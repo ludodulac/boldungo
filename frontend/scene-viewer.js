@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { gableRoofTriangles } from './scene-viewer-gable-roof.js';
 
 const canvas = document.querySelector('#viewer');
 const messageEl = document.querySelector('#message');
@@ -220,6 +221,34 @@ function shedRoofPlane(volume, roof, degrees, material) {
   return mesh;
 }
 
+function gableRoofMesh(volume, roof, material) {
+  const width = metric(volume.width), depth = metric(volume.depth), height = metric(volume.height);
+  const p = volume.position ?? { x: 0, y: 0, z: 0 };
+  if (![width, depth, height, Number(p.x), Number(p.y), Number(p.z)].every(Number.isFinite)) return null;
+  if (!knownNumber(roof.pitch_degrees) || !roof.ridge_direction) return null;
+  const data = gableRoofTriangles({
+    x: Number(p.x),
+    y: Number(p.y),
+    z: Number(p.z),
+    width,
+    depth,
+    height,
+    pitchDegrees: Number(roof.pitch_degrees),
+    overhang: Number(roof.overhang ?? 0),
+    ridgeDirection: roof.ridge_direction,
+  });
+  if (!data) return null;
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(data.vertices), 3));
+  geometry.computeVertexNormals();
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData.architecturalObjectId = roof.id;
+  mesh.userData.ridgeDirection = data.ridgeDirection;
+  mesh.userData.ridgeElevation = data.ridgeElevation;
+  addEdges(mesh);
+  return mesh;
+}
+
 function renderRoofs() {
   const notes = [];
   for (const roof of currentScene.roofs ?? []) {
@@ -234,6 +263,19 @@ function renderRoofs() {
       mesh.position.set(Number(p.x) + width / 2, Number(p.z) + height + 0.02, Number(p.y) + depth / 2);
       group.add(mesh);
       notes.push(`${roof.id} : toit plat.`);
+      continue;
+    }
+    if (roof.type === 'gable') {
+      const mesh = gableRoofMesh(volume, roof, exactRoofMaterial);
+      if (mesh) {
+        group.add(mesh);
+        notes.push(`${roof.id} : toit à deux pans, faîtage ${roof.ridge_direction}, pente ${roof.pitch_degrees}°.`);
+      } else {
+        const unknowns = [];
+        if (!knownNumber(roof.pitch_degrees)) unknowns.push('pente');
+        if (!roof.ridge_direction) unknowns.push('direction de faîtage');
+        notes.push(`${roof.id} : ${unknowns.join(' et ') || 'géométrie'} inconnue, aucun toit à deux pans arbitraire n’est dessiné.`);
+      }
       continue;
     }
     if (roof.type !== 'shed') {
