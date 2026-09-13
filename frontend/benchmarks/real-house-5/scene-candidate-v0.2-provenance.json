@@ -35,6 +35,13 @@
       "target": "platform-timber-1",
       "decision": "extend_longitudinal_footprint_conservatively",
       "statement": "Photos 3 and 4 show exposed portions of the same raised timber terrace and support that the previous candidate footprint was likely too short. The retained 3.0 m depth is a low-confidence revisable Scene inference, not a measurement; exact floor continuity through the occluded masonry/stair zone remains unresolved."
+    },
+    {
+      "kind": "architectural_coherence_simplification",
+      "artifact": "platform-stair-clearance-scene-overlay-v0.1.json",
+      "target": "platform-timber-1 + stair-exterior-1",
+      "decision": "clip_simplified_rectangular_deck_envelope_at_existing_masonry_boundary",
+      "statement": "After the owner-confirmed stair route was materialized, the previous rectangular timber-deck proxy visibly intersected the westbound stair. Because the exact hidden timber contour is not photo-resolved and is secondary for the LEGO goal, the represented deck envelope is conservatively clipped at the already-existing y=7.8 masonry landing rear boundary. This is a reversible Scene simplification, not a claim that the real deck terminates there and not a new measurement."
     }
   ],
   "unresolved_metric_axes": [
@@ -54,6 +61,11 @@
       "target": "stair-exterior-1 exact route metrics",
       "status": "unresolved",
       "reason": "The owner confirms route topology and cardinal directions, not exact run lengths, turn coordinates, west overrun, width, or step metrics. Current Scene coordinates remain revisable inference."
+    },
+    {
+      "target": "platform-timber-1 hidden continuity around masonry/stair complex",
+      "status": "unresolved",
+      "reason": "Photos do not expose the exact timber-floor contour behind the masonry/stair occlusion. The current clipped rectangular envelope is a reversible preview simplification chosen only to avoid an architecturally impossible interpenetration."
     }
   ],
   "policy": "This artifact records benchmark derivation only. It must not be interpreted as new Survey truth or as a production house-specific rule."

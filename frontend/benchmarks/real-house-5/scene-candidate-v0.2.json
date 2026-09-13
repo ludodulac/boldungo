@@ -9,7 +9,8 @@
     "confirmed-opening-semantics-overlay-v0.1.json",
     "observed-front-window-surrounds-overlay-v0.1.json",
     "observed-covered-void-wall-overlay-v0.1.json",
-    "timber-deck-extent-scene-overlay-v0.1.json"
+    "timber-deck-extent-scene-overlay-v0.1.json",
+    "platform-stair-clearance-scene-overlay-v0.1.json"
   ],
   "retained_metric_values": {
     "volume_main.width_m": 7.2,
@@ -22,5 +23,5 @@
     "volume_main.height_m": "provisional_unresolved_multi_family_consensus"
   },
   "provenance": "scene-candidate-v0.2-provenance.json",
-  "statement": "Canonical benchmark recipe for materializing the current Scene candidate. It preserves the accepted Survey and applies only merged, provenance-bearing Scene corrections, direct visual observations, and explicit user confirmations."
+  "statement": "Canonical benchmark recipe for materializing the current Scene candidate. It preserves the accepted Survey and applies only merged, provenance-bearing Scene corrections, direct visual observations, explicit user confirmations, and reversible architectural-coherence simplifications where hidden geometry remains unresolved."
 }
