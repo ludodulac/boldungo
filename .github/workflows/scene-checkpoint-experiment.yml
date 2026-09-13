@@ -45,6 +45,12 @@ jobs:
         run: |
           python scripts/render_scene_checkpoint.py .checkpoints/variants/terrace-50.json south-left .checkpoints/terrace-50-south-left.png
           python scripts/render_scene_checkpoint.py .checkpoints/variants/terrace-62.json south-left .checkpoints/terrace-62-south-left.png
+      - name: Render selected combined variant
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62.json front .checkpoints/combined-front.png
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62.json south-left .checkpoints/combined-south-left.png
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62.json rear-oblique .checkpoints/combined-rear-oblique.png
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62.json perspective .checkpoints/combined-perspective.png --zoom-out 420
       - name: Verify PNG outputs
         run: |
           test -s .checkpoints/current-front.png
@@ -59,9 +65,13 @@ jobs:
           test -s .checkpoints/height-5.6-south-left.png
           test -s .checkpoints/terrace-50-south-left.png
           test -s .checkpoints/terrace-62-south-left.png
+          test -s .checkpoints/combined-front.png
+          test -s .checkpoints/combined-south-left.png
+          test -s .checkpoints/combined-rear-oblique.png
+          test -s .checkpoints/combined-perspective.png
       - uses: actions/upload-artifact@v4
         with:
-          name: scene-visual-sensitivity-sweep
+          name: scene-visual-sensitivity-combined
           path: .checkpoints/*.png
           if-no-files-found: error
           include-hidden-files: true
