@@ -8,6 +8,7 @@ on:
       - 'scripts/prepare_visual_sensitivity_sweep.py'
       - 'scripts/prepare_south_terrace_guardrail_gate.py'
       - 'scripts/prepare_south_terrace_structure_gate.py'
+      - 'scripts/prepare_south_access_connection_gate.py'
       - '.github/workflows/scene-checkpoint-experiment.yml'
       - 'frontend/scene-viewer*'
       - 'frontend/benchmarks/real-house-5/**'
@@ -29,23 +30,24 @@ jobs:
           python -m pip install 'playwright>=1.50,<2'
       - name: Materialize CURRENT Scene
         run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
-      - name: Prepare footprint-corrected experimental Scene
-        run: python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
-      - name: Reapply accepted experimental guardrail
-        run: python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/current-terrace-guardrail.json
-      - name: Add only existing photo-supported visible supports
-        run: python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/current-terrace-guardrail.json .checkpoints/variants/new-terrace-visible-structure.json
-      - name: Render structure gate with locked south-left camera
+      - name: Rebuild accepted experimental terrace hypothesis
         run: |
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/current-terrace-guardrail.json south-left .checkpoints/gate-current-south-left.png
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/new-terrace-visible-structure.json south-left .checkpoints/gate-new-south-left.png
+          python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
+          python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
+          python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/current-access-complex.json
+      - name: Apply one access-complex correction
+        run: python scripts/prepare_south_access_connection_gate.py .checkpoints/variants/current-access-complex.json .checkpoints/variants/new-access-complex.json
+      - name: Render access gate with locked south-left camera
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/current-access-complex.json south-left .checkpoints/gate-current-south-left.png
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new-access-complex.json south-left .checkpoints/gate-new-south-left.png
       - name: Verify gate PNG outputs
         run: |
           test -s .checkpoints/gate-current-south-left.png
           test -s .checkpoints/gate-new-south-left.png
       - uses: actions/upload-artifact@v4
         with:
-          name: south-terrace-structure-gate
+          name: south-access-connection-gate
           path: .checkpoints/gate-*.png
           if-no-files-found: error
           include-hidden-files: true
