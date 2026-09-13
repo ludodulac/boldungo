@@ -3,21 +3,69 @@
   "benchmark_id": "real-house-5",
   "source_scene_id": "brickhouse-scene-real-house-5-candidate",
   "target_survey_stair_system_id": "stair-exterior-1",
+  "owner_fact_journal": "owner-spatial-topology-survey-facts-v0.1.json",
   "operation": "replace_stair_system_geometry",
   "confidence_policy": "low_confidence_inferred_geometry",
   "replaces_scene_stair_ids": ["stair-exterior-1"],
   "stairs": [
-    {"id":"stair-exterior-1-run-lower-v1","start":{"x":-1.1,"y":3.0,"z":0.0},"end":{"x":-1.1,"y":5.5,"z":1.15},"width":1.0,"material":"masonry","left_edge":"solid_parapet","right_edge":"solid_parapet","source":{"kind":"inferred","confidence":0.18},"evidence":[{"photo_index":4,"observation":"La partie basse de l'escalier et son parapet sont visibles; sa projection exacte reste seulement bornee grossierement."},{"photo_index":5,"observation":"La vue arriere confirme une volee basse qui rejoint un changement de direction avant l'arrivee au palier."}]},
-    {"id":"stair-exterior-1-run-upper-v1","start":{"x":-1.1,"y":5.5,"z":1.15},"end":{"x":-2.0,"y":5.5,"z":2.3},"width":1.0,"material":"masonry","left_edge":"solid_parapet","right_edge":"solid_parapet","source":{"kind":"inferred","confidence":0.18},"evidence":[{"photo_index":4,"observation":"Le raccord superieur est visible au voisinage du volume/palier massif, sans preuve d'une coordonnee exacte du coude."},{"photo_index":5,"observation":"La volee superieure rejoint le palier et n'est pas collineaire a la volee basse."}]}
+    {
+      "id": "stair-exterior-1-run-lower-v1",
+      "start": {"x": -2.9, "y": 10.3, "z": 0.0},
+      "end": {"x": -2.0, "y": 10.3, "z": 1.15},
+      "width": 1.0,
+      "material": "masonry",
+      "left_edge": "solid_parapet",
+      "right_edge": "solid_parapet",
+      "source": {"kind": "inferred", "confidence": 0.18},
+      "evidence": [
+        {"photo_index": 4, "observation": "La partie basse de l'escalier et son parapet sont visibles; sa projection exacte reste seulement bornee grossierement."},
+        {"photo_index": 5, "observation": "La vue arriere confirme une volee basse qui rejoint un changement de direction avant l'arrivee au palier."}
+      ]
+    },
+    {
+      "id": "stair-exterior-1-run-upper-v1",
+      "start": {"x": -2.0, "y": 10.3, "z": 1.15},
+      "end": {"x": -2.0, "y": 7.8, "z": 2.3},
+      "width": 1.0,
+      "material": "masonry",
+      "left_edge": "solid_parapet",
+      "right_edge": "solid_parapet",
+      "source": {"kind": "inferred", "confidence": 0.18},
+      "evidence": [
+        {"photo_index": 4, "observation": "Le raccord superieur est visible au voisinage du volume/palier massif, sans preuve d'une coordonnee exacte du coude."},
+        {"photo_index": 5, "observation": "La volee superieure rejoint le palier et n'est pas collineaire a la volee basse."}
+      ]
+    }
   ],
   "stair_system_links": [
-    {"id":"stair-exterior-1-link-lower-v1","stair_run_id":"stair-exterior-1-run-lower-v1","survey_stair_system_id":"stair-exterior-1","source":{"kind":"inferred","confidence":0.18},"statement":"Metric lower run is a low-confidence Scene segmentation of the one Survey stair system."},
-    {"id":"stair-exterior-1-link-upper-v1","stair_run_id":"stair-exterior-1-run-upper-v1","survey_stair_system_id":"stair-exterior-1","source":{"kind":"inferred","confidence":0.18},"statement":"Metric upper run is a low-confidence Scene segmentation of the one Survey stair system."}
+    {
+      "id": "stair-exterior-1-link-lower-v1",
+      "stair_run_id": "stair-exterior-1-run-lower-v1",
+      "survey_stair_system_id": "stair-exterior-1",
+      "source": {"kind": "inferred", "confidence": 0.18},
+      "statement": "Metric lower run is a low-confidence Scene segmentation of the one Survey stair system."
+    },
+    {
+      "id": "stair-exterior-1-link-upper-v1",
+      "stair_run_id": "stair-exterior-1-run-upper-v1",
+      "survey_stair_system_id": "stair-exterior-1",
+      "source": {"kind": "inferred", "confidence": 0.18},
+      "statement": "Metric upper run is a low-confidence Scene segmentation of the one Survey stair system."
+    }
   ],
-  "relation_updates":[{"relation_id":"relation-stair-platform","subject_id":"stair-exterior-1-run-upper-v1","object_id":"platform-massive-1","geometry_status":"resolved","statement":"La volee superieure inferee rejoint physiquement le palier massif; l'identite semantique de l'escalier reste stair-exterior-1 via les liens de provenance."}],
-  "inference_notes":[
-    "The user-confirmed topology proves a direction change and at least two runs, not an exact turn coordinate or exact rise split.",
-    "The 1.15 m junction elevation and axis-aligned coarse run projections are revisable low-confidence Scene inferences chosen inside the already inferred 2.3 m total rise; they are not Survey observations or measurements.",
-    "Tread count, turn angle and landing dimensions remain unresolved."
+  "relation_updates": [
+    {
+      "relation_id": "relation-stair-platform",
+      "subject_id": "stair-exterior-1-run-upper-v1",
+      "object_id": "platform-massive-1",
+      "geometry_status": "resolved",
+      "statement": "La volee superieure inferee rejoint physiquement le palier massif; l'identite semantique de l'escalier reste stair-exterior-1 via les liens de provenance."
+    }
+  ],
+  "inference_notes": [
+    "Owner-confirmed Survey topology fixes the qualitative route: descent from platform-massive-1 goes west beyond the main rear plane, turns left, then goes south to the low courtyard; ascent is the reverse. This topology is user-provided, but the coordinates remain Scene inference.",
+    "No new stair dimension is introduced: the existing provisional 1.0 m width, 1.15 m intermediate rise split, 2.3 m total rise, and horizontal run-length magnitudes 2.5 m and 0.9 m are retained and only reoriented/repositioned to realize the confirmed route.",
+    "The upper platform contact uses the existing platform-massive-1 rear boundary y=7.8 and the previously inferred x=-2.0 contact coordinate; the resulting turn coordinate and west overrun are derived provisional placement, not owner measurements.",
+    "Exact run lengths, exact west overrun, exact turn coordinate, tread count, and landing dimensions remain unresolved."
   ]
 }

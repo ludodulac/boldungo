@@ -15,11 +15,12 @@
       "statement": "The existing 7.2 m candidate width remains inside the photo-derived front-width interval; no user measurement is introduced."
     },
     {
-      "kind": "benchmark_scene_overlay",
+      "kind": "user_confirmed_topology_and_scene_overlay",
       "artifact": "turning-stair-scene-overlay-v0.1.json",
+      "source_fact_journal": "owner-spatial-topology-survey-facts-v0.1.json",
       "target": "stair-exterior-1",
-      "decision": "replace_with_two_linked_runs",
-      "statement": "User-confirmed direction change is realized with two low-confidence metric runs linked back to the single Survey stair system."
+      "decision": "reorient_two_linked_runs_without_new_dimensions",
+      "statement": "Owner-confirmed topology fixes descent as west beyond the main rear plane, then a left turn and south to the low courtyard. The two Scene runs remain low-confidence metric inference: existing provisional width, rise split, total rise and horizontal run-length magnitudes are reused rather than adding a new measurement."
     },
     {
       "kind": "human_relative_level_fact_and_scene_overlay",
@@ -48,6 +49,11 @@
       "current_value_m": 8.0,
       "status": "provisional",
       "reason": "Current opening-height prior families do not yet provide a sufficiently clean multi-family consensus."
+    },
+    {
+      "target": "stair-exterior-1 exact route metrics",
+      "status": "unresolved",
+      "reason": "The owner confirms route topology and cardinal directions, not exact run lengths, turn coordinates, west overrun, width, or step metrics. Current Scene coordinates remain revisable inference."
     }
   ],
   "policy": "This artifact records benchmark derivation only. It must not be interpreted as new Survey truth or as a production house-specific rule."
