@@ -79,6 +79,28 @@ def _terrace_extent(scene: dict, y_min: float) -> dict:
     return result
 
 
+def _visible_full_depth_terrace(scene: dict) -> dict:
+    """One reversible footprint test: make the P3-visible timber deck read as a platform.
+
+    Only the exposed outer projection is widened. The masonry-side hidden junction
+    remains represented by the existing separate fragment/clearance geometry.
+    """
+    result = copy.deepcopy(scene)
+    platform = next(p for p in result.get("platforms", []) if p["id"] == "platform-timber-1")
+    platform["position"]["x"] = -2.8
+    platform["width"] = 2.8
+    source = platform.setdefault("source", {})
+    source["kind"] = "inferred"
+    source["confidence"] = min(float(source.get("confidence", 0.25)), 0.25)
+    platform.setdefault("evidence", []).append({
+        "photo_index": 3,
+        "observation": "EXPERIMENT ONLY: P3 shows sustained full outward projection on the visible timber terrace; exact hidden junction behind the masonry access complex remains unresolved."
+    })
+    result["id"] = f"{scene.get('id', 'scene')}-visible-full-depth-terrace-experiment"
+    result["notes"] = (result.get("notes", "") + " EXPERIMENT ONLY: reversible low-confidence footprint test. The P3-visible timber platform keeps sustained outward projection; no hidden continuity behind the masonry access complex is asserted.").strip()
+    return result
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("current", type=Path)
@@ -100,6 +122,11 @@ def main() -> None:
     combined["notes"] = (combined.get("notes", "") + " COMBINED VISUAL TEST ONLY: selected 6.5 m height family plus 62% terrace family; neither value is promoted truth.").strip()
     (args.output_dir / "combined-6.5-62.json").write_text(
         json.dumps(combined, indent=2) + "\n", encoding="utf-8"
+    )
+
+    corrected = _visible_full_depth_terrace(combined)
+    (args.output_dir / "combined-6.5-62-terrace-footprint.json").write_text(
+        json.dumps(corrected, indent=2) + "\n", encoding="utf-8"
     )
 
 
