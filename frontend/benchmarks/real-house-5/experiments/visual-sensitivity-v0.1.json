@@ -1,0 +1,71 @@
+{
+  "schema_version": "brickhouse-benchmark-visual-sensitivity-0.1",
+  "benchmark_id": "real-house-5",
+  "base_recipe": "../scene-candidate-v0.2.json",
+  "canonical": false,
+  "merge_policy": "experiment_only_no_merge_during_sweep",
+  "purpose": "Test whether apparent main-body height and south-terrace longitudinal extent are dominant perceptual errors before promoting any new Scene metric.",
+  "constants": {
+    "volume_main.width_m": 7.2,
+    "volume_main.depth_m": 9.0,
+    "roof.pitch_degrees": 17.0
+  },
+  "height_sweep": [
+    {"id": "current", "volume_main.height_m": 8.0, "vertical_scale": 1.0},
+    {"id": "height-a", "volume_main.height_m": 6.5, "vertical_scale": 0.8125},
+    {"id": "height-b", "volume_main.height_m": 6.0, "vertical_scale": 0.75},
+    {"id": "height-c", "volume_main.height_m": 5.6, "vertical_scale": 0.7}
+  ],
+  "height_transform_policy": {
+    "anchor": "volume_main.position.z",
+    "scale_dependent_z_fields": [
+      "volume_main.height",
+      "openings[*].offset_vertical",
+      "openings[*].height",
+      "platforms[*].position.z",
+      "platforms[*].supports[*].height",
+      "stairs[*].start.z",
+      "stairs[*].end.z",
+      "chimneys[*].position.z",
+      "chimneys[*].height"
+    ],
+    "preserve": [
+      "opening ordering",
+      "opening horizontal positions",
+      "roof pitch",
+      "semantic relations",
+      "materials",
+      "unknowns"
+    ],
+    "guard": "Reject a variant if coherent scaling makes doors/windows implausible or destroys the three-level reading; do not compensate missing terrain by crushing the house."
+  },
+  "terrace_sweep": [
+    {"id": "terrace-current", "wall_side_y_min": 6.0, "wall_side_y_max": 9.0, "longitudinal_extent_m": 3.0, "depth_fraction": 0.3333333333},
+    {"id": "terrace-50", "wall_side_y_min": 4.5, "wall_side_y_max": 9.0, "longitudinal_extent_m": 4.5, "depth_fraction": 0.5},
+    {"id": "terrace-62", "wall_side_y_min": 3.4, "wall_side_y_max": 9.0, "longitudinal_extent_m": 5.6, "depth_fraction": 0.6222222222}
+  ],
+  "terrace_transform_policy": {
+    "change_only": "longitudinal extent of the represented timber terrace",
+    "preserve": [
+      "timber material",
+      "distinct masonry landing",
+      "stair L geometry",
+      "covered void",
+      "local unresolved stair corridor",
+      "wall-side rear termination y=9.0"
+    ],
+    "unknown_policy": "Extending the visible-order proxy must not assert the exact hidden contour or floor continuity through the occluded masonry/stair zone."
+  },
+  "comparison_gate": {
+    "views": ["front", "south-left", "rear-oblique", "perspective"],
+    "order": [
+      "height sweep with current terrace",
+      "terrace sweep with current height",
+      "choose one order of magnitude for each variable",
+      "render one combined variant",
+      "only if Scene gain is clear, generate full BrickModel and viewer-faithful render"
+    ],
+    "question": "At first glance, is this more recognizably this house?"
+  },
+  "note": "All numeric alternatives in this manifest are sensitivity sliders, not measurements or promoted Scene truth."
+}
