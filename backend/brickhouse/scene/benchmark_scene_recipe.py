@@ -43,6 +43,14 @@ def materialize_scene_recipe(recipe_path: Path) -> ArchitecturalScene:
                     )
             continue
 
+        if operation == "replace_platform_geometry":
+            replaced = set(overlay["replaces_scene_platform_ids"])
+            payload["platforms"] = [
+                item for item in payload.get("platforms", []) if item["id"] not in replaced
+            ]
+            payload["platforms"].extend(deepcopy(overlay["platforms"]))
+            continue
+
         if operation == "update_platform_geometry":
             platform_updates = {item["platform_id"]: item for item in overlay["platform_updates"]}
             for platform in payload.get("platforms", []):
