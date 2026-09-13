@@ -9,8 +9,9 @@ from typing import Any
 import httpx
 from pydantic import ValidationError
 
+from brickhouse.survey import ArchitecturalSurvey
 from .models import PhotoAnalysisResult
-from .openai_provider import MAX_VISION_PHOTOS, PhotoInput, SYSTEM_PROMPT
+from .openai_provider import MAX_VISION_PHOTOS, PhotoInput, SYSTEM_PROMPT, _survey_context
 
 MAX_GEMINI_INLINE_RAW_BYTES = 14 * 1024 * 1024
 
@@ -21,16 +22,25 @@ class GeminiHTTPError(RuntimeError):
         self.status_code = status_code
 
 
-def _prompt(user_notes: str, known_front_width_m: float | None, photo_count: int) -> str:
+def _prompt(
+    user_notes: str,
+    known_front_width_m: float | None,
+    photo_count: int,
+    survey: ArchitecturalSurvey | None,
+) -> str:
     return (
         "Analyze these photos as overlapping views of the same physical property. "
         f"There are {photo_count} supplied views. Do not use photo count itself as certainty: identify repeated physical objects, wall planes and corner crossings before estimating geometry. "
         f"User notes: {user_notes.strip() or 'none provided'}. "
         f"Known front width in meters: {known_front_width_m if known_front_width_m is not None else 'unknown'}. "
+        f"{_survey_context(survey)} "
         "Lock the observed opening inventory per physical wall before metric placement. "
         "Use extra/detail views to refine only the relations they actually reveal. Hidden stair, landing or terrace connections must remain uncertain rather than being completed by architectural habit. "
         "Recover normalized proportions before metric dimensions and cross-check them across compatible views. "
-        "Return the most faithful conservative proposal allowed by the BuildingModel schema, plus questions, assumptions, scale_basis and proportion_evidence. "
+        "Also return a bounded set of normally 8–15 high-value architectural landmark_proposals. Reuse a physical_landmark_id across views only when physical identity is defensible; resemblance alone is insufficient. "
+        "Coordinates are x/width and y/height proposals, not calibrated camera coordinates. Mark ambiguous or rejected identities explicitly rather than manufacturing enough points. "
+        "When the read-only Survey identifies the object but omits a supplied photo where it is directly visible, return a survey_evidence_candidate instead of pretending that evidence is already accepted. "
+        "Return the most faithful conservative proposal allowed by the BuildingModel schema, plus questions, assumptions, scale_basis, proportion_evidence, landmark_proposals and survey_evidence_candidates. "
         "Never change an observed architectural feature merely to make the proposal compatible with the current LEGO engine."
     )
 
@@ -69,8 +79,8 @@ def _repair_prompt(invalid_text: str, exc: Exception) -> str:
         errors = [{"error": str(exc)}]
     return (
         "Repair the following BrickHouse photo-analysis candidate so it validates exactly against the supplied JSON schema. "
-        "Preserve all architectural observations, dimensions and uncertainty unless a value itself violates a schema or cross-field constraint. "
-        "Do not invent missing observations merely to make validation pass. Return JSON only.\n\n"
+        "Preserve all architectural observations, landmark identities, evidence candidates, dimensions and uncertainty unless a value itself violates a schema or cross-field constraint. "
+        "Do not invent missing observations or landmarks merely to make validation pass. Return JSON only.\n\n"
         f"VALIDATION ERRORS:\n{json.dumps(errors, ensure_ascii=False)}\n\n"
         f"CANDIDATE:\n{invalid_text}"
     )
@@ -85,6 +95,7 @@ def _post_json(http: httpx.Client, url: str, key: str, body: dict[str, Any]) -> 
 
 def analyze_building_photos_gemini(
     photos: list[PhotoInput], *, user_notes: str = "", known_front_width_m: float | None = None,
+    survey: ArchitecturalSurvey | None = None,
     client: httpx.Client | None = None, model: str | None = None, api_key: str | None = None,
 ) -> PhotoAnalysisResult:
     if not 1 <= len(photos) <= MAX_VISION_PHOTOS:
@@ -106,7 +117,7 @@ def analyze_building_photos_gemini(
         raise ValueError("Gemini API key is not configured")
 
     parts = [{"inline_data": {"mime_type": p.media_type, "data": base64.b64encode(p.content).decode("ascii")}} for p in photos]
-    parts.append({"text": _prompt(user_notes, known_front_width_m, len(photos))})
+    parts.append({"text": _prompt(user_notes, known_front_width_m, len(photos), survey)})
     schema = PhotoAnalysisResult.model_json_schema()
     generation = {"responseMimeType": "application/json", "responseJsonSchema": schema}
     body = {"system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]}, "contents": [{"role": "user", "parts": parts}], "generationConfig": generation}

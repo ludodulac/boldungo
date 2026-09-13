@@ -5,6 +5,7 @@ import os
 from dataclasses import dataclass
 from typing import Literal
 
+from brickhouse.survey import ArchitecturalSurvey
 from .gemini_provider import GeminiHTTPError, analyze_building_photos_gemini
 from .models import PhotoAnalysisResult
 from .openai_provider import PhotoInput, analyze_building_photos
@@ -61,14 +62,27 @@ def _gemini_error_code(status_code: int) -> str:
 
 def analyze_with_configured_provider(
     photos: list[PhotoInput], *, user_notes: str = "", known_front_width_m: float | None = None,
+    survey: ArchitecturalSurvey | None = None,
 ) -> PhotoAnalysisResult:
     status = vision_status()
     if not status.ready or status.provider is None:
         raise VisionProviderError(status.reason)
     try:
         if status.provider == "openai":
-            return analyze_building_photos(photos, user_notes=user_notes, known_front_width_m=known_front_width_m, model=status.model)
-        return analyze_building_photos_gemini(photos, user_notes=user_notes, known_front_width_m=known_front_width_m, model=status.model)
+            return analyze_building_photos(
+                photos,
+                user_notes=user_notes,
+                known_front_width_m=known_front_width_m,
+                survey=survey,
+                model=status.model,
+            )
+        return analyze_building_photos_gemini(
+            photos,
+            user_notes=user_notes,
+            known_front_width_m=known_front_width_m,
+            survey=survey,
+            model=status.model,
+        )
     except ValueError:
         raise
     except GeminiHTTPError as exc:
