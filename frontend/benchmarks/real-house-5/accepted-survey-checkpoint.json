@@ -8,6 +8,9 @@
   "source_upload_sha256": "b19ed423d24d640d6fe8d5ea30102bb6da189684abcc75297a98d1cc9a1ede9a",
   "canonical_json_sha256": "af68618e0fa6556f96bac811cc6ed8dfa00d2871c32aa0f4a98e65cc17921c15",
   "fixture": "accepted-survey-v0.1.json",
+  "post_acceptance_user_fact_journals": [
+    "owner-spatial-topology-survey-facts-v0.1.json"
+  ],
   "invariants": {
     "photo_facades": ["front", "right", "left", "left", "rear"],
     "known_measurements_count": 0,
@@ -24,5 +27,5 @@
     }
   },
   "next_stage": "survey_to_scene",
-  "rerun_policy": "Do not rerun Photos -> Survey for routine downstream development. Reopen this stage only if its contract or source photos intentionally change."
+  "rerun_policy": "Do not rerun Photos -> Survey for routine downstream development. Reopen this stage only if its contract or source photos intentionally change. Post-acceptance user-confirmed fact journals are append-only provenance and must be applied before downstream Survey -> Scene reasoning."
 }
