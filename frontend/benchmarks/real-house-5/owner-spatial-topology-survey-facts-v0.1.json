@@ -1,0 +1,96 @@
+{
+  "schema_version": "brickhouse-benchmark-human-survey-facts-0.1",
+  "benchmark_id": "real-house-5",
+  "source_survey_id": "brickhouse-survey",
+  "reason": "USER_CONFIRMED spatial topology from owner sketch/explanation",
+  "source": {"kind": "user_provided", "confidence": 1.0},
+  "cardinal_convention": {
+    "east": "front",
+    "west": "rear",
+    "south": "left",
+    "north": "right"
+  },
+  "attribute_facts": [
+    {
+      "observation_id": "stair-exterior-1",
+      "attribute_name": "stair_topology",
+      "value": {
+        "minimum_run_count": 2,
+        "exact_run_count": 2,
+        "direction_change": true,
+        "turning_node_kind": "turn",
+        "component_run_ids": []
+      },
+      "certainty": "certain",
+      "source": {"kind": "user_provided", "confidence": 1.0},
+      "statement": "Owner confirms the exterior stair is L-shaped and has exactly two major runs; no run metrics are supplied.",
+      "supersedes_existing": false
+    },
+    {
+      "observation_id": "stair-exterior-1",
+      "attribute_name": "descent_route",
+      "value": {
+        "starts_from_observation_id": "platform-massive-1",
+        "run_sequence": [
+          {
+            "ordinal": 1,
+            "direction": "west",
+            "extends_beyond": "west_rear_plane_of_main_building"
+          },
+          {
+            "turn": "left"
+          },
+          {
+            "ordinal": 2,
+            "direction": "south",
+            "terminates_at": "low_courtyard_level"
+          }
+        ],
+        "ascent_is_reverse": true,
+        "metric_geometry_status": "unresolved"
+      },
+      "certainty": "certain",
+      "source": {"kind": "user_provided", "confidence": 1.0},
+      "statement": "Owner confirms descent from the masonry/concrete platform goes west beyond the rear plane, turns left, then continues south to the low courtyard; ascent is the reverse path.",
+      "supersedes_existing": false
+    },
+    {
+      "observation_id": "platform-massive-1",
+      "attribute_name": "platform_transition",
+      "value": {
+        "object_observation_id": "platform-timber-1",
+        "kind": "single_step",
+        "step_count": 1,
+        "step_height": null,
+        "metric_geometry_status": "unresolved"
+      },
+      "certainty": "certain",
+      "source": {"kind": "user_provided", "confidence": 1.0},
+      "statement": "Owner confirms the masonry/concrete platform and timber platform are distinct walking surfaces at different levels connected by exactly one step; the step height is unknown.",
+      "supersedes_existing": false
+    }
+  ],
+  "relative_level_facts": [
+    {
+      "subject_observation_id": "platform-timber-1",
+      "object_observation_id": "platform-massive-1",
+      "relation": "lower_than",
+      "certainty": "certain",
+      "source": {"kind": "user_provided", "confidence": 1.0},
+      "statement": "Owner confirms the timber walking surface is lower than the masonry/concrete platform; no vertical delta is supplied."
+    }
+  ],
+  "unresolved": [
+    "Exact lengths of both major stair runs.",
+    "Exact stair width.",
+    "Exact dimensions of both platforms.",
+    "Exact amount by which the westbound run extends beyond the rear plane.",
+    "Exact elevations of both platforms.",
+    "Exact height of the single step between platforms.",
+    "Exact parapet height and thickness.",
+    "Detailed railing geometry.",
+    "Any hidden geometry not supplied by the owner.",
+    "Exact timber floor continuity through occluded zones."
+  ],
+  "notes": "This journal is append-only user provenance. It does not replace the accepted photo evidence, does not add measurements, and must not be interpreted as metric Scene coordinates."
+}
