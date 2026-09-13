@@ -7,7 +7,7 @@ from pathlib import Path
 
 from brickhouse.bricks.export import export_bundle_json
 from brickhouse.pipeline import DEFAULT_FRONT_WIDTH_STUDS, run_m0_pipeline_scene
-from brickhouse.scene.models import ArchitecturalScene
+from brickhouse.scene.wall_profile_scene import ArchitecturalScene
 
 
 def main() -> int:
