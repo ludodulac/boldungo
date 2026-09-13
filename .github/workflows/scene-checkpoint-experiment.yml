@@ -1,0 +1,45 @@
+name: Scene checkpoint experiment
+
+on:
+  push:
+    branches: [experiment/real-house-5-visual-sensitivity]
+    paths:
+      - 'scripts/render_scene_checkpoint.py'
+      - '.github/workflows/scene-checkpoint-experiment.yml'
+      - 'frontend/scene-viewer*'
+      - 'frontend/benchmarks/real-house-5/**'
+
+permissions:
+  contents: read
+
+jobs:
+  render-current:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Boldungo and browser adapter
+        run: |
+          python -m pip install -e .
+          python -m pip install 'playwright>=1.50,<2'
+      - name: Materialize CURRENT Scene
+        run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
+      - name: Render CURRENT camera presets through real Scene viewer
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/current.json front .checkpoints/current-front.png
+          python scripts/render_scene_checkpoint.py .checkpoints/current.json south-left .checkpoints/current-south-left.png
+          python scripts/render_scene_checkpoint.py .checkpoints/current.json rear-oblique .checkpoints/current-rear-oblique.png
+          python scripts/render_scene_checkpoint.py .checkpoints/current.json perspective .checkpoints/current-perspective.png
+      - name: Verify PNG outputs
+        run: |
+          test -s .checkpoints/current-front.png
+          test -s .checkpoints/current-south-left.png
+          test -s .checkpoints/current-rear-oblique.png
+          test -s .checkpoints/current-perspective.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scene-checkpoint-current
+          path: .checkpoints/*.png
+          if-no-files-found: error
