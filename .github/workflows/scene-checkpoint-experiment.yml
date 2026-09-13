@@ -34,17 +34,13 @@ jobs:
           python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
           python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
           python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/current-stair-viewer-scene.json
-      - name: Render stair viewer gate with locked south-left camera
-        run: |
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/current-stair-viewer-scene.json south-left .checkpoints/gate-current-south-left.png
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/current-stair-viewer-scene.json south-left .checkpoints/gate-new-south-left.png --stepped-stairs
-      - name: Verify gate PNG outputs
-        run: |
-          test -s .checkpoints/gate-current-south-left.png
-          test -s .checkpoints/gate-new-south-left.png
+      - name: Render one camera-only stair reveal
+        run: python scripts/render_scene_checkpoint.py .checkpoints/variants/current-stair-viewer-scene.json rear-oblique .checkpoints/stair-l-camera-control.png --stepped-stairs
+      - name: Verify PNG output
+        run: test -s .checkpoints/stair-l-camera-control.png
       - uses: actions/upload-artifact@v4
         with:
-          name: south-stair-viewer-gate
-          path: .checkpoints/gate-*.png
+          name: stair-l-camera-control
+          path: .checkpoints/stair-l-camera-control.png
           if-no-files-found: error
           include-hidden-files: true
