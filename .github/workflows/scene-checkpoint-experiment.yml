@@ -5,9 +5,12 @@ on:
     branches: [experiment/real-house-5-visual-sensitivity]
     paths:
       - 'scripts/render_scene_checkpoint.py'
+      - 'scripts/render_brickmodel_checkpoint.py'
+      - 'scripts/build_scene_brickmodel.py'
       - 'scripts/prepare_visual_sensitivity_sweep.py'
       - '.github/workflows/scene-checkpoint-experiment.yml'
       - 'frontend/scene-viewer*'
+      - 'frontend/viewer*'
       - 'frontend/benchmarks/real-house-5/**'
 
 permissions:
@@ -51,6 +54,14 @@ jobs:
           python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62.json south-left .checkpoints/combined-south-left.png
           python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62.json rear-oblique .checkpoints/combined-rear-oblique.png
           python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62.json perspective .checkpoints/combined-perspective.png --zoom-out 420
+      - name: Build one full BrickModel for selected combined Scene
+        run: python scripts/build_scene_brickmodel.py .checkpoints/variants/combined-6.5-62.json .checkpoints/combined-brickhouse-export.json
+      - name: Render selected BrickModel through real viewer
+        run: |
+          python scripts/render_brickmodel_checkpoint.py .checkpoints/combined-brickhouse-export.json front .checkpoints/brickmodel-front.png
+          python scripts/render_brickmodel_checkpoint.py .checkpoints/combined-brickhouse-export.json south-left .checkpoints/brickmodel-south-left.png
+          python scripts/render_brickmodel_checkpoint.py .checkpoints/combined-brickhouse-export.json rear-oblique .checkpoints/brickmodel-rear-oblique.png
+          python scripts/render_brickmodel_checkpoint.py .checkpoints/combined-brickhouse-export.json perspective .checkpoints/brickmodel-perspective.png
       - name: Verify PNG outputs
         run: |
           test -s .checkpoints/current-front.png
@@ -69,9 +80,15 @@ jobs:
           test -s .checkpoints/combined-south-left.png
           test -s .checkpoints/combined-rear-oblique.png
           test -s .checkpoints/combined-perspective.png
+          test -s .checkpoints/brickmodel-front.png
+          test -s .checkpoints/brickmodel-south-left.png
+          test -s .checkpoints/brickmodel-rear-oblique.png
+          test -s .checkpoints/brickmodel-perspective.png
       - uses: actions/upload-artifact@v4
         with:
-          name: scene-visual-sensitivity-combined
-          path: .checkpoints/*.png
+          name: visual-sensitivity-with-brickmodel
+          path: |
+            .checkpoints/*.png
+            .checkpoints/combined-brickhouse-export.json
           if-no-files-found: error
           include-hidden-files: true
