@@ -43,3 +43,4 @@ jobs:
           name: scene-checkpoint-current
           path: .checkpoints/*.png
           if-no-files-found: error
+          include-hidden-files: true
