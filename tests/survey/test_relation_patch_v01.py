@@ -72,6 +72,19 @@ def test_relation_patch_adds_only_explicit_relation_and_preserves_base() -> None
     assert any(item.id == "chimney-existing" for item in candidate.observations)
 
 
+def test_relation_patch_can_return_no_gain_without_mutating_base() -> None:
+    base = _base()
+    payload = _valid_patch_payload(base)
+    payload["patch_id"] = "patch-no-gain-001"
+    payload["add_relations"] = []
+    patch = SurveyRelationPatch.model_validate(payload)
+
+    application = apply_survey_relation_patch(base, patch)
+
+    assert application.added_relations == []
+    assert application.candidate == base
+
+
 def test_relation_patch_fingerprint_is_deterministic_and_binds_exact_base() -> None:
     base = _base()
     payload = base.model_dump(mode="json")
