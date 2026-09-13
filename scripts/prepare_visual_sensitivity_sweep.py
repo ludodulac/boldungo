@@ -95,6 +95,13 @@ def main() -> None:
         path = args.output_dir / f"terrace-{label}.json"
         path.write_text(json.dumps(_terrace_extent(current, y_min), indent=2) + "\n", encoding="utf-8")
 
+    combined = _terrace_extent(_scale_height(current, 6.5), 3.4)
+    combined["id"] = f"{current.get('id', 'scene')}-combined-height-6.5-terrace-62-experiment"
+    combined["notes"] = (combined.get("notes", "") + " COMBINED VISUAL TEST ONLY: selected 6.5 m height family plus 62% terrace family; neither value is promoted truth.").strip()
+    (args.output_dir / "combined-6.5-62.json").write_text(
+        json.dumps(combined, indent=2) + "\n", encoding="utf-8"
+    )
+
 
 if __name__ == "__main__":
     main()
