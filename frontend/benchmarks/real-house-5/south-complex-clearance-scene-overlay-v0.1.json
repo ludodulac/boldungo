@@ -1,0 +1,79 @@
+{
+  "schema_version": "brickhouse-benchmark-scene-overlay-0.1",
+  "benchmark_id": "real-house-5",
+  "source_scene_id": "brickhouse-scene-real-house-5-candidate-v0.2",
+  "operation": "replace_platform_geometry",
+  "replaces_scene_platform_ids": ["platform-timber-1"],
+  "platforms": [
+    {
+      "id": "platform-timber-1",
+      "host_volume_id": "volume_main",
+      "position": {"x": -1.4, "y": 6.0, "z": 2.1},
+      "width": 1.4,
+      "depth": 3.0,
+      "thickness": 0.18,
+      "supports": [
+        {
+          "id": "platform-timber-1-post-2",
+          "position": {"x": -1.15, "y": 8.65, "z": 0.0},
+          "width": 0.16,
+          "depth": 0.16,
+          "height": 2.1,
+          "source": {"kind": "inferred", "confidence": 0.12}
+        }
+      ],
+      "material": "timber",
+      "deck_board_direction": "unknown",
+      "edges": {
+        "x_min": {"treatment": "unknown", "access_spans": []},
+        "x_max": {"treatment": "wall_attached", "access_spans": []},
+        "y_min": {"treatment": "unknown", "access_spans": []},
+        "y_max": {"treatment": "open_railing", "access_spans": []}
+      },
+      "source": {"kind": "inferred", "confidence": 0.12},
+      "evidence": [
+        {"photo_index": 3, "observation": "La terrasse bois se prolonge nettement le long de la facade Sud; son contour exact dans la zone masquee par l'ensemble maconne/escalier n'est pas visible."},
+        {"photo_index": 4, "observation": "Une portion de terrasse reste visible au-dela de l'ensemble maconne; la jonction locale exacte est occultee."}
+      ]
+    },
+    {
+      "id": "platform-timber-1-outer-front-fragment",
+      "host_volume_id": "volume_main",
+      "position": {"x": -2.8, "y": 6.0, "z": 2.1},
+      "width": 1.4,
+      "depth": 1.8,
+      "thickness": 0.18,
+      "supports": [
+        {
+          "id": "platform-timber-1-post-1",
+          "position": {"x": -2.55, "y": 6.25, "z": 0.0},
+          "width": 0.16,
+          "depth": 0.16,
+          "height": 2.1,
+          "source": {"kind": "inferred", "confidence": 0.12}
+        }
+      ],
+      "material": "timber",
+      "deck_board_direction": "unknown",
+      "edges": {
+        "x_min": {"treatment": "open_railing", "access_spans": []},
+        "x_max": {"treatment": "unknown", "access_spans": []},
+        "y_min": {"treatment": "unknown", "access_spans": []},
+        "y_max": {"treatment": "unknown", "access_spans": []}
+      },
+      "source": {"kind": "inferred", "confidence": 0.12},
+      "evidence": [
+        {"photo_index": 3, "observation": "La largeur exposee de la terrasse et son bord exterieur sont visibles sur la portion avant de l'ensemble Sud."},
+        {"photo_index": 4, "observation": "Le complexe maconne et l'escalier occultent la continuation exacte de cette bande exterieure vers l'arriere."}
+      ]
+    }
+  ],
+  "statement": "Approximation topologique minimale de la terrasse Sud: conserver une bande bois continue le long du mur jusqu'a y=9.0 et une portion exterieure plus large jusqu'au bord arriere deja existant du palier maconne y=7.8. L'evidement local ainsi cree libere le corridor de la volee haute sans raccourcir fortement l'extent longitudinal de la terrasse. Cette decomposition en deux rectangles est une approximation Scene reversible; elle ne pretend pas connaitre le contour cache reel ni une continuite precise derriere l'ensemble maconne/escalier.",
+  "inference_notes": [
+    "La terrasse reste representee jusqu'a y=9.0 le long de la facade Sud.",
+    "Le palier maconne et les deux volees d'escalier de #695 ne sont pas modifies.",
+    "La bande exterieure s'arrete a y=7.8 uniquement comme frontiere de representation locale deja presente dans la Scene; cela ne signifie pas que le bois reel s'y arrete.",
+    "Le corridor de la volee haute x environ [-2.5,-1.5], y [7.8,9.0] reste vide de dalle bois representee.",
+    "Le grand vide couvert n'est rempli par aucun nouveau volume."
+  ]
+}
