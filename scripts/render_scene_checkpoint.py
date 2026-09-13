@@ -91,8 +91,7 @@ def render_scene_checkpoint(scene_path: Path, preset: str, output_path: Path, re
             page.on("pageerror", lambda error: errors.append(str(error)))
             payload = json.dumps(scene, separators=(",", ":"))
             page.add_init_script(
-                "payload => localStorage.setItem('brickhouse.previewArchitecturalScene', payload)",
-                payload,
+                script=f"localStorage.setItem('brickhouse.previewArchitecturalScene', {json.dumps(payload)});"
             )
             response = page.goto(url, wait_until="networkidle", timeout=30000)
             if not response or not response.ok:
