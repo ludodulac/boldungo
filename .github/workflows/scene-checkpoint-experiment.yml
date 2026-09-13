@@ -5,12 +5,10 @@ on:
     branches: [experiment/real-house-5-visual-sensitivity]
     paths:
       - 'scripts/render_scene_checkpoint.py'
-      - 'scripts/render_brickmodel_checkpoint.py'
-      - 'scripts/build_scene_brickmodel.py'
       - 'scripts/prepare_visual_sensitivity_sweep.py'
+      - 'scripts/prepare_south_terrace_guardrail_gate.py'
       - '.github/workflows/scene-checkpoint-experiment.yml'
       - 'frontend/scene-viewer*'
-      - 'frontend/viewer*'
       - 'frontend/benchmarks/real-house-5/**'
 
 permissions:
@@ -30,19 +28,21 @@ jobs:
           python -m pip install 'playwright>=1.50,<2'
       - name: Materialize CURRENT Scene
         run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
-      - name: Prepare non-canonical sweep variants
+      - name: Prepare footprint-corrected experimental Scene
         run: python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
-      - name: Render terrace footprint gate with locked camera path
+      - name: Add one low-confidence visible railing hypothesis
+        run: python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/combined-6.5-62-terrace-footprint-guardrail.json
+      - name: Render railing gate with locked south-left camera
         run: |
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62.json south-left .checkpoints/gate-current-south-left.png
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json south-left .checkpoints/gate-new-south-left.png
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json south-left .checkpoints/gate-current-south-left.png
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/combined-6.5-62-terrace-footprint-guardrail.json south-left .checkpoints/gate-new-south-left.png
       - name: Verify gate PNG outputs
         run: |
           test -s .checkpoints/gate-current-south-left.png
           test -s .checkpoints/gate-new-south-left.png
       - uses: actions/upload-artifact@v4
         with:
-          name: south-terrace-footprint-gate
+          name: south-terrace-guardrail-gate
           path: .checkpoints/gate-*.png
           if-no-files-found: error
           include-hidden-files: true
