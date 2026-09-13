@@ -26,7 +26,10 @@ _RELATION_FIELDS = {
     "statement",
     "evidence",
 }
+_EVIDENCE_FIELDS = {"photo_index", "observation", "region"}
+_REGION_FIELDS = {"x0", "y0", "x1", "y1"}
 _SYMMETRIC_RELATION_KINDS = {
+    RelationKind.CONNECTS_TO,
     RelationKind.ADJACENT_TO,
     RelationKind.ALIGNED_WITH,
     RelationKind.SAME_PHYSICAL_OBJECT,
@@ -64,18 +67,44 @@ class SurveyRelationPatch(BaseModel):
 
     @model_validator(mode="before")
     @classmethod
-    def forbid_nested_relation_fields_outside_contract(cls, value):
+    def forbid_content_outside_contract(cls, value):
         if not isinstance(value, dict):
             return value
         relations = value.get("add_relations")
-        if isinstance(relations, list):
-            for index, relation in enumerate(relations):
-                if isinstance(relation, dict):
-                    unknown = set(relation) - _RELATION_FIELDS
-                    if unknown:
-                        names = ", ".join(sorted(unknown))
+        if not isinstance(relations, list):
+            return value
+
+        for relation_index, relation in enumerate(relations):
+            if not isinstance(relation, dict):
+                continue
+            unknown = set(relation) - _RELATION_FIELDS
+            if unknown:
+                names = ", ".join(sorted(unknown))
+                raise ValueError(
+                    f"add_relations[{relation_index}] contains fields outside SurveyRelation: {names}"
+                )
+
+            evidence_items = relation.get("evidence")
+            if not isinstance(evidence_items, list):
+                continue
+            for evidence_index, evidence in enumerate(evidence_items):
+                if not isinstance(evidence, dict):
+                    continue
+                unknown_evidence = set(evidence) - _EVIDENCE_FIELDS
+                if unknown_evidence:
+                    names = ", ".join(sorted(unknown_evidence))
+                    raise ValueError(
+                        "add_relations"
+                        f"[{relation_index}].evidence[{evidence_index}] contains fields outside PhotoEvidence: {names}"
+                    )
+                region = evidence.get("region")
+                if isinstance(region, dict):
+                    unknown_region = set(region) - _REGION_FIELDS
+                    if unknown_region:
+                        names = ", ".join(sorted(unknown_region))
                         raise ValueError(
-                            f"add_relations[{index}] contains fields outside SurveyRelation: {names}"
+                            "add_relations"
+                            f"[{relation_index}].evidence[{evidence_index}].region contains fields outside NormalizedImageRegion: {names}"
                         )
         return value
 
