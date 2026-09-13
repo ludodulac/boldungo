@@ -6,7 +6,7 @@ PROMPT = ROOT / "frontend" / "brickhouse-survey-prompt.txt"
 
 def test_survey_v26_prompt_forbids_legacy_external_shapes() -> None:
     source = PROMPT.read_text(encoding="utf-8")
-    assert "BRICKHOUSE — PROMPT DE RELEVÉ ARCHITECTURAL v2.6" in source
+    assert "BRICKHOUSE — PROMPT DE RELEVÉ ARCHITECTURAL v2.9" in source
     assert '"front_facade":"front"' in source
     assert '"x_direction":"front_view_left_to_right"' in source
     assert '"y_direction":"front_to_rear"' in source
