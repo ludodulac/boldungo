@@ -142,6 +142,19 @@ def test_relation_patch_rejects_self_relation_collision_and_duplicate() -> None:
     with pytest.raises(ValueError, match="duplicates an existing"):
         apply_survey_relation_patch(base, duplicate_patch)
 
+    reverse_duplicate_payload = _valid_patch_payload(base)
+    reverse_duplicate_payload["add_relations"][0].update(
+        {
+            "id": "relation-landing-stair-copy",
+            "kind": "connects_to",
+            "subject_id": "landing-masonry",
+            "object_id": "stair-exterior",
+        }
+    )
+    reverse_duplicate_patch = SurveyRelationPatch.model_validate(reverse_duplicate_payload)
+    with pytest.raises(ValueError, match="duplicates an existing"):
+        apply_survey_relation_patch(base, reverse_duplicate_patch)
+
 
 def test_relation_patch_contract_forbids_out_of_scope_content() -> None:
     base = _base()
@@ -155,6 +168,11 @@ def test_relation_patch_contract_forbids_out_of_scope_content() -> None:
     nested["add_relations"][0]["facade"] = "rear"
     with pytest.raises(ValidationError, match="outside SurveyRelation"):
         SurveyRelationPatch.model_validate(nested)
+
+    nested_evidence = _valid_patch_payload(base)
+    nested_evidence["add_relations"][0]["evidence"][0]["facade"] = "rear"
+    with pytest.raises(ValidationError, match="outside PhotoEvidence"):
+        SurveyRelationPatch.model_validate(nested_evidence)
 
     observation_attempt = _valid_patch_payload(base)
     observation_attempt["observations"] = [{"id": "new-opening"}]
