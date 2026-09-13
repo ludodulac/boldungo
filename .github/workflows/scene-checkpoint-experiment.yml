@@ -28,10 +28,10 @@ jobs:
         run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
       - name: Render CURRENT camera presets through real Scene viewer
         run: |
-          python scripts/render_scene_checkpoint.py .checkpoints/current.json front .checkpoints/current-front.png
-          python scripts/render_scene_checkpoint.py .checkpoints/current.json south-left .checkpoints/current-south-left.png
-          python scripts/render_scene_checkpoint.py .checkpoints/current.json rear-oblique .checkpoints/current-rear-oblique.png
-          python scripts/render_scene_checkpoint.py .checkpoints/current.json perspective .checkpoints/current-perspective.png
+          python scripts/render_scene_checkpoint.py .checkpoints/current.json front .checkpoints/current-front.png --camera-state-out .checkpoints/camera-front.json
+          python scripts/render_scene_checkpoint.py .checkpoints/current.json south-left .checkpoints/current-south-left.png --camera-state-out .checkpoints/camera-south-left.json
+          python scripts/render_scene_checkpoint.py .checkpoints/current.json rear-oblique .checkpoints/current-rear-oblique.png --camera-state-out .checkpoints/camera-rear-oblique.json
+          python scripts/render_scene_checkpoint.py .checkpoints/current.json perspective .checkpoints/current-perspective.png --camera-state-out .checkpoints/camera-perspective.json --margin 1.18
       - name: Verify PNG outputs
         run: |
           test -s .checkpoints/current-front.png
@@ -41,6 +41,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: scene-checkpoint-current
-          path: .checkpoints/*.png
+          path: |
+            .checkpoints/*.png
+            .checkpoints/camera-*.json
           if-no-files-found: error
           include-hidden-files: true
