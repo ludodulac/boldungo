@@ -1,0 +1,103 @@
+{
+  "schema_version": "0.1",
+  "id": "relation-patch-proof-base",
+  "name": "Relation patch proof base",
+  "canonical_frame": {
+    "front_facade": "front",
+    "x_direction": "front_view_left_to_right",
+    "y_direction": "front_to_rear",
+    "z_direction": "bottom_to_top"
+  },
+  "photos": [
+    {
+      "photo_index": 1,
+      "capture_role": "facade_view",
+      "facade": "front",
+      "description": "Facade view showing an exterior stair, masonry landing and neighboring timber platform.",
+      "source": {"kind": "observed", "confidence": 0.95},
+      "image_left_maps_to_facade_offset": "low",
+      "user_note": null
+    },
+    {
+      "photo_index": 2,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Detail showing the timber and masonry walking surfaces side by side while their exact contact is occluded.",
+      "source": {"kind": "observed", "confidence": 0.95},
+      "image_left_maps_to_facade_offset": null,
+      "user_note": null
+    }
+  ],
+  "known_measurements": [],
+  "observations": [
+    {
+      "id": "platform-timber",
+      "kind": "platform",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Raised timber walking platform.",
+      "evidence": [{"photo_index": 1, "observation": "Timber platform is visible beside the landing."}],
+      "attributes": {"exterior_material": "timber"},
+      "attribute_certainty": {"exterior_material": "certain"}
+    },
+    {
+      "id": "landing-masonry",
+      "kind": "platform",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Distinct masonry landing.",
+      "evidence": [{"photo_index": 1, "observation": "Masonry landing is visible at the top of the stair."}],
+      "attributes": {"exterior_material": "masonry"},
+      "attribute_certainty": {"exterior_material": "certain"}
+    },
+    {
+      "id": "stair-exterior",
+      "kind": "stair",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Exterior stair visibly reaches the masonry landing.",
+      "evidence": [{"photo_index": 1, "observation": "Upper stair end visibly meets the landing."}],
+      "attributes": {},
+      "attribute_certainty": {}
+    },
+    {
+      "id": "opening-existing",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Existing opening retained to prove inventory preservation.",
+      "evidence": [{"photo_index": 1, "observation": "One opening is visible in the facade."}],
+      "attributes": {"physical_object_count": 1},
+      "attribute_certainty": {"physical_object_count": "certain"}
+    },
+    {
+      "id": "chimney-existing",
+      "kind": "chimney",
+      "facade": null,
+      "certainty": "certain",
+      "statement": "Existing chimney retained to prove unrelated observations cannot disappear.",
+      "evidence": [{"photo_index": 1, "observation": "Chimney is visible above the roof edge."}],
+      "attributes": {},
+      "attribute_certainty": {}
+    }
+  ],
+  "relations": [
+    {
+      "id": "relation-stair-landing",
+      "kind": "connects_to",
+      "subject_id": "stair-exterior",
+      "object_id": "landing-masonry",
+      "certainty": "certain",
+      "statement": "The stair visibly connects to the landing.",
+      "evidence": [{"photo_index": 1, "observation": "Upper stair end meets the landing."}]
+    }
+  ],
+  "representation_policy": {
+    "preserve_nominal_materials": true,
+    "preserve_opening_composition": true,
+    "preserve_architectural_details": true,
+    "reproduce_weathering": false,
+    "reproduce_temporary_objects": false
+  },
+  "notes": "Synthetic base for add-only relation patch preservation proof."
+}
