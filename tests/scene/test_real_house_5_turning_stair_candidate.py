@@ -1,4 +1,5 @@
 import json
+import math
 from copy import deepcopy
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from brickhouse.survey.human_facts import HumanAttributeFact, apply_human_attrib
 ROOT = Path(__file__).resolve().parents[2]
 BENCHMARK = ROOT / "frontend" / "benchmarks" / "real-house-5"
 SURVEY_PATH = BENCHMARK / "accepted-survey-v0.1.json"
+OWNER_FACTS_PATH = BENCHMARK / "owner-spatial-topology-survey-facts-v0.1.json"
 SCENE_PATH = ROOT / "tests" / "fixtures" / "real_house_5_scene_candidate.json"
 OVERLAY_PATH = BENCHMARK / "turning-stair-scene-overlay-v0.1.json"
 CLIENT = TestClient(app)
@@ -22,23 +24,15 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _survey_with_user_turn() -> tuple[ArchitecturalSurvey, ArchitecturalSurvey]:
+def _survey_with_owner_topology() -> tuple[ArchitecturalSurvey, ArchitecturalSurvey]:
     source = ArchitecturalSurvey.model_validate(_load(SURVEY_PATH))
-    fact = HumanAttributeFact.model_validate(
-        {
-            "observation_id": "stair-exterior-1",
-            "attribute_name": "stair_topology",
-            "value": {
-                "minimum_run_count": 2,
-                "direction_change": True,
-                "turning_node_kind": "turn_or_landing",
-            },
-            "certainty": "certain",
-            "source": {"kind": "user_provided", "confidence": 1.0},
-            "statement": "User confirms that the exterior stair changes direction.",
-        }
-    )
-    candidate = apply_human_attribute_facts(source, [fact]).candidate
+    journal = _load(OWNER_FACTS_PATH)
+    stair_facts = [
+        HumanAttributeFact.model_validate(item)
+        for item in journal["attribute_facts"]
+        if item["observation_id"] == "stair-exterior-1"
+    ]
+    candidate = apply_human_attribute_facts(source, stair_facts).candidate
     return source, candidate
 
 
@@ -63,8 +57,8 @@ def _turning_scene() -> ArchitecturalScene:
     return ArchitecturalScene.model_validate(payload)
 
 
-def test_turning_overlay_realizes_user_confirmed_topology_without_mutating_survey() -> None:
-    source, survey = _survey_with_user_turn()
+def test_turning_overlay_realizes_owner_confirmed_route_without_mutating_survey() -> None:
+    source, survey = _survey_with_owner_topology()
     source_before = deepcopy(source.model_dump())
     scene = _turning_scene()
 
@@ -91,15 +85,46 @@ def test_turning_overlay_realizes_user_confirmed_topology_without_mutating_surve
     assert "multi_run_stair_direction_change_not_realized" not in error_codes
     assert "multi_run_stair_components_disconnected" not in error_codes
 
+    runs = {item.id: item for item in scene.stairs}
+    lower = runs["stair-exterior-1-run-lower-v1"]
+    upper = runs["stair-exterior-1-run-upper-v1"]
+    main = next(item for item in scene.volumes if item.id == "volume_main")
+    landing = next(item for item in scene.platforms if item.id == "platform-massive-1")
 
-def test_turning_overlay_keeps_geometry_explicitly_low_confidence_and_revisable() -> None:
+    # Ascending Scene run orientation is ground -> turn -> platform, so descent is
+    # the reverse: platform -> WEST (+y) -> left turn -> SOUTH (-x) -> courtyard.
+    assert upper.end.x == upper.start.x
+    assert upper.start.y > upper.end.y
+    assert lower.start.x < lower.end.x
+    assert lower.start.y == lower.end.y
+    assert upper.start == lower.end
+
+    rear_west_plane = main.position.y + main.depth.value
+    assert upper.start.y > rear_west_plane
+
+    # The top endpoint still meets the masonry/concrete platform at its rear edge.
+    assert math.isclose(upper.end.y, landing.position.y + landing.depth)
+    assert landing.position.x <= upper.end.x <= landing.position.x + landing.width
+    assert math.isclose(upper.end.z, landing.position.z)
+
+
+def test_turning_overlay_reuses_existing_provisional_dimensions_instead_of_adding_metrics() -> None:
     overlay = _load(OVERLAY_PATH)
+    runs = overlay["stairs"]
 
-    assert len(overlay["stairs"]) == 2
-    assert all(item["source"]["kind"] == "inferred" for item in overlay["stairs"])
-    assert all(item["source"]["confidence"] < 0.25 for item in overlay["stairs"])
-    assert "exact" not in overlay["inference_notes"][1].lower()
-    assert any("not an exact" in note.lower() or "no exact" in note.lower() for note in overlay["inference_notes"])
+    assert len(runs) == 2
+    assert all(item["source"] == {"kind": "inferred", "confidence": 0.18} for item in runs)
+    assert {item["width"] for item in runs} == {1.0}
+    assert {item["start"]["z"] for item in runs} | {item["end"]["z"] for item in runs} == {0.0, 1.15, 2.3}
+
+    horizontal_lengths = sorted(
+        round(math.hypot(item["end"]["x"] - item["start"]["x"], item["end"]["y"] - item["start"]["y"]), 6)
+        for item in runs
+    )
+    assert horizontal_lengths == [0.9, 2.5]
+    assert overlay["owner_fact_journal"] == "owner-spatial-topology-survey-facts-v0.1.json"
+    assert any("no new stair dimension" in note.lower() for note in overlay["inference_notes"])
+    assert any("remain unresolved" in note.lower() for note in overlay["inference_notes"])
 
 
 def test_turning_scene_still_builds_a_conservative_partial_lego_preview() -> None:
