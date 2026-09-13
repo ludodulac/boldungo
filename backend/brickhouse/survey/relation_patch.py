@@ -60,7 +60,7 @@ class SurveyRelationPatch(BaseModel):
     base_fingerprint: str = Field(pattern=r"^[0-9a-f]{64}$")
     patch_id: str = Field(min_length=1)
     mission: Literal["architectural_relations"] = "architectural_relations"
-    add_relations: list[SurveyRelation] = Field(min_length=1)
+    add_relations: list[SurveyRelation]
 
     @model_validator(mode="before")
     @classmethod
