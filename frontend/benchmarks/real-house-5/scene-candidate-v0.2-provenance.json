@@ -33,7 +33,7 @@
       "artifact": "timber-deck-extent-scene-overlay-v0.1.json",
       "target": "platform-timber-1",
       "decision": "extend_longitudinal_footprint_conservatively",
-      "statement": "Photos 3 and 4 support a longer lateral timber terrace than the previous candidate. The front edge is moved only from y=6.7 m to y=6.0 m while the existing rear termination, vertical level and outward projection are retained; the resulting 3.0 m depth is an inferred minimum visual correction, not a measurement."
+      "statement": "Photos 3 and 4 show exposed portions of the same raised timber terrace and support that the previous candidate footprint was likely too short. The retained 3.0 m depth is a low-confidence revisable Scene inference, not a measurement; exact floor continuity through the occluded masonry/stair zone remains unresolved."
     }
   ],
   "unresolved_metric_axes": [

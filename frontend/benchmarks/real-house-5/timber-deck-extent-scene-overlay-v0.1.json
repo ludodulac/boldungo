@@ -14,16 +14,17 @@
       },
       "source": {"kind": "inferred", "confidence": 0.18},
       "evidence": [
-        {"photo_index": 3, "observation": "The timber terrace reads as a structurally important lateral element extending farther along the facade than the previous 2.3 m candidate; the visible front portion begins near the masonry exterior assembly and continues to the rear end of the house."},
-        {"photo_index": 4, "observation": "The timber terrace is visibly continuous behind the masonry exterior assembly. The correction extends only the longitudinal footprint needed to preserve that overlap/continuity; no exact metric length is claimed."}
+        {"photo_index": 3, "observation": "A substantial exposed portion of the same raised timber terrace is visible along the facade; this supports that the previous 2.3 m candidate footprint was likely too short, but does not provide an exact metric extent."},
+        {"photo_index": 4, "observation": "The same terrace is visible again on exposed portions adjacent to the masonry exterior assembly. Exact floor continuity through the occluded zone behind the masonry/stair assembly is not directly visible and remains unresolved."}
       ],
-      "statement": "Conservative minimum longitudinal extension: keep the existing rear termination at y=9.0 m, move only the inferred front edge from y=6.7 m to y=6.0 m, and increase depth from 2.3 m to 3.0 m. The 3.0 m depth is a revisable Scene inference chosen as the smallest clear visual correction, not a measured terrace length."
+      "statement": "Conservative inferred longitudinal extension: keep the existing rear termination at y=9.0 m, move the provisional front edge from y=6.7 m to y=6.0 m, and increase depth from 2.3 m to 3.0 m. The 3.0 m depth remains a low-confidence revisable Scene inference compatible with the exposed terrace portions; it is not a measurement and does not assert hidden continuity through the occluded masonry/stair zone."
     }
   ],
   "inference_notes": [
     "Only the longitudinal footprint of platform-timber-1 is changed.",
     "Its z level, outward projection, thickness, host relation, edge treatments, material and rear termination remain unchanged.",
     "The front support follows the moved front edge mechanically, keeping the same 0.25 m inset; the rear support remains unchanged.",
+    "The exposed portions in photos 3 and 4 are recognized as the same terrace; exact floor continuity through the occluded masonry/stair zone remains unresolved.",
     "No geometry of the masonry landing, partial wall, stair, openings, terrain or main house is changed."
   ]
 }
