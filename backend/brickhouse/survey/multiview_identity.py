@@ -30,6 +30,7 @@ class MultiViewIdentityValue(BaseModel):
     status: IdentityStatus
     photo_indexes: list[int] = Field(min_length=2)
     cues: list[IdentityCue] = Field(default_factory=list)
+    supporting_relation_ids: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_value(self) -> "MultiViewIdentityValue":
@@ -39,6 +40,8 @@ class MultiViewIdentityValue(BaseModel):
             raise ValueError("photo_indexes must contain positive photo indexes")
         if len(self.cues) != len(set(self.cues)):
             raise ValueError("cues must be unique")
+        if len(self.supporting_relation_ids) != len(set(self.supporting_relation_ids)):
+            raise ValueError("supporting_relation_ids must be unique")
         return self
 
 
@@ -64,6 +67,7 @@ def analyze_multiview_identity(survey: ArchitecturalSurvey) -> MultiViewIdentity
 
     facts: list[MultiViewIdentityFacts] = []
     issues: list[SurveyValidationIssue] = []
+    relations_by_id = {relation.id: relation for relation in survey.relations}
 
     for observation in sorted(survey.observations, key=lambda item: item.id):
         raw = observation.attributes.get("multiview_identity")
@@ -88,6 +92,31 @@ def analyze_multiview_identity(survey: ArchitecturalSurvey) -> MultiViewIdentity
                 f"multiview identity references photo indexes without observation evidence: {missing}",
             ))
 
+        identity_photos = set(identity.photo_indexes)
+        supporting_relations = []
+        for relation_id in identity.supporting_relation_ids:
+            relation = relations_by_id.get(relation_id)
+            if relation is None:
+                issues.append(_issue(
+                    observation.id,
+                    "multiview_identity_support_relation_missing",
+                    f"multiview identity references unknown SurveyRelation {relation_id!r}",
+                ))
+                continue
+            relation_observations = {relation.subject_id, relation.object_id}
+            relation_photos = {item.photo_index for item in relation.evidence}
+            if observation.id not in relation_observations or not (identity_photos & relation_photos):
+                issues.append(_issue(
+                    observation.id,
+                    "multiview_identity_support_relation_not_relevant",
+                    (
+                        f"SurveyRelation {relation_id!r} does not provide local evidence for "
+                        f"observation {observation.id!r} in the identity photo set"
+                    ),
+                ))
+                continue
+            supporting_relations.append(relation)
+
         certainty = observation.certainty_for_attribute("multiview_identity")
         if identity.status == "unresolved" and certainty is Certainty.CERTAIN:
             issues.append(_issue(
@@ -104,6 +133,34 @@ def analyze_multiview_identity(survey: ArchitecturalSurvey) -> MultiViewIdentity
                 observation.id,
                 "certain_multiview_identity_missing_discriminating_cue",
                 "certain same_physical_object identity requires at least one discriminating evidence cue",
+            ))
+        if (
+            identity.status == "same_physical_object"
+            and certainty is Certainty.CERTAIN
+            and identity.cues == ["relative_position"]
+            and not identity.supporting_relation_ids
+        ):
+            issues.append(_issue(
+                observation.id,
+                "certain_multiview_identity_relative_position_requires_relation_evidence",
+                (
+                    "relative_position text alone cannot make same_physical_object identity certain; "
+                    "cite supporting SurveyRelation IDs or keep the identity below certain"
+                ),
+            ))
+        if (
+            identity.status == "same_physical_object"
+            and certainty is Certainty.CERTAIN
+            and supporting_relations
+            and any(relation.certainty is not Certainty.CERTAIN for relation in supporting_relations)
+        ):
+            issues.append(_issue(
+                observation.id,
+                "certain_multiview_identity_requires_certain_relation_support",
+                (
+                    "same_physical_object identity cannot be certain when an explicitly cited "
+                    "supporting SurveyRelation is below certain"
+                ),
             ))
 
         facts.append(MultiViewIdentityFacts(
