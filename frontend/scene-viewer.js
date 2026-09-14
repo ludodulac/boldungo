@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { gableRoofTriangles } from './scene-viewer-gable-roof.js';
+import { composedOpeningVisualPlan } from './scene-opening-visual.js';
 
 const canvas = document.querySelector('#viewer');
 const messageEl = document.querySelector('#message');
@@ -77,21 +78,64 @@ function renderOpenings() {
     if (![ow, oh, ox, oz].every(Number.isFinite)) continue;
     const p = volume.position ?? { x: 0, y: 0, z: 0 };
     const thickness = 0.035;
-    let geometry, x, y, z;
+    let x, y, z, axis;
     if (opening.facade === 'front' || opening.facade === 'rear') {
-      geometry = new THREE.BoxGeometry(ow, oh, thickness);
       x = Number(p.x) + ox + ow / 2;
       y = Number(p.z) + oz + oh / 2;
       z = Number(p.y) + (opening.facade === 'front' ? -thickness : depth + thickness);
+      axis = 'z';
     } else {
-      geometry = new THREE.BoxGeometry(thickness, oh, ow);
       x = Number(p.x) + (opening.facade === 'left' ? -thickness : width + thickness);
       y = Number(p.z) + oz + oh / 2;
       z = Number(p.y) + ox + ow / 2;
+      axis = 'x';
     }
-    const mesh = new THREE.Mesh(geometry, openingMaterial);
-    mesh.position.set(x, y, z);
-    group.add(mesh);
+
+    const visual = composedOpeningVisualPlan(opening.opening_visual);
+    if (!visual) {
+      const geometry = axis === 'z' ? new THREE.BoxGeometry(ow, oh, thickness) : new THREE.BoxGeometry(thickness, oh, ow);
+      const mesh = new THREE.Mesh(geometry, openingMaterial);
+      mesh.position.set(x, y, z);
+      group.add(mesh);
+      continue;
+    }
+
+    // Viewer-only conventions. These tiny offsets/thicknesses are not architectural measurements.
+    const surroundT = Math.min(ow, oh) * 0.055;
+    const relief = visual.surroundRelief === 'projecting' ? 0.018 : 0;
+    const recess = visual.glazingPlane === 'recessed' ? 0.018 : 0;
+    const surroundMat = new THREE.MeshStandardMaterial({ color: visual.surroundColor, roughness: 0.72 });
+    const darkMat = new THREE.MeshStandardMaterial({ color: visual.glazingColor, roughness: 0.16, metalness: 0.05 });
+    const frameMat = new THREE.MeshStandardMaterial({ color: visual.frameColor, roughness: 0.45 });
+    const face = opening.facade === 'front' || opening.facade === 'left' ? -1 : 1;
+    const addBox = (bw, bh, bt, bx, by, bz, material) => {
+      const geometry = axis === 'z' ? new THREE.BoxGeometry(bw, bh, bt) : new THREE.BoxGeometry(bt, bh, bw);
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(bx, by, bz);
+      group.add(mesh);
+    };
+    const normal = distance => axis === 'z' ? [0, 0, face * distance] : [face * distance, 0, 0];
+    const at = (dx, dy, normalDistance) => {
+      const n = normal(normalDistance);
+      return [x + (axis === 'z' ? dx : 0) + n[0], y + dy, z + (axis === 'x' ? dx : 0) + n[2]];
+    };
+
+    for (const [bw, bh, dx, dy] of [
+      [ow, surroundT, 0, (oh - surroundT) / 2],
+      [ow, surroundT, 0, -(oh - surroundT) / 2],
+      [surroundT, oh - 2 * surroundT, (ow - surroundT) / 2, 0],
+      [surroundT, oh - 2 * surroundT, -(ow - surroundT) / 2, 0],
+    ]) {
+      addBox(bw, bh, thickness, ...at(dx, dy, relief), surroundMat);
+    }
+
+    const innerW = Math.max(0.01, ow - 2 * surroundT);
+    const innerH = Math.max(0.01, oh - 2 * surroundT);
+    addBox(innerW, innerH, thickness, ...at(0, 0, -recess), darkMat);
+
+    // Exactly one acquired vertical mullion. No pane count/layout or transom is inferred.
+    const mullionW = Math.min(innerW * 0.055, 0.08);
+    addBox(mullionW, innerH, thickness * 1.25, ...at(0, 0, -recess + 0.006), frameMat);
   }
 }
 
