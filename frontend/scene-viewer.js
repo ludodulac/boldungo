@@ -40,6 +40,10 @@ const genericExteriorMaterial = new THREE.MeshStandardMaterial({ color: 0x8f918d
 const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x1a202c, transparent: true, opacity: 0.45 });
 const observedTerrainMaterial = new THREE.LineDashedMaterial({ color: 0xe4c468, dashSize: 0.28, gapSize: 0.18, transparent: true, opacity: 0.9 });
 
+// Pure rendering conventions for qualitative opening-depth relations. These values
+// are deliberately not architectural measurements and never leave the viewer.
+const openingPreview = Object.freeze({ planeThickness: 0.035, projectingOffset: 0.055, recessedOffset: 0.018 });
+
 let currentScene = null;
 const terrainNotes = [];
 
@@ -50,6 +54,9 @@ function exteriorMaterial(kind) {
   if (kind === 'timber') return timberMaterial;
   if (kind === 'concrete') return concreteMaterial;
   return genericExteriorMaterial;
+}
+function visualColor(value, fallback) {
+  try { return new THREE.Color(value || fallback); } catch { return new THREE.Color(fallback); }
 }
 
 function volumeById(id) { return currentScene?.volumes?.find(item => item.id === id) ?? null; }
@@ -76,22 +83,58 @@ function renderOpenings() {
     const ow = Number(opening.width), oh = Number(opening.height), ox = Number(opening.offset_horizontal), oz = Number(opening.offset_vertical);
     if (![ow, oh, ox, oz].every(Number.isFinite)) continue;
     const p = volume.position ?? { x: 0, y: 0, z: 0 };
-    const thickness = 0.035;
+    const visual = opening.opening_visual ?? {};
+    const hasDepthTruth = visual.surround_relief || visual.glazing_plane;
+    const thickness = openingPreview.planeThickness;
     let geometry, x, y, z;
     if (opening.facade === 'front' || opening.facade === 'rear') {
+      const outward = opening.facade === 'front' ? -1 : 1;
+      const face = Number(p.y) + (opening.facade === 'front' ? 0 : depth);
       geometry = new THREE.BoxGeometry(ow, oh, thickness);
       x = Number(p.x) + ox + ow / 2;
       y = Number(p.z) + oz + oh / 2;
-      z = Number(p.y) + (opening.facade === 'front' ? -thickness : depth + thickness);
+      z = hasDepthTruth && visual.glazing_plane === 'recessed'
+        ? face - outward * openingPreview.recessedOffset
+        : face + outward * thickness;
+      const mesh = new THREE.Mesh(geometry, openingMaterial);
+      mesh.position.set(x, y, z);
+      mesh.userData.architecturalObjectId = opening.id;
+      if (visual.glazing_plane === 'recessed') mesh.userData.renderingConvention = 'qualitative recessed glazing plane; non-metric viewer offset';
+      group.add(mesh);
+
+      if (opening.has_decorative_surround && visual.surround_color && visual.surround_relief === 'projecting') {
+        const band = Math.min(0.14, Math.max(0.06, Math.min(ow, oh) * 0.09));
+        const surroundMaterial = new THREE.MeshStandardMaterial({ color: visualColor(visual.surround_color, 'beige'), roughness: 0.72 });
+        const surroundZ = face + outward * openingPreview.projectingOffset;
+        const bars = [
+          [ow + 2 * band, band, x, y + oh / 2 + band / 2],
+          [ow + 2 * band, band, x, y - oh / 2 - band / 2],
+          [band, oh, x - ow / 2 - band / 2, y],
+          [band, oh, x + ow / 2 + band / 2, y],
+        ];
+        for (const [bw, bh, bx, by] of bars) {
+          const surround = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, thickness), surroundMaterial);
+          surround.position.set(bx, by, surroundZ);
+          surround.userData.architecturalObjectId = opening.id;
+          surround.userData.renderingConvention = 'qualitative projecting surround; non-metric viewer offset and graphic band width';
+          group.add(surround);
+        }
+      }
     } else {
+      const outward = opening.facade === 'left' ? -1 : 1;
+      const face = Number(p.x) + (opening.facade === 'left' ? 0 : width);
       geometry = new THREE.BoxGeometry(thickness, oh, ow);
-      x = Number(p.x) + (opening.facade === 'left' ? -thickness : width + thickness);
+      x = hasDepthTruth && visual.glazing_plane === 'recessed'
+        ? face - outward * openingPreview.recessedOffset
+        : face + outward * thickness;
       y = Number(p.z) + oz + oh / 2;
       z = Number(p.y) + ox + ow / 2;
+      const mesh = new THREE.Mesh(geometry, openingMaterial);
+      mesh.position.set(x, y, z);
+      mesh.userData.architecturalObjectId = opening.id;
+      if (visual.glazing_plane === 'recessed') mesh.userData.renderingConvention = 'qualitative recessed glazing plane; non-metric viewer offset';
+      group.add(mesh);
     }
-    const mesh = new THREE.Mesh(geometry, openingMaterial);
-    mesh.position.set(x, y, z);
-    group.add(mesh);
   }
 }
 
