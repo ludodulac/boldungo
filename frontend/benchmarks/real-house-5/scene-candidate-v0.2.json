@@ -4,9 +4,6 @@
   "scene_id": "brickhouse-scene-real-house-5-candidate-v0.2",
   "base_scene": "../../../tests/fixtures/real_house_5_scene_candidate.json",
   "survey": "accepted-survey-v0.1.json",
-  "survey_overlays": [
-    "observed-chimney-emergence-survey-overlay-v0.1.json"
-  ],
   "apply_overlays_in_order": [
     "turning-stair-scene-overlay-v0.1.json",
     "relative-level-scene-overlay-v0.1.json",
@@ -27,5 +24,5 @@
     "volume_main.height_m": "provisional_unresolved_multi_family_consensus"
   },
   "provenance": "scene-candidate-v0.2-provenance.json",
-  "statement": "Canonical benchmark recipe for materializing the current Scene candidate. It preserves the accepted Survey plus add-only benchmark Survey acquisitions and applies only merged, provenance-bearing Scene corrections, direct visual observations, explicit user confirmations, and the minimal reversible south-complex clearance approximation."
+  "statement": "Canonical benchmark recipe for materializing the current Scene candidate. It preserves the accepted Survey and applies only merged, provenance-bearing Scene corrections, direct visual observations, explicit user confirmations, and the minimal reversible south-complex clearance approximation."
 }

@@ -139,6 +139,20 @@ function renderOpenings() {
   }
 }
 
+function renderChimneys() {
+  for (const chimney of currentScene.chimneys ?? []) {
+    const p = chimney.position;
+    const width = Number(chimney.width), depth = Number(chimney.depth), height = Number(chimney.height);
+    if (!p || ![Number(p.x), Number(p.y), Number(p.z), width, depth, height].every(Number.isFinite)) continue;
+    const geometry = new THREE.BoxGeometry(width, height, depth);
+    const mesh = new THREE.Mesh(geometry, genericExteriorMaterial);
+    addEdges(mesh);
+    mesh.position.set(Number(p.x) + width / 2, Number(p.z) + height / 2, Number(p.y) + depth / 2);
+    mesh.userData.architecturalObjectId = chimney.id;
+    group.add(mesh);
+  }
+}
+
 function renderPlatforms() {
   for (const platform of currentScene.platforms ?? []) {
     const p = platform.position;
@@ -412,7 +426,7 @@ currentScene = loadScene();
 if (!currentScene) {
   messageEl.textContent = 'Aucune ArchitecturalScene disponible. Revenez au parcours Photos et validez d’abord la reconstruction.';
 } else {
-  renderVolumes(); renderOpenings(); renderPlatforms(); renderPartialWallSegments(); renderStairs(); renderTerrain(); renderRoofs(); updateSummary(); frame();
+  renderVolumes(); renderOpenings(); renderChimneys(); renderPlatforms(); renderPartialWallSegments(); renderStairs(); renderTerrain(); renderRoofs(); updateSummary(); frame();
   const exteriorCount = (currentScene.platforms?.length ?? 0) + (currentScene.partial_wall_segments?.length ?? 0) + (currentScene.stairs?.length ?? 0);
   const baseMessage = exteriorCount
     ? `Aperçu architectural chargé, avec ${exteriorCount} élément(s) extérieur(s) métriquement défini(s). Les détails non mesurés ne sont pas inventés.`
