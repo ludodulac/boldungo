@@ -25,6 +25,7 @@ def _scale_height(scene: dict, target_height: float) -> dict:
     volume = next(v for v in result["volumes"] if v["id"] == "volume_main")
     current_height = float(_metric_value(volume["height"]))
     scale = target_height / current_height
+    height_delta = target_height - current_height
     _set_metric(volume, "height", target_height)
 
     for opening in result.get("openings", []):
@@ -45,11 +46,13 @@ def _scale_height(scene: dict, target_height: float) -> dict:
             if stair.get(endpoint) and stair[endpoint].get("z") is not None:
                 stair[endpoint]["z"] = float(stair[endpoint]["z"]) * scale
 
+    # Chimney dimensions are independent inferred properties, not a fraction of wall height.
+    # Move the stack with the host roof/eave sensitivity delta, but do not silently scale its
+    # own inferred height. This keeps the metric hypothesis explicitly inferred and avoids
+    # turning a host-height sweep into a false "almost flush" chimney geometry.
     for chimney in result.get("chimneys", []):
         if chimney.get("position") and chimney["position"].get("z") is not None:
-            chimney["position"]["z"] = float(chimney["position"]["z"]) * scale
-        if chimney.get("height") is not None:
-            chimney["height"] = float(chimney["height"]) * scale
+            chimney["position"]["z"] = float(chimney["position"]["z"]) + height_delta
 
     for wall in result.get("partial_wall_segments", []):
         for endpoint in ("start", "end"):
@@ -59,7 +62,7 @@ def _scale_height(scene: dict, target_height: float) -> dict:
             _set_metric(wall, "height", float(_metric_value(wall["height"])) * scale)
 
     result["id"] = f"{scene.get('id', 'scene')}-height-{target_height:g}-experiment"
-    result["notes"] = (result.get("notes", "") + f" EXPERIMENT ONLY: coherent vertical sensitivity scale {scale:.4f}; target height {target_height:g} m is not promoted truth.").strip()
+    result["notes"] = (result.get("notes", "") + f" EXPERIMENT ONLY: coherent vertical sensitivity scale {scale:.4f}; target height {target_height:g} m is not promoted truth. Chimney own dimensions remain their existing inferred hypothesis and are translated with the host height delta rather than rescaled.").strip()
     return result
 
 
