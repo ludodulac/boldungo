@@ -43,6 +43,8 @@ class RelationKind(str, Enum):
     CONNECTS_TO = "connects_to"
     ADJACENT_TO = "adjacent_to"
     ALIGNED_WITH = "aligned_with"
+    LEFT_OF = "left_of"
+    RIGHT_OF = "right_of"
     SUPPORTS = "supports"
     PART_OF = "part_of"
     SAME_PHYSICAL_OBJECT = "same_physical_object"
