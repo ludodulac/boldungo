@@ -4,12 +4,12 @@ on:
   push:
     branches: [experiment/real-house-5-visual-sensitivity]
     paths:
-      - '.github/workflows/scene-checkpoint-experiment.yml'
       - 'scripts/render_scene_checkpoint.py'
       - 'scripts/prepare_visual_sensitivity_sweep.py'
       - 'scripts/prepare_south_terrace_guardrail_gate.py'
       - 'scripts/prepare_south_terrace_structure_gate.py'
       - 'scripts/prepare_front_lower_register_gate.py'
+      - '.github/workflows/scene-checkpoint-experiment.yml'
       - 'frontend/scene-viewer*'
       - 'frontend/benchmarks/real-house-5/**'
       - 'backend/brickhouse/scene/benchmark_scene_recipe.py'
@@ -29,75 +29,25 @@ jobs:
         run: |
           python -m pip install -e .
           python -m pip install 'playwright>=1.50,<2'
-      - name: Rebuild protected current experimental hypothesis
+      - name: Materialize architectural Scene with acquired P1 opening visuals
+        run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
+      - name: Rebuild accepted experimental hypothesis without rejected terrain or upper-rhythm experiment
         run: |
-          python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
           python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
           python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
           python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/pre-front.json
-          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/current.json
-      - name: Render CURRENT multiview
-        run: |
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json front .checkpoints/current-front.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json perspective .checkpoints/current-perspective.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json south-left .checkpoints/current-south-left.png --stepped-stairs
-      - name: Build one bounded front-door identity hypothesis
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          src=Path('.checkpoints/variants/current.json')
-          dst=Path('.checkpoints/variants/new.json')
-          d=json.loads(src.read_text())
-          target=next(o for o in d['openings'] if o['id']=='front-opening-6')
-          assert target['type']=='door'
-          visual=target.setdefault('opening_visual', {})
-          assert visual.get('glazing')=='glazed'
-          # Use only already structured semantics: make the known glazed door read dark/glazed.
-          # No leaf/pane topology and no metric geometry is changed.
-          visual['frame_color']='dark_gray_brown'
-          visual['frame_material']='painted_or_dark_joinery'
-          visual['glazing']='dark_reflective'
-          visual['notes']='Experimental viewer identity hypothesis from existing door+glazed truth; no leaf/pane topology inferred.'
-          d.setdefault('notes','')
-          d['notes'] += ' EXPERIMENT: front-opening-6 visual identity only; reversible, no metric geometry change.'
-          dst.write_text(json.dumps(d, indent=2, ensure_ascii=False)+'\n')
-          PY
-      - name: Assert protected architecture and bounded change
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          a=json.loads(Path('.checkpoints/variants/current.json').read_text())
-          b=json.loads(Path('.checkpoints/variants/new.json').read_text())
-          for key in ('volumes','roofs','platforms','stairs','partial_wall_segments','chimneys'):
-              assert a.get(key)==b.get(key), key
-          ao={o['id']:o for o in a['openings']}; bo={o['id']:o for o in b['openings']}
-          assert ao.keys()==bo.keys()
-          for oid in ao:
-              if oid!='front-opening-6': assert ao[oid]==bo[oid], oid
-          for k in ('offset_horizontal','offset_vertical','width','height','type','facade','volume_id'):
-              assert ao['front-opening-6'].get(k)==bo['front-opening-6'].get(k), k
-          assert bo['front-opening-6']['opening_visual']['glazing']=='dark_reflective'
-          PY
-      - name: Render NOUVEAU multiview
-        run: |
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json front .checkpoints/new-front.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json perspective .checkpoints/new-perspective.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json south-left .checkpoints/new-south-left.png --stepped-stairs
-      - name: Collect five references
-        run: |
-          cp 01-original.jpg .checkpoints/P1-original.jpg
-          cp 02-original.jpg .checkpoints/P2-original.jpg
-          cp 03-original.jpg .checkpoints/P3-original.jpg
-          cp 04-original.jpg .checkpoints/P4-original.jpg
-          cp 05-original.jpg .checkpoints/P5-original.jpg
+          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/front-viewer-new.json
+      - name: Render new viewer front with identical locked camera
+        run: python scripts/render_scene_checkpoint.py .checkpoints/variants/front-viewer-new.json front .checkpoints/front-viewer-new.png --stepped-stairs
+      - name: Verify PNG output
+        run: test -s .checkpoints/front-viewer-new.png
+      - name: Collect P1 reference
+        run: cp 01-original.jpg .checkpoints/P1-original.jpg
       - uses: actions/upload-artifact@v4
         with:
-          name: front-lower-opening-identity-gate
+          name: p1-opening-viewer-gate
           path: |
-            .checkpoints/current-*.png
-            .checkpoints/new-*.png
-            .checkpoints/P*-original.jpg
+            .checkpoints/front-viewer-new.png
+            .checkpoints/P1-original.jpg
           if-no-files-found: error
           include-hidden-files: true
