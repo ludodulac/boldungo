@@ -13,15 +13,18 @@ on:
       - 'frontend/scene-viewer*'
       - 'frontend/benchmarks/real-house-5/**'
       - 'backend/brickhouse/scene/benchmark_scene_recipe.py'
+      - 'tests/frontend/test_scene_gable_wall.mjs'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   render-current:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -29,25 +32,102 @@ jobs:
         run: |
           python -m pip install -e .
           python -m pip install 'playwright>=1.50,<2'
-      - name: Materialize architectural Scene with acquired P1 opening visuals
-        run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
-      - name: Rebuild accepted experimental hypothesis without rejected terrain or upper-rhythm experiment
+      - name: Materialize current best experimental Scene
         run: |
+          python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
           python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
           python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
           python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/pre-front.json
-          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/front-viewer-new.json
-      - name: Render new viewer front with identical locked camera
-        run: python scripts/render_scene_checkpoint.py .checkpoints/variants/front-viewer-new.json front .checkpoints/front-viewer-new.png --stepped-stairs
-      - name: Verify PNG output
-        run: test -s .checkpoints/front-viewer-new.png
-      - name: Collect P1 reference
-        run: cp 01-original.jpg .checkpoints/P1-original.jpg
+          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/best.json
+      - name: Render CURRENT with locked cameras
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json front .checkpoints/current-front.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json rear-oblique .checkpoints/current-rear-oblique.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json perspective .checkpoints/current-perspective.png --stepped-stairs
+      - name: Promote existing gable truth into viewer wall infill
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('frontend/scene-viewer.js')
+          src=path.read_text(encoding='utf-8')
+          old="import { gableRoofTriangles } from './scene-viewer-gable-roof.js';"
+          new="import { gableRoofTriangles, gableWallTriangles } from './scene-viewer-gable-roof.js';"
+          if new not in src:
+              assert old in src
+              src=src.replace(old,new,1)
+          marker='\nfunction renderRoofs() {'
+          helper=r'''
+function gableWallMesh(volume, roof) {
+  const width = metric(volume.width), depth = metric(volume.depth), height = metric(volume.height);
+  const p = volume.position ?? { x: 0, y: 0, z: 0 };
+  if (![width, depth, height, Number(p.x), Number(p.y), Number(p.z)].every(Number.isFinite)) return null;
+  if (!knownNumber(roof.pitch_degrees) || !roof.ridge_direction) return null;
+  const data = gableWallTriangles({
+    x: Number(p.x), y: Number(p.y), z: Number(p.z), width, depth, height,
+    pitchDegrees: Number(roof.pitch_degrees), overhang: Number(roof.overhang ?? 0), ridgeDirection: roof.ridge_direction,
+  });
+  if (!data) return null;
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(data.vertices), 3));
+  geometry.computeVertexNormals();
+  const material = wallMaterial.clone();
+  material.side = THREE.DoubleSide;
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData.architecturalObjectId = roof.volume_id;
+  mesh.userData.renderingConvention = 'gable-end wall plane derived from known volume and gable roof geometry';
+  addEdges(mesh);
+  return mesh;
+}
+'''
+          if 'function gableWallMesh(volume, roof)' not in src:
+              assert marker in src
+              src=src.replace(marker,'\n'+helper+marker,1)
+          old_block="""    if (roof.type === 'gable') {\n      const mesh = gableRoofMesh(volume, roof, exactRoofMaterial);\n      if (mesh) {\n        group.add(mesh);"""
+          new_block="""    if (roof.type === 'gable') {\n      const mesh = gableRoofMesh(volume, roof, exactRoofMaterial);\n      if (mesh) {\n        const gableWall = gableWallMesh(volume, roof);\n        if (gableWall) group.add(gableWall);\n        group.add(mesh);"""
+          if new_block not in src:
+              assert old_block in src
+              src=src.replace(old_block,new_block,1)
+          path.write_text(src,encoding='utf-8')
+          PY
+      - name: Targeted generic tests
+        run: |
+          node tests/frontend/test_scene_gable_wall.mjs
+          node tests/frontend/test_scene_opening_visual.mjs
+      - name: Render NOUVEAU with identical locked cameras
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json front .checkpoints/new-front.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json rear-oblique .checkpoints/new-rear-oblique.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json perspective .checkpoints/new-perspective.png --stepped-stairs
+      - name: Collect five original references
+        run: |
+          cp 01-original.jpg .checkpoints/P1-original.jpg
+          cp 02-original.jpg .checkpoints/P2-original.jpg
+          cp 03-original.jpg .checkpoints/P3-original.jpg
+          cp 04-original.jpg .checkpoints/P4-original.jpg
+          cp 05-original.jpg .checkpoints/P5-original.jpg
+      - name: Commit viewer correction after tests and gate render
+        run: |
+          if ! git diff --quiet -- frontend/scene-viewer.js; then
+            git config user.name ludodulac
+            git config user.email 162371616+ludodulac@users.noreply.github.com
+            git add frontend/scene-viewer.js
+            git commit -m "Render gable-end walls from known roof geometry"
+            git push origin HEAD:experiment/real-house-5-visual-sensitivity
+          fi
       - uses: actions/upload-artifact@v4
         with:
-          name: p1-opening-viewer-gate
+          name: real-house-5-gable-wall-gate
           path: |
-            .checkpoints/front-viewer-new.png
+            .checkpoints/current-front.png
+            .checkpoints/current-rear-oblique.png
+            .checkpoints/current-perspective.png
+            .checkpoints/new-front.png
+            .checkpoints/new-rear-oblique.png
+            .checkpoints/new-perspective.png
             .checkpoints/P1-original.jpg
+            .checkpoints/P2-original.jpg
+            .checkpoints/P3-original.jpg
+            .checkpoints/P4-original.jpg
+            .checkpoints/P5-original.jpg
           if-no-files-found: error
           include-hidden-files: true
