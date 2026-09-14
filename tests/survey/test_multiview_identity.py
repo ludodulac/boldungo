@@ -36,7 +36,7 @@ def _survey(*, identity=None, certainty="certain", evidence=(1, 2)):
     })
 
 
-def _relational_survey(*, identity, certainty="certain"):
+def _relational_survey(*, identity, certainty="certain", relation_b_certainty="plausible"):
     observations = [{
         "id": "chimney-a",
         "kind": "chimney",
@@ -86,7 +86,7 @@ def _relational_survey(*, identity, certainty="certain"):
                 "kind": "adjacent_to",
                 "subject_id": "chimney-a",
                 "object_id": "anchor-b",
-                "certainty": "plausible",
+                "certainty": relation_b_certainty,
                 "statement": "chimney remains adjacent to anchor-b in the side view",
                 "evidence": [{"photo_index": 2, "observation": "local neighborhood visible"}],
             },
@@ -175,12 +175,15 @@ def test_unresolved_identity_preserves_uncertainty_without_invention():
 
 
 def test_relation_backed_relative_position_identity_is_valid():
-    survey = _relational_survey(identity={
-        "status": "same_physical_object",
-        "photo_indexes": [1, 2, 3],
-        "cues": ["relative_position"],
-        "supporting_relation_ids": ["rel-chimney-anchor-a", "rel-chimney-anchor-b"],
-    })
+    survey = _relational_survey(
+        identity={
+            "status": "same_physical_object",
+            "photo_indexes": [1, 2, 3],
+            "cues": ["relative_position"],
+            "supporting_relation_ids": ["rel-chimney-anchor-a", "rel-chimney-anchor-b"],
+        },
+        relation_b_certainty="certain",
+    )
 
     report = analyze_multiview_identity(survey)
 
@@ -189,6 +192,31 @@ def test_relation_backed_relative_position_identity_is_valid():
         "rel-chimney-anchor-a",
         "rel-chimney-anchor-b",
     ]
+
+
+def test_certain_identity_cannot_depend_on_plausible_relation_support():
+    survey = _relational_survey(identity={
+        "status": "same_physical_object",
+        "photo_indexes": [1, 2, 3],
+        "cues": ["relative_position"],
+        "supporting_relation_ids": ["rel-chimney-anchor-a", "rel-chimney-anchor-b"],
+    })
+
+    assert "certain_multiview_identity_requires_certain_relation_support" in _codes(survey)
+
+
+def test_plausible_identity_accepts_plausible_relation_support():
+    survey = _relational_survey(
+        identity={
+            "status": "same_physical_object",
+            "photo_indexes": [1, 2, 3],
+            "cues": ["relative_position"],
+            "supporting_relation_ids": ["rel-chimney-anchor-a", "rel-chimney-anchor-b"],
+        },
+        certainty="plausible",
+    )
+
+    assert "certain_multiview_identity_requires_certain_relation_support" not in _codes(survey)
 
 
 def test_supporting_relation_id_must_exist():
