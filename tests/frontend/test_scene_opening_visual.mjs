@@ -25,6 +25,9 @@ assert.equal(composedOpeningVisualPlan({ pane_count: 2 }), null, 'pane_count alo
 assert.equal(composedOpeningVisualPlan({ ...acquired, mullion_count: null }), null, 'missing mullion truth must not invent a divider');
 assert.equal(composedOpeningVisualPlan({ ...acquired, leaf_count: null }), null, 'missing leaf truth must not infer the proven two-leaf composition');
 assert.equal(composedOpeningVisualPlan({ ...acquired, mullion_count: 2 }), null, 'unsupported mullion layouts are not guessed');
+assert.equal(composedOpeningVisualPlan({ ...acquired, surround_relief: null }), null, 'missing relief truth must not invent projection');
+assert.equal(composedOpeningVisualPlan({ ...acquired, glazing_plane: null }), null, 'missing glazing-plane truth must not invent recession');
+assert.equal(composedOpeningVisualPlan({ ...acquired, frame_material: null }), null, 'missing joinery material truth must not invent frame treatment');
 assert.equal(composedOpeningVisualPlan({ ...acquired, surround_color: 'unknown-color' }), null, 'unsupported visual vocabulary falls back instead of inventing a color');
 
 console.log('scene opening visual plan: ok');
