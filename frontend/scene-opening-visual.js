@@ -28,11 +28,11 @@ export function composedOpeningVisualPlan(openingVisual) {
     leafCount !== 2 ||
     mullionCount !== 1 ||
     glazing !== 'dark_reflective' ||
+    surroundRelief !== 'projecting' ||
+    glazingPlane !== 'recessed' ||
+    frameMaterial !== 'painted_or_dark_joinery' ||
     !surroundColorName ||
-    !surroundRelief ||
-    !glazingPlane ||
-    !frameColorName ||
-    !frameMaterial
+    !frameColorName
   ) return null;
 
   const surroundColor = VIEWER_COLORS[surroundColorName];
