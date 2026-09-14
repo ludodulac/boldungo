@@ -93,6 +93,7 @@ def analyze_multiview_identity(survey: ArchitecturalSurvey) -> MultiViewIdentity
             ))
 
         identity_photos = set(identity.photo_indexes)
+        supporting_relations = []
         for relation_id in identity.supporting_relation_ids:
             relation = relations_by_id.get(relation_id)
             if relation is None:
@@ -113,6 +114,8 @@ def analyze_multiview_identity(survey: ArchitecturalSurvey) -> MultiViewIdentity
                         f"observation {observation.id!r} in the identity photo set"
                     ),
                 ))
+                continue
+            supporting_relations.append(relation)
 
         certainty = observation.certainty_for_attribute("multiview_identity")
         if identity.status == "unresolved" and certainty is Certainty.CERTAIN:
@@ -143,6 +146,20 @@ def analyze_multiview_identity(survey: ArchitecturalSurvey) -> MultiViewIdentity
                 (
                     "relative_position text alone cannot make same_physical_object identity certain; "
                     "cite supporting SurveyRelation IDs or keep the identity below certain"
+                ),
+            ))
+        if (
+            identity.status == "same_physical_object"
+            and certainty is Certainty.CERTAIN
+            and supporting_relations
+            and any(relation.certainty is not Certainty.CERTAIN for relation in supporting_relations)
+        ):
+            issues.append(_issue(
+                observation.id,
+                "certain_multiview_identity_requires_certain_relation_support",
+                (
+                    "same_physical_object identity cannot be certain when an explicitly cited "
+                    "supporting SurveyRelation is below certain"
                 ),
             ))
 
