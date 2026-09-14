@@ -1,4 +1,4 @@
-name: P1 original acquisition
+name: P1 opening truth acquisition
 
 on:
   push:
@@ -7,19 +7,87 @@ on:
       - '.github/workflows/p1-original-acquisition.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   acquire:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Package original P1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install project
+        run: python -m pip install -e '.[dev]'
+      - name: Acquire P1 qualitative opening truth
         run: |
-          test -f 01-original.jpg
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from brickhouse.survey import ArchitecturalSurvey
+
+          path = Path('frontend/benchmarks/real-house-5/accepted-survey-v0.1.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          targets = {'front-opening-1','front-opening-2','front-opening-3','front-opening-4'}
+          for obs in data['observations']:
+              if obs['id'] not in targets:
+                  continue
+              visual = dict(obs.get('opening_visual') or {})
+              visual['surround_relief'] = 'projecting'
+              visual['glazing_plane'] = 'recessed'
+              visual['notes'] = 'P1 qualitative visual acquisition only; no metric depth implied.'
+              obs['opening_visual'] = visual
+              obs['evidence'] = list(obs.get('evidence') or []) + [
+                  {
+                      'photo_index': 1,
+                      'observation': 'P1 shows the light architectural surround standing visually proud of the rendered facade plane; qualitative projecting relation only.'
+                  },
+                  {
+                      'photo_index': 1,
+                      'observation': 'P1 shows the glazing plane visibly set behind the facade/opening face; qualitative recessed relation only.'
+                  },
+              ]
+          ArchitecturalSurvey.model_validate(data)
+          path.write_text(json.dumps(data, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')
+          PY
+      - name: Materialize real Scene recipe
+        run: |
           mkdir -p .checkpoints/p1
-          cp 01-original.jpg .checkpoints/p1/P1-original.jpg
+          cp frontend/benchmarks/real-house-5/01-original.jpg .checkpoints/p1/P1-original.jpg
+          python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/p1/materialized-scene.json
+      - name: Check Survey to Scene propagation
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          survey = json.loads(Path('frontend/benchmarks/real-house-5/accepted-survey-v0.1.json').read_text())
+          scene = json.loads(Path('.checkpoints/p1/materialized-scene.json').read_text())
+          sobs = {o['id']: o for o in survey['observations']}
+          sops = {o['id']: o for o in scene['openings']}
+          rows = []
+          for oid in ['front-opening-1','front-opening-2','front-opening-3','front-opening-4']:
+              sv = sobs[oid].get('opening_visual') or {}
+              cv = sops[oid].get('opening_visual') or {}
+              rows.append({
+                  'opening_id': oid,
+                  'survey': {k: sv.get(k) for k in ('surround_relief','glazing_plane')},
+                  'scene': {k: cv.get(k) for k in ('surround_relief','glazing_plane')},
+                  'exact': all(cv.get(k) == sv.get(k) for k in ('surround_relief','glazing_plane')),
+              })
+          report = {'all_exact': all(r['exact'] for r in rows), 'rows': rows}
+          Path('.checkpoints/p1/propagation-report.json').write_text(json.dumps(report, indent=2) + '\n')
+          print(json.dumps(report, indent=2))
+          PY
+      - name: Commit acquired Survey truth
+        run: |
+          git config user.name 'ludodulac'
+          git config user.email '162371616+ludodulac@users.noreply.github.com'
+          git add frontend/benchmarks/real-house-5/accepted-survey-v0.1.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Acquire P1 qualitative opening planes'
+            git push origin HEAD:experiment/real-house-5-visual-sensitivity
+          fi
       - uses: actions/upload-artifact@v4
         with:
-          name: p1-original-acquisition
-          path: .checkpoints/p1/P1-original.jpg
+          name: p1-opening-propagation
+          path: .checkpoints/p1/
