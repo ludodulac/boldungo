@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { gableRoofTriangles } from './scene-viewer-gable-roof.js';
+import { gableRoofTriangles, gableWallTriangles } from './scene-viewer-gable-roof.js';
 import { composedOpeningVisualPlan } from './scene-opening-visual.js';
 
 const canvas = document.querySelector('#viewer');
@@ -293,6 +293,29 @@ function gableRoofMesh(volume, roof, material) {
   return mesh;
 }
 
+
+function gableWallMesh(volume, roof) {
+  const width = metric(volume.width), depth = metric(volume.depth), height = metric(volume.height);
+  const p = volume.position ?? { x: 0, y: 0, z: 0 };
+  if (![width, depth, height, Number(p.x), Number(p.y), Number(p.z)].every(Number.isFinite)) return null;
+  if (!knownNumber(roof.pitch_degrees) || !roof.ridge_direction) return null;
+  const data = gableWallTriangles({
+    x: Number(p.x), y: Number(p.y), z: Number(p.z), width, depth, height,
+    pitchDegrees: Number(roof.pitch_degrees), overhang: Number(roof.overhang ?? 0), ridgeDirection: roof.ridge_direction,
+  });
+  if (!data) return null;
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(data.vertices), 3));
+  geometry.computeVertexNormals();
+  const material = wallMaterial.clone();
+  material.side = THREE.DoubleSide;
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData.architecturalObjectId = roof.volume_id;
+  mesh.userData.renderingConvention = 'gable-end wall plane derived from known volume and gable roof geometry';
+  addEdges(mesh);
+  return mesh;
+}
+
 function renderRoofs() {
   const notes = [];
   for (const roof of currentScene.roofs ?? []) {
@@ -312,6 +335,8 @@ function renderRoofs() {
     if (roof.type === 'gable') {
       const mesh = gableRoofMesh(volume, roof, exactRoofMaterial);
       if (mesh) {
+        const gableWall = gableWallMesh(volume, roof);
+        if (gableWall) group.add(gableWall);
         group.add(mesh);
         notes.push(`${roof.id} : toit à deux pans, faîtage ${roof.ridge_direction}, pente ${roof.pitch_degrees}°.`);
       } else {
