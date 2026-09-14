@@ -3,6 +3,7 @@
   "benchmark_id": "real-house-5",
   "scene_id": "brickhouse-scene-real-house-5-candidate-v0.2",
   "base_scene": "../../../tests/fixtures/real_house_5_scene_candidate.json",
+  "survey": "accepted-survey-v0.1.json",
   "apply_overlays_in_order": [
     "turning-stair-scene-overlay-v0.1.json",
     "relative-level-scene-overlay-v0.1.json",
