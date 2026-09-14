@@ -70,3 +70,42 @@ export function gableRoofTriangles({
     ],
   };
 }
+
+/**
+ * Triangular wall planes below the gable roof, derived only from the same
+ * volume + roof geometry already present in ArchitecturalScene.
+ *
+ * Roof overhang is intentionally not used for wall footprint: the wall ends
+ * remain on the host volume boundary. The ridge elevation is shared with the
+ * roof helper so the viewer does not introduce a second roof interpretation.
+ */
+export function gableWallTriangles(params) {
+  const roof = gableRoofTriangles(params);
+  if (!roof) return null;
+
+  const px = Number(params.x), py = Number(params.y), pz = Number(params.z);
+  const w = Number(params.width), d = Number(params.depth), h = Number(params.height);
+  const top = pz + h;
+  const ridgeZ = roof.ridgeElevation;
+  const v = (vx, vy, vz) => [vx, vz, vy]; // architectural x/y/z -> THREE x/y/z
+
+  if (roof.ridgeDirection === 'depth') {
+    const ridgeX = px + w / 2;
+    return {
+      ridgeDirection: roof.ridgeDirection,
+      vertices: [
+        ...v(px, py, top), ...v(px + w, py, top), ...v(ridgeX, py, ridgeZ),
+        ...v(px + w, py + d, top), ...v(px, py + d, top), ...v(ridgeX, py + d, ridgeZ),
+      ],
+    };
+  }
+
+  const ridgeY = py + d / 2;
+  return {
+    ridgeDirection: roof.ridgeDirection,
+    vertices: [
+      ...v(px, py + d, top), ...v(px, py, top), ...v(px, ridgeY, ridgeZ),
+      ...v(px + w, py, top), ...v(px + w, py + d, top), ...v(px + w, ridgeY, ridgeZ),
+    ],
+  };
+}
