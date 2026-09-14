@@ -9,6 +9,7 @@ on:
       - 'scripts/prepare_south_terrace_guardrail_gate.py'
       - 'scripts/prepare_south_terrace_structure_gate.py'
       - 'scripts/prepare_front_lower_register_gate.py'
+      - 'scripts/prepare_south_access_connectivity_gate.py'
       - '.github/workflows/scene-checkpoint-experiment.yml'
       - 'frontend/scene-viewer*'
       - 'frontend/benchmarks/real-house-5/**'
@@ -36,11 +37,46 @@ jobs:
           python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
           python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/pre-front.json
           python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/best.json
-      - name: Render South-complex diagnostic views
+      - name: Render CURRENT
         run: |
           python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json south-left .checkpoints/current-south-left.png --stepped-stairs
           python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json rear-oblique .checkpoints/current-rear-oblique.png --stepped-stairs
           python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json perspective .checkpoints/current-perspective.png --stepped-stairs
+      - name: Apply one South morphology correction
+        run: python scripts/prepare_south_access_connectivity_gate.py .checkpoints/variants/best.json .checkpoints/variants/new.json
+      - name: Targeted invariants
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          old=json.loads(Path('.checkpoints/variants/best.json').read_text())
+          new=json.loads(Path('.checkpoints/variants/new.json').read_text())
+          def byid(scene, key, ident): return next(x for x in scene[key] if x['id']==ident)
+          o_t=byid(old,'platforms','platform-timber-1'); n_t=byid(new,'platforms','platform-timber-1')
+          o_m=byid(old,'platforms','platform-massive-1'); n_m=byid(new,'platforms','platform-massive-1')
+          assert n_m == o_m
+          assert n_t['position']['z'] == o_t['position']['z']
+          assert n_t['position']['y'] + n_t['depth'] == n_m['position']['y']
+          old_supports={(s['id'],s['position']['x'],s['position']['y'],s['height']) for p in old['platforms'] for s in p.get('supports',[])}
+          new_supports={(s['id'],s['position']['x'],s['position']['y'],s['height']) for p in new['platforms'] for s in p.get('supports',[])}
+          assert new_supports == old_supports
+          massive=(n_m['position']['x'],n_m['position']['x']+n_m['width'],n_m['position']['y'],n_m['position']['y']+n_m['depth'])
+          def overlaps(p, box):
+              x0=p['position']['x']; x1=x0+p['width']; y0=p['position']['y']; y1=y0+p['depth']; a,b,c,d=box
+              return min(x1,b)>max(x0,a)+1e-9 and min(y1,d)>max(y0,c)+1e-9
+          timber=[p for p in new['platforms'] if p['id'].startswith('platform-timber-1')]
+          assert not any(overlaps(p,massive) for p in timber)
+          corridor=(-2.5,-1.5,7.8,9.0)
+          assert not any(overlaps(p,corridor) for p in timber)
+          assert min(p['position']['y'] for p in timber) == o_t['position']['y']
+          assert max(p['position']['y']+p['depth'] for p in timber) == o_t['position']['y']+o_t['depth']
+          print('South morphology invariants OK')
+          PY
+      - name: Render NOUVEAU
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json south-left .checkpoints/new-south-left.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json rear-oblique .checkpoints/new-rear-oblique.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json perspective .checkpoints/new-perspective.png --stepped-stairs
       - name: Collect P3 P4 P5 references
         run: |
           cp 03-original.jpg .checkpoints/P3-original.jpg
@@ -48,7 +84,7 @@ jobs:
           cp 05-original.jpg .checkpoints/P5-original.jpg
       - uses: actions/upload-artifact@v4
         with:
-          name: south-complex-diagnostic
+          name: south-access-connectivity-gate
           path: .checkpoints
           if-no-files-found: error
           include-hidden-files: true
