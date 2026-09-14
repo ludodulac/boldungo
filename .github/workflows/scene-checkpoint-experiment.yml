@@ -32,7 +32,7 @@ jobs:
         run: |
           python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json front .checkpoints/current-front.png --stepped-stairs
           python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json perspective .checkpoints/current-perspective.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json rear .checkpoints/current-rear.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json rear-oblique .checkpoints/current-rear-oblique.png --stepped-stairs
       - name: Apply one viewer-only correction using existing Scene chimney geometry
         run: |
           python - <<'PY'
@@ -68,7 +68,7 @@ jobs:
         run: |
           python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json front .checkpoints/new-front.png --stepped-stairs
           python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json perspective .checkpoints/new-perspective.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json rear .checkpoints/new-rear.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/current.json rear-oblique .checkpoints/new-rear-oblique.png --stepped-stairs
       - name: Verify only existing chimney geometry was consumed
         run: |
           python - <<'PY'
