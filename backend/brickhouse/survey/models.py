@@ -7,7 +7,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from brickhouse.building import Facade, SourceInfo
+from brickhouse.building import Facade, OpeningVisualDescription, SourceInfo
 
 
 class Certainty(str, Enum):
@@ -125,24 +125,6 @@ class SurfaceAppearance(BaseModel):
     finish: str | None = None
     weathering: list[str] = Field(default_factory=list)
     reproduce_weathering_in_lego: bool = False
-
-
-class OpeningVisualDescription(BaseModel):
-    frame_color: str | None = None
-    frame_material: str | None = None
-    leaf_count: int | None = Field(default=None, ge=1, le=8)
-    pane_count: int | None = Field(default=None, ge=1, le=32)
-    pane_layout: str | None = None
-    mullion_count: int | None = Field(default=None, ge=0, le=16)
-    glazing: str | None = None
-    sill: str | None = None
-    surround_material: str | None = None
-    surround_color: str | None = None
-    shutter_count: int | None = Field(default=None, ge=0, le=8)
-    shutter_style: str | None = None
-    shutter_color: str | None = None
-    shutter_state: str | None = None
-    notes: str | None = None
 
 
 class SurveyObservation(BaseModel):
