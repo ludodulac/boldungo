@@ -9,23 +9,19 @@ on:
       - 'scripts/prepare_south_terrace_guardrail_gate.py'
       - 'scripts/prepare_south_terrace_structure_gate.py'
       - 'scripts/prepare_front_lower_register_gate.py'
-      - 'scripts/promote_gable_wall_viewer.py'
       - '.github/workflows/scene-checkpoint-experiment.yml'
       - 'frontend/scene-viewer*'
       - 'frontend/benchmarks/real-house-5/**'
       - 'backend/brickhouse/scene/benchmark_scene_recipe.py'
-      - 'tests/frontend/test_scene_gable_wall.mjs'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   render-current:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -33,49 +29,25 @@ jobs:
         run: |
           python -m pip install -e .
           python -m pip install 'playwright>=1.50,<2'
-      - name: Materialize current best experimental Scene
+      - name: Materialize architectural Scene with acquired P1 opening visuals
+        run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
+      - name: Rebuild accepted experimental hypothesis without rejected terrain or upper-rhythm experiment
         run: |
-          python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
           python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
           python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
           python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/pre-front.json
-          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/best.json
-      - name: Render CURRENT
-        run: |
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json front .checkpoints/current-front.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json rear-oblique .checkpoints/current-rear-oblique.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json perspective .checkpoints/current-perspective.png --stepped-stairs
-      - name: Apply proven generic boundary correction
-        run: python scripts/promote_gable_wall_viewer.py
-      - name: Targeted generic tests
-        run: |
-          node tests/frontend/test_scene_gable_wall.mjs
-          node tests/frontend/test_scene_opening_visual.mjs
-      - name: Render NOUVEAU
-        run: |
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json front .checkpoints/new-front.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json rear-oblique .checkpoints/new-rear-oblique.png --stepped-stairs
-          python scripts/render_scene_checkpoint.py .checkpoints/variants/best.json perspective .checkpoints/new-perspective.png --stepped-stairs
-      - name: Collect five original references
-        run: |
-          cp 01-original.jpg .checkpoints/P1-original.jpg
-          cp 02-original.jpg .checkpoints/P2-original.jpg
-          cp 03-original.jpg .checkpoints/P3-original.jpg
-          cp 04-original.jpg .checkpoints/P4-original.jpg
-          cp 05-original.jpg .checkpoints/P5-original.jpg
-      - name: Commit viewer correction
-        shell: bash
-        run: |
-          if ! git diff --quiet -- frontend/scene-viewer.js; then
-            git config user.name ludodulac
-            git config user.email 162371616+ludodulac@users.noreply.github.com
-            git add frontend/scene-viewer.js
-            git commit -m 'Render gable-end walls from known roof geometry'
-            git push origin HEAD:experiment/real-house-5-visual-sensitivity
-          fi
+          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/front-viewer-new.json
+      - name: Render new viewer front with identical locked camera
+        run: python scripts/render_scene_checkpoint.py .checkpoints/variants/front-viewer-new.json front .checkpoints/front-viewer-new.png --stepped-stairs
+      - name: Verify PNG output
+        run: test -s .checkpoints/front-viewer-new.png
+      - name: Collect P1 reference
+        run: cp 01-original.jpg .checkpoints/P1-original.jpg
       - uses: actions/upload-artifact@v4
         with:
-          name: real-house-5-gable-wall-gate
-          path: .checkpoints
+          name: p1-opening-viewer-gate
+          path: |
+            .checkpoints/front-viewer-new.png
+            .checkpoints/P1-original.jpg
           if-no-files-found: error
           include-hidden-files: true
