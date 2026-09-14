@@ -1,0 +1,25 @@
+name: P1 original acquisition
+
+on:
+  push:
+    branches: [experiment/real-house-5-visual-sensitivity]
+    paths:
+      - '.github/workflows/p1-original-acquisition.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  acquire:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package original P1
+        run: |
+          test -f 01-original.jpg
+          mkdir -p .checkpoints/p1
+          cp 01-original.jpg .checkpoints/p1/P1-original.jpg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-original-acquisition
+          path: .checkpoints/p1/P1-original.jpg
