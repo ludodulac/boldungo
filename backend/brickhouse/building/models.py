@@ -79,6 +79,8 @@ class OpeningVisualDescription(BaseModel):
     sill_color: str | None = None
     surround_material: str | None = None
     surround_color: str | None = None
+    surround_relief: Literal["projecting", "flush", "recessed"] | None = None
+    glazing_plane: Literal["projecting", "flush", "recessed"] | None = None
     shutter_count: int | None = Field(default=None, ge=0, le=8)
     shutter_style: str | None = None
     shutter_color: str | None = None
@@ -204,10 +206,10 @@ class BuildingModel(BaseModel):
     def _validate_references(self, volumes: dict[str, Volume]) -> None:
         for opening in self.openings:
             if opening.volume_id not in volumes:
-                raise ValueError(f"opening {opening.id!r} references unknown volume {opening.volume_id!r}")
+                raise ValueError(f"opening {opening.id!r} references unknown volume")
         for roof in self.roofs:
             if roof.volume_id not in volumes:
-                raise ValueError(f"roof {roof.id!r} references unknown volume {roof.volume_id!r}")
+                raise ValueError(f"roof {roof.id!r} references unknown volume")
 
     def _validate_openings(self, volumes: dict[str, Volume]) -> None:
         for opening in self.openings:
