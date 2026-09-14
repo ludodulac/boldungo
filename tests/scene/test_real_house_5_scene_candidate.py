@@ -5,12 +5,15 @@ from fastapi.testclient import TestClient
 
 from brickhouse.api import app
 from brickhouse.scene import ArchitecturalScene, validate_scene_against_survey
+from brickhouse.scene.benchmark_scene_recipe import materialize_scene_recipe
 from brickhouse.survey import ArchitecturalSurvey
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SURVEY_PATH = ROOT / "frontend" / "benchmarks" / "real-house-5" / "accepted-survey-v0.1.json"
+BENCHMARK = ROOT / "frontend" / "benchmarks" / "real-house-5"
+SURVEY_PATH = BENCHMARK / "accepted-survey-v0.1.json"
 SCENE_PATH = ROOT / "tests" / "fixtures" / "real_house_5_scene_candidate.json"
+RECIPE_PATH = BENCHMARK / "scene-candidate-v0.2.json"
 CLIENT = TestClient(app)
 
 
@@ -22,9 +25,13 @@ def _raw_scene() -> dict:
     return json.loads(SCENE_PATH.read_text(encoding="utf-8"))
 
 
+def _materialized_scene() -> dict:
+    return materialize_scene_recipe(RECIPE_PATH).model_dump(mode="json")
+
+
 def test_candidate_is_schema_valid_and_preserves_accepted_survey() -> None:
     survey = ArchitecturalSurvey.model_validate(_raw_survey())
-    scene = ArchitecturalScene.model_validate(_raw_scene())
+    scene = ArchitecturalScene.model_validate(_materialized_scene())
 
     errors = [
         issue for issue in validate_scene_against_survey(survey, scene)
@@ -34,19 +41,20 @@ def test_candidate_is_schema_valid_and_preserves_accepted_survey() -> None:
     assert survey.known_measurements == []
     assert scene.volumes[0].width.source.kind.value == "inferred"
     assert scene.openings[5].id == "front-opening-6"
-    assert scene.openings[5].type.value == "unknown"
+    assert scene.openings[5].type.value == "door"
 
 
 def test_candidate_passes_public_scene_validation_endpoints() -> None:
+    scene = _materialized_scene()
     response = CLIENT.post(
         "/api/v1/validate-scene-against-survey",
-        json={"survey": _raw_survey(), "scene": _raw_scene()},
+        json={"survey": _raw_survey(), "scene": scene},
     )
     assert response.status_code == 200, response.text
     payload = response.json()
     assert not [issue for issue in payload["issues"] if issue["severity"] == "error"]
 
-    response = CLIENT.post("/api/v1/validate-scene", json=_raw_scene())
+    response = CLIENT.post("/api/v1/validate-scene", json=scene)
     assert response.status_code == 200, response.text
     assert response.json()["scene"]["schema_version"] == "0.2"
 
