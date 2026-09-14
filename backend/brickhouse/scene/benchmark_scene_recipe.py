@@ -16,11 +16,46 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _merge_explicit_survey_opening_visual(payload: dict, survey: dict) -> None:
+    """Preserve explicitly acquired Survey opening visuals before Scene overlays.
+
+    ``None`` in Survey means unresolved and therefore never erases an existing Scene value.
+    Later explicit Scene overlays may still replace a property when they record a justified
+    transformation. No qualitative property is converted into metric geometry here.
+    """
+    observations = {
+        item.get("id"): item
+        for item in survey.get("observations", [])
+        if item.get("kind") == "opening" and item.get("id")
+    }
+    for opening in payload.get("openings", []):
+        observation = observations.get(opening.get("id"))
+        if observation is None:
+            continue
+        survey_visual = observation.get("opening_visual")
+        if not isinstance(survey_visual, dict):
+            continue
+        acquired = {
+            key: deepcopy(value)
+            for key, value in survey_visual.items()
+            if value is not None
+        }
+        if not acquired:
+            continue
+        visual = deepcopy(opening.get("opening_visual") or {})
+        visual.update(acquired)
+        opening["opening_visual"] = visual
+
+
 def materialize_scene_recipe(recipe_path: Path) -> ArchitecturalScene:
     recipe_path = recipe_path.resolve()
     benchmark_dir = recipe_path.parent
     recipe = _load(recipe_path)
     payload = _load((benchmark_dir / recipe["base_scene"]).resolve())
+
+    survey_path = recipe.get("survey")
+    if survey_path:
+        _merge_explicit_survey_opening_visual(payload, _load((benchmark_dir / survey_path).resolve()))
 
     for overlay_name in recipe.get("apply_overlays_in_order", []):
         overlay = _load(benchmark_dir / overlay_name)
