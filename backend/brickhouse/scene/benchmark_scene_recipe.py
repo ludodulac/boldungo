@@ -16,6 +16,26 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _apply_survey_overlays(survey: dict, overlay_paths: list[Path]) -> dict:
+    """Apply add-only benchmark Survey acquisitions without changing the Survey contract."""
+    result = deepcopy(survey)
+    observations = {item.get("id"): item for item in result.get("observations", []) if item.get("id")}
+    for path in overlay_paths:
+        overlay = _load(path)
+        if overlay.get("operation") != "update_survey_observations":
+            raise ValueError(f"Unsupported benchmark Survey overlay operation: {overlay.get('operation')!r}")
+        for update in overlay.get("observation_updates", []):
+            observation = observations.get(update.get("observation_id"))
+            if observation is None:
+                raise ValueError(f"Survey overlay references unknown observation: {update.get('observation_id')!r}")
+            observation.setdefault("attributes", {}).update(deepcopy(update.get("attributes", {})))
+            observation.setdefault("attribute_certainty", {}).update(
+                deepcopy(update.get("attribute_certainty", {}))
+            )
+            observation.setdefault("evidence", []).extend(deepcopy(update.get("evidence", [])))
+    return result
+
+
 def _merge_explicit_survey_opening_visual(payload: dict, survey: dict) -> None:
     """Preserve explicitly acquired Survey opening visuals before Scene overlays.
 
@@ -47,6 +67,32 @@ def _merge_explicit_survey_opening_visual(payload: dict, survey: dict) -> None:
         opening["opening_visual"] = visual
 
 
+def _merge_explicit_survey_chimney_evidence(payload: dict, survey: dict) -> None:
+    """Carry qualitative chimney observations into Scene evidence without metric conversion."""
+    observations = {
+        item.get("id"): item
+        for item in survey.get("observations", [])
+        if item.get("kind") == "chimney" and item.get("id")
+    }
+    for chimney in payload.get("chimneys", []):
+        observation = observations.get(chimney.get("id"))
+        if observation is None:
+            continue
+        emergence = observation.get("attributes", {}).get("roof_emergence")
+        if emergence is None:
+            continue
+        for evidence in observation.get("evidence", []):
+            chimney.setdefault("evidence", []).append(
+                {
+                    "photo_index": evidence["photo_index"],
+                    "observation": (
+                        f"Survey roof_emergence={emergence}: {evidence['observation']} "
+                        "This qualitative truth does not define a metric chimney height."
+                    ),
+                }
+            )
+
+
 def materialize_scene_recipe(recipe_path: Path) -> ArchitecturalScene:
     recipe_path = recipe_path.resolve()
     benchmark_dir = recipe_path.parent
@@ -55,7 +101,13 @@ def materialize_scene_recipe(recipe_path: Path) -> ArchitecturalScene:
 
     survey_path = recipe.get("survey")
     if survey_path:
-        _merge_explicit_survey_opening_visual(payload, _load((benchmark_dir / survey_path).resolve()))
+        survey = _load((benchmark_dir / survey_path).resolve())
+        survey = _apply_survey_overlays(
+            survey,
+            [benchmark_dir / name for name in recipe.get("survey_overlays", [])],
+        )
+        _merge_explicit_survey_opening_visual(payload, survey)
+        _merge_explicit_survey_chimney_evidence(payload, survey)
 
     for overlay_name in recipe.get("apply_overlays_in_order", []):
         overlay = _load(benchmark_dir / overlay_name)
