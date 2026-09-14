@@ -4,69 +4,50 @@ on:
   push:
     branches: [experiment/real-house-5-visual-sensitivity]
     paths:
+      - 'scripts/render_scene_checkpoint.py'
+      - 'scripts/prepare_visual_sensitivity_sweep.py'
+      - 'scripts/prepare_south_terrace_guardrail_gate.py'
+      - 'scripts/prepare_south_terrace_structure_gate.py'
+      - 'scripts/prepare_front_lower_register_gate.py'
       - '.github/workflows/scene-checkpoint-experiment.yml'
+      - 'frontend/scene-viewer*'
+      - 'frontend/benchmarks/real-house-5/**'
+      - 'backend/brickhouse/scene/benchmark_scene_recipe.py'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  persist-chimney-gain:
+  render-current:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Persist proven Survey to Scene to viewer chain
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Boldungo and browser adapter
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          survey_path=Path('frontend/benchmarks/real-house-5/accepted-survey-v0.1.json')
-          survey=json.loads(survey_path.read_text())
-          chimney=next(o for o in survey['observations'] if o['id']=='chimney-1')
-          chimney.setdefault('attributes', {})['roof_emergence']='clearly_projecting'
-          chimney.setdefault('attribute_certainty', {})['roof_emergence']='certain'
-          additions=[
-            {'photo_index':1,'observation':'P1 shows chimney-1 as a distinct masonry stack clearly projecting above the visible roof plane; no metric height or ridge-altitude relation is inferred.'},
-            {'photo_index':5,'observation':'P5 re-observes the same rear-side chimney stack clearly emerging above the roof plane; exact metric height and relation to ridge altitude remain unresolved.'},
-          ]
-          existing={(e['photo_index'],e['observation']) for e in chimney.get('evidence',[])}
-          for item in additions:
-              if (item['photo_index'],item['observation']) not in existing:
-                  chimney.setdefault('evidence',[]).append(item)
-          survey_path.write_text(json.dumps(survey, ensure_ascii=False, separators=(',',':'))+'\n')
-
-          recipe_path=Path('frontend/benchmarks/real-house-5/scene-candidate-v0.2.json')
-          recipe=json.loads(recipe_path.read_text())
-          recipe.pop('survey_overlays', None)
-          recipe['statement']='Canonical benchmark recipe for materializing the current Scene candidate. It preserves the accepted Survey and applies only merged, provenance-bearing Scene corrections, direct visual observations, explicit user confirmations, and the minimal reversible south-complex clearance approximation.'
-          recipe_path.write_text(json.dumps(recipe, indent=2, ensure_ascii=False)+'\n')
-
-          materializer=Path('backend/brickhouse/scene/benchmark_scene_recipe.py')
-          s=materializer.read_text()
-          start=s.index('def _apply_survey_overlays(')
-          end=s.index('def _merge_explicit_survey_opening_visual', start)
-          s=s[:start]+s[end:]
-          old='''    survey_path = recipe.get("survey")\n    if survey_path:\n        survey = _load((benchmark_dir / survey_path).resolve())\n        survey = _apply_survey_overlays(\n            survey,\n            [benchmark_dir / name for name in recipe.get("survey_overlays", [])],\n        )\n        _merge_explicit_survey_opening_visual(payload, survey)\n        _merge_explicit_survey_chimney_evidence(payload, survey)\n'''
-          new='''    survey_path = recipe.get("survey")\n    if survey_path:\n        survey = _load((benchmark_dir / survey_path).resolve())\n        _merge_explicit_survey_opening_visual(payload, survey)\n        _merge_explicit_survey_chimney_evidence(payload, survey)\n'''
-          assert old in s
-          materializer.write_text(s.replace(old,new,1))
-
-          viewer=Path('frontend/scene-viewer.js')
-          v=viewer.read_text()
-          marker='function renderPlatforms() {'
-          assert marker in v and 'function renderChimneys() {' not in v
-          fn='''function renderChimneys() {\n  for (const chimney of currentScene.chimneys ?? []) {\n    const p = chimney.position;\n    const width = Number(chimney.width), depth = Number(chimney.depth), height = Number(chimney.height);\n    if (!p || ![Number(p.x), Number(p.y), Number(p.z), width, depth, height].every(Number.isFinite)) continue;\n    const geometry = new THREE.BoxGeometry(width, height, depth);\n    const mesh = new THREE.Mesh(geometry, genericExteriorMaterial);\n    addEdges(mesh);\n    mesh.position.set(Number(p.x) + width / 2, Number(p.z) + height / 2, Number(p.y) + depth / 2);\n    mesh.userData.architecturalObjectId = chimney.id;\n    group.add(mesh);\n  }\n}\n\n'''
-          v=v.replace(marker, fn+marker, 1)
-          oldcall='renderVolumes(); renderOpenings(); renderPlatforms(); renderPartialWallSegments(); renderStairs(); renderTerrain(); renderRoofs();'
-          newcall='renderVolumes(); renderOpenings(); renderChimneys(); renderPlatforms(); renderPartialWallSegments(); renderStairs(); renderTerrain(); renderRoofs();'
-          assert oldcall in v
-          viewer.write_text(v.replace(oldcall,newcall,1))
-
-          overlay=Path('frontend/benchmarks/real-house-5/observed-chimney-emergence-survey-overlay-v0.1.json')
-          if overlay.exists(): overlay.unlink()
-          PY
-          git config user.name 'ludodulac'
-          git config user.email '162371616+ludodulac@users.noreply.github.com'
-          git add backend/brickhouse/scene/benchmark_scene_recipe.py frontend/scene-viewer.js frontend/benchmarks/real-house-5/accepted-survey-v0.1.json frontend/benchmarks/real-house-5/scene-candidate-v0.2.json frontend/benchmarks/real-house-5/observed-chimney-emergence-survey-overlay-v0.1.json
-          git commit -m 'Keep qualitative chimney emergence through viewer [skip ci]'
-          git push origin HEAD:experiment/real-house-5-visual-sensitivity
+          python -m pip install -e .
+          python -m pip install 'playwright>=1.50,<2'
+      - name: Materialize architectural Scene with acquired Survey truth
+        run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
+      - name: Rebuild accepted experimental hypothesis without rejected terrain or upper-rhythm experiment
+        run: |
+          python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
+          python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
+          python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/pre-front.json
+          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/front-viewer-new.json
+      - name: Render new viewer front with identical locked camera
+        run: python scripts/render_scene_checkpoint.py .checkpoints/variants/front-viewer-new.json front .checkpoints/front-viewer-new.png --stepped-stairs
+      - name: Verify PNG output
+        run: test -s .checkpoints/front-viewer-new.png
+      - name: Collect P1 reference
+        run: cp 01-original.jpg .checkpoints/P1-original.jpg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: p1-opening-viewer-gate
+          path: |
+            .checkpoints/front-viewer-new.png
+            .checkpoints/P1-original.jpg
+          if-no-files-found: error
+          include-hidden-files: true
