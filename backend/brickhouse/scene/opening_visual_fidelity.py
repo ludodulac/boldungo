@@ -20,6 +20,8 @@ _VISUAL_FIELDS = (
     "sill",
     "surround_material",
     "surround_color",
+    "surround_relief",
+    "glazing_plane",
     "shutter_count",
     "shutter_style",
     "shutter_color",
