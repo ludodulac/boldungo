@@ -1,0 +1,154 @@
+name: Promote proven composed opening viewer rendering
+
+on:
+  push:
+    branches: [experiment/real-house-5-visual-sensitivity]
+    paths:
+      - '.github/workflows/promote-composed-opening-viewer.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  promote-and-prove:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Integrate the already-proven generic rendering into production viewer
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('frontend/scene-viewer.js')
+          src=path.read_text(encoding='utf-8')
+          anchor="import { gableRoofTriangles } from './scene-viewer-gable-roof.js';\n"
+          imp="import { composedOpeningVisualPlan } from './scene-opening-visual.js';\n"
+          assert anchor in src and imp not in src
+          src=src.replace(anchor,anchor+imp,1)
+          start=src.index('function renderOpenings() {')
+          end=src.index('\nfunction renderPlatforms() {',start)
+          replacement=r'''function renderOpenings() {
+            for (const opening of currentScene.openings ?? []) {
+              const volume = volumeById(opening.volume_id);
+              if (!volume) continue;
+              const width = metric(volume.width), depth = metric(volume.depth), height = metric(volume.height);
+              if (![width, depth, height].every(Number.isFinite)) continue;
+              const ow = Number(opening.width), oh = Number(opening.height), ox = Number(opening.offset_horizontal), oz = Number(opening.offset_vertical);
+              if (![ow, oh, ox, oz].every(Number.isFinite)) continue;
+              const p = volume.position ?? { x: 0, y: 0, z: 0 };
+              const thickness = 0.035;
+              let x, y, z, axis;
+              if (opening.facade === 'front' || opening.facade === 'rear') {
+                x = Number(p.x) + ox + ow / 2;
+                y = Number(p.z) + oz + oh / 2;
+                z = Number(p.y) + (opening.facade === 'front' ? -thickness : depth + thickness);
+                axis = 'z';
+              } else {
+                x = Number(p.x) + (opening.facade === 'left' ? -thickness : width + thickness);
+                y = Number(p.z) + oz + oh / 2;
+                z = Number(p.y) + ox + ow / 2;
+                axis = 'x';
+              }
+
+              const visual = composedOpeningVisualPlan(opening.opening_visual);
+              if (!visual) {
+                const geometry = axis === 'z' ? new THREE.BoxGeometry(ow, oh, thickness) : new THREE.BoxGeometry(thickness, oh, ow);
+                const mesh = new THREE.Mesh(geometry, openingMaterial);
+                mesh.position.set(x, y, z);
+                group.add(mesh);
+                continue;
+              }
+
+              // Viewer-only conventions. These tiny offsets/thicknesses are not architectural measurements.
+              const surroundT = Math.min(ow, oh) * 0.055;
+              const relief = visual.surroundRelief === 'projecting' ? 0.018 : 0;
+              const recess = visual.glazingPlane === 'recessed' ? 0.018 : 0;
+              const surroundMat = new THREE.MeshStandardMaterial({ color: visual.surroundColor, roughness: 0.72 });
+              const darkMat = new THREE.MeshStandardMaterial({ color: visual.glazingColor, roughness: 0.16, metalness: 0.05 });
+              const frameMat = new THREE.MeshStandardMaterial({ color: visual.frameColor, roughness: 0.45 });
+              const face = opening.facade === 'front' || opening.facade === 'left' ? -1 : 1;
+              const addBox = (bw, bh, bt, bx, by, bz, material) => {
+                const geometry = axis === 'z' ? new THREE.BoxGeometry(bw, bh, bt) : new THREE.BoxGeometry(bt, bh, bw);
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(bx, by, bz);
+                group.add(mesh);
+              };
+              const normal = distance => axis === 'z' ? [0, 0, face * distance] : [face * distance, 0, 0];
+              const at = (dx, dy, normalDistance) => {
+                const n = normal(normalDistance);
+                return [x + (axis === 'z' ? dx : 0) + n[0], y + dy, z + (axis === 'x' ? dx : 0) + n[2]];
+              };
+
+              for (const [bw, bh, dx, dy] of [
+                [ow, surroundT, 0, (oh - surroundT) / 2],
+                [ow, surroundT, 0, -(oh - surroundT) / 2],
+                [surroundT, oh - 2 * surroundT, (ow - surroundT) / 2, 0],
+                [surroundT, oh - 2 * surroundT, -(ow - surroundT) / 2, 0],
+              ]) {
+                addBox(bw, bh, thickness, ...at(dx, dy, relief), surroundMat);
+              }
+
+              const innerW = Math.max(0.01, ow - 2 * surroundT);
+              const innerH = Math.max(0.01, oh - 2 * surroundT);
+              addBox(innerW, innerH, thickness, ...at(0, 0, -recess), darkMat);
+
+              // Exactly one acquired vertical mullion. No pane count/layout or transom is inferred.
+              const mullionW = Math.min(innerW * 0.055, 0.08);
+              addBox(mullionW, innerH, thickness * 1.25, ...at(0, 0, -recess + 0.006), frameMat);
+            }
+          }
+          '''
+          path.write_text(src[:start]+replacement+src[end:],encoding='utf-8')
+          PY
+      - name: Targeted generic behavior test
+        run: node tests/frontend/test_scene_opening_visual.mjs
+      - name: Production visual equivalence to validated CLEAR GAIN gate
+        run: |
+          python - <<'PY'
+          import hashlib,json,shutil,subprocess,tempfile
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          from brickhouse.scene.benchmark_scene_recipe import materialize_scene_recipe
+          import scripts.run_real_house_5_composed_window_gate as gate
+          root=Path.cwd(); bench=root/'frontend/benchmarks/real-house-5'; out=root/'artifacts/composed-opening-production-proof'; out.mkdir(parents=True,exist_ok=True)
+          shutil.copy2(bench/'01-original.jpg',out/'01-p1-original.jpg')
+          scene=materialize_scene_recipe(bench/'scene-candidate-v0.2.json').model_dump(mode='json')
+          old=subprocess.check_output(['git','show','856c6f5eed8195694d4ee5cdd0b1739d953deb24:frontend/scene-viewer.js'],text=True)
+          s=old.index(gate.OLD_START);e=old.index(gate.OLD_END,s);validated=old[:s]+gate.NEW_RENDER+old[e:]
+          with tempfile.TemporaryDirectory(prefix='boldungo-production-proof-') as tmp:
+            tmp=Path(tmp); current=tmp/'current'; clear=tmp/'clear'; production=tmp/'production'
+            for dst in (current,clear,production): shutil.copytree(root/'frontend',dst/'frontend')
+            (current/'frontend/scene-viewer.js').write_text(old,encoding='utf-8')
+            (clear/'frontend/scene-viewer.js').write_text(validated,encoding='utf-8')
+            servers=[]
+            try:
+              for dst in (current,clear,production): servers.append(gate.serve(dst))
+              with sync_playwright() as p:
+                browser=p.chromium.launch(headless=True,executable_path=gate.browser_path(),args=['--no-sandbox']); page=browser.new_page(viewport=gate.VIEWPORT,device_scale_factor=1)
+                names=('02-current-front.png','03-validated-clear-gain.png','04-production-front.png')
+                for (server,_),name in zip(servers,names): gate.render(page,f'http://127.0.0.1:{server.server_address[1]}/frontend/scene-viewer.html',scene,out/name)
+                browser.close()
+            finally:
+              for server,thread in servers: server.shutdown();server.server_close();thread.join(timeout=2)
+          a=(out/'03-validated-clear-gain.png').read_bytes(); b=(out/'04-production-front.png').read_bytes()
+          ha=hashlib.sha256(a).hexdigest(); hb=hashlib.sha256(b).hexdigest()
+          assert ha==hb, f'production render differs from validated gate: {ha} != {hb}'
+          (out/'equivalence.txt').write_text(f'validated_gate_sha256={ha}\nproduction_sha256={hb}\nidentical=true\n',encoding='utf-8')
+          PY
+      - name: Commit production viewer integration only
+        run: |
+          git config user.name ludodulac
+          git config user.email 162371616+ludodulac@users.noreply.github.com
+          git add frontend/scene-viewer.js
+          git commit -m "Promote proven composed opening rendering"
+          git push origin HEAD:experiment/real-house-5-visual-sensitivity
+      - uses: actions/upload-artifact@v4
+        with:
+          name: composed-opening-production-proof
+          path: artifacts/composed-opening-production-proof
