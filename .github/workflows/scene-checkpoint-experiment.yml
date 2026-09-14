@@ -29,25 +29,74 @@ jobs:
         run: |
           python -m pip install -e .
           python -m pip install 'playwright>=1.50,<2'
-      - name: Materialize architectural Scene with acquired P1 opening visuals
-        run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
-      - name: Rebuild accepted experimental hypothesis without rejected terrain or upper-rhythm experiment
+      - name: Rebuild protected current experimental hypothesis
         run: |
+          python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
           python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
           python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
           python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/pre-front.json
-          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/front-viewer-new.json
-      - name: Render new viewer front with identical locked camera
-        run: python scripts/render_scene_checkpoint.py .checkpoints/variants/front-viewer-new.json front .checkpoints/front-viewer-new.png --stepped-stairs
-      - name: Verify PNG output
-        run: test -s .checkpoints/front-viewer-new.png
-      - name: Collect P1 reference
-        run: cp 01-original.jpg .checkpoints/P1-original.jpg
+          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/current-best-pre-long.json
+          python - <<'PY'
+          import copy, json
+          from pathlib import Path
+          src=Path('.checkpoints/variants/current-best-pre-long.json')
+          scene=json.loads(src.read_text())
+          new=copy.deepcopy(scene)
+          p=next(x for x in new['platforms'] if x['id']=='platform-timber-1')
+          rear=float(p['position']['y'])+float(p['depth'])
+          p['position']['y']=0.0
+          p['depth']=rear
+          p['source']={'kind':'inferred','confidence':0.10}
+          p.setdefault('evidence',[]).append({'photo_index':3,'observation':'PROTECTED EXPERIMENTAL DIRECTION: long South-terrace silhouette sensitivity; front termination remains unmeasured and reversible.'})
+          new['id']=new.get('id','scene')+'-protected-long-terrace'
+          Path('.checkpoints/current-best.json').write_text(json.dumps(new,indent=2)+'\n')
+          PY
+      - name: Render CURRENT flat-ground reference
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/current-best.json south-left .checkpoints/current-south-left.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/current-best.json rear-oblique .checkpoints/current-rear-oblique.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/current-best.json perspective .checkpoints/current-perspective.png --stepped-stairs
+      - name: Replace rejected two-regime preview by one continuous low-confidence slope
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/render_scene_checkpoint.py')
+          s=p.read_text()
+          old="""  const x0=Number(p.x)-5,x1=Number(p.x)+w+5,y0=Number(p.y)-3,y1=Number(p.y)+d+4,t0=Number(p.y)+d*.42,t1=Number(p.y)+d*.78,low=Number(p.z)-.72,high=Number(p.z)+.10;\n  const verts=new Float32Array([x0,low,y0,x1,low,y0,x1,low,t0,x0,low,y0,x1,low,t0,x0,low,t0,x0,low,t0,x1,low,t0,x1,high,t1,x0,low,t0,x1,high,t1,x0,high,t1,x0,high,t1,x1,high,t1,x1,high,y1,x0,high,t1,x1,high,y1,x0,high,y1]);"""
+          new="""  const x0=Number(p.x)-5,x1=Number(p.x)+w+5,y0=Number(p.y)-3,y1=Number(p.y)+d+4,low=Number(p.z)-.72,high=Number(p.z)+.10;\n  // ONE reversible qualitative realization: a single continuous plane rising front_to_rear.\n  // End elevations only reuse the previous sensitivity envelope; neither is an observed metric.\n  const verts=new Float32Array([x0,low,y0,x1,low,y0,x1,high,y1,x0,low,y0,x1,high,y1,x0,high,y1]);"""
+          if old not in s: raise SystemExit('terrain proxy anchor not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+      - name: Assert qualitative source and protected architecture
+        run: |
+          python - <<'PY'
+          import json
+          s=json.load(open('.checkpoints/current-best.json'))
+          profile=next(p for p in s['terrain']['profiles'] if p['facade']=='right')
+          assert profile['start_elevation'] is None and profile['end_elevation'] is None
+          assert profile['source']['kind'] in ('observed','user_provided','inferred')
+          t=next(p for p in s['platforms'] if p['id']=='platform-timber-1')
+          assert t['position']['y']==0.0
+          assert any(x['id']=='platform-massive-1' for x in s['platforms'])
+          assert len(s['stairs'])>=2
+          assert any(w['id']=='covered-void-right-masonry-wall-1' for w in s.get('partial_wall_segments',[]))
+          print('PASS: Scene terrain metrics remain unknown; continuous geometry exists only as low-confidence reversible viewer hypothesis; protected South architecture unchanged')
+          PY
+      - name: Render NOUVEAU continuous qualitative terrain
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/current-best.json south-left .checkpoints/new-south-left.png --stepped-stairs --qualitative-terrain
+          python scripts/render_scene_checkpoint.py .checkpoints/current-best.json rear-oblique .checkpoints/new-rear-oblique.png --stepped-stairs --qualitative-terrain
+          python scripts/render_scene_checkpoint.py .checkpoints/current-best.json perspective .checkpoints/new-perspective.png --stepped-stairs --qualitative-terrain
+      - name: Collect five references
+        run: |
+          cp 01-original.jpg .checkpoints/P1-original.jpg
+          cp 02-original.jpg .checkpoints/P2-original.jpg
+          cp 03-original.jpg .checkpoints/P3-original.jpg
+          cp 04-original.jpg .checkpoints/P4-original.jpg
+          cp 05-original.jpg .checkpoints/P5-original.jpg
       - uses: actions/upload-artifact@v4
         with:
-          name: p1-opening-viewer-gate
-          path: |
-            .checkpoints/front-viewer-new.png
-            .checkpoints/P1-original.jpg
+          name: continuous-qualitative-terrain-gate
+          path: .checkpoints
           if-no-files-found: error
           include-hidden-files: true
