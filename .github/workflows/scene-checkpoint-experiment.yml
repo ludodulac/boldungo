@@ -17,7 +17,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install Boldungo
-        run: python -m pip install -e .
+      - name: Install Boldungo and pytest
+        run: |
+          python -m pip install -e .
+          python -m pip install pytest
       - name: Run targeted Survey relation tests
         run: python -m pytest -q tests/survey/test_relative_horizontal_relations.py
