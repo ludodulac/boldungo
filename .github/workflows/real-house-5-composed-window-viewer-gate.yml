@@ -1,0 +1,29 @@
+name: Real-house-5 composed P1 window viewer gate
+
+on:
+  push:
+    branches: [experiment/real-house-5-visual-sensitivity]
+    paths:
+      - '.github/workflows/real-house-5-composed-window-viewer-gate.yml'
+      - 'frontend/scene-viewer.js'
+      - 'scripts/run_real_house_5_composed_window_gate.py'
+
+permissions:
+  contents: read
+
+jobs:
+  visual-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Run one P1 composed-window visual gate
+        run: python scripts/run_real_house_5_composed_window_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-house-5-composed-window-viewer-gate
+          path: artifacts/real-house-5-composed-window-viewer-gate
