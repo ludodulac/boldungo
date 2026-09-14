@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 jobs:
-  render-current:
+  chimney-truth-gate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,25 +29,75 @@ jobs:
         run: |
           python -m pip install -e .
           python -m pip install 'playwright>=1.50,<2'
-      - name: Materialize architectural Scene with acquired P1 opening visuals
-        run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
-      - name: Rebuild accepted experimental hypothesis without rejected terrain or upper-rhythm experiment
+      - name: Materialize Scene and prove qualitative Survey truth survives first boundary
         run: |
-          python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
+          python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/base.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('.checkpoints/base.json').read_text())
+          c=next(x for x in d['chimneys'] if x['id']=='chimney-1')
+          texts=[e['observation'] for e in c.get('evidence',[])]
+          assert any('roof_emergence=clearly_projecting' in t and 'P1' in t for t in texts), texts
+          assert any('roof_emergence=clearly_projecting' in t and 'P5' in t for t in texts), texts
+          assert c['source']['kind']=='inferred'
+          PY
+      - name: Rebuild protected experimental hypothesis with independent chimney geometry
+        run: |
+          python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/base.json .checkpoints/variants
           python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
           python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/pre-front.json
-          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/front-viewer-new.json
-      - name: Render new viewer front with identical locked camera
-        run: python scripts/render_scene_checkpoint.py .checkpoints/variants/front-viewer-new.json front .checkpoints/front-viewer-new.png --stepped-stairs
-      - name: Verify PNG output
-        run: test -s .checkpoints/front-viewer-new.png
-      - name: Collect P1 reference
-        run: cp 01-original.jpg .checkpoints/P1-original.jpg
+          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/new.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=json.loads(Path('.checkpoints/base.json').read_text())
+          new=json.loads(Path('.checkpoints/variants/new.json').read_text())
+          b=next(x for x in base['chimneys'] if x['id']=='chimney-1')
+          n=next(x for x in new['chimneys'] if x['id']=='chimney-1')
+          assert n['height']==b['height'], (b,n)
+          assert abs(n['position']['z'] - (b['position']['z'] + 6.5 - 8.0)) < 1e-9, (b,n)
+          assert n['position']['x']==b['position']['x'] and n['position']['y']==b['position']['y']
+          assert n['source']['kind']=='inferred'
+          assert any('roof_emergence=clearly_projecting' in e['observation'] for e in n.get('evidence',[]))
+          PY
+      - name: Render CURRENT multiview with protected generic viewer
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json front .checkpoints/current-front.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json rear-oblique .checkpoints/current-rear-oblique.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json perspective .checkpoints/current-perspective.png --stepped-stairs
+      - name: Enable already-tested generic chimney rendering for gate
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('frontend/scene-viewer.js')
+          s=p.read_text()
+          marker='function renderPlatforms() {'
+          assert marker in s
+          fn='''function renderChimneys() {\n  for (const chimney of currentScene.chimneys ?? []) {\n    const p = chimney.position;\n    const width = Number(chimney.width), depth = Number(chimney.depth), height = Number(chimney.height);\n    if (!p || ![Number(p.x), Number(p.y), Number(p.z), width, depth, height].every(Number.isFinite)) continue;\n    const geometry = new THREE.BoxGeometry(width, height, depth);\n    const mesh = new THREE.Mesh(geometry, genericExteriorMaterial);\n    addEdges(mesh);\n    mesh.position.set(Number(p.x) + width / 2, Number(p.z) + height / 2, Number(p.y) + depth / 2);\n    mesh.userData.architecturalObjectId = chimney.id;\n    group.add(mesh);\n  }\n}\n\n'''
+          s=s.replace(marker, fn+marker, 1)
+          old='renderVolumes(); renderOpenings(); renderPlatforms(); renderPartialWallSegments(); renderStairs(); renderTerrain(); renderRoofs();'
+          new='renderVolumes(); renderOpenings(); renderChimneys(); renderPlatforms(); renderPartialWallSegments(); renderStairs(); renderTerrain(); renderRoofs();'
+          assert old in s
+          p.write_text(s.replace(old,new,1))
+          PY
+      - name: Render NOUVEAU multiview
+        run: |
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json front .checkpoints/new-front.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json rear-oblique .checkpoints/new-rear-oblique.png --stepped-stairs
+          python scripts/render_scene_checkpoint.py .checkpoints/variants/new.json perspective .checkpoints/new-perspective.png --stepped-stairs
+      - name: Collect P1 and P5 references
+        run: |
+          cp 01-original.jpg .checkpoints/P1-original.jpg
+          cp 05-original.jpg .checkpoints/P5-original.jpg
       - uses: actions/upload-artifact@v4
         with:
-          name: p1-opening-viewer-gate
+          name: chimney-truth-multiview-gate
           path: |
-            .checkpoints/front-viewer-new.png
+            .checkpoints/current-*.png
+            .checkpoints/new-*.png
             .checkpoints/P1-original.jpg
+            .checkpoints/P5-original.jpg
+            .checkpoints/variants/new.json
           if-no-files-found: error
           include-hidden-files: true
