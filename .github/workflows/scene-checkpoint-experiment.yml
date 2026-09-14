@@ -9,6 +9,7 @@ on:
       - 'scripts/prepare_south_terrace_guardrail_gate.py'
       - 'scripts/prepare_south_terrace_structure_gate.py'
       - 'scripts/prepare_front_lower_register_gate.py'
+      - 'scripts/prepare_front_upper_rhythm_gate.py'
       - '.github/workflows/scene-checkpoint-experiment.yml'
       - 'frontend/scene-viewer*'
       - 'frontend/benchmarks/real-house-5/**'
@@ -30,13 +31,14 @@ jobs:
           python -m pip install 'playwright>=1.50,<2'
       - name: Materialize unchanged architectural Scene
         run: python scripts/materialize_scene_recipe.py frontend/benchmarks/real-house-5/scene-candidate-v0.2.json .checkpoints/current.json
-      - name: Rebuild accepted experimental architectural hypothesis without rejected terrain
+      - name: Rebuild accepted experimental hypothesis and one upper-rhythm proposal
         run: |
           python scripts/prepare_visual_sensitivity_sweep.py .checkpoints/current.json .checkpoints/variants
           python scripts/prepare_south_terrace_guardrail_gate.py .checkpoints/variants/combined-6.5-62-terrace-footprint.json .checkpoints/variants/terrace-guardrail.json
-          python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/front-current.json
-          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/front-current.json .checkpoints/variants/front-new.json
-      - name: Render front lower-register gate with identical camera
+          python scripts/prepare_south_terrace_structure_gate.py .checkpoints/variants/terrace-guardrail.json .checkpoints/variants/pre-front.json
+          python scripts/prepare_front_lower_register_gate.py .checkpoints/variants/pre-front.json .checkpoints/variants/front-current.json
+          python scripts/prepare_front_upper_rhythm_gate.py .checkpoints/variants/front-current.json .checkpoints/variants/front-new.json
+      - name: Render upper-rhythm gate with identical front camera
         run: |
           python scripts/render_scene_checkpoint.py .checkpoints/variants/front-current.json front .checkpoints/front-current.png --stepped-stairs
           python scripts/render_scene_checkpoint.py .checkpoints/variants/front-new.json front .checkpoints/front-new.png --stepped-stairs
@@ -44,7 +46,7 @@ jobs:
         run: test -s .checkpoints/front-current.png && test -s .checkpoints/front-new.png
       - uses: actions/upload-artifact@v4
         with:
-          name: front-lower-register-gate
+          name: front-upper-rhythm-gate
           path: .checkpoints/front-*.png
           if-no-files-found: error
           include-hidden-files: true
