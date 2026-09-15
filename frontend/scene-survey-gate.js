@@ -65,9 +65,17 @@ function hydrateCertainSurveyRelations(survey, scene) {
       if (key === 'platforms') for (const support of item?.supports ?? []) if (support?.id) objectIds.add(support.id);
     }
   }
+  const realizedSurveyIds = new Set(
+    (hydrated.survey_realizations ?? [])
+      .filter(item => Array.isArray(item?.scene_object_ids) && item.scene_object_ids.length > 0)
+      .filter(item => item.scene_object_ids.every(id => objectIds.has(id)))
+      .map(item => item.survey_observation_id)
+      .filter(Boolean),
+  );
+  const endpointIsRepresented = id => objectIds.has(id) || realizedSurveyIds.has(id);
   for (const relation of survey?.relations ?? []) {
     if (relation?.certainty !== 'certain' || existingIds.has(relation.id)) continue;
-    if (!objectIds.has(relation.subject_id) || !objectIds.has(relation.object_id)) continue;
+    if (!endpointIsRepresented(relation.subject_id) || !endpointIsRepresented(relation.object_id)) continue;
     relations.push({
       id: relation.id,
       kind: relation.kind,
