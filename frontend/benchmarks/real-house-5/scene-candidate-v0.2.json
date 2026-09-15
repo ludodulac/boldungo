@@ -10,18 +10,19 @@
     "observed-front-window-surrounds-overlay-v0.1.json",
     "observed-covered-void-wall-overlay-v0.1.json",
     "timber-deck-extent-scene-overlay-v0.1.json",
-    "south-complex-clearance-scene-overlay-v0.1.json"
+    "south-complex-clearance-scene-overlay-v0.1.json",
+    "front-height-composition-scene-overlay-v0.1.json"
   ],
   "retained_metric_values": {
     "volume_main.width_m": 7.2,
     "volume_main.depth_m": 9.0,
-    "volume_main.height_m": 8.0
+    "volume_main.height_m": 6.5243
   },
   "metric_status": {
     "volume_main.width_m": "retained_inside_photo_derived_interval",
     "volume_main.depth_m": "provisional_unresolved_complete_extent",
-    "volume_main.height_m": "provisional_unresolved_multi_family_consensus"
+    "volume_main.height_m": "photo_derived_low_confidence_consensus"
   },
   "provenance": "scene-candidate-v0.2-provenance.json",
-  "statement": "Canonical benchmark recipe for materializing the current Scene candidate. It preserves the accepted Survey and applies only merged, provenance-bearing Scene corrections, direct visual observations, explicit user confirmations, and the minimal reversible south-complex clearance approximation."
+  "statement": "Canonical benchmark recipe for materializing the current Scene candidate. It preserves the accepted Survey and applies only provenance-bearing Scene corrections, direct visual observations, explicit user confirmations, generic photo-scale inference, and reversible south-complex approximations."
 }

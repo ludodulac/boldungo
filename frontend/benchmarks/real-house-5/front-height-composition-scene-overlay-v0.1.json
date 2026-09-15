@@ -1,0 +1,16 @@
+{
+  "schema_version":"brickhouse-benchmark-scene-overlay-0.1",
+  "benchmark_id":"real-house-5",
+  "source_scene_id":"brickhouse-scene-real-house-5-candidate-v0.2",
+  "operation":"update_metric_geometry",
+  "volume_updates":[{"volume_id":"volume_main","height":{"value":6.5243,"source":{"kind":"inferred","confidence":0.2915},"evidence":[{"photo_index":1,"observation":"Generic rectified-plane scale inference from front opening-height cues resolves a low-confidence wall-height consensus around 6.52 m."}]}}],
+  "opening_updates":[
+    {"opening_id":"front-opening-1","offset_vertical":4.84,"evidence":[{"photo_index":1,"observation":"Vertical center re-anchored to the rectified front-plane frame position after resolving the facade height."}]},
+    {"opening_id":"front-opening-2","offset_vertical":4.98,"evidence":[{"photo_index":1,"observation":"Vertical center re-anchored to the rectified front-plane frame position after resolving the facade height."}]},
+    {"opening_id":"front-opening-3","offset_vertical":2.79,"evidence":[{"photo_index":1,"observation":"Vertical center re-anchored to the rectified front-plane frame position after resolving the facade height."}]},
+    {"opening_id":"front-opening-4","offset_vertical":2.81,"evidence":[{"photo_index":1,"observation":"Vertical center re-anchored to the rectified front-plane frame position after resolving the facade height."}]},
+    {"opening_id":"front-opening-5","offset_vertical":0.47,"evidence":[{"photo_index":1,"observation":"Vertical center re-anchored to the rectified front-plane frame position after resolving the facade height."}]},
+    {"opening_id":"front-opening-6","offset_vertical":0.0,"evidence":[{"photo_index":1,"observation":"The rectified lower glazed opening reaches the visible facade base; its existing inferred height is retained."}]}
+  ],
+  "statement":"Correct the dominant over-tall global silhouette using the existing generic photo-scale machinery, then re-anchor the already-observed front openings to their rectified vertical centers. No hidden geometry, terrain, terrace, stair, roof pitch, or opening width is invented."
+}
