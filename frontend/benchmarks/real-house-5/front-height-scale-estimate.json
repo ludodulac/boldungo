@@ -1,0 +1,14 @@
+{
+  "schema_version":"brickhouse-benchmark-scale-estimate-0.1",
+  "benchmark_id":"real-house-5",
+  "target":"volume_main.height",
+  "resolved":true,
+  "value_m":6.5243,
+  "min_m":5.6806,
+  "max_m":6.8702,
+  "confidence":0.2915,
+  "source":{"kind":"inferred","confidence":0.2915},
+  "supporting_families":["front_repeated_window_height","front_small_window_height"],
+  "rejected_families":["front_glazed_door_height"],
+  "diagnostic":"Resolved by the generic photo-scale estimator from rectified front-plane opening heights. Repeated windows are correlated as one family; the glazed-door cue is rejected from the consensus. This remains low-confidence inference, not measurement."
+}
