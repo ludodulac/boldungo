@@ -47,6 +47,7 @@ def test_consolidated_recipe_materializes_current_benchmark_geometry() -> None:
     scene = _materialize_recipe()
     recipe = _load(RECIPE)
     scale = _load(BENCHMARK / "front-width-scale-estimate.json")
+    height_scale = _load(BENCHMARK / "front-height-scale-estimate.json")
     provenance = _load(BENCHMARK / "scene-candidate-v0.2-provenance.json")
 
     main = next(item for item in scene.volumes if item.id == "volume_main")
@@ -56,7 +57,9 @@ def test_consolidated_recipe_materializes_current_benchmark_geometry() -> None:
     assert scale["min_m"] <= main.width.value <= scale["max_m"]
     assert main.width.value == recipe["retained_metric_values"]["volume_main.width_m"]
     assert recipe["metric_status"]["volume_main.depth_m"].startswith("provisional")
-    assert recipe["metric_status"]["volume_main.height_m"].startswith("provisional")
+    assert recipe["metric_status"]["volume_main.height_m"] == "photo_derived_low_confidence_consensus"
+    assert height_scale["min_m"] <= main.height.value <= height_scale["max_m"]
+    assert main.height.value == recipe["retained_metric_values"]["volume_main.height_m"]
     assert provenance["known_measurements_required"] is False
     assert timber.position.z < landing.position.z
     assert len(scene.stairs) >= 2
