@@ -43,6 +43,26 @@ class SceneRelation(BaseModel):
         return self
 
 
+class SceneSurveyRealization(BaseModel):
+    """Map one Survey architectural object to one or more Scene primitives.
+
+    This preserves architectural identity/provenance across geometric refinement
+    without claiming that the refined primitives touch each other or any relation
+    endpoint metrically.
+    """
+
+    survey_observation_id: str = Field(min_length=1)
+    scene_object_ids: list[str] = Field(min_length=1)
+    evidence: list[Evidence] = Field(default_factory=list)
+
+    @field_validator("scene_object_ids")
+    @classmethod
+    def validate_scene_object_ids(cls, value):
+        if len(value) != len(set(value)):
+            raise ValueError("scene realization object IDs must be unique")
+        return value
+
+
 class ArchitecturalScene(_MetricArchitecturalScene):
     """ArchitecturalScene v0.2 plus non-metric structural relations.
 
@@ -52,6 +72,7 @@ class ArchitecturalScene(_MetricArchitecturalScene):
     """
 
     relations: list[SceneRelation] = Field(default_factory=list)
+    survey_realizations: list[SceneSurveyRealization] = Field(default_factory=list)
     platform_structure_observations: list[PlatformStructureObservation] = Field(default_factory=list)
     terrain: Terrain | None = None
 
@@ -91,6 +112,22 @@ class ArchitecturalScene(_MetricArchitecturalScene):
                     f"{observation.platform_id!r}"
                 )
 
+        realization_ids = [item.survey_observation_id for item in self.survey_realizations]
+        if len(realization_ids) != len(set(realization_ids)):
+            raise ValueError("Survey realization observation IDs must be unique")
+        realized_scene_ids: set[str] = set()
+        for realization in self.survey_realizations:
+            unknown_ids = set(realization.scene_object_ids) - object_ids
+            if unknown_ids:
+                raise ValueError(
+                    f"Survey realization {realization.survey_observation_id!r} references unknown Scene objects "
+                    f"{sorted(unknown_ids)!r}"
+                )
+            duplicate_ids = realized_scene_ids.intersection(realization.scene_object_ids)
+            if duplicate_ids:
+                raise ValueError(f"Scene objects cannot realize multiple Survey observations: {sorted(duplicate_ids)!r}")
+            realized_scene_ids.update(realization.scene_object_ids)
+
         volume_ids = {volume.id for volume in self.volumes}
         relation_ids = [relation.id for relation in self.relations]
         if len(relation_ids) != len(set(relation_ids)):
@@ -120,15 +157,35 @@ class ArchitecturalScene(_MetricArchitecturalScene):
                     raise ValueError(
                         f"resolved scene relation {relation.id!r} references no Scene object"
                     )
-            if relation.geometry_status == "unresolved" and not (subject_present or object_present):
+            if relation.geometry_status == "unresolved" and not (
+                subject_present
+                or object_present
+                or self._realizes_survey_observation(relation.subject_id)
+                or self._realizes_survey_observation(relation.object_id)
+            ):
                 raise ValueError(
-                    f"unresolved scene relation {relation.id!r} must reference at least one Scene object"
+                    f"unresolved scene relation {relation.id!r} must reference at least one Scene object "
+                    "directly or through survey_realizations"
                 )
 
+    def _realizes_survey_observation(self, survey_observation_id: str) -> bool:
+        return any(
+            item.survey_observation_id == survey_observation_id
+            for item in self.survey_realizations
+        )
+
+    def _survey_observations_for_scene_object(self, object_id: str) -> set[str]:
+        return {
+            item.survey_observation_id
+            for item in self.survey_realizations
+            if object_id in item.scene_object_ids
+        }
+
     def _has_unresolved_relation(self, object_id: str) -> bool:
+        represented_ids = {object_id, *self._survey_observations_for_scene_object(object_id)}
         return any(
             relation.geometry_status == "unresolved"
-            and object_id in {relation.subject_id, relation.object_id}
+            and bool(represented_ids.intersection({relation.subject_id, relation.object_id}))
             for relation in self.relations
         )
 
