@@ -72,7 +72,7 @@ class ArchitecturalScene(_MetricArchitecturalScene):
     """
 
     relations: list[SceneRelation] = Field(default_factory=list)
-    survey_realizations: list[SceneSurveyRealization] = Field(default_factory=list)
+    survey_realizations: list[SceneSurveyRealization] = Field(default_factory=list, exclude_if=lambda value: not value)
     platform_structure_observations: list[PlatformStructureObservation] = Field(default_factory=list)
     terrain: Terrain | None = None
 
