@@ -1,0 +1,18 @@
+{
+  "schema_version": "brickhouse-benchmark-scale-evidence-0.1",
+  "benchmark_id": "real-house-5",
+  "target": "volume_main.height",
+  "units": "m",
+  "source_photo_index": 1,
+  "reference_extent": {"coverage":"full_target_extent","target_extent_id":"volume_main.height","statement":"The rectified front wall plane spans the visible base-to-eave wall height used by this benchmark inference."},
+  "reuse_rectification_and_annotations_from": "front-width-scale-evidence.json",
+  "cue_specs": [
+    {"annotation_id":"front-opening-1-frame-v1","cue_family":"front_repeated_window_height","semantic_type":"window","leaf_count":2,"prior_id":"fr-opening-priors-0.1:window-2leaf:height"},
+    {"annotation_id":"front-opening-2-frame-v1","cue_family":"front_repeated_window_height","semantic_type":"window","leaf_count":2,"prior_id":"fr-opening-priors-0.1:window-2leaf:height"},
+    {"annotation_id":"front-opening-3-frame-v1","cue_family":"front_repeated_window_height","semantic_type":"window","leaf_count":2,"prior_id":"fr-opening-priors-0.1:window-2leaf:height"},
+    {"annotation_id":"front-opening-4-frame-v1","cue_family":"front_repeated_window_height","semantic_type":"window","leaf_count":2,"prior_id":"fr-opening-priors-0.1:window-2leaf:height"},
+    {"annotation_id":"front-opening-5-frame-v1","cue_family":"front_small_window_height","semantic_type":"window","leaf_count":1,"prior_id":"fr-opening-priors-0.1:window-1leaf:height"},
+    {"annotation_id":"front-opening-6-frame-v1","cue_family":"front_glazed_door_height","semantic_type":"door_or_glazed_door","leaf_count":null,"prior_id":"fr-opening-priors-0.1:glazed-door-leaves-unknown:height"}
+  ],
+  "policy": {"minimum_independent_families":2,"accepted_survey_is_immutable":true,"known_measurements_must_remain_empty":true,"statistical_priors_are_not_measurements":true}
+}
