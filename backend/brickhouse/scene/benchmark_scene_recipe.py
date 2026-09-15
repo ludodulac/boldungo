@@ -77,6 +77,29 @@ def materialize_scene_recipe(recipe_path: Path) -> ArchitecturalScene:
                         support["source"] = deepcopy(update["source"])
             continue
 
+        if operation == "update_metric_geometry":
+            volume_updates = {item["volume_id"]: item for item in overlay.get("volume_updates", [])}
+            for volume in payload.get("volumes", []):
+                update = volume_updates.get(volume["id"])
+                if update is None:
+                    continue
+                for field in ("width", "depth", "height"):
+                    if field in update:
+                        volume[field] = deepcopy(update[field])
+                volume.setdefault("evidence", []).extend(deepcopy(update.get("evidence", [])))
+            opening_updates = {item["opening_id"]: item for item in overlay.get("opening_updates", [])}
+            for opening in payload.get("openings", []):
+                update = opening_updates.get(opening["id"])
+                if update is None:
+                    continue
+                for field in ("offset_horizontal", "offset_vertical", "width", "height"):
+                    if field in update:
+                        opening[field] = update[field]
+                if "source" in update:
+                    opening["source"] = deepcopy(update["source"])
+                opening.setdefault("evidence", []).extend(deepcopy(update.get("evidence", [])))
+            continue
+
         if operation == "update_opening_semantics":
             opening_updates = {item["opening_id"]: item for item in overlay["opening_updates"]}
             for opening in payload.get("openings", []):
