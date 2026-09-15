@@ -8,9 +8,26 @@ Quand un même objet architectural semble apparaître dans plusieurs photos, ne 
 Pour toute observation qui fusionne explicitement des preuves provenant de plusieurs photos, renseigne `attributes.multiview_identity` quand la correspondance est établie ou reste ambiguë :
 - `status`: `"same_physical_object"` ou `"unresolved"` ;
 - `photo_indexes`: au moins deux index de photos réellement cités par l’observation ;
-- `cues`: uniquement des indices discriminants parmi `shape_detail`, `relative_position`, `structural_continuity`, `occlusion_continuity`, `facade_transition`, `user_statement`.
+- `cues`: uniquement des indices discriminants parmi `shape_detail`, `relative_position`, `structural_continuity`, `occlusion_continuity`, `facade_transition`, `user_statement` ;
+- `supporting_relation_ids`: les IDs de `relations[]` réellement utilisés comme preuve locale de cette correspondance, quand une relation architecturale contribue à l’identité.
 
-Ajoute `attribute_certainty.multiview_identity` avec la certitude appropriée. `status:"unresolved"` ne peut jamais être `certain`.
+Ajoute `attribute_certainty.multiview_identity` avec la certitude appropriée. `status:"unresolved"` ne peut jamais être `certain`. Une identité `same_physical_object` certaine appuyée par `supporting_relation_ids` ne peut citer que des relations certaines ; une relation plausible ou un indice ambigu ne doit jamais promouvoir l’identité.
+
+IDENTITÉ, SYSTÈME ARCHITECTURAL ET PRIMITIVES FUTURES
+Un objet Survey est une identité architecturale observée, pas une obligation de primitive géométrique unique. Un même escalier observé comme système continu dans plusieurs vues peut rester UNE observation Survey `kind:"stair"` même si la reconstruction Scene devra plus tard le réaliser par plusieurs volées/`StairRun`. Ne crée pas plusieurs objets Survey uniquement parce que plusieurs portions géométriques sont visibles si les preuves établissent qu’elles appartiennent au même escalier architectural.
+
+Inversement, des objets distincts qui composent un même ensemble d’accès restent distincts : terrasse/deck, palier maçonné et escalier ne deviennent jamais `same_physical_object` parce qu’ils sont connectés. Utilise les relations existantes selon ce que les photos prouvent :
+- `connects_to` pour une continuité/raccord architectural certain ou plausible ;
+- `adjacent_to` pour une proximité architecturale sans preuve de raccord ;
+- `part_of` seulement lorsque l’appartenance à un ensemble architectural est réellement soutenue ;
+- `same_physical_object` uniquement pour deux IDs distincts dont l’identité physique commune est explicitement prouvée avant fusion. Après fusion sous un seul ID stable, ne crée jamais de self-relation.
+Aucune de ces relations n’est transitive par défaut : A `connects_to` B et B `connects_to` C ne prouve pas A `connects_to` C ; A `part_of` X et B `part_of` X ne prouve ni A=B ni A `connects_to` B.
+
+TOPOLOGIE AVANT GÉOMÉTRIE
+Une relation architecturale peut être certaine alors que sa jonction métrique exacte est cachée. Dans ce cas, conserve la relation certaine et décris explicitement dans `statement`/`evidence` que la géométrie de jonction reste inconnue ; n’invente ni coordonnées, ni volée cachée, ni contour derrière une occultation. Le passage Survey → Scene pourra conserver cette relation avec une géométrie `unresolved`.
+
+ESPACES OUVERTS SOUS STRUCTURE
+Quand les photos montrent un volume d’air/espace couvert OUVERT sous une terrasse, un deck ou une plateforme, ne transforme jamais cet espace en volume bâti fermé par défaut. Encode ce qui est réellement observé (plateforme, supports visibles, occultations éventuelles) et conserve explicitement dans les attributs/statement la propriété qualitative d’ouverture si elle est utile. Une face non visible reste inconnue : l’absence de vue n’autorise ni mur, ni fermeture, ni remplissage.
 
 CE QUI NE SUFFIT PAS
 La ressemblance générique de couleur, matériau, largeur apparente, type architectural, présence sur la même façade, proximité en projection 2D ou simple chevauchement visuel ne prouve PAS une identité multi-vues. Deux cheminées similaires ou deux fenêtres semblables peuvent appartenir à des objets distincts.
@@ -22,13 +39,17 @@ OWNERSHIP ET IDENTITÉ RESTENT SÉPARÉS
 Une correspondance multi-vues n’autorise pas à promouvoir automatiquement l’ownership. Inversement, deux objets appartenant tous deux au bâtiment cible ne sont pas nécessairement le même objet. Applique d’abord l’identité physique, puis conserve l’ownership avec sa propre certitude.
 
 OBJETS À CONTRÔLER EN PRIORITÉ
-Cheminées, ouvertures, pans/toitures, volumes, plateformes/terrasses, escaliers, paliers, équipements et détails répétitifs. Pour un escalier multi-volées, ne confonds pas « mêmes système architectural » et « même volée ».
+Cheminées, ouvertures, pans/toitures, volumes, plateformes/terrasses, escaliers, paliers, équipements et détails répétitifs. Pour un escalier multi-volées, ne confonds pas « même système architectural » et « même volée géométrique future ».
 
 PRÉFLIGHT OBLIGATOIRE
 1. toute fusion multi-vues doit être justifiée ou explicitement laissée `unresolved` ;
 2. les `photo_indexes` doivent correspondre aux preuves citées ;
 3. une identité certaine doit avoir au moins un cue discriminant ;
-4. ne jamais fusionner sur la seule base de ressemblance/proximité ;
-5. ne jamais convertir une identité `unresolved` en géométrie ou ownership certain pour compléter la reconstruction.
+4. tout `supporting_relation_ids` doit référencer une relation locale pertinente et ne peut promouvoir sa certitude ;
+5. ne jamais fusionner sur la seule base de ressemblance/proximité ;
+6. `same_physical_object`, `part_of`, `connects_to` et `adjacent_to` restent sémantiquement distincts et non transitifs par défaut ;
+7. une jonction cachée reste géométriquement inconnue même si sa relation architecturale est certaine ;
+8. un espace observé ouvert sous une plateforme ne doit jamais être fermé par complétion ;
+9. ne jamais convertir une identité `unresolved` en géométrie ou ownership certain pour compléter la reconstruction.
 
-Le Survey est incomplet si plusieurs vues ont été fusionnées sous un même objet sans trace explicite de la correspondance alors que cette identité est architecturalement ambiguë.
+Le Survey est incomplet si plusieurs vues ont été fusionnées sous un même objet sans trace explicite de la correspondance alors que cette identité est architecturalement ambiguë, ou si des relations architecturales directement prouvées entre structures extérieures observées disparaissent avant la reconstruction géométrique.
