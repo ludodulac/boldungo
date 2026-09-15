@@ -52,3 +52,13 @@ def test_real_house_timber_deck_keeps_longitudinal_extent_after_local_clearance(
         "stair-exterior-1-run-lower-v1",
         "stair-exterior-1-run-upper-v1",
     }
+
+
+def test_real_house_timber_deck_exposed_front_edge_keeps_observed_railing():
+    scene = materialize_scene_recipe(REAL_HOUSE_RECIPE)
+    platforms = {platform.id: platform for platform in scene.platforms}
+
+    outer = platforms["platform-timber-1-outer-front-fragment"]
+    assert outer.edges is not None
+    assert outer.edges.x_min.treatment.value == "open_railing"
+    assert outer.edges.y_min.treatment.value == "open_railing"
