@@ -326,22 +326,40 @@ function updateSummary() {
   [...summary.querySelectorAll('dd')].forEach((node, index) => { node.textContent = values[index] ?? '—'; });
 }
 
-function loadScene() {
+function isArchitecturalScene(candidate) {
+  return candidate?.schema_version === '0.2' && Array.isArray(candidate.volumes);
+}
+
+async function loadScene() {
+  const explicitSceneUrl = new URLSearchParams(window.location.search).get('scene');
+  if (explicitSceneUrl) {
+    const response = await fetch(explicitSceneUrl);
+    if (!response.ok) throw new Error(`Impossible de charger la Scene explicite (${response.status}).`);
+    const value = await response.json();
+    const candidate = value?.scene ?? value;
+    if (!isArchitecturalScene(candidate)) throw new Error('Le fichier explicite n’est pas une ArchitecturalScene v0.2 valide.');
+    return candidate;
+  }
+
   const keys = ['brickhouse.previewArchitecturalScene', 'brickhouse.pendingSceneValidation', 'brickhouse.lastSceneSurveyValidation'];
   for (const key of keys) {
     try {
       const raw = localStorage.getItem(key); if (!raw) continue;
       const value = JSON.parse(raw);
       const candidate = value?.scene ?? value;
-      if (candidate?.schema_version === '0.2' && Array.isArray(candidate.volumes)) return candidate;
+      if (isArchitecturalScene(candidate)) return candidate;
     } catch { /* try next source */ }
   }
   return null;
 }
 
-currentScene = loadScene();
+try {
+  currentScene = await loadScene();
+} catch (error) {
+  messageEl.textContent = error instanceof Error ? error.message : 'Impossible de charger la Scene explicite.';
+}
 if (!currentScene) {
-  messageEl.textContent = 'Aucune ArchitecturalScene disponible. Revenez au parcours Photos et validez d’abord la reconstruction.';
+  if (!messageEl.textContent) messageEl.textContent = 'Aucune ArchitecturalScene disponible. Revenez au parcours Photos et validez d’abord la reconstruction.';
 } else {
   renderVolumes(); renderOpenings(); renderPlatforms(); renderPartialWallSegments(); renderStairs(); renderTerrain(); renderRoofs(); updateSummary(); frame();
   const exteriorCount = (currentScene.platforms?.length ?? 0) + (currentScene.partial_wall_segments?.length ?? 0) + (currentScene.stairs?.length ?? 0);

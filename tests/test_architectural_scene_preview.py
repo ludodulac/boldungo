@@ -49,3 +49,23 @@ def test_scene_preview_renders_known_exterior_elements() -> None:
     assert "currentScene.stairs" in source
     assert "does not guess which sides receive posts or rails" in source
     assert "Les détails non mesurés ne sont pas inventés." in source
+
+
+def test_scene_preview_accepts_explicit_scene_url_before_local_storage() -> None:
+    source = Path("frontend/scene-viewer.js").read_text(encoding="utf-8")
+    explicit = "new URLSearchParams(window.location.search).get('scene')"
+    assert explicit in source
+    assert "await fetch(explicitSceneUrl)" in source
+    assert source.index(explicit) < source.index("localStorage.getItem(key)")
+    assert "currentScene = await loadScene()" in source
+
+
+def test_scene_preview_keeps_historical_local_storage_fallback() -> None:
+    source = Path("frontend/scene-viewer.js").read_text(encoding="utf-8")
+    for key in (
+        "brickhouse.previewArchitecturalScene",
+        "brickhouse.pendingSceneValidation",
+        "brickhouse.lastSceneSurveyValidation",
+    ):
+        assert key in source
+    assert "if (isArchitecturalScene(candidate)) return candidate" in source
