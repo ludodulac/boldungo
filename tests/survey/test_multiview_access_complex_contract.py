@@ -16,6 +16,7 @@ def test_generic_multiview_access_complex_preserves_identity_topology_and_unknow
             {"photo_index": 1, "facade": "left", "description": "oblique access view", "source": SOURCE, "image_left_maps_to_facade_offset": "low"},
             {"photo_index": 2, "facade": "rear", "description": "rear access view", "source": SOURCE, "image_left_maps_to_facade_offset": "low"},
             {"photo_index": 3, "facade": "right", "description": "opposite access view", "source": SOURCE, "image_left_maps_to_facade_offset": "low"},
+            {"photo_index": 4, "facade": "front", "description": "canonical front reference view", "source": SOURCE, "image_left_maps_to_facade_offset": "low"},
         ],
         "observations": [
             {
