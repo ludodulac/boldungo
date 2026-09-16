@@ -165,7 +165,7 @@ class BrickExportBundle(BaseModel):
                 raise ValueError("InstructionPlan total_parts does not match BrickModel part count")
             if self.assembly_plan is not None:
                 assembly_ids = [pid for step in self.assembly_plan.steps for pid in step.placement_ids]
-                instruction_ids = [pid for step in self.instruction_plan.steps for pid in step.placement_ids]
+                instruction_ids = [pid for step in self.instruction_plan.steps for pid in step.added_placement_ids]
                 if instruction_ids != assembly_ids:
                     raise ValueError("InstructionPlan placement ordering does not match AssemblyPlan")
         if self.bag_plan is not None:
@@ -273,7 +273,7 @@ def create_export_bundle(
         fidelity_issues,
         _semantic_color_fidelity_issues(model),
     )
-    instruction_plan = generate_instruction_plan(assembly_plan) if assembly_plan is not None else None
+    instruction_plan = generate_instruction_plan(assembly_plan, model) if assembly_plan is not None else None
     bag_plan = generate_bag_plan(assembly_plan) if assembly_plan is not None else None
     capability_summary = derive_export_capability_summary(
         assembly_plan=assembly_plan,
@@ -301,6 +301,5 @@ def create_export_bundle(
     )
 
 
-def export_bundle_json(bundle: BrickExportBundle, *, indent: int = 2) -> str:
-    """Serialize an export bundle as deterministic UTF-8 JSON text."""
-    return bundle.model_dump_json(indent=indent, exclude_none=True)
+def export_bundle_json(bundle: BrickExportBundle) -> str:
+    return bundle.model_dump_json(indent=2)
