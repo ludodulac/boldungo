@@ -301,5 +301,6 @@ def create_export_bundle(
     )
 
 
-def export_bundle_json(bundle: BrickExportBundle) -> str:
-    return bundle.model_dump_json(indent=2)
+def export_bundle_json(bundle: BrickExportBundle, *, indent: int = 2) -> str:
+    """Serialize an export bundle as deterministic UTF-8 JSON text."""
+    return bundle.model_dump_json(indent=indent, exclude_none=True)
