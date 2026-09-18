@@ -153,8 +153,8 @@ def test_photo_analysis_is_disabled_without_selected_provider(monkeypatch):
 def test_photo_analysis_endpoint_returns_mocked_structured_result(monkeypatch):
     _enable_openai(monkeypatch)
     captured = {}
-    def fake_analyze(photos, *, user_notes="", known_front_width_m=None):
-        captured.update(count=len(photos), notes=user_notes, width=known_front_width_m)
+    def fake_analyze(photos, *, user_notes="", known_front_width_m=None, survey=None):
+        captured.update(count=len(photos), notes=user_notes, width=known_front_width_m, survey=survey)
         return _analysis_result()
     monkeypatch.setattr(api_module, "analyze_with_configured_provider", fake_analyze)
     response = client.post(
@@ -166,7 +166,7 @@ def test_photo_analysis_endpoint_returns_mocked_structured_result(monkeypatch):
     payload = response.json()
     assert payload["building"]["metadata"]["created_from"] == "photo_analysis"
     assert payload["needs_confirmation"] is True
-    assert captured == {"count": 2, "notes": "Terrasse à gauche", "width": 10.2}
+    assert captured == {"count": 2, "notes": "Terrasse à gauche", "width": 10.2, "survey": None}
 
 
 def test_photo_proposal_can_flow_directly_into_brick_build(monkeypatch):

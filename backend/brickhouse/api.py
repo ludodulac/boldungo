@@ -597,6 +597,7 @@ async def analyze_photos(
     photos: list[UploadFile] = File(...),
     user_notes: str = Form(default=""),
     known_front_width_m: float | None = Form(default=None),
+    survey_json: str = Form(default=""),
 ) -> PhotoAnalysisResult:
     vision = vision_status()
     if not vision.ready:
@@ -614,6 +615,13 @@ async def analyze_photos(
         )
     if known_front_width_m is not None and known_front_width_m <= 0:
         raise HTTPException(status_code=422, detail="known_front_width_m doit être positif.")
+
+    accepted_survey: ArchitecturalSurvey | None = None
+    if survey_json.strip():
+        try:
+            accepted_survey = ArchitecturalSurvey.model_validate_json(survey_json)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail="survey_json must contain a valid accepted ArchitecturalSurvey v0.1") from exc
 
     prepared: list[PhotoInput] = []
     for upload in photos:
@@ -644,6 +652,7 @@ async def analyze_photos(
             prepared,
             user_notes=user_notes,
             known_front_width_m=known_front_width_m,
+            survey=accepted_survey,
         )
         return result.model_copy(
             update={"m0_compatibility": assess_m0_compatibility(result.building)}
