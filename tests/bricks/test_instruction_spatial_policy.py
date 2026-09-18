@@ -41,6 +41,15 @@ def test_compact_group_remains_one_gesture():
     assert policy.diagnose(_step(ids)).consecutive_gaps_studs == (0, 0)
 
 
+def test_exactly_two_distant_placements_split_into_two_gestures():
+    ids = ["a", "b"]
+    policy = SpatialCoherenceInstructionPolicy(_model([_part("a", 0), _part("b", 3)]))
+    diagnostic = policy.diagnose(_step(ids))
+    assert diagnostic.consecutive_gaps_studs == (2,)
+    assert diagnostic.split_after_indices == (1,)
+    assert policy.groups_for(_step(ids)) == [["a"], ["b"]]
+
+
 def test_two_compact_groups_with_clear_gap_split_without_reordering():
     ids = ["a", "b", "c", "d"]
     policy = SpatialCoherenceInstructionPolicy(_model([
