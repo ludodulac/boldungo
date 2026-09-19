@@ -3,6 +3,8 @@ from pathlib import Path
 
 from brickhouse.bricks.assembly import AssemblyPlan, AssemblyStep
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
+from brickhouse.bricks.bom import generate_bom
+from brickhouse.bricks.export import BrickExportBundle, create_export_bundle, export_bundle_json
 from brickhouse.bricks.instruction_spatial import SpatialCoherenceInstructionPolicy
 from brickhouse.bricks.instructions import (
     BoundedInstructionSplitPolicy,
@@ -194,3 +196,47 @@ def test_spatial_policy_is_deterministic():
     model = _model([_part("a", 0), _part("b", 1), _part("c", 5), _part("d", 6)])
     policy = SpatialCoherenceInstructionPolicy(model)
     assert policy.groups_for(_step(ids)) == policy.groups_for(_step(ids))
+
+
+def test_export_bundle_explicit_spatial_policy_preserves_default_and_round_trips():
+    fixture = Path(__file__).parents[1] / "fixtures" / "notice_reference_steps_1_8.json"
+    assembly = AssemblyPlan.model_validate(json.loads(fixture.read_text()))
+    model = _notice_reference_model()
+
+    direct_bundle = create_export_bundle(model, generate_bom(model), assembly)
+    notice_bundle = create_export_bundle(
+        model,
+        generate_bom(model),
+        assembly,
+        instruction_policy=SpatialCoherenceInstructionPolicy(model),
+    )
+
+    assert direct_bundle.instruction_plan is not None
+    assert direct_bundle.instruction_plan.total_steps == 8
+    assert direct_bundle.instruction_plan.steps[0].added_placement_ids == [
+        "wall-000001", "wall-000002", "wall-000003", "wall-000004",
+    ]
+
+    assert notice_bundle.assembly_plan is not None
+    assert notice_bundle.assembly_plan.total_steps == 8
+    assert notice_bundle.instruction_plan is not None
+    assert notice_bundle.instruction_plan.total_steps == 9
+    assert notice_bundle.instruction_plan.steps[0].source_assembly_step_id == "step-0001"
+    assert notice_bundle.instruction_plan.steps[0].added_placement_ids == [
+        "wall-000001", "wall-000002",
+    ]
+    assert notice_bundle.instruction_plan.steps[1].source_assembly_step_id == "step-0001"
+    assert notice_bundle.instruction_plan.steps[1].added_placement_ids == [
+        "wall-000003", "wall-000004",
+    ]
+    assert [step.source_assembly_step_id for step in notice_bundle.instruction_plan.steps[2:]] == [
+        "step-0002", "step-0003", "step-0004", "step-0005",
+        "step-0006", "step-0007", "step-0008",
+    ]
+
+    restored = BrickExportBundle.model_validate_json(export_bundle_json(notice_bundle))
+    assert restored.instruction_plan is not None
+    assert restored.instruction_plan.total_steps == 9
+    assert [step.added_placement_ids for step in restored.instruction_plan.steps] == [
+        step.added_placement_ids for step in notice_bundle.instruction_plan.steps
+    ]
