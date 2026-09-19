@@ -36,7 +36,8 @@ def _survey_with_user_turn(source: ArchitecturalSurvey) -> ArchitecturalSurvey:
             "value": {"minimum_run_count": 2, "direction_change": True, "turning_node_kind": "turn_or_landing"},
             "certainty": "certain",
             "source": {"kind": "user_provided", "confidence": 1.0},
-            "statement": "User confirms exactly two stair runs with a direction change.",\n            "supersedes_existing": True,
+            "statement": "User confirms exactly two stair runs with a direction change.",
+            "supersedes_existing": True,
         }
     )
     return apply_human_attribute_facts(source, [fact]).candidate
