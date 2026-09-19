@@ -31,15 +31,9 @@ def test_real_house_timber_deck_keeps_longitudinal_extent_after_local_clearance(
     assert outer.depth == 1.8
     assert outer.position.y + outer.depth == 7.8
 
-    supports = {
-        support.id: support
-        for platform in (timber, outer)
-        for support in platform.supports
-    }
-    assert supports["platform-timber-1-post-1"].position.y == 6.25
-    assert supports["platform-timber-1-post-1"].height == 2.1
-    assert supports["platform-timber-1-post-2"].position.y == 8.65
-    assert supports["platform-timber-1-post-2"].height == 2.1
+    # Exact support-post metrics are not established by the accepted Survey.
+    assert timber.supports == []
+    assert outer.supports == []
 
     massive = platforms["platform-massive-1"]
     assert massive.position.y == 5.5
