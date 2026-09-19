@@ -58,7 +58,14 @@ def test_south_complex_scene_still_generates_complete_partial_brickmodel() -> No
     assert bundle.brick_model.parts
     assert bundle.bom.total_parts == len(bundle.brick_model.parts)
     assert any(value.startswith("scene-platform:platform-timber-1:") for value in ids)
-    assert any("platform-timber-1-outer-front-fragment" in value for value in ids)
+    # The outer fragment remains in Scene, but without invented metric posts the
+    # physical-support gate must not manufacture a LEGO support path for it.
+    assert not any("platform-timber-1-outer-front-fragment" in value for value in ids)
+    assert any(
+        issue.code == "partial_preview_exterior_object_omitted"
+        and issue.object_id == "platform-timber-1-outer-front-fragment"
+        for issue in bundle.fidelity_issues
+    )
     assert any("platform-massive-1" in value for value in ids)
     assert any("stair-exterior-1-run-upper-v1" in value for value in ids)
     assert any("stair-exterior-1-run-lower-v1" in value for value in ids)
