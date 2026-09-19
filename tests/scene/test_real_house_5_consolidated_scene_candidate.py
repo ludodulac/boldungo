@@ -33,11 +33,11 @@ def _survey_with_confirmed_turn() -> tuple[ArchitecturalSurvey, ArchitecturalSur
             "value": {
                 "minimum_run_count": 2,
                 "direction_change": True,
-                "turning_node_kind": "turn_or_landing",
+                "exact_run_count": 2,\n                "turning_node_kind": "turn",
             },
             "certainty": "certain",
             "source": {"kind": "user_provided", "confidence": 1.0},
-            "statement": "User confirms that the exterior stair changes direction.",
+            "statement": "User confirms exactly two stair runs with a direction change.",\n            "supersedes_existing": True,
         }
     )
     return source, apply_human_attribute_facts(source, [fact]).candidate
