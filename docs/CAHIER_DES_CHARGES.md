@@ -29,6 +29,8 @@ Le système doit pouvoir confronter :
 
 Il doit ensuite seulement décider quelles observations méritent d'enrichir ou de corriger le Survey.
 
+Le parcours produit nominal doit pouvoir fonctionner à partir d'un petit ensemble de vues suffisamment informatives, typiquement environ cinq photographies d'un bâtiment. Des vues supplémentaires peuvent améliorer ou lever les incertitudes de la reconstruction, mais elles ne doivent pas devenir une condition implicite de réussite. Dans les benchmarks, des photographies supplémentaires peuvent constituer une vérité de contrôle privée réservée à l'évaluation d'une reconstruction produite exclusivement depuis le sous-ensemble nominal ; elles ne doivent jamais être accessibles au système candidat pendant cette reconstruction.
+
 ## 3. Réanalyse multivue
 
 L'analyse doit distinguer explicitement :
