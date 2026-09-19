@@ -1,7 +1,10 @@
 name: Build Notice Preview Artifact
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [feat/instruction-spatial-coherence]
+    paths:
+      - '.github/workflows/notice-preview-artifact.yml'
 
 permissions:
   contents: read
