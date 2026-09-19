@@ -27,7 +27,7 @@ jobs:
       - name: Exercise public Scene validation, build, and capture canonical views
         env:
           DEPLOY_SHA: ${{ github.event.workflow_run.head_sha }}
-          PAGE_URL: https://ludodulac.github.io/lego-app/
+          PAGE_URL: https://ludodulac.github.io/boldungo/
         run: |
           python - <<'PY'
           import json
