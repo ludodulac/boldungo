@@ -27,11 +27,13 @@ def test_real_house_5_user_confirmed_stair_turn_is_non_metric_overlay() -> None:
             "value": {
                 "minimum_run_count": 2,
                 "direction_change": True,
-                "turning_node_kind": "turn_or_landing",
+                "exact_run_count": 2,
+                "turning_node_kind": "turn",
             },
             "certainty": "certain",
             "source": {"kind": "user_provided", "confidence": 1.0},
-            "statement": "User confirms that the exterior stair is L-shaped / changes direction.",
+            "statement": "User confirms exactly two stair runs with a direction change.",
+            "supersedes_existing": True,
         }
     )
 
@@ -48,7 +50,7 @@ def test_real_house_5_user_confirmed_stair_turn_is_non_metric_overlay() -> None:
     assert stair_fact.requires_multiple_scene_runs is True
     assert stair_fact.topology.minimum_run_count == 2
     assert stair_fact.topology.direction_change is True
-    assert stair_fact.topology.exact_run_count is None
+    assert stair_fact.topology.exact_run_count == 2
 
     # The clarification is semantic/topological only: no metric fields are added.
     stair_observation = next(

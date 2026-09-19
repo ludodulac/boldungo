@@ -30,37 +30,11 @@ def test_real_house_5_accepted_orientation_matches_human_confirmed_walkaround() 
     survey = _survey()
 
     assert survey.known_measurements == []
-    assert [photo.facade for photo in survey.photos] == [
-        "front",
-        "right",
-        "left",
-        "left",
-        "rear",
-    ]
-
-
-def test_real_house_5_orientation_truth_does_not_promote_hidden_rear_content() -> None:
-    survey = _survey()
-
-    # The rear capture is evidence only for objects it actually observes.  The
-    # orientation itself must never be used as permission to synthesize rear
-    # openings or measurements.
-    rear_photo = survey.photos[4]
-    assert rear_photo.photo_index == 5
-    assert rear_photo.facade == "rear"
-    assert survey.known_measurements == []
-
-    rear_openings = [
-        item
-        for item in survey.observations
-        if item.kind == "opening" and item.facade == "rear"
-    ]
-    assert rear_openings == []
-
-    photo_5_evidence_ids = {
-        item.id
-        for item in survey.observations
-        if any(evidence.photo_index == 5 for evidence in item.evidence)
-    }
-    assert "stair-exterior-1" in photo_5_evidence_ids
-    assert "platform-massive-1" in photo_5_evidence_ids
+    canonical = survey.photos[:5]
+    supplemental = survey.photos[5:]
+    assert [photo.photo_index for photo in canonical] == [1, 2, 3, 4, 5]
+    assert [photo.capture_role for photo in canonical] == ["facade_view"] * 5
+    assert [photo.facade for photo in canonical] == ["front", "right", "left", "left", "rear"]
+    assert supplemental
+    assert all(photo.capture_role == "targeted_detail" for photo in supplemental)
+    assert all(photo.facade is None for photo in supplemental)

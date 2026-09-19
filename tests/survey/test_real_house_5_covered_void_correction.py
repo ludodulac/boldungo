@@ -24,7 +24,8 @@ def _json(path: Path):
 
 
 def test_real_house_5_covered_void_correction_uses_explicit_correction_contract() -> None:
-    corrected = ArchitecturalSurvey.model_validate(_json(BENCHMARK / "accepted-survey-v0.1.json"))
+    correction = SurveyCorrection.model_validate(_json(BENCHMARK / "covered-void-survey-correction-v0.1.json"))
+    corrected = correction.candidate
     original = corrected.model_copy(deep=True)
     original.observations.insert(
         -2,
@@ -61,8 +62,6 @@ def test_real_house_5_covered_void_correction_uses_explicit_correction_contract(
     )
 
     audit = SurveyAudit.model_validate(_json(BENCHMARK / "covered-void-survey-audit-v0.1.json"))
-    correction = SurveyCorrection.model_validate(_json(BENCHMARK / "covered-void-survey-correction-v0.1.json"))
-
     assert correction.candidate == corrected
     assert validate_survey_correction(original, audit, correction) == []
 
