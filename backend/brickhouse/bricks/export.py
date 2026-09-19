@@ -13,7 +13,7 @@ from .bags import BagPlan, generate_bag_plan
 from .bom import BillOfMaterials
 from .brick_model import BrickModel
 from .building_layout import BuildingDiscretizationQuality
-from .instructions import InstructionPlan, generate_instruction_plan
+from .instructions import InstructionPlan, InstructionSplitPolicy, generate_instruction_plan
 from .scale_optimizer import ScaleRecommendation
 
 
@@ -266,6 +266,7 @@ def create_export_bundle(
     discretization_quality: list[BuildingDiscretizationQuality] | None = None,
     scale_recommendation: ScaleRecommendation | None = None,
     mechanical_verification: MechanicalVerificationSummary | None = None,
+    instruction_policy: InstructionSplitPolicy | None = None,
 ) -> BrickExportBundle:
     """Create the viewer/export bundle without hiding known architectural losses."""
     resolved_quality = discretization_quality or []
@@ -273,7 +274,11 @@ def create_export_bundle(
         fidelity_issues,
         _semantic_color_fidelity_issues(model),
     )
-    instruction_plan = generate_instruction_plan(assembly_plan, model) if assembly_plan is not None else None
+    instruction_plan = (
+        generate_instruction_plan(assembly_plan, model, policy=instruction_policy)
+        if assembly_plan is not None
+        else None
+    )
     bag_plan = generate_bag_plan(assembly_plan) if assembly_plan is not None else None
     capability_summary = derive_export_capability_summary(
         assembly_plan=assembly_plan,
