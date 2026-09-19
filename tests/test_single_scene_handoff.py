@@ -78,7 +78,13 @@ def test_real_house_accepted_survey_checkpoint_is_frozen_for_downstream_work():
     assert checkpoint["canonical_json_sha256"] == canonical_json_sha256(survey_raw)
     assert checkpoint["fixture"] == ACCEPTED_SURVEY.name
     assert checkpoint["invariants"]["photo_facades"] == ["front", "right", "left", "left", "rear"]
-    assert [photo["facade"] for photo in survey_raw["photos"]] == checkpoint["invariants"]["photo_facades"]
+    canonical = survey_raw["photos"][: checkpoint["invariants"]["canonical_photo_count"]]
+    supplemental = survey_raw["photos"][checkpoint["invariants"]["canonical_photo_count"] :]
+    assert [photo["facade"] for photo in canonical] == checkpoint["invariants"]["photo_facades"]
+    assert [photo["capture_role"] for photo in canonical] == ["facade_view"] * 5
+    assert len(supplemental) == checkpoint["invariants"]["supplemental_targeted_detail_count"]
+    assert all(photo["capture_role"] == "targeted_detail" for photo in supplemental)
+    assert all(photo["facade"] is None for photo in supplemental)
     assert checkpoint["invariants"]["known_measurements_count"] == len(survey_raw["known_measurements"])
     assert checkpoint["invariants"]["observation_count"] == len(survey_raw["observations"])
     assert checkpoint["invariants"]["relation_count"] == len(survey_raw["relations"])
