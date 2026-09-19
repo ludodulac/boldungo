@@ -1,0 +1,30 @@
+name: Build Notice Preview Artifact
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact ref
+        uses: actions/checkout@v4
+
+      - name: Verify notice preview files
+        run: |
+          test -s frontend/viewer.html
+          test -s frontend/viewer.js
+          test -s frontend/styles.css
+          test -s frontend/notice-step-0005-export.json
+          printf '%s\n' "$GITHUB_SHA" > frontend/NOTICE_PREVIEW_HEAD.txt
+
+      - name: Upload static frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: boldungo-notice-step-0005-v2
+          path: frontend/
+          if-no-files-found: error
+          retention-days: 7
