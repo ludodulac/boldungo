@@ -1,1 +1,956 @@
-{"schema_version":"0.1","id":"brickhouse-survey","name":"BrickHouse architectural survey","canonical_frame":{"front_facade":"front","x_direction":"front_view_left_to_right","y_direction":"front_to_rear","z_direction":"bottom_to_top"},"photos":[{"photo_index":1,"capture_role":"facade_view","facade":"front","description":"Vue de capture avant montrant l'enveloppe enduite, six ouvertures distinctes visibles et la toiture.","source":{"kind":"observed","confidence":1.0},"image_left_maps_to_facade_offset":"low","user_note":null},{"photo_index":2,"capture_role":"facade_view","facade":"right","description":"Vue de capture du cote droit montrant un long mur enduit, une fenetre haute, deux petites ouvertures basses et une rue en pente.","source":{"kind":"observed","confidence":1.0},"image_left_maps_to_facade_offset":"low","user_note":null},{"photo_index":3,"capture_role":"facade_view","facade":"left","description":"Premiere vue de capture du cote gauche montrant une elevation blanche, une terrasse bois surelevee, ses supports, des ouvertures et un escalier exterieur.","source":{"kind":"observed","confidence":1.0},"image_left_maps_to_facade_offset":"high","user_note":null},{"photo_index":4,"capture_role":"facade_view","facade":"left","description":"Seconde vue de capture du cote gauche, plus rapprochee, montrant le meme ensemble avec mur blanc, ouverture haute, volume/palier massif, escalier et terrasse bois en arriere-plan.","source":{"kind":"observed","confidence":1.0},"image_left_maps_to_facade_offset":"low","user_note":null},{"photo_index":5,"capture_role":"facade_view","facade":"rear","description":"Vue de capture arriere montrant l'ensemble escalier-volume exterieur, une partie de l'elevation blanche, la toiture et une cheminee.","source":{"kind":"observed","confidence":1.0},"image_left_maps_to_facade_offset":"high","user_note":null}],"known_measurements":[],"observations":[{"id":"building-boundary-1","kind":"building_boundary","facade":null,"certainty":"certain","statement":"L'enveloppe physique du batiment cible est clairement visible dans les cinq vues.","evidence":[{"photo_index":1,"observation":"Elevation principale enduite et coins du batiment visibles."},{"photo_index":2,"observation":"Long plan lateral enduit et raccords de toiture visibles."},{"photo_index":3,"observation":"Elevation blanche et structures exterieures attenantes visibles."},{"photo_index":4,"observation":"Coin, mur blanc et raccord de l'ouvrage exterieur visibles."},{"photo_index":5,"observation":"Elevation blanche, toiture et ouvrage exterieur visibles."}],"attributes":{},"attribute_certainty":{},"appearance":null,"opening_visual":null},{"id":"front-opening-1","kind":"opening","facade":"front","certainty":"certain","statement":"Fenetre haute gauche de la facade avant.","evidence":[{"photo_index":1,"observation":"Ouverture physique distincte nettement visible sur l'elevation avant."}],"attributes":{"physical_object_count":1,"semantic_type":"window","facade_horizontal_rank":1,"facade_vertical_rank":3},"attribute_certainty":{"physical_object_count":"certain","semantic_type":"certain","facade_horizontal_rank":"certain","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"front-opening-2","kind":"opening","facade":"front","certainty":"certain","statement":"Fenetre haute droite de la facade avant.","evidence":[{"photo_index":1,"observation":"Ouverture physique distincte nettement visible sur l'elevation avant."}],"attributes":{"physical_object_count":1,"semantic_type":"window","facade_horizontal_rank":2,"facade_vertical_rank":3},"attribute_certainty":{"physical_object_count":"certain","semantic_type":"certain","facade_horizontal_rank":"certain","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"front-opening-3","kind":"opening","facade":"front","certainty":"certain","statement":"Fenetre intermediaire gauche de la facade avant.","evidence":[{"photo_index":1,"observation":"Ouverture physique distincte nettement visible sur l'elevation avant."}],"attributes":{"physical_object_count":1,"semantic_type":"window","facade_horizontal_rank":1,"facade_vertical_rank":2},"attribute_certainty":{"physical_object_count":"certain","semantic_type":"certain","facade_horizontal_rank":"certain","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"front-opening-4","kind":"opening","facade":"front","certainty":"certain","statement":"Fenetre intermediaire droite de la facade avant.","evidence":[{"photo_index":1,"observation":"Ouverture physique distincte nettement visible sur l'elevation avant."}],"attributes":{"physical_object_count":1,"semantic_type":"window","facade_horizontal_rank":2,"facade_vertical_rank":2},"attribute_certainty":{"physical_object_count":"certain","semantic_type":"certain","facade_horizontal_rank":"certain","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"front-opening-5","kind":"opening","facade":"front","certainty":"certain","statement":"Petite fenetre basse gauche de la facade avant.","evidence":[{"photo_index":1,"observation":"Ouverture physique distincte nettement visible sur l'elevation avant."}],"attributes":{"physical_object_count":1,"semantic_type":"window","facade_horizontal_rank":1,"facade_vertical_rank":1},"attribute_certainty":{"physical_object_count":"certain","semantic_type":"certain","facade_horizontal_rank":"certain","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"front-opening-6","kind":"opening","facade":"front","certainty":"certain","statement":"Grande ouverture basse droite avec porte vitree/composition vitree sur la facade avant.","evidence":[{"photo_index":1,"observation":"Ouverture physique distincte nettement visible sur l'elevation avant."}],"attributes":{"physical_object_count":1,"semantic_type":"door_or_glazed_door","facade_horizontal_rank":2,"facade_vertical_rank":1},"attribute_certainty":{"physical_object_count":"certain","semantic_type":"plausible","facade_horizontal_rank":"certain","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"right-opening-1","kind":"opening","facade":"right","certainty":"certain","statement":"Fenetre haute visible sur le mur de capture droit.","evidence":[{"photo_index":2,"observation":"Ouverture physique distincte visible sur le plan lateral."}],"attributes":{"physical_object_count":1,"facade_horizontal_rank":1,"facade_vertical_rank":3,"semantic_type":"window"},"attribute_certainty":{"physical_object_count":"certain","facade_horizontal_rank":"certain","facade_vertical_rank":"certain","semantic_type":"certain"},"appearance":null,"opening_visual":null},{"id":"right-opening-2","kind":"opening","facade":"right","certainty":"certain","statement":"Petite ouverture basse proche de l'angle avant du mur de capture droit.","evidence":[{"photo_index":2,"observation":"Ouverture physique distincte visible sur le plan lateral."}],"attributes":{"physical_object_count":1,"facade_horizontal_rank":1,"facade_vertical_rank":1},"attribute_certainty":{"physical_object_count":"certain","facade_horizontal_rank":"certain","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"right-opening-3","kind":"opening","facade":"right","certainty":"certain","statement":"Ouverture basse vitree ou en blocs translucides visible plus loin sur le mur de capture droit.","evidence":[{"photo_index":2,"observation":"Ouverture physique distincte visible sur le plan lateral."}],"attributes":{"physical_object_count":1,"facade_horizontal_rank":2,"facade_vertical_rank":1},"attribute_certainty":{"physical_object_count":"certain","facade_horizontal_rank":"certain","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"left-opening-1","kind":"opening","facade":"left","certainty":"certain","statement":"Fenetre haute de l'elevation blanche documentee par les vues de capture gauche.","evidence":[{"photo_index":3,"observation":"Fenetre haute visible au-dessus de l'ensemble exterieur."},{"photo_index":4,"observation":"La meme fenetre haute est recoupee pres du coin et de l'escalier."}],"attributes":{"physical_object_count":1,"semantic_type":"window","facade_horizontal_rank":1,"facade_vertical_rank":2},"attribute_certainty":{"physical_object_count":"certain","semantic_type":"certain","facade_horizontal_rank":"plausible","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"left-opening-2","kind":"opening","facade":"left","certainty":"certain","statement":"Ouverture basse sombre visible sous la fenetre haute, au voisinage de la terrasse.","evidence":[{"photo_index":3,"observation":"Ouverture rectangulaire sombre visible sous la fenetre haute et derriere le garde-corps de terrasse."}],"attributes":{"physical_object_count":1,"facade_horizontal_rank":1,"facade_vertical_rank":1},"attribute_certainty":{"physical_object_count":"certain","facade_horizontal_rank":"plausible","facade_vertical_rank":"certain"},"appearance":null,"opening_visual":null},{"id":"roof-1","kind":"roof","facade":null,"certainty":"certain","statement":"La toiture principale est visible dans plusieurs vues; la vue avant montre un pignon et les vues laterales montrent les pans associes.","evidence":[{"photo_index":1,"observation":"Rives inclinees se rejoignant vers un sommet sur l'elevation avant."},{"photo_index":2,"observation":"Pan de toiture incline visible le long du mur lateral."},{"photo_index":5,"observation":"Rive et pan de toiture recoupes depuis l'arriere."}],"attributes":{"roof_type":"gable","facade_is_gable":true},"attribute_certainty":{"roof_type":"plausible","facade_is_gable":"plausible"},"appearance":null,"opening_visual":null},{"id":"chimney-1","kind":"chimney","facade":null,"certainty":"certain","statement":"Une cheminee maconnee appartenant au batiment cible est visible au-dessus de la toiture.","evidence":[{"photo_index":1,"observation":"Souche de cheminee visible a gauche au-dessus de la toiture."},{"photo_index":5,"observation":"Souche de cheminee recoupee depuis la vue arriere."}],"attributes":{},"attribute_certainty":{},"appearance":null,"opening_visual":null},{"id":"platform-timber-1","kind":"platform","facade":"left","certainty":"certain","statement":"Terrasse/deck sureleve en bois avec garde-corps, surface de circulation distincte.","evidence":[{"photo_index":3,"observation":"Plateforme bois surelevee et garde-corps clairement visibles."},{"photo_index":4,"observation":"Bord et garde-corps de la meme terrasse visibles en arriere-plan."}],"attributes":{"exterior_material":"timber","supports":["Poteaux et contreventements bois visibles sous la plateforme dans la photo 3."]},"attribute_certainty":{"exterior_material":"certain","supports":"certain"},"appearance":null,"opening_visual":null},{"id":"platform-massive-1","kind":"platform","facade":"left","certainty":"certain","statement":"Surface de circulation/palier au sommet du volume exterieur blanc, distincte de la terrasse bois.","evidence":[{"photo_index":4,"observation":"Surface superieure du volume blanc bordee par des parois, au raccord de l'escalier."},{"photo_index":5,"observation":"Le meme ensemble palier-volume est visible avec l'escalier qui y aboutit."}],"attributes":{"exterior_material":"masonry"},"attribute_certainty":{"exterior_material":"plausible"},"appearance":null,"opening_visual":null},{"id":"stair-exterior-1","kind":"stair","facade":"left","certainty":"certain","statement":"Volee d'escalier exterieure maconnee visible le long de l'elevation et aboutissant au palier.","evidence":[{"photo_index":3,"observation":"Escalier exterieur visible a gauche de l'elevation."},{"photo_index":4,"observation":"Partie basse et limons/parois de l'escalier visibles."},{"photo_index":5,"observation":"Volee complete mieux recoupee, montant vers le palier."}],"attributes":{"exterior_material":"masonry"},"attribute_certainty":{"exterior_material":"plausible"},"appearance":null,"opening_visual":null},{"id":"terrain-right-1","kind":"terrain","facade":"right","certainty":"certain","statement":"Le sol/rue adjacent au mur de capture droit monte nettement le long de la facade.","evidence":[{"photo_index":2,"observation":"Bord de chaussee et pied du mur visibles avec variation longitudinale nette du niveau."}],"attributes":{"slope_direction":"front_to_rear_up"},"attribute_certainty":{"slope_direction":"plausible"},"appearance":null,"opening_visual":null}],"relations":[{"id":"relation-stair-platform","kind":"connects_to","subject_id":"stair-exterior-1","object_id":"platform-massive-1","certainty":"certain","statement":"L'escalier exterieur aboutit visiblement au palier massif.","evidence":[{"photo_index":5,"observation":"La volee monte directement vers la surface du palier."}]},{"id":"relation-platform-boundary","kind":"connects_to","subject_id":"platform-massive-1","object_id":"building-boundary-1","certainty":"certain","statement":"Le palier massif rejoint physiquement l'enveloppe du batiment.","evidence":[{"photo_index":4,"observation":"Le palier est visible au contact direct du mur blanc."}]},{"id":"relation-timber-boundary","kind":"connects_to","subject_id":"platform-timber-1","object_id":"building-boundary-1","certainty":"certain","statement":"La terrasse bois est physiquement raccordee a l'elevation du batiment.","evidence":[{"photo_index":3,"observation":"Le bord interieur de la terrasse rejoint le mur de l'elevation."}]}],"representation_policy":{"preserve_nominal_materials":true,"preserve_opening_composition":true,"preserve_architectural_details":true,"reproduce_weathering":false,"reproduce_temporary_objects":false},"notes":"Les identites de facade des photos sont conservees exactement comme capture_hints. Les vues 3, 4 et 5 se recoupent fortement autour de l'escalier, du volume/palier blanc et de la terrasse bois; ce recoupement sert a dedupliquer les objets sans promouvoir les libelles de capture en orientations user_confirmed."}
+{
+  "schema_version": "0.1",
+  "id": "brickhouse-survey",
+  "name": "BrickHouse architectural survey",
+  "canonical_frame": {
+    "front_facade": "front",
+    "x_direction": "front_view_left_to_right",
+    "y_direction": "front_to_rear",
+    "z_direction": "bottom_to_top"
+  },
+  "photos": [
+    {
+      "photo_index": 1,
+      "capture_role": "facade_view",
+      "facade": "front",
+      "description": "Vue de capture avant montrant l'enveloppe enduite, six ouvertures distinctes visibles et la toiture.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "low",
+      "user_note": null
+    },
+    {
+      "photo_index": 2,
+      "capture_role": "facade_view",
+      "facade": "right",
+      "description": "Vue de capture du cote droit montrant un long mur enduit, une fenetre haute, deux petites ouvertures basses et une rue en pente.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "low",
+      "user_note": null
+    },
+    {
+      "photo_index": 3,
+      "capture_role": "facade_view",
+      "facade": "left",
+      "description": "Premiere vue de capture du cote gauche montrant une elevation blanche, une terrasse bois surelevee, ses supports, des ouvertures et un escalier exterieur.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "high",
+      "user_note": null
+    },
+    {
+      "photo_index": 4,
+      "capture_role": "facade_view",
+      "facade": "left",
+      "description": "Seconde vue de capture du cote gauche, plus rapprochee, montrant le meme ensemble avec mur blanc, ouverture haute, volume/palier massif, escalier et terrasse bois en arriere-plan.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "low",
+      "user_note": null
+    },
+    {
+      "photo_index": 5,
+      "capture_role": "facade_view",
+      "facade": "rear",
+      "description": "Vue de capture arriere montrant l'ensemble escalier-volume exterieur, une partie de l'elevation blanche, la toiture et une cheminee.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "high",
+      "user_note": null
+    },
+    {
+      "photo_index": 6,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue depuis la terrasse bois vers le palier maçonné haut et le départ de l'escalier.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N1; fichier source 1000036914.jpg"
+    },
+    {
+      "photo_index": 7,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue plongeante depuis le niveau haut montrant l'escalier maçonné, ses parois latérales et un palier/changement de direction.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N2; fichier source 1000036915.jpg"
+    },
+    {
+      "photo_index": 8,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue rapprochée de la porte extérieure vitrée, de son seuil maçonné et du bord de la terrasse bois.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N3; fichier source 1000036916.jpg"
+    },
+    {
+      "photo_index": 9,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue longitudinale de la zone haute montrant terrasse bois, palier maçonné, porte et façade dans un même contexte.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N4; fichier source 1000036917.jpg"
+    },
+    {
+      "photo_index": 10,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue plongeante montrant le palier intermédiaire de l'escalier et les parois maçonnées qui l'accompagnent.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N5; fichier source 1000036918.jpg"
+    },
+    {
+      "photo_index": 11,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue basse du complexe extérieur montrant la maçonnerie de l'escalier et son contexte de cour.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N6; fichier source 1000036919.jpg"
+    },
+    {
+      "photo_index": 12,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Seconde vue basse du même complexe, utile au recoupement de la maçonnerie et de l'escalier.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N7; fichier source 1000036920.jpg"
+    },
+    {
+      "photo_index": 13,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue frontale de l'escalier extérieur montrant les marches et les deux parois latérales.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N8; fichier source 1000036921.jpg"
+    },
+    {
+      "photo_index": 14,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue d'ensemble de la façade et de la terrasse bois, avec garde-corps et zone couverte inférieure.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N9; fichier source 1000036922.jpg"
+    },
+    {
+      "photo_index": 15,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue sous la terrasse bois montrant support vertical, rive/structure porteuse et contreventement diagonal.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N10; fichier source 1000036923.jpg"
+    },
+    {
+      "photo_index": 16,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue sous la terrasse bois montrant le solivage/poutres et le dessous du platelage.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N11; fichier source 1000036924.jpg"
+    },
+    {
+      "photo_index": 17,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue latérale étroite de la terrasse et de son garde-corps au contact de la façade.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N12; fichier source 1000036925.jpg"
+    },
+    {
+      "photo_index": 18,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue haute de toiture et de façade confirmant rive/débord de toiture et éléments techniques visibles.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N13; fichier source 1000036926.jpg"
+    },
+    {
+      "photo_index": 19,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue rapprochée sous la terrasse confirmant le solivage/poutres portant le platelage.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N14; fichier source 1000036927.jpg"
+    },
+    {
+      "photo_index": 20,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue latérale basse de l'escalier confirmant marches, paroi maçonnée et relation avec la cour.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N15; fichier source 1000036928.jpg"
+    },
+    {
+      "photo_index": 21,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue dans l'axe de l'escalier confirmant la volée, les parois maçonnées et le changement de niveau.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N16; fichier source 1000036929.jpg"
+    },
+    {
+      "photo_index": 22,
+      "capture_role": "targeted_detail",
+      "facade": null,
+      "description": "Vue rasante du débord de toiture et d'une conduite/descente visible sur la façade.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": null,
+      "user_note": "Nouvelle photo complémentaire N17; fichier source 1000036930.jpg"
+    }
+  ],
+  "known_measurements": [],
+  "observations": [
+    {
+      "id": "building-boundary-1",
+      "kind": "building_boundary",
+      "facade": null,
+      "certainty": "certain",
+      "statement": "L'enveloppe physique du batiment cible est clairement visible dans les cinq vues.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Elevation principale enduite et coins du batiment visibles."
+        },
+        {
+          "photo_index": 2,
+          "observation": "Long plan lateral enduit et raccords de toiture visibles."
+        },
+        {
+          "photo_index": 3,
+          "observation": "Elevation blanche et structures exterieures attenantes visibles."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Coin, mur blanc et raccord de l'ouvrage exterieur visibles."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Elevation blanche, toiture et ouvrage exterieur visibles."
+        }
+      ],
+      "attributes": {},
+      "attribute_certainty": {},
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "front-opening-1",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Fenetre haute gauche de la facade avant.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture physique distincte nettement visible sur l'elevation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "semantic_type": "window",
+        "facade_horizontal_rank": 1,
+        "facade_vertical_rank": 3
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "semantic_type": "certain",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "front-opening-2",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Fenetre haute droite de la facade avant.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture physique distincte nettement visible sur l'elevation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "semantic_type": "window",
+        "facade_horizontal_rank": 2,
+        "facade_vertical_rank": 3
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "semantic_type": "certain",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "front-opening-3",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Fenetre intermediaire gauche de la facade avant.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture physique distincte nettement visible sur l'elevation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "semantic_type": "window",
+        "facade_horizontal_rank": 1,
+        "facade_vertical_rank": 2
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "semantic_type": "certain",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "front-opening-4",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Fenetre intermediaire droite de la facade avant.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture physique distincte nettement visible sur l'elevation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "semantic_type": "window",
+        "facade_horizontal_rank": 2,
+        "facade_vertical_rank": 2
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "semantic_type": "certain",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "front-opening-5",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Petite fenetre basse gauche de la facade avant.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture physique distincte nettement visible sur l'elevation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "semantic_type": "window",
+        "facade_horizontal_rank": 1,
+        "facade_vertical_rank": 1
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "semantic_type": "certain",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "front-opening-6",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Grande ouverture basse droite avec porte vitree/composition vitree sur la facade avant.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture physique distincte nettement visible sur l'elevation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "semantic_type": "door_or_glazed_door",
+        "facade_horizontal_rank": 2,
+        "facade_vertical_rank": 1
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "semantic_type": "plausible",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "right-opening-1",
+      "kind": "opening",
+      "facade": "right",
+      "certainty": "certain",
+      "statement": "Fenetre haute visible sur le mur de capture droit.",
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Ouverture physique distincte visible sur le plan lateral."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "facade_horizontal_rank": 1,
+        "facade_vertical_rank": 3,
+        "semantic_type": "window"
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain",
+        "semantic_type": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "right-opening-2",
+      "kind": "opening",
+      "facade": "right",
+      "certainty": "certain",
+      "statement": "Petite ouverture basse proche de l'angle avant du mur de capture droit.",
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Ouverture physique distincte visible sur le plan lateral."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "facade_horizontal_rank": 1,
+        "facade_vertical_rank": 1
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "right-opening-3",
+      "kind": "opening",
+      "facade": "right",
+      "certainty": "certain",
+      "statement": "Ouverture basse vitree ou en blocs translucides visible plus loin sur le mur de capture droit.",
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Ouverture physique distincte visible sur le plan lateral."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "facade_horizontal_rank": 2,
+        "facade_vertical_rank": 1
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "facade_horizontal_rank": "certain",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "left-opening-1",
+      "kind": "opening",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Fenetre haute de l'elevation blanche documentee par les vues de capture gauche.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Fenetre haute visible au-dessus de l'ensemble exterieur."
+        },
+        {
+          "photo_index": 4,
+          "observation": "La meme fenetre haute est recoupee pres du coin et de l'escalier."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "semantic_type": "window",
+        "facade_horizontal_rank": 1,
+        "facade_vertical_rank": 2
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "semantic_type": "certain",
+        "facade_horizontal_rank": "plausible",
+        "facade_vertical_rank": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "left-opening-2",
+      "kind": "opening",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Porte extérieure vitrée de l'élévation blanche donnant sur la zone haute terrasse/palier.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Ouverture rectangulaire sombre visible sous la fenetre haute et derriere le garde-corps de terrasse."
+        },
+        {
+          "photo_index": 8,
+          "observation": "Vue rapprochée : porte extérieure vitrée directement visible au-dessus du seuil maçonné."
+        },
+        {
+          "photo_index": 9,
+          "observation": "Vue plus large : la même porte est replacée sur la façade, immédiatement au voisinage du palier maçonné et de la terrasse bois."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "facade_horizontal_rank": 1,
+        "facade_vertical_rank": 1,
+        "semantic_type": "door",
+        "multiview_identity": {
+          "status": "same_physical_object",
+          "photo_indexes": [
+            3,
+            8,
+            9
+          ],
+          "cues": [
+            "relative_position",
+            "structural_continuity"
+          ]
+        }
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "facade_horizontal_rank": "plausible",
+        "facade_vertical_rank": "certain",
+        "semantic_type": "certain",
+        "multiview_identity": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "roof-1",
+      "kind": "roof",
+      "facade": null,
+      "certainty": "certain",
+      "statement": "La toiture principale est visible dans plusieurs vues; la vue avant montre un pignon et les vues laterales montrent les pans associes.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Rives inclinees se rejoignant vers un sommet sur l'elevation avant."
+        },
+        {
+          "photo_index": 2,
+          "observation": "Pan de toiture incline visible le long du mur lateral."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Rive et pan de toiture recoupes depuis l'arriere."
+        }
+      ],
+      "attributes": {
+        "roof_type": "gable",
+        "facade_is_gable": true
+      },
+      "attribute_certainty": {
+        "roof_type": "plausible",
+        "facade_is_gable": "plausible"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "chimney-1",
+      "kind": "chimney",
+      "facade": null,
+      "certainty": "certain",
+      "statement": "Une cheminee maconnee appartenant au batiment cible est visible au-dessus de la toiture.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Souche de cheminee visible a gauche au-dessus de la toiture."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Souche de cheminee recoupee depuis la vue arriere."
+        }
+      ],
+      "attributes": {},
+      "attribute_certainty": {},
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "platform-timber-1",
+      "kind": "platform",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Terrasse/deck surélevé en bois avec platelage et garde-corps; sa structure porteuse inférieure visible comprend solivage/poutres, rive porteuse, support(s) vertical(aux) et contreventement(s) diagonal(aux), sans quantité ni géométrie métrique exhaustive.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Plateforme bois surelevee et garde-corps clairement visibles."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Bord et garde-corps de la meme terrasse visibles en arriere-plan."
+        },
+        {
+          "photo_index": 6,
+          "observation": "Platelage bois et transition vers le palier maçonné visibles depuis la surface de circulation."
+        },
+        {
+          "photo_index": 9,
+          "observation": "Terrasse, garde-corps et raccord à la façade visibles dans une même vue."
+        },
+        {
+          "photo_index": 15,
+          "observation": "Sous-face : support vertical, rive/structure porteuse et contreventement diagonal visibles."
+        },
+        {
+          "photo_index": 16,
+          "observation": "Sous-face : solivage/poutres répétées portant le platelage visibles."
+        },
+        {
+          "photo_index": 19,
+          "observation": "Vue rapprochée sous terrasse confirmant le solivage/poutres sans permettre des métriques fiables."
+        }
+      ],
+      "attributes": {
+        "exterior_material": "timber",
+        "supports": [
+          "Poteaux et contreventements bois visibles sous la plateforme dans la photo 3."
+        ]
+      },
+      "attribute_certainty": {
+        "exterior_material": "certain",
+        "supports": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "platform-massive-1",
+      "kind": "platform",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Surface de circulation/palier maçonné réelle au raccord haut de l'escalier, distincte de la terrasse bois et voisine directe de la porte; aucun volume fermé sous-jacent n'est démontré.",
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Surface maçonnée de circulation bordée par des parois, au raccord de l'escalier; cette vue ne démontre pas un volume fermé sous-jacent."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Le même palier maçonné est recoupé avec l'escalier qui y aboutit."
+        },
+        {
+          "photo_index": 6,
+          "observation": "Vue depuis la terrasse : palier maçonné haut distinct du platelage bois."
+        },
+        {
+          "photo_index": 8,
+          "observation": "Vue rapprochée : seuil/palier maçonné directement devant la porte et au contact du bord de terrasse bois."
+        },
+        {
+          "photo_index": 9,
+          "observation": "Vue d'ensemble haute : porte, palier maçonné et terrasse bois sont simultanément visibles."
+        }
+      ],
+      "attributes": {
+        "exterior_material": "masonry"
+      },
+      "attribute_certainty": {
+        "exterior_material": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "stair-exterior-1",
+      "kind": "stair",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Système d'escalier extérieur maçonné : plusieurs portions de parcours sont visibles et au moins un palier/changement de direction est confirmé multivue; la géométrie métrique reste inconnue.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Escalier exterieur visible a gauche de l'elevation."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Partie basse et limons/parois de l'escalier visibles."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Volee complete mieux recoupee, montant vers le palier."
+        },
+        {
+          "photo_index": 7,
+          "observation": "Vue plongeante : marches, parois latérales et palier/changement de direction sont visibles sans fournir de métrique."
+        },
+        {
+          "photo_index": 10,
+          "observation": "Autre vue plongeante du même ensemble confirmant le palier intermédiaire et le changement de direction."
+        },
+        {
+          "photo_index": 13,
+          "observation": "Vue frontale basse confirmant marches et parois maçonnées latérales."
+        },
+        {
+          "photo_index": 20,
+          "observation": "Vue latérale basse confirmant la continuité du système d'escalier dans la cour."
+        },
+        {
+          "photo_index": 21,
+          "observation": "Vue dans l'axe confirmant une portion de volée et ses parois latérales."
+        }
+      ],
+      "attributes": {
+        "exterior_material": "masonry",
+        "stair_topology": {
+          "minimum_run_count": 2,
+          "exact_run_count": null,
+          "direction_change": true,
+          "turning_node_kind": "landing",
+          "component_run_ids": []
+        }
+      },
+      "attribute_certainty": {
+        "exterior_material": "plausible",
+        "stair_topology": "certain"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "terrain-right-1",
+      "kind": "terrain",
+      "facade": "right",
+      "certainty": "certain",
+      "statement": "Le sol/rue adjacent au mur de capture droit monte nettement le long de la facade.",
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Bord de chaussee et pied du mur visibles avec variation longitudinale nette du niveau."
+        }
+      ],
+      "attributes": {
+        "slope_direction": "front_to_rear_up"
+      },
+      "attribute_certainty": {
+        "slope_direction": "plausible"
+      },
+      "appearance": null,
+      "opening_visual": null
+    },
+    {
+      "id": "rainwater-downpipe-left-1",
+      "kind": "equipment",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Une descente d'eaux pluviales apparente est visible sur la façade de la zone terrasse; son tracé complet et ses dimensions ne sont pas mesurés.",
+      "evidence": [
+        {
+          "photo_index": 9,
+          "observation": "Conduite verticale blanche avec raccord/coude supérieur visible sur la façade au-dessus de la zone haute."
+        },
+        {
+          "photo_index": 22,
+          "observation": "Vue rasante du débord de toiture montrant une conduite/descente au droit de la façade."
+        }
+      ],
+      "attributes": {},
+      "attribute_certainty": {},
+      "appearance": null,
+      "opening_visual": null
+    }
+  ],
+  "relations": [
+    {
+      "id": "relation-stair-platform",
+      "kind": "connects_to",
+      "subject_id": "stair-exterior-1",
+      "object_id": "platform-massive-1",
+      "certainty": "certain",
+      "statement": "L'escalier exterieur aboutit visiblement au palier massif.",
+      "evidence": [
+        {
+          "photo_index": 5,
+          "observation": "La volee monte directement vers la surface du palier."
+        }
+      ]
+    },
+    {
+      "id": "relation-platform-boundary",
+      "kind": "connects_to",
+      "subject_id": "platform-massive-1",
+      "object_id": "building-boundary-1",
+      "certainty": "certain",
+      "statement": "Le palier massif rejoint physiquement l'enveloppe du batiment.",
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Le palier est visible au contact direct du mur blanc."
+        }
+      ]
+    },
+    {
+      "id": "relation-timber-boundary",
+      "kind": "connects_to",
+      "subject_id": "platform-timber-1",
+      "object_id": "building-boundary-1",
+      "certainty": "certain",
+      "statement": "La terrasse bois est physiquement raccordee a l'elevation du batiment.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Le bord interieur de la terrasse rejoint le mur de l'elevation."
+        }
+      ]
+    },
+    {
+      "id": "relation-door-massive-platform",
+      "kind": "connects_to",
+      "subject_id": "left-opening-2",
+      "object_id": "platform-massive-1",
+      "certainty": "certain",
+      "statement": "La porte extérieure ouvre directement sur la zone de circulation maçonnée haute.",
+      "evidence": [
+        {
+          "photo_index": 8,
+          "observation": "Le seuil maçonné est directement devant la porte."
+        },
+        {
+          "photo_index": 9,
+          "observation": "La vue large confirme la continuité porte-palier dans la zone haute."
+        }
+      ]
+    },
+    {
+      "id": "relation-massive-timber-platform",
+      "kind": "connects_to",
+      "subject_id": "platform-massive-1",
+      "object_id": "platform-timber-1",
+      "certainty": "certain",
+      "statement": "Le palier maçonné et la terrasse bois sont deux surfaces de circulation distinctes mais directement raccordées.",
+      "evidence": [
+        {
+          "photo_index": 6,
+          "observation": "La transition entre surface maçonnée et platelage bois est directement visible."
+        },
+        {
+          "photo_index": 9,
+          "observation": "Les deux surfaces sont simultanément visibles au droit de la façade."
+        }
+      ]
+    }
+  ],
+  "representation_policy": {
+    "preserve_nominal_materials": true,
+    "preserve_opening_composition": true,
+    "preserve_architectural_details": true,
+    "reproduce_weathering": false,
+    "reproduce_temporary_objects": false
+  },
+  "notes": "Les identites de facade des photos sont conservees exactement comme capture_hints. Les vues 3, 4 et 5 se recoupent fortement autour de l'escalier, du volume/palier blanc et de la terrasse bois; ce recoupement sert a dedupliquer les objets sans promouvoir les libelles de capture en orientations user_confirmed. Révision multivue 2026-09-19 : les photos complémentaires 6-22 renforcent la topologie sans ajouter de mesure. DETTE CONTRACTUELLE : des parois maçonnées latérales/bordantes associées au parcours d'escalier et au palier sont observées (photos 7, 10, 13, 20, 21), mais le contrat Survey 0.1 ne possède pas de type non métrique propre pour une structure physique bordante à géométrie non résolue; aucune clé locale opaque ni géométrie n'est inventée. Le volume fermé sous-jacent au palier reste non démontré."
+}
