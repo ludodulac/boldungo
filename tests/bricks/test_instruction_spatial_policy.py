@@ -240,3 +240,26 @@ def test_export_bundle_explicit_spatial_policy_preserves_default_and_round_trips
     assert [step.added_placement_ids for step in restored.instruction_plan.steps] == [
         step.added_placement_ids for step in notice_bundle.instruction_plan.steps
     ]
+
+
+def test_committed_first_notice_export_is_real_spatial_bundle():
+    fixture = Path(__file__).parents[1] / "fixtures" / "notice_reference_steps_1_8.json"
+    assembly = AssemblyPlan.model_validate(json.loads(fixture.read_text()))
+    model = _notice_reference_model()
+    expected = create_export_bundle(
+        model,
+        generate_bom(model),
+        assembly,
+        instruction_policy=SpatialCoherenceInstructionPolicy(model),
+    )
+    export_path = Path(__file__).parents[2] / "frontend" / "notice-step-0001-export.json"
+    committed = BrickExportBundle.model_validate_json(export_path.read_text())
+
+    assert committed == expected
+    assert committed.instruction_plan is not None
+    assert committed.instruction_plan.total_steps == 9
+    assert committed.instruction_plan.steps[0].source_assembly_step_id == "step-0001"
+    assert committed.instruction_plan.before_placement_ids(1) == []
+    assert committed.instruction_plan.steps[0].added_placement_ids == [
+        "wall-000001", "wall-000002",
+    ]
