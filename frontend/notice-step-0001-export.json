@@ -10,8 +10,8 @@
     "physical_model": {
       "stud_pitch_mm": 8,
       "plate_height_mm": 3.2,
-      "width_mm": 136,
-      "depth_mm": 112,
+      "width_mm": 128,
+      "depth_mm": 104,
       "height_mm": 19.2
     }
   },
@@ -19,8 +19,8 @@
     "schema_version": "0.1",
     "building_id": "simple-house",
     "volume_id": "main",
-    "width_studs": 17,
-    "depth_studs": 14,
+    "width_studs": 16,
+    "depth_studs": 13,
     "height_plates": 6,
     "parts": [
       {
