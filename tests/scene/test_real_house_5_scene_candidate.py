@@ -9,7 +9,7 @@ from brickhouse.survey import ArchitecturalSurvey
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SURVEY_PATH = ROOT / "frontend" / "benchmarks" / "real-house-5" / "accepted-survey-v0.1.json"
+SURVEY_PATH = ROOT / "frontend" / "benchmarks" / "real-house-5" / "scene-source-survey-v0.1.json"
 SCENE_PATH = ROOT / "tests" / "fixtures" / "real_house_5_scene_candidate.json"
 CLIENT = TestClient(app)
 
@@ -22,7 +22,7 @@ def _raw_scene() -> dict:
     return json.loads(SCENE_PATH.read_text(encoding="utf-8"))
 
 
-def test_candidate_is_schema_valid_and_preserves_accepted_survey() -> None:
+def test_candidate_is_schema_valid_and_preserves_frozen_scene_source_survey() -> None:
     survey = ArchitecturalSurvey.model_validate(_raw_survey())
     scene = ArchitecturalScene.model_validate(_raw_scene())
 
