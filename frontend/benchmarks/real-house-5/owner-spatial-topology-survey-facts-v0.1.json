@@ -3,7 +3,10 @@
   "benchmark_id": "real-house-5",
   "source_survey_id": "brickhouse-survey",
   "reason": "USER_CONFIRMED spatial topology from owner sketch/explanation",
-  "source": {"kind": "user_provided", "confidence": 1.0},
+  "source": {
+    "kind": "user_provided",
+    "confidence": 1
+  },
   "cardinal_convention": {
     "east": "front",
     "west": "rear",
@@ -22,9 +25,12 @@
         "component_run_ids": []
       },
       "certainty": "certain",
-      "source": {"kind": "user_provided", "confidence": 1.0},
-      "statement": "Owner confirms the exterior stair is L-shaped and has exactly two major runs; no run metrics are supplied.",
-      "supersedes_existing": false
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "statement": "Owner-confirmed topology refines the photo-derived minimum: the exterior stair is L-shaped and has exactly two major runs; no run metrics are supplied.",
+      "supersedes_existing": true
     },
     {
       "observation_id": "stair-exterior-1",
@@ -50,7 +56,10 @@
         "metric_geometry_status": "unresolved"
       },
       "certainty": "certain",
-      "source": {"kind": "user_provided", "confidence": 1.0},
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
       "statement": "Owner confirms descent from the masonry/concrete platform goes west beyond the rear plane, turns left, then continues south to the low courtyard; ascent is the reverse path.",
       "supersedes_existing": false
     },
@@ -65,7 +74,10 @@
         "metric_geometry_status": "unresolved"
       },
       "certainty": "certain",
-      "source": {"kind": "user_provided", "confidence": 1.0},
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
       "statement": "Owner confirms the masonry/concrete platform and timber platform are distinct walking surfaces at different levels connected by exactly one step; the step height is unknown.",
       "supersedes_existing": false
     }
@@ -76,7 +88,10 @@
       "object_observation_id": "platform-massive-1",
       "relation": "lower_than",
       "certainty": "certain",
-      "source": {"kind": "user_provided", "confidence": 1.0},
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
       "statement": "Owner confirms the timber walking surface is lower than the masonry/concrete platform; no vertical delta is supplied."
     }
   ],
