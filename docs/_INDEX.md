@@ -2,6 +2,10 @@
 
 Commencer par `AI_START_HERE.md`. Cet index sert uniquement à atteindre rapidement la documentation spécialisée. **Ne pas charger tout `docs/`.**
 
+## Cahier des charges produit
+
+- [CAHIER_DES_CHARGES.md](CAHIER_DES_CHARGES.md) — référence produit consolidée : rôle des photos, réanalyse multivue, frontières Survey/Scene/LEGO, fidélité architecturale perceptive, contrôle humain et critères de réussite.
+
 ## Architecture canonique
 
 - [ARCHITECTURAL_SURVEY_V01.md](ARCHITECTURAL_SURVEY_V01.md) — vérité observée/semantique et incertitudes issues des photos.
