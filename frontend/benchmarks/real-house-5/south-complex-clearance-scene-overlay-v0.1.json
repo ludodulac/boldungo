@@ -12,29 +12,13 @@
       "host_volume_id": "volume_main",
       "position": {
         "x": -1.4,
-        "y": 6.0,
+        "y": 6,
         "z": 2.1
       },
       "width": 1.4,
-      "depth": 3.0,
+      "depth": 3,
       "thickness": 0.18,
-      "supports": [
-        {
-          "id": "platform-timber-1-post-2",
-          "position": {
-            "x": -1.15,
-            "y": 8.65,
-            "z": 0.0
-          },
-          "width": 0.16,
-          "depth": 0.16,
-          "height": 2.1,
-          "source": {
-            "kind": "inferred",
-            "confidence": 0.12
-          }
-        }
-      ],
+      "supports": [],
       "material": "timber",
       "deck_board_direction": "unknown",
       "edges": {
@@ -75,29 +59,13 @@
       "host_volume_id": "volume_main",
       "position": {
         "x": -2.8,
-        "y": 6.0,
+        "y": 6,
         "z": 2.1
       },
       "width": 1.4,
       "depth": 1.8,
       "thickness": 0.18,
-      "supports": [
-        {
-          "id": "platform-timber-1-post-1",
-          "position": {
-            "x": -2.55,
-            "y": 6.25,
-            "z": 0.0
-          },
-          "width": 0.16,
-          "depth": 0.16,
-          "height": 2.1,
-          "source": {
-            "kind": "inferred",
-            "confidence": 0.12
-          }
-        }
-      ],
+      "supports": [],
       "material": "timber",
       "deck_board_direction": "unknown",
       "edges": {
