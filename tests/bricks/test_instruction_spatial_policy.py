@@ -38,7 +38,9 @@ def test_compact_group_remains_one_gesture():
     ids = ["a", "b", "c"]
     policy = SpatialCoherenceInstructionPolicy(_model([_part("a", 0), _part("b", 1), _part("c", 2)]))
     assert policy.groups_for(_step(ids)) == [ids]
-    assert policy.diagnose(_step(ids)).consecutive_gaps_studs == (0, 0)
+    diagnostic = policy.diagnose(_step(ids))
+    assert diagnostic.consecutive_gaps_studs == (0, 0)
+    assert diagnostic.directional_relations == ((1, 0), (1, 0))
 
 
 def test_exactly_two_distant_placements_split_into_two_gestures():
@@ -46,6 +48,7 @@ def test_exactly_two_distant_placements_split_into_two_gestures():
     policy = SpatialCoherenceInstructionPolicy(_model([_part("a", 0), _part("b", 3)]))
     diagnostic = policy.diagnose(_step(ids))
     assert diagnostic.consecutive_gaps_studs == (2,)
+    assert diagnostic.directional_relations == ((1, 0),)
     assert diagnostic.split_after_indices == (1,)
     assert policy.groups_for(_step(ids)) == [["a"], ["b"]]
 
@@ -76,6 +79,7 @@ def test_spatial_alternation_is_not_reordered_or_clustered():
     ]))
     diagnostic = policy.diagnose(_step(ids))
     assert diagnostic.consecutive_gaps_studs == (9, 9, 9)
+    assert diagnostic.directional_relations == ((1, 0), (-1, 0), (1, 0))
     assert diagnostic.split_after_indices == ()
     assert policy.groups_for(_step(ids)) == [ids]
 
@@ -89,7 +93,24 @@ def test_different_part_sizes_use_rotated_footprints_not_origins_only():
     ]))
     diagnostic = policy.diagnose(_step(ids))
     assert diagnostic.consecutive_gaps_studs == (0, 3)
+    assert diagnostic.directional_relations == ((1, 0), (1, 0))
     assert diagnostic.split_after_indices == (2,)
+
+
+def test_directional_relations_cover_axes_turns_single_and_unknown_geometry():
+    ids = ["a", "b", "c", "d"]
+    policy = SpatialCoherenceInstructionPolicy(_model([
+        _part("a", 0, 0), _part("b", 0, 2), _part("c", 2, 2), _part("d", 2, 0),
+    ]))
+    diagnostic = policy.diagnose(_step(ids))
+    assert diagnostic.directional_relations == ((0, 1), (1, 0), (0, -1))
+
+    single = policy.diagnose(_step(["a"]))
+    assert single.directional_relations == ()
+
+    unknown = policy.diagnose(_step(["missing"]))
+    assert unknown.directional_relations is None
+    assert unknown.split_after_indices == ()
 
 
 def test_geometry_change_can_change_split_but_id_change_cannot():
@@ -163,6 +184,7 @@ def test_real_notice_steps_1_8_spatial_policy_is_lossless_and_diagnostic():
     assert [d.split_after_indices for d in diagnostics] == [
         (2,), (), (), (), (), (), (), (),
     ]
+    assert diagnostics[4].directional_relations == ((1, 0), (1, 0), (1, 0))
     assert spatial_policy.groups_for(assembly.steps[1]) == [assembly.steps[1].placement_ids]
     assert spatial_policy.groups_for(assembly.steps[4]) == [assembly.steps[4].placement_ids]
 

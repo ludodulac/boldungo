@@ -13,6 +13,7 @@ class SpatialCoherenceDiagnostic:
     """Explain a spatial decision without enlarging the serialized InstructionPlan."""
 
     consecutive_gaps_studs: tuple[int, ...]
+    directional_relations: tuple[tuple[int, int], ...] | None
     baseline_gap_studs: int
     split_after_indices: tuple[int, ...]
     bounding_box_studs: tuple[int, int] | None
@@ -59,17 +60,21 @@ class SpatialCoherenceInstructionPolicy:
             footprints = [self._footprint(parts_by_id[pid]) for pid in step.placement_ids]
         except (KeyError, ValueError):
             return SpatialCoherenceDiagnostic(
-                consecutive_gaps_studs=(), baseline_gap_studs=0,
-                split_after_indices=(), bounding_box_studs=None,
+                consecutive_gaps_studs=(), directional_relations=None,
+                baseline_gap_studs=0, split_after_indices=(), bounding_box_studs=None,
                 explanation="footprint geometry unavailable; conservative direct gesture",
             )
 
         box = self._bounding_box_size(footprints)
         if len(footprints) < 2:
-            return SpatialCoherenceDiagnostic((), 0, (), box, "single placement")
+            return SpatialCoherenceDiagnostic((), (), 0, (), box, "single placement")
 
         gaps = tuple(
             self._empty_stud_gap(footprints[index], footprints[index + 1])
+            for index in range(len(footprints) - 1)
+        )
+        directions = tuple(
+            self._signed_footprint_relation(footprints[index], footprints[index + 1])
             for index in range(len(footprints) - 1)
         )
         baseline = min(gaps)
@@ -94,7 +99,7 @@ class SpatialCoherenceInstructionPolicy:
             )
         else:
             explanation = f"spatially coherent consecutive footprints: gaps={gaps}"
-        return SpatialCoherenceDiagnostic(gaps, baseline, boundaries, box, explanation)
+        return SpatialCoherenceDiagnostic(gaps, directions, baseline, boundaries, box, explanation)
 
     @staticmethod
     def _footprint(part: BrickModelPart) -> tuple[int, int, int, int]:
@@ -118,6 +123,16 @@ class SpatialCoherenceInstructionPolicy:
         dx = max(0, rx0 - lx1 - 1, lx0 - rx1 - 1)
         dy = max(0, ry0 - ly1 - 1, ly0 - ry1 - 1)
         return max(dx, dy)
+
+    @staticmethod
+    def _signed_footprint_relation(
+        left: tuple[int, int, int, int], right: tuple[int, int, int, int]
+    ) -> tuple[int, int]:
+        lx0, lx1, ly0, ly1 = left
+        rx0, rx1, ry0, ry1 = right
+        sx = 1 if rx0 > lx1 else -1 if rx1 < lx0 else 0
+        sy = 1 if ry0 > ly1 else -1 if ry1 < ly0 else 0
+        return sx, sy
 
     @staticmethod
     def _bounding_box_size(
