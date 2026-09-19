@@ -154,7 +154,7 @@ def _notice_reference_model() -> BrickModel:
         ("wall-000019", "BRICK_1X2", 1, 1, 3, 0, "left"),
     ]
     return BrickModel(
-        building_id="building-simple-house", volume_id="main", width_studs=16,
+        building_id="simple-house", volume_id="main", width_studs=16,
         depth_studs=13, height_plates=6,
         parts=[BrickModelPart(
             placement_id=pid, part_id=part_id, category="brick", component="wall",
