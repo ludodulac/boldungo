@@ -10,16 +10,19 @@ jobs:
   artifact:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout exact ref
+      - name: Checkout validated V2
         uses: actions/checkout@v4
+        with:
+          ref: 2668c0565d7cd790442f2396927a749fbd1a281d
 
-      - name: Verify notice preview files
+      - name: Verify notice preview files and source HEAD
         run: |
+          test "$(git rev-parse HEAD)" = "2668c0565d7cd790442f2396927a749fbd1a281d"
           test -s frontend/viewer.html
           test -s frontend/viewer.js
           test -s frontend/styles.css
           test -s frontend/notice-step-0005-export.json
-          printf '%s\n' "$GITHUB_SHA" > frontend/NOTICE_PREVIEW_HEAD.txt
+          git rev-parse HEAD > frontend/NOTICE_PREVIEW_HEAD.txt
 
       - name: Upload static frontend artifact
         uses: actions/upload-artifact@v4
