@@ -21,11 +21,11 @@ def test_current_real_house_scene_is_not_allowed_to_collapse_confirmed_turning_s
             "value": {
                 "minimum_run_count": 2,
                 "direction_change": True,
-                "turning_node_kind": "turn_or_landing",
+                "exact_run_count": 2,\n                "turning_node_kind": "turn",
             },
             "certainty": "certain",
             "source": {"kind": "user_provided", "confidence": 1.0},
-            "statement": "User confirms that the exterior stair changes direction.",
+            "statement": "User confirms exactly two stair runs with a direction change.",\n            "supersedes_existing": True,
         }
     )
     candidate = apply_human_attribute_facts(source, [fact]).candidate
