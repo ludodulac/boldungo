@@ -2,7 +2,7 @@ name: NOTICE visibility audit
 on:
   push:
     branches: [experiment/notice-step12-visual-action]
-    paths: ['.github/workflows/notice-visibility-audit.yml']
+    paths: ['.github/workflows/notice-visibility-audit.yml', 'frontend/viewer.js']
 jobs:
   audit:
     runs-on: ubuntu-latest
