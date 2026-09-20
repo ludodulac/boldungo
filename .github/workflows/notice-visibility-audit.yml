@@ -1,0 +1,26 @@
+name: NOTICE visibility audit
+on:
+  push:
+    branches: [experiment/notice-step12-visual-action]
+    paths: ['.github/workflows/notice-visibility-audit.yml']
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-save playwright@1.55.0 && npx playwright install --with-deps chromium
+      - run: |
+          python -m http.server 4173 --directory frontend >/tmp/http.log 2>&1 &
+          cat > audit.mjs <<'JS'
+          import { chromium } from 'playwright'; import fs from 'fs';
+          const browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:1200,height:900}});const rows=[];
+          for(let n=1;n<=34;n++){const id=String(n).padStart(4,'0');await page.goto(`http://127.0.0.1:4173/viewer.html?notice=step-${id}&visual=action`,{waitUntil:'networkidle'});await page.waitForFunction(seq=>window.__NOTICE_PROOF__?.current_sequence===seq,n);rows.push(await page.evaluate(()=>({step:window.__NOTICE_PROOF__.current_sequence,decision:window.__NOTICE_PROOF__.reference_decision})));}fs.writeFileSync('notice-visibility-audit.json',JSON.stringify(rows,null,2));await browser.close();
+          JS
+          node audit.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notice-visibility-audit
+          path: notice-visibility-audit.json
+          retention-days: 14
