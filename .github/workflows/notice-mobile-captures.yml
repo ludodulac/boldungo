@@ -1,0 +1,25 @@
+name: NOTICE mobile checkpoint captures
+on:
+  push:
+    branches: [feature/notice-reconstructed-steps-1-34]
+    paths: ['.github/workflows/notice-mobile-captures.yml']
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npx --yes playwright@1.55.0 install --with-deps chromium
+      - name: Serve frontend and capture mobile checkpoints
+        run: |
+          python -m http.server 4173 --directory frontend >/tmp/http.log 2>&1 &
+          sleep 2
+          for N in 0001 0012 0024 0034; do
+            npx --yes playwright@1.55.0 screenshot --device="Pixel 5" --wait-for-timeout=2500 "http://127.0.0.1:4173/viewer.html?notice=step-$N" "notice-step-$N-mobile.png"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notice-1-34-mobile-checkpoints
+          path: notice-step-*-mobile.png
+          retention-days: 14
