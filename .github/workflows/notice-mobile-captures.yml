@@ -1,4 +1,4 @@
-name: NOTICE mobile checkpoint captures ##
+name: NOTICE mobile checkpoint captures ###
 on:
   push:
     branches: [feature/notice-reconstructed-steps-1-34]
