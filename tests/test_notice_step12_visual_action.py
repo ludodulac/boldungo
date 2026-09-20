@@ -17,3 +17,12 @@ def test_step_12_experiment_does_not_invent_motion_or_change_plan():
     assert "const added=new Set(step.placement_ids)" in js
     block=js[js.index("function applyNoticeAssemblyStep"):js.index("function goToNoticeStep")]
     assert "arrow" not in block.lower()
+
+
+def test_step_12_float_requires_real_support_immediately_below():
+    js=VIEWER.read_text(encoding="utf-8")
+    assert "function noticeStep12SupportEvidence(state)" in js
+    assert "candidate.z_plates+3===part.z_plates&&overlap" in js
+    assert "if(!supports.length)return null" in js
+    assert "axis:'vertical',direction:'down'" in js
+    assert "if(mesh)mesh.position.y+=1.35" in js
