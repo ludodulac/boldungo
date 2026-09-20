@@ -36,6 +36,7 @@ class BrickModelPart(BaseModel):
     opening_id: str | None = None
     trim_role: TrimRole | None = None
     semantic_color: str | None = Field(default=None, min_length=1)
+    prototype_recess_studs: int = Field(default=0, ge=0, le=1)
 
     @model_validator(mode="after")
     def validate_semantic_zone(self):
@@ -279,7 +280,7 @@ def generate_brick_model(
             x_studs=placement.x_studs + x_offset, y_studs=placement.y_studs + y_offset,
             z_plates=placement.z_plates, rotation_quarter_turns=placement.rotation_quarter_turns,
             facade=placement.facade, opening_id=placement.opening_id,
-            trim_role=placement.trim_role, semantic_color=placement.semantic_color,
+            trim_role=placement.trim_role, semantic_color=placement.semantic_color, prototype_recess_studs=placement.prototype_recess_studs,
         ))
     for index, placement in enumerate(window_parts or [], start=1):
         parts.append(BrickModelPart(
@@ -287,7 +288,7 @@ def generate_brick_model(
             category=placement.category, component="facade_detail",
             x_studs=placement.x_studs + x_offset, y_studs=placement.y_studs + y_offset,
             z_plates=placement.z_plates, rotation_quarter_turns=placement.rotation_quarter_turns,
-            facade=placement.facade, opening_id=placement.opening_id,
+            facade=placement.facade, opening_id=placement.opening_id, prototype_recess_studs=placement.prototype_recess_studs,
         ))
     if roof is not None:
         for index, placement in enumerate(roof.placements, start=1):
