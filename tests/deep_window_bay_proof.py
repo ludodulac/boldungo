@@ -36,7 +36,7 @@ def capture():
                 context=browser.new_context(viewport={"width":900,"height":700})
                 context.add_init_script("localStorage.clear()")
                 page=context.new_page();page.goto(f"http://127.0.0.1:{port}/frontend/viewer.html?deep={label}-{view}",wait_until="networkidle")
-                page.locator("#view-front" if view=="front" else "#view-perspective").click();page.wait_for_timeout(700)
+                page.locator("#view-front" if view=="front" else "#reset-view").click();page.wait_for_timeout(700)
                 page.locator("#viewer").screenshot(path=str(OUT/f"{label}-{view}.png"));context.close()
         browser.close()
 
