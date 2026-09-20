@@ -60,13 +60,16 @@ def _final_observations(workspace):
     return result
 
 
-def _identity_groups(workspace, eligible_ids):
+def _identity_groups(workspace, eligible):
     groups = []
     for identity in workspace.pass_2.identities:
         if identity.status is not IdentityStatus.SAME_PHYSICAL_OBJECT or identity.certainty is not CertaintyLevel.CERTAIN:
             continue
         current = set(identity.observation_ids)
-        if not current.issubset(eligible_ids):
+        if not current.issubset(set(eligible)):
+            continue
+        mapped_kinds = {_KIND_MAP[(eligible[x].proposed_category or "").lower()] for x in current}
+        if len(mapped_kinds) != 1:
             continue
         overlaps = [group for group in groups if group & current]
         for group in overlaps:
@@ -74,7 +77,7 @@ def _identity_groups(workspace, eligible_ids):
             groups.remove(group)
         groups.append(current)
     grouped = set().union(*groups) if groups else set()
-    groups.extend([{identifier} for identifier in eligible_ids if identifier not in grouped])
+    groups.extend([{identifier} for identifier in eligible if identifier not in grouped])
     return groups
 
 
@@ -108,14 +111,11 @@ def workspace_to_survey(workspace: MultiViewWorkspace, *, survey_id: str, survey
 
     observations = []
     local_to_survey = {}
-    for group in _identity_groups(workspace, set(eligible)):
+    for group in _identity_groups(workspace, eligible):
         items = [eligible[x] for x in sorted(group)]
         kinds = {_KIND_MAP[(x.proposed_category or "").lower()] for x in items}
         if len(kinds) != 1:
-            for x in items:
-                group = {x.id}
-                # conflicting categories are kept separate rather than coerced
-            continue
+            raise AssertionError("identity grouping must not merge incompatible Survey kinds")
         kind = next(iter(kinds))
         oid = "mv-" + "-".join(sorted(group))
         existence = min((x.certainty.existence for x in items), key=lambda x: _RANK[x])
