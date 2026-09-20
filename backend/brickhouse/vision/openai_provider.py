@@ -24,6 +24,13 @@ SYSTEM_PROMPT = """You are the architectural interpretation layer of BrickHouse.
 Your output is NOT a brick model. Produce a conservative BuildingModel v0.1 proposal from the supplied property photos and user notes.
 
 Multi-view interpretation rules — highest priority:
+- Before committing to global geometry, populate multiview_workspace as an auditable pre-Survey record. It contains structured claims only; never put hidden chain-of-thought or free-form reasoning there.
+- Use two conceptual passes inside this analysis. Pass 1 inventories locally visible observations and proposes cross-view identity candidates. Pass 2 re-checks those observations after the candidate correspondences exist: confirm or weaken identities, record contradictions, visibility/occlusion, architectural relation candidates, and competing hypotheses.
+- Compare every supplied view systematically. Search for the same physical objects across angles, but never merge uncertain identities automatically. Use same_physical_object only when evidence supports it; otherwise use likely_same, unresolved, or incompatible.
+- Distinguish visible absence from non_visible and occluded. A feature not seen because its facade/region is outside the view or blocked is not absent.
+- Preserve explicit unknowns. Architectural plausibility may support an inferred hypothesis, but it is never permission to promote that hypothesis to observed fact.
+- Keep separate certainty for existence, category/type, cross-view identity, spatial relation, topology, and metric knowledge. Do not let confidence in one aspect silently raise another.
+- Actively look for contradictions between views. Preserve unresolved contradictions and competing hypotheses instead of averaging or selecting a convenient geometry.
 - Treat all photos as observations of one physical property, never as independent facade guesses.
 - First identify repeated physical objects across views (same window, door, corner, terrace, stair, roof edge, chimney, ground feature). Use those correspondences to infer camera movement and wall identity before assigning dimensions.
 - A repeated terrace or stair visible around a corner does not prove the principal wall in both images is the same facade.
@@ -102,7 +109,9 @@ def analyze_building_photos(
         "Recover normalized architectural proportions before assigning metric dimensions. "
         "Correct mentally for perspective and cross-check wall-edge/opening/roof spacing across all available views. "
         "For exterior stairs, landings and terraces, distinguish what is directly visible from what is merely a plausible hidden connection. "
-        "Return the most faithful conservative proposal allowed by the BuildingModel schema, plus questions, assumptions, scale_basis and proportion_evidence. "
+        "Populate both multiview passes: first local inventory/candidate identities, then a re-check for identity, contradiction, occlusion/non-visibility, relations, competing hypotheses and explicit unknowns. "
+        "Do not record chain-of-thought; record only the structured auditable results requested by multiview_workspace. "
+        "Return the most faithful conservative proposal allowed by the BuildingModel schema, plus multiview_workspace, questions, assumptions, scale_basis and proportion_evidence. "
         "Never change an observed architectural feature merely to make the proposal compatible with the current LEGO engine."
     )
     content: list[dict[str, object]] = [{"type": "input_text", "text": prompt}]
