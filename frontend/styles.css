@@ -69,3 +69,5 @@ body.notice-prototype-mode .app-shell{display:block}
 body.notice-prototype-mode .panel,body.notice-prototype-mode .viewer-hint{display:none}
 body.notice-prototype-mode .viewer-wrap{position:relative;height:100vh}
 @media(max-width:760px){.notice-prototype-hud{top:12px;left:12px;gap:16px;padding:10px 12px}.notice-prototype-hud>strong{font-size:34px}.notice-parts{gap:12px;font-size:18px}body.notice-prototype-mode .viewer-wrap{height:100vh}}
+
+.notice-navigation{display:flex;gap:.5rem;justify-content:center;margin-top:.55rem}.notice-navigation button{font:inherit;font-weight:700;padding:.5rem .75rem;border:1px solid #cbd5e1;border-radius:.55rem;background:#fff;color:#111827}.notice-navigation button:disabled{opacity:.4}
