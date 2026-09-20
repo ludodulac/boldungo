@@ -62,8 +62,7 @@ dd { margin: 0; font-variant-numeric: tabular-nums; text-align: right; }
 .notice-prototype-hud>strong{font-size:42px;line-height:1}
 .notice-parts{display:flex;gap:20px;align-items:center;font-size:22px;font-weight:800}
 .notice-parts span{display:flex;align-items:center;gap:8px}
-.notice-brick{display:inline-block;height:22px;border:2px solid #b45309;background:#f59e0b;border-radius:3px}
-.notice-brick.one{width:22px}.notice-brick.three{width:66px}
+.notice-part-preview{display:block;width:72px;height:44px;object-fit:contain}
 body.notice-prototype-mode{background:#f3f4f6}
 body.notice-prototype-mode .app-shell{display:block}
 body.notice-prototype-mode .panel,body.notice-prototype-mode .viewer-hint{display:none}
