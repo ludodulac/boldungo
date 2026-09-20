@@ -1,0 +1,37 @@
+name: Deep LEGO window bay proof
+
+on:
+  pull_request:
+    paths:
+      - 'backend/brickhouse/bricks/windows.py'
+      - 'backend/brickhouse/bricks/facade_details.py'
+      - 'backend/brickhouse/bricks/brick_model.py'
+      - 'tests/deep_window_bay_proof.py'
+      - '.github/workflows/deep-window-bay-proof.yml'
+
+jobs:
+  proof:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e ".[dev]"
+      - name: Generate matched prototype exports
+        run: |
+          python tests/deep_window_bay_proof.py 0
+          python tests/deep_window_bay_proof.py 1
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/deep-bay-proof')
+          for n in ('before','after'):
+            d=json.loads((p/f'{n}.json').read_text())
+            print(n,d['bom']['total_parts'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deep-window-bay-before-after
+          path: /tmp/deep-bay-proof/*.json
+          retention-days: 14
