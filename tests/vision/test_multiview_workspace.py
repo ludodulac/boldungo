@@ -143,20 +143,25 @@ class _FakeClient:
 def _minimal_building():
     return {
         "schema_version": "0.1",
-        "metadata": {"name": "Synthetic house", "created_from": "photo_analysis"},
+        "id": "synthetic-house",
+        "name": "Synthetic house",
+        "building_type": "house",
+        "units": "m",
         "volumes": [{
             "id": "main",
+            "shape": "rectangular_prism",
             "position": {"x": 0, "y": 0, "z": 0},
             "width": 8,
             "depth": 6,
             "height": 5,
+            "floors": 2,
+            "source": {"kind": "inferred", "confidence": 0.5},
         }],
-        "roofs": [],
         "openings": [],
-        "platforms": [],
-        "stairs": [],
+        "roofs": [],
+        "appearance": {},
+        "metadata": {"created_from": "photo_analysis"},
     }
-
 
 def test_provider_requests_structured_multiview_workspace_without_extra_ai_calls():
     a, b = _obs("p1-opening", 1), _obs("p2-opening", 2)
