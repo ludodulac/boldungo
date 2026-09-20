@@ -98,6 +98,22 @@ function noticeStep12SupportEvidence(state){
   }
   return evidence;
 }
+function noticeReferenceDecision(state,index){
+  const added=[...state.added].map(id=>({id,part:lastBundle.brick_model.parts.find(p=>p.placement_id===id),mesh:meshByPlacementId.get(id)})).filter(x=>x.part&&x.mesh);
+  const visible=added.length>0&&added.every(x=>x.mesh.visible!==false);
+  const many=added.length>=5;
+  const clustered=added.length>1;
+  return{
+    mode:many?'multi-piece':clustered?'simple-cluster':'simple-final',
+    fixed_reference:true,
+    highlight:true,
+    arrow:false,
+    closeup:false,
+    alternate_angle:false,
+    reason:many?'plusieurs pièces nouvelles : vue finale fixe, sans mouvement inventé':clustered?'petit groupe de pièces : position finale suffit':'placement simple : position finale suffit',
+    visible_after:true,
+  };
+}
 function applyNoticeAssemblyStep(index){
   clearNoticeInsertionArrows();
   const state=noticeAssemblyStepState(lastBundle,index);
@@ -105,6 +121,7 @@ function applyNoticeAssemblyStep(index){
   const visualActionPrototype=noticeReferenceGrammar;
   const supportEvidence=index===11&&noticeReferenceGrammar?noticeStep12SupportEvidence(state):null;
   for(const[id,m]of meshByPlacementId)setPartState(m,state.added.has(id)?(visualActionPrototype?'notice-current':'current'):state.before.has(id)?'normal':'hidden');
+  const decision=noticeReferenceDecision(state,index);
   const insertionArrows=[];
   if(noticeReferenceGrammar){
     for(const id of state.added){
@@ -142,6 +159,7 @@ function applyNoticeAssemblyStep(index){
     visual_action_prototype:visualActionPrototype,
     support_evidence:supportEvidence,
     insertion_arrow_count:insertionArrows.length,
+    reference_decision:decision,
     before_placement_ids:[...state.before],
     added_placement_ids:[...state.added],
     pli:[...state.pli].map(([part_id,quantity])=>({part_id,quantity})),
