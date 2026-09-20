@@ -8,7 +8,7 @@ def test_notice_framing_uses_only_current_visible_assembly_placements():
     assert "function noticePlacementFrame(placementIds)" in js
     assert "const mesh=meshByPlacementId.get(id);" in js
     assert "box.expandByObject(mesh,true);" in js
-    assert "frameNoticePlacements([...state.before,...state.added],state.step.view||'perspective');" in js
+    assert "frameNoticePlacements([...state.before,...state.added],'perspective');" in js
 
 def test_notice_framing_accounts_for_mobile_viewport_without_changing_normal_viewer():
     js = VIEWER.read_text(encoding="utf-8")
