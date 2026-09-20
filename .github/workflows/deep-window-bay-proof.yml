@@ -2,6 +2,7 @@ name: Deep LEGO window bay proof
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
     paths:
       - 'backend/brickhouse/bricks/windows.py'
       - 'backend/brickhouse/bricks/facade_details.py'
