@@ -113,3 +113,53 @@ def test_likely_same_is_not_promoted_to_same_physical_object():
     result=bridge(workspace([a,b],identities=[identity]))
     assert len(result.survey_state.survey.observations)==2
     assert all("multiview_identity" not in x.attributes for x in result.survey_state.survey.observations)
+
+
+def test_unknown_front_orientation_does_not_block_bridge_or_invent_facade():
+    a = obs("a", 1, "window")
+    hidden = LocalObservation(
+        id="hidden", photo_index=2, status=ClaimStatus.UNKNOWN,
+        visibility=VisibilityStatus.OCCLUDED, statement="region blocked",
+    )
+    h1 = OpenHypothesis(
+        id="roof-gable", subject_refs=["a"], statement="roof may be gable",
+        competing_with=["roof-other"], certainty=CertaintyLevel.PLAUSIBLE,
+        supporting_photo_indexes=[1],
+    )
+    h2 = OpenHypothesis(
+        id="roof-other", subject_refs=["a"], statement="roof may have another topology",
+        competing_with=["roof-gable"], certainty=CertaintyLevel.UNPROVEN,
+        supporting_photo_indexes=[2],
+    )
+    result = workspace_to_survey(
+        workspace([a, hidden], hypotheses=[h1, h2]),
+        survey_id="orientation-neutral",
+        survey_name="Orientation neutral",
+    )
+    survey = result.survey_state.survey
+    assert all(photo.capture_role == "targeted_detail" for photo in survey.photos)
+    assert all(photo.facade is None for photo in survey.photos)
+    assert all(photo.image_left_maps_to_facade_offset is None for photo in survey.photos)
+    assert survey.known_measurements == []
+    assert len(survey.observations) == 1
+    assert survey.observations[0].certainty is Certainty.CERTAIN
+    assert {e.photo_index for e in survey.observations[0].evidence} == {1}
+    assert any(x.code is BridgeDebtCode.VISIBILITY_ASSESSMENT_ONLY for x in result.diagnostics)
+    assert len(result.survey_state.open_questions) == 2
+
+
+def test_explicit_front_orientation_remains_supported_without_changing_claim_certainty():
+    item = obs("a", 2, "door", CertaintyLevel.PLAUSIBLE)
+    result = workspace_to_survey(
+        workspace([item]),
+        survey_id="known-front",
+        survey_name="Known front",
+        front_facade_photo_index=2,
+    )
+    survey = result.survey_state.survey
+    front = next(photo for photo in survey.photos if photo.photo_index == 2)
+    assert front.capture_role == "facade_view"
+    assert front.facade.value == "front"
+    observation = survey.observations[0]
+    assert observation.certainty is Certainty.CERTAIN
+    assert observation.attribute_certainty["semantic_type"] is Certainty.PLAUSIBLE
