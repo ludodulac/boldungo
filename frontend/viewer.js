@@ -71,10 +71,13 @@ function noticeStep12InsertionArrows(state,supportEvidence){
   const partsById=new Map(lastBundle.brick_model.parts.map(part=>[part.placement_id,part]));
   for(const item of supportEvidence){
     const part=partsById.get(item.placement_id),d=dims(part);
-    const x=part.x_studs+d.width/2,z=part.y_studs+d.length/2;
-    const endY=part.z_plates*PLATE_WORLD_HEIGHT+Math.max(.55,d.heightPlates*PLATE_WORLD_HEIGHT+.35);
-    const startY=endY+1.0;
-    const arrow=new THREE.ArrowHelper(new THREE.Vector3(0,-1,0),new THREE.Vector3(x,startY,z),startY-endY,0xe87520,.28,.16);
+    const mesh=meshByPlacementId.get(item.placement_id);
+    if(!mesh)continue;
+    const targetY=part.z_plates*PLATE_WORLD_HEIGHT+d.heightPlates*PLATE_WORLD_HEIGHT+.16;
+    const x=mesh.position.x,z=mesh.position.z;
+    const startY=mesh.position.y-.12;
+    const length=Math.max(.45,startY-targetY);
+    const arrow=new THREE.ArrowHelper(new THREE.Vector3(0,-1,0),new THREE.Vector3(x,startY,z),length,0xe87520,.22,.12);
     arrow.userData.noticeInsertionArrow=true;scene.add(arrow);arrows.push(arrow);
   }
   return arrows;
@@ -103,7 +106,7 @@ function applyNoticeAssemblyStep(index){
   if(visualActionPrototype&&supportEvidence){
     for(const item of supportEvidence){
       const mesh=meshByPlacementId.get(item.placement_id);
-      if(mesh)mesh.position.y+=1.35;
+      if(mesh)mesh.position.y+=.72;
     }
   }
   const insertionArrows=visualActionPrototype?noticeStep12InsertionArrows(state,supportEvidence):[];
