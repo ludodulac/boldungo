@@ -1,0 +1,605 @@
+{
+  "schema_version": "0.1",
+  "id": "real-house-5-five-photo-survey-candidate-v0.1",
+  "name": "Real house 5 — five-photo development Survey candidate",
+  "canonical_frame": {
+    "front_facade": "front",
+    "x_direction": "front_view_left_to_right",
+    "y_direction": "front_to_rear",
+    "z_direction": "bottom_to_top"
+  },
+  "photos": [
+    {
+      "photo_index": 1,
+      "capture_role": "facade_view",
+      "facade": "front",
+      "description": "Vue avant canonique: enveloppe, six ouvertures principales et pignon.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "low"
+    },
+    {
+      "photo_index": 2,
+      "capture_role": "facade_view",
+      "facade": "right",
+      "description": "Vue canonique du côté droit: mur latéral, fenêtre haute, ouvertures basses, toiture et contexte arrière.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "low"
+    },
+    {
+      "photo_index": 3,
+      "capture_role": "facade_view",
+      "facade": "left",
+      "description": "Vue canonique du côté gauche: terrasse bois surélevée, garde-corps, supports, contreventements, ouvertures et escalier.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "high"
+    },
+    {
+      "photo_index": 4,
+      "capture_role": "facade_view",
+      "facade": "left",
+      "description": "Vue gauche rapprochée: escalier maçonné, palier/circulation supérieure, terrasse bois et ouvertures.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "low"
+    },
+    {
+      "photo_index": 5,
+      "capture_role": "facade_view",
+      "facade": "rear",
+      "description": "Vue arrière canonique: ensemble escalier-palier, élévation, toiture.",
+      "source": {
+        "kind": "observed",
+        "confidence": 1
+      },
+      "image_left_maps_to_facade_offset": "high"
+    }
+  ],
+  "known_measurements": [],
+  "observations": [
+    {
+      "id": "building-boundary-1",
+      "kind": "building_boundary",
+      "facade": null,
+      "certainty": "certain",
+      "statement": "L'enveloppe générale du bâtiment cible est identifiable à travers les cinq vues sans métrique connue.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Enveloppe du même bâtiment recoupée dans cette vue."
+        },
+        {
+          "photo_index": 2,
+          "observation": "Enveloppe du même bâtiment recoupée dans cette vue."
+        },
+        {
+          "photo_index": 3,
+          "observation": "Enveloppe du même bâtiment recoupée dans cette vue."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Enveloppe du même bâtiment recoupée dans cette vue."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Enveloppe du même bâtiment recoupée dans cette vue."
+        }
+      ],
+      "attributes": {
+        "multiview_identity": {
+          "status": "same_physical_object",
+          "photo_indexes": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "cues": [
+            "structural_continuity",
+            "facade_transition"
+          ]
+        }
+      },
+      "attribute_certainty": {
+        "multiview_identity": "certain"
+      }
+    },
+    {
+      "id": "roof-main-1",
+      "kind": "roof",
+      "facade": null,
+      "certainty": "certain",
+      "statement": "Toiture principale visible; le pignon frontal et les vues latérales établissent une toiture générale à deux pans.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Pignon triangulaire et deux rives inclinées visibles."
+        },
+        {
+          "photo_index": 2,
+          "observation": "Pan/ligne de toiture latérale compatible avec le pignon."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Toiture recoupée depuis l'arrière."
+        }
+      ],
+      "attributes": {
+        "roof_type": "gable",
+        "gable_end_observed": true,
+        "ridge_qualitative": "between_two_slopes",
+        "visual_pitch": "moderate_reconstructible_proportion",
+        "numeric_pitch_degrees": null
+      },
+      "attribute_certainty": {
+        "roof_type": "certain",
+        "gable_end_observed": "certain",
+        "ridge_qualitative": "plausible",
+        "visual_pitch": "plausible",
+        "numeric_pitch_degrees": "unproven"
+      }
+    },
+    {
+      "id": "chimney-house-1",
+      "kind": "chimney",
+      "facade": null,
+      "certainty": "certain",
+      "statement": "Cheminée de la maison recoupée dans la zone de toiture avant; position seulement qualitative.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Souche visible dans la zone gauche de la toiture vue de face."
+        },
+        {
+          "photo_index": 3,
+          "observation": "Souche recoupée depuis le côté gauche avec repères relatifs toiture/antenne."
+        }
+      ],
+      "attributes": {
+        "belongs_to_target_house": true,
+        "qualitative_position": "toward_front-facade-left; cross-view relative position only",
+        "multiview_identity": {
+          "status": "same_physical_object",
+          "photo_indexes": [
+            1,
+            3
+          ],
+          "cues": [
+            "shape_detail",
+            "relative_position"
+          ]
+        }
+      },
+      "attribute_certainty": {
+        "belongs_to_target_house": "certain",
+        "qualitative_position": "plausible",
+        "multiview_identity": "certain"
+      }
+    },
+    {
+      "id": "chimneys-background-1",
+      "kind": "context",
+      "facade": null,
+      "certainty": "certain",
+      "statement": "D'autres cheminées sont visibles en arrière-plan sur la vue droite; leur appartenance au bâtiment cible n'est pas établie.",
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Souches visibles au-delà du toit cible dans le contexte arrière."
+        }
+      ],
+      "attributes": {
+        "belongs_to_target_house": null
+      },
+      "attribute_certainty": {
+        "belongs_to_target_house": "unproven"
+      }
+    },
+    {
+      "id": "platform-timber-1",
+      "kind": "platform",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Terrasse bois surélevée, surface de circulation extérieure distincte, avec garde-corps et structure visible sous la plateforme.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Plateforme bois, garde-corps, poteau(x) et diagonale(s) visibles."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Même terrasse bois recoupée près du palier maçonné."
+        }
+      ],
+      "attributes": {
+        "exterior_material": "timber",
+        "raised": true,
+        "circulation_function": "upper exterior walking/circulation surface",
+        "support_structure": {
+          "vertical_supports_exist": true,
+          "diagonal_bracing_exists": true,
+          "exhaustive_count": null,
+          "metric_positions": null
+        },
+        "multiview_identity": {
+          "status": "same_physical_object",
+          "photo_indexes": [
+            3,
+            4
+          ],
+          "cues": [
+            "shape_detail",
+            "structural_continuity"
+          ]
+        }
+      },
+      "attribute_certainty": {
+        "exterior_material": "certain",
+        "raised": "certain",
+        "circulation_function": "plausible",
+        "support_structure": "certain",
+        "multiview_identity": "certain"
+      }
+    },
+    {
+      "id": "guardrail-timber-1",
+      "kind": "material",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Garde-corps/balustrade en bois appartenant à la terrasse surélevée.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Garde-corps visible sur le bord de terrasse."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Même garde-corps recoupé en arrière-plan."
+        }
+      ],
+      "attributes": {
+        "material": "timber",
+        "exact_module_count": null
+      },
+      "attribute_certainty": {
+        "material": "certain",
+        "exact_module_count": "unproven"
+      }
+    },
+    {
+      "id": "stair-exterior-1",
+      "kind": "stair",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Système d'escalier extérieur maçonné assurant une circulation du niveau extérieur bas vers la circulation supérieure; une forme tournante est plausible mais non établie.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Escalier extérieur visible."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Escalier et parois maçonnées recoupés."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Escalier montant vers le palier supérieur."
+        }
+      ],
+      "attributes": {
+        "exterior_material": "masonry",
+        "circulation_function": "lower_to_upper",
+        "stair_topology": {
+          "minimum_run_count": null,
+          "exact_run_count": null,
+          "direction_change": null,
+          "turning_node_kind": null,
+          "component_run_ids": []
+        },
+        "turning_form_hypothesis": "L/turning circulation plausible; hidden turn not proven"
+      },
+      "attribute_certainty": {
+        "exterior_material": "plausible",
+        "circulation_function": "plausible",
+        "stair_topology": "unproven",
+        "turning_form_hypothesis": "plausible"
+      }
+    },
+    {
+      "id": "platform-massive-1",
+      "kind": "platform",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Palier/surface de circulation maçonnée supérieure, distincte de la terrasse bois; aucun grand volume inférieur fermé n'est affirmé.",
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Surface supérieure maçonnée bordée de parois au raccord de l'escalier."
+        },
+        {
+          "photo_index": 5,
+          "observation": "Même ensemble de circulation supérieure recoupé avec l'escalier."
+        }
+      ],
+      "attributes": {
+        "exterior_material": "masonry",
+        "circulation_function": "upper circulation node",
+        "closed_volume_below": null,
+        "metric_dimensions": null,
+        "multiview_identity": {
+          "status": "same_physical_object",
+          "photo_indexes": [
+            4,
+            5
+          ],
+          "cues": [
+            "shape_detail",
+            "structural_continuity"
+          ]
+        }
+      },
+      "attribute_certainty": {
+        "exterior_material": "plausible",
+        "circulation_function": "plausible",
+        "closed_volume_below": "unproven",
+        "metric_dimensions": "unproven",
+        "multiview_identity": "certain"
+      }
+    },
+    {
+      "id": "front-openings-1",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "statement": "Six ouvertures principales distinctes sont observables sur la façade avant; leurs compositions visuelles doivent être préservées sans métrique inventée.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Six ouvertures physiques distinctes visibles sur l'élévation."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 6,
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "metric_geometry": "unproven"
+      }
+    },
+    {
+      "id": "right-opening-high-1",
+      "kind": "opening",
+      "facade": "right",
+      "certainty": "certain",
+      "statement": "Fenêtre haute ordinaire visible sur la façade droite.",
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Fenêtre haute clairement visible."
+        }
+      ],
+      "attributes": {
+        "semantic_type": "window",
+        "relative_vertical_position": "high",
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "semantic_type": "certain",
+        "relative_vertical_position": "certain",
+        "metric_geometry": "unproven"
+      }
+    },
+    {
+      "id": "right-opening-low-glazed-1",
+      "kind": "opening",
+      "facade": "right",
+      "certainty": "certain",
+      "statement": "Ouverture basse vitrée/translucide au bord de la route, d'apparence compatible avec des briques de verre.",
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Ouverture basse translucide visible."
+        }
+      ],
+      "attributes": {
+        "semantic_type_hypothesis": "glass_block_like_opening",
+        "relative_vertical_position": "low",
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "semantic_type_hypothesis": "plausible",
+        "relative_vertical_position": "certain",
+        "metric_geometry": "unproven"
+      }
+    },
+    {
+      "id": "right-equipment-low-1",
+      "kind": "equipment",
+      "facade": "right",
+      "certainty": "plausible",
+      "statement": "Petit élément bas de type coffret/équipement technique; importance architecturale secondaire.",
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Petit élément rectangulaire bas distinct des ouvertures principales."
+        }
+      ],
+      "attributes": {
+        "equipment_type_hypothesis": "electrical_or_technical_box"
+      },
+      "attribute_certainty": {
+        "equipment_type_hypothesis": "plausible"
+      }
+    },
+    {
+      "id": "left-opening-high-1",
+      "kind": "opening",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Fenêtre haute visible sur l'élévation gauche.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Fenêtre haute visible."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Même fenêtre recoupée."
+        }
+      ],
+      "attributes": {
+        "semantic_type": "window",
+        "multiview_identity": {
+          "status": "same_physical_object",
+          "photo_indexes": [
+            3,
+            4
+          ],
+          "cues": [
+            "shape_detail",
+            "structural_continuity"
+          ]
+        }
+      },
+      "attribute_certainty": {
+        "semantic_type": "certain",
+        "multiview_identity": "certain"
+      }
+    },
+    {
+      "id": "left-access-opening-1",
+      "kind": "opening",
+      "facade": "left",
+      "certainty": "certain",
+      "statement": "Grande ouverture vitrée/d'accès visible au niveau de la circulation supérieure; son sous-type exact reste à confirmer.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Grande ouverture sombre/vitrée visible derrière la zone de terrasse."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Zone d'accès supérieure recoupée depuis un autre angle."
+        }
+      ],
+      "attributes": {
+        "semantic_type_hypothesis": "door_or_glazed_door_or_french_door",
+        "multiview_identity": {
+          "status": "same_physical_object",
+          "photo_indexes": [
+            3,
+            4
+          ],
+          "cues": [
+            "relative_position",
+            "structural_continuity"
+          ]
+        }
+      },
+      "attribute_certainty": {
+        "semantic_type_hypothesis": "plausible",
+        "multiview_identity": "plausible"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "relation-stair-landing",
+      "kind": "connects_to",
+      "subject_id": "stair-exterior-1",
+      "object_id": "platform-massive-1",
+      "certainty": "certain",
+      "statement": "L'escalier atteint la circulation/palier maçonné supérieur.",
+      "evidence": [
+        {
+          "photo_index": 5,
+          "observation": "La volée visible monte vers le palier."
+        }
+      ]
+    },
+    {
+      "id": "relation-landing-building",
+      "kind": "connects_to",
+      "subject_id": "platform-massive-1",
+      "object_id": "building-boundary-1",
+      "certainty": "certain",
+      "statement": "Le palier rejoint physiquement l'enveloppe du bâtiment.",
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Contact direct du palier avec l'élévation visible."
+        }
+      ]
+    },
+    {
+      "id": "relation-deck-building",
+      "kind": "connects_to",
+      "subject_id": "platform-timber-1",
+      "object_id": "building-boundary-1",
+      "certainty": "certain",
+      "statement": "La terrasse bois rejoint physiquement l'élévation du bâtiment.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Bord intérieur de la terrasse au contact du mur."
+        }
+      ]
+    },
+    {
+      "id": "relation-guardrail-deck",
+      "kind": "part_of",
+      "subject_id": "guardrail-timber-1",
+      "object_id": "platform-timber-1",
+      "certainty": "certain",
+      "statement": "Le garde-corps appartient à la terrasse bois.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Garde-corps porté par le bord de terrasse."
+        }
+      ]
+    },
+    {
+      "id": "relation-deck-landing-hypothesis",
+      "kind": "connects_to",
+      "subject_id": "platform-timber-1",
+      "object_id": "platform-massive-1",
+      "certainty": "plausible",
+      "statement": "HYPOTHÈSE ARCHITECTURALE FORTE: les deux surfaces de circulation semblent directement connectées; la jonction cachée n'est pas prouvée et aucune géométrie n'est créée.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Terrasse et circulation supérieure appartiennent au même ensemble d'accès visible."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Les deux surfaces sont visibles en voisinage fonctionnel."
+        },
+        {
+          "photo_index": 5,
+          "observation": "L'ensemble escalier-palier est compatible avec une continuité vers la terrasse."
+        }
+      ]
+    }
+  ],
+  "representation_policy": {
+    "preserve_nominal_materials": true,
+    "preserve_opening_composition": true,
+    "preserve_architectural_details": true,
+    "reproduce_weathering": false,
+    "reproduce_temporary_objects": false
+  },
+  "notes": "CANDIDAT SURVEY dérivé de la référence de développement cinq-photos V0.2. Aucune Scene, aucun LEGO, aucune géométrie métrique inventée. Correction connue post-oracle: terrasse bois ↔ palier est rétrogradée à hypothèse architecturale forte/plausible. Le schéma Survey 0.1 ne possède pas de champ typé pour questions utilisateur, déduction architecturale comme provenance, position qualitative, contradictions ou UNKNOWN explicite hors attributs libres; ces informations ne doivent pas être surpromues."
+}
