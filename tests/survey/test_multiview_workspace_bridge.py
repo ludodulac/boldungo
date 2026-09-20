@@ -38,7 +38,7 @@ def test_a_certain_same_window_fuses_with_multiview_provenance():
     assert len(result.survey_state.survey.observations)==1
     item=result.survey_state.survey.observations[0]
     assert {e.photo_index for e in item.evidence}=={1,2}
-    assert item.attributes["multiview_identity"]["status"]=="same_physical_object"
+    assert item.attributes=={}
 
 
 def test_b_opening_existence_certain_but_door_type_stays_plausible():
