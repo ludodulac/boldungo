@@ -85,7 +85,7 @@ function applyNoticeAssemblyStep(index){
     if(prev)prev.disabled=index===0;
     if(next)next.disabled=index===33;
   }
-  frameNoticePlacements([...state.before,...state.added],state.step.view||'perspective');
+  frameNoticePlacements([...state.before,...state.added],'perspective');
   window.__NOTICE_PROOF__={
     total_assembly_steps:34,
     current_step:state.step.step_id,
