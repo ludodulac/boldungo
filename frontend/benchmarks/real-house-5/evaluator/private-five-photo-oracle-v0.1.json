@@ -1,0 +1,368 @@
+{
+  "schema_version": "brickhouse-five-photo-oracle-0.1",
+  "benchmark_id": "real-house-5",
+  "candidate_input_policy": {
+    "allowed_photo_indexes": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "control_photo_indexes": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "owner_facts_allowed": false,
+    "scene_allowed": false,
+    "lego_allowed": false
+  },
+  "diagnostic_categories": {
+    "A": "correctly_observed_or_identified",
+    "B": "correctly_related_by_multiview",
+    "C": "reasonable_hypothesis_preserved_as_hypothesis",
+    "D": "honestly_left_unknown",
+    "E": "perceptible_element_missed",
+    "F": "wrong_interpretation",
+    "G": "hallucinated_or_invented_certainty"
+  },
+  "truths": [
+    {
+      "id": "main-building-envelope",
+      "truth": "The same rendered main building envelope is present across the canonical views.",
+      "evidence_1_5": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "evidence_6_22": [],
+      "maximum_from_five": "MULTIVIEW_DEDUCIBLE_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "front-opening-inventory",
+      "truth": "Six distinct principal openings are visible on the front elevation.",
+      "evidence_1_5": [
+        1
+      ],
+      "evidence_6_22": [],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "right-opening-inventory",
+      "truth": "The right elevation contains the visible upper and low openings recorded by the accepted Survey.",
+      "evidence_1_5": [
+        2
+      ],
+      "evidence_6_22": [],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "main-roof-gable",
+      "truth": "The principal roof is a gable/two-slope roof; the front view is a gable elevation.",
+      "evidence_1_5": [
+        1,
+        2,
+        5
+      ],
+      "evidence_6_22": [
+        18
+      ],
+      "maximum_from_five": "MULTIVIEW_DEDUCIBLE_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "chimney-present",
+      "truth": "A masonry chimney belongs to the target building roof.",
+      "evidence_1_5": [
+        1,
+        5
+      ],
+      "evidence_6_22": [],
+      "maximum_from_five": "MULTIVIEW_DEDUCIBLE_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "timber-deck-present",
+      "truth": "A raised timber walking deck distinct from masonry circulation is attached to the left/rear zone.",
+      "evidence_1_5": [
+        3,
+        4
+      ],
+      "evidence_6_22": [
+        6,
+        9,
+        14,
+        17
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "timber-guardrail-present",
+      "truth": "The timber deck has a timber guardrail/balustrade.",
+      "evidence_1_5": [
+        3,
+        4
+      ],
+      "evidence_6_22": [
+        9,
+        14,
+        17
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "timber-vertical-supports-exist",
+      "truth": "At least one vertical timber support exists below the deck; exhaustive count and geometry are unresolved.",
+      "evidence_1_5": [
+        3
+      ],
+      "evidence_6_22": [
+        15
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "timber-diagonal-bracing-exists",
+      "truth": "Diagonal timber bracing exists below the deck; exhaustive count and geometry are unresolved.",
+      "evidence_1_5": [
+        3
+      ],
+      "evidence_6_22": [
+        15
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "timber-joists-beams",
+      "truth": "Repeated timber joists/beams support the deck boards.",
+      "evidence_1_5": [],
+      "evidence_6_22": [
+        16,
+        19
+      ],
+      "maximum_from_five": "UNKNOWN_FROM_5",
+      "importance": "SECONDARY"
+    },
+    {
+      "id": "masonry-stair-present",
+      "truth": "An exterior masonry stair system is present.",
+      "evidence_1_5": [
+        3,
+        4,
+        5
+      ],
+      "evidence_6_22": [
+        7,
+        10,
+        13,
+        20,
+        21
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "stair-direction-change",
+      "truth": "The stair system contains a direction change/turning landing.",
+      "evidence_1_5": [
+        3,
+        4,
+        5
+      ],
+      "evidence_6_22": [
+        7,
+        10,
+        13,
+        20,
+        21
+      ],
+      "maximum_from_five": "HYPOTHESIS_ONLY_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "stair-exact-two-major-runs",
+      "truth": "Owner truth refines the stair to exactly two major runs; no run metrics are supplied.",
+      "evidence_1_5": [],
+      "evidence_6_22": [
+        7,
+        10,
+        13,
+        20,
+        21
+      ],
+      "maximum_from_five": "UNKNOWN_FROM_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "stair-side-masonry-walls",
+      "truth": "Masonry side walls/parapets accompany portions of the stair route; their metrics are unresolved.",
+      "evidence_1_5": [
+        4,
+        5
+      ],
+      "evidence_6_22": [
+        7,
+        10,
+        13,
+        20,
+        21
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "masonry-upper-landing",
+      "truth": "A real masonry circulation landing exists at the upper stair connection and is distinct from the timber deck.",
+      "evidence_1_5": [
+        4,
+        5
+      ],
+      "evidence_6_22": [
+        6,
+        8,
+        9
+      ],
+      "maximum_from_five": "MULTIVIEW_DEDUCIBLE_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "stair-connects-upper-landing",
+      "truth": "The exterior stair reaches the masonry upper landing.",
+      "evidence_1_5": [
+        5
+      ],
+      "evidence_6_22": [
+        7,
+        10,
+        13,
+        20,
+        21
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "masonry-landing-connects-building",
+      "truth": "The masonry landing physically meets the building envelope.",
+      "evidence_1_5": [
+        4
+      ],
+      "evidence_6_22": [
+        6,
+        8,
+        9
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "timber-deck-connects-building",
+      "truth": "The timber deck physically meets the building elevation.",
+      "evidence_1_5": [
+        3
+      ],
+      "evidence_6_22": [
+        9,
+        14,
+        17
+      ],
+      "maximum_from_five": "OBSERVABLE_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "timber-deck-connects-masonry-landing",
+      "truth": "The timber deck and masonry landing are distinct walking surfaces directly connected in the upper circulation zone.",
+      "evidence_1_5": [
+        3,
+        4,
+        5
+      ],
+      "evidence_6_22": [
+        6,
+        9
+      ],
+      "maximum_from_five": "HYPOTHESIS_ONLY_5",
+      "importance": "CRITICAL"
+    },
+    {
+      "id": "left-lower-opening-is-door",
+      "truth": "The dark lower left opening is an exterior glazed door serving the upper deck/landing zone.",
+      "evidence_1_5": [
+        3
+      ],
+      "evidence_6_22": [
+        8,
+        9
+      ],
+      "maximum_from_five": "HYPOTHESIS_ONLY_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "door-connects-masonry-landing",
+      "truth": "That exterior door opens directly onto the masonry upper circulation zone.",
+      "evidence_1_5": [
+        3,
+        4
+      ],
+      "evidence_6_22": [
+        8,
+        9
+      ],
+      "maximum_from_five": "HYPOTHESIS_ONLY_5",
+      "importance": "IMPORTANT"
+    },
+    {
+      "id": "rainwater-downpipe",
+      "truth": "A visible rainwater downpipe exists on the facade in the terrace zone; full route and dimensions are unresolved.",
+      "evidence_1_5": [],
+      "evidence_6_22": [
+        9,
+        22
+      ],
+      "maximum_from_five": "UNKNOWN_FROM_5",
+      "importance": "SECONDARY"
+    },
+    {
+      "id": "no-proven-closed-volume-under-landing",
+      "truth": "The evidence establishes masonry circulation surfaces/walls but does not establish a closed volume beneath the landing.",
+      "evidence_1_5": [
+        4,
+        5
+      ],
+      "evidence_6_22": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "maximum_from_five": "HYPOTHESIS_ONLY_5",
+      "importance": "IMPORTANT"
+    }
+  ],
+  "notes": "Evaluator-only control truth. Evidence in photos 6–22 and owner facts must never be exposed to the candidate phase. maximum_from_five is the benchmark ceiling: later knowledge does not retroactively make a fact deducible from photos 1–5."
+}
