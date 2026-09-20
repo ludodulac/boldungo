@@ -121,9 +121,12 @@ function applyNoticeAssemblyStep(index){
       const span=document.createElement('span'),preview=document.createElement('canvas'),qty=document.createElement('b');
       preview.className='notice-part-preview';preview.width=96;preview.height=58;preview.dataset.partId=partId;
       const part=lastBundle.brick_model.parts.find(item=>item.part_id===partId);
-      const d=dims(part),ctx=preview.getContext('2d'),studs=Math.max(d.width,d.length),bodyW=Math.min(78,18+studs*7),x=(96-bodyW)/2,y=24;
-      ctx.fillStyle='#e8e3d8';ctx.strokeStyle='#5f6368';ctx.lineWidth=1.5;ctx.fillRect(x,y,bodyW,22);ctx.strokeRect(x,y,bodyW,22);
-      for(let stud=0;stud<studs;stud++){const sx=x+(stud+.5)*bodyW/studs;ctx.beginPath();ctx.ellipse(sx,y,Math.min(4,bodyW/studs*.28),2.3,0,0,Math.PI*2);ctx.fill();ctx.stroke();}
+      const d=dims(part),ctx=preview.getContext('2d'),studs=Math.max(d.width,d.length),bodyW=Math.min(72,18+studs*6.5),x=(96-bodyW)/2,y=20,depth=10;
+      ctx.fillStyle='#e8e3d8';ctx.strokeStyle='#5f6368';ctx.lineWidth=1.3;
+      ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+bodyW,y);ctx.lineTo(x+bodyW+depth,y-6);ctx.lineTo(x+depth,y-6);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+bodyW,y);ctx.lineTo(x+bodyW,y+20);ctx.lineTo(x,y+20);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x+bodyW,y);ctx.lineTo(x+bodyW+depth,y-6);ctx.lineTo(x+bodyW+depth,y+14);ctx.lineTo(x+bodyW,y+20);ctx.closePath();ctx.fill();ctx.stroke();
+      for(let stud=0;stud<studs;stud++){const sx=x+(stud+.5)*bodyW/studs+depth*.5;ctx.beginPath();ctx.ellipse(sx,y-5.5,Math.min(3.6,bodyW/studs*.27),2.1,0,0,Math.PI*2);ctx.fill();ctx.stroke();}
       qty.textContent=`×${quantity}`;span.append(preview,qty);return span;
     }));
     const prev=hud.querySelector('#notice-prev'),next=hud.querySelector('#notice-next');
