@@ -82,9 +82,14 @@ def _identity_groups(workspace, eligible):
 
 
 def workspace_to_survey(workspace: MultiViewWorkspace, *, survey_id: str, survey_name: str,
-                        front_facade_photo_index: int) -> MultiViewSurveyBridgeResult:
-    """Transfer only claims that Survey can represent without increasing certainty."""
-    if not 1 <= front_facade_photo_index <= workspace.photo_count:
+                        front_facade_photo_index: int | None = None) -> MultiViewSurveyBridgeResult:
+    """Transfer only claims that Survey can represent without increasing certainty.
+
+    A canonical front is optional at this pre-Survey boundary.  When capture
+    metadata or a user confirmation establishes one, callers may supply its
+    photo index; otherwise every source view remains orientation-neutral.
+    """
+    if front_facade_photo_index is not None and not 1 <= front_facade_photo_index <= workspace.photo_count:
         raise ValueError("front_facade_photo_index is outside workspace photos")
     local = _final_observations(workspace)
     diagnostics = []
@@ -175,9 +180,10 @@ def workspace_to_survey(workspace: MultiViewWorkspace, *, survey_id: str, survey
         description="Source photo from pre-Survey multiview workspace.",
         source=SourceInfo(kind=SourceKind.OBSERVED, confidence=1.0), image_left_maps_to_facade_offset=None)
         for i in range(1, workspace.photo_count+1)]
-    photos[front_facade_photo_index-1] = PhotoView(photo_index=front_facade_photo_index,
-        capture_role="facade_view", facade=Facade.FRONT, description="Externally established canonical front view.",
-        source=SourceInfo(kind=SourceKind.OBSERVED, confidence=1.0), image_left_maps_to_facade_offset="low")
+    if front_facade_photo_index is not None:
+        photos[front_facade_photo_index-1] = PhotoView(photo_index=front_facade_photo_index,
+            capture_role="facade_view", facade=Facade.FRONT, description="Externally established canonical front view.",
+            source=SourceInfo(kind=SourceKind.OBSERVED, confidence=1.0), image_left_maps_to_facade_offset="low")
     survey = ArchitecturalSurvey(id=survey_id, name=survey_name, photos=photos, known_measurements=[],
         observations=observations, relations=relations,
         notes="Generated conservatively from MultiViewWorkspace; no metric values synthesized.")
