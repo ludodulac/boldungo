@@ -65,6 +65,21 @@ function noticeAssemblyStepState(bundle,index){
   }
   return{plan,step,before,added,pli};
 }
+function noticeStep12InsertionArrows(state,supportEvidence){
+  const arrows=[];
+  if(!supportEvidence)return arrows;
+  const partsById=new Map(lastBundle.brick_model.parts.map(part=>[part.placement_id,part]));
+  for(const item of supportEvidence){
+    const part=partsById.get(item.placement_id),d=dims(part);
+    const x=part.x_studs+d.width/2,z=part.y_studs+d.length/2;
+    const endY=part.z_plates*PLATE_WORLD_HEIGHT+Math.max(.55,d.heightPlates*PLATE_WORLD_HEIGHT+.35);
+    const startY=endY+1.0;
+    const arrow=new THREE.ArrowHelper(new THREE.Vector3(0,-1,0),new THREE.Vector3(x,startY,z),startY-endY,0xe87520,.28,.16);
+    arrow.userData.noticeInsertionArrow=true;scene.add(arrow);arrows.push(arrow);
+  }
+  return arrows;
+}
+function clearNoticeInsertionArrows(){for(const obj of [...scene.children])if(obj.userData?.noticeInsertionArrow)scene.remove(obj);}
 function noticeStep12SupportEvidence(state){
   if(state.step.step_id!=='step-0012')return null;
   const partsById=new Map(lastBundle.brick_model.parts.map(part=>[part.placement_id,part]));
@@ -80,6 +95,7 @@ function noticeStep12SupportEvidence(state){
   return evidence;
 }
 function applyNoticeAssemblyStep(index){
+  clearNoticeInsertionArrows();
   const state=noticeAssemblyStepState(lastBundle,index);
   const visualActionPrototype=index===11&&new URLSearchParams(window.location.search).get('visual')==='action';
   const supportEvidence=visualActionPrototype?noticeStep12SupportEvidence(state):null;
@@ -90,6 +106,7 @@ function applyNoticeAssemblyStep(index){
       if(mesh)mesh.position.y+=1.35;
     }
   }
+  const insertionArrows=visualActionPrototype?noticeStep12InsertionArrows(state,supportEvidence):[];
   scene.background.setHex(0xf3f4f6);ground.visible=false;document.body.classList.add('notice-prototype-mode');
   const hud=document.querySelector('#notice-prototype-hud');
   if(hud){
@@ -114,6 +131,7 @@ function applyNoticeAssemblyStep(index){
     current_sequence:index+1,
     visual_action_prototype:visualActionPrototype,
     support_evidence:supportEvidence,
+    insertion_arrow_count:insertionArrows.length,
     before_placement_ids:[...state.before],
     added_placement_ids:[...state.added],
     pli:[...state.pli].map(([part_id,quantity])=>({part_id,quantity})),
