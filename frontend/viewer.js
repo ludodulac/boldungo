@@ -65,10 +65,31 @@ function noticeAssemblyStepState(bundle,index){
   }
   return{plan,step,before,added,pli};
 }
+function noticeStep12SupportEvidence(state){
+  if(state.step.step_id!=='step-0012')return null;
+  const partsById=new Map(lastBundle.brick_model.parts.map(part=>[part.placement_id,part]));
+  const footprint=part=>{const d=dims(part);return{x0:part.x_studs,x1:part.x_studs+d.width,y0:part.y_studs,y1:part.y_studs+d.length};};
+  const overlap=(a,b)=>Math.max(a.x0,b.x0)<Math.min(a.x1,b.x1)&&Math.max(a.y0,b.y0)<Math.min(a.y1,b.y1);
+  const evidence=[];
+  for(const id of state.added){
+    const part=partsById.get(id),area=footprint(part);
+    const supports=[...state.before].map(pid=>partsById.get(pid)).filter(Boolean).filter(candidate=>candidate.z_plates+3===part.z_plates&&overlap(area,footprint(candidate)));
+    if(!supports.length)return null;
+    evidence.push({placement_id:id,support_placement_ids:supports.map(item=>item.placement_id),axis:'vertical',direction:'down'});
+  }
+  return evidence;
+}
 function applyNoticeAssemblyStep(index){
   const state=noticeAssemblyStepState(lastBundle,index);
   const visualActionPrototype=index===11&&new URLSearchParams(window.location.search).get('visual')==='action';
+  const supportEvidence=visualActionPrototype?noticeStep12SupportEvidence(state):null;
   for(const[id,m]of meshByPlacementId)setPartState(m,state.added.has(id)?(visualActionPrototype?'notice-current':'current'):state.before.has(id)?(visualActionPrototype?'previous':'normal'):'hidden');
+  if(visualActionPrototype&&supportEvidence){
+    for(const item of supportEvidence){
+      const mesh=meshByPlacementId.get(item.placement_id);
+      if(mesh)mesh.position.y+=1.35;
+    }
+  }
   scene.background.setHex(0xf3f4f6);ground.visible=false;document.body.classList.add('notice-prototype-mode');
   const hud=document.querySelector('#notice-prototype-hud');
   if(hud){
@@ -92,6 +113,7 @@ function applyNoticeAssemblyStep(index){
     current_step:state.step.step_id,
     current_sequence:index+1,
     visual_action_prototype:visualActionPrototype,
+    support_evidence:supportEvidence,
     before_placement_ids:[...state.before],
     added_placement_ids:[...state.added],
     pli:[...state.pli].map(([part_id,quantity])=>({part_id,quantity})),
