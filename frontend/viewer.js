@@ -83,7 +83,7 @@ function applyNoticeAssemblyStep(index){
   const state=noticeAssemblyStepState(lastBundle,index);
   const visualActionPrototype=index===11&&new URLSearchParams(window.location.search).get('visual')==='action';
   const supportEvidence=visualActionPrototype?noticeStep12SupportEvidence(state):null;
-  for(const[id,m]of meshByPlacementId)setPartState(m,state.added.has(id)?(visualActionPrototype?'notice-current':'current'):state.before.has(id)?(visualActionPrototype?'previous':'normal'):'hidden');
+  for(const[id,m]of meshByPlacementId)setPartState(m,state.added.has(id)?(visualActionPrototype?'notice-current':'current'):state.before.has(id)?'normal':'hidden');
   if(visualActionPrototype&&supportEvidence){
     for(const item of supportEvidence){
       const mesh=meshByPlacementId.get(item.placement_id);
