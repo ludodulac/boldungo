@@ -293,9 +293,6 @@ class ArchitecturalSurvey(BaseModel):
         photo_indexes = [photo.photo_index for photo in self.photos]
         if len(photo_indexes) != len(set(photo_indexes)):
             raise ValueError("photo indexes must be unique")
-        if not any(photo.facade is Facade.FRONT for photo in self.photos):
-            raise ValueError("survey requires at least one canonical front photo")
-
         measurement_kinds = [measurement.kind for measurement in self.known_measurements]
         if len(measurement_kinds) != len(set(measurement_kinds)):
             raise ValueError("survey known measurement kinds must be unique")
