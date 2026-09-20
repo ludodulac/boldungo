@@ -113,3 +113,49 @@ def test_likely_same_is_not_promoted_to_same_physical_object():
     result=bridge(workspace([a,b],identities=[identity]))
     assert len(result.survey_state.survey.observations)==2
     assert all("multiview_identity" not in x.attributes for x in result.survey_state.survey.observations)
+
+
+def test_unknown_front_orientation_is_preserved_before_canonical_survey():
+    a = obs("a", 1, "window")
+    hidden = LocalObservation(
+        id="hidden", photo_index=2, status=ClaimStatus.UNKNOWN,
+        visibility=VisibilityStatus.OCCLUDED, statement="region blocked",
+    )
+    h1 = OpenHypothesis(
+        id="roof-gable", subject_refs=["a"], statement="roof may be gable",
+        competing_with=["roof-other"], certainty=CertaintyLevel.PLAUSIBLE,
+        supporting_photo_indexes=[1],
+    )
+    h2 = OpenHypothesis(
+        id="roof-other", subject_refs=["a"], statement="roof may have another topology",
+        competing_with=["roof-gable"], certainty=CertaintyLevel.UNPROVEN,
+        supporting_photo_indexes=[2],
+    )
+    ws = workspace([a, hidden], hypotheses=[h1, h2])
+    result = workspace_to_survey(
+        ws, survey_id="orientation-neutral", survey_name="Orientation neutral",
+    )
+    assert result.workspace == ws
+    assert result.workspace.pass_2.observations[0].certainty.existence is CertaintyLevel.CERTAIN
+    assert result.workspace.pass_2.observations[1].visibility is VisibilityStatus.OCCLUDED
+    assert len(result.workspace.pass_2.hypotheses) == 2
+    assert result.workspace.pass_2.hypotheses[0].certainty is CertaintyLevel.PLAUSIBLE
+    assert result.workspace.pass_2.observations[0].photo_index == 1
+    assert result.workspace.photo_count == 2
+    assert any("orientation is unknown" in x.statement for x in result.diagnostics)
+
+def test_explicit_front_orientation_remains_supported_without_changing_claim_certainty():
+    item = obs("a", 2, "door", CertaintyLevel.PLAUSIBLE)
+    result = workspace_to_survey(
+        workspace([item]),
+        survey_id="known-front",
+        survey_name="Known front",
+        front_facade_photo_index=2,
+    )
+    survey = result.survey_state.survey
+    front = next(photo for photo in survey.photos if photo.photo_index == 2)
+    assert front.capture_role == "facade_view"
+    assert front.facade.value == "front"
+    observation = survey.observations[0]
+    assert observation.certainty is Certainty.CERTAIN
+    assert observation.attribute_certainty["semantic_type"] is Certainty.PLAUSIBLE
