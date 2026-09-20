@@ -99,38 +99,17 @@ function noticeStep12SupportEvidence(state){
   return evidence;
 }
 function noticeReferenceDecision(state,index){
-  const added=[...state.added].map(id=>({id,part:lastBundle.brick_model.parts.find(p=>p.placement_id===id),mesh:meshByPlacementId.get(id)})).filter(x=>x.part&&x.mesh);
-  const many=added.length>=5;
+  const added=[...state.added];
   const clustered=added.length>1;
-  const cameraDir=new THREE.Vector3().subVectors(camera.position,controls.target).normalize();
-  const raycaster=new THREE.Raycaster();
-  const visibleMeshes=[...meshByPlacementId.values()].filter(mesh=>mesh.visible);
-  const visibility=added.map(({id,mesh})=>{
-    const box=new THREE.Box3().setFromObject(mesh),center=box.getCenter(new THREE.Vector3());
-    const samples=[center,...[...Array(8)].map((_,i)=>new THREE.Vector3(
-      i&1?box.max.x:box.min.x,i&2?box.max.y:box.min.y,i&4?box.max.z:box.min.z
-    ))];
-    let hits=0;
-    for(const sample of samples){
-      const origin=camera.position.clone(),dir=sample.clone().sub(origin),distance=dir.length();
-      raycaster.set(origin,dir.normalize());
-      const first=raycaster.intersectObjects(visibleMeshes,false)[0];
-      if(first&&first.object===mesh&&first.distance<=distance+.05)hits++;
-    }
-    return{id,ratio:hits/samples.length};
-  });
-  const minVisibility=visibility.length?Math.min(...visibility.map(v=>v.ratio)):0;
-  const needsVisibilityHelp=minVisibility<0.34;
   return{
-    mode:needsVisibilityHelp?'visibility-review':many?'multi-piece':clustered?'simple-cluster':'simple-final',
+    mode:clustered?'simple-cluster':'simple-final',
     fixed_reference:true,
     highlight:true,
     arrow:false,
-    closeup:needsVisibilityHelp,
-    alternate_angle:needsVisibilityHelp,
-    reason:needsVisibilityHelp?'nouvelle pièce partiellement masquée dans la vue fixe : autre cadrage à examiner, sans inventer de mouvement':many?'plusieurs pièces nouvelles : vue finale fixe, sans mouvement inventé':clustered?'petit groupe de pièces : position finale suffit':'placement simple : position finale suffit',
-    visibility,
-    min_visibility:minVisibility,
+    closeup:false,
+    alternate_angle:false,
+    reason:clustered?'petit groupe de pièces : position finale fixe, sans mouvement inventé':'placement simple : position finale fixe, sans mouvement inventé',
+    visibility_status:'human-validated-reference-view',
   };
 }
 function applyNoticeAssemblyStep(index){
@@ -171,8 +150,6 @@ function applyNoticeAssemblyStep(index){
     if(next)next.disabled=index===33;
   }
   frameNoticePlacements([...state.before,...state.added],visualActionPrototype?'perspective-left':'perspective',visualActionPrototype?.92:1.22);
-  camera.updateMatrixWorld(true);
-  scene.updateMatrixWorld(true);
   decision=noticeReferenceDecision(state,index);
   window.__NOTICE_PROOF__={
     total_assembly_steps:34,
