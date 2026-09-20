@@ -127,10 +127,6 @@ def workspace_to_survey(workspace: MultiViewWorkspace, *, survey_id: str, survey
             if type_certainty is not CertaintyLevel.UNKNOWN:
                 attrs["semantic_type"] = semantic_type
                 attr_certainty["semantic_type"] = _certainty(type_certainty)
-        if len(group) > 1:
-            attrs["multiview_identity"] = {"status": "same_physical_object",
-                "photo_indexes": sorted({x.photo_index for x in items}), "cues": [], "supporting_relation_ids": []}
-            attr_certainty["multiview_identity"] = Certainty.CERTAIN
         observations.append(SurveyObservation(id=oid, kind=kind, certainty=_certainty(existence),
             statement=" / ".join(dict.fromkeys(x.statement for x in items)),
             evidence=[PhotoEvidence(photo_index=x.photo_index, observation=x.statement, region=x.region) for x in items],
