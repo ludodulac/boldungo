@@ -10,7 +10,7 @@ def test_large_exports_disable_individual_stud_meshes_only() -> None:
     assert "let studMeshBudgetEnabled=true" in source
     assert "studMeshBudgetEnabled=b.brick_model.parts.length<=1200" in source
     assert "studMeshBudgetEnabled&&(studDetailEnabled||span<=4)" in source
-    assert "studMeshBudgetEnabled&&(studDetailEnabled||w*l<=4)" in source
+    assert "studMeshBudgetEnabled&&(noticeFirstStep||studDetailEnabled||w*l<=4)" in source
 
 
 def test_large_model_budget_does_not_change_export_data() -> None:
