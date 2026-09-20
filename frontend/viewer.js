@@ -140,7 +140,7 @@ function applyNoticeAssemblyStep(index){
   const visualActionPrototype=noticeReferenceGrammar;
   const supportEvidence=index===11&&noticeReferenceGrammar?noticeStep12SupportEvidence(state):null;
   for(const[id,m]of meshByPlacementId)setPartState(m,state.added.has(id)?(visualActionPrototype?'notice-current':'current'):state.before.has(id)?'normal':'hidden');
-  const decision=noticeReferenceDecision(state,index);
+  let decision=null;
   const insertionArrows=[];
   if(noticeReferenceGrammar){
     for(const id of state.added){
@@ -171,6 +171,9 @@ function applyNoticeAssemblyStep(index){
     if(next)next.disabled=index===33;
   }
   frameNoticePlacements([...state.before,...state.added],visualActionPrototype?'perspective-left':'perspective',visualActionPrototype?.92:1.22);
+  camera.updateMatrixWorld(true);
+  scene.updateMatrixWorld(true);
+  decision=noticeReferenceDecision(state,index);
   window.__NOTICE_PROOF__={
     total_assembly_steps:34,
     current_step:state.step.step_id,
