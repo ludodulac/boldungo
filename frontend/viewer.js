@@ -100,18 +100,37 @@ function noticeStep12SupportEvidence(state){
 }
 function noticeReferenceDecision(state,index){
   const added=[...state.added].map(id=>({id,part:lastBundle.brick_model.parts.find(p=>p.placement_id===id),mesh:meshByPlacementId.get(id)})).filter(x=>x.part&&x.mesh);
-  const visible=added.length>0&&added.every(x=>x.mesh.visible!==false);
   const many=added.length>=5;
   const clustered=added.length>1;
+  const cameraDir=new THREE.Vector3().subVectors(camera.position,controls.target).normalize();
+  const raycaster=new THREE.Raycaster();
+  const visibleMeshes=[...meshByPlacementId.values()].filter(mesh=>mesh.visible);
+  const visibility=added.map(({id,mesh})=>{
+    const box=new THREE.Box3().setFromObject(mesh),center=box.getCenter(new THREE.Vector3());
+    const samples=[center,...[...Array(8)].map((_,i)=>new THREE.Vector3(
+      i&1?box.max.x:box.min.x,i&2?box.max.y:box.min.y,i&4?box.max.z:box.min.z
+    ))];
+    let hits=0;
+    for(const sample of samples){
+      const origin=camera.position.clone(),dir=sample.clone().sub(origin),distance=dir.length();
+      raycaster.set(origin,dir.normalize());
+      const first=raycaster.intersectObjects(visibleMeshes,false)[0];
+      if(first&&first.object===mesh&&first.distance<=distance+.05)hits++;
+    }
+    return{id,ratio:hits/samples.length};
+  });
+  const minVisibility=visibility.length?Math.min(...visibility.map(v=>v.ratio)):0;
+  const needsVisibilityHelp=minVisibility<0.34;
   return{
-    mode:many?'multi-piece':clustered?'simple-cluster':'simple-final',
+    mode:needsVisibilityHelp?'visibility-review':many?'multi-piece':clustered?'simple-cluster':'simple-final',
     fixed_reference:true,
     highlight:true,
     arrow:false,
-    closeup:false,
-    alternate_angle:false,
-    reason:many?'plusieurs pièces nouvelles : vue finale fixe, sans mouvement inventé':clustered?'petit groupe de pièces : position finale suffit':'placement simple : position finale suffit',
-    visible_after:true,
+    closeup:needsVisibilityHelp,
+    alternate_angle:needsVisibilityHelp,
+    reason:needsVisibilityHelp?'nouvelle pièce partiellement masquée dans la vue fixe : autre cadrage à examiner, sans inventer de mouvement':many?'plusieurs pièces nouvelles : vue finale fixe, sans mouvement inventé':clustered?'petit groupe de pièces : position finale suffit':'placement simple : position finale suffit',
+    visibility,
+    min_visibility:minVisibility,
   };
 }
 function applyNoticeAssemblyStep(index){
