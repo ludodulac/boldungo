@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 from brickhouse.building.models import BuildingModel, Facade, OpeningType
 from .building_layout import BuildingBrickShell
 
-TrimRole = Literal["sill", "left_jamb", "right_jamb", "head", "surround_base"]
+TrimRole = Literal["sill", "left_jamb", "right_jamb", "head", "surround_base", "reveal_left", "reveal_right", "reveal_sill", "reveal_head"]
 FacadeDetailCategory = Literal["facade_detail", "masonry", "stone"]
 
 
@@ -29,6 +29,7 @@ class FacadeDetailPlacement(BaseModel):
     opening_id: str | None = None
     trim_role: TrimRole | None = None
     semantic_color: str | None = Field(default=None, min_length=1)
+    prototype_recess_studs: int = Field(default=0, ge=0, le=1)
 
 
 _CANONICAL_TRIM_SPANS: tuple[tuple[int, str], ...] = (
@@ -389,3 +390,31 @@ def generate_window_surrounds(
                     sill_color,
                 )
     return placements
+
+
+def generate_prototype_window_reveals(building: BuildingModel, shell: BuildingBrickShell, *, recess_studs: int = 1) -> list[FacadeDetailPlacement]:
+    """One-stud LEGO representation prototype; never an architectural metric claim."""
+    if recess_studs != 1:
+        raise ValueError("prototype reveal depth is exactly one LEGO stud")
+    walls = {wall.facade: wall for wall in shell.walls}
+    front = walls[Facade.FRONT].grid.width_studs
+    depth = walls[Facade.RIGHT].grid.width_studs
+    openings = {opening.id: opening for opening in building.openings}
+    out = []
+    def add(facade, local_x, course, role, opening_id):
+        x, y, z = _to_global(facade, local_x, course, front, depth)
+        rotation = 0 if facade in {Facade.FRONT, Facade.REAR} else 1
+        if facade is Facade.REAR: y -= 1
+        if facade is Facade.RIGHT: x -= 1
+        out.append(FacadeDetailPlacement(part_id="BRICK_1X2", category="facade_detail", facade=facade, x_studs=x, y_studs=y, z_plates=z, rotation_quarter_turns=rotation, opening_id=opening_id, trim_role=role, prototype_recess_studs=1))
+    for facade, wall in walls.items():
+        for r in wall.grid.openings:
+            o = openings.get(r.id)
+            if not o or o.type is not OpeningType.WINDOW: continue
+            for course in range(r.z_bricks, r.z_bricks + r.height_bricks):
+                add(facade, r.x_studs, course, "reveal_left", r.id)
+                add(facade, r.x_studs + r.width_studs - 1, course, "reveal_right", r.id)
+            for x in range(r.x_studs, r.x_studs + r.width_studs):
+                add(facade, x, r.z_bricks, "reveal_sill", r.id)
+                add(facade, x, r.z_bricks + r.height_bricks - 1, "reveal_head", r.id)
+    return out
