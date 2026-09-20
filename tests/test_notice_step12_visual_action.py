@@ -5,7 +5,8 @@ STYLES=Path("frontend/styles.css")
 
 def test_step_12_reference_experiment_is_strictly_opt_in():
     js=VIEWER.read_text(encoding="utf-8")
-    assert "visualActionPrototype=index===11&&new URLSearchParams(window.location.search).get('visual')==='action'" in js
+    assert "const noticeReferenceGrammar=new URLSearchParams(window.location.search).get('visual')==='action'" in js
+    assert "const visualActionPrototype=noticeReferenceGrammar" in js
     assert "state.before.has(id)?'normal':'hidden'" in js
     assert "visualActionPrototype?'perspective-left':'perspective'" in js
     assert "visualActionPrototype?.92:1.22" in js
