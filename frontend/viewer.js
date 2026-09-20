@@ -30,7 +30,7 @@ function frameNoticePlacements(placementIds,view='perspective'){
   const f=noticePlacementFrame(placementIds);
   if(!f)return;
   const directions={front:new THREE.Vector3(0,0,1),rear:new THREE.Vector3(0,0,-1),left:new THREE.Vector3(-1,0,0),right:new THREE.Vector3(1,0,0),perspective:new THREE.Vector3(.9,.65,1.05)};
-  const direction=(directions[view]??directions.perspective).clone().normalize();
+  const direction=(view==='perspective'?new THREE.Vector3(.72,.92,1.18):(directions[view]??directions.perspective)).clone().normalize();
   const forward=direction.clone().negate();
   const right=new THREE.Vector3().crossVectors(forward,new THREE.Vector3(0,1,0)).normalize();
   const viewUp=new THREE.Vector3().crossVectors(right,forward).normalize();
