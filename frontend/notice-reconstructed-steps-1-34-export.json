@@ -1,0 +1,1515 @@
+{
+  "schema_version": "0.1",
+  "building_id": "building_simple_house_001",
+  "volume_id": "vol_main",
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "building_simple_house_001",
+    "volume_id": "vol_main",
+    "width_studs": 16,
+    "depth_studs": 13,
+    "height_plates": 34,
+    "canvas_width_studs": 18,
+    "canvas_depth_studs": 16,
+    "origin_x_studs": 1,
+    "origin_y_studs": 1,
+    "parts": [
+      {
+        "placement_id": "wall-000001",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 1,
+        "z_plates": 0,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000002",
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 7,
+        "y_studs": 1,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000003",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 10,
+        "y_studs": 1,
+        "z_plates": 0,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000004",
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 1,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000005",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 9,
+        "y_studs": 13,
+        "z_plates": 0,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000006",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 13,
+        "z_plates": 0,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000007",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 5,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000008",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 2,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000009",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000010",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 10,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000011",
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 2,
+        "y_studs": 1,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000012",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 5,
+        "y_studs": 1,
+        "z_plates": 3,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000013",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 10,
+        "y_studs": 1,
+        "z_plates": 3,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000014",
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 15,
+        "y_studs": 1,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000015",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 8,
+        "y_studs": 13,
+        "z_plates": 3,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000016",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 2,
+        "y_studs": 13,
+        "z_plates": 3,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000017",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 6,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000018",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 3,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000019",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 1,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000020",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 1,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000021",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 9,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000022",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 12,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000023",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 1,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000024",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 5,
+        "y_studs": 1,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000025",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 10,
+        "y_studs": 1,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000026",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 15,
+        "y_studs": 1,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000027",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 9,
+        "y_studs": 13,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000028",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 13,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000029",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 5,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000030",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 2,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000031",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000032",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 10,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000033",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 2,
+        "y_studs": 1,
+        "z_plates": 9,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000034",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 10,
+        "y_studs": 1,
+        "z_plates": 9,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000035",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 8,
+        "y_studs": 13,
+        "z_plates": 9,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000036",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 2,
+        "y_studs": 13,
+        "z_plates": 9,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000037",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 6,
+        "z_plates": 9,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000038",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 3,
+        "z_plates": 9,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000039",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 1,
+        "z_plates": 9,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000040",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 1,
+        "z_plates": 9,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000041",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 9,
+        "z_plates": 9,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000042",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 12,
+        "z_plates": 9,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000043",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 1,
+        "z_plates": 12,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000044",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 9,
+        "y_studs": 1,
+        "z_plates": 12,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000045",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 9,
+        "y_studs": 13,
+        "z_plates": 12,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000046",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 13,
+        "z_plates": 12,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000047",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 5,
+        "z_plates": 12,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000048",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 2,
+        "z_plates": 12,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000049",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": 12,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000050",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 10,
+        "z_plates": 12,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000051",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 2,
+        "y_studs": 1,
+        "z_plates": 15,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000052",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 6,
+        "y_studs": 1,
+        "z_plates": 15,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000053",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 14,
+        "y_studs": 1,
+        "z_plates": 15,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000054",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 8,
+        "y_studs": 13,
+        "z_plates": 15,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000055",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 2,
+        "y_studs": 13,
+        "z_plates": 15,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000056",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 6,
+        "z_plates": 15,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000057",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 3,
+        "z_plates": 15,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000058",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 1,
+        "z_plates": 15,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000059",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 1,
+        "z_plates": 15,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000060",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 9,
+        "z_plates": 15,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000061",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 12,
+        "z_plates": 15,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000062",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 1,
+        "z_plates": 18,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000063",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 6,
+        "y_studs": 1,
+        "z_plates": 18,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000064",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 14,
+        "y_studs": 1,
+        "z_plates": 18,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000065",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 9,
+        "y_studs": 13,
+        "z_plates": 18,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000066",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 13,
+        "z_plates": 18,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "wall-000067",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 5,
+        "z_plates": 18,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000068",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 1,
+        "y_studs": 2,
+        "z_plates": 18,
+        "rotation_quarter_turns": 0,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000069",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": 18,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "wall-000070",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 10,
+        "z_plates": 18,
+        "rotation_quarter_turns": 0,
+        "facade": "right"
+      },
+      {
+        "placement_id": "gable-000001",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 4,
+        "y_studs": 1,
+        "z_plates": 21,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "gable-000002",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 12,
+        "y_studs": 1,
+        "z_plates": 21,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "gable-000003",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 6,
+        "y_studs": 1,
+        "z_plates": 24,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "gable-000004",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 8,
+        "y_studs": 1,
+        "z_plates": 27,
+        "rotation_quarter_turns": 1,
+        "facade": "front"
+      },
+      {
+        "placement_id": "gable-000005",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 4,
+        "y_studs": 13,
+        "z_plates": 21,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "gable-000006",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 12,
+        "y_studs": 13,
+        "z_plates": 21,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "gable-000007",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 6,
+        "y_studs": 13,
+        "z_plates": 24,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      },
+      {
+        "placement_id": "gable-000008",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 8,
+        "y_studs": 13,
+        "z_plates": 27,
+        "rotation_quarter_turns": 1,
+        "facade": "rear"
+      }
+    ]
+  },
+  "bom": {
+    "schema_version": "0.1",
+    "building_id": "building_simple_house_001",
+    "volume_id": "vol_main",
+    "total_parts": 78,
+    "unique_part_types": 5,
+    "lines": [
+      {
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "quantity": 4
+      },
+      {
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "quantity": 14
+      },
+      {
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "quantity": 20
+      },
+      {
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "quantity": 10
+      },
+      {
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "quantity": 30
+      }
+    ]
+  },
+  "assembly_plan": {
+    "schema_version": "0.2",
+    "building_id": "building_simple_house_001",
+    "volume_id": "vol_main",
+    "total_steps": 34,
+    "total_parts": 78,
+    "total_bags": 3,
+    "steps": [
+      {
+        "step_id": "step-0001",
+        "sequence": 1,
+        "component": "wall",
+        "z_plates": 0,
+        "title": "Murs — façade avant — niveau 0 plates",
+        "placement_ids": [
+          "wall-000001",
+          "wall-000002",
+          "wall-000003",
+          "wall-000004"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0002",
+        "sequence": 2,
+        "component": "wall",
+        "z_plates": 0,
+        "title": "Murs — façade droite — niveau 0 plates",
+        "placement_ids": [
+          "wall-000009",
+          "wall-000010"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "right"
+      },
+      {
+        "step_id": "step-0003",
+        "sequence": 3,
+        "component": "wall",
+        "z_plates": 0,
+        "title": "Murs — façade arrière — niveau 0 plates",
+        "placement_ids": [
+          "wall-000005",
+          "wall-000006"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0004",
+        "sequence": 4,
+        "component": "wall",
+        "z_plates": 0,
+        "title": "Murs — façade gauche — niveau 0 plates",
+        "placement_ids": [
+          "wall-000007",
+          "wall-000008"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "left"
+      },
+      {
+        "step_id": "step-0005",
+        "sequence": 5,
+        "component": "wall",
+        "z_plates": 3,
+        "title": "Murs — façade avant — niveau 3 plates",
+        "placement_ids": [
+          "wall-000011",
+          "wall-000012",
+          "wall-000013",
+          "wall-000014"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0006",
+        "sequence": 6,
+        "component": "wall",
+        "z_plates": 3,
+        "title": "Murs — façade droite — niveau 3 plates",
+        "placement_ids": [
+          "wall-000020",
+          "wall-000021",
+          "wall-000022"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "right"
+      },
+      {
+        "step_id": "step-0007",
+        "sequence": 7,
+        "component": "wall",
+        "z_plates": 3,
+        "title": "Murs — façade arrière — niveau 3 plates",
+        "placement_ids": [
+          "wall-000015",
+          "wall-000016"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0008",
+        "sequence": 8,
+        "component": "wall",
+        "z_plates": 3,
+        "title": "Murs — façade gauche — niveau 3 plates",
+        "placement_ids": [
+          "wall-000017",
+          "wall-000018",
+          "wall-000019"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "left"
+      },
+      {
+        "step_id": "step-0009",
+        "sequence": 9,
+        "component": "wall",
+        "z_plates": 6,
+        "title": "Murs — façade avant — niveau 6 plates",
+        "placement_ids": [
+          "wall-000023",
+          "wall-000024",
+          "wall-000025",
+          "wall-000026"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0010",
+        "sequence": 10,
+        "component": "wall",
+        "z_plates": 6,
+        "title": "Murs — façade droite — niveau 6 plates",
+        "placement_ids": [
+          "wall-000031",
+          "wall-000032"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "right"
+      },
+      {
+        "step_id": "step-0011",
+        "sequence": 11,
+        "component": "wall",
+        "z_plates": 6,
+        "title": "Murs — façade arrière — niveau 6 plates",
+        "placement_ids": [
+          "wall-000027",
+          "wall-000028"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0012",
+        "sequence": 12,
+        "component": "wall",
+        "z_plates": 6,
+        "title": "Murs — façade gauche — niveau 6 plates",
+        "placement_ids": [
+          "wall-000029",
+          "wall-000030"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "left"
+      },
+      {
+        "step_id": "step-0013",
+        "sequence": 13,
+        "component": "wall",
+        "z_plates": 9,
+        "title": "Murs — façade avant — niveau 9 plates",
+        "placement_ids": [
+          "wall-000033",
+          "wall-000034"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0014",
+        "sequence": 14,
+        "component": "wall",
+        "z_plates": 9,
+        "title": "Murs — façade droite — niveau 9 plates",
+        "placement_ids": [
+          "wall-000040",
+          "wall-000041",
+          "wall-000042"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "right"
+      },
+      {
+        "step_id": "step-0015",
+        "sequence": 15,
+        "component": "wall",
+        "z_plates": 9,
+        "title": "Murs — façade arrière — niveau 9 plates",
+        "placement_ids": [
+          "wall-000035",
+          "wall-000036"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0016",
+        "sequence": 16,
+        "component": "wall",
+        "z_plates": 9,
+        "title": "Murs — façade gauche — niveau 9 plates",
+        "placement_ids": [
+          "wall-000037",
+          "wall-000038",
+          "wall-000039"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "left"
+      },
+      {
+        "step_id": "step-0017",
+        "sequence": 17,
+        "component": "wall",
+        "z_plates": 12,
+        "title": "Murs — façade avant — niveau 12 plates",
+        "placement_ids": [
+          "wall-000043",
+          "wall-000044"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0018",
+        "sequence": 18,
+        "component": "wall",
+        "z_plates": 12,
+        "title": "Murs — façade droite — niveau 12 plates",
+        "placement_ids": [
+          "wall-000049",
+          "wall-000050"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "right"
+      },
+      {
+        "step_id": "step-0019",
+        "sequence": 19,
+        "component": "wall",
+        "z_plates": 12,
+        "title": "Murs — façade arrière — niveau 12 plates",
+        "placement_ids": [
+          "wall-000045",
+          "wall-000046"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0020",
+        "sequence": 20,
+        "component": "wall",
+        "z_plates": 12,
+        "title": "Murs — façade gauche — niveau 12 plates",
+        "placement_ids": [
+          "wall-000047",
+          "wall-000048"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "left"
+      },
+      {
+        "step_id": "step-0021",
+        "sequence": 21,
+        "component": "wall",
+        "z_plates": 15,
+        "title": "Murs — façade avant — niveau 15 plates",
+        "placement_ids": [
+          "wall-000051",
+          "wall-000052",
+          "wall-000053"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0022",
+        "sequence": 22,
+        "component": "wall",
+        "z_plates": 15,
+        "title": "Murs — façade droite — niveau 15 plates",
+        "placement_ids": [
+          "wall-000059",
+          "wall-000060",
+          "wall-000061"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "right"
+      },
+      {
+        "step_id": "step-0023",
+        "sequence": 23,
+        "component": "wall",
+        "z_plates": 15,
+        "title": "Murs — façade arrière — niveau 15 plates",
+        "placement_ids": [
+          "wall-000054",
+          "wall-000055"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0024",
+        "sequence": 24,
+        "component": "wall",
+        "z_plates": 15,
+        "title": "Murs — façade gauche — niveau 15 plates",
+        "placement_ids": [
+          "wall-000056",
+          "wall-000057",
+          "wall-000058"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "left"
+      },
+      {
+        "step_id": "step-0025",
+        "sequence": 25,
+        "component": "wall",
+        "z_plates": 18,
+        "title": "Murs — façade avant — niveau 18 plates",
+        "placement_ids": [
+          "wall-000062",
+          "wall-000063",
+          "wall-000064"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0026",
+        "sequence": 26,
+        "component": "wall",
+        "z_plates": 18,
+        "title": "Murs — façade droite — niveau 18 plates",
+        "placement_ids": [
+          "wall-000069",
+          "wall-000070"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "right"
+      },
+      {
+        "step_id": "step-0027",
+        "sequence": 27,
+        "component": "wall",
+        "z_plates": 18,
+        "title": "Murs — façade arrière — niveau 18 plates",
+        "placement_ids": [
+          "wall-000065",
+          "wall-000066"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0028",
+        "sequence": 28,
+        "component": "wall",
+        "z_plates": 18,
+        "title": "Murs — façade gauche — niveau 18 plates",
+        "placement_ids": [
+          "wall-000067",
+          "wall-000068"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "left"
+      },
+      {
+        "step_id": "step-0029",
+        "sequence": 29,
+        "component": "wall",
+        "z_plates": 21,
+        "title": "Murs — façade avant — niveau 21 plates",
+        "placement_ids": [
+          "gable-000001",
+          "gable-000002"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0030",
+        "sequence": 30,
+        "component": "wall",
+        "z_plates": 21,
+        "title": "Murs — façade arrière — niveau 21 plates",
+        "placement_ids": [
+          "gable-000006",
+          "gable-000005"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0031",
+        "sequence": 31,
+        "component": "wall",
+        "z_plates": 24,
+        "title": "Murs — façade avant — niveau 24 plates",
+        "placement_ids": [
+          "gable-000003"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0032",
+        "sequence": 32,
+        "component": "wall",
+        "z_plates": 24,
+        "title": "Murs — façade arrière — niveau 24 plates",
+        "placement_ids": [
+          "gable-000007"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      },
+      {
+        "step_id": "step-0033",
+        "sequence": 33,
+        "component": "wall",
+        "z_plates": 27,
+        "title": "Murs — façade avant — niveau 27 plates",
+        "placement_ids": [
+          "gable-000004"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "front"
+      },
+      {
+        "step_id": "step-0034",
+        "sequence": 34,
+        "component": "wall",
+        "z_plates": 27,
+        "title": "Murs — façade arrière — niveau 27 plates",
+        "placement_ids": [
+          "gable-000008"
+        ],
+        "phase": "Structure",
+        "bag": 1,
+        "instruction_kind": "placement",
+        "focus": "normal",
+        "view": "rear"
+      }
+    ]
+  },
+  "fidelity_issues": [
+    {
+      "code": "lego_architectural_opening_unrepresented",
+      "severity": "warning",
+      "message": "Architectural opening 'door_front_01' (door) remains preserved as an opening void, but the current validated LEGO representation plan cannot emit a faithful assembly: door glazing is not established by structured evidence. No semantic reclassification or fake glazing is introduced.",
+      "object_id": "door_front_01"
+    },
+    {
+      "code": "lego_roof_gable_line_adjustment",
+      "severity": "info",
+      "message": "Architectural roof 'roof_main' remains unchanged; its LEGO longitudinal line extends from 13 to 16 studs (+1) to tile the selected slope and ridge families exactly. This is representation-only gable-end overhang.",
+      "object_id": "roof_main"
+    },
+    {
+      "code": "lego_gable_rise_distortion",
+      "severity": "info",
+      "message": "Architectural roof 'roof_main' remains unchanged at 35.00°; the validated LEGO 33.00° family makes the gable lower/flatter by 7.3% for the same half-span. This is a representation-fidelity diagnostic, not a mutation of architectural geometry.",
+      "object_id": "roof_main"
+    }
+  ],
+  "capability_summary": {
+    "render_artifact": "available",
+    "bom": "contract_verified",
+    "assembly_plan": "contract_verified",
+    "instruction_plan": "contract_verified",
+    "bag_plan": "contract_verified",
+    "fidelity_level": "degraded",
+    "mechanical_verification": {
+      "state": "not_claimed",
+      "scopes": []
+    }
+  },
+  "notice_reconstruction_provenance": {
+    "source": "docs/examples/building-model-simple-house.json",
+    "front_width_studs": 16,
+    "run_id": 35511101561,
+    "status": "compatible_reconstruction_not_historical_original",
+    "brick_model_sha256": "bf31eec2c4b11c28800f206a71924b6910f1d3b99cc0fa2ed9931610fef4db23",
+    "assembly_plan_sha256": "3b9b8cb1ba4dc8927656ce9a1ad1195b98019ad899cc018ec238e973661246b3"
+  }
+}
