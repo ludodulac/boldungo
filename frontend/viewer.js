@@ -16,6 +16,38 @@ function modelFrame(){const box=new THREE.Box3().setFromObject(modelGroup);if(bo
 // Therefore the architectural front camera stands at positive world z and sees increasing model x from screen left to screen right.
 function frameCanonicalView(view='perspective'){const f=modelFrame();if(!f)return;const d=cameraDistance(f.size),c=f.center;const directions={front:new THREE.Vector3(0,0,1),rear:new THREE.Vector3(0,0,-1),left:new THREE.Vector3(-1,0,0),right:new THREE.Vector3(1,0,0),perspective:new THREE.Vector3(.9,.65,1.05)};placeCamera(c,directions[view].normalize(),d,new THREE.Vector3(0,1,0));}
 function frameModel(){frameCanonicalView('perspective');}
+function noticePlacementFrame(placementIds){
+  const box=new THREE.Box3();
+  for(const id of placementIds){
+    const mesh=meshByPlacementId.get(id);
+    if(mesh)box.expandByObject(mesh,true);
+  }
+  if(box.isEmpty())return null;
+  return{box,size:box.getSize(new THREE.Vector3()),center:box.getCenter(new THREE.Vector3())};
+}
+function frameNoticePlacements(placementIds,view='perspective'){
+  resizeRenderer();
+  const f=noticePlacementFrame(placementIds);
+  if(!f)return;
+  const directions={front:new THREE.Vector3(0,0,1),rear:new THREE.Vector3(0,0,-1),left:new THREE.Vector3(-1,0,0),right:new THREE.Vector3(1,0,0),perspective:new THREE.Vector3(.9,.65,1.05)};
+  const direction=(directions[view]??directions.perspective).clone().normalize();
+  const forward=direction.clone().negate();
+  const right=new THREE.Vector3().crossVectors(forward,new THREE.Vector3(0,1,0)).normalize();
+  const viewUp=new THREE.Vector3().crossVectors(right,forward).normalize();
+  const corners=[];
+  for(const x of [f.box.min.x,f.box.max.x])for(const y of [f.box.min.y,f.box.max.y])for(const z of [f.box.min.z,f.box.max.z])corners.push(new THREE.Vector3(x,y,z).sub(f.center));
+  const halfWidth=Math.max(...corners.map(p=>Math.abs(p.dot(right))));
+  const halfHeight=Math.max(...corners.map(p=>Math.abs(p.dot(viewUp))));
+  const halfDepth=Math.max(...corners.map(p=>Math.abs(p.dot(direction))));
+  const verticalFov=THREE.MathUtils.degToRad(camera.fov);
+  const horizontalFov=2*Math.atan(Math.tan(verticalFov/2)*camera.aspect);
+  const fitDistance=Math.max(
+    halfWidth/Math.tan(horizontalFov/2),
+    halfHeight/Math.tan(verticalFov/2),
+    1,
+  );
+  placeCamera(f.center,direction,halfDepth+fitDistance*1.22,new THREE.Vector3(0,1,0));
+}
 function noticeStepState(bundle,index){
   const plan=bundle?.instruction_plan;
   if(!plan?.steps?.length)throw new Error('InstructionPlan absent du bundle NOTICE.');
@@ -49,7 +81,7 @@ function applyNoticeFirstStep(){
       qty.textContent=`×${quantity}`;span.append(brick,qty);return span;
     }));
   }
-  frameCanonicalView(state.step.view||'perspective');
+  frameNoticePlacements([...state.before,...state.added],state.step.view||'perspective');
   window.__NOTICE_PROOF__={
     total_instruction_steps:state.plan.total_steps,
     current_step:state.step.step_id,
