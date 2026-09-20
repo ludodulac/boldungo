@@ -101,11 +101,12 @@ function noticeStep12SupportEvidence(state){
 function applyNoticeAssemblyStep(index){
   clearNoticeInsertionArrows();
   const state=noticeAssemblyStepState(lastBundle,index);
-  const visualActionPrototype=index===11&&new URLSearchParams(window.location.search).get('visual')==='action';
-  const supportEvidence=visualActionPrototype?noticeStep12SupportEvidence(state):null;
+  const noticeReferenceGrammar=new URLSearchParams(window.location.search).get('visual')==='action';
+  const visualActionPrototype=noticeReferenceGrammar;
+  const supportEvidence=index===11&&noticeReferenceGrammar?noticeStep12SupportEvidence(state):null;
   for(const[id,m]of meshByPlacementId)setPartState(m,state.added.has(id)?(visualActionPrototype?'notice-current':'current'):state.before.has(id)?'normal':'hidden');
   const insertionArrows=[];
-  if(visualActionPrototype){
+  if(noticeReferenceGrammar){
     for(const id of state.added){
       const mesh=meshByPlacementId.get(id);if(!mesh)continue;
       const outline=new THREE.BoxHelper(mesh,0x2563eb);outline.userData.noticeStepHighlight=true;scene.add(outline);
