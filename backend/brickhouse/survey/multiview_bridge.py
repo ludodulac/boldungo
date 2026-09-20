@@ -26,7 +26,13 @@ class BridgeDiagnostic(BaseModel):
 
 
 class MultiViewSurveyBridgeResult(BaseModel):
-    survey_state: SurveyReasoningState
+    survey_state: SurveyReasoningState | None = None
+    diagnostics: list[BridgeDiagnostic] = Field(default_factory=list)
+
+
+class SurveyOrientationPending(BaseModel):
+    """Lossless pre-Survey result when no canonical facade orientation is known."""
+    workspace: MultiViewWorkspace
     diagnostics: list[BridgeDiagnostic] = Field(default_factory=list)
 
 
@@ -82,7 +88,7 @@ def _identity_groups(workspace, eligible):
 
 
 def workspace_to_survey(workspace: MultiViewWorkspace, *, survey_id: str, survey_name: str,
-                        front_facade_photo_index: int | None = None) -> MultiViewSurveyBridgeResult:
+                        front_facade_photo_index: int | None = None) -> MultiViewSurveyBridgeResult | SurveyOrientationPending:
     """Transfer only claims that Survey can represent without increasing certainty.
 
     A canonical front is optional at this pre-Survey boundary.  When capture
@@ -91,6 +97,14 @@ def workspace_to_survey(workspace: MultiViewWorkspace, *, survey_id: str, survey
     """
     if front_facade_photo_index is not None and not 1 <= front_facade_photo_index <= workspace.photo_count:
         raise ValueError("front_facade_photo_index is outside workspace photos")
+    if front_facade_photo_index is None:
+        return SurveyOrientationPending(
+            workspace=workspace,
+            diagnostics=[BridgeDiagnostic(
+                code=BridgeDebtCode.UNREPRESENTABLE_RELATION,
+                statement="Canonical front orientation is unknown; workspace is preserved without fabricating a Survey facade.",
+            )],
+        )
     local = _final_observations(workspace)
     diagnostics = []
     eligible = {}
