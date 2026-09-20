@@ -115,7 +115,7 @@ def test_likely_same_is_not_promoted_to_same_physical_object():
     assert all("multiview_identity" not in x.attributes for x in result.survey_state.survey.observations)
 
 
-def test_unknown_front_orientation_does_not_block_bridge_or_invent_facade():
+def test_unknown_front_orientation_is_preserved_before_canonical_survey():
     a = obs("a", 1, "window")
     hidden = LocalObservation(
         id="hidden", photo_index=2, status=ClaimStatus.UNKNOWN,
@@ -131,22 +131,18 @@ def test_unknown_front_orientation_does_not_block_bridge_or_invent_facade():
         competing_with=["roof-gable"], certainty=CertaintyLevel.UNPROVEN,
         supporting_photo_indexes=[2],
     )
+    ws = workspace([a, hidden], hypotheses=[h1, h2])
     result = workspace_to_survey(
-        workspace([a, hidden], hypotheses=[h1, h2]),
-        survey_id="orientation-neutral",
-        survey_name="Orientation neutral",
+        ws, survey_id="orientation-neutral", survey_name="Orientation neutral",
     )
-    survey = result.survey_state.survey
-    assert all(photo.capture_role == "targeted_detail" for photo in survey.photos)
-    assert all(photo.facade is None for photo in survey.photos)
-    assert all(photo.image_left_maps_to_facade_offset is None for photo in survey.photos)
-    assert survey.known_measurements == []
-    assert len(survey.observations) == 1
-    assert survey.observations[0].certainty is Certainty.CERTAIN
-    assert {e.photo_index for e in survey.observations[0].evidence} == {1}
-    assert any(x.code is BridgeDebtCode.VISIBILITY_ASSESSMENT_ONLY for x in result.diagnostics)
-    assert len(result.survey_state.open_questions) == 2
-
+    assert result.workspace == ws
+    assert result.workspace.pass_2.observations[0].certainty.existence is CertaintyLevel.CERTAIN
+    assert result.workspace.pass_2.observations[1].visibility is VisibilityStatus.OCCLUDED
+    assert len(result.workspace.pass_2.hypotheses) == 2
+    assert result.workspace.pass_2.hypotheses[0].certainty is CertaintyLevel.PLAUSIBLE
+    assert result.workspace.pass_2.observations[0].photo_index == 1
+    assert result.workspace.photo_count == 2
+    assert any("orientation is unknown" in x.statement for x in result.diagnostics)
 
 def test_explicit_front_orientation_remains_supported_without_changing_claim_certainty():
     item = obs("a", 2, "door", CertaintyLevel.PLAUSIBLE)
