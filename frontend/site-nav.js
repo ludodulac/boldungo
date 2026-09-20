@@ -5,6 +5,7 @@ const NAV_ITEMS = [
   { group: 'Parcours principal', href: './configurator.html', label: 'Configurateur manuel LEGO' },
   { group: 'Parcours principal', href: './viewer.html', label: 'Visionneuse du modèle LEGO' },
   { group: 'Parcours principal', href: './instructions.html', label: 'Notice de montage' },
+  { group: 'Parcours principal', href: './viewer.html?notice=step-0001', label: 'Aperçu NOTICE — étape 1' },
   { group: 'Outils et diagnostics', href: './scene-viewer.html', label: 'Visionneuse Scene 3D' },
   { group: 'Outils et diagnostics', href: './brickhouse-first-bricks.html', label: 'Diagnostic · premières briques' },
   { group: 'Outils et diagnostics', href: './brickhouse-reference-preview.html', label: 'Prévisualisation de référence' },
