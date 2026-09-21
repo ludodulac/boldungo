@@ -1,18 +1,17 @@
 name: Five-photo house visual proof
-
 on:
   pull_request:
     paths:
       - 'backend/brickhouse/survey/**'
       - 'frontend/benchmarks/real-house-5/five-photo-*'
-      - 'tests/five_photo_visual_proof.py'\n      - 'tests/five_photo_scene_projection_proof.py'
+      - 'tests/five_photo_visual_proof.py'
+      - 'tests/five_photo_scene_projection_proof.py'
+      - 'tests/scene/test_five_photo_geometry_fidelity.py'
       - 'tests/survey/test_survey_v02_minimal_contract.py'
       - '.github/workflows/five-photo-house-visual-proof.yml'
   workflow_dispatch:
-
 permissions:
   contents: read
-
 jobs:
   visual-proof:
     runs-on: ubuntu-latest
@@ -24,8 +23,10 @@ jobs:
           cache: pip
       - name: Install
         run: python -m pip install -e ".[dev]" pillow
-      - name: Targeted Survey tests
+      - name: Targeted Survey and geometry tests
         run: pytest -q tests/survey/test_survey_v02_minimal_contract.py tests/scene/test_five_photo_geometry_fidelity.py
+      - name: Project Scene against five source photos BEFORE LEGO
+        run: python tests/five_photo_scene_projection_proof.py
       - name: Build candidate BrickModel
         run: python tests/five_photo_visual_proof.py
       - name: Sanity check witness
@@ -72,7 +73,8 @@ jobs:
         with:
           name: five-photo-house-candidate-captures
           path: |
-            five-photo-captures/*.png\n            five-photo-scene-projections/*.png
+            five-photo-captures/*.png
+            five-photo-scene-projections/*.png
             frontend/sample-export.json
             frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.4.json
             frontend/benchmarks/real-house-5/five-photo-materialization-v0.1.json
