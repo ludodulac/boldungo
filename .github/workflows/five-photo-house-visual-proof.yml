@@ -25,7 +25,7 @@ jobs:
       - name: Install
         run: python -m pip install -e ".[dev]"
       - name: Targeted Survey tests
-        run: pytest -q tests/survey/test_survey_v02_minimal_contract.py
+        run: pytest -q tests/survey/test_survey_v02_minimal_contract.py tests/scene/test_five_photo_geometry_fidelity.py
       - name: Build candidate BrickModel
         run: python tests/five_photo_visual_proof.py
       - name: Sanity check witness
@@ -33,7 +33,7 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          scene=json.loads(Path('frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.2.json').read_text())
+          scene=json.loads(Path('frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.3.json').read_text())
           assert scene['roofs'][0]['type']=='gable'
           assert scene['roofs'][0]['pitch_degrees'] is None
           assert not any(v['id']=='lower_exterior_volume' for v in scene['volumes'])
@@ -74,5 +74,5 @@ jobs:
           path: |
             five-photo-captures/*.png
             frontend/sample-export.json
-            frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.2.json
+            frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.3.json
             frontend/benchmarks/real-house-5/five-photo-materialization-v0.1.json
