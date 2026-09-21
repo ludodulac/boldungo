@@ -36,8 +36,8 @@ jobs:
           parts=export.get('brick_model',{}).get('parts') or []
           if not parts: raise SystemExit('Boldungo build returned no BrickModel parts')
           Path('proof').mkdir(exist_ok=True)
-          Path('proof/brickhouse-export.json').write_text(json.dumps(export,indent=2)+'\\n',encoding='utf-8')
-          Path('proof/build-summary.json').write_text(json.dumps({'source_scene':str(scene_path),'scene_id':scene['id'],'commit':os.environ.get('GITHUB_SHA'),'engine_endpoint':'local /api/v1/build-scene','front_width_studs':48,'allow_partial':True,'brick_parts':len(parts),'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])},indent=2)+'\\n',encoding='utf-8')
+          Path('proof/brickhouse-export.json').write_text(json.dumps(export,indent=2),encoding='utf-8')
+          Path('proof/build-summary.json').write_text(json.dumps({'source_scene':str(scene_path),'scene_id':scene['id'],'commit':os.environ.get('GITHUB_SHA'),'engine_endpoint':'local /api/v1/build-scene','front_width_studs':48,'allow_partial':True,'brick_parts':len(parts),'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])},indent=2),encoding='utf-8')
           PY
       - name: Install Playwright
         run: |
