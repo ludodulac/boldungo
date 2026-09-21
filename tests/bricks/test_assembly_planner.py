@@ -1,4 +1,4 @@
-from brickhouse.bricks.assembly_planner import direct_support_graph
+from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 def part(pid, part_id, x, y, z, rotation=0):
@@ -26,3 +26,13 @@ def test_rotated_footprint_can_supply_support():
         part("top", "BRICK_1X2", 0, 2, 3, rotation=1),
     ]))
     assert graph["top"] == ("base",)
+
+
+def test_candidates_start_on_ground_then_unlock_supported_part():
+    m = model([
+        part("base", "BRICK_1X4", 0, 0, 0),
+        part("top", "BRICK_1X2", 1, 0, 3),
+        part("unsupported", "BRICK_1X2", 8, 0, 3),
+    ])
+    assert [c.placement_id for c in planning_candidates(m, set())] == ["base"]
+    assert [c.placement_id for c in planning_candidates(m, {"base"})] == ["top"]
