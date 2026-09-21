@@ -262,3 +262,34 @@ def unresolved_placements(model: BrickModel, result: PlannerResult) -> tuple[Unr
         )
         for pid in result.unresolved_ids
     )
+
+
+def validate_planner_result(model: BrickModel, result: PlannerResult) -> tuple[str, ...]:
+    """Replay planner output and report contract violations without guessing."""
+    eligible = {
+        p.placement_id for p in model.parts
+        if p.category not in {"roof_tile", "ridge_tile"}
+    }
+    built = set(result.initial_built_ids)
+    issues: list[str] = []
+    seen: set[str] = set()
+    supports = direct_support_graph(model)
+    parts = {p.placement_id: p for p in model.parts}
+    for step in result.steps:
+        pid = step.placement_id
+        if pid not in eligible:
+            issues.append(f"out-of-scope:{pid}")
+            continue
+        if pid in seen or pid in result.initial_built_ids:
+            issues.append(f"duplicate:{pid}")
+            continue
+        part = parts[pid]
+        required = set(supports[pid])
+        if part.z_plates > 0 and (not required or not required.issubset(built)):
+            issues.append(f"support-order:{pid}")
+        built.add(pid)
+        seen.add(pid)
+    expected_unresolved = eligible - built
+    if expected_unresolved != set(result.unresolved_ids):
+        issues.append("unresolved-set-mismatch")
+    return tuple(issues)
