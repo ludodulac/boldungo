@@ -71,3 +71,14 @@ def test_unresolved_part_reports_why_planner_refused_it():
     ])
     result = plan_supported_non_roof_parts(m)
     assert unresolved_reasons(m, result) == {"floating": "no-direct-support-proven"}
+
+
+def test_planner_can_resume_from_existing_partial_build():
+    m = model([
+        part("base", "BRICK_1X4", 0, 0, 0),
+        part("top", "BRICK_1X2", 0, 1, 3),
+    ])
+    result = plan_supported_non_roof_parts(m, initial_built_ids={"base"})
+    assert result.initial_built_ids == ("base",)
+    assert [step.placement_id for step in result.steps] == ["top"]
+    assert result.unresolved_ids == ()
