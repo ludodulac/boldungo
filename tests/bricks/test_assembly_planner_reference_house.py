@@ -16,3 +16,11 @@ def test_reference_house_planner_audit_is_deterministic_and_honest():
     assert first.planned_count > 0
     assert first.planned_count + first.unresolved_count == first.eligible_count
     assert first.complete_for_scope is (first.unresolved_count == 0)
+
+    # Keep the real-model audit visible in CI so future planner work is driven
+    # by actual coverage rather than invented heuristics.
+    print(
+        f"REFERENCE_PLANNER_AUDIT eligible={first.eligible_count} "
+        f"planned={first.planned_count} unresolved={first.unresolved_count} "
+        f"reasons={dict(first.unresolved_by_reason)}"
+    )
