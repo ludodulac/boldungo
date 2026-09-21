@@ -141,6 +141,7 @@ class PlannerStep:
 class PlannerResult:
     steps: tuple[PlannerStep, ...]
     unresolved_ids: tuple[str, ...]
+    initial_built_ids: tuple[str, ...] = ()
 
 def plan_supported_non_roof_parts(model: BrickModel, initial_built_ids: set[str] | None = None) -> PlannerResult:
     """Build a deterministic conservative order for the currently proven scope.
@@ -164,6 +165,7 @@ def plan_supported_non_roof_parts(model: BrickModel, initial_built_ids: set[str]
     return PlannerResult(
         steps=tuple(steps),
         unresolved_ids=tuple(sorted(eligible_ids - built)),
+        initial_built_ids=tuple(sorted(set(initial_built_ids or ()) & eligible_ids)),
     )
 
 
@@ -171,7 +173,7 @@ def unresolved_reasons(model: BrickModel, result: PlannerResult) -> dict[str, st
     """Explain why this conservative planner stopped on each unresolved part."""
     supports = direct_support_graph(model)
     part_by_id = {p.placement_id: p for p in model.parts}
-    built = {step.placement_id for step in result.steps}
+    built = set(result.initial_built_ids) | {step.placement_id for step in result.steps}
     reasons: dict[str, str] = {}
     for pid in result.unresolved_ids:
         part = part_by_id[pid]
