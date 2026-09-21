@@ -216,7 +216,7 @@ _CONSERVATIVE_OBSERVATION_KIND_ALIASES = {
 
 
 class ArchitecturalSurvey(BaseModel):
-    schema_version: Literal["0.1"] = "0.1"
+    schema_version: Literal["0.1", "0.2"] = "0.1"
     id: str
     name: str
     canonical_frame: CanonicalFrame = Field(default_factory=CanonicalFrame)
