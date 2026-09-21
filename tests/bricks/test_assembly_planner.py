@@ -13,7 +13,7 @@ def model(parts):
 def test_direct_support_requires_vertical_contact_and_footprint_overlap():
     graph = direct_support_graph(model([
         part("base", "BRICK_1X4", 0, 0, 0),
-        part("top", "BRICK_1X2", 1, 0, 3),
+        part("top", "BRICK_1X2", 0, 1, 3),
         part("away", "BRICK_1X2", 8, 0, 3),
     ]))
     assert graph["base"] == ()
@@ -23,7 +23,7 @@ def test_direct_support_requires_vertical_contact_and_footprint_overlap():
 def test_rotated_footprint_can_supply_support():
     graph = direct_support_graph(model([
         part("base", "BRICK_1X4", 0, 0, 0, rotation=1),
-        part("top", "BRICK_1X2", 0, 2, 3, rotation=1),
+        part("top", "BRICK_1X2", 1, 0, 3, rotation=1),
     ]))
     assert graph["top"] == ("base",)
 
@@ -55,7 +55,7 @@ def test_planner_builds_supported_stack_and_refuses_unproven_floating_part():
     m = model([
         part("base", "BRICK_1X4", 0, 0, 0),
         part("middle", "BRICK_1X4", 0, 0, 3),
-        part("top", "BRICK_1X2", 1, 0, 6),
+        part("top", "BRICK_1X2", 0, 1, 6),
         part("floating", "BRICK_1X1", 9, 0, 6),
     ])
     result = plan_supported_non_roof_parts(m)
