@@ -103,3 +103,28 @@ def planning_candidates(model: BrickModel, built_ids: set[str]) -> tuple[Plannin
             support_count=len(support_ids), support_area=support_area, grounded=grounded,
         ))
     return tuple(sorted(candidates, key=lambda c: (c.z_plates, -c.support_area, c.placement_id)))
+
+
+@dataclass(frozen=True)
+class CandidateScore:
+    placement_id: str
+    score: int
+    reasons: tuple[str, ...]
+
+def score_candidates(candidates: tuple[PlanningCandidate, ...]) -> tuple[CandidateScore, ...]:
+    """Rank already-safe candidates using only evidence available in this slice.
+
+    More supported footprint is preferred; lower courses receive a small
+    continuity preference. No claim is made yet about fingers, insertion paths,
+    global stability or visibility.
+    """
+    scored = []
+    for candidate in candidates:
+        score = candidate.support_area * 10 - candidate.z_plates
+        reasons = (
+            "grounded" if candidate.grounded else "direct-support-proven",
+            f"support-area={candidate.support_area}",
+            f"z={candidate.z_plates}",
+        )
+        scored.append(CandidateScore(candidate.placement_id, score, reasons))
+    return tuple(sorted(scored, key=lambda c: (-c.score, c.placement_id)))
