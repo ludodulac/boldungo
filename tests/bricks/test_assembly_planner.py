@@ -110,3 +110,14 @@ def test_unresolved_placements_expose_real_part_context():
     assert unresolved[0].part_id == "BRICK_1X1"
     assert unresolved[0].z_plates == 6
     assert unresolved[0].reason == "no-direct-support-proven"
+
+
+def test_planner_prefers_nearby_safe_candidate_after_first_placement():
+    m = model([
+        part("first", "BRICK_1X1", 0, 0, 0),
+        part("near", "BRICK_1X1", 1, 0, 0),
+        part("far", "BRICK_1X1", 9, 0, 0),
+    ])
+    result = plan_supported_non_roof_parts(m, initial_built_ids={"first"})
+    assert [step.placement_id for step in result.steps] == ["near", "far"]
+    assert "spatial-distance=1" in result.steps[0].reasons
