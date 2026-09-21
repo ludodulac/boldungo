@@ -9,7 +9,7 @@ def test_notice_keeps_validated_three_quarter_camera_primitive():
     assert "const f=noticePlacementFrame(placementIds);" in js
     assert "halfWidth/Math.tan(horizontalFov/2)" in js
     assert "halfHeight/Math.tan(verticalFov/2)" in js
-    assert "frameNoticePlacements([...state.before,...state.added],'perspective');" in js
+    assert "frameNoticePlacements([...state.before,...state.added],visualActionPrototype?'perspective-left':'perspective',visualActionPrototype?.92:1.22);" in js
     assert "function frameModel(){frameCanonicalView('perspective');}" in js
 
 def test_viewer_javascript_remains_syntactically_valid():

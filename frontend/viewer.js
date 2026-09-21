@@ -2,10 +2,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const PLATE_WORLD_HEIGHT=1/2.5;const noticeMode=new URLSearchParams(window.location.search).get('notice');const noticeMatch=/^step-(\d{4})$/.exec(noticeMode??'');const noticeStepNumber=noticeMatch?Number(noticeMatch[1]):null;const noticePrototypeMode=noticeStepNumber!==null&&noticeStepNumber>=1&&noticeStepNumber<=34;const canvas=document.querySelector('#viewer'),messageEl=document.querySelector('#message'),summaryEl=document.querySelector('#model-summary'),fileInput=document.querySelector('#file-input'),resetButton=document.querySelector('#reset-view'),frontButton=document.querySelector('#view-front'),rearButton=document.querySelector('#view-rear'),leftButton=document.querySelector('#view-left'),rightButton=document.querySelector('#view-right'),sampleButton=document.querySelector('#load-sample'),downloadBomButton=document.querySelector('#download-bom'),fidelityCard=document.querySelector('#fidelity-card'),fidelityList=document.querySelector('#fidelity-list'),assemblyCard=document.querySelector('#assembly-card'),assemblyTitle=document.querySelector('#assembly-title'),assemblyProgress=document.querySelector('#assembly-progress'),assemblyRange=document.querySelector('#assembly-range'),assemblyPrev=document.querySelector('#assembly-prev'),assemblyNext=document.querySelector('#assembly-next'),assemblyFull=document.querySelector('#assembly-full');
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x101827);const camera=new THREE.PerspectiveCamera(45,1,.1,1000);const renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.screenSpacePanning=true;scene.add(new THREE.HemisphereLight(0xdcecff,0x20283a,2.35));const keyLight=new THREE.DirectionalLight(0xfff4df,3.1);keyLight.position.set(18,28,16);keyLight.castShadow=true;scene.add(keyLight);const fillLight=new THREE.DirectionalLight(0x9ec5ff,.75);fillLight.position.set(-14,10,-18);scene.add(fillLight);const ground=new THREE.GridHelper(80,80,0x53627c,0x27344b);ground.position.y=-.01;scene.add(ground);const modelGroup=new THREE.Group();modelGroup.scale.z=-1;scene.add(modelGroup);
-const exteriorCategories=['timber','concrete','masonry','stone','metal','composite'];const palette={brick:0xd8c7a4,facade_detail:0xf2eee5,window_frame:0xf2eee5,window_pane:0x91c7e8,roof_tile:0x565b61,ridge_tile:0x565b61,timber:0xa87845,concrete:0xb8b8b2,masonry:0xd4d0c5,stone:0x96938b,metal:0x8b9299,composite:0x8d8175,terrain:0x72777b};const namedColors={off_white:0xe8e5dc,white:0xf3f3ef,cream:0xe4d7b5,beige:0xcbb991,gray:0x777b7e,grey:0x777b7e,dark_gray:0x4d5257,dark_grey:0x4d5257,black:0x24272b,dark_brown:0x49382e,brown:0x77543d,red:0xa94b42,terracotta:0xa85b46};const materials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:k==='window_pane'?.18:k==='timber'?.58:k==='metal'?.28:.48,metalness:k==='metal'?.55:0,transparent:k==='window_pane',opacity:k==='window_pane'?.58:1})]));const fadedMaterials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:.62,transparent:true,opacity:.32,depthWrite:false})]));const highlightMaterials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:.34,emissive:c,emissiveIntensity:.18})]));const semanticMaterials=new Map();const edgeMaterial=new THREE.LineBasicMaterial({color:0x171b24,transparent:true,opacity:.30});const studGeometry=new THREE.CylinderGeometry(.30,.30,.15,14);const studDetailEnabled=!window.matchMedia('(max-width: 760px)').matches;let studMeshBudgetEnabled=true;let lastBundle=null,meshByPlacementId=new Map(),currentAssemblyStep=null;
+const exteriorCategories=['timber','concrete','masonry','stone','metal','composite'];const palette={brick:0xd8c7a4,facade_detail:0xf2eee5,window_frame:0xf2eee5,window_pane:0x91c7e8,roof_tile:0x565b61,ridge_tile:0x565b61,timber:0xa87845,concrete:0xb8b8b2,masonry:0xd4d0c5,stone:0x96938b,metal:0x8b9299,composite:0x8d8175,terrain:0x72777b};const namedColors={off_white:0xe8e5dc,white:0xf3f3ef,cream:0xe4d7b5,beige:0xcbb991,gray:0x777b7e,grey:0x777b7e,dark_gray:0x4d5257,dark_grey:0x4d5257,black:0x24272b,dark_brown:0x49382e,brown:0x77543d,red:0xa94b42,terracotta:0xa85b46};const materials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:k==='window_pane'?.18:k==='timber'?.58:k==='metal'?.28:.48,metalness:k==='metal'?.55:0,transparent:k==='window_pane',opacity:k==='window_pane'?.58:1})]));const fadedMaterials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:.62,transparent:true,opacity:.32,depthWrite:false})]));const noticeOutlineMaterial=new THREE.LineBasicMaterial({color:0x2563eb,linewidth:1});
+const highlightMaterials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:.34,emissive:c,emissiveIntensity:.18})]));const noticeActionMaterial=new THREE.MeshStandardMaterial({color:0xf59e0b,roughness:.28,emissive:0xf59e0b,emissiveIntensity:.34});const semanticMaterials=new Map();const edgeMaterial=new THREE.LineBasicMaterial({color:0x171b24,transparent:true,opacity:.30});const studGeometry=new THREE.CylinderGeometry(.30,.30,.15,14);const studDetailEnabled=!window.matchMedia('(max-width: 760px)').matches;let studMeshBudgetEnabled=true;let lastBundle=null,meshByPlacementId=new Map(),currentAssemblyStep=null;
 function semanticColorValue(value){if(typeof value!=='string')return null;const text=value.trim().toLowerCase();const named=namedColors[text];if(named!==undefined)return named;if(/^#[0-9a-f]{6}$/i.test(text))return Number.parseInt(text.slice(1),16);return null;}function colorValue(value,fallback){const semantic=semanticColorValue(value);return semantic===null?fallback:semantic;}function setPaletteColor(category,color){palette[category]=color;materials[category].color.setHex(color);fadedMaterials[category].color.setHex(color);highlightMaterials[category].color.setHex(color);highlightMaterials[category].emissive.setHex(color);semanticMaterials.clear();}function applyAppearance(b){const a=b?.appearance;if(!a)return;const wall=colorValue(a.walls?.color,palette.brick),roof=colorValue(a.roof?.color,palette.roof_tile),frame=colorValue(a.frames?.color,palette.window_frame);setPaletteColor('brick',wall);setPaletteColor('roof_tile',roof);setPaletteColor('ridge_tile',roof);setPaletteColor('window_frame',frame);}
 function setMessage(t=''){messageEl.textContent=t;}function rawDims(p){const m=p.part_id.match(/_(\d+)X(\d+)(?:X(\d+))?(?:_|$)/);if(!m)throw new Error(`Dimensions inconnues pour ${p.part_id}`);return{a:+m[1],b:+m[2],c:m[3]?+m[3]:null};}function dims(p){const{a,b,c}=rawDims(p);let w=a,l=b;if(p.rotation_quarter_turns%2)[w,l]=[l,w];let heightPlates=1;if(['brick','facade_detail','terrain',...exteriorCategories].includes(p.category))heightPlates=3;else if(['window_frame','window_pane'].includes(p.category))heightPlates=(c??1)*3;return{width:w,length:l,heightPlates};}
-function validateBundle(b){if(!b||b.schema_version!=='0.1'||!Array.isArray(b.brick_model?.parts)||!Array.isArray(b.bom?.lines))throw new Error('Export BrickHouse invalide.');if(b.bom.total_parts!==b.brick_model.parts.length)throw new Error('BOM incohérente.');}function clearModel(){while(modelGroup.children.length)modelGroup.remove(modelGroup.children[0]);meshByPlacementId=new Map();}function mat(p,s='normal'){const k=palette[p.category]?p.category:'brick',c=semanticColorValue(p.semantic_color);if(c===null)return s==='current'?highlightMaterials[k]:s==='previous'?fadedMaterials[k]:materials[k];const cacheKey=`${s}:${k}:${c}`;if(semanticMaterials.has(cacheKey))return semanticMaterials.get(cacheKey);const source=s==='current'?highlightMaterials[k]:s==='previous'?fadedMaterials[k]:materials[k],m=source.clone();m.color.setHex(c);if(s==='current')m.emissive.setHex(c);semanticMaterials.set(cacheKey,m);return m;}function setPartState(g,s){g.visible=s!=='hidden';if(!g.visible)return;const m=mat(g.userData.part,s);g.traverse(c=>{if(c.isMesh)c.material=m;});}
+function validateBundle(b){if(!b||b.schema_version!=='0.1'||!Array.isArray(b.brick_model?.parts)||!Array.isArray(b.bom?.lines))throw new Error('Export BrickHouse invalide.');if(b.bom.total_parts!==b.brick_model.parts.length)throw new Error('BOM incohérente.');}function clearModel(){while(modelGroup.children.length)modelGroup.remove(modelGroup.children[0]);meshByPlacementId=new Map();}function mat(p,s='normal'){const k=palette[p.category]?p.category:'brick',c=semanticColorValue(p.semantic_color);if(s==='notice-current')return mat(p,'normal');if(c===null)return s==='current'?highlightMaterials[k]:s==='previous'?fadedMaterials[k]:materials[k];const cacheKey=`${s}:${k}:${c}`;if(semanticMaterials.has(cacheKey))return semanticMaterials.get(cacheKey);const source=s==='current'?highlightMaterials[k]:s==='previous'?fadedMaterials[k]:materials[k],m=source.clone();m.color.setHex(c);if(s==='current')m.emissive.setHex(c);semanticMaterials.set(cacheKey,m);return m;}function setPartState(g,s){g.visible=s!=='hidden';if(!g.visible)return;const m=mat(g.userData.part,s);g.traverse(c=>{if(c.isMesh)c.material=m;});}
 function wedgeGeometry(run,span){const x0=-run/2,x1=run/2,z0=-span/2,z1=span/2,low=.10,high=3*PLATE_WORLD_HEIGHT;const v=new Float32Array([x0,0,z0,x0,0,z1,x1,0,z0,x1,0,z1,x0,low,z0,x0,low,z1,x1,high,z0,x1,high,z1]);const idx=[0,2,3,0,3,1,4,5,7,4,7,6,0,1,5,0,5,4,2,6,7,2,7,3,0,4,6,0,6,2,1,3,7,1,7,5];const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(v,3));g.setIndex(idx);g.computeVertexNormals();return g;}function makeSlopeMesh(p){const{a:run,b:span}=rawDims(p),world=dims(p),group=new THREE.Group(),geo=wedgeGeometry(run,span),body=new THREE.Mesh(geo,mat(p));body.castShadow=true;body.receiveShadow=true;body.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo),edgeMaterial));group.userData={part:p};group.add(body);if(studMeshBudgetEnabled&&(studDetailEnabled||span<=4)){for(let i=0;i<span;i++){const s=new THREE.Mesh(studGeometry,mat(p));s.position.set(run/2-.5,3*PLATE_WORLD_HEIGHT+.075,i-(span-1)/2);s.castShadow=true;group.add(s);}}if(p.roof_side==='slope')group.rotation.y=p.rotation_quarter_turns*Math.PI/2;else if(p.rotation_quarter_turns%2===0)group.rotation.y=p.roof_side==='negative'?0:Math.PI;else group.rotation.y=p.roof_side==='negative'?-Math.PI/2:Math.PI/2;group.position.set(p.x_studs+world.width/2,p.z_plates*PLATE_WORLD_HEIGHT,p.y_studs+world.length/2);return group;}
 function makePartMesh(p){const{width:w,length:l,heightPlates:hp}=dims(p),h=hp*PLATE_WORLD_HEIGHT,g=new THREE.Group();g.userData={part:p};if(p.category==='roof_tile'&&p.part_id.startsWith('BRICK_SLOPED_'))return makeSlopeMesh(p);let geo;if(p.category==='window_pane'){const thickness=.12;geo=p.rotation_quarter_turns%2?new THREE.BoxGeometry(thickness,h,l*.82):new THREE.BoxGeometry(w*.82,h,thickness);}else geo=new THREE.BoxGeometry(w,h,l);const body=new THREE.Mesh(geo,mat(p));body.castShadow=p.category!=='window_pane';body.receiveShadow=true;body.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo),edgeMaterial));g.add(body);if(['brick','facade_detail','window_frame','terrain',...exteriorCategories].includes(p.category)&&studMeshBudgetEnabled&&(noticePrototypeMode||studDetailEnabled||w*l<=4)){for(let x=0;x<w;x++)for(let z=0;z<l;z++){const s=new THREE.Mesh(studGeometry,mat(p));s.position.set(x-(w-1)/2,h/2+.075,z-(l-1)/2);s.castShadow=true;g.add(s);}}g.position.set(p.x_studs+w/2,p.z_plates*PLATE_WORLD_HEIGHT+h/2,p.y_studs+l/2);return g;}
 function updateSummary(b){const m=b.brick_model,v=[b.building_id,String(b.bom.total_parts),String(b.bom.unique_part_types),`${m.width_studs} × ${m.depth_studs} tenons`];[...summaryEl.querySelectorAll('dd')].forEach((n,i)=>n.textContent=v[i]??'—');}
@@ -25,12 +26,12 @@ function noticePlacementFrame(placementIds){
   if(box.isEmpty())return null;
   return{box,size:box.getSize(new THREE.Vector3()),center:box.getCenter(new THREE.Vector3())};
 }
-function frameNoticePlacements(placementIds,view='perspective'){
+function frameNoticePlacements(placementIds,view='perspective',distanceScale=1.22){
   resizeRenderer();
   const f=noticePlacementFrame(placementIds);
   if(!f)return;
   const directions={front:new THREE.Vector3(0,0,1),rear:new THREE.Vector3(0,0,-1),left:new THREE.Vector3(-1,0,0),right:new THREE.Vector3(1,0,0),perspective:new THREE.Vector3(.9,.65,1.05)};
-  const direction=(view==='perspective'?new THREE.Vector3(.72,.92,1.18):(directions[view]??directions.perspective)).clone().normalize();
+  const direction=(view==='perspective'?new THREE.Vector3(.72,.92,1.18):view==='perspective-left'?new THREE.Vector3(-.72,.92,1.18):(directions[view]??directions.perspective)).clone().normalize();
   const forward=direction.clone().negate();
   const right=new THREE.Vector3().crossVectors(forward,new THREE.Vector3(0,1,0)).normalize();
   const viewUp=new THREE.Vector3().crossVectors(right,forward).normalize();
@@ -46,7 +47,7 @@ function frameNoticePlacements(placementIds,view='perspective'){
     halfHeight/Math.tan(verticalFov/2),
     1,
   );
-  placeCamera(f.center,direction,halfDepth+fitDistance*1.22,new THREE.Vector3(0,1,0));
+  placeCamera(f.center,direction,halfDepth+fitDistance*distanceScale,new THREE.Vector3(0,1,0));
 }
 function noticeAssemblyStepState(bundle,index){
   const plan=bundle?.assembly_plan;
@@ -65,9 +66,67 @@ function noticeAssemblyStepState(bundle,index){
   }
   return{plan,step,before,added,pli};
 }
+function noticeStep12InsertionArrows(state,supportEvidence){
+  const arrows=[];
+  if(!supportEvidence)return arrows;
+  const partsById=new Map(lastBundle.brick_model.parts.map(part=>[part.placement_id,part]));
+  for(const item of supportEvidence){
+    const part=partsById.get(item.placement_id),d=dims(part);
+    const mesh=meshByPlacementId.get(item.placement_id);
+    if(!mesh)continue;
+    const targetY=part.z_plates*PLATE_WORLD_HEIGHT+d.heightPlates*PLATE_WORLD_HEIGHT+.16;
+    const x=mesh.position.x,z=mesh.position.z;
+    const startY=mesh.position.y-.12;
+    const length=Math.max(.45,startY-targetY);
+    const arrow=new THREE.ArrowHelper(new THREE.Vector3(0,-1,0),new THREE.Vector3(x,startY,z),length,0xe87520,.22,.12);
+    arrow.userData.noticeInsertionArrow=true;scene.add(arrow);arrows.push(arrow);
+  }
+  return arrows;
+}
+function clearNoticeInsertionArrows(){for(const obj of [...scene.children])if(obj.userData?.noticeInsertionArrow||obj.userData?.noticeStepHighlight)scene.remove(obj);}
+function noticeStep12SupportEvidence(state){
+  if(state.step.step_id!=='step-0012')return null;
+  const partsById=new Map(lastBundle.brick_model.parts.map(part=>[part.placement_id,part]));
+  const footprint=part=>{const d=dims(part);return{x0:part.x_studs,x1:part.x_studs+d.width,y0:part.y_studs,y1:part.y_studs+d.length};};
+  const overlap=(a,b)=>Math.max(a.x0,b.x0)<Math.min(a.x1,b.x1)&&Math.max(a.y0,b.y0)<Math.min(a.y1,b.y1);
+  const evidence=[];
+  for(const id of state.added){
+    const part=partsById.get(id),area=footprint(part);
+    const supports=[...state.before].map(pid=>partsById.get(pid)).filter(Boolean).filter(candidate=>candidate.z_plates+3===part.z_plates&&overlap(area,footprint(candidate)));
+    if(!supports.length)return null;
+    evidence.push({placement_id:id,support_placement_ids:supports.map(item=>item.placement_id),axis:'vertical',direction:'down'});
+  }
+  return evidence;
+}
+function noticeReferenceDecision(state,index){
+  const added=[...state.added];
+  const clustered=added.length>1;
+  return{
+    mode:clustered?'simple-cluster':'simple-final',
+    fixed_reference:true,
+    highlight:true,
+    arrow:false,
+    closeup:false,
+    alternate_angle:false,
+    reason:clustered?'petit groupe de pièces : position finale fixe, sans mouvement inventé':'placement simple : position finale fixe, sans mouvement inventé',
+    visibility_status:'human-validated-reference-view',
+  };
+}
 function applyNoticeAssemblyStep(index){
+  clearNoticeInsertionArrows();
   const state=noticeAssemblyStepState(lastBundle,index);
-  for(const[id,m]of meshByPlacementId)setPartState(m,state.added.has(id)?'current':state.before.has(id)?'normal':'hidden');
+  const noticeReferenceGrammar=new URLSearchParams(window.location.search).get('visual')==='action';
+  const visualActionPrototype=noticeReferenceGrammar;
+  const supportEvidence=index===11&&noticeReferenceGrammar?noticeStep12SupportEvidence(state):null;
+  for(const[id,m]of meshByPlacementId)setPartState(m,state.added.has(id)?(visualActionPrototype?'notice-current':'current'):state.before.has(id)?'normal':'hidden');
+  let decision=null;
+  const insertionArrows=[];
+  if(noticeReferenceGrammar){
+    for(const id of state.added){
+      const mesh=meshByPlacementId.get(id);if(!mesh)continue;
+      const outline=new THREE.BoxHelper(mesh,0x2563eb);outline.userData.noticeStepHighlight=true;scene.add(outline);
+    }
+  }
   scene.background.setHex(0xf3f4f6);ground.visible=false;document.body.classList.add('notice-prototype-mode');
   const hud=document.querySelector('#notice-prototype-hud');
   if(hud){
@@ -75,21 +134,31 @@ function applyNoticeAssemblyStep(index){
     hud.querySelector('strong').textContent=`${index+1} / 34`;
     const parts=hud.querySelector('.notice-parts');
     parts.replaceChildren(...[...state.pli].map(([partId,quantity])=>{
-      const span=document.createElement('span'),brick=document.createElement('i'),qty=document.createElement('b');
-      brick.className='notice-brick';brick.dataset.partId=partId;
+      const span=document.createElement('span'),preview=document.createElement('canvas'),qty=document.createElement('b');
+      preview.className='notice-part-preview';preview.width=96;preview.height=58;preview.dataset.partId=partId;
       const part=lastBundle.brick_model.parts.find(item=>item.part_id===partId);
-      const d=dims(part);brick.style.width=`${Math.max(22,d.width*18)}px`;brick.style.height=`${Math.max(22,d.length*18)}px`;
-      qty.textContent=`×${quantity}`;span.append(brick,qty);return span;
+      const d=dims(part),ctx=preview.getContext('2d'),studs=Math.max(d.width,d.length),bodyW=Math.min(72,18+studs*6.5),x=(96-bodyW)/2,y=20,depth=10;
+      ctx.fillStyle='#e8e3d8';ctx.strokeStyle='#5f6368';ctx.lineWidth=1.3;
+      ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+bodyW,y);ctx.lineTo(x+bodyW+depth,y-6);ctx.lineTo(x+depth,y-6);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+bodyW,y);ctx.lineTo(x+bodyW,y+20);ctx.lineTo(x,y+20);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x+bodyW,y);ctx.lineTo(x+bodyW+depth,y-6);ctx.lineTo(x+bodyW+depth,y+14);ctx.lineTo(x+bodyW,y+20);ctx.closePath();ctx.fill();ctx.stroke();
+      for(let stud=0;stud<studs;stud++){const sx=x+(stud+.5)*bodyW/studs+depth*.5;ctx.beginPath();ctx.ellipse(sx,y-5.5,Math.min(3.6,bodyW/studs*.27),2.1,0,0,Math.PI*2);ctx.fill();ctx.stroke();}
+      qty.textContent=`×${quantity}`;span.append(preview,qty);return span;
     }));
     const prev=hud.querySelector('#notice-prev'),next=hud.querySelector('#notice-next');
     if(prev)prev.disabled=index===0;
     if(next)next.disabled=index===33;
   }
-  frameNoticePlacements([...state.before,...state.added],'perspective');
+  frameNoticePlacements([...state.before,...state.added],visualActionPrototype?'perspective-left':'perspective',visualActionPrototype?.92:1.22);
+  decision=noticeReferenceDecision(state,index);
   window.__NOTICE_PROOF__={
     total_assembly_steps:34,
     current_step:state.step.step_id,
     current_sequence:index+1,
+    visual_action_prototype:visualActionPrototype,
+    support_evidence:supportEvidence,
+    insertion_arrow_count:insertionArrows.length,
+    reference_decision:decision,
     before_placement_ids:[...state.before],
     added_placement_ids:[...state.added],
     pli:[...state.pli].map(([part_id,quantity])=>({part_id,quantity})),
