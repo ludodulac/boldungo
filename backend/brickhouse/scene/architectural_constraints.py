@@ -42,8 +42,8 @@ def evaluate_normalized_constraints(rects:dict[str,NormalizedRect], constraints:
     for c in constraints:
         a=rects.get(c.subject_id); b=rects.get(c.object_id) if c.object_id else None
         residual=0.0
-        if c.kind is ConstraintKind.ABOVE and a and b: residual=max(0.0,a.z0-b.z1)
-        elif c.kind is ConstraintKind.BELOW and a and b: residual=max(0.0,b.z0-a.z1)
+        if c.kind is ConstraintKind.ABOVE and a and b: residual=max(0.0,b.z1-a.z0)
+        elif c.kind is ConstraintKind.BELOW and a and b: residual=max(0.0,a.z1-b.z0)
         elif c.kind is ConstraintKind.LEFT_OF and a and b: residual=max(0.0,a.x1-b.x0)
         elif c.kind is ConstraintKind.RIGHT_OF and a and b: residual=max(0.0,b.x1-a.x0)
         elif c.kind is ConstraintKind.APPROX_ALIGNED_X and a and b: residual=abs(_cx(a)-_cx(b))
