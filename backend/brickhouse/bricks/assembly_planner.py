@@ -111,7 +111,7 @@ class CandidateScore:
     score: int
     reasons: tuple[str, ...]
 
-def score_candidates(candidates: tuple[PlanningCandidate, ...]) -> tuple[CandidateScore, ...]:
+def score_candidates(candidates: tuple[PlanningCandidate, ...], model: BrickModel | None = None, built_ids: set[str] | None = None) -> tuple[CandidateScore, ...]:
     """Rank already-safe candidates using only evidence available in this slice.
 
     More supported footprint is preferred; lower courses receive a small
@@ -121,11 +121,23 @@ def score_candidates(candidates: tuple[PlanningCandidate, ...]) -> tuple[Candida
     scored = []
     for candidate in candidates:
         score = candidate.support_area * 10 - candidate.z_plates
-        reasons = (
+        reasons_list = [
             "grounded" if candidate.grounded else "direct-support-proven",
             f"support-area={candidate.support_area}",
             f"z={candidate.z_plates}",
-        )
+        ]
+        if model is not None and built_ids:
+            parts = {p.placement_id: p for p in model.parts}
+            current = parts[candidate.placement_id]
+            built_parts = [parts[pid] for pid in built_ids if pid in parts]
+            if built_parts:
+                distance = min(
+                    abs(current.x_studs - other.x_studs) + abs(current.y_studs - other.y_studs)
+                    for other in built_parts
+                )
+                score -= distance
+                reasons_list.append(f"spatial-distance={distance}")
+        reasons = tuple(reasons_list)
         scored.append(CandidateScore(candidate.placement_id, score, reasons))
     return tuple(sorted(scored, key=lambda c: (-c.score, c.placement_id)))
 
@@ -156,7 +168,7 @@ def plan_supported_non_roof_parts(model: BrickModel, initial_built_ids: set[str]
     built: set[str] = set(initial_built_ids or ()) & eligible_ids
     steps: list[PlannerStep] = []
     while built != eligible_ids:
-        ranked = score_candidates(planning_candidates(model, built))
+        ranked = score_candidates(planning_candidates(model, built), model, built)
         if not ranked:
             break
         chosen = ranked[0]
