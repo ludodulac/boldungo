@@ -21,7 +21,7 @@ class PartFootprint:
     z1: int
 
 def _dimensions(part: BrickModelPart) -> tuple[int, int, int]:
-    match = re.search(r"_(\d+)X(\d+)(?:X(\d+))?(?:_|$)", part.part_id)
+    match = re.search(r"_(\\d+)X(\\d+)(?:X(\\d+))?(?:_|$)", part.part_id)
     if not match:
         raise ValueError(f"Cannot derive dimensions for {part.part_id!r}")
     width, depth = int(match.group(1)), int(match.group(2))
