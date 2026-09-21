@@ -1,7 +1,7 @@
 {
-  "schema_version": "0.1",
-  "id": "real-house-5-five-photo-survey-candidate-v0.1",
-  "name": "Real house 5 — five-photo development Survey candidate",
+  "schema_version": "0.2",
+  "id": "real-house-5-five-photo-survey-candidate-v0.2",
+  "name": "Real house 5 — five-photo Survey 0.2 candidate",
   "canonical_frame": {
     "front_facade": "front",
     "x_direction": "front_view_left_to_right",
@@ -113,7 +113,9 @@
       },
       "attribute_certainty": {
         "multiview_identity": "certain"
-      }
+      },
+      "knowledge_mode": "deduced_multiview",
+      "attribute_knowledge_mode": {}
     },
     {
       "id": "roof-main-1",
@@ -148,6 +150,11 @@
         "ridge_qualitative": "plausible",
         "visual_pitch": "plausible",
         "numeric_pitch_degrees": "unproven"
+      },
+      "knowledge_mode": "deduced_multiview",
+      "attribute_knowledge_mode": {
+        "roof_type": "deduced_multiview",
+        "ridge_qualitative": "deduced_architecturally"
       }
     },
     {
@@ -185,7 +192,10 @@
         "belongs_to_target_house": "certain",
         "qualitative_position": "plausible",
         "multiview_identity": "certain"
-      }
+      },
+      "knowledge_mode": "deduced_multiview",
+      "attribute_knowledge_mode": {},
+      "qualitative_position": "toward front-facade-left roof zone"
     },
     {
       "id": "chimneys-background-1",
@@ -204,7 +214,9 @@
       },
       "attribute_certainty": {
         "belongs_to_target_house": "unproven"
-      }
+      },
+      "knowledge_mode": "observed",
+      "attribute_knowledge_mode": {}
     },
     {
       "id": "platform-timber-1",
@@ -250,32 +262,9 @@
         "circulation_function": "plausible",
         "support_structure": "certain",
         "multiview_identity": "certain"
-      }
-    },
-    {
-      "id": "guardrail-timber-1",
-      "kind": "material",
-      "facade": "left",
-      "certainty": "certain",
-      "statement": "Garde-corps/balustrade en bois appartenant à la terrasse surélevée.",
-      "evidence": [
-        {
-          "photo_index": 3,
-          "observation": "Garde-corps visible sur le bord de terrasse."
-        },
-        {
-          "photo_index": 4,
-          "observation": "Même garde-corps recoupé en arrière-plan."
-        }
-      ],
-      "attributes": {
-        "material": "timber",
-        "exact_module_count": null
       },
-      "attribute_certainty": {
-        "material": "certain",
-        "exact_module_count": "unproven"
-      }
+      "knowledge_mode": "deduced_multiview",
+      "attribute_knowledge_mode": {}
     },
     {
       "id": "stair-exterior-1",
@@ -314,6 +303,11 @@
         "circulation_function": "plausible",
         "stair_topology": "unproven",
         "turning_form_hypothesis": "plausible"
+      },
+      "knowledge_mode": "deduced_multiview",
+      "attribute_knowledge_mode": {
+        "turning_form_hypothesis": "hypothesis",
+        "circulation_function": "deduced_architecturally"
       }
     },
     {
@@ -355,28 +349,9 @@
         "closed_volume_below": "unproven",
         "metric_dimensions": "unproven",
         "multiview_identity": "certain"
-      }
-    },
-    {
-      "id": "front-openings-1",
-      "kind": "opening",
-      "facade": "front",
-      "certainty": "certain",
-      "statement": "Six ouvertures principales distinctes sont observables sur la façade avant; leurs compositions visuelles doivent être préservées sans métrique inventée.",
-      "evidence": [
-        {
-          "photo_index": 1,
-          "observation": "Six ouvertures physiques distinctes visibles sur l'élévation."
-        }
-      ],
-      "attributes": {
-        "physical_object_count": 6,
-        "metric_geometry": null
       },
-      "attribute_certainty": {
-        "physical_object_count": "certain",
-        "metric_geometry": "unproven"
-      }
+      "knowledge_mode": "deduced_multiview",
+      "attribute_knowledge_mode": {}
     },
     {
       "id": "right-opening-high-1",
@@ -399,7 +374,9 @@
         "semantic_type": "certain",
         "relative_vertical_position": "certain",
         "metric_geometry": "unproven"
-      }
+      },
+      "knowledge_mode": "observed",
+      "attribute_knowledge_mode": {}
     },
     {
       "id": "right-opening-low-glazed-1",
@@ -422,7 +399,9 @@
         "semantic_type_hypothesis": "plausible",
         "relative_vertical_position": "certain",
         "metric_geometry": "unproven"
-      }
+      },
+      "knowledge_mode": "observed",
+      "attribute_knowledge_mode": {}
     },
     {
       "id": "right-equipment-low-1",
@@ -441,7 +420,9 @@
       },
       "attribute_certainty": {
         "equipment_type_hypothesis": "plausible"
-      }
+      },
+      "knowledge_mode": "observed",
+      "attribute_knowledge_mode": {}
     },
     {
       "id": "left-opening-high-1",
@@ -476,7 +457,9 @@
       "attribute_certainty": {
         "semantic_type": "certain",
         "multiview_identity": "certain"
-      }
+      },
+      "knowledge_mode": "deduced_multiview",
+      "attribute_knowledge_mode": {}
     },
     {
       "id": "left-access-opening-1",
@@ -511,6 +494,250 @@
       "attribute_certainty": {
         "semantic_type_hypothesis": "plausible",
         "multiview_identity": "plausible"
+      },
+      "knowledge_mode": "deduced_multiview",
+      "attribute_knowledge_mode": {}
+    },
+    {
+      "id": "front-opening-1",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "qualitative_position": "upper-left",
+      "statement": "Ouverture physique principale upper-left visible sur la façade avant; sous-type et métrique non imposés par ce Survey.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture upper-left visible sur l'élévation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "metric_geometry": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
+    },
+    {
+      "id": "front-opening-2",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "qualitative_position": "upper-right",
+      "statement": "Ouverture physique principale upper-right visible sur la façade avant; sous-type et métrique non imposés par ce Survey.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture upper-right visible sur l'élévation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "metric_geometry": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
+    },
+    {
+      "id": "front-opening-3",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "qualitative_position": "middle-left",
+      "statement": "Ouverture physique principale middle-left visible sur la façade avant; sous-type et métrique non imposés par ce Survey.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture middle-left visible sur l'élévation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "metric_geometry": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
+    },
+    {
+      "id": "front-opening-4",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "qualitative_position": "middle-right",
+      "statement": "Ouverture physique principale middle-right visible sur la façade avant; sous-type et métrique non imposés par ce Survey.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture middle-right visible sur l'élévation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "metric_geometry": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
+    },
+    {
+      "id": "front-opening-5",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "qualitative_position": "lower-left",
+      "statement": "Ouverture physique principale lower-left visible sur la façade avant; sous-type et métrique non imposés par ce Survey.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture lower-left visible sur l'élévation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "metric_geometry": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
+    },
+    {
+      "id": "front-opening-6",
+      "kind": "opening",
+      "facade": "front",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "qualitative_position": "lower-right",
+      "statement": "Ouverture physique principale lower-right visible sur la façade avant; sous-type et métrique non imposés par ce Survey.",
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Ouverture lower-right visible sur l'élévation avant."
+        }
+      ],
+      "attributes": {
+        "physical_object_count": 1,
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "physical_object_count": "certain",
+        "metric_geometry": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
+    },
+    {
+      "id": "deck-guardrail-structure-1",
+      "kind": "structure",
+      "facade": "left",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "structure_role": "guardrail",
+      "statement": "Un garde-corps en bois existe sur la terrasse surélevée; son nombre exact de modules n'est pas affirmé.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Garde-corps visible sur le bord de terrasse."
+        },
+        {
+          "photo_index": 4,
+          "observation": "Même garde-corps recoupé."
+        }
+      ],
+      "attributes": {
+        "material": "timber",
+        "exhaustive_count": null
+      },
+      "attribute_certainty": {
+        "material": "certain",
+        "exhaustive_count": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "material": "observed"
+      }
+    },
+    {
+      "id": "deck-vertical-support-structure-1",
+      "kind": "structure",
+      "facade": "left",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "structure_role": "vertical_support",
+      "statement": "Au moins un support vertical en bois est visible sous la terrasse; inventaire et coordonnées inconnus.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Support vertical visible sous la terrasse."
+        }
+      ],
+      "attributes": {
+        "material": "timber",
+        "exhaustive_count": null,
+        "metric_positions": null
+      },
+      "attribute_certainty": {
+        "material": "certain",
+        "exhaustive_count": "unproven",
+        "metric_positions": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "material": "observed"
+      }
+    },
+    {
+      "id": "deck-diagonal-bracing-structure-1",
+      "kind": "structure",
+      "facade": "left",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "structure_role": "diagonal_bracing",
+      "statement": "Au moins un contreventement diagonal en bois est visible sous la terrasse; inventaire et géométrie exhaustive inconnus.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Contreventement diagonal visible sous la terrasse."
+        }
+      ],
+      "attributes": {
+        "material": "timber",
+        "exhaustive_count": null,
+        "metric_geometry": null
+      },
+      "attribute_certainty": {
+        "material": "certain",
+        "exhaustive_count": "unproven",
+        "metric_geometry": "unproven"
+      },
+      "attribute_knowledge_mode": {
+        "material": "observed"
       }
     }
   ],
@@ -527,7 +754,8 @@
           "photo_index": 5,
           "observation": "La volée visible monte vers le palier."
         }
-      ]
+      ],
+      "knowledge_mode": "deduced_multiview"
     },
     {
       "id": "relation-landing-building",
@@ -541,7 +769,8 @@
           "photo_index": 4,
           "observation": "Contact direct du palier avec l'élévation visible."
         }
-      ]
+      ],
+      "knowledge_mode": "deduced_multiview"
     },
     {
       "id": "relation-deck-building",
@@ -555,21 +784,8 @@
           "photo_index": 3,
           "observation": "Bord intérieur de la terrasse au contact du mur."
         }
-      ]
-    },
-    {
-      "id": "relation-guardrail-deck",
-      "kind": "part_of",
-      "subject_id": "guardrail-timber-1",
-      "object_id": "platform-timber-1",
-      "certainty": "certain",
-      "statement": "Le garde-corps appartient à la terrasse bois.",
-      "evidence": [
-        {
-          "photo_index": 3,
-          "observation": "Garde-corps porté par le bord de terrasse."
-        }
-      ]
+      ],
+      "knowledge_mode": "deduced_multiview"
     },
     {
       "id": "relation-deck-landing-hypothesis",
@@ -591,6 +807,52 @@
           "photo_index": 5,
           "observation": "L'ensemble escalier-palier est compatible avec une continuité vers la terrasse."
         }
+      ],
+      "knowledge_mode": "hypothesis"
+    },
+    {
+      "id": "relation-guardrail-deck",
+      "kind": "part_of",
+      "subject_id": "deck-guardrail-structure-1",
+      "object_id": "platform-timber-1",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "statement": "Le garde-corps appartient à la terrasse bois.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Garde-corps porté par le bord de terrasse."
+        }
+      ]
+    },
+    {
+      "id": "relation-support-deck",
+      "kind": "supports",
+      "subject_id": "deck-vertical-support-structure-1",
+      "object_id": "platform-timber-1",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "statement": "Le support vertical visible participe au support de la terrasse sans localisation métrique.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Support vertical visible sous la terrasse."
+        }
+      ]
+    },
+    {
+      "id": "relation-bracing-deck",
+      "kind": "part_of",
+      "subject_id": "deck-diagonal-bracing-structure-1",
+      "object_id": "platform-timber-1",
+      "certainty": "certain",
+      "knowledge_mode": "observed",
+      "statement": "Le contreventement diagonal visible appartient à la structure de terrasse.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Diagonale visible sous la terrasse."
+        }
       ]
     }
   ],
@@ -601,5 +863,5 @@
     "reproduce_weathering": false,
     "reproduce_temporary_objects": false
   },
-  "notes": "CANDIDAT SURVEY dérivé de la référence de développement cinq-photos V0.2. Aucune Scene, aucun LEGO, aucune géométrie métrique inventée. Correction connue post-oracle: terrasse bois ↔ palier est rétrogradée à hypothèse architecturale forte/plausible. Le schéma Survey 0.1 ne possède pas de champ typé pour questions utilisateur, déduction architecturale comme provenance, position qualitative, contradictions ou UNKNOWN explicite hors attributs libres; ces informations ne doivent pas être surpromues."
+  "notes": "Survey 0.2 candidate recovered from v0.1. Five-photo provenance only. No metric geometry invented. Known calibration correction preserved: timber deck ↔ masonry landing is knowledge_mode=hypothesis and certainty=plausible."
 }
