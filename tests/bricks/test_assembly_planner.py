@@ -1,4 +1,4 @@
-from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons
+from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 def part(pid, part_id, x, y, z, rotation=0):
@@ -82,3 +82,17 @@ def test_planner_can_resume_from_existing_partial_build():
     assert result.initial_built_ids == ("base",)
     assert [step.placement_id for step in result.steps] == ["top"]
     assert result.unresolved_ids == ()
+
+
+def test_planner_audit_reports_coverage_without_claiming_false_completion():
+    m = model([
+        part("base", "BRICK_1X4", 0, 0, 0),
+        part("top", "BRICK_1X2", 0, 1, 3),
+        part("floating", "BRICK_1X1", 9, 0, 6),
+    ])
+    audit = audit_supported_non_roof_plan(m)
+    assert audit.eligible_count == 3
+    assert audit.planned_count == 2
+    assert audit.unresolved_count == 1
+    assert audit.complete_for_scope is False
+    assert audit.unresolved_by_reason == (("no-direct-support-proven", 1),)
