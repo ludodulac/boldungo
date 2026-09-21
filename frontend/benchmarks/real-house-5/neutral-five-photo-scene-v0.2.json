@@ -565,5 +565,5 @@
       "color": "dark_brown"
     }
   },
-  "notes": "Neutral five-photo candidate. Absolute dimensions and stair-turn metric geometry are MODELING_APPROXIMATION values only. No chimney is modeled because the visible chimney attribution to the target building is not sufficiently secure from these five views alone. No vegetation, pots, furniture, gate or decorative surroundings are added. Candidate iteration 2 preserves the same photo-only architectural interpretation. Render proof uses a 32-stud front discretization to keep the first viewer capture tractable."
+  "notes": "Neutral five-photo candidate. Absolute dimensions and stair-turn metric geometry are MODELING_APPROXIMATION values only. No chimney is modeled because the visible chimney attribution to the target building is not sufficiently secure from these five views alone. No vegetation, pots, furniture, gate or decorative surroundings are added. Candidate iteration 2 preserves the same photo-only architectural interpretation. Render proof uses a 32-stud front discretization to keep the first viewer capture tractable. First proof may use 16 studs to establish the real end-to-end viewer path before higher-density refinement."
 }
