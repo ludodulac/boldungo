@@ -1,0 +1,18 @@
+from pathlib import Path
+
+from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan
+from brickhouse.pipeline import run_m0_pipeline
+
+REFERENCE_HOUSE = Path("docs/examples/building-model-simple-house.json")
+
+
+def test_reference_house_planner_audit_is_deterministic_and_honest():
+    bundle = run_m0_pipeline(REFERENCE_HOUSE, front_width_studs=48)
+    first = audit_supported_non_roof_plan(bundle.brick_model)
+    second = audit_supported_non_roof_plan(bundle.brick_model)
+
+    assert first == second
+    assert first.eligible_count > 0
+    assert first.planned_count > 0
+    assert first.planned_count + first.unresolved_count == first.eligible_count
+    assert first.complete_for_scope is (first.unresolved_count == 0)
