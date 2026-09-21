@@ -19,33 +19,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install Boldungo engine
+        run: python -m pip install -e .
       - name: Build BrickModel from the committed Scene using Boldungo engine
-        env:
-          ENGINE_URL: https://brickhouse-api.onrender.com
         run: |
           python - <<'PY'
-          import json, os, urllib.request
+          import json, os
           from pathlib import Path
+          from fastapi.testclient import TestClient
+          from brickhouse.api import app
           scene_path=Path('frontend/benchmarks/real-house-5/neutral-five-photo-scene-v0.2.json')
           scene=json.loads(scene_path.read_text(encoding='utf-8'))
-          body=json.dumps({'scene':scene,'front_width_studs':48,'allow_partial':True}).encode()
-          req=urllib.request.Request(os.environ['ENGINE_URL'].rstrip('/')+'/api/v1/build-scene',data=body,headers={'Content-Type':'application/json'},method='POST')
-          with urllib.request.urlopen(req,timeout=180) as response:
-              export=json.load(response)
+          response=TestClient(app).post('/api/v1/build-scene',json={'scene':scene,'front_width_studs':48,'allow_partial':True})
+          if response.status_code != 200: raise SystemExit(f'Boldungo build failed {response.status_code}: {response.text}')
+          export=response.json()
           parts=export.get('brick_model',{}).get('parts') or []
           if not parts: raise SystemExit('Boldungo build returned no BrickModel parts')
           Path('proof').mkdir(exist_ok=True)
-          Path('proof/brickhouse-export.json').write_text(json.dumps(export,indent=2)+'\n',encoding='utf-8')
-          Path('proof/build-summary.json').write_text(json.dumps({
-              'source_scene':str(scene_path),
-              'scene_id':scene['id'],
-              'commit':os.environ.get('GITHUB_SHA'),
-              'engine_endpoint':'/api/v1/build-scene',
-              'front_width_studs':48,
-              'allow_partial':True,
-              'brick_parts':len(parts),
-              'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])
-          },indent=2)+'\n',encoding='utf-8')
+          Path('proof/brickhouse-export.json').write_text(json.dumps(export,indent=2)+'\\n',encoding='utf-8')
+          Path('proof/build-summary.json').write_text(json.dumps({'source_scene':str(scene_path),'scene_id':scene['id'],'commit':os.environ.get('GITHUB_SHA'),'engine_endpoint':'local /api/v1/build-scene','front_width_studs':48,'allow_partial':True,'brick_parts':len(parts),'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])},indent=2)+'\\n',encoding='utf-8')
           PY
       - name: Install Playwright
         run: |
