@@ -188,3 +188,30 @@ def unresolved_reasons(model: BrickModel, result: PlannerResult) -> dict[str, st
         else:
             reasons[pid] = "planner-scope-unresolved"
     return reasons
+
+
+@dataclass(frozen=True)
+class PlannerAudit:
+    eligible_count: int
+    planned_count: int
+    unresolved_count: int
+    complete_for_scope: bool
+    unresolved_by_reason: tuple[tuple[str, int], ...]
+
+def audit_supported_non_roof_plan(model: BrickModel) -> PlannerAudit:
+    """Summarize planner coverage without changing the production AssemblyPlan."""
+    result = plan_supported_non_roof_parts(model)
+    reasons = unresolved_reasons(model, result)
+    counts: dict[str, int] = {}
+    for reason in reasons.values():
+        counts[reason] = counts.get(reason, 0) + 1
+    eligible_count = sum(
+        1 for p in model.parts if p.category not in {"roof_tile", "ridge_tile"}
+    )
+    return PlannerAudit(
+        eligible_count=eligible_count,
+        planned_count=len(result.steps),
+        unresolved_count=len(result.unresolved_ids),
+        complete_for_scope=not result.unresolved_ids,
+        unresolved_by_reason=tuple(sorted(counts.items())),
+    )
