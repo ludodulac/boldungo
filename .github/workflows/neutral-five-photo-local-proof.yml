@@ -30,14 +30,14 @@ jobs:
           from brickhouse.api import app
           scene_path=Path('frontend/benchmarks/real-house-5/neutral-five-photo-scene-v0.2.json')
           scene=json.loads(scene_path.read_text(encoding='utf-8'))
-          response=TestClient(app).post('/api/v1/build-scene',json={'scene':scene,'front_width_studs':32,'allow_partial':True})
+          response=TestClient(app).post('/api/v1/build-scene',json={'scene':scene,'front_width_studs':16,'allow_partial':True})
           if response.status_code != 200: raise SystemExit(f'Boldungo build failed {response.status_code}: {response.text}')
           export=response.json()
           parts=export.get('brick_model',{}).get('parts') or []
           if not parts: raise SystemExit('Boldungo build returned no BrickModel parts')
           Path('proof').mkdir(exist_ok=True)
           Path('proof/brickhouse-export.json').write_text(json.dumps(export,indent=2),encoding='utf-8')
-          Path('proof/build-summary.json').write_text(json.dumps({'source_scene':str(scene_path),'scene_id':scene['id'],'commit':os.environ.get('GITHUB_SHA'),'engine_endpoint':'local /api/v1/build-scene','front_width_studs':32,'allow_partial':True,'brick_parts':len(parts),'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])},indent=2),encoding='utf-8')
+          Path('proof/build-summary.json').write_text(json.dumps({'source_scene':str(scene_path),'scene_id':scene['id'],'commit':os.environ.get('GITHUB_SHA'),'engine_endpoint':'local /api/v1/build-scene','front_width_studs':16,'allow_partial':True,'brick_parts':len(parts),'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])},indent=2),encoding='utf-8')
           PY
       - name: Install Playwright
         run: |
@@ -54,16 +54,16 @@ jobs:
           out=Path('proof/viewer-screenshots'); out.mkdir(parents=True,exist_ok=True)
           with sync_playwright() as p:
               browser=p.chromium.launch(headless=True,args=['--no-sandbox'])
-              page=browser.new_page(viewport={'width':1440,'height':1000},device_scale_factor=1)
+              page=browser.new_page(viewport={'width':960,'height':720},device_scale_factor=1)
               page.goto('http://127.0.0.1:4173/viewer.html',wait_until='domcontentloaded')
               page.evaluate('(bundle)=>localStorage.setItem("brickhouse.pendingExport",JSON.stringify(bundle))',export)
               page.reload(wait_until='networkidle')
               page.wait_for_function('()=>document.querySelectorAll("#model-summary dd")[0]?.textContent.trim()!=="—"')
               canvas=page.locator('#viewer')
-              page.wait_for_timeout(1200)
+              page.wait_for_timeout(500)
               views=[('perspective','#reset-view'),('front','#view-front'),('rear','#view-rear'),('left','#view-left'),('right','#view-right')]
               for name,selector in views:
-                  page.locator(selector).click(); page.wait_for_timeout(700)
+                  page.locator(selector).click(); page.wait_for_timeout(250)
                   canvas.screenshot(path=str(out/f'{name}.png'))
               page.locator('#reset-view').click(); page.wait_for_timeout(500)
               box=canvas.bounding_box()
