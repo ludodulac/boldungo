@@ -5,7 +5,7 @@ on:
     paths:
       - 'backend/brickhouse/survey/**'
       - 'frontend/benchmarks/real-house-5/five-photo-*'
-      - 'tests/five_photo_visual_proof.py'
+      - 'tests/five_photo_visual_proof.py'\n      - 'tests/five_photo_scene_projection_proof.py'
       - 'tests/survey/test_survey_v02_minimal_contract.py'
       - '.github/workflows/five-photo-house-visual-proof.yml'
   workflow_dispatch:
@@ -74,5 +74,5 @@ jobs:
           path: |
             five-photo-captures/*.png\n            five-photo-scene-projections/*.png
             frontend/sample-export.json
-            frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.3.json
+            frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.4.json
             frontend/benchmarks/real-house-5/five-photo-materialization-v0.1.json
