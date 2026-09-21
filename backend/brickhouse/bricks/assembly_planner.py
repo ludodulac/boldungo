@@ -126,6 +126,15 @@ def score_candidates(candidates: tuple[PlanningCandidate, ...], model: BrickMode
             f"support-area={candidate.support_area}",
             f"z={candidate.z_plates}",
         ]
+        if model is not None:
+            parts = {p.placement_id: p for p in model.parts}
+            current = parts[candidate.placement_id]
+            # Decorative/detail parts are kept late when an equally safe
+            # structural candidate exists. This is a preference, never a
+            # substitute for support evidence.
+            if current.category == "facade_detail":
+                score -= 1000
+                reasons_list.append("fragile-detail-late")
         if model is not None and built_ids:
             parts = {p.placement_id: p for p in model.parts}
             current = parts[candidate.placement_id]
