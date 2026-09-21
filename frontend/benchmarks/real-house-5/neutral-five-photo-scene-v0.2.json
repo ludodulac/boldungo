@@ -1,0 +1,66 @@
+{
+  "schema_version": "0.2",
+  "id": "real-house-5-neutral-2026-09-21",
+  "name": "real-house-5 neutral five-photo reconstruction",
+  "units": "m",
+  "volumes": [{
+    "id": "house-main",
+    "position": {"x": 0.0, "y": 0.0, "z": 0.0},
+    "width": {"value": 7.4, "source": {"kind": "inferred", "confidence": 0.30}, "evidence": [{"photo_index": 1, "observation": "Modeling approximation from front-facade proportions only; no metric measurement supplied."}]},
+    "depth": {"value": 8.6, "source": {"kind": "inferred", "confidence": 0.25}, "evidence": [{"photo_index": 2, "observation": "Modeling approximation constrained by the long right elevation and rear/left views."}]},
+    "height": {"value": 7.8, "source": {"kind": "inferred", "confidence": 0.30}, "evidence": [{"photo_index": 1, "observation": "Modeling approximation preserving three visible opening levels below the eaves."}]},
+    "floors": 3,
+    "source": {"kind": "inferred", "confidence": 0.55}
+  }],
+  "openings": [
+    {"id":"front-upper-left","type":"window","volume_id":"house-main","facade":"front","offset_horizontal":1.15,"offset_vertical":5.55,"width":1.25,"height":1.35,"source":{"kind":"inferred","confidence":0.72}},
+    {"id":"front-upper-right","type":"window","volume_id":"house-main","facade":"front","offset_horizontal":4.85,"offset_vertical":5.55,"width":1.25,"height":1.35,"source":{"kind":"inferred","confidence":0.72}},
+    {"id":"front-middle-left","type":"window","volume_id":"house-main","facade":"front","offset_horizontal":1.05,"offset_vertical":3.15,"width":1.35,"height":1.30,"source":{"kind":"inferred","confidence":0.75}},
+    {"id":"front-middle-right","type":"window","volume_id":"house-main","facade":"front","offset_horizontal":4.75,"offset_vertical":3.15,"width":1.35,"height":1.30,"source":{"kind":"inferred","confidence":0.75}},
+    {"id":"front-low-left","type":"window","volume_id":"house-main","facade":"front","offset_horizontal":1.25,"offset_vertical":0.45,"width":0.85,"height":1.05,"source":{"kind":"inferred","confidence":0.72}},
+    {"id":"front-low-right","type":"unknown","volume_id":"house-main","facade":"front","offset_horizontal":4.55,"offset_vertical":0.10,"width":1.45,"height":2.05,"source":{"kind":"inferred","confidence":0.62}},
+    {"id":"right-upper","type":"window","volume_id":"house-main","facade":"right","offset_horizontal":2.10,"offset_vertical":4.80,"width":1.10,"height":1.55,"source":{"kind":"inferred","confidence":0.65}},
+    {"id":"right-low-front","type":"unknown","volume_id":"house-main","facade":"right","offset_horizontal":0.80,"offset_vertical":0.35,"width":0.50,"height":0.55,"source":{"kind":"inferred","confidence":0.45}},
+    {"id":"right-low-rear","type":"unknown","volume_id":"house-main","facade":"right","offset_horizontal":6.30,"offset_vertical":0.45,"width":0.85,"height":0.75,"source":{"kind":"inferred","confidence":0.48}},
+    {"id":"rear-upper-left","type":"window","volume_id":"house-main","facade":"rear","offset_horizontal":0.85,"offset_vertical":5.35,"width":1.20,"height":1.45,"source":{"kind":"inferred","confidence":0.65}},
+    {"id":"rear-middle-left","type":"unknown","volume_id":"house-main","facade":"rear","offset_horizontal":1.05,"offset_vertical":2.55,"width":1.00,"height":1.25,"source":{"kind":"inferred","confidence":0.48}},
+    {"id":"rear-middle-right","type":"window","volume_id":"house-main","facade":"rear","offset_horizontal":4.65,"offset_vertical":2.65,"width":1.35,"height":1.15,"source":{"kind":"inferred","confidence":0.65}},
+    {"id":"left-upper","type":"window","volume_id":"house-main","facade":"left","offset_horizontal":2.10,"offset_vertical":4.75,"width":1.15,"height":1.55,"source":{"kind":"inferred","confidence":0.70}},
+    {"id":"left-middle","type":"unknown","volume_id":"house-main","facade":"left","offset_horizontal":2.10,"offset_vertical":2.25,"width":1.10,"height":1.20,"source":{"kind":"inferred","confidence":0.50}}
+  ],
+  "roofs": [{
+    "id":"main-gable","volume_id":"house-main","type":"gable","overhang":0.18,"ridge_direction":"depth","down_slope_direction":null,"pitch_degrees":17.0,
+    "source":{"kind":"inferred","confidence":0.65},
+    "evidence":[{"photo_index":1,"observation":"Front silhouette directly shows a shallow gable."},{"photo_index":2,"observation":"Right elevation confirms the roof plane runs along the building depth."}]
+  }],
+  "terrain":{"kind":"facade_grade_profiles","profiles":[{"facade":"right","start_elevation":null,"end_elevation":null,"outward_extent":null,"source":{"kind":"observed","confidence":0.90},"evidence":[{"photo_index":2,"observation":"Street/ground rises along the right wall; amplitude intentionally left unknown."}]}]},
+  "platforms":[
+    {"id":"rear-timber-deck","host_volume_id":"house-main","position":{"x":1.90,"y":8.60,"z":2.35},"width":5.50,"depth":2.10,"thickness":0.18,"material":"timber","deck_board_direction":"unknown",
+     "supports":[
+       {"id":"deck-post-left","position":{"x":2.25,"y":9.95,"z":0.0},"width":0.18,"depth":0.18,"height":2.35,"source":{"kind":"inferred","confidence":0.62}},
+       {"id":"deck-post-right","position":{"x":6.65,"y":9.95,"z":0.0},"width":0.18,"depth":0.18,"height":2.35,"source":{"kind":"inferred","confidence":0.58}}
+     ],
+     "edges":{"x_min":{"treatment":"open_railing","access_spans":[]},"x_max":{"treatment":"open_railing","access_spans":[]},"y_min":{"treatment":"wall_attached","access_spans":[]},"y_max":{"treatment":"open_railing","access_spans":[]}},
+     "source":{"kind":"inferred","confidence":0.72}},
+    {"id":"left-upper-landing","host_volume_id":"house-main","position":{"x":-1.25,"y":6.95,"z":2.35},"width":1.25,"depth":1.25,"thickness":0.18,"material":"concrete","supports":[],"source":{"kind":"inferred","confidence":0.58}},
+    {"id":"left-turn-landing","host_volume_id":"house-main","position":{"x":-1.25,"y":4.65,"z":1.10},"width":1.25,"depth":1.15,"thickness":0.18,"material":"concrete","supports":[],"source":{"kind":"inferred","confidence":0.45}}
+  ],
+  "stairs":[
+    {"id":"left-stair-lower","start":{"x":-1.05,"y":2.10,"z":0.0},"end":{"x":-1.05,"y":4.65,"z":1.10},"width":0.95,"material":"concrete","left_edge":"solid_parapet","right_edge":"solid_parapet","source":{"kind":"inferred","confidence":0.52}},
+    {"id":"left-stair-upper","start":{"x":-1.05,"y":4.65,"z":1.10},"end":{"x":-0.10,"y":6.95,"z":2.35},"width":0.95,"material":"concrete","left_edge":"solid_parapet","right_edge":"solid_parapet","source":{"kind":"inferred","confidence":0.42}}
+  ],
+  "equipment":[],
+  "visibility":[],
+  "platform_structure_observations":[
+    {"id":"deck-bracing-observed","platform_id":"rear-timber-deck","kind":"diagonal_brace","statement":"Diagonal timber bracing is visible below the rear deck; exact count and endpoints are not metrically known.","count":null,"source":{"kind":"observed","confidence":0.88},"evidence":[{"photo_index":3,"observation":"At least one diagonal brace is directly visible beneath the deck."}]}
+  ],
+  "relations":[
+    {"id":"lower-to-turn","kind":"connects_to","subject_id":"left-stair-lower","object_id":"left-turn-landing","certainty":"probable","geometry_status":"resolved","semantic_anchor_volume_id":null,"statement":"Lower stair run reaches the intermediate turning landing.","evidence":[{"photo_index":5,"observation":"Multi-view circulation supports a turn before the upper arrival."}]},
+    {"id":"upper-from-turn","kind":"connects_to","subject_id":"left-stair-upper","object_id":"left-turn-landing","certainty":"probable","geometry_status":"resolved","semantic_anchor_volume_id":null,"statement":"Upper stair run starts from the turning landing.","evidence":[{"photo_index":4,"observation":"Upper masonry run is partly occluded but constrained by the visible parapet and arrival."}]},
+    {"id":"upper-to-landing","kind":"connects_to","subject_id":"left-stair-upper","object_id":"left-upper-landing","certainty":"probable","geometry_status":"resolved","semantic_anchor_volume_id":null,"statement":"Upper stair run reaches the masonry landing beside the house.","evidence":[{"photo_index":4,"observation":"Landing and stair circulation meet beside the left elevation."}]},
+    {"id":"landing-to-house","kind":"connects_to","subject_id":"left-upper-landing","object_id":"building_boundary","certainty":"certain","geometry_status":"resolved","semantic_anchor_volume_id":"house-main","statement":"The upper masonry landing touches the house envelope.","evidence":[{"photo_index":4,"observation":"Landing is visibly built against the target wall."}]},
+    {"id":"deck-to-house","kind":"connects_to","subject_id":"rear-timber-deck","object_id":"building_boundary","certainty":"certain","geometry_status":"resolved","semantic_anchor_volume_id":"house-main","statement":"Rear timber deck is attached to the rear elevation.","evidence":[{"photo_index":3,"observation":"Deck inner edge visibly meets the white rear wall."}]}
+  ],
+  "appearance":{"walls":{"color":"off_white"},"roof":{"color":"dark_gray"},"frames":{"color":"dark_brown"}},
+  "notes":"Neutral five-photo candidate. Absolute dimensions and stair-turn metric geometry are MODELING_APPROXIMATION values only. No chimney is modeled because the visible chimney attribution to the target building is not sufficiently secure from these five views alone. No vegetation, pots, furniture, gate or decorative surroundings are added."
+}
