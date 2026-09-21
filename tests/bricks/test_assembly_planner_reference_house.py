@@ -30,3 +30,17 @@ def test_reference_house_planner_audit_is_deterministic_and_honest():
         bundle.brick_model, plan_supported_non_roof_parts(bundle.brick_model)
     )
     assert unresolved == ()
+
+
+def test_reference_house_planner_order_respects_direct_support_dependencies():
+    bundle = run_m0_pipeline(REFERENCE_HOUSE, front_width_studs=48)
+    result = plan_supported_non_roof_parts(bundle.brick_model)
+    sequence = {step.placement_id: step.sequence for step in result.steps}
+    from brickhouse.bricks.assembly_planner import direct_support_graph
+
+    for placement_id, support_ids in direct_support_graph(bundle.brick_model).items():
+        if placement_id not in sequence:
+            continue
+        for support_id in support_ids:
+            assert support_id in sequence
+            assert sequence[support_id] < sequence[placement_id]
