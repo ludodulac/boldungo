@@ -1,4 +1,4 @@
-from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates
+from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 def part(pid, part_id, x, y, z, rotation=0):
@@ -36,3 +36,16 @@ def test_candidates_start_on_ground_then_unlock_supported_part():
     ])
     assert [c.placement_id for c in planning_candidates(m, set())] == ["base"]
     assert [c.placement_id for c in planning_candidates(m, {"base"})] == ["top"]
+
+
+def test_scoring_prefers_larger_proven_support_and_keeps_reasons():
+    m = model([
+        part("wide", "BRICK_1X4", 0, 0, 0),
+        part("narrow", "BRICK_1X1", 6, 0, 0),
+        part("wide_top", "BRICK_1X4", 0, 0, 3),
+        part("narrow_top", "BRICK_1X1", 6, 0, 3),
+    ])
+    candidates = planning_candidates(m, {"wide", "narrow"})
+    scored = score_candidates(candidates)
+    assert [item.placement_id for item in scored] == ["wide_top", "narrow_top"]
+    assert "direct-support-proven" in scored[0].reasons
