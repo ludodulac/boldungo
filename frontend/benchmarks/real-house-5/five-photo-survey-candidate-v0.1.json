@@ -368,15 +368,19 @@
       "attributes": {
         "semantic_type": "window",
         "relative_vertical_position": "high",
-        "metric_geometry": null
+        "metric_geometry": null,
+        "physical_object_count": 1
       },
       "attribute_certainty": {
         "semantic_type": "certain",
         "relative_vertical_position": "certain",
-        "metric_geometry": "unproven"
+        "metric_geometry": "unproven",
+        "physical_object_count": "certain"
       },
       "knowledge_mode": "observed",
-      "attribute_knowledge_mode": {}
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
     },
     {
       "id": "right-opening-low-glazed-1",
@@ -393,15 +397,19 @@
       "attributes": {
         "semantic_type_hypothesis": "glass_block_like_opening",
         "relative_vertical_position": "low",
-        "metric_geometry": null
+        "metric_geometry": null,
+        "physical_object_count": 1
       },
       "attribute_certainty": {
         "semantic_type_hypothesis": "plausible",
         "relative_vertical_position": "certain",
-        "metric_geometry": "unproven"
+        "metric_geometry": "unproven",
+        "physical_object_count": "certain"
       },
       "knowledge_mode": "observed",
-      "attribute_knowledge_mode": {}
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
     },
     {
       "id": "right-equipment-low-1",
@@ -452,14 +460,18 @@
             "shape_detail",
             "structural_continuity"
           ]
-        }
+        },
+        "physical_object_count": 1
       },
       "attribute_certainty": {
         "semantic_type": "certain",
-        "multiview_identity": "certain"
+        "multiview_identity": "certain",
+        "physical_object_count": "certain"
       },
       "knowledge_mode": "deduced_multiview",
-      "attribute_knowledge_mode": {}
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
     },
     {
       "id": "left-access-opening-1",
@@ -489,14 +501,18 @@
             "relative_position",
             "structural_continuity"
           ]
-        }
+        },
+        "physical_object_count": 1
       },
       "attribute_certainty": {
         "semantic_type_hypothesis": "plausible",
-        "multiview_identity": "plausible"
+        "multiview_identity": "plausible",
+        "physical_object_count": "certain"
       },
       "knowledge_mode": "deduced_multiview",
-      "attribute_knowledge_mode": {}
+      "attribute_knowledge_mode": {
+        "physical_object_count": "observed"
+      }
     },
     {
       "id": "front-opening-1",
