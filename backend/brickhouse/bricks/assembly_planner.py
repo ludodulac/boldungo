@@ -128,3 +128,40 @@ def score_candidates(candidates: tuple[PlanningCandidate, ...]) -> tuple[Candida
         )
         scored.append(CandidateScore(candidate.placement_id, score, reasons))
     return tuple(sorted(scored, key=lambda c: (-c.score, c.placement_id)))
+
+
+@dataclass(frozen=True)
+class PlannerStep:
+    sequence: int
+    placement_id: str
+    score: int
+    reasons: tuple[str, ...]
+
+@dataclass(frozen=True)
+class PlannerResult:
+    steps: tuple[PlannerStep, ...]
+    unresolved_ids: tuple[str, ...]
+
+def plan_supported_non_roof_parts(model: BrickModel) -> PlannerResult:
+    """Build a deterministic conservative order for the currently proven scope.
+
+    This experimental planner intentionally stops instead of guessing when no
+    support-proven candidate remains. The existing AssemblyPlan is not changed.
+    """
+    eligible_ids = {
+        p.placement_id for p in model.parts
+        if p.category not in {"roof_tile", "ridge_tile"}
+    }
+    built: set[str] = set()
+    steps: list[PlannerStep] = []
+    while built != eligible_ids:
+        ranked = score_candidates(planning_candidates(model, built))
+        if not ranked:
+            break
+        chosen = ranked[0]
+        built.add(chosen.placement_id)
+        steps.append(PlannerStep(len(steps) + 1, chosen.placement_id, chosen.score, chosen.reasons))
+    return PlannerResult(
+        steps=tuple(steps),
+        unresolved_ids=tuple(sorted(eligible_ids - built)),
+    )
