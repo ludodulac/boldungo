@@ -1,4 +1,4 @@
-from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan
+from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan, unresolved_placements
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 def part(pid, part_id, x, y, z, rotation=0):
@@ -96,3 +96,17 @@ def test_planner_audit_reports_coverage_without_claiming_false_completion():
     assert audit.unresolved_count == 1
     assert audit.complete_for_scope is False
     assert audit.unresolved_by_reason == (("no-direct-support-proven", 1),)
+
+
+def test_unresolved_placements_expose_real_part_context():
+    m = model([
+        part("base", "BRICK_1X4", 0, 0, 0),
+        part("floating", "BRICK_1X1", 9, 0, 6),
+    ])
+    result = plan_supported_non_roof_parts(m)
+    unresolved = unresolved_placements(m, result)
+    assert len(unresolved) == 1
+    assert unresolved[0].placement_id == "floating"
+    assert unresolved[0].part_id == "BRICK_1X1"
+    assert unresolved[0].z_plates == 6
+    assert unresolved[0].reason == "no-direct-support-proven"
