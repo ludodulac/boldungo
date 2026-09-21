@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan, plan_supported_non_roof_parts, unresolved_placements
+from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan, plan_supported_non_roof_parts, unresolved_placements, validate_planner_result
 from brickhouse.pipeline import run_m0_pipeline
 
 REFERENCE_HOUSE = Path("docs/examples/building-model-simple-house.json")
@@ -44,3 +44,9 @@ def test_reference_house_planner_order_respects_direct_support_dependencies():
         for support_id in support_ids:
             assert support_id in sequence
             assert sequence[support_id] < sequence[placement_id]
+
+
+def test_reference_house_planner_replays_without_contract_violations():
+    bundle = run_m0_pipeline(REFERENCE_HOUSE, front_width_studs=48)
+    result = plan_supported_non_roof_parts(bundle.brick_model)
+    assert validate_planner_result(bundle.brick_model, result) == ()
