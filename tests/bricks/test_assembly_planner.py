@@ -1,4 +1,4 @@
-from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts
+from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 def part(pid, part_id, x, y, z, rotation=0):
@@ -62,3 +62,12 @@ def test_planner_builds_supported_stack_and_refuses_unproven_floating_part():
     assert [step.placement_id for step in result.steps] == ["base", "middle", "top"]
     assert result.unresolved_ids == ("floating",)
     assert [step.sequence for step in result.steps] == [1, 2, 3]
+
+
+def test_unresolved_part_reports_why_planner_refused_it():
+    m = model([
+        part("base", "BRICK_1X4", 0, 0, 0),
+        part("floating", "BRICK_1X1", 9, 0, 6),
+    ])
+    result = plan_supported_non_roof_parts(m)
+    assert unresolved_reasons(m, result) == {"floating": "no-direct-support-proven"}
