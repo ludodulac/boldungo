@@ -121,3 +121,14 @@ def test_planner_prefers_nearby_safe_candidate_after_first_placement():
     result = plan_supported_non_roof_parts(m, initial_built_ids={"first"})
     assert [step.placement_id for step in result.steps] == ["near", "far"]
     assert "spatial-distance=1" in result.steps[0].reasons
+
+
+def test_planner_prefers_structural_candidate_before_safe_facade_detail():
+    structural = part("structural", "BRICK_1X1", 0, 0, 0)
+    detail = part("detail", "BRICK_1X1", 1, 0, 0).model_copy(
+        update={"category": "facade_detail", "component": "facade_detail"}
+    )
+    m = model([detail, structural])
+    result = plan_supported_non_roof_parts(m)
+    assert [step.placement_id for step in result.steps] == ["structural", "detail"]
+    assert "fragile-detail-late" in result.steps[1].reasons
