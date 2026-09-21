@@ -1,0 +1,82 @@
+name: Neutral five-photo Boldungo local render proof
+on:
+  push:
+    branches: [experiment/real-house-5-neutral-render]
+    paths:
+      - 'frontend/benchmarks/real-house-5/neutral-five-photo-scene-v0.2.json'
+      - '.github/workflows/neutral-five-photo-render.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Boldungo engine
+        run: python -m pip install -e .
+      - name: Build BrickModel from the committed Scene using Boldungo engine
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from fastapi.testclient import TestClient
+          from brickhouse.api import app
+          scene_path=Path('frontend/benchmarks/real-house-5/neutral-five-photo-scene-v0.2.json')
+          scene=json.loads(scene_path.read_text(encoding='utf-8'))
+          response=TestClient(app).post('/api/v1/build-scene',json={'scene':scene,'front_width_studs':48,'allow_partial':True})
+          if response.status_code != 200: raise SystemExit(f'Boldungo build failed {response.status_code}: {response.text}')
+          export=response.json()
+          parts=export.get('brick_model',{}).get('parts') or []
+          if not parts: raise SystemExit('Boldungo build returned no BrickModel parts')
+          Path('proof').mkdir(exist_ok=True)
+          Path('proof/brickhouse-export.json').write_text(json.dumps(export,indent=2)+'\\n',encoding='utf-8')
+          Path('proof/build-summary.json').write_text(json.dumps({'source_scene':str(scene_path),'scene_id':scene['id'],'commit':os.environ.get('GITHUB_SHA'),'engine_endpoint':'local /api/v1/build-scene','front_width_studs':48,'allow_partial':True,'brick_parts':len(parts),'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])},indent=2)+'\\n',encoding='utf-8')
+          PY
+      - name: Install Playwright
+        run: |
+          python -m pip install 'playwright>=1.50,<2'
+          python -m playwright install --with-deps chromium
+      - name: Capture real Boldungo viewer
+        run: |
+          python -m http.server 4173 --directory frontend >/tmp/boldungo-http.log 2>&1 &
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          export=json.loads(Path('proof/brickhouse-export.json').read_text())
+          out=Path('proof/viewer-screenshots'); out.mkdir(parents=True,exist_ok=True)
+          with sync_playwright() as p:
+              browser=p.chromium.launch(headless=True,args=['--no-sandbox'])
+              page=browser.new_page(viewport={'width':1440,'height':1000},device_scale_factor=1)
+              page.goto('http://127.0.0.1:4173/viewer.html',wait_until='domcontentloaded')
+              page.evaluate('(bundle)=>localStorage.setItem("brickhouse.pendingExport",JSON.stringify(bundle))',export)
+              page.reload(wait_until='networkidle')
+              page.wait_for_function('()=>document.querySelectorAll("#model-summary dd")[0]?.textContent.trim()!=="—"')
+              canvas=page.locator('#viewer')
+              page.wait_for_timeout(1200)
+              views=[('perspective','#reset-view'),('front','#view-front'),('rear','#view-rear'),('left','#view-left'),('right','#view-right')]
+              for name,selector in views:
+                  page.locator(selector).click(); page.wait_for_timeout(700)
+                  canvas.screenshot(path=str(out/f'{name}.png'))
+              page.locator('#reset-view').click(); page.wait_for_timeout(500)
+              box=canvas.bounding_box()
+              page.mouse.move(box['x']+box['width']*.5,box['y']+box['height']*.5)
+              page.mouse.down()
+              page.mouse.move(box['x']+box['width']*.5,box['y']+box['height']*.82,steps=18)
+              page.mouse.up(); page.wait_for_timeout(900)
+              canvas.screenshot(path=str(out/'top-down.png'))
+              browser.close()
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: neutral-five-photo-boldungo-${{ github.sha }}
+          path: proof/
+          if-no-files-found: error
+          retention-days: 14
