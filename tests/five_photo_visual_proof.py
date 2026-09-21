@@ -7,7 +7,7 @@ from brickhouse.partial_scene_pipeline import run_partial_scene_pipeline
 from brickhouse.scene import ArchitecturalScene
 
 ROOT=Path(__file__).resolve().parents[1]
-SCENE=ROOT/"frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.3.json"
+SCENE=ROOT/"frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.4.json"
 OUTPUT=ROOT/"frontend/sample-export.json"
 MANIFEST=ROOT/"frontend/benchmarks/real-house-5/five-photo-materialization-v0.1.json"
 
