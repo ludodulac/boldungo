@@ -1,0 +1,28 @@
+from brickhouse.bricks.assembly_planner import direct_support_graph
+from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
+
+def part(pid, part_id, x, y, z, rotation=0):
+    return BrickModelPart(placement_id=pid, part_id=part_id, category="brick",
+        component="wall", x_studs=x, y_studs=y, z_plates=z,
+        rotation_quarter_turns=rotation, facade="front")
+
+def model(parts):
+    return BrickModel(building_id="b", volume_id="v", width_studs=12,
+        depth_studs=12, height_plates=12, parts=parts)
+
+def test_direct_support_requires_vertical_contact_and_footprint_overlap():
+    graph = direct_support_graph(model([
+        part("base", "BRICK_1X4", 0, 0, 0),
+        part("top", "BRICK_1X2", 1, 0, 3),
+        part("away", "BRICK_1X2", 8, 0, 3),
+    ]))
+    assert graph["base"] == ()
+    assert graph["top"] == ("base",)
+    assert graph["away"] == ()
+
+def test_rotated_footprint_can_supply_support():
+    graph = direct_support_graph(model([
+        part("base", "BRICK_1X4", 0, 0, 0, rotation=1),
+        part("top", "BRICK_1X2", 0, 2, 3, rotation=1),
+    ]))
+    assert graph["top"] == ("base",)
