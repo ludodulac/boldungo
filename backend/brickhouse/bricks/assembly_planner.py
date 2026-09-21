@@ -215,3 +215,29 @@ def audit_supported_non_roof_plan(model: BrickModel) -> PlannerAudit:
         complete_for_scope=not result.unresolved_ids,
         unresolved_by_reason=tuple(sorted(counts.items())),
     )
+
+
+@dataclass(frozen=True)
+class UnresolvedPlacement:
+    placement_id: str
+    part_id: str
+    category: str
+    component: str
+    z_plates: int
+    reason: str
+
+def unresolved_placements(model: BrickModel, result: PlannerResult) -> tuple[UnresolvedPlacement, ...]:
+    """Return concrete unresolved parts so real models can drive the next rule."""
+    reasons = unresolved_reasons(model, result)
+    parts = {p.placement_id: p for p in model.parts}
+    return tuple(
+        UnresolvedPlacement(
+            placement_id=pid,
+            part_id=parts[pid].part_id,
+            category=parts[pid].category,
+            component=parts[pid].component,
+            z_plates=parts[pid].z_plates,
+            reason=reasons[pid],
+        )
+        for pid in result.unresolved_ids
+    )
