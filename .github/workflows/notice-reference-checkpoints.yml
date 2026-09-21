@@ -1,0 +1,34 @@
+name: NOTICE reference grammar checkpoints
+on:
+  push:
+    branches: [experiment/notice-step12-visual-action]
+    paths: ['.github/workflows/notice-reference-checkpoints.yml']
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm install --no-save playwright@1.55.0 && npx playwright install --with-deps chromium
+      - run: |
+          python -m http.server 4173 --directory frontend >/tmp/http.log 2>&1 &
+          cat > capture.mjs <<'JS'
+          import { chromium, devices } from 'playwright';
+          const browser=await chromium.launch({headless:true});
+          const context=await browser.newContext({...devices['Pixel 5']});
+          const page=await context.newPage();
+          for(const n of [1,12,24,34]){
+            const id=String(n).padStart(4,'0');
+            await page.goto(`http://127.0.0.1:4173/viewer.html?notice=step-${id}&visual=action`,{waitUntil:'networkidle'});
+            await page.waitForFunction(seq=>window.__NOTICE_PROOF__?.current_sequence===seq,n);
+            await page.locator('.viewer-wrap').screenshot({path:`notice-step-${id}-reference.png`});
+          }
+          await browser.close();
+          JS
+          node capture.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notice-reference-checkpoints
+          path: notice-step-*-reference.png
+          retention-days: 14
