@@ -142,7 +142,7 @@ class PlannerResult:
     steps: tuple[PlannerStep, ...]
     unresolved_ids: tuple[str, ...]
 
-def plan_supported_non_roof_parts(model: BrickModel) -> PlannerResult:
+def plan_supported_non_roof_parts(model: BrickModel, initial_built_ids: set[str] | None = None) -> PlannerResult:
     """Build a deterministic conservative order for the currently proven scope.
 
     This experimental planner intentionally stops instead of guessing when no
@@ -152,7 +152,7 @@ def plan_supported_non_roof_parts(model: BrickModel) -> PlannerResult:
         p.placement_id for p in model.parts
         if p.category not in {"roof_tile", "ridge_tile"}
     }
-    built: set[str] = set()
+    built: set[str] = set(initial_built_ids or ()) & eligible_ids
     steps: list[PlannerStep] = []
     while built != eligible_ids:
         ranked = score_candidates(planning_candidates(model, built))
@@ -165,3 +165,24 @@ def plan_supported_non_roof_parts(model: BrickModel) -> PlannerResult:
         steps=tuple(steps),
         unresolved_ids=tuple(sorted(eligible_ids - built)),
     )
+
+
+def unresolved_reasons(model: BrickModel, result: PlannerResult) -> dict[str, str]:
+    """Explain why this conservative planner stopped on each unresolved part."""
+    supports = direct_support_graph(model)
+    part_by_id = {p.placement_id: p for p in model.parts}
+    built = {step.placement_id for step in result.steps}
+    reasons: dict[str, str] = {}
+    for pid in result.unresolved_ids:
+        part = part_by_id[pid]
+        if part.category in {"roof_tile", "ridge_tile"}:
+            reasons[pid] = "roof-slope-contact-not-modelled"
+            continue
+        support_ids = supports.get(pid, ())
+        if not support_ids and part.z_plates > 0:
+            reasons[pid] = "no-direct-support-proven"
+        elif not set(support_ids).issubset(built):
+            reasons[pid] = "support-dependency-unresolved"
+        else:
+            reasons[pid] = "planner-scope-unresolved"
+    return reasons
