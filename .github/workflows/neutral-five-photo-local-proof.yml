@@ -21,7 +21,9 @@ jobs:
           python-version: '3.12'
       - name: Install Boldungo engine
         run: python -m pip install -e .
-      - name: Pre-LEGO normalized architectural constraint gate\n        run: python -m pytest -q tests/test_architectural_constraints_normalized.py tests/test_real_house_5_v03_prelego_constraints.py\n      - name: Build BrickModel from the committed Scene using Boldungo engine
+      - name: Pre-LEGO normalized architectural constraint gate
+        run: python -m pytest -q tests/test_architectural_constraints_normalized.py tests/test_real_house_5_v03_prelego_constraints.py
+      - name: Build BrickModel from the committed Scene using Boldungo engine
         run: |
           python - <<'PY'
           import json, os
