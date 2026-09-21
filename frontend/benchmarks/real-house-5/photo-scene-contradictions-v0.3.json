@@ -1,0 +1,24 @@
+{
+ "schema_version":"boldungo-architectural-constraint-audit-0.1",
+ "benchmark_id":"real-house-5",
+ "source_scene":"neutral-five-photo-scene-v0.2.json",
+ "target_scene":"neutral-five-photo-scene-v0.3.json",
+ "photo_orientation":{"1":"front","2":"right","3":"left","4":"left","5":"rear"},
+ "losses":[
+  {"area":"global proportions","v02_problem":"7.4 x 8.6 x 7.8 m was promoted before ratio consistency; wall became visibly too tall.","cause":"metric-first scene authoring","generic_fix":"store/validate normalized facade ratios before metric conversion"},
+  {"area":"openings","v02_problem":"positions were independent metre guesses and left glazed door was typed unknown; rear openings were invented despite partial rear visibility.","cause":"no normalized opening identity/alignment constraint pass","generic_fix":"individual normalized rectangles + multiview identity + alignment/order constraints; omit unseen openings"},
+  {"area":"terrace","v02_problem":"rear-timber-deck placed on rear facade x=1.9,y=8.6, contradicting photos 3-4 where the structure runs along the left facade.","cause":"object-list reasoning lost host-facade topology","generic_fix":"host facade + touches/starts/ends/shares-edge constraints precede metric footprint"},
+  {"area":"stair","v02_problem":"L topology existed but its metric placement was disconnected from the known rearward route/landing complex.","cause":"axis-aligned coordinates chosen without path constraint solving","generic_fix":"represent ordered runs, turn node and endpoint connectivity as hard topology before lengths"},
+  {"area":"terrain","v02_problem":"qualitative grade was preserved but renderer/building could visually dominate interpretation.","cause":"building and grade lack explicit independent-frame constraint","generic_fix":"horizontal building levels + independent terrain grade constraint"},
+  {"area":"roof","v02_problem":"gable type/orientation was broadly right but 7.8 m wall height distorted silhouette; chimney was dropped despite prior five-view evidence.","cause":"roof solved after wrong envelope; evidence threshold inconsistent","generic_fix":"solve envelope ratios then roof relation; retain cross-view roof features with provenance"}
+ ],
+ "hard_constraints":[
+  "building floors horizontal",
+  "ground grade independent of building frame",
+  "front openings preserve three vertical bands and two principal bays",
+  "left upper window and left glazed door belong to same physical left wall",
+  "timber deck attached along left facade and lower than masonry landing",
+  "stair has two major non-collinear runs with a turn and connects ground to masonry landing",
+  "roof is gable with ridge along depth"
+ ]
+}
