@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan
+from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan, plan_supported_non_roof_parts, unresolved_placements
 from brickhouse.pipeline import run_m0_pipeline
 
 REFERENCE_HOUSE = Path("docs/examples/building-model-simple-house.json")
@@ -25,3 +25,10 @@ def test_reference_house_planner_audit_is_deterministic_and_honest():
     assert first.planned_count == 118
     assert first.unresolved_count == 16
     assert first.unresolved_by_reason == (("no-direct-support-proven", 16),)
+
+    unresolved = unresolved_placements(
+        bundle.brick_model, plan_supported_non_roof_parts(bundle.brick_model)
+    )
+    assert len(unresolved) == 16
+    assert all(item.reason == "no-direct-support-proven" for item in unresolved)
+    assert all(item.component != "roof" for item in unresolved)
