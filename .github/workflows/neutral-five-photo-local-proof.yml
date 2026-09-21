@@ -3,7 +3,7 @@ on:
   push:
     branches: [experiment/real-house-5-neutral-render]
     paths:
-      - 'frontend/benchmarks/real-house-5/neutral-five-photo-scene-v0.2.json'
+      - 'frontend/benchmarks/real-house-5/neutral-five-photo-scene-v0.3.json'
       - '.github/workflows/neutral-five-photo-render.yml'
   workflow_dispatch:
 
@@ -21,23 +21,23 @@ jobs:
           python-version: '3.12'
       - name: Install Boldungo engine
         run: python -m pip install -e .
-      - name: Build BrickModel from the committed Scene using Boldungo engine
+      - name: Pre-LEGO normalized architectural constraint gate\n        run: python -m pytest -q tests/test_architectural_constraints_normalized.py tests/test_real_house_5_v03_prelego_constraints.py\n      - name: Build BrickModel from the committed Scene using Boldungo engine
         run: |
           python - <<'PY'
           import json, os
           from pathlib import Path
           from fastapi.testclient import TestClient
           from brickhouse.api import app
-          scene_path=Path('frontend/benchmarks/real-house-5/neutral-five-photo-scene-v0.2.json')
+          scene_path=Path('frontend/benchmarks/real-house-5/neutral-five-photo-scene-v0.3.json')
           scene=json.loads(scene_path.read_text(encoding='utf-8'))
-          response=TestClient(app).post('/api/v1/build-scene',json={'scene':scene,'front_width_studs':16,'allow_partial':True})
+          response=TestClient(app).post('/api/v1/build-scene',json={'scene':scene,'front_width_studs':32,'allow_partial':True})
           if response.status_code != 200: raise SystemExit(f'Boldungo build failed {response.status_code}: {response.text}')
           export=response.json()
           parts=export.get('brick_model',{}).get('parts') or []
           if not parts: raise SystemExit('Boldungo build returned no BrickModel parts')
           Path('proof').mkdir(exist_ok=True)
           Path('proof/brickhouse-export.json').write_text(json.dumps(export,indent=2),encoding='utf-8')
-          Path('proof/build-summary.json').write_text(json.dumps({'source_scene':str(scene_path),'scene_id':scene['id'],'commit':os.environ.get('GITHUB_SHA'),'engine_endpoint':'local /api/v1/build-scene','front_width_studs':16,'allow_partial':True,'brick_parts':len(parts),'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])},indent=2),encoding='utf-8')
+          Path('proof/build-summary.json').write_text(json.dumps({'source_scene':str(scene_path),'scene_id':scene['id'],'commit':os.environ.get('GITHUB_SHA'),'engine_endpoint':'local /api/v1/build-scene','front_width_studs':32,'allow_partial':True,'brick_parts':len(parts),'assembly_steps':len(export.get('assembly_plan',{}).get('steps') or [])},indent=2),encoding='utf-8')
           PY
       - name: Install Playwright
         run: |
