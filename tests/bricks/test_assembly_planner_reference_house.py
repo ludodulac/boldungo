@@ -19,8 +19,9 @@ def test_reference_house_planner_audit_is_deterministic_and_honest():
 
     # Keep the real-model audit visible in CI so future planner work is driven
     # by actual coverage rather than invented heuristics.
-    print(
-        f"REFERENCE_PLANNER_AUDIT eligible={first.eligible_count} "
-        f"planned={first.planned_count} unresolved={first.unresolved_count} "
-        f"reasons={dict(first.unresolved_by_reason)}"
-    )
+    # Pin the current reference-house coverage. If geometry or planner logic
+    # changes, CI must make that change explicit rather than silently degrading.
+    assert first.eligible_count == 134
+    assert first.planned_count == 118
+    assert first.unresolved_count == 16
+    assert first.unresolved_by_reason == (("no-direct-support-proven", 16),)
