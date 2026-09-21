@@ -21,14 +21,12 @@ def test_reference_house_planner_audit_is_deterministic_and_honest():
     # by actual coverage rather than invented heuristics.
     # Pin the current reference-house coverage. If geometry or planner logic
     # changes, CI must make that change explicit rather than silently degrading.
-    assert first.eligible_count == 134
-    assert first.planned_count == 118
-    assert first.unresolved_count == 16
-    assert first.unresolved_by_reason == (("no-direct-support-proven", 16),)
+    assert first.eligible_count == 691
+    assert first.planned_count == 691
+    assert first.unresolved_count == 0
+    assert first.unresolved_by_reason == ()
 
     unresolved = unresolved_placements(
         bundle.brick_model, plan_supported_non_roof_parts(bundle.brick_model)
     )
-    assert len(unresolved) == 16
-    assert all(item.reason == "no-direct-support-proven" for item in unresolved)
-    assert all(item.component != "roof" for item in unresolved)
+    assert unresolved == ()
