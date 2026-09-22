@@ -50,6 +50,14 @@ class AspectCertainty(BaseModel):
     metric: CertaintyLevel = CertaintyLevel.UNKNOWN
 
 
+LOCAL_OBSERVATION_RESPONSE_INVARIANTS = (
+    "If status='observed', visibility MUST be 'visible'. "
+    "Use visibility='occluded' only when the claimed content is not directly observable "
+    "because occlusion prevents observing it; partially masked but still directly observed "
+    "content remains visibility='visible' and the statement may describe the partial masking.",
+)
+
+
 class LocalObservation(BaseModel):
     model_config = {"extra": "forbid"}
     id: str = Field(min_length=1)
@@ -79,6 +87,12 @@ class ViewAssessment(BaseModel):
     subject_hint: str = Field(min_length=1)
     visibility: VisibilityStatus
     statement: str = Field(min_length=1)
+
+
+IDENTITY_CANDIDATE_RESPONSE_INVARIANTS = (
+    "observation_ids MUST contain unique IDs.",
+    "If status='same_physical_object', certainty MUST be 'certain' or 'plausible'.",
+)
 
 
 class IdentityCandidate(BaseModel):
@@ -614,7 +628,7 @@ class BootstrapPhotoRef(BaseModel):
 
 
 class VisualBootstrapRequest(BaseModel):
-    schema_version: str = "0.2"
+    schema_version: str = "0.3"
     bootstrap_id: str = Field(min_length=1)
     photos: list[BootstrapPhotoRef] = Field(min_length=1)
     instruction: str = Field(min_length=1)
@@ -622,7 +636,15 @@ class VisualBootstrapRequest(BaseModel):
     epistemic_rules: list[str] = Field(min_length=1)
     output_filename: str = "visual-bootstrap-response.json"
     response_schema: dict
+    response_invariants: list[str]
     response_example: dict | None = None
+
+
+VISUAL_BOOTSTRAP_RESPONSE_INVARIANTS = (
+    "Observation IDs MUST be unique within observations.",
+    "Every observation.photo_index MUST be <= photo_count.",
+    "Every identity_candidates[].observation_ids entry MUST reference an existing observations[].id.",
+)
 
 
 class VisualBootstrapResponse(BaseModel):
@@ -649,6 +671,28 @@ class VisualBootstrapResponse(BaseModel):
                     f"bootstrap identity references unknown observations: {sorted(unknown)}"
                 )
         return self
+
+
+NORMALIZED_IMAGE_REGION_RESPONSE_INVARIANTS = (
+    "For every non-null region, x1 MUST be greater than x0 and y1 MUST be greater than y0 (positive area).",
+)
+
+IMPORT_VISUAL_BOOTSTRAP_RESPONSE_INVARIANTS = (
+    "response.bootstrap_id MUST equal request.bootstrap_id.",
+    "response.photo_count MUST equal the number of request.photos.",
+    "Every response observation.photo_index MUST be one of the photo_index values present in request.photos.",
+)
+
+
+def visual_bootstrap_response_invariants() -> list[str]:
+    """Human-readable counterparts of non-schema validators used by bootstrap validation/import."""
+    return [
+        *LOCAL_OBSERVATION_RESPONSE_INVARIANTS,
+        *IDENTITY_CANDIDATE_RESPONSE_INVARIANTS,
+        *NORMALIZED_IMAGE_REGION_RESPONSE_INVARIANTS,
+        *VISUAL_BOOTSTRAP_RESPONSE_INVARIANTS,
+        *IMPORT_VISUAL_BOOTSTRAP_RESPONSE_INVARIANTS,
+    ]
 
 
 def visual_bootstrap_response_schema() -> dict:
@@ -698,6 +742,7 @@ def build_visual_bootstrap_request(
             "architectural_plausibility != observation",
         ],
         response_schema=visual_bootstrap_response_schema(),
+        response_invariants=visual_bootstrap_response_invariants(),
         response_example={
             "schema_version": "0.1",
             "bootstrap_id": "synthetic-example",
