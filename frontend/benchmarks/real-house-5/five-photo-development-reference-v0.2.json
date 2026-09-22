@@ -1,0 +1,737 @@
+{
+  "schema_version": "brickhouse-five-photo-development-reference-0.2",
+  "benchmark_id": "real-house-5",
+  "status": "FROZEN_DEVELOPMENT_REFERENCE",
+  "label": "RÉFÉRENCE DE DÉVELOPPEMENT / ANALYSE CINQ-PHOTOS V0.2 — PAS UNE SORTIE AUTOMATIQUE DU PROVIDER",
+  "derived_from": [
+    "five-photo-development-reference-v0.1.json",
+    "docs/PHOTO_REASONING_MEMORY.md",
+    "retour humain de Ludovic postérieur au gel V0.1"
+  ],
+  "construction_policy": {
+    "primary_authority": "five canonical JPEGs only",
+    "oracle_used_during_construction": false,
+    "scene_used": false,
+    "lego_used": false,
+    "owner_facts_used": false,
+    "principle": "metric unknown does not imply architectural incomprehension"
+  },
+  "objects": [
+    {
+      "id": "main_roof",
+      "claims": [
+        {
+          "property": "existence",
+          "state": "OBSERVED",
+          "photos": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "value": "principal roof visible"
+        },
+        {
+          "property": "qualitative_form",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            1,
+            2,
+            5
+          ],
+          "value": "two-slope/gable roof"
+        },
+        {
+          "property": "gable_end",
+          "state": "OBSERVED",
+          "photos": [
+            1
+          ],
+          "value": "triangular gable elevation"
+        },
+        {
+          "property": "ridge",
+          "state": "DEDUCED_ARCHITECTURALLY",
+          "photos": [
+            1,
+            2,
+            5
+          ],
+          "value": "ridge connecting the two roof slopes"
+        },
+        {
+          "property": "visual_pitch",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            1,
+            2,
+            5
+          ],
+          "value": "moderate pitch constrained qualitatively by gable silhouette; reconstructible proportionally"
+        },
+        {
+          "property": "numeric_pitch_degrees",
+          "state": "UNKNOWN",
+          "photos": [
+            1,
+            2,
+            5
+          ],
+          "value": null
+        },
+        {
+          "property": "covering_material",
+          "state": "TO_CONFIRM",
+          "photos": [
+            1,
+            3
+          ],
+          "value": "metal/zinc-like appearance is plausible but not required for geometric reconstruction"
+        }
+      ]
+    },
+    {
+      "id": "chimney_front_zone",
+      "claims": [
+        {
+          "property": "existence",
+          "state": "OBSERVED",
+          "photos": [
+            1,
+            3
+          ],
+          "value": "chimney stack visible in roof context"
+        },
+        {
+          "property": "identity_across_views",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            1,
+            3
+          ],
+          "value": "same front-zone chimney is strongly constrained by relative position to facade/roof and nearby antenna"
+        },
+        {
+          "property": "belongs_to_target_house",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            1,
+            3
+          ],
+          "value": true
+        },
+        {
+          "property": "qualitative_position",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            1,
+            3
+          ],
+          "value": "toward left side when facing front facade; corresponding relative side position in left-side view"
+        },
+        {
+          "property": "metric_position",
+          "state": "UNKNOWN",
+          "photos": [
+            1,
+            3
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "background_chimneys",
+      "claims": [
+        {
+          "property": "existence",
+          "state": "OBSERVED",
+          "photos": [
+            2
+          ],
+          "value": "other chimney stacks visible behind/around target roof"
+        },
+        {
+          "property": "belongs_to_target_house",
+          "state": "HYPOTHESIS",
+          "photos": [
+            2
+          ],
+          "value": false,
+          "note": "background relation suggests neighboring building; candidate user confirmation remains useful if identity matters"
+        }
+      ]
+    },
+    {
+      "id": "timber_deck",
+      "claims": [
+        {
+          "property": "existence",
+          "state": "OBSERVED",
+          "photos": [
+            3,
+            4
+          ],
+          "value": true
+        },
+        {
+          "property": "material",
+          "state": "OBSERVED",
+          "photos": [
+            3,
+            4
+          ],
+          "value": "timber"
+        },
+        {
+          "property": "raised",
+          "state": "OBSERVED",
+          "photos": [
+            3
+          ],
+          "value": true
+        },
+        {
+          "property": "identity_across_views",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            3,
+            4
+          ],
+          "value": "same raised deck"
+        },
+        {
+          "property": "connects_to_building",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            3,
+            4
+          ],
+          "value": true
+        },
+        {
+          "property": "circulation_function",
+          "state": "DEDUCED_ARCHITECTURALLY",
+          "photos": [
+            3,
+            4
+          ],
+          "value": "upper exterior walking/circulation surface serving building openings"
+        },
+        {
+          "property": "qualitative_extent",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            3,
+            4
+          ],
+          "value": "extent and level can be approximated from facade/opening relationships"
+        },
+        {
+          "property": "metric_dimensions",
+          "state": "UNKNOWN",
+          "photos": [
+            3,
+            4
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "guardrail",
+      "claims": [
+        {
+          "property": "existence",
+          "state": "OBSERVED",
+          "photos": [
+            3,
+            4
+          ],
+          "value": true
+        },
+        {
+          "property": "belongs_to_deck",
+          "state": "OBSERVED",
+          "photos": [
+            3,
+            4
+          ],
+          "value": true
+        },
+        {
+          "property": "material",
+          "state": "OBSERVED",
+          "photos": [
+            3,
+            4
+          ],
+          "value": "timber"
+        },
+        {
+          "property": "exact_module_count",
+          "state": "UNKNOWN",
+          "photos": [
+            3,
+            4
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "deck_support_structure",
+      "claims": [
+        {
+          "property": "vertical_support_existence",
+          "state": "OBSERVED",
+          "photos": [
+            3
+          ],
+          "value": true
+        },
+        {
+          "property": "diagonal_bracing_existence",
+          "state": "OBSERVED",
+          "photos": [
+            3
+          ],
+          "value": true
+        },
+        {
+          "property": "structural_function",
+          "state": "DEDUCED_ARCHITECTURALLY",
+          "photos": [
+            3
+          ],
+          "value": "supports/stabilizes raised deck"
+        },
+        {
+          "property": "exhaustive_support_count",
+          "state": "UNKNOWN",
+          "photos": [
+            3
+          ],
+          "value": null
+        },
+        {
+          "property": "support_coordinates",
+          "state": "UNKNOWN",
+          "photos": [
+            3
+          ],
+          "value": null
+        },
+        {
+          "property": "exhaustive_bracing_geometry",
+          "state": "UNKNOWN",
+          "photos": [
+            3
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "masonry_stair",
+      "claims": [
+        {
+          "property": "existence",
+          "state": "OBSERVED",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": true
+        },
+        {
+          "property": "material_family",
+          "state": "OBSERVED",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": "masonry"
+        },
+        {
+          "property": "identity_across_views",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": "same exterior stair system"
+        },
+        {
+          "property": "function",
+          "state": "DEDUCED_ARCHITECTURALLY",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": "connects lower exterior ground/courtyard circulation to upper exterior circulation"
+        },
+        {
+          "property": "reaches_upper_masonry_circulation",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            4,
+            5
+          ],
+          "value": true
+        },
+        {
+          "property": "qualitative_turning_form",
+          "state": "HYPOTHESIS",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": "L/turning circulation is strongly plausible from visible segments, occlusion and required arrival, but hidden turn is not directly established"
+        },
+        {
+          "property": "exact_run_count",
+          "state": "UNKNOWN",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": null
+        },
+        {
+          "property": "exact_step_count",
+          "state": "UNKNOWN",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": null
+        },
+        {
+          "property": "metric_geometry",
+          "state": "UNKNOWN",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "masonry_landing",
+      "claims": [
+        {
+          "property": "existence",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            4,
+            5
+          ],
+          "value": true
+        },
+        {
+          "property": "distinct_from_timber_deck",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": true
+        },
+        {
+          "property": "connects_to_building",
+          "state": "DEDUCED_MULTIVIEW",
+          "photos": [
+            4,
+            5
+          ],
+          "value": true
+        },
+        {
+          "property": "circulation_function",
+          "state": "DEDUCED_ARCHITECTURALLY",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": "upper circulation node receiving stair and serving access zone"
+        },
+        {
+          "property": "functional_connection_to_timber_deck",
+          "state": "DEDUCED_ARCHITECTURALLY",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": "a traversable connection is strongly constrained by the visible access system; exact hidden junction remains unresolved"
+        },
+        {
+          "property": "metric_dimensions",
+          "state": "UNKNOWN",
+          "photos": [
+            4,
+            5
+          ],
+          "value": null
+        },
+        {
+          "property": "closed_volume_below",
+          "state": "UNKNOWN",
+          "photos": [
+            4,
+            5
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "openings",
+      "claims": [
+        {
+          "property": "front_inventory",
+          "state": "OBSERVED",
+          "photos": [
+            1
+          ],
+          "value": "six principal openings"
+        },
+        {
+          "property": "right_high_window",
+          "state": "OBSERVED",
+          "photos": [
+            2
+          ],
+          "value": "ordinary upper window"
+        },
+        {
+          "property": "right_low_glazed_opening",
+          "state": "OBSERVED",
+          "photos": [
+            2
+          ],
+          "value": "low opening at road edge with glass-block-like appearance"
+        },
+        {
+          "property": "right_low_technical_box",
+          "state": "OBSERVED",
+          "photos": [
+            2
+          ],
+          "value": "small technical/electrical-box-like element; not treated as major architectural opening"
+        },
+        {
+          "property": "upper_access_zone_openings",
+          "state": "OBSERVED",
+          "photos": [
+            3,
+            4,
+            5
+          ],
+          "value": "door/window or glazed access openings visible at upper circulation level"
+        },
+        {
+          "property": "every_opening_exact_semantic_type",
+          "state": "TO_CONFIRM",
+          "photos": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "value": null
+        },
+        {
+          "property": "opening_depths",
+          "state": "UNKNOWN",
+          "photos": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "id": "facade_identity_markers",
+      "claims": [
+        {
+          "property": "lower_facade_color_band",
+          "state": "OBSERVED",
+          "photos": [
+            1,
+            2,
+            3
+          ],
+          "value": "lower facade/soubassement has visually distinct treatment/color"
+        },
+        {
+          "property": "opening_surrounds",
+          "state": "OBSERVED",
+          "photos": [
+            1,
+            2,
+            3
+          ],
+          "value": "some opening surrounds differ visually from main wall"
+        },
+        {
+          "property": "shutters",
+          "state": "OBSERVED",
+          "photos": [
+            1,
+            2,
+            3
+          ],
+          "value": "small shutters/volets visible on characteristic openings"
+        },
+        {
+          "property": "future_representation_priority",
+          "state": "DEDUCED_ARCHITECTURALLY",
+          "photos": [
+            1,
+            2,
+            3
+          ],
+          "value": "preserve these markers qualitatively for recognition; exact piece/count reproduction is unnecessary"
+        }
+      ]
+    }
+  ],
+  "circulation_topology": [
+    {
+      "from": "lower exterior ground/courtyard",
+      "to": "masonry stair",
+      "state": "OBSERVED",
+      "photos": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "from": "masonry stair",
+      "to": "upper masonry landing/circulation",
+      "state": "DEDUCED_MULTIVIEW",
+      "photos": [
+        4,
+        5
+      ]
+    },
+    {
+      "from": "upper masonry landing/circulation",
+      "to": "building access zone",
+      "state": "DEDUCED_ARCHITECTURALLY",
+      "photos": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "from": "timber deck",
+      "to": "building access zone",
+      "state": "DEDUCED_MULTIVIEW",
+      "photos": [
+        3,
+        4
+      ]
+    },
+    {
+      "from": "masonry landing/circulation",
+      "to": "timber deck",
+      "state": "DEDUCED_ARCHITECTURALLY",
+      "photos": [
+        3,
+        4,
+        5
+      ],
+      "note": "functional continuity strongly constrained; exact metric junction/step/material remains unresolved"
+    }
+  ],
+  "candidate_user_questions": [
+    {
+      "priority": "HIGH",
+      "question": "L'escalier tourne-t-il bien derrière/au niveau de ce mur avant d'arriver au palier supérieur ?",
+      "resolves": [
+        "qualitative stair topology",
+        "turn location"
+      ],
+      "reason": "high impact on recognizable exterior circulation"
+    },
+    {
+      "priority": "HIGH",
+      "question": "La grande ouverture au niveau de la terrasse est-elle une porte simple, une porte-fenêtre double ou une fenêtre ?",
+      "resolves": [
+        "access opening semantics"
+      ],
+      "reason": "affects facade identity and circulation interpretation"
+    },
+    {
+      "priority": "MEDIUM",
+      "question": "La couverture visible est-elle bien en zinc/métal ?",
+      "resolves": [
+        "roof material"
+      ],
+      "reason": "appearance-relevant but does not block roof geometry"
+    },
+    {
+      "priority": "MEDIUM",
+      "question": "Les cheminées visibles derrière sur la vue de droite appartiennent-elles au bâtiment voisin ?",
+      "resolves": [
+        "background chimney ownership"
+      ],
+      "reason": "prevents attaching neighboring stacks to target model"
+    }
+  ],
+  "metric_unknowns_preserved": [
+    "numeric roof pitch",
+    "exact chimney coordinates/footprint",
+    "exact building dimensions",
+    "wall thicknesses",
+    "opening depths",
+    "landing dimensions",
+    "closed volume below landing",
+    "exact stair run count",
+    "exact stair step count",
+    "exact stair coordinates",
+    "exact deck-to-landing metric junction",
+    "exhaustive deck support count",
+    "support coordinates",
+    "exhaustive bracing geometry"
+  ],
+  "future_identity_priorities": [
+    "silhouette",
+    "volumes",
+    "levels",
+    "gable/two-slope roof",
+    "characteristic openings",
+    "timber deck",
+    "masonry landing",
+    "exterior stair",
+    "target-house chimney",
+    "guardrail",
+    "main facade colors",
+    "lower facade/soubassement treatment",
+    "opening surrounds",
+    "shutters"
+  ],
+  "freeze_note": "V0.2 was constructed before reopening the private oracle. It is a human-assisted development reference from five canonical photos, V0.1, generic PHOTO_REASONING_MEMORY rules, and Ludovic's post-freeze reasoning feedback. It is not an automatic provider output."
+}
