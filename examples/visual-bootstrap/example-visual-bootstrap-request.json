@@ -1,0 +1,46 @@
+{
+  "schema_version": "0.1",
+  "bootstrap_id": "example-bootstrap",
+  "photos": [
+    {
+      "photo_index": 1,
+      "filename": "photo-1.jpg"
+    },
+    {
+      "photo_index": 2,
+      "filename": "photo-2.jpg"
+    },
+    {
+      "photo_index": 3,
+      "filename": "photo-3.jpg"
+    },
+    {
+      "photo_index": 4,
+      "filename": "photo-4.jpg"
+    },
+    {
+      "photo_index": 5,
+      "filename": "photo-5.jpg"
+    }
+  ],
+  "instruction": "Inspect the supplied photos and return only visual-bootstrap-response.json. Record local, traceable visual observations with approximate normalized image ROIs where possible. State observable properties separately from observed property states. Do not reconstruct the whole building, infer hidden geometry, or use architectural plausibility as visual evidence. Similar-looking fragments across photos remain identity candidates unless their physical identity is explicitly supported.",
+  "information_to_record": [
+    "local visual fragments or subjects",
+    "approximate normalized image regions",
+    "visibility",
+    "observable properties",
+    "observed property states only when visually established",
+    "directly supported local visual relations in statements",
+    "cross-view identity candidates with explicit support level"
+  ],
+  "epistemic_rules": [
+    "non_visible != absent",
+    "occluded != absent",
+    "ambiguous != false",
+    "not_mentioned != not_relevant",
+    "image_roi != world_metric",
+    "resemblance != same_physical_object",
+    "architectural_plausibility != observation"
+  ],
+  "output_filename": "visual-bootstrap-response.json"
+}
