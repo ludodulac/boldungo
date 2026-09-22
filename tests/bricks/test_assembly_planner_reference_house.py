@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan, plan_supported_non_roof_parts, unresolved_placements, validate_planner_result
+from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan, plan_supported_non_roof_parts, unresolved_placements, validate_planner_result, planner_metrics
 from brickhouse.pipeline import run_m0_pipeline
 
 REFERENCE_HOUSE = Path("docs/examples/building-model-simple-house.json")
@@ -50,3 +50,12 @@ def test_reference_house_planner_replays_without_contract_violations():
     bundle = run_m0_pipeline(REFERENCE_HOUSE, front_width_studs=48)
     result = plan_supported_non_roof_parts(bundle.brick_model)
     assert validate_planner_result(bundle.brick_model, result) == ()
+
+
+def test_reference_house_planner_has_measurable_human_continuity():
+    bundle = run_m0_pipeline(REFERENCE_HOUSE, front_width_studs=48)
+    result = plan_supported_non_roof_parts(bundle.brick_model)
+    metrics = planner_metrics(bundle.brick_model, result)
+    assert metrics.step_count == 691
+    assert metrics.spatial_travel >= 0
+    assert metrics.facade_switches >= 0
