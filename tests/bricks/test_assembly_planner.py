@@ -1,4 +1,4 @@
-from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan, unresolved_placements, planner_metrics, evaluate_planner_quality, group_planner_steps
+from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan, unresolved_placements, planner_metrics, evaluate_planner_quality, group_planner_steps, build_autonomous_instruction_steps
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 def part(pid, part_id, x, y, z, rotation=0):
@@ -172,3 +172,16 @@ def test_grouped_steps_preserve_order_and_cap_readable_pli():
     flattened = [pid for group in groups for pid in group.placement_ids]
     assert flattened == [step.placement_id for step in result.steps]
     assert all(len(group.placement_ids) <= 2 for group in groups)
+
+
+def test_autonomous_instruction_steps_have_exact_pli_counts():
+    m = model([
+        part("a", "BRICK_1X1", 0, 0, 0),
+        part("b", "BRICK_1X1", 1, 0, 0),
+        part("c", "BRICK_1X2", 2, 0, 0),
+    ])
+    result = plan_supported_non_roof_parts(m)
+    steps = build_autonomous_instruction_steps(m, result, max_parts=8)
+    assert len(steps) == 1
+    assert steps[0].placement_ids == tuple(step.placement_id for step in result.steps)
+    assert dict(steps[0].part_counts) == {"BRICK_1X1": 2, "BRICK_1X2": 1}
