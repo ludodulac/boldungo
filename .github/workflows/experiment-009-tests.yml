@@ -1,18 +1,19 @@
-name: Experiment 008 targeted tests
+name: Experiment 009 targeted tests
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - experiment/mv-testable-hypothesis-008
     paths:
       - 'backend/brickhouse/vision/multiview.py'
       - 'tests/vision/test_multiview_workspace.py'
       - 'tests/survey/test_multiview_workspace_bridge.py'
       - 'tests/survey/test_reasoning_state.py'
-      - '.github/workflows/experiment-008-tests.yml'
+      - '.github/workflows/experiment-009-tests.yml'
 
 jobs:
   targeted-tests:
-    if: github.head_ref == 'experiment/mv-testable-hypothesis-008' || github.head_ref == 'experiment/mv-discriminating-question-009'
+    if: github.head_ref == 'experiment/mv-discriminating-question-009'
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -24,11 +25,11 @@ jobs:
           cache: pip
       - name: Install project
         run: python -m pip install -e ".[dev]"
-      - name: Run Experiment 008 targeted tests
+      - name: Run Experiment 008/009 targeted tests
         run: |
           pytest -q \
             tests/vision/test_multiview_workspace.py \
             tests/survey/test_multiview_workspace_bridge.py \
             tests/survey/test_reasoning_state.py
 
-# Experimental PR-only verification for 008/009; remove before any integration decision.
+# Trigger verification after workflow registration.

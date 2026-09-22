@@ -17,6 +17,8 @@ from brickhouse.vision.multiview import (
     InquiryState,
     InquiryTestResult,
     ObservablePrediction,
+    ObservableProperty,
+    derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
     MultiViewPass,
@@ -353,3 +355,85 @@ def test_workspace_inquiry_reuses_existing_hypotheses_without_survey_promotion()
     )
 
     assert workspace.inquiries[0].hypothesis_ids == ["continues", "terminates"]
+
+
+
+def _structured_prediction(
+    prediction_id: str,
+    hypothesis_id: str,
+    **properties: str,
+) -> ObservablePrediction:
+    return ObservablePrediction(
+        id=prediction_id,
+        hypothesis_id=hypothesis_id,
+        statement="Human-readable wording is not used for semantic comparison.",
+        observable_properties=[
+            ObservableProperty(name=name, value=value)
+            for name, value in properties.items()
+        ],
+    )
+
+
+def test_discriminating_question_is_derived_from_structured_prediction_difference():
+    question = derive_discriminating_question([
+        _structured_prediction(
+            "p-continues", "continues", continuation="visible"
+        ),
+        _structured_prediction(
+            "p-terminates", "terminates", continuation="absent"
+        ),
+    ])
+
+    assert question is not None
+    assert question.hypothesis_ids == ["continues", "terminates"]
+    assert question.prediction_ids == ["p-continues", "p-terminates"]
+    assert [item.property_name for item in question.discriminants] == ["continuation"]
+    assert question.discriminants[0].expected_outcomes == {
+        "continues": "visible",
+        "terminates": "absent",
+    }
+    assert question.evidence_needed == ["continuation"]
+
+
+def test_equivalent_structured_predictions_generate_no_false_question():
+    question = derive_discriminating_question([
+        _structured_prediction("p-a", "h-a", continuation="visible"),
+        _structured_prediction("p-b", "h-b", continuation="visible"),
+    ])
+
+    assert question is None
+
+
+def test_multiple_observable_differences_are_all_preserved_without_ranking():
+    question = derive_discriminating_question([
+        _structured_prediction(
+            "p-a", "h-a", continuation="visible", edge_alignment="aligned"
+        ),
+        _structured_prediction(
+            "p-b", "h-b", continuation="absent", edge_alignment="offset"
+        ),
+    ])
+
+    assert question is not None
+    assert [item.property_name for item in question.discriminants] == [
+        "continuation",
+        "edge_alignment",
+    ]
+    assert question.evidence_needed == ["continuation", "edge_alignment"]
+
+
+def test_non_observable_conceptual_difference_generates_no_visual_question():
+    predictions = [
+        ObservablePrediction(
+            id="p-a",
+            hypothesis_id="h-a",
+            statement="Conceptual model A differs, but defines no observable consequence.",
+        ),
+        ObservablePrediction(
+            id="p-b",
+            hypothesis_id="h-b",
+            statement="Conceptual model B differs, but defines no observable consequence.",
+        ),
+    ]
+
+    assert derive_discriminating_question(predictions) is None

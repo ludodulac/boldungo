@@ -142,12 +142,84 @@ class InquiryState(str, Enum):
     IRREDUCIBLE_UNKNOWN = "irreducible_unknown"
 
 
+class ObservableProperty(BaseModel):
+    """Machine-readable observable outcome; absent means no visual consequence is defined."""
+
+    name: str = Field(min_length=1)
+    value: str = Field(min_length=1)
+
+
 class ObservablePrediction(BaseModel):
     """Observable consequence of an existing OpenHypothesis, not an observation."""
 
     id: str = Field(min_length=1)
     hypothesis_id: str = Field(min_length=1)
     statement: str = Field(min_length=1)
+    observable_properties: list[ObservableProperty] = Field(default_factory=list)
+
+
+class DiscriminatingProperty(BaseModel):
+    """One structured property whose predicted outcomes differ across hypotheses."""
+
+    property_name: str = Field(min_length=1)
+    expected_outcomes: dict[str, str] = Field(min_length=2)
+
+
+class DiscriminatingQuestion(BaseModel):
+    """Machine-first question derived from divergent observable predictions."""
+
+    hypothesis_ids: list[str] = Field(min_length=2)
+    prediction_ids: list[str] = Field(min_length=2)
+    discriminants: list[DiscriminatingProperty] = Field(min_length=1)
+    evidence_needed: list[str] = Field(min_length=1)
+    human_readable_question: str = Field(min_length=1)
+
+
+def derive_discriminating_question(
+    predictions: list[ObservablePrediction],
+) -> DiscriminatingQuestion | None:
+    """Derive visual discriminants from structured outcomes, never prediction prose."""
+
+    by_hypothesis: dict[str, ObservablePrediction] = {}
+    for prediction in predictions:
+        if prediction.hypothesis_id in by_hypothesis:
+            raise ValueError("provide exactly one prediction per competing hypothesis")
+        by_hypothesis[prediction.hypothesis_id] = prediction
+    if len(by_hypothesis) < 2:
+        raise ValueError("at least two competing hypothesis predictions are required")
+
+    property_maps = {
+        hypothesis_id: {item.name: item.value for item in prediction.observable_properties}
+        for hypothesis_id, prediction in by_hypothesis.items()
+    }
+    common_properties = set.intersection(*(set(items) for items in property_maps.values()))
+    discriminants: list[DiscriminatingProperty] = []
+    for property_name in sorted(common_properties):
+        outcomes = {
+            hypothesis_id: property_maps[hypothesis_id][property_name]
+            for hypothesis_id in by_hypothesis
+        }
+        if len(set(outcomes.values())) > 1:
+            discriminants.append(
+                DiscriminatingProperty(
+                    property_name=property_name,
+                    expected_outcomes=outcomes,
+                )
+            )
+
+    if not discriminants:
+        return None
+
+    names = [item.property_name for item in discriminants]
+    return DiscriminatingQuestion(
+        hypothesis_ids=list(by_hypothesis),
+        prediction_ids=[item.id for item in by_hypothesis.values()],
+        discriminants=discriminants,
+        evidence_needed=names,
+        human_readable_question=(
+            "What observable outcome is present for " + ", ".join(names) + "?"
+        ),
+    )
 
 
 class DiscriminatingTest(BaseModel):
