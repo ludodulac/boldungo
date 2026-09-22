@@ -1,0 +1,80 @@
+name: Mission 021 generate real bootstrap request
+on:
+  pull_request:
+    branches: [experiment/bootstrap-machine-contract-020]
+jobs:
+  generate:
+    if: github.head_ref == 'experiment/real-bootstrap-request-021'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e ".[dev]"
+      - name: Generate request from Experiment 020 code
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from brickhouse.vision.multiview import (
+              VisualBootstrapRequest,
+              VisualBootstrapResponse,
+              build_visual_bootstrap_request,
+          )
+          names=[f"{i:02d}-original.jpg" for i in range(1,6)]
+          request=build_visual_bootstrap_request(
+              "real-house-5-bootstrap-v1-001",
+              names,
+          )
+          # Mission 021: strengthen only the visual task wording, without architectural facts.
+          request.instruction = (
+              "Inspect all five supplied JPEGs as views of the same physical world. "
+              "Perform a genuine multi-view visual analysis while producing local, traceable "
+              "observations grounded in the pixels. Revisit an earlier local interpretation "
+              "when another view supplies new visual evidence. Record approximate normalized "
+              "image ROIs where possible. State observable properties separately from observed "
+              "property states. Seek potential cross-view correspondences but keep them as "
+              "identity candidates unless physical identity is explicitly supported. "
+              "Do not reconstruct a final Scene or LEGO model, infer hidden geometry, or use "
+              "architectural plausibility as visual evidence. Do not add fields that are not "
+              "present in the response schema. Do not invent enum values. Return only "
+              "visual-bootstrap-response.json as a JSON document that validates exactly against "
+              "response_schema. N'ajoutez aucun champ absent du schema de reponse, n'inventez "
+              "aucune valeur d'enum et retournez un JSON valide exactement contre response_schema."
+          )
+          request.epistemic_rules = [
+              "all_five_photos_are_views_of_one_physical_world",
+              "observation != deduction",
+              "non_visible != absent",
+              "occluded != absent",
+              "ambiguous != false",
+              "not_mentioned != not_relevant",
+              "image_roi != world_metric",
+              "resemblance != same_physical_object",
+              "architectural_plausibility != observation",
+              "do_not_promote_candidate_identity_without_explicit_support",
+          ]
+          # Critical synchronization check: exact importer schema, not a copy.
+          assert request.response_schema == VisualBootstrapResponse.model_json_schema()
+          assert [p.filename for p in request.photos] == names
+          assert [p.photo_index for p in request.photos] == [1,2,3,4,5]
+          payload=request.model_dump(mode="json")
+          text=json.dumps(payload,ensure_ascii=False,indent=2)+"\n"
+          forbidden=[
+              "source_photos","cross_view_identity_candidates","mostly_visible",
+              "partly_visible","high_candidate","medium_candidate",
+          ]
+          # These historical-019 tokens must not occur outside the embedded JSON Schema.
+          # Enum names from schema are allowed; failure-specific invented tokens are not.
+          assert all(token not in text for token in forbidden)
+          Path("visual-bootstrap-request.json").write_text(text,encoding="utf-8")
+          restored=VisualBootstrapRequest.model_validate_json(text)
+          assert restored.response_schema == VisualBootstrapResponse.model_json_schema()
+          print("REQUEST_OK", restored.bootstrap_id, len(restored.photos))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-bootstrap-request-021
+          path: visual-bootstrap-request.json
+          if-no-files-found: error
