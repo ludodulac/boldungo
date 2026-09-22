@@ -31,4 +31,4 @@ jobs:
             tests/survey/test_multiview_workspace_bridge.py \
             tests/survey/test_reasoning_state.py
 
-# Experimental PR-only verification; remove before any integration decision.
+# Experimental PR-only verification for 008/009; remove before any integration decision.
