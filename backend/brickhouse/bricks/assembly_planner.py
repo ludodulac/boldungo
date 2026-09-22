@@ -300,6 +300,7 @@ class PlannerMetrics:
     step_count: int
     spatial_travel: int
     facade_switches: int
+    max_spatial_jump: int
 
 def planner_metrics(model: BrickModel, result: PlannerResult) -> PlannerMetrics:
     """Measure simple human-facing continuity without changing validity."""
@@ -307,8 +308,29 @@ def planner_metrics(model: BrickModel, result: PlannerResult) -> PlannerMetrics:
     ordered = [parts[s.placement_id] for s in result.steps if s.placement_id in parts]
     travel = 0
     switches = 0
+    max_jump = 0
     for previous, current in zip(ordered, ordered[1:]):
-        travel += abs(previous.x_studs-current.x_studs)+abs(previous.y_studs-current.y_studs)
+        jump = abs(previous.x_studs-current.x_studs)+abs(previous.y_studs-current.y_studs)
+        travel += jump
+        max_jump = max(max_jump, jump)
         if previous.facade != current.facade:
             switches += 1
-    return PlannerMetrics(len(ordered), travel, switches)
+    return PlannerMetrics(len(ordered), travel, switches, max_jump)
+
+
+@dataclass(frozen=True)
+class PlannerQualityReport:
+    valid: bool
+    issues: tuple[str, ...]
+    metrics: PlannerMetrics
+    unresolved_count: int
+
+def evaluate_planner_quality(model: BrickModel, result: PlannerResult) -> PlannerQualityReport:
+    """One deterministic report for safety first, then human continuity."""
+    issues = validate_planner_result(model, result)
+    return PlannerQualityReport(
+        valid=not issues,
+        issues=issues,
+        metrics=planner_metrics(model, result),
+        unresolved_count=len(result.unresolved_ids),
+    )
