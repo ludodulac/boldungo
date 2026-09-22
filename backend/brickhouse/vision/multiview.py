@@ -336,6 +336,108 @@ def derive_candidate_evidence_targets(
     return targets
 
 
+class DiscriminationPotential(str, Enum):
+    NONE = "none"
+    TESTABLE = "testable"
+    DISCRIMINATING = "discriminating"
+
+
+class DiscriminationAssessment(BaseModel):
+    """Qualitative, explainable assessment; no pseudo-probabilistic score."""
+
+    target: CandidateEvidenceTarget
+    potential: DiscriminationPotential
+    discriminant_applicable: bool
+    expected_outcomes_distinct: bool
+    reason: str = Field(min_length=1)
+
+
+class EvidenceTargetSelection(BaseModel):
+    """Best qualitative tier; ties are preserved rather than broken arbitrarily."""
+
+    best_candidates: list[CandidateEvidenceTarget] = Field(default_factory=list)
+    tied: bool = False
+    reason: str = Field(min_length=1)
+
+
+def assess_discrimination_targets(
+    question: DiscriminatingQuestion,
+    candidates: list[CandidateEvidenceTarget],
+    observable_discriminants_by_observation: dict[str, set[str]],
+) -> list[DiscriminationAssessment]:
+    """Assess whether each existing ROI can actually expose the question's discriminant."""
+
+    question_properties = {item.property_name: item for item in question.discriminants}
+    assessments: list[DiscriminationAssessment] = []
+    for target in candidates:
+        discriminant = question_properties.get(target.discriminant_property)
+        applicable = any(
+            target.discriminant_property
+            in observable_discriminants_by_observation.get(observation_id, set())
+            for observation_id in target.source_observation_ids
+        )
+        distinct = (
+            discriminant is not None
+            and len(set(discriminant.expected_outcomes.values())) > 1
+        )
+        if not target.testable:
+            potential = DiscriminationPotential.NONE
+            reason = "Target is structurally linked but not visually testable."
+        elif not applicable or not distinct:
+            potential = DiscriminationPotential.TESTABLE
+            reason = "Target is visible/testable but cannot expose distinct outcomes for this discriminant."
+        else:
+            potential = DiscriminationPotential.DISCRIMINATING
+            reason = "Target is testable and can expose the discriminant with distinct expected outcomes."
+        assessments.append(
+            DiscriminationAssessment(
+                target=target,
+                potential=potential,
+                discriminant_applicable=applicable,
+                expected_outcomes_distinct=distinct,
+                reason=reason,
+            )
+        )
+    return assessments
+
+
+def select_discrimination_targets(
+    assessments: list[DiscriminationAssessment],
+) -> EvidenceTargetSelection:
+    """Select all top discriminating candidates; never break a semantic tie by order."""
+
+    best = [
+        item.target
+        for item in assessments
+        if item.potential is DiscriminationPotential.DISCRIMINATING
+    ]
+    if not best:
+        return EvidenceTargetSelection(
+            reason="No candidate can currently expose a discriminating outcome."
+        )
+    canonical = sorted(
+        best,
+        key=lambda item: (
+            item.photo_index,
+            item.region.x0,
+            item.region.y0,
+            item.region.x1,
+            item.region.y1,
+            tuple(item.source_observation_ids),
+            item.discriminant_property,
+        ),
+    )
+    return EvidenceTargetSelection(
+        best_candidates=canonical,
+        tied=len(canonical) > 1,
+        reason=(
+            "Multiple candidates have equal best discrimination potential."
+            if len(canonical) > 1
+            else "One candidate has uniquely best discrimination potential."
+        ),
+    )
+
+
 class DiscriminatingTest(BaseModel):
     """One photo region where competing predictions are expected to differ."""
 
