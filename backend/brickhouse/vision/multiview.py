@@ -935,6 +935,15 @@ def build_executable_visual_inquiry(
         for prediction_id in question.prediction_ids
     ):
         return None
+    prediction_ids_by_hypothesis = {
+        hypothesis_id: [
+            prediction_id for prediction_id in question.prediction_ids
+            if prediction_by_id[prediction_id].hypothesis_id == hypothesis_id
+        ]
+        for hypothesis_id in question.hypothesis_ids
+    }
+    if any(len(ids) != 1 for ids in prediction_ids_by_hypothesis.values()):
+        return None
     if any(
         hypothesis_by_id[hypothesis_id].source_uncertainty_id != uncertainty.id
         for hypothesis_id in question.hypothesis_ids
@@ -955,11 +964,7 @@ def build_executable_visual_inquiry(
             (
                 prop.value
                 for prop in prediction_by_id[
-                    next(
-                        prediction_id
-                        for prediction_id in question.prediction_ids
-                        if prediction_by_id[prediction_id].hypothesis_id == hypothesis_id
-                    )
+                    prediction_ids_by_hypothesis[hypothesis_id][0]
                 ].observable_properties
                 if prop.name == target.discriminant_property
             ),
