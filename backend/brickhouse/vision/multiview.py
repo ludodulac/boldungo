@@ -373,11 +373,12 @@ def derive_discriminant_applicability(
 ) -> ApplicabilityState:
     """Derive applicability only from target provenance and structured observation properties."""
 
-    by_id = {item.id: item for item in observations}
     linked = [
-        by_id[observation_id]
-        for observation_id in target.source_observation_ids
-        if observation_id in by_id
+        item
+        for item in observations
+        if item.id in target.source_observation_ids
+        and item.photo_index == target.photo_index
+        and item.region == target.region
     ]
     if not linked:
         return ApplicabilityState.NOT_APPLICABLE
