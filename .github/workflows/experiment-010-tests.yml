@@ -31,3 +31,5 @@ jobs:
             tests/vision/test_multiview_workspace.py \
             tests/survey/test_multiview_workspace_bridge.py \
             tests/survey/test_reasoning_state.py
+
+# Trigger after workflow registration.
