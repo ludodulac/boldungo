@@ -21,6 +21,9 @@ from brickhouse.vision.multiview import (
     HypothesisClaim,
     derive_observable_prediction,
     derive_candidate_evidence_targets,
+    assess_discrimination_targets,
+    select_discrimination_targets,
+    DiscriminationPotential,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -749,3 +752,153 @@ def test_no_testable_candidate_can_end_as_irreducible_unknown_without_invented_r
 
     assert unresolved.state is InquiryState.IRREDUCIBLE_UNKNOWN
     assert unresolved.viable_hypothesis_ids == ["h-continues", "h-terminates"]
+
+
+
+def _assess_012(observations, capabilities):
+    hypotheses, predictions, question, targets = _targeting_chain(observations)
+    assessments = assess_discrimination_targets(question, targets, capabilities)
+    selection = select_discrimination_targets(assessments)
+    return hypotheses, predictions, question, targets, assessments, selection
+
+
+def test_discriminating_candidate_is_preferred_over_merely_visible_candidate():
+    observations = [
+        _target_observation("surface-s", 2),
+        _target_observation(
+            "surface-s", 4,
+            region=NormalizedImageRegion(x0=0.5, y0=0.1, x1=0.8, y1=0.4),
+        ),
+    ]
+    _, _, _, _, assessments, selection = _assess_012(
+        observations,
+        {"surface-s": {"continuation"}},
+    )
+    # Make photo 2 explicitly unable to expose the discriminant while photo 4 can.
+    assessments = assess_discrimination_targets(
+        _targeting_chain(observations)[2],
+        _targeting_chain(observations)[3],
+        {},
+    )
+    # Capabilities are observation-specific, so distinguish the two occurrences by source ids.
+    observations[0].id = "surface-s-a"
+    observations[1].id = "surface-s-b"
+    hypotheses = [
+        OpenHypothesis(id="h-continues", subject_refs=["surface-s-a"], statement="x",
+            competing_with=["h-terminates"], claim=HypothesisClaim(subject_ref="surface-s-a", relation="CONTINUES")),
+        OpenHypothesis(id="h-terminates", subject_refs=["surface-s-a"], statement="y",
+            competing_with=["h-continues"], claim=HypothesisClaim(subject_ref="surface-s-a", relation="TERMINATES")),
+    ]
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    question = derive_discriminating_question(predictions)
+    targets = derive_candidate_evidence_targets(question, hypotheses, observations)
+    # Add the second occurrence as explicitly linked to the same subject for this synthetic identity trace.
+    targets.append(targets[0].model_copy(update={
+        "photo_index": 4,
+        "region": observations[1].region,
+        "source_observation_ids": ["surface-s-b"],
+    }))
+    assessments = assess_discrimination_targets(
+        question, targets, {"surface-s-b": {"continuation"}}
+    )
+    selection = select_discrimination_targets(assessments)
+    assert [item.potential for item in assessments] == [
+        DiscriminationPotential.TESTABLE,
+        DiscriminationPotential.DISCRIMINATING,
+    ]
+    assert [item.photo_index for item in selection.best_candidates] == [4]
+    assert selection.tied is False
+
+
+def test_occluded_candidate_never_beats_visible_testable_discriminating_candidate():
+    observations = [
+        _target_observation("surface-s", 2, visibility=VisibilityStatus.OCCLUDED),
+        _target_observation("surface-s", 4),
+    ]
+    _, _, question, targets = _targeting_chain(observations)
+    assessments = assess_discrimination_targets(
+        question, targets, {"surface-s": {"continuation"}}
+    )
+    selection = select_discrimination_targets(assessments)
+    assert assessments[0].potential is DiscriminationPotential.NONE
+    assert assessments[1].potential is DiscriminationPotential.DISCRIMINATING
+    assert [item.photo_index for item in selection.best_candidates] == [4]
+
+
+def test_equal_discrimination_potential_preserves_tied_best_candidates():
+    observations = [
+        _target_observation("surface-s", 2),
+        _target_observation("surface-s", 4),
+    ]
+    _, _, question, targets = _targeting_chain(observations)
+    assessments = assess_discrimination_targets(
+        question, targets, {"surface-s": {"continuation"}}
+    )
+    selection = select_discrimination_targets(assessments)
+    assert selection.tied is True
+    assert [item.photo_index for item in selection.best_candidates] == [2, 4]
+
+
+def test_no_discriminating_target_produces_no_artificial_selection():
+    observations = [_target_observation("surface-s", 2)]
+    _, _, question, targets = _targeting_chain(observations)
+    assessments = assess_discrimination_targets(question, targets, {})
+    selection = select_discrimination_targets(assessments)
+    assert assessments[0].potential is DiscriminationPotential.TESTABLE
+    assert selection.best_candidates == []
+    assert selection.tied is False
+
+
+def test_selection_is_semantically_independent_of_candidate_input_order():
+    observations = [
+        _target_observation("surface-s", 4),
+        _target_observation("surface-s", 2),
+    ]
+    _, _, question, targets = _targeting_chain(observations)
+    capabilities = {"surface-s": {"continuation"}}
+    forward = select_discrimination_targets(
+        assess_discrimination_targets(question, targets, capabilities)
+    )
+    reverse = select_discrimination_targets(
+        assess_discrimination_targets(question, list(reversed(targets)), capabilities)
+    )
+    assert forward == reverse
+    assert [item.photo_index for item in forward.best_candidates] == [2, 4]
+
+
+def test_end_to_end_012_selects_unique_target_then_resolves():
+    observation = _target_observation("surface-s", 5)
+    hypotheses, predictions, question, targets = _targeting_chain([observation])
+    assessments = assess_discrimination_targets(
+        question, targets, {"surface-s": {"continuation"}}
+    )
+    selection = select_discrimination_targets(assessments)
+    assert len(selection.best_candidates) == 1
+    target = selection.best_candidates[0]
+    test = DiscriminatingTest(
+        id="selected-012",
+        photo_index=target.photo_index,
+        region=target.region,
+        prediction_ids=question.prediction_ids,
+        evidence_sought=target.discriminant_property,
+    )
+    inquiry = VisualInquiry(
+        id="end-to-end-012",
+        question=question.human_readable_question,
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[test],
+    )
+    result = InquiryTestResult(
+        test_id=test.id,
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.VISIBLE,
+        sufficient_visibility=True,
+        statement="Continuation is visible in the selected discriminating target.",
+        compatible_prediction_ids=["derived-h-continues"],
+        discriminating=True,
+    )
+    resolved = apply_inquiry_test(inquiry, result)
+    assert resolved.state is InquiryState.RESOLVED
+    assert resolved.resolved_hypothesis_id == "h-continues"
