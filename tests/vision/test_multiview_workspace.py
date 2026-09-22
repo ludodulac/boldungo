@@ -839,7 +839,7 @@ def test_end_to_end_012_selects_unique_target_then_resolves():
     observation = _target_observation("surface-s", 5)
     observation.observable_properties = {"continuation"}
     hypotheses, predictions, question, targets = _targeting_chain([observation])
-    assessments = assess_discrimination_targets(question, targets, observations)
+    assessments = assess_discrimination_targets(question, targets, [observation])
     selection = select_discrimination_targets(assessments)
     assert len(selection.best_candidates) == 1
     target = selection.best_candidates[0]
