@@ -648,6 +648,7 @@ class DiscriminatingTest(BaseModel):
     region: NormalizedImageRegion
     prediction_ids: list[str] = Field(min_length=2)
     evidence_sought: str = Field(min_length=1)
+    source_observation_ids: list[str] = Field(default_factory=list)
 
 
 class InquiryTestResult(BaseModel):
@@ -898,6 +899,100 @@ class VisualEvidenceResponse(BaseModel):
         return self
 
 
+def build_executable_visual_inquiry(
+    uncertainty: StructuredUncertainty,
+    hypotheses: list[OpenHypothesis],
+    predictions: list[ObservablePrediction],
+    question: DiscriminatingQuestion,
+    assessments: list[DiscriminationAssessment],
+    selection: EvidenceTargetSelection,
+) -> "VisualInquiry" | None:
+    """Build one executable inquiry from already-derived structured artifacts only."""
+
+    if len(selection.best_candidates) != 1 or selection.tied:
+        return None
+    target = selection.best_candidates[0]
+    matching_assessments = [
+        item for item in assessments
+        if item.target == target
+        and item.potential is DiscriminationPotential.DISCRIMINATING
+    ]
+    if len(matching_assessments) != 1:
+        return None
+    if not target.source_observation_ids:
+        return None
+
+    hypothesis_by_id = {item.id: item for item in hypotheses}
+    prediction_by_id = {item.id: item for item in predictions}
+    if len(hypothesis_by_id) != len(hypotheses) or len(prediction_by_id) != len(predictions):
+        return None
+    if set(question.hypothesis_ids) != set(hypothesis_by_id):
+        return None
+    if set(question.prediction_ids) != set(prediction_by_id):
+        return None
+    if any(
+        prediction_by_id[prediction_id].hypothesis_id not in hypothesis_by_id
+        for prediction_id in question.prediction_ids
+    ):
+        return None
+    prediction_ids_by_hypothesis = {
+        hypothesis_id: [
+            prediction_id for prediction_id in question.prediction_ids
+            if prediction_by_id[prediction_id].hypothesis_id == hypothesis_id
+        ]
+        for hypothesis_id in question.hypothesis_ids
+    }
+    if any(len(ids) != 1 for ids in prediction_ids_by_hypothesis.values()):
+        return None
+    if any(
+        hypothesis_by_id[hypothesis_id].source_uncertainty_id != uncertainty.id
+        for hypothesis_id in question.hypothesis_ids
+    ):
+        return None
+
+    discriminants = [
+        item for item in question.discriminants
+        if item.property_name == target.discriminant_property
+    ]
+    if len(discriminants) != 1:
+        return None
+    discriminant = discriminants[0]
+    if set(discriminant.expected_outcomes) != set(question.hypothesis_ids):
+        return None
+    structured_outcomes = {
+        hypothesis_id: next(
+            (
+                prop.value
+                for prop in prediction_by_id[
+                    prediction_ids_by_hypothesis[hypothesis_id][0]
+                ].observable_properties
+                if prop.name == target.discriminant_property
+            ),
+            None,
+        )
+        for hypothesis_id in question.hypothesis_ids
+    }
+    if structured_outcomes != discriminant.expected_outcomes:
+        return None
+
+    source_token = "-".join(sorted(target.source_observation_ids))
+    test = DiscriminatingTest(
+        id=f"test-{uncertainty.id}-{target.photo_index}-{target.discriminant_property}-{source_token}",
+        photo_index=target.photo_index,
+        region=target.region,
+        prediction_ids=list(question.prediction_ids),
+        evidence_sought=target.discriminant_property,
+        source_observation_ids=list(target.source_observation_ids),
+    )
+    return VisualInquiry(
+        id=f"inquiry-{uncertainty.id}",
+        question=question.human_readable_question,
+        hypothesis_ids=list(question.hypothesis_ids),
+        predictions=[prediction_by_id[item] for item in question.prediction_ids],
+        tests=[test],
+    )
+
+
 def build_visual_inquiry_request(
     inquiry: "VisualInquiry",
     question: DiscriminatingQuestion,
@@ -919,6 +1014,10 @@ def build_visual_inquiry_request(
             if item.photo_index == target.photo_index
             and item.region == target.region
             and item.evidence_sought == target.discriminant_property
+            and (
+                not item.source_observation_ids
+                or item.source_observation_ids == target.source_observation_ids
+            )
         ),
         None,
     )

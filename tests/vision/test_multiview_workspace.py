@@ -24,6 +24,7 @@ from brickhouse.vision.multiview import (
     assess_discrimination_targets,
     select_discrimination_targets,
     DiscriminationPotential,
+    EvidenceTargetSelection,
     ApplicabilityState,
     derive_discriminant_applicability,
     StructuredUncertainty,
@@ -33,6 +34,7 @@ from brickhouse.vision.multiview import (
     VisualEvidenceResponse,
     VisualInquiryRequest,
     build_visual_inquiry_request,
+    build_executable_visual_inquiry,
     import_visual_evidence_response,
     VisualBootstrapRequest,
     VisualBootstrapResponse,
@@ -1893,3 +1895,82 @@ def test_026_registry_is_single_supported_family_and_request_is_synchronized():
     assert "If not relevant, omit it" in rule
     assert "Absence never means false" in rule
     assert "merely because the engine supports it" in rule
+
+
+# Experiment 029 — deterministic executable inquiry construction.
+
+def _chain029():
+    observation=_obs026({"continuation"})
+    uncertainties=detect_continuity_uncertainties([observation])
+    assert len(uncertainties)==1
+    uncertainty=uncertainties[0]
+    hypotheses=derive_competing_hypotheses(uncertainty)
+    predictions=[derive_observable_prediction(h) for h in hypotheses]
+    assert all(predictions)
+    question=derive_discriminating_question(predictions)
+    assert question is not None
+    targets=derive_candidate_evidence_targets(question,hypotheses,[observation])
+    assessments=assess_discrimination_targets(question,targets,[observation])
+    selection=select_discrimination_targets(assessments)
+    return observation,uncertainty,hypotheses,predictions,question,targets,assessments,selection
+
+def test_029_a_vertical_015_to_visual_request_is_deterministic():
+    observation,uncertainty,hypotheses,predictions,question,targets,assessments,selection=_chain029()
+    inquiry1=build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,question,assessments,selection)
+    inquiry2=build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,question,assessments,selection)
+    assert inquiry1 is not None and inquiry1 == inquiry2
+    assert len(inquiry1.tests)==1
+    test=inquiry1.tests[0]
+    target=selection.best_candidates[0]
+    assert test.photo_index == target.photo_index
+    assert test.region == target.region
+    assert test.source_observation_ids == target.source_observation_ids == [observation.id]
+    assert test.evidence_sought == target.discriminant_property == "continuation"
+    assert test.prediction_ids == question.prediction_ids
+    request=build_visual_inquiry_request(inquiry1,question,hypotheses,target)
+    assert request.target == target
+    assert request.test_id == test.id
+    assert request.predictions == predictions
+    assert request.model_dump(mode="json") == build_visual_inquiry_request(
+        inquiry2,question,hypotheses,target).model_dump(mode="json")
+
+def test_029_b_consumes_prediction_outcomes_without_recoding_continuation_semantics():
+    _,uncertainty,hypotheses,predictions,question,_,assessments,selection=_chain029()
+    assert question.discriminants[0].expected_outcomes == {
+        predictions[0].hypothesis_id: "visible",
+        predictions[1].hypothesis_id: "absent",
+    }
+    altered=predictions[0].model_copy(deep=True)
+    altered.observable_properties[0].value="different"
+    assert build_executable_visual_inquiry(
+        uncertainty,hypotheses,[altered,predictions[1]],question,assessments,selection
+    ) is None
+
+def test_029_c_fail_closed_without_unique_discriminating_target():
+    _,uncertainty,hypotheses,predictions,question,_,assessments,selection=_chain029()
+    empty=EvidenceTargetSelection(reason="none")
+    assert build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,question,assessments,empty) is None
+    tied=selection.model_copy(deep=True)
+    tied.tied=True
+    assert build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,question,assessments,tied) is None
+    nondiscriminating=[item.model_copy(update={"potential":DiscriminationPotential.TESTABLE}) for item in assessments]
+    assert build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,question,nondiscriminating,selection) is None
+
+def test_029_d_fail_closed_on_incoherent_hypotheses_or_discriminant_or_provenance():
+    _,uncertainty,hypotheses,predictions,question,_,assessments,selection=_chain029()
+    bad_h=hypotheses[0].model_copy(update={"source_uncertainty_id":"other"})
+    assert build_executable_visual_inquiry(
+        uncertainty,[bad_h,hypotheses[1]],predictions,question,assessments,selection) is None
+    bad_q=question.model_copy(deep=True)
+    bad_q.discriminants[0].property_name="other"
+    assert build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,bad_q,assessments,selection) is None
+    bad_sel=selection.model_copy(deep=True)
+    bad_sel.best_candidates[0].source_observation_ids=[]
+    assert build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,question,assessments,bad_sel) is None
