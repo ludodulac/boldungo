@@ -1,0 +1,45 @@
+name: Mission 027 generate real bootstrap V3
+on:
+  pull_request:
+    branches: [experiment/inquiry-property-registry-026]
+jobs:
+  generate:
+    if: github.head_ref == 'experiment/real-bootstrap-request-027'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e ".[dev]"
+      - name: Generate and validate V3 request
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from brickhouse.vision.multiview import (
+              INQUIRY_PROPERTY_REGISTRY, VisualBootstrapRequest,
+              build_visual_bootstrap_request, inquiry_property_registry_payload,
+          )
+          names=[f"{i:02d}-original.jpg" for i in range(1,6)]
+          req=build_visual_bootstrap_request("real-house-5-bootstrap-v3-001", names)
+          assert req.inquiry_property_registry == inquiry_property_registry_payload()
+          assert set(INQUIRY_PROPERTY_REGISTRY) == {"continuation"}
+          assert INQUIRY_PROPERTY_REGISTRY["continuation"].recognized_states == ("CONTINUES","TERMINATES")
+          assert req.response_schema
+          assert req.response_invariants
+          assert [(p.photo_index,p.filename) for p in req.photos] == list(enumerate(names,1))
+          assert req.bootstrap_id not in {"real-house-5-bootstrap-v0-001","real-house-5-bootstrap-v1-001","real-house-5-bootstrap-v2-001"}
+          text=json.dumps(req.model_dump(mode="json"),ensure_ascii=False,indent=2)+"\n"
+          forbidden=["p1-lower-right-glazed-opening","p2-pale-wall","p4-building-elevation","p4-lower-opening"]
+          assert all(x not in text for x in forbidden)
+          restored=VisualBootstrapRequest.model_validate_json(text)
+          assert restored == req
+          assert restored.inquiry_property_registry == inquiry_property_registry_payload()
+          Path("visual-bootstrap-request.json").write_text(text,encoding="utf-8")
+          print("REQUEST_V3_OK", req.bootstrap_id)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-bootstrap-request-027
+          path: visual-bootstrap-request.json
+          if-no-files-found: error
