@@ -9,6 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: '3.12', cache: pip}
+        with:
+          python-version: '3.12'
+          cache: pip
       - run: python -m pip install -e ".[dev]"
-      - run: pytest -q tests/vision/test_multiview_workspace.py tests/survey/test_multiview_workspace_bridge.py tests/survey/test_reasoning_state.py
+      - name: Run Experiment 008-026 targeted tests
+        run: pytest -q tests/vision/test_multiview_workspace.py tests/survey/test_multiview_workspace_bridge.py tests/survey/test_reasoning_state.py
