@@ -60,6 +60,7 @@ class LocalObservation(BaseModel):
     proposed_category: str | None = None
     statement: str = Field(min_length=1)
     certainty: AspectCertainty = Field(default_factory=AspectCertainty)
+    observable_properties: set[str] | None = None
 
     @model_validator(mode="after")
     def validate_visibility(self) -> "LocalObservation":
@@ -342,12 +343,18 @@ class DiscriminationPotential(str, Enum):
     DISCRIMINATING = "discriminating"
 
 
+class ApplicabilityState(str, Enum):
+    APPLICABLE = "applicable"
+    NOT_APPLICABLE = "not_applicable"
+    UNKNOWN = "unknown"
+
+
 class DiscriminationAssessment(BaseModel):
     """Qualitative, explainable assessment; no pseudo-probabilistic score."""
 
     target: CandidateEvidenceTarget
     potential: DiscriminationPotential
-    discriminant_applicable: bool
+    discriminant_applicability: ApplicabilityState
     expected_outcomes_distinct: bool
     reason: str = Field(min_length=1)
 
@@ -360,22 +367,52 @@ class EvidenceTargetSelection(BaseModel):
     reason: str = Field(min_length=1)
 
 
+def derive_discriminant_applicability(
+    target: CandidateEvidenceTarget,
+    observations: list[LocalObservation],
+) -> ApplicabilityState:
+    """Derive applicability only from target provenance and structured observation properties."""
+
+    linked = [
+        item
+        for item in observations
+        if item.id in target.source_observation_ids
+        and item.photo_index == target.photo_index
+        and item.region == target.region
+    ]
+    if not linked:
+        return ApplicabilityState.NOT_APPLICABLE
+
+    states: list[ApplicabilityState] = []
+    for observation in linked:
+        if observation.region != target.region or observation.photo_index != target.photo_index:
+            states.append(ApplicabilityState.NOT_APPLICABLE)
+        elif observation.observable_properties is None:
+            states.append(ApplicabilityState.UNKNOWN)
+        elif target.discriminant_property in observation.observable_properties:
+            states.append(ApplicabilityState.APPLICABLE)
+        else:
+            states.append(ApplicabilityState.NOT_APPLICABLE)
+
+    if ApplicabilityState.APPLICABLE in states:
+        return ApplicabilityState.APPLICABLE
+    if ApplicabilityState.UNKNOWN in states:
+        return ApplicabilityState.UNKNOWN
+    return ApplicabilityState.NOT_APPLICABLE
+
+
 def assess_discrimination_targets(
     question: DiscriminatingQuestion,
     candidates: list[CandidateEvidenceTarget],
-    observable_discriminants_by_observation: dict[str, set[str]],
+    observations: list[LocalObservation],
 ) -> list[DiscriminationAssessment]:
-    """Assess whether each existing ROI can actually expose the question's discriminant."""
+    """Assess targets using applicability derived from structured observations."""
 
     question_properties = {item.property_name: item for item in question.discriminants}
     assessments: list[DiscriminationAssessment] = []
     for target in candidates:
         discriminant = question_properties.get(target.discriminant_property)
-        applicable = any(
-            target.discriminant_property
-            in observable_discriminants_by_observation.get(observation_id, set())
-            for observation_id in target.source_observation_ids
-        )
+        applicability = derive_discriminant_applicability(target, observations)
         distinct = (
             discriminant is not None
             and len(set(discriminant.expected_outcomes.values())) > 1
@@ -383,17 +420,20 @@ def assess_discrimination_targets(
         if not target.testable:
             potential = DiscriminationPotential.NONE
             reason = "Target is structurally linked but not visually testable."
-        elif not applicable or not distinct:
+        elif applicability is ApplicabilityState.UNKNOWN:
+            potential = DiscriminationPotential.TESTABLE
+            reason = "Target is testable but discriminant applicability is structurally unknown."
+        elif applicability is not ApplicabilityState.APPLICABLE or not distinct:
             potential = DiscriminationPotential.TESTABLE
             reason = "Target is visible/testable but cannot expose distinct outcomes for this discriminant."
         else:
             potential = DiscriminationPotential.DISCRIMINATING
-            reason = "Target is testable and can expose the discriminant with distinct expected outcomes."
+            reason = "Target is testable and structurally exposes the discriminant with distinct outcomes."
         assessments.append(
             DiscriminationAssessment(
                 target=target,
                 potential=potential,
-                discriminant_applicable=applicable,
+                discriminant_applicability=applicability,
                 expected_outcomes_distinct=distinct,
                 reason=reason,
             )
