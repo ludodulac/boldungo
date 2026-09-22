@@ -24,6 +24,7 @@ from brickhouse.vision.multiview import (
     assess_discrimination_targets,
     select_discrimination_targets,
     DiscriminationPotential,
+    EvidenceTargetSelection,
     ApplicabilityState,
     derive_discriminant_applicability,
     StructuredUncertainty,
