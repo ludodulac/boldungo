@@ -279,6 +279,63 @@ def derive_discriminating_question(
     )
 
 
+class CandidateEvidenceTarget(BaseModel):
+    """Existing observation region that is traceably relevant to a discriminant."""
+
+    photo_index: int = Field(ge=1)
+    region: NormalizedImageRegion
+    source_observation_ids: list[str] = Field(min_length=1)
+    discriminant_property: str = Field(min_length=1)
+    visibility: VisibilityStatus
+    testable: bool
+    reason: str = Field(min_length=1)
+
+
+def derive_candidate_evidence_targets(
+    question: DiscriminatingQuestion,
+    hypotheses: list[OpenHypothesis],
+    observations: list[LocalObservation],
+) -> list[CandidateEvidenceTarget]:
+    """Find existing, structurally linked ROIs; never invent or rank a region."""
+
+    hypothesis_by_id = {item.id: item for item in hypotheses}
+    subject_refs = {
+        hypothesis_by_id[hypothesis_id].claim.subject_ref
+        for hypothesis_id in question.hypothesis_ids
+        if hypothesis_id in hypothesis_by_id
+        and hypothesis_by_id[hypothesis_id].claim is not None
+    }
+    if not subject_refs:
+        return []
+
+    discriminants = [item.property_name for item in question.discriminants]
+    targets: list[CandidateEvidenceTarget] = []
+    for observation in observations:
+        if observation.id not in subject_refs or observation.region is None:
+            continue
+        testable = (
+            observation.visibility is VisibilityStatus.VISIBLE
+            and observation.status is ClaimStatus.OBSERVED
+        )
+        for property_name in discriminants:
+            targets.append(
+                CandidateEvidenceTarget(
+                    photo_index=observation.photo_index,
+                    region=observation.region,
+                    source_observation_ids=[observation.id],
+                    discriminant_property=property_name,
+                    visibility=observation.visibility,
+                    testable=testable,
+                    reason=(
+                        "Existing ROI is directly referenced by the structured hypothesis subject."
+                        if testable
+                        else "Structurally linked ROI exists but is not currently visually testable."
+                    ),
+                )
+            )
+    return targets
+
+
 class DiscriminatingTest(BaseModel):
     """One photo region where competing predictions are expected to differ."""
 

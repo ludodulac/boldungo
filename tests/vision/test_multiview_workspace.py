@@ -20,6 +20,7 @@ from brickhouse.vision.multiview import (
     ObservableProperty,
     HypothesisClaim,
     derive_observable_prediction,
+    derive_candidate_evidence_targets,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -566,3 +567,185 @@ def test_legacy_text_only_hypothesis_remains_compatible():
 
     assert hypothesis.claim is None
     assert derive_observable_prediction(hypothesis) is None
+
+
+
+def _targeting_chain(observations: list[LocalObservation]):
+    hypotheses = [
+        _structured_hypothesis("h-continues", "CONTINUES", ["h-terminates"]),
+        _structured_hypothesis("h-terminates", "TERMINATES", ["h-continues"]),
+    ]
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    question = derive_discriminating_question(predictions)
+    assert question is not None
+    targets = derive_candidate_evidence_targets(question, hypotheses, observations)
+    return hypotheses, predictions, question, targets
+
+
+def _target_observation(
+    observation_id: str,
+    photo_index: int,
+    *,
+    visibility: VisibilityStatus = VisibilityStatus.VISIBLE,
+    region: NormalizedImageRegion | None = None,
+) -> LocalObservation:
+    return LocalObservation(
+        id=observation_id,
+        photo_index=photo_index,
+        status=(
+            ClaimStatus.OBSERVED
+            if visibility is VisibilityStatus.VISIBLE
+            else ClaimStatus.INFERRED
+        ),
+        visibility=visibility,
+        region=region or NormalizedImageRegion(x0=0.1, y0=0.2, x1=0.4, y1=0.5),
+        statement="Synthetic observation used only for generic evidence targeting.",
+    )
+
+
+def test_linked_visible_region_becomes_testable_candidate_target():
+    _, _, _, targets = _targeting_chain([
+        _target_observation("surface-s", 2),
+    ])
+
+    assert len(targets) == 1
+    assert targets[0].photo_index == 2
+    assert targets[0].source_observation_ids == ["surface-s"]
+    assert targets[0].discriminant_property == "continuation"
+    assert targets[0].testable is True
+
+
+def test_multiple_linked_regions_are_preserved_without_ranking():
+    _, _, _, targets = _targeting_chain([
+        _target_observation("surface-s", 2),
+        _target_observation(
+            "surface-s",
+            4,
+            region=NormalizedImageRegion(x0=0.5, y0=0.1, x1=0.8, y1=0.4),
+        ),
+    ])
+
+    assert [item.photo_index for item in targets] == [2, 4]
+    assert all(item.testable for item in targets)
+
+
+def test_occluded_or_non_visible_linked_regions_are_context_not_testable_targets():
+    _, _, _, targets = _targeting_chain([
+        _target_observation("surface-s", 2, visibility=VisibilityStatus.OCCLUDED),
+        _target_observation("surface-s", 3, visibility=VisibilityStatus.NON_VISIBLE),
+    ])
+
+    assert len(targets) == 2
+    assert all(item.testable is False for item in targets)
+    assert {item.visibility for item in targets} == {
+        VisibilityStatus.OCCLUDED,
+        VisibilityStatus.NON_VISIBLE,
+    }
+
+
+def test_no_exploitable_region_yields_no_testable_evidence_target():
+    _, _, _, targets = _targeting_chain([
+        _target_observation("surface-s", 2, visibility=VisibilityStatus.OCCLUDED),
+    ])
+
+    assert not [item for item in targets if item.testable]
+
+
+def test_visually_similar_but_unlinked_observation_is_rejected():
+    similar = LocalObservation(
+        id="different-surface",
+        photo_index=5,
+        status=ClaimStatus.OBSERVED,
+        visibility=VisibilityStatus.VISIBLE,
+        region=NormalizedImageRegion(x0=0.2, y0=0.2, x1=0.6, y1=0.6),
+        proposed_category="surface",
+        statement="Looks similar but is not structurally referenced by the hypothesis.",
+    )
+
+    _, _, _, targets = _targeting_chain([similar])
+
+    assert targets == []
+
+
+def test_end_to_end_derived_target_can_build_test_and_resolve_inquiry():
+    observation = _target_observation("surface-s", 3)
+    hypotheses, predictions, question, targets = _targeting_chain([observation])
+    testable = [item for item in targets if item.testable]
+    assert len(testable) == 1
+    target = testable[0]
+
+    test = DiscriminatingTest(
+        id="derived-target-test",
+        photo_index=target.photo_index,
+        region=target.region,
+        prediction_ids=question.prediction_ids,
+        evidence_sought=target.discriminant_property,
+    )
+    inquiry = VisualInquiry(
+        id="end-to-end-011",
+        question=question.human_readable_question,
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[test],
+    )
+    result = InquiryTestResult(
+        test_id=test.id,
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.VISIBLE,
+        sufficient_visibility=True,
+        statement="Compatible continuation is visible in the automatically targeted ROI.",
+        compatible_prediction_ids=["derived-h-continues"],
+        discriminating=True,
+    )
+
+    resolved = apply_inquiry_test(inquiry, result)
+
+    assert resolved.state is InquiryState.RESOLVED
+    assert resolved.resolved_hypothesis_id == "h-continues"
+    assert test.photo_index == observation.photo_index
+    assert test.region == observation.region
+
+
+def test_no_testable_candidate_can_end_as_irreducible_unknown_without_invented_roi():
+    hypotheses, predictions, question, targets = _targeting_chain([
+        _target_observation("surface-s", 2, visibility=VisibilityStatus.OCCLUDED),
+    ])
+    assert not [item for item in targets if item.testable]
+
+    context_target = targets[0]
+    inquiry = VisualInquiry(
+        id="no-target-011",
+        question=question.human_readable_question,
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[
+            DiscriminatingTest(
+                id="context-only-test",
+                photo_index=context_target.photo_index,
+                region=context_target.region,
+                prediction_ids=question.prediction_ids,
+                evidence_sought=question.discriminants[0].property_name,
+            )
+        ],
+    )
+    inaccessible = InquiryTestResult(
+        test_id="context-only-test",
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.OCCLUDED,
+        sufficient_visibility=False,
+        statement="The only structurally linked ROI is occluded.",
+        compatible_prediction_ids=question.prediction_ids,
+        discriminating=False,
+    )
+
+    unresolved = apply_inquiry_test(
+        inquiry,
+        inaccessible,
+        no_more_candidate_evidence=True,
+        information_missing="No testable structurally linked ROI is available.",
+    )
+
+    assert unresolved.state is InquiryState.IRREDUCIBLE_UNKNOWN
+    assert unresolved.viable_hypothesis_ids == ["h-continues", "h-terminates"]
