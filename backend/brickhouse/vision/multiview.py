@@ -127,6 +127,14 @@ class Contradiction(BaseModel):
         return self
 
 
+class HypothesisClaim(BaseModel):
+    """Minimal machine-readable relation claim; relation semantics are rule-driven."""
+
+    subject_ref: str = Field(min_length=1)
+    relation: str = Field(min_length=1)
+    object_ref: str | None = None
+
+
 class OpenHypothesis(BaseModel):
     id: str = Field(min_length=1)
     subject_refs: list[str] = Field(min_length=1)
@@ -134,6 +142,7 @@ class OpenHypothesis(BaseModel):
     competing_with: list[str] = Field(default_factory=list)
     certainty: CertaintyLevel = CertaintyLevel.UNPROVEN
     supporting_photo_indexes: list[int] = Field(default_factory=list)
+    claim: HypothesisClaim | None = None
 
 
 class InquiryState(str, Enum):
@@ -156,6 +165,54 @@ class ObservablePrediction(BaseModel):
     hypothesis_id: str = Field(min_length=1)
     statement: str = Field(min_length=1)
     observable_properties: list[ObservableProperty] = Field(default_factory=list)
+
+
+class ObservabilityCondition(BaseModel):
+    """Conditions required before an expected world outcome is visually testable."""
+
+    region_in_frame: bool = True
+    non_occluded: bool = True
+    sufficient_visibility: bool = True
+
+
+def derive_observable_prediction(
+    hypothesis: OpenHypothesis,
+) -> ObservablePrediction | None:
+    """Apply the one generic Experiment-010 continuity rule family."""
+
+    if hypothesis.claim is None:
+        return None
+
+    outcomes = {
+        "CONTINUES": "visible",
+        "TERMINATES": "absent",
+    }
+    outcome = outcomes.get(hypothesis.claim.relation)
+    if outcome is None:
+        return None
+
+    condition = ObservabilityCondition()
+    return ObservablePrediction(
+        id=f"derived-{hypothesis.id}",
+        hypothesis_id=hypothesis.id,
+        statement=(
+            "When the relevant region is in frame, non-occluded, and sufficiently "
+            f"visible, compatible continuation is expected to be {outcome}."
+        ),
+        observable_properties=[
+            ObservableProperty(name="continuation", value=outcome),
+            ObservableProperty(
+                name="observability_required",
+                value=(
+                    "in_frame+non_occluded+sufficient_visibility"
+                    if condition.region_in_frame
+                    and condition.non_occluded
+                    and condition.sufficient_visibility
+                    else "unspecified"
+                ),
+            ),
+        ],
+    )
 
 
 class DiscriminatingProperty(BaseModel):
