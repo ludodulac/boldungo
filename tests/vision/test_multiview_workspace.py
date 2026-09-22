@@ -18,6 +18,8 @@ from brickhouse.vision.multiview import (
     InquiryTestResult,
     ObservablePrediction,
     ObservableProperty,
+    HypothesisClaim,
+    derive_observable_prediction,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -437,3 +439,130 @@ def test_non_observable_conceptual_difference_generates_no_visual_question():
     ]
 
     assert derive_discriminating_question(predictions) is None
+
+
+
+def _structured_hypothesis(
+    hypothesis_id: str,
+    relation: str,
+    competing_with: list[str] | None = None,
+) -> OpenHypothesis:
+    return OpenHypothesis(
+        id=hypothesis_id,
+        subject_refs=["surface-s"],
+        statement="Human-readable hypothesis prose is not used to derive the prediction.",
+        competing_with=competing_with or [],
+        claim=HypothesisClaim(
+            subject_ref="surface-s",
+            relation=relation,
+            object_ref="occluder-o",
+        ),
+    )
+
+
+def test_structured_continues_hypothesis_derives_observable_prediction():
+    hypothesis = _structured_hypothesis("h-continues", "CONTINUES")
+
+    prediction = derive_observable_prediction(hypothesis)
+
+    assert prediction is not None
+    assert prediction.hypothesis_id == "h-continues"
+    assert {item.name: item.value for item in prediction.observable_properties} == {
+        "continuation": "visible",
+        "observability_required": "in_frame+non_occluded+sufficient_visibility",
+    }
+
+
+def test_structured_terminates_hypothesis_derives_different_prediction():
+    hypothesis = _structured_hypothesis("h-terminates", "TERMINATES")
+
+    prediction = derive_observable_prediction(hypothesis)
+
+    assert prediction is not None
+    assert {item.name: item.value for item in prediction.observable_properties}[
+        "continuation"
+    ] == "absent"
+
+
+def test_structured_hypotheses_derive_predictions_then_discriminating_question():
+    hypotheses = [
+        _structured_hypothesis("h-continues", "CONTINUES", ["h-terminates"]),
+        _structured_hypothesis("h-terminates", "TERMINATES", ["h-continues"]),
+    ]
+
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+
+    assert all(item is not None for item in predictions)
+    question = derive_discriminating_question(predictions)
+    assert question is not None
+    assert [item.property_name for item in question.discriminants] == ["continuation"]
+    assert question.discriminants[0].expected_outcomes == {
+        "h-continues": "visible",
+        "h-terminates": "absent",
+    }
+
+
+def test_unknown_structured_relation_has_no_derivable_prediction():
+    hypothesis = _structured_hypothesis("h-unknown", "ALIGNED_WITH")
+
+    assert derive_observable_prediction(hypothesis) is None
+
+
+def test_derived_absence_prediction_does_not_bypass_occlusion_safety():
+    hypotheses = [
+        _structured_hypothesis("h-continues", "CONTINUES", ["h-terminates"]),
+        _structured_hypothesis("h-terminates", "TERMINATES", ["h-continues"]),
+    ]
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    inquiry = VisualInquiry(
+        id="derived-continuity",
+        question="Derived by Experiment 009 from the predictions.",
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[
+            DiscriminatingTest(
+                id="occluded-roi",
+                photo_index=2,
+                region=NormalizedImageRegion(x0=0.2, y0=0.2, x1=0.5, y1=0.5),
+                prediction_ids=[item.id for item in predictions],
+                evidence_sought="Inspect continuation only if the region is observable.",
+            )
+        ],
+    )
+
+    with pytest.raises(ValueError, match="discriminating evidence requires|occluded/non-visible ROI"):
+        InquiryTestResult(
+            test_id="occluded-roi",
+            inspected=True,
+            region_in_frame=True,
+            visibility=VisibilityStatus.OCCLUDED,
+            sufficient_visibility=False,
+            statement="Continuation is not visible because the region is occluded.",
+            compatible_prediction_ids=["derived-h-terminates"],
+            discriminating=True,
+        )
+
+    safe_result = InquiryTestResult(
+        test_id="occluded-roi",
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.OCCLUDED,
+        sufficient_visibility=False,
+        statement="The derived predictions cannot be tested in this occluded region.",
+        compatible_prediction_ids=[item.id for item in predictions],
+        discriminating=False,
+    )
+    still_open = apply_inquiry_test(inquiry, safe_result)
+    assert still_open.state is InquiryState.OPEN
+    assert still_open.viable_hypothesis_ids == ["h-continues", "h-terminates"]
+
+
+def test_legacy_text_only_hypothesis_remains_compatible():
+    hypothesis = OpenHypothesis(
+        id="legacy-h",
+        subject_refs=["obs-a"],
+        statement="Legacy hypothesis without structured claim.",
+    )
+
+    assert hypothesis.claim is None
+    assert derive_observable_prediction(hypothesis) is None
