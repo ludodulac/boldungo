@@ -61,6 +61,7 @@ class LocalObservation(BaseModel):
     statement: str = Field(min_length=1)
     certainty: AspectCertainty = Field(default_factory=AspectCertainty)
     observable_properties: set[str] | None = None
+    observed_property_states: dict[str, str] | None = None
 
     @model_validator(mode="after")
     def validate_visibility(self) -> "LocalObservation":
@@ -155,6 +156,48 @@ class StructuredUncertainty(BaseModel):
     property_name: str = Field(min_length=1)
     source_observation_ids: list[str] = Field(min_length=1)
     resolved_state: str | None = None
+
+
+def detect_continuity_uncertainties(
+    observations: list[LocalObservation],
+) -> list[StructuredUncertainty]:
+    """Detect only relevant-but-unresolved continuity; missing mention is not uncertainty."""
+
+    grouped: dict[str, list[LocalObservation]] = {}
+    for observation in observations:
+        grouped.setdefault(observation.id, []).append(observation)
+
+    uncertainties: list[StructuredUncertainty] = []
+    for subject_ref, subject_observations in grouped.items():
+        relevant = [
+            item
+            for item in subject_observations
+            if item.observable_properties is not None
+            and "continuation" in item.observable_properties
+        ]
+        if not relevant:
+            continue
+
+        established_states = {
+            item.observed_property_states["continuation"]
+            for item in relevant
+            if item.observed_property_states is not None
+            and item.observed_property_states.get("continuation")
+            in {"CONTINUES", "TERMINATES"}
+        }
+        if established_states:
+            continue
+
+        source_ids = sorted({item.id for item in relevant})
+        uncertainties.append(
+            StructuredUncertainty(
+                id=f"uncertainty-{subject_ref}-continuity",
+                subject_ref=subject_ref,
+                property_name="continuity",
+                source_observation_ids=source_ids,
+            )
+        )
+    return uncertainties
 
 
 def derive_competing_hypotheses(
