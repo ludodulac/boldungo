@@ -293,3 +293,22 @@ def validate_planner_result(model: BrickModel, result: PlannerResult) -> tuple[s
     if expected_unresolved != set(result.unresolved_ids):
         issues.append("unresolved-set-mismatch")
     return tuple(issues)
+
+
+@dataclass(frozen=True)
+class PlannerMetrics:
+    step_count: int
+    spatial_travel: int
+    facade_switches: int
+
+def planner_metrics(model: BrickModel, result: PlannerResult) -> PlannerMetrics:
+    """Measure simple human-facing continuity without changing validity."""
+    parts = {p.placement_id: p for p in model.parts}
+    ordered = [parts[s.placement_id] for s in result.steps if s.placement_id in parts]
+    travel = 0
+    switches = 0
+    for previous, current in zip(ordered, ordered[1:]):
+        travel += abs(previous.x_studs-current.x_studs)+abs(previous.y_studs-current.y_studs)
+        if previous.facade != current.facade:
+            switches += 1
+    return PlannerMetrics(len(ordered), travel, switches)
