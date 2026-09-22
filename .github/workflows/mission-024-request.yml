@@ -1,0 +1,51 @@
+name: Mission 024 generate real bootstrap request V2
+on:
+  pull_request:
+    branches: [experiment/bootstrap-invariants-023]
+jobs:
+  generate:
+    if: github.head_ref == 'experiment/real-bootstrap-request-024'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e ".[dev]"
+      - name: Generate request strictly from Experiment 023 mechanism
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from brickhouse.vision.multiview import (
+              VisualBootstrapRequest,
+              VisualBootstrapResponse,
+              build_visual_bootstrap_request,
+              visual_bootstrap_response_invariants,
+          )
+          names=[f"{i:02d}-original.jpg" for i in range(1,6)]
+          request=build_visual_bootstrap_request("real-house-5-bootstrap-v2-001", names)
+          assert request.response_schema == VisualBootstrapResponse.model_json_schema()
+          assert request.response_invariants == visual_bootstrap_response_invariants()
+          assert request.bootstrap_id not in {"real-house-5-bootstrap-v0-001","real-house-5-bootstrap-v1-001"}
+          assert [(p.photo_index,p.filename) for p in request.photos] == list(enumerate(names,start=1))
+          payload=request.model_dump(mode="json")
+          text=json.dumps(payload,ensure_ascii=False,indent=2)+"\n"
+          # No tokens specific to the failed V1 response are allowed.
+          forbidden=[
+              "p1-lower-right-glazed-opening","p2-pale-wall",
+              "p4-building-elevation","p4-lower-opening",
+          ]
+          assert all(token not in text for token in forbidden)
+          Path("visual-bootstrap-request.json").write_text(text,encoding="utf-8")
+          restored=VisualBootstrapRequest.model_validate_json(text)
+          assert restored == request
+          assert restored.response_schema == VisualBootstrapResponse.model_json_schema()
+          assert restored.response_invariants == visual_bootstrap_response_invariants()
+          print("REQUEST_OK", restored.bootstrap_id, len(restored.photos))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-bootstrap-request-024
+          path: visual-bootstrap-request.json
+          if-no-files-found: error
