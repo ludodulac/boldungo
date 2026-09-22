@@ -606,6 +606,108 @@ class InquiryTestResult(BaseModel):
         return self
 
 
+class BootstrapPhotoRef(BaseModel):
+    photo_index: int = Field(ge=1)
+    filename: str = Field(min_length=1)
+
+
+class VisualBootstrapRequest(BaseModel):
+    schema_version: str = "0.1"
+    bootstrap_id: str = Field(min_length=1)
+    photos: list[BootstrapPhotoRef] = Field(min_length=1)
+    instruction: str = Field(min_length=1)
+    information_to_record: list[str] = Field(min_length=1)
+    epistemic_rules: list[str] = Field(min_length=1)
+    output_filename: str = "visual-bootstrap-response.json"
+
+
+class VisualBootstrapResponse(BaseModel):
+    schema_version: str = "0.1"
+    bootstrap_id: str = Field(min_length=1)
+    photo_count: int = Field(ge=1)
+    observations: list[LocalObservation] = Field(default_factory=list)
+    identity_candidates: list[IdentityCandidate] = Field(default_factory=list)
+    observer_comment: str | None = None
+
+    @model_validator(mode="after")
+    def validate_bootstrap(self) -> "VisualBootstrapResponse":
+        ids = {item.id for item in self.observations}
+        if len(ids) != len(self.observations):
+            raise ValueError("bootstrap observation IDs must be unique")
+        for item in self.observations:
+            if item.photo_index > self.photo_count:
+                raise ValueError("bootstrap observation references unavailable photo")
+        for identity in self.identity_candidates:
+            unknown = set(identity.observation_ids) - ids
+            if unknown:
+                raise ValueError(
+                    f"bootstrap identity references unknown observations: {sorted(unknown)}"
+                )
+        return self
+
+
+def build_visual_bootstrap_request(
+    bootstrap_id: str,
+    photo_filenames: list[str],
+) -> VisualBootstrapRequest:
+    return VisualBootstrapRequest(
+        bootstrap_id=bootstrap_id,
+        photos=[
+            BootstrapPhotoRef(photo_index=index, filename=filename)
+            for index, filename in enumerate(photo_filenames, start=1)
+        ],
+        instruction=(
+            "Inspect the supplied photos and return only visual-bootstrap-response.json. "
+            "Record local, traceable visual observations with approximate normalized image "
+            "ROIs where possible. State observable properties separately from observed "
+            "property states. Do not reconstruct the whole building, infer hidden geometry, "
+            "or use architectural plausibility as visual evidence. Similar-looking fragments "
+            "across photos remain identity candidates unless their physical identity is "
+            "explicitly supported."
+        ),
+        information_to_record=[
+            "local visual fragments or subjects",
+            "approximate normalized image regions",
+            "visibility",
+            "observable properties",
+            "observed property states only when visually established",
+            "directly supported local visual relations in statements",
+            "cross-view identity candidates with explicit support level",
+        ],
+        epistemic_rules=[
+            "non_visible != absent",
+            "occluded != absent",
+            "ambiguous != false",
+            "not_mentioned != not_relevant",
+            "image_roi != world_metric",
+            "resemblance != same_physical_object",
+            "architectural_plausibility != observation",
+        ],
+    )
+
+
+def import_visual_bootstrap_response(
+    request: VisualBootstrapRequest,
+    response: VisualBootstrapResponse,
+) -> "MultiViewWorkspace":
+    if response.bootstrap_id != request.bootstrap_id:
+        raise ValueError("bootstrap response ID does not match request")
+    if response.photo_count != len(request.photos):
+        raise ValueError("bootstrap response photo count does not match request")
+    expected_indexes = {item.photo_index for item in request.photos}
+    if any(item.photo_index not in expected_indexes for item in response.observations):
+        raise ValueError("bootstrap observation references unexpected photo")
+    return MultiViewWorkspace(
+        photo_count=response.photo_count,
+        pass_1=MultiViewPass(
+            pass_number=1,
+            observations=response.observations,
+            identities=response.identity_candidates,
+        ),
+        pass_2=MultiViewPass(pass_number=2),
+    )
+
+
 class VisualEvidenceStatus(str, Enum):
     OBSERVED = "observed"
     NOT_OBSERVED = "not_observed"
