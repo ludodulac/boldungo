@@ -606,6 +606,172 @@ class InquiryTestResult(BaseModel):
         return self
 
 
+class VisualEvidenceStatus(str, Enum):
+    OBSERVED = "observed"
+    NOT_OBSERVED = "not_observed"
+    OCCLUDED = "occluded"
+    NON_VISIBLE = "non_visible"
+    AMBIGUOUS = "ambiguous"
+    INSUFFICIENT_EVIDENCE = "insufficient_evidence"
+
+
+class VisualInquiryRequest(BaseModel):
+    schema_version: str = "0.1"
+    request_id: str = Field(min_length=1)
+    inquiry_id: str = Field(min_length=1)
+    instruction: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    property_name: str = Field(min_length=1)
+    question: DiscriminatingQuestion
+    predictions: list[ObservablePrediction] = Field(min_length=2)
+    target: CandidateEvidenceTarget
+    test_id: str = Field(min_length=1)
+    observability_requirements: list[str] = Field(min_length=1)
+
+
+class VisualEvidenceResponse(BaseModel):
+    schema_version: str = "0.1"
+    request_id: str = Field(min_length=1)
+    inquiry_id: str = Field(min_length=1)
+    test_id: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    region: NormalizedImageRegion
+    property_name: str = Field(min_length=1)
+    status: VisualEvidenceStatus
+    observed_value: str | None = None
+    certainty: CertaintyLevel = CertaintyLevel.UNKNOWN
+    source_observation_ids: list[str] = Field(min_length=1)
+    comment: str | None = None
+
+    @model_validator(mode="after")
+    def validate_structured_result(self) -> "VisualEvidenceResponse":
+        if self.status in {VisualEvidenceStatus.OBSERVED, VisualEvidenceStatus.NOT_OBSERVED}:
+            if self.observed_value is None:
+                raise ValueError("decisive visual evidence requires a structured observed_value")
+        elif self.observed_value is not None:
+            raise ValueError("inconclusive visual evidence cannot carry an observed_value")
+        return self
+
+
+def build_visual_inquiry_request(
+    inquiry: "VisualInquiry",
+    question: DiscriminatingQuestion,
+    hypotheses: list[OpenHypothesis],
+    target: CandidateEvidenceTarget,
+) -> VisualInquiryRequest:
+    hypothesis_by_id = {item.id: item for item in hypotheses}
+    subject_refs = {
+        hypothesis_by_id[item].claim.subject_ref
+        for item in question.hypothesis_ids
+        if item in hypothesis_by_id and hypothesis_by_id[item].claim is not None
+    }
+    if len(subject_refs) != 1:
+        raise ValueError("visual exchange requires one structurally identified subject")
+    test = next(
+        (
+            item
+            for item in inquiry.tests
+            if item.photo_index == target.photo_index
+            and item.region == target.region
+            and item.evidence_sought == target.discriminant_property
+        ),
+        None,
+    )
+    if test is None:
+        raise ValueError("candidate target must correspond to an inquiry test")
+    return VisualInquiryRequest(
+        request_id=f"request-{inquiry.id}-{test.id}",
+        inquiry_id=inquiry.id,
+        instruction=(
+            "Inspect only the referenced photo/ROI and return a VisualEvidenceResponse JSON. "
+            "Report occluded, non-visible, ambiguous, or insufficient evidence explicitly; "
+            "do not infer absence from inability to see."
+        ),
+        subject_ref=next(iter(subject_refs)),
+        property_name=target.discriminant_property,
+        question=question,
+        predictions=inquiry.predictions,
+        target=target,
+        test_id=test.id,
+        observability_requirements=[
+            "region_in_frame",
+            "non_occluded",
+            "sufficient_visibility",
+        ],
+    )
+
+
+def import_visual_evidence_response(
+    request: VisualInquiryRequest,
+    response: VisualEvidenceResponse,
+) -> InquiryTestResult:
+    if (
+        response.request_id != request.request_id
+        or response.inquiry_id != request.inquiry_id
+        or response.test_id != request.test_id
+        or response.photo_index != request.target.photo_index
+        or response.region != request.target.region
+        or response.property_name != request.property_name
+        or response.source_observation_ids != request.target.source_observation_ids
+    ):
+        raise ValueError("visual evidence response provenance does not match request")
+
+    inconclusive = response.status in {
+        VisualEvidenceStatus.OCCLUDED,
+        VisualEvidenceStatus.NON_VISIBLE,
+        VisualEvidenceStatus.AMBIGUOUS,
+        VisualEvidenceStatus.INSUFFICIENT_EVIDENCE,
+    }
+    if inconclusive:
+        visibility = (
+            VisibilityStatus.OCCLUDED
+            if response.status is VisualEvidenceStatus.OCCLUDED
+            else VisibilityStatus.NON_VISIBLE
+            if response.status is VisualEvidenceStatus.NON_VISIBLE
+            else VisibilityStatus.VISIBLE
+        )
+        return InquiryTestResult(
+            test_id=request.test_id,
+            inspected=True,
+            region_in_frame=response.status is not VisualEvidenceStatus.NON_VISIBLE,
+            visibility=visibility,
+            sufficient_visibility=False,
+            statement=response.comment or f"External visual result: {response.status.value}.",
+            compatible_prediction_ids=request.question.prediction_ids,
+            discriminating=False,
+        )
+
+    outcomes = {
+        hypothesis_id: value
+        for discriminant in request.question.discriminants
+        if discriminant.property_name == request.property_name
+        for hypothesis_id, value in discriminant.expected_outcomes.items()
+    }
+    compatible = [
+        prediction_id
+        for prediction_id in request.question.prediction_ids
+        if outcomes.get(
+            next(
+                item.hypothesis_id
+                for item in request.predictions
+                if item.id == prediction_id
+            )
+        ) == response.observed_value
+    ]
+    if not compatible:
+        raise ValueError("structured observed_value matches no expected outcome")
+    return InquiryTestResult(
+        test_id=request.test_id,
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.VISIBLE,
+        sufficient_visibility=True,
+        statement=response.comment or "Structured external visual evidence imported.",
+        compatible_prediction_ids=compatible,
+        discriminating=len(compatible) == 1,
+    )
+
+
 class VisualInquiry(BaseModel):
     """Minimal executable inquiry attached to the existing pre-Survey workspace."""
 

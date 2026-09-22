@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1",
+  "request_id": "request-example-inquiry-example-test",
+  "inquiry_id": "example-inquiry",
+  "test_id": "example-test",
+  "photo_index": 2,
+  "region": {
+    "x0": 0.2,
+    "y0": 0.2,
+    "x1": 0.6,
+    "y1": 0.6
+  },
+  "property_name": "continuation",
+  "status": "observed",
+  "observed_value": "visible",
+  "certainty": "certain",
+  "source_observation_ids": [
+    "surface-s"
+  ],
+  "comment": "Synthetic example only."
+}
