@@ -1014,7 +1014,10 @@ def build_visual_inquiry_request(
             if item.photo_index == target.photo_index
             and item.region == target.region
             and item.evidence_sought == target.discriminant_property
-            and item.source_observation_ids == target.source_observation_ids
+            and (
+                not item.source_observation_ids
+                or item.source_observation_ids == target.source_observation_ids
+            )
         ),
         None,
     )
