@@ -48,6 +48,9 @@ from brickhouse.vision.multiview import (
     OpenHypothesis,
     ViewAssessment,
     VisibilityStatus,
+    inquiry_property_registry_payload,
+    INQUIRY_PROPERTY_REGISTRY,
+
 )
 from brickhouse.vision.openai_provider import PhotoInput, analyze_building_photos
 from brickhouse.survey.models import NormalizedImageRegion
@@ -1847,3 +1850,46 @@ def test_023_f_invariant_inventory_mentions_every_runtime_rule():
     ]
     for phrase in expected:
         assert phrase in joined
+
+
+# Experiment 026 — canonical inquiry-property vocabulary.
+
+def _obs026(props=None, states=None):
+    return LocalObservation(id="synthetic-fragment", photo_index=1, status="observed",
+        visibility="visible", region={"x0":.1,"y0":.1,"x1":.3,"y1":.3},
+        statement="Synthetic fragment.", observable_properties=props,
+        observed_property_states=states)
+
+def test_026_a_non_relevant_continuation_absent():
+    assert detect_continuity_uncertainties([_obs026({"shape"})]) == []
+
+def test_026_b_relevant_unknown_runs_015_014_010_009():
+    uncertainties=detect_continuity_uncertainties([_obs026({"continuation"})])
+    assert len(uncertainties)==1
+    hypotheses=derive_competing_hypotheses(uncertainties[0])
+    predictions=[derive_observable_prediction(h) for h in hypotheses]
+    assert all(predictions)
+    question=derive_discriminating_question(predictions)
+    assert question is not None
+    assert [d.property_name for d in question.discriminants] == ["continuation"]
+
+@pytest.mark.parametrize("state", ["CONTINUES","TERMINATES"])
+def test_026_c_d_canonical_established_states_create_no_uncertainty(state):
+    assert detect_continuity_uncertainties([_obs026({"continuation"},{"continuation":state})]) == []
+
+def test_026_e_noncanonical_value_fails_closed_as_unresolved():
+    uncertainties=detect_continuity_uncertainties([_obs026({"continuation"},{"continuation":"MAYBE"})])
+    assert len(uncertainties)==1
+
+def test_026_registry_is_single_supported_family_and_request_is_synchronized():
+    assert set(INQUIRY_PROPERTY_REGISTRY) == {"continuation"}
+    spec=INQUIRY_PROPERTY_REGISTRY["continuation"]
+    assert spec.recognized_states == ("CONTINUES","TERMINATES")
+    request=build_visual_bootstrap_request("synthetic-026",["one.jpg"])
+    assert request.inquiry_property_registry == inquiry_property_registry_payload()
+    assert request.inquiry_property_registry == [spec.model_dump(mode="json")]
+    rule="\n".join(request.information_to_record)
+    assert "If relevant but no state is established" in rule
+    assert "If not relevant, omit it" in rule
+    assert "Absence never means false" in rule
+    assert "merely because the engine supports it" in rule
