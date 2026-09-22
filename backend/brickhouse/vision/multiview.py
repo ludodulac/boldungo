@@ -144,6 +144,53 @@ class OpenHypothesis(BaseModel):
     certainty: CertaintyLevel = CertaintyLevel.UNPROVEN
     supporting_photo_indexes: list[int] = Field(default_factory=list)
     claim: HypothesisClaim | None = None
+    source_uncertainty_id: str | None = None
+
+
+class StructuredUncertainty(BaseModel):
+    """Local unresolved property with explicit observation provenance."""
+
+    id: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    property_name: str = Field(min_length=1)
+    source_observation_ids: list[str] = Field(min_length=1)
+    resolved_state: str | None = None
+
+
+def derive_competing_hypotheses(
+    uncertainty: StructuredUncertainty,
+) -> list[OpenHypothesis]:
+    """Derive only alternatives licensed by the one Experiment-014 property family."""
+
+    if uncertainty.resolved_state is not None:
+        return []
+
+    alternatives_by_property = {
+        "continuity": ("CONTINUES", "TERMINATES"),
+    }
+    alternatives = alternatives_by_property.get(uncertainty.property_name)
+    if alternatives is None:
+        return []
+
+    hypothesis_ids = [
+        f"{uncertainty.id}-{relation.lower()}" for relation in alternatives
+    ]
+    return [
+        OpenHypothesis(
+            id=hypothesis_id,
+            subject_refs=[uncertainty.subject_ref],
+            statement=f"Structured alternative: {relation}.",
+            competing_with=[
+                other_id for other_id in hypothesis_ids if other_id != hypothesis_id
+            ],
+            claim=HypothesisClaim(
+                subject_ref=uncertainty.subject_ref,
+                relation=relation,
+            ),
+            source_uncertainty_id=uncertainty.id,
+        )
+        for hypothesis_id, relation in zip(hypothesis_ids, alternatives)
+    ]
 
 
 class InquiryState(str, Enum):
