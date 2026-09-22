@@ -19,7 +19,7 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install -e . pillow
       - name: Verify Scene v0.4 remains byte-identical to parent branch version
-        run: git diff --exit-code HEAD~3 -- frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.4.json
+        run: git diff --exit-code 58a0eb544dafb94739c67501f0d2714b51ce9dc2^ -- frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.4.json
       - name: Build same-image-space overlay
         run: PYTHONPATH=backend python tests/photo4_perspective_overlay_proof.py
       - name: Smoke check
