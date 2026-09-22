@@ -1,0 +1,85 @@
+{
+  "schema_version": "0.1",
+  "request_id": "request-example-inquiry-example-test",
+  "inquiry_id": "example-inquiry",
+  "instruction": "Inspect only the referenced photo/ROI and return a VisualEvidenceResponse JSON. Report occluded, non-visible, ambiguous, or insufficient evidence explicitly; do not infer absence from inability to see.",
+  "subject_ref": "surface-s",
+  "property_name": "continuation",
+  "question": {
+    "hypothesis_ids": [
+      "example-uncertainty-continues",
+      "example-uncertainty-terminates"
+    ],
+    "prediction_ids": [
+      "derived-example-uncertainty-continues",
+      "derived-example-uncertainty-terminates"
+    ],
+    "discriminants": [
+      {
+        "property_name": "continuation",
+        "expected_outcomes": {
+          "example-uncertainty-continues": "visible",
+          "example-uncertainty-terminates": "absent"
+        }
+      }
+    ],
+    "evidence_needed": [
+      "continuation"
+    ],
+    "human_readable_question": "Inspect the structured discriminant 'continuation' and report only what the referenced ROI supports."
+  },
+  "predictions": [
+    {
+      "id": "derived-example-uncertainty-continues",
+      "hypothesis_id": "example-uncertainty-continues",
+      "statement": "When observable, compatible continuation is expected to be visible.",
+      "observable_properties": [
+        {
+          "name": "continuation",
+          "value": "visible"
+        },
+        {
+          "name": "observability_required",
+          "value": "in_frame+non_occluded+sufficient_visibility"
+        }
+      ]
+    },
+    {
+      "id": "derived-example-uncertainty-terminates",
+      "hypothesis_id": "example-uncertainty-terminates",
+      "statement": "When observable, compatible continuation is expected to be absent.",
+      "observable_properties": [
+        {
+          "name": "continuation",
+          "value": "absent"
+        },
+        {
+          "name": "observability_required",
+          "value": "in_frame+non_occluded+sufficient_visibility"
+        }
+      ]
+    }
+  ],
+  "target": {
+    "photo_index": 2,
+    "region": {
+      "x0": 0.2,
+      "y0": 0.2,
+      "x1": 0.6,
+      "y1": 0.6
+    },
+    "source_observation_ids": [
+      "surface-s"
+    ],
+    "discriminant_property": "continuation",
+    "visibility": "visible",
+    "testable": true,
+    "reason": "Synthetic existing observation ROI."
+  },
+  "test_id": "example-test",
+  "observability_requirements": [
+    "region_in_frame",
+    "non_occluded",
+    "sufficient_visibility"
+  ]
+}
