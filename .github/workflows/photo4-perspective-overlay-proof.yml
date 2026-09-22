@@ -1,0 +1,33 @@
+name: Photo 4 perspective overlay proof
+on:
+  pull_request:
+    paths:
+      - 'backend/brickhouse/scene/photo_projection.py'
+      - 'frontend/benchmarks/real-house-5/photo-4-image-constraints-v0.1.json'
+      - 'tests/photo4_perspective_overlay_proof.py'
+      - '.github/workflows/photo4-perspective-overlay-proof.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e . pillow
+      - name: Verify Scene v0.4 remains byte-identical to parent branch version
+        run: git diff --exit-code HEAD~3 -- frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.4.json
+      - name: Build same-image-space overlay
+        run: PYTHONPATH=backend python tests/photo4_perspective_overlay_proof.py
+      - name: Smoke check
+        run: test -s photo4-perspective-overlay.png && test -s photo4-perspective-overlay-report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: photo4-perspective-scene-overlay
+          path: |
+            photo4-perspective-overlay.png
+            photo4-perspective-overlay-report.json
+            frontend/benchmarks/real-house-5/photo-4-image-constraints-v0.1.json
