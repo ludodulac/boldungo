@@ -26,6 +26,8 @@ from brickhouse.vision.multiview import (
     DiscriminationPotential,
     ApplicabilityState,
     derive_discriminant_applicability,
+    StructuredUncertainty,
+    derive_competing_hypotheses,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -976,3 +978,145 @@ def test_013_visible_observations_without_applicable_property_yield_no_target():
         for item in assessments
     )
     assert selection.best_candidates == []
+
+
+
+def _uncertainty_014(resolved_state=None, property_name="continuity"):
+    return StructuredUncertainty(
+        id="uncertainty-s-continuity",
+        subject_ref="surface-s",
+        property_name=property_name,
+        source_observation_ids=["surface-s"],
+        resolved_state=resolved_state,
+    )
+
+
+def test_014_continuity_uncertainty_generates_exact_competing_alternatives():
+    hypotheses = derive_competing_hypotheses(_uncertainty_014())
+    assert [item.claim.relation for item in hypotheses] == ["CONTINUES", "TERMINATES"]
+    assert hypotheses[0].competing_with == [hypotheses[1].id]
+    assert hypotheses[1].competing_with == [hypotheses[0].id]
+
+
+def test_014_hypotheses_preserve_uncertainty_and_observation_provenance():
+    uncertainty = _uncertainty_014()
+    hypotheses = derive_competing_hypotheses(uncertainty)
+    assert {item.source_uncertainty_id for item in hypotheses} == {uncertainty.id}
+    assert uncertainty.source_observation_ids == ["surface-s"]
+
+
+def test_014_unknown_property_derives_no_hypotheses():
+    assert derive_competing_hypotheses(
+        _uncertainty_014(property_name="unsupported-property")
+    ) == []
+
+
+def test_014_resolved_uncertainty_does_not_recreate_competing_hypotheses():
+    assert derive_competing_hypotheses(
+        _uncertainty_014(resolved_state="CONTINUES")
+    ) == []
+
+
+def test_014_repeated_derivation_is_deterministic_and_deduplicable():
+    uncertainty = _uncertainty_014()
+    first = derive_competing_hypotheses(uncertainty)
+    second = derive_competing_hypotheses(uncertainty)
+    assert first == second
+    assert len({item.id for item in first + second}) == 2
+
+
+def test_014_end_to_end_from_uncertainty_to_resolved():
+    observation = _target_observation("surface-s", 5)
+    observation.observable_properties = {"continuation"}
+    uncertainty = _uncertainty_014()
+    hypotheses = derive_competing_hypotheses(uncertainty)
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    assert all(item is not None for item in predictions)
+    question = derive_discriminating_question(predictions)
+    targets = derive_candidate_evidence_targets(
+        question, hypotheses, [observation]
+    )
+    assessments = assess_discrimination_targets(question, targets, [observation])
+    selection = select_discrimination_targets(assessments)
+    assert len(selection.best_candidates) == 1
+    target = selection.best_candidates[0]
+    test = DiscriminatingTest(
+        id="generated-from-uncertainty-014",
+        photo_index=target.photo_index,
+        region=target.region,
+        prediction_ids=question.prediction_ids,
+        evidence_sought=target.discriminant_property,
+    )
+    inquiry = VisualInquiry(
+        id="end-to-end-014",
+        question=question.human_readable_question,
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[test],
+    )
+    result = InquiryTestResult(
+        test_id=test.id,
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.VISIBLE,
+        sufficient_visibility=True,
+        statement="Continuation is visible.",
+        compatible_prediction_ids=[f"derived-{hypotheses[0].id}"],
+        discriminating=True,
+    )
+    resolved = apply_inquiry_test(inquiry, result)
+    assert resolved.state is InquiryState.RESOLVED
+    assert resolved.resolved_hypothesis_id == hypotheses[0].id
+    assert hypotheses[0].source_uncertainty_id == uncertainty.id
+    assert uncertainty.source_observation_ids == [observation.id]
+    assert test.photo_index == observation.photo_index
+    assert test.region == observation.region
+
+
+def test_014_no_discriminating_evidence_ends_irreducible_unknown():
+    observation = _target_observation(
+        "surface-s", 3, visibility=VisibilityStatus.OCCLUDED
+    )
+    observation.observable_properties = {"continuation"}
+    uncertainty = _uncertainty_014()
+    hypotheses = derive_competing_hypotheses(uncertainty)
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    question = derive_discriminating_question(predictions)
+    targets = derive_candidate_evidence_targets(
+        question, hypotheses, [observation]
+    )
+    assessments = assess_discrimination_targets(question, targets, [observation])
+    assert select_discrimination_targets(assessments).best_candidates == []
+
+    fallback_test = DiscriminatingTest(
+        id="unavailable-evidence-014",
+        photo_index=targets[0].photo_index,
+        region=targets[0].region,
+        prediction_ids=question.prediction_ids,
+        evidence_sought=targets[0].discriminant_property,
+    )
+    inquiry = VisualInquiry(
+        id="irreducible-014",
+        question=question.human_readable_question,
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[fallback_test],
+    )
+    result = InquiryTestResult(
+        test_id=fallback_test.id,
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.OCCLUDED,
+        sufficient_visibility=False,
+        statement="The relevant region is occluded.",
+        compatible_prediction_ids=question.prediction_ids,
+        discriminating=False,
+    )
+    unresolved = apply_inquiry_test(
+        inquiry,
+        result,
+        no_more_candidate_evidence=True,
+        information_missing="No non-occluded observation exposes continuation.",
+    )
+    assert unresolved.state is InquiryState.IRREDUCIBLE_UNKNOWN
+    assert set(unresolved.viable_hypothesis_ids) == {item.id for item in hypotheses}
