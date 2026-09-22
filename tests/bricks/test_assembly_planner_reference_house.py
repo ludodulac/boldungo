@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan, plan_supported_non_roof_parts, unresolved_placements, validate_planner_result, planner_metrics, evaluate_planner_quality
+from brickhouse.bricks.assembly_planner import audit_supported_non_roof_plan, plan_supported_non_roof_parts, unresolved_placements, validate_planner_result, planner_metrics, evaluate_planner_quality, group_planner_steps
 from brickhouse.pipeline import run_m0_pipeline
 
 REFERENCE_HOUSE = Path("docs/examples/building-model-simple-house.json")
@@ -70,3 +70,14 @@ def test_reference_house_quality_report_is_valid_and_complete_for_current_scope(
     assert report.issues == ()
     assert report.unresolved_count == 0
     assert report.metrics.step_count == 691
+
+
+def test_reference_house_grouped_notice_preserves_all_autonomous_placements():
+    bundle = run_m0_pipeline(REFERENCE_HOUSE, front_width_studs=48)
+    result = plan_supported_non_roof_parts(bundle.brick_model)
+    groups = group_planner_steps(bundle.brick_model, result, max_parts=8)
+    flattened = [pid for group in groups for pid in group.placement_ids]
+    assert flattened == [step.placement_id for step in result.steps]
+    assert len(flattened) == 691
+    assert groups
+    assert all(1 <= len(group.placement_ids) <= 8 for group in groups)
