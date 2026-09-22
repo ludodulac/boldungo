@@ -1,0 +1,32 @@
+name: Photo 4 perspective Scene overlay
+on:
+  push:
+    branches: [feat/five-photo-survey02-to-visual]
+    paths:
+      - 'backend/brickhouse/photo_projection.py'
+      - 'frontend/benchmarks/real-house-5/photo4-*'
+      - 'frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.4.json'
+      - '.github/workflows/photo4-scene-overlay.yml'
+  workflow_dispatch:
+jobs:
+  overlay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Generate aligned SVG
+        run: |
+          python backend/brickhouse/photo_projection.py \
+            frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.4.json \
+            frontend/benchmarks/real-house-5/photo4-image-constraints-v0.1.json \
+            frontend/benchmarks/real-house-5/photo4-camera-v0.1.json \
+            frontend/benchmarks/real-house-5/photo4-scene-overlay.svg
+          cp frontend/benchmarks/real-house-5/04-original.jpg frontend/benchmarks/real-house-5/04-original.jpg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: photo4-perspective-scene-overlay
+          path: |
+            frontend/benchmarks/real-house-5/photo4-scene-overlay.svg
+            frontend/benchmarks/real-house-5/photo4-image-constraints-v0.1.json
+            frontend/benchmarks/real-house-5/photo4-camera-v0.1.json
