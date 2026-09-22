@@ -367,3 +367,34 @@ def group_planner_steps(model: BrickModel, result: PlannerResult, *, max_parts: 
     if current and current_key is not None:
         groups.append(PlannerStepGroup(len(groups)+1, tuple(current), current_key[0], current_key[1]))
     return tuple(groups)
+
+
+@dataclass(frozen=True)
+class AutonomousInstructionStep:
+    sequence: int
+    placement_ids: tuple[str, ...]
+    part_counts: tuple[tuple[str, int], ...]
+    z_plates: int
+    facade: str | None
+
+def build_autonomous_instruction_steps(
+    model: BrickModel, result: PlannerResult, *, max_parts: int = 8
+) -> tuple[AutonomousInstructionStep, ...]:
+    """Project safe planner groups into renderer-neutral instruction data."""
+    parts = {p.placement_id: p for p in model.parts}
+    output: list[AutonomousInstructionStep] = []
+    for group in group_planner_steps(model, result, max_parts=max_parts):
+        counts: dict[str, int] = {}
+        for placement_id in group.placement_ids:
+            part_id = parts[placement_id].part_id
+            counts[part_id] = counts.get(part_id, 0) + 1
+        output.append(
+            AutonomousInstructionStep(
+                sequence=group.sequence,
+                placement_ids=group.placement_ids,
+                part_counts=tuple(sorted(counts.items())),
+                z_plates=group.z_plates,
+                facade=group.facade,
+            )
+        )
+    return tuple(output)
