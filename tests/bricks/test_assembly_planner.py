@@ -1,4 +1,4 @@
-from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan, unresolved_placements
+from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan, unresolved_placements, planner_metrics
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 def part(pid, part_id, x, y, z, rotation=0):
@@ -132,3 +132,15 @@ def test_planner_prefers_structural_candidate_before_safe_facade_detail():
     result = plan_supported_non_roof_parts(m)
     assert [step.placement_id for step in result.steps] == ["structural", "detail"]
     assert "fragile-detail-late" in result.steps[1].reasons
+
+
+def test_planner_metrics_measure_spatial_travel():
+    m = model([
+        part("a", "BRICK_1X1", 0, 0, 0),
+        part("b", "BRICK_1X1", 2, 0, 0),
+        part("c", "BRICK_1X1", 2, 3, 0),
+    ])
+    result = plan_supported_non_roof_parts(m)
+    metrics = planner_metrics(m, result)
+    assert metrics.step_count == 3
+    assert metrics.spatial_travel >= 5
