@@ -174,11 +174,12 @@ class InquiryTestResult(BaseModel):
 
     @model_validator(mode="after")
     def validate_discriminating_absence(self) -> "InquiryTestResult":
-        if self.discriminating and self.visibility is VisibilityStatus.ABSENT:
-            if not self.inspected or not self.region_in_frame or not self.sufficient_visibility:
-                raise ValueError(
-                    "absence is discriminating only for an inspected, in-frame, sufficiently visible ROI"
-                )
+        if self.discriminating and (
+            not self.inspected or not self.region_in_frame or not self.sufficient_visibility
+        ):
+            raise ValueError(
+                "discriminating evidence requires an inspected, in-frame, sufficiently visible ROI"
+            )
         if self.discriminating and self.visibility in {
             VisibilityStatus.OCCLUDED,
             VisibilityStatus.NON_VISIBLE,
@@ -229,6 +230,12 @@ class VisualInquiry(BaseModel):
         if self.state is InquiryState.RESOLVED:
             if self.resolved_hypothesis_id not in hypothesis_ids or not self.resolution_test_id:
                 raise ValueError("resolved inquiry requires a surviving hypothesis and resolution test")
+            resolution_results = [
+                item for item in self.test_results
+                if item.test_id == self.resolution_test_id and item.discriminating
+            ]
+            if not resolution_results:
+                raise ValueError("resolved inquiry requires a tested discriminating result")
         if self.state is InquiryState.IRREDUCIBLE_UNKNOWN:
             if len(self.viable_hypothesis_ids) < 2 or not self.information_missing or not self.stop_reason:
                 raise ValueError(
