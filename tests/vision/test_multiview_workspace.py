@@ -29,6 +29,11 @@ from brickhouse.vision.multiview import (
     StructuredUncertainty,
     derive_competing_hypotheses,
     detect_continuity_uncertainties,
+    VisualEvidenceStatus,
+    VisualEvidenceResponse,
+    VisualInquiryRequest,
+    build_visual_inquiry_request,
+    import_visual_evidence_response,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -1272,3 +1277,169 @@ def test_015_end_to_end_from_observations_to_irreducible_unknown():
     )
     assert unresolved.state is InquiryState.IRREDUCIBLE_UNKNOWN
     assert set(unresolved.viable_hypothesis_ids) == {item.id for item in hypotheses}
+
+
+
+def _visual_exchange_016(visibility=VisibilityStatus.VISIBLE):
+    observation = _target_observation("surface-s", 5, visibility=visibility)
+    observation.observable_properties = {"continuation"}
+    uncertainty = detect_continuity_uncertainties([observation])[0]
+    hypotheses = derive_competing_hypotheses(uncertainty)
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    question = derive_discriminating_question(predictions)
+    targets = derive_candidate_evidence_targets(question, hypotheses, [observation])
+    assessments = assess_discrimination_targets(question, targets, [observation])
+    if visibility is VisibilityStatus.VISIBLE:
+        target = select_discrimination_targets(assessments).best_candidates[0]
+    else:
+        target = targets[0]
+    test = DiscriminatingTest(
+        id="visual-exchange-test-016",
+        photo_index=target.photo_index,
+        region=target.region,
+        prediction_ids=question.prediction_ids,
+        evidence_sought=target.discriminant_property,
+    )
+    inquiry = VisualInquiry(
+        id="visual-exchange-inquiry-016",
+        question=question.human_readable_question,
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[test],
+    )
+    request = build_visual_inquiry_request(inquiry, question, hypotheses, target)
+    return observation, uncertainty, hypotheses, question, inquiry, request
+
+
+def test_016_request_is_generated_from_real_experimental_inquiry_chain():
+    _, _, hypotheses, question, inquiry, request = _visual_exchange_016()
+    assert request.inquiry_id == inquiry.id
+    assert request.question == question
+    assert request.predictions == inquiry.predictions
+    assert request.subject_ref == hypotheses[0].claim.subject_ref
+    assert request.target.photo_index == 5
+    assert request.property_name == "continuation"
+
+
+def test_016_request_json_round_trip_is_lossless():
+    *_, request = _visual_exchange_016()
+    payload = request.model_dump_json()
+    restored = VisualInquiryRequest.model_validate_json(payload)
+    assert restored == request
+
+
+def test_016_observed_response_imports_as_discriminating_result():
+    *_, request = _visual_exchange_016()
+    response = VisualEvidenceResponse(
+        request_id=request.request_id,
+        inquiry_id=request.inquiry_id,
+        test_id=request.test_id,
+        photo_index=request.target.photo_index,
+        region=request.target.region,
+        property_name=request.property_name,
+        status=VisualEvidenceStatus.OBSERVED,
+        observed_value="visible",
+        certainty=CertaintyLevel.CERTAIN,
+        source_observation_ids=request.target.source_observation_ids,
+    )
+    restored = VisualEvidenceResponse.model_validate_json(response.model_dump_json())
+    result = import_visual_evidence_response(request, restored)
+    assert result.discriminating is True
+    assert len(result.compatible_prediction_ids) == 1
+
+
+def test_016_occluded_response_never_becomes_absence():
+    *_, request = _visual_exchange_016()
+    response = VisualEvidenceResponse(
+        request_id=request.request_id, inquiry_id=request.inquiry_id,
+        test_id=request.test_id, photo_index=request.target.photo_index,
+        region=request.target.region, property_name=request.property_name,
+        status=VisualEvidenceStatus.OCCLUDED, certainty=CertaintyLevel.UNKNOWN,
+        source_observation_ids=request.target.source_observation_ids,
+    )
+    result = import_visual_evidence_response(request, response)
+    assert result.visibility is VisibilityStatus.OCCLUDED
+    assert result.discriminating is False
+    assert result.compatible_prediction_ids == request.question.prediction_ids
+
+
+def test_016_ambiguous_and_insufficient_preserve_all_predictions():
+    *_, request = _visual_exchange_016()
+    for status in [
+        VisualEvidenceStatus.AMBIGUOUS,
+        VisualEvidenceStatus.INSUFFICIENT_EVIDENCE,
+    ]:
+        response = VisualEvidenceResponse(
+            request_id=request.request_id, inquiry_id=request.inquiry_id,
+            test_id=request.test_id, photo_index=request.target.photo_index,
+            region=request.target.region, property_name=request.property_name,
+            status=status, source_observation_ids=request.target.source_observation_ids,
+        )
+        result = import_visual_evidence_response(request, response)
+        assert result.discriminating is False
+        assert result.compatible_prediction_ids == request.question.prediction_ids
+
+
+def test_016_invalid_or_incomplete_response_is_safely_rejected():
+    *_, request = _visual_exchange_016()
+    with pytest.raises(ValueError):
+        VisualEvidenceResponse(
+            request_id=request.request_id, inquiry_id=request.inquiry_id,
+            test_id=request.test_id, photo_index=request.target.photo_index,
+            region=request.target.region, property_name=request.property_name,
+            status=VisualEvidenceStatus.OBSERVED,
+            source_observation_ids=request.target.source_observation_ids,
+        )
+    response = VisualEvidenceResponse(
+        request_id="wrong-request", inquiry_id=request.inquiry_id,
+        test_id=request.test_id, photo_index=request.target.photo_index,
+        region=request.target.region, property_name=request.property_name,
+        status=VisualEvidenceStatus.OBSERVED, observed_value="visible",
+        source_observation_ids=request.target.source_observation_ids,
+    )
+    with pytest.raises(ValueError, match="provenance"):
+        import_visual_evidence_response(request, response)
+
+
+def test_016_full_json_exchange_round_trip_resolves():
+    _, uncertainty, hypotheses, _, inquiry, request = _visual_exchange_016()
+    request_json = request.model_dump_json()
+    external_request = VisualInquiryRequest.model_validate_json(request_json)
+    external_response = VisualEvidenceResponse(
+        request_id=external_request.request_id,
+        inquiry_id=external_request.inquiry_id,
+        test_id=external_request.test_id,
+        photo_index=external_request.target.photo_index,
+        region=external_request.target.region,
+        property_name=external_request.property_name,
+        status=VisualEvidenceStatus.OBSERVED,
+        observed_value="visible",
+        certainty=CertaintyLevel.CERTAIN,
+        source_observation_ids=external_request.target.source_observation_ids,
+        comment="Synthetic external inspection.",
+    )
+    imported_response = VisualEvidenceResponse.model_validate_json(
+        external_response.model_dump_json()
+    )
+    result = import_visual_evidence_response(request, imported_response)
+    resolved = apply_inquiry_test(inquiry, result)
+    assert resolved.state is InquiryState.RESOLVED
+    assert hypotheses[0].source_uncertainty_id == uncertainty.id
+
+
+def test_016_inconclusive_json_exchange_preserves_hypotheses():
+    *_, inquiry, request = _visual_exchange_016()
+    response = VisualEvidenceResponse(
+        request_id=request.request_id, inquiry_id=request.inquiry_id,
+        test_id=request.test_id, photo_index=request.target.photo_index,
+        region=request.target.region, property_name=request.property_name,
+        status=VisualEvidenceStatus.INSUFFICIENT_EVIDENCE,
+        source_observation_ids=request.target.source_observation_ids,
+    )
+    result = import_visual_evidence_response(
+        VisualInquiryRequest.model_validate_json(request.model_dump_json()),
+        VisualEvidenceResponse.model_validate_json(response.model_dump_json()),
+    )
+    updated = apply_inquiry_test(inquiry, result)
+    assert updated.state is InquiryState.OPEN
+    assert set(updated.viable_hypothesis_ids) == set(inquiry.hypothesis_ids)
