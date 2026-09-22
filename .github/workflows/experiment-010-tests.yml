@@ -1,0 +1,33 @@
+name: Experiment 010 targeted tests
+
+on:
+  pull_request:
+    branches:
+      - experiment/mv-discriminating-question-009
+    paths:
+      - 'backend/brickhouse/vision/multiview.py'
+      - 'tests/vision/test_multiview_workspace.py'
+      - 'tests/survey/test_multiview_workspace_bridge.py'
+      - 'tests/survey/test_reasoning_state.py'
+      - '.github/workflows/experiment-010-tests.yml'
+
+jobs:
+  targeted-tests:
+    if: github.head_ref == 'experiment/mv-derived-predictions-010'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install project
+        run: python -m pip install -e ".[dev]"
+      - name: Run Experiment 008/009/010 targeted tests
+        run: |
+          pytest -q \
+            tests/vision/test_multiview_workspace.py \
+            tests/survey/test_multiview_workspace_bridge.py \
+            tests/survey/test_reasoning_state.py
