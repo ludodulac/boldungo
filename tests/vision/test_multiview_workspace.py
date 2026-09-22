@@ -38,6 +38,7 @@ from brickhouse.vision.multiview import (
     VisualBootstrapResponse,
     build_visual_bootstrap_request,
     import_visual_bootstrap_response,
+    visual_bootstrap_response_schema,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -1635,3 +1636,114 @@ def test_017b_k_invalid_bootstrap_response_is_rejected_safely():
     )
     with pytest.raises(ValueError, match="ID"):
         import_visual_bootstrap_response(request, valid)
+
+
+# Experiment 020 — machine-strict, self-describing bootstrap contract.
+
+def test_020_a_embedded_schema_is_exact_importer_model_schema():
+    request = _bootstrap_017b_request()
+    assert request.response_schema == visual_bootstrap_response_schema()
+    assert request.response_schema == VisualBootstrapResponse.model_json_schema()
+
+
+def test_020_b_schema_exposes_required_fields_enums_roi_and_extra_policy():
+    schema = _bootstrap_017b_request().response_schema
+    assert set(schema["required"]) >= {"bootstrap_id", "photo_count"}
+    assert schema["additionalProperties"] is False
+    defs = schema["$defs"]
+    assert defs["LocalObservation"]["additionalProperties"] is False
+    assert defs["IdentityCandidate"]["additionalProperties"] is False
+    assert set(defs["NormalizedImageRegion"]["properties"]) == {"x0", "y0", "x1", "y1"}
+    assert set(defs["NormalizedImageRegion"]["required"]) == {"x0", "y0", "x1", "y1"}
+    assert set(defs["VisibilityStatus"]["enum"]) == {"visible", "absent", "non_visible", "occluded"}
+    assert set(defs["ClaimStatus"]["enum"]) == {"observed", "inferred", "unknown"}
+    assert set(defs["IdentityStatus"]["enum"]) == {
+        "same_physical_object", "likely_same", "unresolved", "incompatible"
+    }
+    assert set(defs["CertaintyLevel"]["enum"]) == {
+        "certain", "plausible", "unproven", "unknown"
+    }
+
+
+def test_020_c_synthetic_contract_response_roundtrips_into_workspace():
+    request = _bootstrap_017b_request()
+    payload = {
+        "schema_version": "0.1",
+        "bootstrap_id": request.bootstrap_id,
+        "photo_count": 5,
+        "observations": [{
+            "id": "synthetic-fragment",
+            "photo_index": 2,
+            "status": "observed",
+            "visibility": "visible",
+            "region": {"x0": 0.1, "y0": 0.2, "x1": 0.3, "y1": 0.4},
+            "qualitative_position": None,
+            "proposed_category": None,
+            "statement": "Synthetic fragment is visible.",
+            "certainty": {
+                "existence": "certain", "category": "unknown", "identity": "unknown",
+                "spatial_relation": "unknown", "topology": "unknown", "metric": "unknown"
+            },
+            "observable_properties": ["shape"],
+            "observed_property_states": None
+        }],
+        "identity_candidates": [],
+        "observer_comment": None
+    }
+    serialized = json.dumps(payload)
+    response = VisualBootstrapResponse.model_validate_json(serialized)
+    workspace = import_visual_bootstrap_response(request, response)
+    assert workspace.photo_count == 5
+    assert workspace.pass_1.observations[0].id == "synthetic-fragment"
+
+
+@pytest.mark.parametrize("mutation", [
+    "missing_photo_count",
+    "extra_source_photos",
+    "wrong_identity_field",
+    "array_roi",
+    "missing_observation_contract_fields",
+    "invalid_visibility",
+])
+def test_020_d_real_019_failure_shapes_are_rejected_by_new_contract(mutation):
+    request = _bootstrap_017b_request()
+    payload = {
+        "schema_version": "0.1",
+        "bootstrap_id": request.bootstrap_id,
+        "photo_count": 5,
+        "observations": [{
+            "id": "fragment",
+            "photo_index": 1,
+            "status": "observed",
+            "visibility": "visible",
+            "region": {"x0": 0.1, "y0": 0.1, "x1": 0.2, "y1": 0.2},
+            "statement": "Synthetic fragment.",
+            "certainty": {
+                "existence": "certain", "category": "unknown", "identity": "unknown",
+                "spatial_relation": "unknown", "topology": "unknown", "metric": "unknown"
+            }
+        }],
+        "identity_candidates": []
+    }
+    if mutation == "missing_photo_count":
+        payload.pop("photo_count")
+    elif mutation == "extra_source_photos":
+        payload["source_photos"] = [{"photo_index": 1, "filename": "x.jpg"}]
+    elif mutation == "wrong_identity_field":
+        payload["cross_view_identity_candidates"] = payload.pop("identity_candidates")
+    elif mutation == "array_roi":
+        payload["observations"][0]["region"] = [0.1, 0.1, 0.2, 0.2]
+    elif mutation == "missing_observation_contract_fields":
+        for field in ("status", "statement", "certainty"):
+            payload["observations"][0].pop(field)
+    elif mutation == "invalid_visibility":
+        payload["observations"][0]["visibility"] = "mostly_visible"
+    with pytest.raises(ValueError):
+        VisualBootstrapResponse.model_validate(payload)
+
+
+def test_020_e_request_instruction_forbids_schema_redesign():
+    instruction = _bootstrap_017b_request().instruction
+    assert "Do not add fields" in instruction
+    assert "Do not invent enum values" in instruction
+    assert "validates exactly against response_schema" in instruction
