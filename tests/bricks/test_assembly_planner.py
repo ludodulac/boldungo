@@ -1,4 +1,4 @@
-from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan, unresolved_placements, planner_metrics
+from brickhouse.bricks.assembly_planner import direct_support_graph, planning_candidates, score_candidates, plan_supported_non_roof_parts, unresolved_reasons, audit_supported_non_roof_plan, unresolved_placements, planner_metrics, evaluate_planner_quality
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 def part(pid, part_id, x, y, z, rotation=0):
@@ -144,3 +144,18 @@ def test_planner_metrics_measure_spatial_travel():
     metrics = planner_metrics(m, result)
     assert metrics.step_count == 3
     assert metrics.spatial_travel >= 5
+    assert metrics.max_spatial_jump >= 3
+
+
+def test_quality_report_keeps_validity_separate_from_continuity():
+    m = model([
+        part("a", "BRICK_1X1", 0, 0, 0),
+        part("b", "BRICK_1X1", 5, 0, 0),
+    ])
+    result = plan_supported_non_roof_parts(m)
+    report = evaluate_planner_quality(m, result)
+    assert report.valid is True
+    assert report.issues == ()
+    assert report.unresolved_count == 0
+    assert report.metrics.step_count == 2
+    assert report.metrics.max_spatial_jump == 5
