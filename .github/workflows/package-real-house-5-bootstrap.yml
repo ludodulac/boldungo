@@ -1,0 +1,59 @@
+name: Package real-house-5 visual bootstrap
+on:
+  workflow_dispatch:
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build exact visual bootstrap package
+        run: |
+          python - <<'PY'
+          import hashlib, json, pathlib, shutil, zipfile
+          root=pathlib.Path(".")
+          src=root/"frontend/benchmarks/real-house-5"
+          out=root/"dist/real-house-5-visual-bootstrap"
+          out.mkdir(parents=True, exist_ok=True)
+          names=[f"{i:02d}-original.jpg" for i in range(1,6)]
+          request={
+            "schema_version":"0.1",
+            "bootstrap_id":"real-house-5-bootstrap-v0-001",
+            "photos":[{"photo_index":i,"filename":n} for i,n in enumerate(names,1)],
+            "instruction":"Inspect all five supplied JPEGs as views of the same physical world. Return only visual-bootstrap-response.json. Produce local, traceable observations grounded in pixels, with approximate normalized image ROIs where possible. Revisit an earlier interpretation when another view supplies new visual evidence. Record observable properties separately from observed property states. Seek potential cross-view correspondences but keep them as identity candidates unless physical identity is explicitly supported. Do not reconstruct a final Scene or LEGO model, infer hidden geometry from architectural plausibility, or treat inability to see as absence.",
+            "information_to_record":["local visual fragments or subjects","approximate normalized image regions","visibility","observable properties","observed property states only when visually established","directly supported local visual relations in statements","cross-view identity candidates with explicit support level"],
+            "epistemic_rules":["all_five_photos_are_views_of_one_physical_world","observation != deduction","non_visible != absent","occluded != absent","ambiguous != false","not_mentioned != not_relevant","image_roi != world_metric","resemblance != same_physical_object","architectural_plausibility != observation","do_not_promote_candidate_identity_without_explicit_support"],
+            "output_filename":"visual-bootstrap-response.json"
+          }
+          (out/"visual-bootstrap-request.json").write_text(json.dumps(request,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          readme="""BOLDÜNGO — PREMIER BOOTSTRAP VISUEL\n\n1. Ouvrir une conversation ChatGPT capable de voir les images.\n2. Joindre les cinq JPEG originaux ET visual-bootstrap-request.json.\n3. Envoyer exactement :\n\nExécute strictement visual-bootstrap-request.json sur les cinq photos jointes. Rends-moi le fichier visual-bootstrap-response.json demandé, sans modifier le contrat.\n\n4. Récupérer visual-bootstrap-response.json.\n5. Rapporter ce fichier à la conversation Boldüngo.\n\nNe répondre soi-même à aucune question architecturale.\n"""
+          (out/"LIRE-MOI.txt").write_text(readme,encoding="utf-8")
+          hashes={}
+          for n in names:
+            s=src/n; d=out/n
+            shutil.copyfile(s,d)
+            hs=hashlib.sha256(s.read_bytes()).hexdigest()
+            hd=hashlib.sha256(d.read_bytes()).hexdigest()
+            if hs!=hd: raise SystemExit(f"hash mismatch: {n}")
+            hashes[n]={"source":hs,"package":hd}
+          (out/"SHA256.json").write_text(json.dumps(hashes,indent=2)+"\n",encoding="utf-8")
+          z=root/"dist/boldungo-real-house-5-visual-bootstrap.zip"
+          with zipfile.ZipFile(z,"w",zipfile.ZIP_DEFLATED) as archive:
+            for p in sorted(out.iterdir()): archive.write(p,p.name)
+          with zipfile.ZipFile(z) as archive:
+            got=set(archive.namelist())
+            expected=set(names+["visual-bootstrap-request.json","LIRE-MOI.txt","SHA256.json"])
+            if got!=expected: raise SystemExit(f"archive content mismatch: {got ^ expected}")
+            for n in names:
+              if hashlib.sha256(archive.read(n)).hexdigest()!=hashes[n]["source"]: raise SystemExit(f"archive hash mismatch: {n}")
+            json.loads(archive.read("visual-bootstrap-request.json"))
+            archive.read("LIRE-MOI.txt").decode("utf-8")
+          print(json.dumps(hashes,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: boldungo-real-house-5-visual-bootstrap
+          path: dist/boldungo-real-house-5-visual-bootstrap.zip
+          if-no-files-found: error
