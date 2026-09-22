@@ -39,6 +39,7 @@ from brickhouse.vision.multiview import (
     build_visual_bootstrap_request,
     import_visual_bootstrap_response,
     visual_bootstrap_response_schema,
+    visual_bootstrap_response_invariants,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -1747,3 +1748,102 @@ def test_020_e_request_instruction_forbids_schema_redesign():
     assert "Do not add fields" in instruction
     assert "Do not invent enum values" in instruction
     assert "validates exactly against response_schema" in instruction
+
+
+# Experiment 023 — expose non-JSON-Schema validation/import invariants.
+
+def test_023_a_request_embeds_exact_invariant_contract():
+    request = _bootstrap_017b_request()
+    assert request.response_invariants == visual_bootstrap_response_invariants()
+    joined = "\n".join(request.response_invariants)
+    assert "status='observed', visibility MUST be 'visible'" in joined
+    assert "partially masked but still directly observed" in joined
+
+
+def _valid_023_payload(request):
+    return {
+        "schema_version": "0.1", "bootstrap_id": request.bootstrap_id, "photo_count": 5,
+        "observations": [{
+            "id": "fragment-a", "photo_index": 1, "status": "observed",
+            "visibility": "visible",
+            "region": {"x0": .1, "y0": .1, "x1": .2, "y1": .2},
+            "statement": "Synthetic visible fragment.",
+            "certainty": {"existence": "certain", "category": "unknown", "identity": "unknown",
+                          "spatial_relation": "unknown", "topology": "unknown", "metric": "unknown"}
+        }],
+        "identity_candidates": []
+    }
+
+
+def test_023_b_observed_visible_valid_and_imports():
+    request = _bootstrap_017b_request()
+    response = VisualBootstrapResponse.model_validate(_valid_023_payload(request))
+    workspace = import_visual_bootstrap_response(request, response)
+    assert workspace.pass_1.observations[0].visibility.value == "visible"
+
+
+def test_023_c_real_022_observed_occluded_shape_rejected():
+    request = _bootstrap_017b_request()
+    payload = _valid_023_payload(request)
+    payload["observations"][0]["visibility"] = "occluded"
+    with pytest.raises(ValueError, match="observed local claims require visibility='visible'"):
+        VisualBootstrapResponse.model_validate(payload)
+
+
+@pytest.mark.parametrize("mutation", [
+    "duplicate_observation_ids", "photo_above_count", "identity_unknown_observation",
+    "identity_duplicate_ids", "same_object_unsupported", "roi_non_positive_x",
+])
+def test_023_d_all_validation_invariants_are_rejected(mutation):
+    request = _bootstrap_017b_request()
+    payload = _valid_023_payload(request)
+    if mutation == "duplicate_observation_ids":
+        payload["observations"].append(dict(payload["observations"][0]))
+    elif mutation == "photo_above_count":
+        payload["observations"][0]["photo_index"] = 6
+    elif mutation == "identity_unknown_observation":
+        payload["identity_candidates"] = [{"id":"i","observation_ids":["fragment-a","missing"],
+          "status":"likely_same","certainty":"plausible"}]
+    elif mutation == "identity_duplicate_ids":
+        payload["identity_candidates"] = [{"id":"i","observation_ids":["fragment-a","fragment-a"],
+          "status":"likely_same","certainty":"plausible"}]
+    elif mutation == "same_object_unsupported":
+        payload["observations"].append({**payload["observations"][0], "id":"fragment-b", "photo_index":2})
+        payload["identity_candidates"] = [{"id":"i","observation_ids":["fragment-a","fragment-b"],
+          "status":"same_physical_object","certainty":"unknown"}]
+    elif mutation == "roi_non_positive_x":
+        payload["observations"][0]["region"]["x1"] = payload["observations"][0]["region"]["x0"]
+    with pytest.raises(ValueError):
+        VisualBootstrapResponse.model_validate(payload)
+
+
+@pytest.mark.parametrize("mutation", ["bootstrap_id", "photo_count", "unexpected_photo_index"])
+def test_023_e_all_import_invariants_are_rejected(mutation):
+    request = _bootstrap_017b_request()
+    payload = _valid_023_payload(request)
+    if mutation == "bootstrap_id":
+        payload["bootstrap_id"] = "other"
+    elif mutation == "photo_count":
+        payload["photo_count"] = 4
+    elif mutation == "unexpected_photo_index":
+        # structurally valid against response photo_count, but not a request photo index
+        payload["photo_count"] = 6
+        payload["observations"][0]["photo_index"] = 6
+        # isolate unexpected-index import check by making request length match count
+        request.photos.append(type(request.photos[0])(photo_index=7, filename="synthetic-6.jpg"))
+    response = VisualBootstrapResponse.model_validate(payload)
+    with pytest.raises(ValueError):
+        import_visual_bootstrap_response(request, response)
+
+
+def test_023_f_invariant_inventory_mentions_every_runtime_rule():
+    joined = "\n".join(visual_bootstrap_response_invariants())
+    expected = [
+        "status='observed'", "observation_ids MUST contain unique",
+        "same_physical_object", "x1 MUST be greater than x0",
+        "Observation IDs MUST be unique", "photo_index MUST be <= photo_count",
+        "MUST reference an existing", "bootstrap_id MUST equal",
+        "photo_count MUST equal", "MUST be one of the photo_index",
+    ]
+    for phrase in expected:
+        assert phrase in joined
