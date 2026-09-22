@@ -164,6 +164,26 @@ class OpenHypothesis(BaseModel):
     source_uncertainty_id: str | None = None
 
 
+class InquiryPropertySpec(BaseModel):
+    id: str = Field(min_length=1)
+    perceptual_description: str = Field(min_length=1)
+    recognized_states: tuple[str, ...] = Field(min_length=1)
+    applicable_unknown_meaning: str = Field(min_length=1)
+    epistemic_conditions: tuple[str, ...] = Field(min_length=1)
+    competing_hypothesis_states: tuple[str, ...] = Field(min_length=2)
+
+INQUIRY_PROPERTY_REGISTRY = {"continuation": InquiryPropertySpec(
+    id="continuation",
+    perceptual_description="Whether the same directly observed visual fragment visibly continues beyond the inspected local region or visibly terminates there.",
+    recognized_states=("CONTINUES", "TERMINATES"),
+    applicable_unknown_meaning="The property is perceptually relevant, but the pixels do not establish either recognized state.",
+    epistemic_conditions=("Use only direct pixel evidence.", "Do not infer from architectural plausibility.", "Do not establish a state under occlusion, non-visibility, ambiguity, or insufficient evidence."),
+    competing_hypothesis_states=("CONTINUES", "TERMINATES"),
+)}
+
+def inquiry_property_registry_payload() -> list[dict]:
+    return [INQUIRY_PROPERTY_REGISTRY[key].model_dump(mode="json") for key in sorted(INQUIRY_PROPERTY_REGISTRY)]
+
 class StructuredUncertainty(BaseModel):
     """Local unresolved property with explicit observation provenance."""
 
@@ -189,17 +209,17 @@ def detect_continuity_uncertainties(
             item
             for item in subject_observations
             if item.observable_properties is not None
-            and "continuation" in item.observable_properties
+            and INQUIRY_PROPERTY_REGISTRY["continuation"].id in item.observable_properties
         ]
         if not relevant:
             continue
 
         established_states = {
-            item.observed_property_states["continuation"]
+            item.observed_property_states[INQUIRY_PROPERTY_REGISTRY["continuation"].id]
             for item in relevant
             if item.observed_property_states is not None
-            and item.observed_property_states.get("continuation")
-            in {"CONTINUES", "TERMINATES"}
+            and item.observed_property_states.get(INQUIRY_PROPERTY_REGISTRY["continuation"].id)
+            in INQUIRY_PROPERTY_REGISTRY["continuation"].recognized_states
         }
         if established_states:
             continue
@@ -224,10 +244,8 @@ def derive_competing_hypotheses(
     if uncertainty.resolved_state is not None:
         return []
 
-    alternatives_by_property = {
-        "continuity": ("CONTINUES", "TERMINATES"),
-    }
-    alternatives = alternatives_by_property.get(uncertainty.property_name)
+    property_spec = INQUIRY_PROPERTY_REGISTRY.get("continuation") if uncertainty.property_name == "continuity" else None
+    alternatives = property_spec.competing_hypothesis_states if property_spec is not None else None
     if alternatives is None:
         return []
 
@@ -290,10 +308,8 @@ def derive_observable_prediction(
     if hypothesis.claim is None:
         return None
 
-    outcomes = {
-        "CONTINUES": "visible",
-        "TERMINATES": "absent",
-    }
+    continuation = INQUIRY_PROPERTY_REGISTRY["continuation"]
+    outcomes = dict(zip(continuation.competing_hypothesis_states, ("visible", "absent")))
     outcome = outcomes.get(hypothesis.claim.relation)
     if outcome is None:
         return None
@@ -637,6 +653,7 @@ class VisualBootstrapRequest(BaseModel):
     output_filename: str = "visual-bootstrap-response.json"
     response_schema: dict
     response_invariants: list[str]
+    inquiry_property_registry: list[dict]
     response_example: dict | None = None
 
 
@@ -731,6 +748,7 @@ def build_visual_bootstrap_request(
             "observed property states only when visually established",
             "directly supported local visual relations in statements",
             "cross-view identity candidates with explicit support level",
+            "For each inquiry_property_registry property: add its canonical id to observable_properties only when pixels make it perceptually relevant. If pixels establish a recognized state, record it under the same id in observed_property_states. If relevant but no state is established, keep the id without a corresponding state. If not relevant, omit it. Absence never means false. Never select a property merely because the engine supports it.",
         ],
         epistemic_rules=[
             "non_visible != absent",
@@ -743,6 +761,7 @@ def build_visual_bootstrap_request(
         ],
         response_schema=visual_bootstrap_response_schema(),
         response_invariants=visual_bootstrap_response_invariants(),
+        inquiry_property_registry=inquiry_property_registry_payload(),
         response_example={
             "schema_version": "0.1",
             "bootstrap_id": "synthetic-example",
