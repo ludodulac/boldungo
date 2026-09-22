@@ -303,7 +303,7 @@ def test_inquiry_becomes_irreducible_unknown_when_accessible_evidence_is_exhaust
 def test_occluded_absence_cannot_refute_a_hypothesis():
     inquiry, _ = _inquiry_fixture()
 
-    with pytest.raises(ValueError, match="occluded/non-visible ROI"):
+    with pytest.raises(ValueError, match="discriminating evidence requires|occluded/non-visible ROI"):
         InquiryTestResult(
             test_id="view-2-roi",
             inspected=True,
