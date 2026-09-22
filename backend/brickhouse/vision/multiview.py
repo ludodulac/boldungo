@@ -51,6 +51,7 @@ class AspectCertainty(BaseModel):
 
 
 class LocalObservation(BaseModel):
+    model_config = {"extra": "forbid"}
     id: str = Field(min_length=1)
     photo_index: int = Field(ge=1)
     status: ClaimStatus
@@ -81,6 +82,7 @@ class ViewAssessment(BaseModel):
 
 
 class IdentityCandidate(BaseModel):
+    model_config = {"extra": "forbid"}
     id: str = Field(min_length=1)
     observation_ids: list[str] = Field(min_length=2)
     status: IdentityStatus
@@ -612,16 +614,19 @@ class BootstrapPhotoRef(BaseModel):
 
 
 class VisualBootstrapRequest(BaseModel):
-    schema_version: str = "0.1"
+    schema_version: str = "0.2"
     bootstrap_id: str = Field(min_length=1)
     photos: list[BootstrapPhotoRef] = Field(min_length=1)
     instruction: str = Field(min_length=1)
     information_to_record: list[str] = Field(min_length=1)
     epistemic_rules: list[str] = Field(min_length=1)
     output_filename: str = "visual-bootstrap-response.json"
+    response_schema: dict
+    response_example: dict | None = None
 
 
 class VisualBootstrapResponse(BaseModel):
+    model_config = {"extra": "forbid"}
     schema_version: str = "0.1"
     bootstrap_id: str = Field(min_length=1)
     photo_count: int = Field(ge=1)
@@ -646,6 +651,11 @@ class VisualBootstrapResponse(BaseModel):
         return self
 
 
+def visual_bootstrap_response_schema() -> dict:
+    """Single source of truth: schema generated from the exact importer model."""
+    return VisualBootstrapResponse.model_json_schema()
+
+
 def build_visual_bootstrap_request(
     bootstrap_id: str,
     photo_filenames: list[str],
@@ -663,7 +673,11 @@ def build_visual_bootstrap_request(
             "property states. Do not reconstruct the whole building, infer hidden geometry, "
             "or use architectural plausibility as visual evidence. Similar-looking fragments "
             "across photos remain identity candidates unless their physical identity is "
-            "explicitly supported."
+            "explicitly supported. Do not add fields that are not present in the response "
+            "schema. Do not invent enum values. Return a JSON document that validates exactly "
+            "against response_schema. N'ajoutez aucun champ absent du schema de reponse, "
+            "n'inventez aucune valeur d'enum et retournez un JSON valide exactement contre "
+            "response_schema."
         ),
         information_to_record=[
             "local visual fragments or subjects",
@@ -683,6 +697,31 @@ def build_visual_bootstrap_request(
             "resemblance != same_physical_object",
             "architectural_plausibility != observation",
         ],
+        response_schema=visual_bootstrap_response_schema(),
+        response_example={
+            "schema_version": "0.1",
+            "bootstrap_id": "synthetic-example",
+            "photo_count": 1,
+            "observations": [{
+                "id": "fragment-example",
+                "photo_index": 1,
+                "status": "observed",
+                "visibility": "visible",
+                "region": {"x0": 0.1, "y0": 0.1, "x1": 0.2, "y1": 0.2},
+                "qualitative_position": None,
+                "proposed_category": None,
+                "statement": "Synthetic visible fragment.",
+                "certainty": {
+                    "existence": "certain", "category": "unknown",
+                    "identity": "unknown", "spatial_relation": "unknown",
+                    "topology": "unknown", "metric": "unknown"
+                },
+                "observable_properties": ["shape"],
+                "observed_property_states": None
+            }],
+            "identity_candidates": [],
+            "observer_comment": "Syntax-only synthetic example."
+        },
     )
 
 
