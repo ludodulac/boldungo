@@ -34,6 +34,10 @@ from brickhouse.vision.multiview import (
     VisualInquiryRequest,
     build_visual_inquiry_request,
     import_visual_evidence_response,
+    VisualBootstrapRequest,
+    VisualBootstrapResponse,
+    build_visual_bootstrap_request,
+    import_visual_bootstrap_response,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -1443,3 +1447,191 @@ def test_016_inconclusive_json_exchange_preserves_hypotheses():
     updated = apply_inquiry_test(inquiry, result)
     assert updated.state is InquiryState.OPEN
     assert set(updated.viable_hypothesis_ids) == set(inquiry.hypothesis_ids)
+
+
+
+def _bootstrap_017b_request():
+    return build_visual_bootstrap_request(
+        "bootstrap-017b",
+        [f"photo-{index}.jpg" for index in range(1, 6)],
+    )
+
+
+def _bootstrap_017b_observation(
+    *,
+    observation_id="fragment-s",
+    photo_index=2,
+    properties=None,
+    states=None,
+):
+    observation = _target_observation(observation_id, photo_index)
+    observation.observable_properties = properties
+    observation.observed_property_states = states
+    return observation
+
+
+def test_017b_a_bootstrap_request_is_json_serializable():
+    request = _bootstrap_017b_request()
+    restored = VisualBootstrapRequest.model_validate_json(request.model_dump_json())
+    assert restored == request
+    assert len(restored.photos) == 5
+
+
+def test_017b_b_multi_observation_response_is_json_serializable():
+    response = VisualBootstrapResponse(
+        bootstrap_id="bootstrap-017b",
+        photo_count=5,
+        observations=[
+            _bootstrap_017b_observation(observation_id="fragment-a", photo_index=1),
+            _bootstrap_017b_observation(observation_id="fragment-b", photo_index=4),
+        ],
+    )
+    assert VisualBootstrapResponse.model_validate_json(response.model_dump_json()) == response
+
+
+def test_017b_c_import_creates_existing_workspace_and_local_observations():
+    request = _bootstrap_017b_request()
+    response = VisualBootstrapResponse(
+        bootstrap_id=request.bootstrap_id,
+        photo_count=5,
+        observations=[_bootstrap_017b_observation()],
+    )
+    workspace = import_visual_bootstrap_response(request, response)
+    assert isinstance(workspace, MultiViewWorkspace)
+    assert isinstance(workspace.pass_1.observations[0], LocalObservation)
+    assert workspace.pass_2.observations == []
+
+
+def test_017b_d_roi_is_preserved_exactly_as_image_region():
+    request = _bootstrap_017b_request()
+    observation = _bootstrap_017b_observation()
+    workspace = import_visual_bootstrap_response(
+        request,
+        VisualBootstrapResponse(
+            bootstrap_id=request.bootstrap_id, photo_count=5, observations=[observation]
+        ),
+    )
+    assert workspace.pass_1.observations[0].region == observation.region
+
+
+def test_017b_e_observable_properties_are_preserved():
+    request = _bootstrap_017b_request()
+    observation = _bootstrap_017b_observation(properties={"continuation", "shape"})
+    workspace = import_visual_bootstrap_response(
+        request,
+        VisualBootstrapResponse(
+            bootstrap_id=request.bootstrap_id, photo_count=5, observations=[observation]
+        ),
+    )
+    assert workspace.pass_1.observations[0].observable_properties == {"continuation", "shape"}
+
+
+def test_017b_f_observed_property_states_are_preserved():
+    request = _bootstrap_017b_request()
+    observation = _bootstrap_017b_observation(
+        properties={"continuation"}, states={"continuation": "CONTINUES"}
+    )
+    workspace = import_visual_bootstrap_response(
+        request,
+        VisualBootstrapResponse(
+            bootstrap_id=request.bootstrap_id, photo_count=5, observations=[observation]
+        ),
+    )
+    assert workspace.pass_1.observations[0].observed_property_states == {
+        "continuation": "CONTINUES"
+    }
+
+
+def test_017b_g_identity_candidates_are_not_promoted_to_certain_identity():
+    request = _bootstrap_017b_request()
+    observations = [
+        _bootstrap_017b_observation(observation_id="fragment-a", photo_index=1),
+        _bootstrap_017b_observation(observation_id="fragment-b", photo_index=3),
+    ]
+    candidate = IdentityCandidate(
+        id="identity-candidate-ab",
+        observation_ids=["fragment-a", "fragment-b"],
+        status=IdentityStatus.LIKELY_SAME,
+        corroborating_photo_indexes=[1, 3],
+        certainty=CertaintyLevel.PLAUSIBLE,
+    )
+    workspace = import_visual_bootstrap_response(
+        request,
+        VisualBootstrapResponse(
+            bootstrap_id=request.bootstrap_id,
+            photo_count=5,
+            observations=observations,
+            identity_candidates=[candidate],
+        ),
+    )
+    assert workspace.pass_1.identities[0].status is IdentityStatus.LIKELY_SAME
+    assert workspace.pass_1.identities[0].status is not IdentityStatus.SAME_PHYSICAL_OBJECT
+
+
+def test_017b_h_bootstrap_unknown_continuity_starts_inquiry_engine():
+    request = _bootstrap_017b_request()
+    observation = _bootstrap_017b_observation(properties={"continuation"})
+    workspace = import_visual_bootstrap_response(
+        request,
+        VisualBootstrapResponse(
+            bootstrap_id=request.bootstrap_id, photo_count=5, observations=[observation]
+        ),
+    )
+    uncertainty = detect_continuity_uncertainties(workspace.pass_1.observations)[0]
+    hypotheses = derive_competing_hypotheses(uncertainty)
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    question = derive_discriminating_question(predictions)
+    assert uncertainty.subject_ref == observation.id
+    assert {item.claim.relation for item in hypotheses} == {"CONTINUES", "TERMINATES"}
+    assert question is not None
+    assert question.discriminants[0].property_name == "continuation"
+
+
+def test_017b_i_known_continues_does_not_create_uncertainty():
+    request = _bootstrap_017b_request()
+    observation = _bootstrap_017b_observation(
+        properties={"continuation"}, states={"continuation": "CONTINUES"}
+    )
+    workspace = import_visual_bootstrap_response(
+        request,
+        VisualBootstrapResponse(
+            bootstrap_id=request.bootstrap_id, photo_count=5, observations=[observation]
+        ),
+    )
+    assert detect_continuity_uncertainties(workspace.pass_1.observations) == []
+
+
+def test_017b_j_unmentioned_continuation_does_not_create_uncertainty():
+    request = _bootstrap_017b_request()
+    observation = _bootstrap_017b_observation(properties={"shape"})
+    workspace = import_visual_bootstrap_response(
+        request,
+        VisualBootstrapResponse(
+            bootstrap_id=request.bootstrap_id, photo_count=5, observations=[observation]
+        ),
+    )
+    assert detect_continuity_uncertainties(workspace.pass_1.observations) == []
+
+
+def test_017b_k_invalid_bootstrap_response_is_rejected_safely():
+    request = _bootstrap_017b_request()
+    with pytest.raises(ValueError):
+        VisualBootstrapResponse(
+            bootstrap_id=request.bootstrap_id,
+            photo_count=5,
+            observations=[
+                _bootstrap_017b_observation(
+                    observation_id="fragment-a", photo_index=1
+                ),
+                _bootstrap_017b_observation(
+                    observation_id="fragment-a", photo_index=2
+                ),
+            ],
+        )
+    valid = VisualBootstrapResponse(
+        bootstrap_id="wrong-bootstrap",
+        photo_count=5,
+        observations=[_bootstrap_017b_observation()],
+    )
+    with pytest.raises(ValueError, match="ID"):
+        import_visual_bootstrap_response(request, valid)
