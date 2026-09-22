@@ -184,6 +184,46 @@ INQUIRY_PROPERTY_REGISTRY = {"continuation": InquiryPropertySpec(
 def inquiry_property_registry_payload() -> list[dict]:
     return [INQUIRY_PROPERTY_REGISTRY[key].model_dump(mode="json") for key in sorted(INQUIRY_PROPERTY_REGISTRY)]
 
+class InquiryPropertySpec(BaseModel):
+    """Canonical property family currently supported by autonomous inquiry."""
+
+    id: str = Field(min_length=1)
+    perceptual_description: str = Field(min_length=1)
+    recognized_states: tuple[str, ...] = Field(min_length=1)
+    applicable_unknown_meaning: str = Field(min_length=1)
+    epistemic_conditions: tuple[str, ...] = Field(min_length=1)
+    competing_hypothesis_states: tuple[str, ...] = Field(min_length=1)
+
+
+INQUIRY_PROPERTY_REGISTRY: dict[str, InquiryPropertySpec] = {
+    "continuation": InquiryPropertySpec(
+        id="continuation",
+        perceptual_description=(
+            "Whether a visually relevant fragment or boundary can be seen to continue "
+            "through the evidence region or can be seen to terminate there."
+        ),
+        recognized_states=("CONTINUES", "TERMINATES"),
+        applicable_unknown_meaning=(
+            "The continuation property is perceptually relevant/observable for this fragment, "
+            "but the pixels do not establish whether it CONTINUES or TERMINATES."
+        ),
+        epistemic_conditions=(
+            "Record a state only when the relevant image evidence directly establishes it.",
+            "Do not infer termination from occlusion, non-visibility, ambiguity, or missing evidence.",
+        ),
+        competing_hypothesis_states=("CONTINUES", "TERMINATES"),
+    ),
+}
+
+
+def inquiry_property_registry_payload() -> list[dict]:
+    """Bootstrap-facing registry generated from the inquiry engine's canonical registry."""
+    return [
+        INQUIRY_PROPERTY_REGISTRY[key].model_dump(mode="json")
+        for key in sorted(INQUIRY_PROPERTY_REGISTRY)
+    ]
+
+
 class StructuredUncertainty(BaseModel):
     """Local unresolved property with explicit observation provenance."""
 
@@ -323,7 +363,7 @@ def derive_observable_prediction(
             f"visible, compatible continuation is expected to be {outcome}."
         ),
         observable_properties=[
-            ObservableProperty(name="continuation", value=outcome),
+            ObservableProperty(name=INQUIRY_PROPERTY_REGISTRY["continuation"].id, value=outcome),
             ObservableProperty(
                 name="observability_required",
                 value=(
