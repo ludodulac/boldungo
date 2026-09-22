@@ -28,6 +28,7 @@ from brickhouse.vision.multiview import (
     derive_discriminant_applicability,
     StructuredUncertainty,
     derive_competing_hypotheses,
+    detect_continuity_uncertainties,
     derive_discriminating_question,
     VisualInquiry,
     apply_inquiry_test,
@@ -1117,6 +1118,157 @@ def test_014_no_discriminating_evidence_ends_irreducible_unknown():
         result,
         no_more_candidate_evidence=True,
         information_missing="No non-occluded observation exposes continuation.",
+    )
+    assert unresolved.state is InquiryState.IRREDUCIBLE_UNKNOWN
+    assert set(unresolved.viable_hypothesis_ids) == {item.id for item in hypotheses}
+
+
+
+def test_015_relevant_but_unresolved_continuity_creates_uncertainty():
+    observation = _target_observation("surface-s", 2)
+    observation.observable_properties = {"continuation"}
+    detected = detect_continuity_uncertainties([observation])
+    assert len(detected) == 1
+    assert detected[0].subject_ref == "surface-s"
+    assert detected[0].property_name == "continuity"
+
+
+def test_015_known_continues_creates_no_uncertainty():
+    observation = _target_observation("surface-s", 2)
+    observation.observable_properties = {"continuation"}
+    observation.observed_property_states = {"continuation": "CONTINUES"}
+    assert detect_continuity_uncertainties([observation]) == []
+
+
+def test_015_known_terminates_creates_no_uncertainty():
+    observation = _target_observation("surface-s", 2)
+    observation.observable_properties = {"continuation"}
+    observation.observed_property_states = {"continuation": "TERMINATES"}
+    assert detect_continuity_uncertainties([observation]) == []
+
+
+def test_015_unmentioned_property_does_not_create_uncertainty():
+    observation = _target_observation("surface-s", 2)
+    observation.observable_properties = {"shape"}
+    assert detect_continuity_uncertainties([observation]) == []
+
+
+def test_015_occlusion_preserves_unknown_and_never_invents_terminates():
+    observation = _target_observation(
+        "surface-s", 2, visibility=VisibilityStatus.OCCLUDED
+    )
+    observation.observable_properties = {"continuation"}
+    detected = detect_continuity_uncertainties([observation])
+    assert len(detected) == 1
+    assert detected[0].resolved_state is None
+    assert derive_competing_hypotheses(detected[0])[1].claim.relation == "TERMINATES"
+    assert all(item.certainty is CertaintyLevel.UNPROVEN for item in derive_competing_hypotheses(detected[0]))
+
+
+def test_015_detection_is_stably_deduplicated():
+    observation_a = _target_observation("surface-s", 2)
+    observation_b = _target_observation("surface-s", 4)
+    observation_a.observable_properties = {"continuation"}
+    observation_b.observable_properties = {"continuation"}
+    first = detect_continuity_uncertainties([observation_a, observation_b])
+    second = detect_continuity_uncertainties([observation_b, observation_a])
+    assert first == second
+    assert len(first) == 1
+
+
+def test_015_detected_uncertainty_preserves_source_observation_provenance():
+    observation = _target_observation("surface-s", 3)
+    observation.observable_properties = {"continuation"}
+    uncertainty = detect_continuity_uncertainties([observation])[0]
+    assert uncertainty.source_observation_ids == [observation.id]
+
+
+def test_015_end_to_end_from_observations_to_resolved():
+    observation = _target_observation("surface-s", 5)
+    observation.observable_properties = {"continuation"}
+    uncertainties = detect_continuity_uncertainties([observation])
+    assert len(uncertainties) == 1
+    uncertainty = uncertainties[0]
+    hypotheses = derive_competing_hypotheses(uncertainty)
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    question = derive_discriminating_question(predictions)
+    targets = derive_candidate_evidence_targets(question, hypotheses, [observation])
+    assessments = assess_discrimination_targets(question, targets, [observation])
+    selection = select_discrimination_targets(assessments)
+    assert len(selection.best_candidates) == 1
+    target = selection.best_candidates[0]
+    test = DiscriminatingTest(
+        id="detected-uncertainty-015",
+        photo_index=target.photo_index,
+        region=target.region,
+        prediction_ids=question.prediction_ids,
+        evidence_sought=target.discriminant_property,
+    )
+    inquiry = VisualInquiry(
+        id="end-to-end-015",
+        question=question.human_readable_question,
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[test],
+    )
+    resolved = apply_inquiry_test(
+        inquiry,
+        InquiryTestResult(
+            test_id=test.id,
+            inspected=True,
+            region_in_frame=True,
+            visibility=VisibilityStatus.VISIBLE,
+            sufficient_visibility=True,
+            statement="Continuation is visible.",
+            compatible_prediction_ids=[f"derived-{hypotheses[0].id}"],
+            discriminating=True,
+        ),
+    )
+    assert resolved.state is InquiryState.RESOLVED
+    assert hypotheses[0].source_uncertainty_id == uncertainty.id
+    assert uncertainty.source_observation_ids == [observation.id]
+
+
+def test_015_end_to_end_from_observations_to_irreducible_unknown():
+    observation = _target_observation(
+        "surface-s", 3, visibility=VisibilityStatus.OCCLUDED
+    )
+    observation.observable_properties = {"continuation"}
+    uncertainty = detect_continuity_uncertainties([observation])[0]
+    hypotheses = derive_competing_hypotheses(uncertainty)
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    question = derive_discriminating_question(predictions)
+    targets = derive_candidate_evidence_targets(question, hypotheses, [observation])
+    assessments = assess_discrimination_targets(question, targets, [observation])
+    assert select_discrimination_targets(assessments).best_candidates == []
+    test = DiscriminatingTest(
+        id="no-evidence-015",
+        photo_index=targets[0].photo_index,
+        region=targets[0].region,
+        prediction_ids=question.prediction_ids,
+        evidence_sought=targets[0].discriminant_property,
+    )
+    inquiry = VisualInquiry(
+        id="unknown-015",
+        question=question.human_readable_question,
+        hypothesis_ids=[item.id for item in hypotheses],
+        predictions=predictions,
+        tests=[test],
+    )
+    unresolved = apply_inquiry_test(
+        inquiry,
+        InquiryTestResult(
+            test_id=test.id,
+            inspected=True,
+            region_in_frame=True,
+            visibility=VisibilityStatus.OCCLUDED,
+            sufficient_visibility=False,
+            statement="Relevant continuity region is occluded.",
+            compatible_prediction_ids=question.prediction_ids,
+            discriminating=False,
+        ),
+        no_more_candidate_evidence=True,
+        information_missing="No testable continuity observation is available.",
     )
     assert unresolved.state is InquiryState.IRREDUCIBLE_UNKNOWN
     assert set(unresolved.viable_hypothesis_ids) == {item.id for item in hypotheses}
