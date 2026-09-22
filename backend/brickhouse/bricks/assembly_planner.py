@@ -334,3 +334,36 @@ def evaluate_planner_quality(model: BrickModel, result: PlannerResult) -> Planne
         metrics=planner_metrics(model, result),
         unresolved_count=len(result.unresolved_ids),
     )
+
+
+@dataclass(frozen=True)
+class PlannerStepGroup:
+    sequence: int
+    placement_ids: tuple[str, ...]
+    z_plates: int
+    facade: str | None
+
+def group_planner_steps(model: BrickModel, result: PlannerResult, *, max_parts: int = 8) -> tuple[PlannerStepGroup, ...]:
+    """Group consecutive planned placements without reordering them.
+
+    A group stays on one course and facade and is capped for readable PLI.
+    This is presentation structure only: planner order remains authoritative.
+    """
+    if max_parts < 1:
+        raise ValueError("max_parts must be positive")
+    parts = {p.placement_id: p for p in model.parts}
+    groups: list[PlannerStepGroup] = []
+    current: list[str] = []
+    current_key: tuple[int, str | None] | None = None
+    for step in result.steps:
+        part = parts[step.placement_id]
+        facade = part.facade.value if part.facade is not None else None
+        key = (part.z_plates, facade)
+        if current and (key != current_key or len(current) >= max_parts):
+            groups.append(PlannerStepGroup(len(groups)+1, tuple(current), current_key[0], current_key[1]))
+            current = []
+        current_key = key
+        current.append(step.placement_id)
+    if current and current_key is not None:
+        groups.append(PlannerStepGroup(len(groups)+1, tuple(current), current_key[0], current_key[1]))
+    return tuple(groups)
