@@ -1921,6 +1921,69 @@ class VisualBootstrapRequest(BaseModel):
     response_example: dict | None = None
 
 
+class PerceptualEvidenceLevel(str, Enum):
+    OBSERVED = "observed"
+    CANDIDATE = "candidate"
+    AMBIGUOUS = "ambiguous"
+    UNKNOWN = "unknown"
+
+
+class PerceptualEvidenceRegion(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    observation_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    region: NormalizedImageRegion | None = None
+    visibility: VisibilityStatus
+
+
+class PerceptualCue(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    cue_token: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+    evidence_regions: list[PerceptualEvidenceRegion] = Field(min_length=1)
+    level: PerceptualEvidenceLevel
+
+
+class PerceptualIdentityEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    identity_candidate_ref: str = Field(min_length=1)
+    supports_same: list[PerceptualCue] = Field(default_factory=list)
+    supports_distinct: list[PerceptualCue] = Field(default_factory=list)
+    level: PerceptualEvidenceLevel = PerceptualEvidenceLevel.UNKNOWN
+
+
+class PerceptualRelationEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    relation_token: str = Field(min_length=1)
+    object_ref: str = Field(min_length=1)
+    evidence_regions: list[PerceptualEvidenceRegion] = Field(min_length=1)
+    level: PerceptualEvidenceLevel
+
+
+class PerceptualAlternative(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    alternative_token: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+    evidence_cues: list[PerceptualCue] = Field(min_length=1)
+
+
+class PerceptualAmbiguity(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    id: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    alternatives: list[PerceptualAlternative] = Field(min_length=2)
+    discriminating_cues: list[PerceptualCue] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_alternatives(self) -> "PerceptualAmbiguity":
+        tokens = [item.alternative_token for item in self.alternatives]
+        if len(tokens) != len(set(tokens)):
+            raise ValueError("perceptual ambiguity alternatives must be distinct")
+        return self
+
+
 VISUAL_BOOTSTRAP_RESPONSE_INVARIANTS = (
     "Observation IDs MUST be unique within observations.",
     "Every observation.photo_index MUST be <= photo_count.",
@@ -1935,6 +1998,9 @@ class VisualBootstrapResponse(BaseModel):
     photo_count: int = Field(ge=1)
     observations: list[LocalObservation] = Field(default_factory=list)
     identity_candidates: list[IdentityCandidate] = Field(default_factory=list)
+    identity_evidence: list[PerceptualIdentityEvidence] = Field(default_factory=list)
+    relation_evidence: list[PerceptualRelationEvidence] = Field(default_factory=list)
+    perceptual_ambiguities: list[PerceptualAmbiguity] = Field(default_factory=list)
     observer_comment: str | None = None
 
     @model_validator(mode="after")
@@ -1945,12 +2011,37 @@ class VisualBootstrapResponse(BaseModel):
         for item in self.observations:
             if item.photo_index > self.photo_count:
                 raise ValueError("bootstrap observation references unavailable photo")
+        identity_ids = {item.id for item in self.identity_candidates}
         for identity in self.identity_candidates:
             unknown = set(identity.observation_ids) - ids
             if unknown:
                 raise ValueError(
                     f"bootstrap identity references unknown observations: {sorted(unknown)}"
                 )
+        def validate_regions(regions: list[PerceptualEvidenceRegion]) -> None:
+            for evidence in regions:
+                if evidence.observation_ref not in ids:
+                    raise ValueError("perceptual evidence references unknown observation")
+                observation = next(item for item in self.observations if item.id == evidence.observation_ref)
+                if evidence.photo_index != observation.photo_index or evidence.region != observation.region:
+                    raise ValueError("perceptual evidence provenance must exactly match its observation")
+        for identity_evidence in self.identity_evidence:
+            if identity_evidence.identity_candidate_ref not in identity_ids:
+                raise ValueError("identity evidence references unknown identity candidate")
+            for cue in [*identity_evidence.supports_same, *identity_evidence.supports_distinct]:
+                validate_regions(cue.evidence_regions)
+        for relation in self.relation_evidence:
+            if relation.subject_ref not in ids or relation.object_ref not in ids:
+                raise ValueError("perceptual relation must reference observations")
+            validate_regions(relation.evidence_regions)
+        for ambiguity in self.perceptual_ambiguities:
+            if ambiguity.subject_ref not in ids:
+                raise ValueError("perceptual ambiguity references unknown observation")
+            for alternative in ambiguity.alternatives:
+                for cue in alternative.evidence_cues:
+                    validate_regions(cue.evidence_regions)
+            for cue in ambiguity.discriminating_cues:
+                validate_regions(cue.evidence_regions)
         return self
 
 
