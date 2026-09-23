@@ -1179,6 +1179,46 @@ def import_visual_inquiry_batch_response(
     return imported
 
 
+def record_relation_alternative_batch_response(
+    request: VisualInquiryBatchRequest,
+    response: VisualInquiryBatchResponse,
+    candidates: list[ArchitecturalRelationCandidate],
+) -> list[ArchitecturalRelationCandidate]:
+    """Apply each relation-alternative result only to its exact persisted pair and preserve exhaustion memory."""
+    if response.batch_request_id != request.batch_request_id:
+        raise ValueError("batch_request_id mismatch")
+    expected = {item.investigation_id: item for item in request.investigations}
+    if set(item.investigation_id for item in response.results) != set(expected):
+        raise ValueError("batch results must match investigations exactly")
+    by_pair = {(item.subject_ref, item.object_ref): item for item in candidates}
+    updated = dict(by_pair)
+    for result in response.results:
+        item = expected[result.investigation_id]
+        if item.protocol != "relation_alternative" or result.protocol != "relation_alternative":
+            raise ValueError("relation-alternative batch recorder accepts only relation_alternative investigations")
+        if not isinstance(item.request, RelationAlternativeProducerRequest) or not isinstance(result.response, RelationAlternativeProducerResponse):
+            raise ValueError("wrong relation-alternative batch contract")
+        pair = (item.request.subject_ref, item.request.object_ref)
+        candidate = updated.get(pair)
+        if candidate is None:
+            raise ValueError("batch relation-alternative result has no persisted pair candidate")
+        imported = import_relation_alternative_producer_response(item.request, result.response)
+        if imported is not None:
+            imported = imported.model_copy(update={
+                "id": candidate.id,
+                "batch_investigation_id": candidate.batch_investigation_id,
+                "source_observation_ids_by_element": candidate.source_observation_ids_by_element,
+                "visual_evidence_source_ids": candidate.visual_evidence_source_ids,
+                "investigations": candidate.investigations,
+            })
+            updated[pair] = imported
+        else:
+            updated[pair] = record_relation_investigation(
+                candidate, item.request, result.response, investigation_id=result.investigation_id
+            )
+    return [updated[(item.subject_ref, item.object_ref)] for item in candidates]
+
+
 def build_relation_pair_batch_request(
     batch_request_id: str,
     workspace: "MultiViewWorkspace",
