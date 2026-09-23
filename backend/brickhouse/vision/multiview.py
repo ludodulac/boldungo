@@ -2175,6 +2175,49 @@ def build_identity_enquiry_bootstrap_request(
     })
 
 
+def build_rich_multiview_bootstrap_request(
+    bootstrap_id: str,
+    photo_filenames: list[str],
+) -> VisualBootstrapRequest:
+    """Ask the observer for richer pixel-grounded multiview evidence without promoting it to truth."""
+    base = build_identity_enquiry_bootstrap_request(bootstrap_id, photo_filenames)
+    return base.model_copy(update={
+        "schema_version": "0.5",
+        "instruction": (
+            base.instruction
+            + " Compare the supplied views jointly. In addition to local observations, encode only pixel-grounded "
+              "multiview evidence that fits the response schema: identity cues, oriented relation evidence, and genuine "
+              "perceptual ambiguities. Evidence level means observed/candidate/ambiguous/unknown; CANDIDATE and AMBIGUOUS "
+              "are never architectural truth. Every cue must cite exact observation-backed photo/ROI provenance. "
+              "Do not infer topology, membership, contact, connection, or hidden geometry from architectural plausibility. "
+              "For identity, SAME and DISTINCT cues are independent evidence lists; absence of a cue is not evidence for the opposite. "
+              "For relation evidence, direction is exactly subject_ref -> relation_token -> object_ref; never add inverse/converse automatically. "
+              "Emit perceptual alternatives only when at least two readings are genuinely supported by visible evidence; UNKNOWN alone never creates alternatives."
+        ),
+        "information_to_record": [
+            *base.information_to_record,
+            "Pixel-grounded cross-view identity cues supporting SAME and, independently, cues supporting DISTINCT, each with exact observation/photo/ROI provenance and epistemic level.",
+            "Oriented observable relation evidence subject_ref -> relation_token -> object_ref for visible spatial/contact/connection/membership-like evidence only when the pixels support that relation.",
+            "Genuine perceptual ambiguities with at least two independently supported alternatives and optional discriminating cues; never manufacture alternatives from UNKNOWN.",
+            "Surface/boundary/physical-element observations should be separate LocalObservation records when they are visually distinguishable and useful as evidence subjects.",
+            "Occlusion and visibility belong in evidence provenance; occlusion/non-visibility never implies absence or termination.",
+        ],
+        "epistemic_rules": [
+            *base.epistemic_rules,
+            "candidate != observed",
+            "ambiguous != observed",
+            "unknown != competing_alternatives",
+            "missing_same_cue != distinct_evidence",
+            "missing_distinct_cue != same_evidence",
+            "oriented_relation != automatic_inverse_or_converse",
+            "visible_contact_or_connection_only != hidden_topology",
+        ],
+        "response_schema": visual_bootstrap_response_schema(),
+        "response_invariants": visual_bootstrap_response_invariants(),
+        "response_example": None,
+    })
+
+
 def import_visual_bootstrap_response(
     request: VisualBootstrapRequest,
     response: VisualBootstrapResponse,
