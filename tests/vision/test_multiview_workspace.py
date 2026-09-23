@@ -47,6 +47,14 @@ from brickhouse.vision.multiview import (
     build_identity_discriminant_producer_request,
     import_identity_discriminant_producer_response,
     build_identity_enquiry_bootstrap_request,
+    build_rich_multiview_bootstrap_request,
+    PerceptualEvidenceLevel,
+    PerceptualEvidenceRegion,
+    PerceptualCue,
+    PerceptualIdentityEvidence,
+    PerceptualRelationEvidence,
+    PerceptualAlternative,
+    PerceptualAmbiguity,
     detect_relation_uncertainties,
     RelationInquiryState,
     RelationAlternative,
@@ -3635,3 +3643,35 @@ def test_061_not_enquirable_likely_same_does_not_become_identity_uncertainty():
     identity=IdentityCandidate(id="i",observation_ids=["o1","o2"],status=IdentityStatus.LIKELY_SAME,certainty=CertaintyLevel.PLAUSIBLE,inquiry_state=IdentityInquiryState.NOT_ENQUIRABLE)
     workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=observations,identities=[identity]),pass_2=MultiViewPass(pass_number=2))
     assert derive_existing_structured_uncertainties(workspace)==[]
+
+
+def test_062_rich_bootstrap_exposes_multiview_evidence_without_promoting_candidate_to_truth():
+    req=build_rich_multiview_bootstrap_request("rich",["a.jpg","b.jpg"])
+    assert req.schema_version=="0.5"
+    assert "identity_evidence" in req.response_schema["properties"]
+    assert "relation_evidence" in req.response_schema["properties"]
+    assert "perceptual_ambiguities" in req.response_schema["properties"]
+    assert any("UNKNOWN alone" in x for x in req.information_to_record)
+
+
+def test_062_rich_evidence_requires_exact_observation_provenance_and_oriented_refs():
+    a=_obs("a",1); b=_obs("b",2)
+    a=a.model_copy(update={"region":NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)})
+    b=b.model_copy(update={"region":NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4)})
+    identity=IdentityCandidate(id="i",observation_ids=["a","b"],status=IdentityStatus.LIKELY_SAME,certainty=CertaintyLevel.PLAUSIBLE)
+    region=PerceptualEvidenceRegion(observation_ref="a",photo_index=1,region=a.region,visibility=VisibilityStatus.VISIBLE)
+    cue=PerceptualCue(cue_token="cue-alpha",description="Synthetic visible cue.",evidence_regions=[region],level=PerceptualEvidenceLevel.CANDIDATE)
+    response=VisualBootstrapResponse(bootstrap_id="rich",photo_count=2,observations=[a,b],identity_candidates=[identity],identity_evidence=[PerceptualIdentityEvidence(identity_candidate_ref="i",supports_same=[cue],level="candidate")],relation_evidence=[PerceptualRelationEvidence(id="r",subject_ref="a",relation_token="token-alpha",object_ref="b",evidence_regions=[region],level="candidate")])
+    assert response.identity_candidates[0].status is IdentityStatus.LIKELY_SAME
+    assert response.relation_evidence[0].subject_ref=="a" and response.relation_evidence[0].object_ref=="b"
+    bad=region.model_copy(update={"photo_index":2})
+    with pytest.raises(ValueError):
+        VisualBootstrapResponse(bootstrap_id="rich",photo_count=2,observations=[a,b],identity_candidates=[identity],identity_evidence=[PerceptualIdentityEvidence(identity_candidate_ref="i",supports_same=[cue.model_copy(update={"evidence_regions":[bad]})],level="candidate")])
+
+
+def test_062_perceptual_ambiguity_requires_two_distinct_supported_alternatives():
+    a=_obs("a",1).model_copy(update={"region":NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)})
+    region=PerceptualEvidenceRegion(observation_ref="a",photo_index=1,region=a.region,visibility=VisibilityStatus.VISIBLE)
+    cue=PerceptualCue(cue_token="c",description="Synthetic cue.",evidence_regions=[region],level="ambiguous")
+    with pytest.raises(ValueError):
+        PerceptualAmbiguity(id="amb",subject_ref="a",alternatives=[PerceptualAlternative(alternative_token="x",description="X",evidence_cues=[cue]),PerceptualAlternative(alternative_token="x",description="X2",evidence_cues=[cue])])
