@@ -3379,6 +3379,15 @@ def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> M
             relation.epistemic_level, token=relation.relation_token,
             provenance=relation.provenance, source_ref=f"{relation.subject_ref}->{relation.object_ref}")
 
+    for record in workspace.property_correspondences:
+        corr=record.correspondence
+        add("PROPERTY_CORRESPONDENCE",
+            [f"observation:{corr.observation_ref_a}",f"observation:{corr.observation_ref_b}"],
+            corr.epistemic_level,token=f"{corr.property_name_a}<->{corr.property_name_b}",
+            provenance=[RichEvidenceProvenance(observation_ref=corr.provenance_a.observation_ref,photo_index=corr.provenance_a.photo_index,roi=corr.provenance_a.roi),
+                        RichEvidenceProvenance(observation_ref=corr.provenance_b.observation_ref,photo_index=corr.provenance_b.photo_index,roi=corr.provenance_b.roi)],
+            source_ref=record.request_id)
+
     uncertainties = derive_existing_structured_uncertainties(workspace)
     organizations: list[CompetingWorldOrganization] = []
     for uncertainty in uncertainties:
@@ -3829,7 +3838,7 @@ class PropertyCorrespondenceRecord(BaseModel):
     model_config = ConfigDict(extra="forbid")
     request_id: str = Field(min_length=1)
     missing_constraint_id: str = Field(min_length=1)
-    identity_candidate_id: str = Field(min_length=1)
+    identity_candidate_id: str | None = None
     correspondence: CrossObservationPropertyCorrespondence
 
 
@@ -4012,6 +4021,7 @@ class MultiViewWorkspace(BaseModel):
     rich_perceptual_ambiguities: list[RichPerceptualAmbiguity] = Field(default_factory=list)
     property_correspondences: list[PropertyCorrespondenceRecord] = Field(default_factory=list)
     property_outcome_mapping_investigations: list[PropertyOutcomeMappingInvestigationRecord] = Field(default_factory=list)
+    global_connectivity_request_ids: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
@@ -4151,6 +4161,91 @@ class GlobalMultiviewConnectivityResponse(BaseModel):
     perceptual_relations:list[RichRelationEvidence]=Field(default_factory=list)
     continuities:list[GlobalVisibleContinuation]=Field(default_factory=list)
     perceptual_ambiguities:list[RichPerceptualAmbiguity]=Field(default_factory=list)
+
+
+def validate_global_multiview_connectivity_response(
+    request:GlobalMultiviewConnectivityRequest,response:GlobalMultiviewConnectivityResponse
+)->dict:
+    if response.request_id!=request.request_id:
+        raise ValueError("global connectivity response request_id mismatch")
+    sources={x.observation_ref:x for x in request.sources}
+    allowed_relations=set(request.allowed_relation_tokens)
+    accepted={"identity_candidates":[],"identity_cues":[],"property_correspondences":[],"perceptual_relations":[],"continuities":[],"perceptual_ambiguities":[]}
+    rejected=[]
+    def reject(kind,index,reason): rejected.append({"kind":kind,"index":index,"reason":reason})
+    for i,item in enumerate(response.identity_candidates):
+        unknown=[x for x in item.observation_refs if x not in sources]
+        if unknown: reject("identity_candidate",i,f"unknown observation_ref: {unknown}")
+        else: accepted["identity_candidates"].append(item)
+    candidate_ids={x.identity_candidate_id for x in response.identity_candidates}|{x["id"] for x in request.existing_identity_candidates}
+    for i,item in enumerate(response.identity_cues):
+        if item.identity_candidate_ref not in candidate_ids: reject("identity_cue",i,"unknown identity_candidate_ref"); continue
+        bad=False
+        for p in item.provenance:
+            s=sources.get(p.observation_ref)
+            if s is None or p.photo_index!=s.photo_index or p.roi!=s.roi: bad=True
+        if bad: reject("identity_cue",i,"provenance does not exactly match supplied source")
+        else: accepted["identity_cues"].append(item)
+    for i,item in enumerate(response.property_correspondences):
+        bad=None
+        for ref,prop,p in [(item.observation_ref_a,item.property_name_a,item.provenance_a),(item.observation_ref_b,item.property_name_b,item.provenance_b)]:
+            s=sources.get(ref)
+            if s is None: bad="unknown observation_ref"; break
+            if prop not in s.property_names: bad="property_name not supplied for observation"; break
+            if p.observation_ref!=ref or p.property_name!=prop or p.photo_index!=s.photo_index or p.roi!=s.roi: bad="provenance does not exactly match supplied source"; break
+        if bad: reject("property_correspondence",i,bad)
+        else: accepted["property_correspondences"].append(item)
+    for i,item in enumerate(response.perceptual_relations):
+        if item.relation_token not in allowed_relations: reject("perceptual_relation",i,"relation_token not allowed"); continue
+        if item.epistemic_level!="OBSERVED": reject("perceptual_relation",i,"epistemic_level must remain OBSERVED"); continue
+        if item.subject_ref not in sources or item.object_ref not in sources: reject("perceptual_relation",i,"unknown subject/object observation_ref"); continue
+        bad=False
+        for p in item.provenance:
+            s=sources.get(p.observation_ref)
+            if s is None or p.photo_index!=s.photo_index or p.roi!=s.roi: bad=True
+        if bad: reject("perceptual_relation",i,"provenance does not exactly match supplied source")
+        else: accepted["perceptual_relations"].append(item)
+    for i,item in enumerate(response.continuities):
+        s=sources.get(item.observation_ref)
+        if s is None: reject("continuation",i,"unknown observation_ref"); continue
+        if item.property_name!="continuation" or item.state not in request.allowed_continuation_states or item.epistemic_level!="OBSERVED": reject("continuation",i,"continuation token/state/epistemic level not allowed"); continue
+        if any(p.observation_ref!=item.observation_ref or p.photo_index!=s.photo_index or p.roi!=s.roi for p in item.provenance): reject("continuation",i,"provenance does not exactly match supplied source")
+        else: accepted["continuities"].append(item)
+    for i,item in enumerate(response.perceptual_ambiguities):
+        if item.subject_ref not in sources: reject("perceptual_ambiguity",i,"unknown subject_ref")
+        else: accepted["perceptual_ambiguities"].append(item)
+    return {"accepted":accepted,"rejected":rejected}
+
+
+def ingest_global_multiview_connectivity_response(
+    workspace:"MultiViewWorkspace",request:GlobalMultiviewConnectivityRequest,response:GlobalMultiviewConnectivityResponse
+)->tuple["MultiViewWorkspace",dict]:
+    validation=validate_global_multiview_connectivity_response(request,response)
+    data=workspace.model_copy(deep=True)
+    known_corr={(x.correspondence.observation_ref_a,x.correspondence.property_name_a,x.correspondence.observation_ref_b,x.correspondence.property_name_b) for x in data.property_correspondences}
+    known_rel={(x.subject_ref,x.relation_token,x.object_ref,x.epistemic_level) for x in data.rich_relation_evidence}
+    new={"property_correspondences":[],"perceptual_relations":[],"continuities":[]}
+    known={"property_correspondences":[],"perceptual_relations":[],"continuities":[]}
+    for x in validation["accepted"]["property_correspondences"]:
+        key=(x.observation_ref_a,x.property_name_a,x.observation_ref_b,x.property_name_b)
+        target=known if key in known_corr else new
+        target["property_correspondences"].append(key)
+        if key not in known_corr:
+            data.property_correspondences.append(PropertyCorrespondenceRecord(request_id=request.request_id,missing_constraint_id="global-connectivity-071",identity_candidate_id=None,correspondence=x)); known_corr.add(key)
+    for x in validation["accepted"]["perceptual_relations"]:
+        key=(x.subject_ref,x.relation_token,x.object_ref,x.epistemic_level)
+        target=known if key in known_rel else new
+        target["perceptual_relations"].append(key)
+        if key not in known_rel: data.rich_relation_evidence.append(x); known_rel.add(key)
+    obs={x.id:x for x in [*data.pass_1.observations,*data.pass_2.observations]}
+    for x in validation["accepted"]["continuities"]:
+        old=(obs[x.observation_ref].observed_property_states or {}).get("continuation")
+        (known if old==x.state else new)["continuities"].append((x.observation_ref,x.state))
+        if old is None:
+            obs[x.observation_ref].observed_property_states={**(obs[x.observation_ref].observed_property_states or {}),"continuation":x.state}
+    if request.request_id not in data.global_connectivity_request_ids: data.global_connectivity_request_ids.append(request.request_id)
+    validation["new_information"]=new; validation["already_known_information"]=known
+    return data,validation
 
 
 GLOBAL_MULTIVIEW_CONNECTIVITY_INVARIANTS=(
