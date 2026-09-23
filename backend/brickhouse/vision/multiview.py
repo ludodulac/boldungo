@@ -868,10 +868,11 @@ class InquiryTestResult(BaseModel):
             raise ValueError(
                 "discriminating evidence requires an inspected, in-frame, sufficiently visible ROI"
             )
-        if self.discriminating and self.visibility in {
-            VisibilityStatus.OCCLUDED,
-            VisibilityStatus.NON_VISIBLE,
-        }:
+        if (
+            self.discriminating
+            and not self.composite_sources
+            and self.visibility in {VisibilityStatus.OCCLUDED, VisibilityStatus.NON_VISIBLE}
+        ):
             raise ValueError("occluded/non-visible ROI cannot provide discriminating evidence")
         return self
 
