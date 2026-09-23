@@ -1048,6 +1048,46 @@ def exhausted_relation_pair_evidence_sets(
     return result
 
 
+class RelationLoopNextAction(str, Enum):
+    RELATION_ALTERNATIVE_REQUEST = "relation_alternative_request"
+    RELATION_PAIR_REQUEST = "relation_pair_request"
+
+
+def build_next_relation_loop_request(
+    producer_request_id: str,
+    workspace: "MultiViewWorkspace",
+    candidate: ArchitecturalRelationCandidate | None = None,
+) -> RelationAlternativeProducerRequest | RelationPairProducerRequest:
+    """Route persisted relation-loop state to the next existing producer without architectural policy."""
+    observations = [*workspace.pass_1.observations, *workspace.pass_2.observations]
+    by_id = {item.id: item for item in observations}
+    if candidate is not None and candidate.relation is None and not candidate.investigations:
+        source_ids: list[str] = []
+        for ids in candidate.source_observation_ids_by_element.values():
+            for source_id in ids:
+                if source_id not in source_ids:
+                    source_ids.append(source_id)
+        for source_id in candidate.visual_evidence_source_ids:
+            if source_id not in source_ids:
+                source_ids.append(source_id)
+        if len(source_ids) < 2 or any(source_id not in by_id for source_id in source_ids):
+            raise ValueError("relation candidate lacks sufficient known provenance for alternative producer")
+        return build_relation_alternative_producer_request(
+            producer_request_id,
+            candidate.subject_ref,
+            candidate.object_ref,
+            [by_id[source_id] for source_id in source_ids],
+        )
+    identities = [*workspace.pass_1.identities, *workspace.pass_2.identities]
+    relations = [*workspace.pass_1.relations, *workspace.pass_2.relations]
+    return build_relation_pair_producer_request(
+        producer_request_id,
+        observations,
+        identities,
+        exhausted_relation_pair_evidence_sets(relations),
+    )
+
+
 class IdentityDiscriminant(BaseModel):
     """Explicit perceptual contract supplied for one identity candidate; never inferred."""
 
