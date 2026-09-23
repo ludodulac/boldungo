@@ -1,0 +1,31 @@
+name: Experiment 041 targeted tests
+on:
+  pull_request:
+    branches: [experiment/identity-discriminant-040]
+jobs:
+  targeted-tests:
+    if: github.head_ref == 'experiment/identity-discriminant-producer-041'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12', cache: pip}
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q tests/vision/test_multiview_workspace.py tests/survey/test_multiview_workspace_bridge.py tests/survey/test_reasoning_state.py
+      - name: Generate real 041 bootstrap request
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from brickhouse.vision.multiview import build_identity_enquiry_bootstrap_request
+          request = build_identity_enquiry_bootstrap_request(
+              "real-house-5-bootstrap-v4-041",
+              [f"{i:02d}-original.jpg" for i in range(1, 6)],
+          )
+          Path("visual-bootstrap-request-041.json").write_text(
+              request.model_dump_json(indent=2), encoding="utf-8"
+          )
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-bootstrap-request-041
+          path: visual-bootstrap-request-041.json

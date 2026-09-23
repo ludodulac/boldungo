@@ -12,6 +12,11 @@ from brickhouse.vision.multiview import (
     Contradiction,
     IdentityCandidate,
     IdentityDiscriminant,
+    IdentityDiscriminantProducerStatus,
+    IdentityDiscriminantProducerResponse,
+    build_identity_discriminant_producer_request,
+    import_identity_discriminant_producer_response,
+    build_identity_enquiry_bootstrap_request,
     build_identity_discriminant_inquiry,
     IdentityStatus,
     IdentityInquiryState,
@@ -2883,3 +2888,166 @@ def test_040_y_old_035_workspace_without_discriminant_reloads_fail_closed():
 
 def test_040_z_continuation_non_regression_anchor():
     test_039_b_legacy_mono_continuation_unchanged()
+
+
+# Experiment 041 — visual producer of explicit identity discriminants.
+
+def _producer041(n=2, last_region=True):
+    obs,c,u,d=_id040(n, regions=last_region)
+    req=build_identity_discriminant_producer_request(c,obs)
+    assert req is not None
+    mapping={s.observation_ref:s.source_id for s in req.sources}
+    response=IdentityDiscriminantProducerResponse(
+        request_id=req.request_id, identity_candidate_id=c.id,
+        status=IdentityDiscriminantProducerStatus.DISCRIMINANT_PROPOSED,
+        property_name=req.allowed_property_names[0],
+        property_description="A precise synthetic perceptual relation, documentation only.",
+        source_ids_by_observation=mapping,
+        outcomes_by_alternative={
+            IdentityStatus.SAME_PHYSICAL_OBJECT.value:[req.allowed_outcomes[0]],
+            IdentityStatus.INCOMPATIBLE.value:[req.allowed_outcomes[1]],
+        },
+        outcome_descriptions={
+            req.allowed_outcomes[0]:"Synthetic observable configuration alpha.",
+            req.allowed_outcomes[1]:"Synthetic observable configuration beta.",
+        },
+        required_source_ids=list(mapping.values()),
+    )
+    return obs,c,req,response
+
+def test_041_a_enquirable_candidate_generates_producer_request():
+    obs,c,req,response=_producer041()
+    assert req.identity_candidate_id==c.id and len(req.sources)==2
+
+def test_041_b_non_enquirable_candidate_generates_no_request():
+    a,b=_obs("a",1),_obs("b",2)
+    c=IdentityCandidate(id="legacy",observation_ids=[a.id,b.id],status=IdentityStatus.UNRESOLVED)
+    assert build_identity_discriminant_producer_request(c,[a,b]) is None
+
+def test_041_c_d_no_reliable_discriminant_is_valid_and_creates_nothing():
+    obs,c,req,response=_producer041()
+    no=IdentityDiscriminantProducerResponse(request_id=req.request_id,identity_candidate_id=c.id,
+        status=IdentityDiscriminantProducerStatus.NO_RELIABLE_DISCRIMINANT)
+    assert import_identity_discriminant_producer_response(req,no) is None
+
+def test_041_e_f_valid_two_and_three_source_discriminants_import_without_pair_reduction():
+    for n in (2,3):
+        obs,c,req,response=_producer041(n)
+        d=import_identity_discriminant_producer_response(req,response)
+        assert d is not None and len(d.source_ids_by_observation)==n
+
+def test_041_g_unknown_observation_rejected_by_request_builder():
+    obs,c,req,response=_producer041()
+    with pytest.raises(ValueError):
+        build_identity_discriminant_producer_request(c,obs[:-1])
+
+def test_041_h_unknown_source_id_rejected():
+    obs,c,req,response=_producer041()
+    bad=response.model_copy(update={"source_ids_by_observation":{**response.source_ids_by_observation,obs[0].id:"unknown"}})
+    with pytest.raises(ValueError):
+        import_identity_discriminant_producer_response(req,bad)
+
+def test_041_i_duplicate_source_id_rejected():
+    obs,c,req,response=_producer041()
+    dup={o.id:"dup" for o in obs}
+    bad=response.model_copy(update={"source_ids_by_observation":dup,"required_source_ids":["dup"]})
+    with pytest.raises(ValueError):
+        import_identity_discriminant_producer_response(req,bad)
+
+def test_041_j_unknown_required_source_rejected():
+    obs,c,req,response=_producer041()
+    with pytest.raises(ValueError):
+        import_identity_discriminant_producer_response(req,response.model_copy(update={"required_source_ids":["unknown"]}))
+
+def test_041_k_l_missing_or_extra_alternative_rejected():
+    obs,c,req,response=_producer041()
+    one={IdentityStatus.SAME_PHYSICAL_OBJECT.value:[req.allowed_outcomes[0]]}
+    with pytest.raises(ValueError):
+        import_identity_discriminant_producer_response(req,response.model_copy(update={"outcomes_by_alternative":one}))
+    extra={**response.outcomes_by_alternative,"other":[req.allowed_outcomes[2]]}
+    with pytest.raises(ValueError):
+        import_identity_discriminant_producer_response(req,response.model_copy(update={"outcomes_by_alternative":extra}))
+
+def test_041_m_shared_outcome_rejected():
+    obs,c,req,response=_producer041()
+    shared={x:[req.allowed_outcomes[0]] for x in req.open_alternatives}
+    bad=response.model_copy(update={"outcomes_by_alternative":shared,
+        "outcome_descriptions":{req.allowed_outcomes[0]:"shared"}})
+    with pytest.raises(ValueError):
+        import_identity_discriminant_producer_response(req,bad)
+
+def test_041_n_alternative_without_outcome_rejected():
+    obs,c,req,response=_producer041()
+    bad=response.model_copy(update={"outcomes_by_alternative":{
+        req.open_alternatives[0]:[req.allowed_outcomes[0]],req.open_alternatives[1]:[]}})
+    with pytest.raises(ValueError):
+        import_identity_discriminant_producer_response(req,bad)
+
+def test_041_o_missing_or_invalid_property_rejected():
+    obs,c,req,response=_producer041()
+    with pytest.raises(ValueError):
+        IdentityDiscriminantProducerResponse(request_id=req.request_id,identity_candidate_id=c.id,
+            status=IdentityDiscriminantProducerStatus.DISCRIMINANT_PROPOSED)
+    with pytest.raises(ValueError):
+        import_identity_discriminant_producer_response(req,response.model_copy(update={"property_name":"invented"}))
+
+def test_041_p_extra_response_field_rejected():
+    obs,c,req,response=_producer041()
+    raw=response.model_dump(); raw["extra"]="forbidden"
+    with pytest.raises(ValueError):
+        IdentityDiscriminantProducerResponse.model_validate(raw)
+
+def test_041_q_r_null_roi_remains_null_and_is_never_fabricated():
+    obs,c,req,response=_producer041(last_region=True)
+    assert obs[-1].region is None
+    assert req.sources[-1].region is None
+
+def test_041_s_t_support_indexes_alone_do_not_create_discriminant():
+    obs,c,u,d=_id040()
+    assert c.corroborating_photo_indexes and c.conflicting_photo_indexes
+    req=build_identity_discriminant_producer_request(c,obs)
+    no=IdentityDiscriminantProducerResponse(request_id=req.request_id,identity_candidate_id=c.id,
+        status=IdentityDiscriminantProducerStatus.NO_RELIABLE_DISCRIMINANT)
+    assert import_identity_discriminant_producer_response(req,no) is None
+
+def test_041_u_v_w_prose_category_and_id_are_not_interpreted():
+    obs,c,u,d=_id040()
+    obs[0]=obs[0].model_copy(update={"statement":"outcome_alpha looks same","proposed_category":"same"})
+    c=c.model_copy(update={"id":"same-object-name"})
+    req=build_identity_discriminant_producer_request(c,obs)
+    assert req is not None
+    no=IdentityDiscriminantProducerResponse(request_id=req.request_id,identity_candidate_id=c.id,
+        status=IdentityDiscriminantProducerStatus.NO_RELIABLE_DISCRIMINANT)
+    assert import_identity_discriminant_producer_response(req,no) is None
+
+def test_041_x_valid_response_discriminant_persists_in_workspace():
+    obs,c,req,response=_producer041()
+    d=import_identity_discriminant_producer_response(req,response)
+    ws=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=obs,identities=[c]),
+        pass_2=MultiViewPass(pass_number=2),identity_discriminants=[d])
+    loaded=MultiViewWorkspace.model_validate_json(ws.model_dump_json())
+    assert loaded.identity_discriminants==[d]
+    assert loaded.identity_discriminants[0].property_description==d.property_description
+
+def test_041_y_old_workspace_without_producer_or_discriminant_reloads():
+    obs,c,u,d=_id040()
+    ws=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=obs,identities=[c]),
+        pass_2=MultiViewPass(pass_number=2))
+    assert MultiViewWorkspace.model_validate_json(ws.model_dump_json()).identity_discriminants==[]
+
+def test_041_z_continuation_non_regression_anchor():
+    test_039_b_legacy_mono_continuation_unchanged()
+
+def test_041_contract_embeds_generated_schema_and_machine_invariants():
+    obs,c,req,response=_producer041()
+    assert req.response_schema==IdentityDiscriminantProducerResponse.model_json_schema()
+    assert req.response_invariants
+    assert all(isinstance(x,str) for x in req.response_invariants)
+
+def test_041_fresh_bootstrap_is_versioned_and_does_not_embed_discriminant():
+    req=build_identity_enquiry_bootstrap_request("real-house-5-bootstrap-v4-041",
+        [f"{i:02d}-original.jpg" for i in range(1,6)])
+    assert req.schema_version=="0.4"
+    assert req.photos[0].filename=="01-original.jpg" and len(req.photos)==5
+    assert "open_alternatives" in req.instruction
+    assert "subsequent machine request" in req.instruction

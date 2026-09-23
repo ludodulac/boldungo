@@ -583,6 +583,8 @@ class IdentityDiscriminant(BaseModel):
     source_ids_by_observation: dict[str, str] = Field(min_length=2)
     outcomes_by_alternative: dict[str, list[str]] = Field(min_length=2)
     required_source_ids: list[str] = Field(min_length=1)
+    property_description: str | None = Field(default=None, min_length=1)
+    outcome_descriptions: dict[str, str] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def validate_identity_discriminant(self) -> "IdentityDiscriminant":
@@ -598,7 +600,187 @@ class IdentityDiscriminant(BaseModel):
         all_outcomes = [outcome for outcomes in self.outcomes_by_alternative.values() for outcome in outcomes]
         if len(all_outcomes) != len(set(all_outcomes)):
             raise ValueError("each perceptual outcome must map to exactly one identity alternative")
+        if self.outcome_descriptions and set(self.outcome_descriptions) != set(all_outcomes):
+            raise ValueError("identity discriminant outcome descriptions must exactly cover outcomes")
         return self
+
+
+class IdentityDiscriminantProducerStatus(str, Enum):
+    DISCRIMINANT_PROPOSED = "discriminant_proposed"
+    NO_RELIABLE_DISCRIMINANT = "no_reliable_discriminant"
+    INSUFFICIENT_VISUAL_EVIDENCE = "insufficient_visual_evidence"
+
+
+class IdentityDiscriminantProducerSource(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    source_id: str = Field(min_length=1)
+    observation_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    region: NormalizedImageRegion | None = None
+
+
+class IdentityDiscriminantProducerResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    request_id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    status: IdentityDiscriminantProducerStatus
+    property_name: str | None = Field(default=None, min_length=1)
+    property_description: str | None = Field(default=None, min_length=1)
+    source_ids_by_observation: dict[str, str] | None = None
+    outcomes_by_alternative: dict[str, list[str]] | None = None
+    outcome_descriptions: dict[str, str] | None = None
+    required_source_ids: list[str] | None = None
+
+    @model_validator(mode="after")
+    def validate_producer_shape(self) -> "IdentityDiscriminantProducerResponse":
+        payload = (
+            self.property_name, self.property_description, self.source_ids_by_observation,
+            self.outcomes_by_alternative, self.outcome_descriptions, self.required_source_ids,
+        )
+        if self.status is IdentityDiscriminantProducerStatus.DISCRIMINANT_PROPOSED:
+            if any(item is None for item in payload):
+                raise ValueError("proposed discriminant requires complete structured payload")
+        elif any(item is not None for item in payload):
+            raise ValueError("inconclusive producer status cannot carry discriminant payload")
+        return self
+
+
+IDENTITY_DISCRIMINANT_PRODUCER_RESPONSE_INVARIANTS = (
+    "response.request_id and identity_candidate_id MUST exactly match the request.",
+    "DISCRIMINANT_PROPOSED requires the complete discriminant payload; NO_RELIABLE_DISCRIMINANT and INSUFFICIENT_VISUAL_EVIDENCE require every discriminant payload field to be null/absent.",
+    "property_name MUST be one of request.allowed_property_names. It is an opaque machine token; property_description documents the actually observed perceptual phenomenon and MUST NOT be parsed or executed.",
+    "Every outcome token MUST be one of request.allowed_outcomes. outcome_descriptions document observable outcomes and MUST NOT be parsed or executed.",
+    "source_ids_by_observation MUST exactly equal the observation_ref→source_id mapping supplied by the request; no source may be invented, omitted, renamed, or duplicated.",
+    "required_source_ids MUST be unique and a subset of the request source IDs.",
+    "outcomes_by_alternative keys MUST exactly equal request.open_alternatives; every alternative MUST have at least one outcome; every outcome MUST map to exactly one alternative.",
+    "outcome_descriptions keys MUST exactly equal all outcome tokens used by outcomes_by_alternative.",
+    "General resemblance, assumed category, color alone, material alone, image proximity, architectural plausibility, statement, proposed_category, ID names, corroborating_photo_indexes alone, or conflicting_photo_indexes alone MUST NOT by themselves constitute a reliable identity discriminant.",
+    "A proposed discriminant must describe a perceptual property/relation whose allowed observable outcomes have explicitly different consequences for the open alternatives. The engine does not infer those consequences from prose.",
+)
+
+
+def identity_discriminant_producer_response_schema() -> dict:
+    return IdentityDiscriminantProducerResponse.model_json_schema()
+
+
+def identity_discriminant_producer_response_invariants() -> list[str]:
+    return list(IDENTITY_DISCRIMINANT_PRODUCER_RESPONSE_INVARIANTS)
+
+
+class IdentityDiscriminantProducerRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    request_id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    instruction: str = Field(min_length=1)
+    observation_ids: list[str] = Field(min_length=2)
+    sources: list[IdentityDiscriminantProducerSource] = Field(min_length=2)
+    open_alternatives: list[str] = Field(min_length=2)
+    allowed_property_names: list[str] = Field(min_length=1)
+    allowed_outcomes: list[str] = Field(min_length=2)
+    response_schema: dict
+    response_invariants: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_producer_request(self) -> "IdentityDiscriminantProducerRequest":
+        if len(self.observation_ids) != len(set(self.observation_ids)):
+            raise ValueError("producer observation IDs must be unique")
+        source_ids = [item.source_id for item in self.sources]
+        refs = [item.observation_ref for item in self.sources]
+        if len(source_ids) != len(set(source_ids)):
+            raise ValueError("producer source IDs must be unique")
+        if len(refs) != len(set(refs)) or set(refs) != set(self.observation_ids):
+            raise ValueError("producer sources must exactly cover observations")
+        if len(self.allowed_property_names) != len(set(self.allowed_property_names)):
+            raise ValueError("allowed property tokens must be unique")
+        if len(self.allowed_outcomes) != len(set(self.allowed_outcomes)):
+            raise ValueError("allowed outcome tokens must be unique")
+        return self
+
+
+def build_identity_discriminant_producer_request(
+    candidate: IdentityCandidate,
+    observations: list[LocalObservation],
+) -> IdentityDiscriminantProducerRequest | None:
+    if candidate.inquiry_state is not IdentityInquiryState.OPEN_ALTERNATIVES:
+        return None
+    observation_by_id = {item.id: item for item in observations}
+    if not set(candidate.observation_ids).issubset(observation_by_id):
+        raise ValueError("identity candidate references unknown observation")
+    sources = [
+        IdentityDiscriminantProducerSource(
+            source_id=f"identity-source-{index + 1}",
+            observation_ref=observation_id,
+            photo_index=observation_by_id[observation_id].photo_index,
+            region=observation_by_id[observation_id].region,
+        )
+        for index, observation_id in enumerate(candidate.observation_ids)
+    ]
+    return IdentityDiscriminantProducerRequest(
+        request_id=f"identity-discriminant-request-{candidate.id}",
+        identity_candidate_id=candidate.id,
+        instruction=(
+            "Inspect only the supplied visual sources. Do NOT decide whether they are the same physical object. "
+            "Decide only whether the pixels support a precise perceptual discriminant whose observable outcomes "
+            "would differ across the already-open alternatives. If no such reliable discriminant exists, return "
+            "NO_RELIABLE_DISCRIMINANT; if the pixels cannot support the inquiry, return INSUFFICIENT_VISUAL_EVIDENCE. "
+            "For a proposal, choose one opaque property token and opaque outcome tokens only from the allowed lists, "
+            "and document their perceptual meaning in the non-executable description fields. Do not infer from general "
+            "resemblance, category, color alone, material alone, image proximity, architectural plausibility, statements, "
+            "proposed categories, IDs, or support/conflict photo indexes."
+        ),
+        observation_ids=list(candidate.observation_ids),
+        sources=sources,
+        open_alternatives=[item.value for item in candidate.open_alternatives],
+        allowed_property_names=["perceptual_discriminant_1", "perceptual_discriminant_2", "perceptual_discriminant_3"],
+        allowed_outcomes=["outcome_alpha", "outcome_beta", "outcome_gamma", "outcome_delta"],
+        response_schema=identity_discriminant_producer_response_schema(),
+        response_invariants=identity_discriminant_producer_response_invariants(),
+    )
+
+
+def import_identity_discriminant_producer_response(
+    request: IdentityDiscriminantProducerRequest,
+    response: IdentityDiscriminantProducerResponse,
+) -> IdentityDiscriminant | None:
+    if response.request_id != request.request_id or response.identity_candidate_id != request.identity_candidate_id:
+        raise ValueError("identity discriminant producer response does not match request")
+    if response.status is not IdentityDiscriminantProducerStatus.DISCRIMINANT_PROPOSED:
+        return None
+    if response.property_name not in request.allowed_property_names:
+        raise ValueError("identity discriminant property token is not allowed")
+    expected_sources = {item.observation_ref: item.source_id for item in request.sources}
+    if response.source_ids_by_observation != expected_sources:
+        raise ValueError("identity discriminant source mapping does not exactly match request")
+    source_ids = list(response.source_ids_by_observation.values())
+    if len(source_ids) != len(set(source_ids)):
+        raise ValueError("identity discriminant source IDs must be unique")
+    if len(response.required_source_ids) != len(set(response.required_source_ids)):
+        raise ValueError("identity discriminant required source IDs must be unique")
+    if not set(response.required_source_ids).issubset(source_ids):
+        raise ValueError("identity discriminant requires unknown source ID")
+    if set(response.outcomes_by_alternative) != set(request.open_alternatives):
+        raise ValueError("identity discriminant alternatives do not exactly match request")
+    used = [outcome for outcomes in response.outcomes_by_alternative.values() for outcome in outcomes]
+    if any(outcome not in request.allowed_outcomes for outcome in used):
+        raise ValueError("identity discriminant outcome token is not allowed")
+    if any(not outcomes for outcomes in response.outcomes_by_alternative.values()):
+        raise ValueError("every identity alternative requires at least one outcome")
+    if len(used) != len(set(used)):
+        raise ValueError("each perceptual outcome must map to exactly one identity alternative")
+    if set(response.outcome_descriptions) != set(used):
+        raise ValueError("outcome descriptions must exactly cover used outcome tokens")
+    return IdentityDiscriminant(
+        id=f"identity-discriminant-{request.identity_candidate_id}",
+        identity_candidate_id=request.identity_candidate_id,
+        property_name=response.property_name,
+        source_ids_by_observation=dict(response.source_ids_by_observation),
+        outcomes_by_alternative={key: list(value) for key, value in response.outcomes_by_alternative.items()},
+        required_source_ids=list(response.required_source_ids),
+        property_description=response.property_description,
+        outcome_descriptions=dict(response.outcome_descriptions),
+    )
 
 
 class IdentityInquiryArtifacts(BaseModel):
@@ -1068,6 +1250,37 @@ def build_visual_bootstrap_request(
             "observer_comment": "Syntax-only synthetic example."
         },
     )
+
+
+def build_identity_enquiry_bootstrap_request(
+    bootstrap_id: str,
+    photo_filenames: list[str],
+) -> VisualBootstrapRequest:
+    """Fresh bootstrap request that may create 035-enquirable candidates; no historical enrichment."""
+
+    base = build_visual_bootstrap_request(bootstrap_id, photo_filenames)
+    return base.model_copy(update={
+        "schema_version": "0.4",
+        "instruction": (
+            base.instruction
+            + " For cross-view identity candidates, do not decide identity from resemblance. "
+              "When pixels justify a genuine unresolved identity competition, you MAY emit inquiry_state='open_alternatives' "
+              "with exactly the alternatives 'same_physical_object' and 'incompatible'. If that explicit competition is not "
+              "justified, retain the legacy/default non-enquirable form. Do not invent a discriminant in this bootstrap response; "
+              "a subsequent machine request will ask for one only for explicitly enquirable candidates."
+        ),
+        "information_to_record": [
+            *base.information_to_record,
+            "Identity inquiry readiness: only a genuinely unresolved cross-view identity competition may use inquiry_state='open_alternatives' with exactly ['same_physical_object','incompatible']; otherwise use the non-enquirable legacy/default form.",
+        ],
+        "epistemic_rules": [
+            *base.epistemic_rules,
+            "likely_same != open_alternatives",
+            "unresolved != automatically_enquirable",
+            "corroborating_photo_indexes != identity_discriminant",
+            "conflicting_photo_indexes != identity_discriminant",
+        ],
+    })
 
 
 def import_visual_bootstrap_response(
