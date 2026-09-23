@@ -1252,6 +1252,37 @@ def build_visual_bootstrap_request(
     )
 
 
+def build_identity_enquiry_bootstrap_request(
+    bootstrap_id: str,
+    photo_filenames: list[str],
+) -> VisualBootstrapRequest:
+    """Fresh bootstrap request that may create 035-enquirable candidates; no historical enrichment."""
+
+    base = build_visual_bootstrap_request(bootstrap_id, photo_filenames)
+    return base.model_copy(update={
+        "schema_version": "0.4",
+        "instruction": (
+            base.instruction
+            + " For cross-view identity candidates, do not decide identity from resemblance. "
+              "When pixels justify a genuine unresolved identity competition, you MAY emit inquiry_state='open_alternatives' "
+              "with exactly the alternatives 'same_physical_object' and 'incompatible'. If that explicit competition is not "
+              "justified, retain the legacy/default non-enquirable form. Do not invent a discriminant in this bootstrap response; "
+              "a subsequent machine request will ask for one only for explicitly enquirable candidates."
+        ),
+        "information_to_record": [
+            *base.information_to_record,
+            "Identity inquiry readiness: only a genuinely unresolved cross-view identity competition may use inquiry_state='open_alternatives' with exactly ['same_physical_object','incompatible']; otherwise use the non-enquirable legacy/default form.",
+        ],
+        "epistemic_rules": [
+            *base.epistemic_rules,
+            "likely_same != open_alternatives",
+            "unresolved != automatically_enquirable",
+            "corroborating_photo_indexes != identity_discriminant",
+            "conflicting_photo_indexes != identity_discriminant",
+        ],
+    })
+
+
 def import_visual_bootstrap_response(
     request: VisualBootstrapRequest,
     response: VisualBootstrapResponse,
