@@ -168,6 +168,8 @@ class RelationInvestigationRecord(BaseModel):
     object_ref: str = Field(min_length=1)
     source_observation_ids: list[str] = Field(min_length=2)
     outcome: Literal["no_reliable_alternatives", "insufficient_visual_evidence"]
+    investigation_id: str | None = Field(default=None, min_length=1)
+    producer_request_id: str | None = Field(default=None, min_length=1)
 
     @model_validator(mode="after")
     def validate_record(self) -> "RelationInvestigationRecord":
@@ -1018,6 +1020,8 @@ def record_relation_investigation(
     candidate: ArchitecturalRelationCandidate,
     request: RelationAlternativeProducerRequest,
     response: RelationAlternativeProducerResponse,
+    *,
+    investigation_id: str | None = None,
 ) -> ArchitecturalRelationCandidate:
     """Persist only exhaustion of this exact pair+evidence investigation; infer no relation."""
     imported = import_relation_alternative_producer_response(request, response)
@@ -1029,6 +1033,8 @@ def record_relation_investigation(
         object_ref=request.object_ref,
         source_observation_ids=source_ids,
         outcome=response.status.value,
+        investigation_id=investigation_id,
+        producer_request_id=request.producer_request_id,
     )
     existing = list(candidate.investigations)
     if record not in existing:
@@ -1226,6 +1232,65 @@ def build_relation_alternative_batch_request(
             request=request,
         ))
     return VisualInquiryBatchRequest(batch_request_id=batch_request_id, investigations=items)
+
+
+class ReasoningDependency(BaseModel):
+    """Explicit reasoning edge only; it carries no architectural priority by itself."""
+    model_config = ConfigDict(extra="forbid")
+    upstream_ref: str = Field(min_length=1)
+    downstream_ref: str = Field(min_length=1)
+    downstream_kind: Literal["uncertainty", "hypothesis", "topology", "future_world_representation"]
+
+
+class InvestigationImpactAssessment(BaseModel):
+    """Qualitative impact derived from an open uncertainty, testability, exhaustion and explicit dependencies."""
+    model_config = ConfigDict(extra="forbid")
+    uncertainty_id: str = Field(min_length=1)
+    investigation_available: bool
+    addresses_open_uncertainty: bool
+    discriminating_testable: bool
+    can_modify_shared_state: bool
+    exhausted_or_redundant: bool
+    downstream_refs: list[str] = Field(default_factory=list)
+    blocked: bool
+
+
+def assess_investigation_impact(
+    uncertainty: StructuredUncertainty,
+    *,
+    discriminating_testable: bool,
+    exhausted_or_redundant: bool,
+    dependencies: list[ReasoningDependency],
+) -> InvestigationImpactAssessment:
+    """No score: state-changing impact exists only through explicit downstream dependency edges."""
+    downstream = sorted({edge.downstream_ref for edge in dependencies if edge.upstream_ref == uncertainty.id})
+    open_uncertainty = uncertainty.resolved_state is None and len(uncertainty.open_alternatives) >= 2
+    available = open_uncertainty and not exhausted_or_redundant
+    can_modify = available and discriminating_testable and bool(downstream)
+    return InvestigationImpactAssessment(
+        uncertainty_id=uncertainty.id,
+        investigation_available=available,
+        addresses_open_uncertainty=open_uncertainty,
+        discriminating_testable=discriminating_testable,
+        can_modify_shared_state=can_modify,
+        exhausted_or_redundant=exhausted_or_redundant,
+        downstream_refs=downstream,
+        blocked=open_uncertainty and (exhausted_or_redundant or not discriminating_testable or not downstream),
+    )
+
+
+def select_impactful_investigations(
+    assessments: list[InvestigationImpactAssessment],
+) -> list[InvestigationImpactAssessment]:
+    """Keep every non-dominated state-changing investigation; incomparable/equal impacts remain tied."""
+    eligible = [item for item in assessments if item.can_modify_shared_state and not item.exhausted_or_redundant]
+    result: list[InvestigationImpactAssessment] = []
+    for item in eligible:
+        item_refs = set(item.downstream_refs)
+        dominated = any(item_refs < set(other.downstream_refs) for other in eligible)
+        if not dominated:
+            result.append(item)
+    return result
 
 
 class IdentityDiscriminant(BaseModel):
@@ -2709,6 +2774,7 @@ class MultiViewWorkspace(BaseModel):
     pass_2: MultiViewPass
     inquiries: list[VisualInquiry] = Field(default_factory=list)
     identity_discriminants: list[IdentityDiscriminant] = Field(default_factory=list)
+    reasoning_dependencies: list[ReasoningDependency] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
