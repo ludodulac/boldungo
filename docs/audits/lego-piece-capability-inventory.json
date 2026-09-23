@@ -1,0 +1,925 @@
+{
+  "schema_version": "0.1",
+  "audit_kind": "lego_piece_capability_inventory",
+  "base_main_audited": "f93eb40314c69aec591454632a876b294c97d987",
+  "generated_by": "scripts/audit_lego_piece_capabilities.py",
+  "derivation": {
+    "raw_parts": "CSV row count excluding header",
+    "master_types": "CSV row count excluding header",
+    "master_status": "count status column values",
+    "placement_approved": "create_current_engine_capability_registry(...).approved_ids(); current verified set is 12 M0 bricks + 11 roof parts + 6 validated window parts",
+    "ldraw_mappings": "CANONICAL_LDRAW_PARTS in geometry_adapter.py",
+    "note": "null means not cleanly determined; no identifier/count invented."
+  },
+  "counts": {
+    "raw_parts": 63588,
+    "master_types": 169,
+    "master_active": 165,
+    "master_experimental": 4,
+    "placement_approved": 29
+  },
+  "placement_approved_ids": [
+    "BRICK_1X1",
+    "BRICK_1X2",
+    "BRICK_1X3",
+    "BRICK_1X4",
+    "BRICK_1X6",
+    "BRICK_1X8",
+    "BRICK_2X10",
+    "BRICK_2X2",
+    "BRICK_2X3",
+    "BRICK_2X4",
+    "BRICK_2X6",
+    "BRICK_2X8",
+    "BRICK_SLOPED_18_4X2",
+    "BRICK_SLOPED_33_3X2",
+    "BRICK_SLOPED_33_3X4",
+    "BRICK_SLOPED_33_3X6",
+    "BRICK_SLOPED_45_2X1",
+    "BRICK_SLOPED_45_2X2",
+    "BRICK_SLOPED_45_2X3",
+    "BRICK_SLOPED_45_2X4",
+    "GLASS_FOR_WINDOW_1X2X2_60601",
+    "GLASS_FOR_WINDOW_1X2X3_60602",
+    "GLASS_FOR_WINDOW_1X4X3_60603",
+    "TILE_2X2",
+    "TILE_2X3",
+    "TILE_2X4",
+    "WINDOW_1X2X2_60592",
+    "WINDOW_1X2X3_60593",
+    "WINDOW_1X4X3_60594"
+  ],
+  "approved_pieces": [
+    {
+      "boldungo_id": "BRICK_1X1",
+      "part_num": "3005",
+      "design_ids": [
+        "3005",
+        "30071",
+        "35382"
+      ],
+      "ldraw_id": "3005",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_1X2",
+      "part_num": "3004",
+      "design_ids": [
+        "3004",
+        "93792"
+      ],
+      "ldraw_id": "3004",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_1X3",
+      "part_num": "3622",
+      "design_ids": [
+        "3622",
+        "45505"
+      ],
+      "ldraw_id": "3622",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_1X4",
+      "part_num": "3010",
+      "design_ids": [
+        "3010"
+      ],
+      "ldraw_id": "3010",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_1X6",
+      "part_num": "3009",
+      "design_ids": [
+        "3009"
+      ],
+      "ldraw_id": "3009",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_1X8",
+      "part_num": "3008",
+      "design_ids": [
+        "3008",
+        "63322"
+      ],
+      "ldraw_id": "3008",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_2X10",
+      "part_num": "3006",
+      "design_ids": [
+        "3006",
+        "92538"
+      ],
+      "ldraw_id": "3006",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_2X2",
+      "part_num": "3003",
+      "design_ids": [
+        "15591",
+        "3003",
+        "62404"
+      ],
+      "ldraw_id": "3003",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_2X3",
+      "part_num": "3002",
+      "design_ids": [
+        "3002"
+      ],
+      "ldraw_id": "3002",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_2X4",
+      "part_num": "3001",
+      "design_ids": [
+        "15589",
+        "3001",
+        "54534",
+        "72841"
+      ],
+      "ldraw_id": "3001",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_2X6",
+      "part_num": "2456",
+      "design_ids": [
+        "2456",
+        "44237"
+      ],
+      "ldraw_id": "2456",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_2X8",
+      "part_num": "3007",
+      "design_ids": [
+        "3007",
+        "93888"
+      ],
+      "ldraw_id": "3007",
+      "source_category": "Bricks",
+      "architectural_family": "bricks",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": true,
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_SLOPED_18_4X2",
+      "part_num": "30363",
+      "design_ids": [
+        "30363"
+      ],
+      "ldraw_id": "30363",
+      "source_category": "Bricks Sloped",
+      "architectural_family": "slopes",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_SLOPED_33_3X2",
+      "part_num": "3298",
+      "design_ids": [
+        "3298"
+      ],
+      "ldraw_id": "3298",
+      "source_category": "Bricks Sloped",
+      "architectural_family": "slopes",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_SLOPED_33_3X4",
+      "part_num": "3297",
+      "design_ids": [
+        "3016",
+        "3297"
+      ],
+      "ldraw_id": "3297",
+      "source_category": "Bricks Sloped",
+      "architectural_family": "slopes",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_SLOPED_33_3X6",
+      "part_num": "3939",
+      "design_ids": [
+        "3939",
+        "6208"
+      ],
+      "ldraw_id": "3939",
+      "source_category": "Bricks Sloped",
+      "architectural_family": "slopes",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_SLOPED_45_2X1",
+      "part_num": "3040b",
+      "design_ids": [
+        "3040",
+        "35281",
+        "6270"
+      ],
+      "ldraw_id": "3040b",
+      "source_category": "Bricks Sloped",
+      "architectural_family": "slopes",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_SLOPED_45_2X2",
+      "part_num": "3039",
+      "design_ids": [
+        "3039",
+        "35277",
+        "6227",
+        "63341"
+      ],
+      "ldraw_id": "3039",
+      "source_category": "Bricks Sloped",
+      "architectural_family": "slopes",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_SLOPED_45_2X3",
+      "part_num": "3038",
+      "design_ids": [
+        "3038"
+      ],
+      "ldraw_id": "3038",
+      "source_category": "Bricks Sloped",
+      "architectural_family": "slopes",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "BRICK_SLOPED_45_2X4",
+      "part_num": "3037",
+      "design_ids": [
+        "3037"
+      ],
+      "ldraw_id": "3037",
+      "source_category": "Bricks Sloped",
+      "architectural_family": "slopes",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "GLASS_FOR_WINDOW_1X2X2_60601",
+      "part_num": "60601",
+      "design_ids": [
+        "35315",
+        "35316",
+        "60601",
+        "7179",
+        "86209"
+      ],
+      "ldraw_id": "60601",
+      "source_category": "raw_category_16",
+      "architectural_family": "window_glazing",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": false,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": null,
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "GLASS_FOR_WINDOW_1X2X3_60602",
+      "part_num": "60602",
+      "design_ids": [
+        "35287",
+        "60602"
+      ],
+      "ldraw_id": "60602",
+      "source_category": "raw_category_16",
+      "architectural_family": "window_glazing",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": false,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": null,
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "GLASS_FOR_WINDOW_1X4X3_60603",
+      "part_num": "60603",
+      "design_ids": [
+        "35318",
+        "86210"
+      ],
+      "ldraw_id": "60603",
+      "source_category": "raw_category_16",
+      "architectural_family": "window_glazing",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": false,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": null,
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "TILE_2X2",
+      "part_num": "3068b",
+      "design_ids": [
+        "113493",
+        "113506",
+        "1136",
+        "3068",
+        "63327",
+        "78814"
+      ],
+      "ldraw_id": "3068b",
+      "source_category": "Tiles",
+      "architectural_family": "tiles",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "TILE_2X3",
+      "part_num": "26603",
+      "design_ids": [
+        "26603"
+      ],
+      "ldraw_id": "26603",
+      "source_category": "Tiles",
+      "architectural_family": "tiles",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "TILE_2X4",
+      "part_num": "87079",
+      "design_ids": [
+        "113479",
+        "38879",
+        "87079"
+      ],
+      "ldraw_id": "87079",
+      "source_category": "Tiles",
+      "architectural_family": "tiles",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": true,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": "ACTIVE",
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "WINDOW_1X2X2_60592",
+      "part_num": "60592",
+      "design_ids": [
+        "60592",
+        "79128"
+      ],
+      "ldraw_id": "60592",
+      "source_category": "raw_category_16",
+      "architectural_family": "windows",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": false,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": null,
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "WINDOW_1X2X3_60593",
+      "part_num": "60593",
+      "design_ids": [
+        "3662",
+        "60593"
+      ],
+      "ldraw_id": "60593",
+      "source_category": "raw_category_16",
+      "architectural_family": "windows",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": false,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": null,
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    },
+    {
+      "boldungo_id": "WINDOW_1X4X3_60594",
+      "part_num": "60594",
+      "design_ids": [
+        "60594"
+      ],
+      "ldraw_id": "60594",
+      "source_category": "raw_category_16",
+      "architectural_family": "windows",
+      "layers": {
+        "RAW_KNOWN": true,
+        "MASTER_SELECTED": false,
+        "ENGINE_APPROVED": true,
+        "SPECIAL_TECHNIQUE_REQUIRED": false
+      },
+      "master_status": null,
+      "piece_capability_stage": "PLACEMENT_APPROVED",
+      "geometry_available": true,
+      "connectivity_known": "specialized_or_limited",
+      "placement_approved": true,
+      "special_technique_required": false,
+      "autonomous_selection_available": true
+    }
+  ],
+  "dormant_priority_families": [
+    {
+      "family": "plates",
+      "raw_reference_count": 143,
+      "sources": [
+        "data/raw/parts.csv category 14",
+        "data/processed/piece_types_master.csv"
+      ],
+      "first_blocker": "not promoted as a general autonomous placement palette"
+    },
+    {
+      "family": "tiles",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv",
+        "data/processed/piece_types_master.csv"
+      ],
+      "first_blocker": "only TILE_2X2/TILE_2X3/TILE_2X4 are placement-approved for current specialized use"
+    },
+    {
+      "family": "jumpers",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv category 9"
+      ],
+      "first_blocker": "offset stud connectivity/placement not approved"
+    },
+    {
+      "family": "masonry",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv category 5"
+      ],
+      "first_blocker": "not canonicalized/promoted for placement"
+    },
+    {
+      "family": "arches",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv category 37"
+      ],
+      "first_blocker": "non-rectangular geometry/connectivity not approved"
+    },
+    {
+      "family": "doors",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv category 16",
+        "data/processed/piece_types_master.csv"
+      ],
+      "first_blocker": "no current autonomous door assembly/placement approval"
+    },
+    {
+      "family": "additional_windows",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv category 16",
+        "data/processed/piece_types_master.csv"
+      ],
+      "first_blocker": "current engine restricts windows to three validated frame/pane assemblies"
+    },
+    {
+      "family": "fences_railings",
+      "raw_reference_count": 138,
+      "sources": [
+        "data/raw/parts.csv category 32"
+      ],
+      "first_blocker": "scene railing solution reuses standard bricks; fence geometry/connectivity is not approved"
+    },
+    {
+      "family": "round",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv categories 20,21,67"
+      ],
+      "first_blocker": "round connection/footprint vocabulary not promoted"
+    },
+    {
+      "family": "cheese_slopes",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv category 3"
+      ],
+      "first_blocker": "not in current validated roof slope families"
+    },
+    {
+      "family": "inverted_slopes",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv"
+      ],
+      "first_blocker": "inverted support/connectivity not approved"
+    },
+    {
+      "family": "wedges",
+      "raw_reference_count": 455,
+      "sources": [
+        "data/raw/parts.csv category 6"
+      ],
+      "first_blocker": "angled footprint/connectivity not approved"
+    },
+    {
+      "family": "curved_slopes",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv categories 3,37,67"
+      ],
+      "first_blocker": "curved geometry known in raw data but not canonicalized for placement"
+    },
+    {
+      "family": "brackets_snot",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv categories 5,9,34"
+      ],
+      "first_blocker": "side-stud/SNOT connector inference is not approved"
+    },
+    {
+      "family": "headlight",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv"
+      ],
+      "first_blocker": "SNOT connector semantics not approved"
+    },
+    {
+      "family": "bars_clips",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv and category 32"
+      ],
+      "first_blocker": "bar/clip connection domain not implemented for autonomous placement"
+    },
+    {
+      "family": "hinges",
+      "raw_reference_count": 240,
+      "sources": [
+        "data/raw/parts.csv category 18"
+      ],
+      "first_blocker": "hinge articulation/connectivity not approved"
+    },
+    {
+      "family": "technic",
+      "raw_reference_count": null,
+      "sources": [
+        "data/raw/parts.csv categories 8,12,46,51,53,54,55"
+      ],
+      "first_blocker": "Technic connector inference/placement is outside current approved domain"
+    }
+  ],
+  "consistency": {
+    "all_approved_exist_in_registry": true,
+    "all_approved_have_ldraw_mapping": true,
+    "no_implicit_master_placement_approval": true,
+    "inconsistencies": [
+      {
+        "type": "approved_not_master_selected",
+        "ids": [
+          "GLASS_FOR_WINDOW_1X2X2_60601",
+          "GLASS_FOR_WINDOW_1X2X3_60602",
+          "GLASS_FOR_WINDOW_1X4X3_60603",
+          "WINDOW_1X2X2_60592",
+          "WINDOW_1X2X3_60593",
+          "WINDOW_1X4X3_60594"
+        ],
+        "note": "Explicit promotion is intentional: six validated window frame/pane IDs are absent from the 169-row master and are added by promote_capabilities with source_dataset_known=false."
+      }
+    ]
+  }
+}
