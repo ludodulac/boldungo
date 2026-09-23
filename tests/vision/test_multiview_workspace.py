@@ -34,6 +34,8 @@ from brickhouse.vision.multiview import (
     VisualEvidenceResponse,
     VisualInquiryRequest,
     build_visual_inquiry_request,
+    visual_evidence_response_schema,
+    visual_evidence_response_invariants,
     build_executable_visual_inquiry,
     import_visual_evidence_response,
     VisualBootstrapRequest,
@@ -1974,3 +1976,101 @@ def test_029_d_fail_closed_on_incoherent_hypotheses_or_discriminant_or_provenanc
     bad_sel.best_candidates[0].source_observation_ids=[]
     assert build_executable_visual_inquiry(
         uncertainty,hypotheses,predictions,question,assessments,bad_sel) is None
+
+
+# Experiment 030 — self-describing strict VisualEvidenceResponse contract.
+
+def _request030():
+    _,uncertainty,hypotheses,predictions,question,_,assessments,selection=_chain029()
+    inquiry=build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,question,assessments,selection)
+    assert inquiry is not None
+    return inquiry,question,hypotheses,selection.best_candidates[0],build_visual_inquiry_request(
+        inquiry,question,hypotheses,selection.best_candidates[0])
+
+def _response030(request,status="observed",value="visible",**overrides):
+    payload={
+        "schema_version":"0.1","request_id":request.request_id,
+        "inquiry_id":request.inquiry_id,"test_id":request.test_id,
+        "photo_index":request.target.photo_index,
+        "region":request.target.region.model_dump(mode="json"),
+        "property_name":request.property_name,"status":status,
+        "observed_value":value,"certainty":"certain",
+        "source_observation_ids":list(request.target.source_observation_ids),
+        "comment":"Synthetic external evidence."
+    }
+    payload.update(overrides)
+    return payload
+
+def test_030_a_b_request_embeds_schema_directly_from_response_model():
+    *_,request=_request030()
+    assert request.response_schema == visual_evidence_response_schema()
+    assert request.response_schema == VisualEvidenceResponse.model_json_schema()
+    assert request.response_schema["additionalProperties"] is False
+
+def test_030_c_request_embeds_runtime_invariants():
+    *_,request=_request030()
+    assert request.response_invariants == visual_evidence_response_invariants()
+    joined="\n".join(request.response_invariants)
+    for phrase in ["observed","not_observed","occluded","non_visible","ambiguous",
+                   "insufficient_evidence","observed_value","request_id","inquiry_id",
+                   "test_id","photo_index","region","property_name","source_observation_ids"]:
+        assert phrase in joined
+
+def test_030_d_decisive_json_response_validates_and_imports():
+    *_,request=_request030()
+    response=VisualEvidenceResponse.model_validate_json(json.dumps(_response030(request)))
+    result=import_visual_evidence_response(request,response)
+    assert result.discriminating
+    assert len(result.compatible_prediction_ids)==1
+
+@pytest.mark.parametrize("status",["occluded","non_visible","ambiguous","insufficient_evidence"])
+def test_030_e_h_inconclusive_statuses_remain_nondiscriminating(status):
+    *_,request=_request030()
+    payload=_response030(request,status=status,value=None)
+    response=VisualEvidenceResponse.model_validate_json(json.dumps(payload))
+    result=import_visual_evidence_response(request,response)
+    assert not result.discriminating
+    assert result.compatible_prediction_ids == request.question.prediction_ids
+    assert not result.sufficient_visibility
+
+def test_030_i_inconclusive_value_is_rejected():
+    *_,request=_request030()
+    with pytest.raises(ValueError,match="inconclusive visual evidence cannot carry"):
+        VisualEvidenceResponse.model_validate(_response030(request,status="occluded",value="absent"))
+
+@pytest.mark.parametrize("status",["observed","not_observed"])
+def test_030_j_decisive_missing_value_is_rejected(status):
+    *_,request=_request030()
+    with pytest.raises(ValueError,match="decisive visual evidence requires"):
+        VisualEvidenceResponse.model_validate(_response030(request,status=status,value=None))
+
+def test_030_k_unexpected_decisive_value_fails_closed_at_import():
+    *_,request=_request030()
+    response=VisualEvidenceResponse.model_validate(_response030(request,value="NON_CANONICAL"))
+    with pytest.raises(ValueError,match="matches no expected outcome"):
+        import_visual_evidence_response(request,response)
+
+@pytest.mark.parametrize(("field","value"),[
+    ("request_id","wrong-request"),("inquiry_id","wrong-inquiry"),("test_id","wrong-test"),
+    ("photo_index",2),("property_name","wrong-property"),
+    ("source_observation_ids",["wrong-source"]),
+])
+def test_030_l_o_q_r_provenance_mismatch_rejected(field,value):
+    *_,request=_request030()
+    response=VisualEvidenceResponse.model_validate(_response030(request,**{field:value}))
+    with pytest.raises(ValueError,match="provenance does not match"):
+        import_visual_evidence_response(request,response)
+
+def test_030_p_roi_mismatch_rejected():
+    *_,request=_request030()
+    region=request.target.region.model_dump(mode="json")
+    region["x0"]=region["x0"]-0.01 if region["x0"]>=0.01 else region["x0"]+0.01
+    response=VisualEvidenceResponse.model_validate(_response030(request,region=region))
+    with pytest.raises(ValueError,match="provenance does not match"):
+        import_visual_evidence_response(request,response)
+
+def test_030_strict_response_rejects_extra_fields():
+    *_,request=_request030()
+    with pytest.raises(ValueError):
+        VisualEvidenceResponse.model_validate(_response030(request,unexpected="nope"))
