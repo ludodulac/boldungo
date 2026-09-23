@@ -7,6 +7,12 @@ import pytest
 
 from brickhouse.vision.multiview import (
     AspectCertainty,
+    import_relation_alternative_producer_response,
+    build_relation_alternative_producer_request,
+    RelationAlternativeProposal,
+    RelationAlternativeProducerSource,
+    RelationAlternativeProducerResponse,
+    RelationAlternativeProducerStatus,
     ArchitecturalRelationCandidate,
     CertaintyLevel,
     ClaimStatus,
@@ -3263,3 +3269,116 @@ def test_047_workspace_rejects_unknown_relation_provenance():
             pass_1=MultiViewPass(pass_number=1,observations=[_relation_obs_047("obs-a")],relations=[candidate]),
             pass_2=MultiViewPass(pass_number=2),
         )
+
+
+# Experiment 048 — strict external producer of explicit relation alternatives.
+
+def _relation_sources_048():
+    return [
+        LocalObservation(id="obs-a", photo_index=1, status=ClaimStatus.OBSERVED, visibility=VisibilityStatus.VISIBLE,
+                         region=NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2), statement="Synthetic A."),
+        LocalObservation(id="obs-b", photo_index=2, status=ClaimStatus.OBSERVED, visibility=VisibilityStatus.VISIBLE,
+                         region=NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4), statement="Synthetic B."),
+    ]
+
+def _relation_request_048():
+    return build_relation_alternative_producer_request("producer-048","A","B",_relation_sources_048())
+
+def _relation_response_048(status=RelationAlternativeProducerStatus.OPEN_ALTERNATIVES):
+    req=_relation_request_048()
+    kwargs=dict(schema_version="0.1",producer_request_id=req.producer_request_id,subject_ref="A",object_ref="B",
+                status=status,sources=req.sources)
+    if status is RelationAlternativeProducerStatus.OPEN_ALTERNATIVES:
+        kwargs.update(alternatives=[
+            RelationAlternativeProposal(relation_token="relation_alpha",source_observation_ids=["obs-a"]),
+            RelationAlternativeProposal(relation_token="relation_beta",source_observation_ids=["obs-b"]),
+        ], relation_descriptions={"relation_alpha":"Synthetic relation A.","relation_beta":"Synthetic relation B."})
+    return RelationAlternativeProducerResponse(**kwargs)
+
+def test_048_a_valid_open_alternatives_imports_candidate():
+    candidate=import_relation_alternative_producer_response(_relation_request_048(),_relation_response_048())
+    assert candidate.inquiry_state is RelationInquiryState.OPEN_ALTERNATIVES
+    assert [x.relation for x in candidate.open_alternatives]==["relation_alpha","relation_beta"]
+
+@pytest.mark.parametrize("status",[
+    RelationAlternativeProducerStatus.NO_RELIABLE_ALTERNATIVES,
+    RelationAlternativeProducerStatus.INSUFFICIENT_VISUAL_EVIDENCE,
+])
+def test_048_bc_inconclusive_creates_no_competition(status):
+    assert import_relation_alternative_producer_response(_relation_request_048(),_relation_response_048(status)) is None
+
+def test_048_d_one_alternative_rejected():
+    req=_relation_request_048()
+    with pytest.raises(ValueError):
+        RelationAlternativeProducerResponse(schema_version="0.1",producer_request_id=req.producer_request_id,
+            subject_ref="A",object_ref="B",status="open_alternatives",sources=req.sources,
+            alternatives=[RelationAlternativeProposal(relation_token="relation_alpha",source_observation_ids=["obs-a"])],
+            relation_descriptions={"relation_alpha":"A"})
+
+def test_048_e_duplicate_rejected():
+    req=_relation_request_048()
+    with pytest.raises(ValueError):
+        RelationAlternativeProducerResponse(schema_version="0.1",producer_request_id=req.producer_request_id,
+            subject_ref="A",object_ref="B",status="open_alternatives",sources=req.sources,
+            alternatives=[
+                RelationAlternativeProposal(relation_token="relation_alpha",source_observation_ids=["obs-a"]),
+                RelationAlternativeProposal(relation_token="relation_alpha",source_observation_ids=["obs-b"])],
+            relation_descriptions={"relation_alpha":"A"})
+
+def test_048_f_subject_object_mismatch_rejected_on_import():
+    response=_relation_response_048().model_copy(update={"subject_ref":"OTHER"})
+    with pytest.raises(ValueError):
+        import_relation_alternative_producer_response(_relation_request_048(),response)
+
+def test_048_g_unknown_source_observation_rejected():
+    response=_relation_response_048()
+    response=response.model_copy(update={"alternatives":[
+        RelationAlternativeProposal(relation_token="relation_alpha",source_observation_ids=["obs-a"]),
+        RelationAlternativeProposal(relation_token="relation_beta",source_observation_ids=["unknown"])]})
+    with pytest.raises(ValueError):
+        import_relation_alternative_producer_response(_relation_request_048(),response)
+
+def test_048_h_photo_roi_mismatch_rejected():
+    response=_relation_response_048()
+    bad=response.sources[0].model_copy(update={"photo_index":9})
+    response=response.model_copy(update={"sources":[bad,*response.sources[1:]]})
+    with pytest.raises(ValueError):
+        import_relation_alternative_producer_response(_relation_request_048(),response)
+
+def test_048_i_provenance_source_mapping_mismatch_rejected():
+    response=_relation_response_048()
+    bad=response.sources[0].model_copy(update={"observation_ref":"obs-b"})
+    response=response.model_copy(update={"sources":[bad,*response.sources[1:]]})
+    with pytest.raises(ValueError):
+        import_relation_alternative_producer_response(_relation_request_048(),response)
+
+def test_048_j_extra_field_rejected():
+    payload=_relation_response_048().model_dump()
+    payload["extra"]="forbidden"
+    with pytest.raises(ValueError):
+        RelationAlternativeProducerResponse.model_validate(payload)
+
+def test_048_k_valid_import_detects_exactly_one_uncertainty():
+    candidate=import_relation_alternative_producer_response(_relation_request_048(),_relation_response_048())
+    result=detect_relation_uncertainties([candidate],_relation_sources_048())
+    assert len(result)==1
+    assert result[0].open_alternatives==["relation_alpha","relation_beta"]
+
+def test_048_l_persistence_reload_preserves_candidate_and_alternatives():
+    candidate=import_relation_alternative_producer_response(_relation_request_048(),_relation_response_048())
+    observations=_relation_sources_048()
+    workspace=MultiViewWorkspace(photo_count=2,
+        pass_1=MultiViewPass(pass_number=1,observations=observations,relations=[candidate]),
+        pass_2=MultiViewPass(pass_number=2))
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.pass_1.relations[0] == candidate
+
+def test_048_inconclusive_with_alternatives_rejected():
+    req=_relation_request_048()
+    with pytest.raises(ValueError):
+        RelationAlternativeProducerResponse(schema_version="0.1",producer_request_id=req.producer_request_id,
+            subject_ref="A",object_ref="B",status="no_reliable_alternatives",sources=req.sources,
+            alternatives=[
+                RelationAlternativeProposal(relation_token="relation_alpha",source_observation_ids=["obs-a"]),
+                RelationAlternativeProposal(relation_token="relation_beta",source_observation_ids=["obs-b"])],
+            relation_descriptions={"relation_alpha":"A","relation_beta":"B"})
