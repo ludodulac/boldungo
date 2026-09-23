@@ -564,16 +564,44 @@ def derive_discriminating_question(
     )
 
 
-class CandidateEvidenceTarget(BaseModel):
-    """Existing observation region that is traceably relevant to a discriminant."""
+class EvidenceRegion(BaseModel):
+    """One visual source in an atomic evidence target; region may be genuinely unknown."""
 
+    source_id: str = Field(min_length=1)
+    observation_ref: str | None = Field(default=None, min_length=1)
     photo_index: int = Field(ge=1)
-    region: NormalizedImageRegion
+    region: NormalizedImageRegion | None = None
+    visibility: VisibilityStatus = VisibilityStatus.VISIBLE
+
+
+class CandidateEvidenceTarget(BaseModel):
+    """One atomic target, optionally composed of several visual sources."""
+
+    # Legacy mono-source representation remains readable for 008-032.
+    photo_index: int | None = Field(default=None, ge=1)
+    region: NormalizedImageRegion | None = None
     source_observation_ids: list[str] = Field(min_length=1)
     discriminant_property: str = Field(min_length=1)
-    visibility: VisibilityStatus
+    visibility: VisibilityStatus = VisibilityStatus.VISIBLE
     testable: bool
     reason: str = Field(min_length=1)
+    evidence_regions: list[EvidenceRegion] = Field(default_factory=list)
+    requires_exhaustive_sources: bool = True
+
+    @model_validator(mode="after")
+    def validate_evidence_shape(self) -> "CandidateEvidenceTarget":
+        if self.evidence_regions:
+            source_ids = [item.source_id for item in self.evidence_regions]
+            if len(source_ids) != len(set(source_ids)):
+                raise ValueError("composite evidence source IDs must be unique")
+            if self.photo_index is not None or self.region is not None:
+                raise ValueError("composite target cannot also carry legacy photo/region")
+            refs = [item.observation_ref for item in self.evidence_regions if item.observation_ref]
+            if set(refs) != set(self.source_observation_ids):
+                raise ValueError("composite evidence provenance must match source observations")
+        elif self.photo_index is None or self.region is None:
+            raise ValueError("legacy target requires photo_index and region")
+        return self
 
 
 def derive_candidate_evidence_targets(
@@ -763,14 +791,28 @@ def select_discrimination_targets(
 
 
 class DiscriminatingTest(BaseModel):
-    """One photo region where competing predictions are expected to differ."""
+    """One atomic test; composite evidence is never exploded into independent tests."""
 
     id: str = Field(min_length=1)
-    photo_index: int = Field(ge=1)
-    region: NormalizedImageRegion
+    photo_index: int | None = Field(default=None, ge=1)
+    region: NormalizedImageRegion | None = None
     prediction_ids: list[str] = Field(min_length=2)
     evidence_sought: str = Field(min_length=1)
     source_observation_ids: list[str] = Field(default_factory=list)
+    evidence_regions: list[EvidenceRegion] = Field(default_factory=list)
+    composite_sufficiency_rule: str | None = None
+
+    @model_validator(mode="after")
+    def validate_test_evidence_shape(self) -> "DiscriminatingTest":
+        if self.evidence_regions:
+            source_ids = [item.source_id for item in self.evidence_regions]
+            if len(source_ids) != len(set(source_ids)):
+                raise ValueError("composite test source IDs must be unique")
+            if self.photo_index is not None or self.region is not None:
+                raise ValueError("composite test cannot also carry legacy photo/region")
+        elif self.photo_index is None or self.region is None:
+            raise ValueError("legacy test requires photo_index and region")
+        return self
 
 
 class InquiryTestResult(BaseModel):
