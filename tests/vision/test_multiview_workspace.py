@@ -15,6 +15,8 @@ from brickhouse.vision.multiview import (
     IdentityInquiryState,
     detect_identity_uncertainties,
     LocalObservation,
+    EvidenceRegion,
+    CandidateEvidenceTarget,
     DiscriminatingTest,
     InquiryState,
     InquiryTestResult,
@@ -2326,3 +2328,109 @@ def test_035_s_continuation_uncertainty_shape_remains_backward_compatible():
     assert u.source_ref is None
     assert u.open_alternatives==[]
     assert len(derive_competing_hypotheses(u))==2
+
+
+# Experiment 037 — composite visual evidence transport (levels 1-2).
+
+def _ereg037(source_id, photo, obs=None, roi=True, visibility=VisibilityStatus.VISIBLE):
+    return EvidenceRegion(
+        source_id=source_id, observation_ref=obs, photo_index=photo,
+        region=NormalizedImageRegion(x0=.1,y0=.2,x1=.3,y1=.4) if roi else None,
+        visibility=visibility,
+    )
+
+def _ctarget037(regions):
+    return CandidateEvidenceTarget(
+        source_observation_ids=[r.observation_ref for r in regions if r.observation_ref],
+        discriminant_property="opaque_token",
+        visibility=VisibilityStatus.VISIBLE,
+        testable=False,
+        reason="Synthetic composite transport only; no sufficiency rule.",
+        evidence_regions=regions,
+    )
+
+def test_037_a_legacy_target_still_loads():
+    raw={"photo_index":1,"region":{"x0":.1,"y0":.1,"x1":.2,"y1":.2},
+         "source_observation_ids":["o"],"discriminant_property":"opaque_token",
+         "visibility":"visible","testable":True,"reason":"legacy"}
+    t=CandidateEvidenceTarget.model_validate(raw)
+    assert t.photo_index==1 and t.region is not None and t.evidence_regions==[]
+
+def test_037_b_historical_visual_response_shape_still_loads():
+    raw={"schema_version":"0.2","request_id":"r","inquiry_id":"i","test_id":"t",
+         "photo_index":1,"region":{"x0":.1,"y0":.1,"x1":.2,"y1":.2},
+         "property_name":"opaque_token","status":"observed","observed_value":"yes",
+         "certainty":"certain","source_observation_ids":["o"]}
+    assert VisualEvidenceResponse.model_validate(raw).photo_index==1
+
+def test_037_c_d_composite_two_and_three_sources_remain_one_target():
+    for n in (2,3):
+        regions=[_ereg037(f"s{x}",x+1,f"o{x}") for x in range(n)]
+        t=_ctarget037(regions)
+        assert isinstance(t,CandidateEvidenceTarget) and len(t.evidence_regions)==n
+
+def test_037_e_two_regions_same_photo_are_distinct():
+    a=_ereg037("a",1,"oa"); b=_ereg037("b",1,"ob")
+    b.region=NormalizedImageRegion(x0=.5,y0=.5,x1=.6,y1=.6)
+    t=_ctarget037([a,b])
+    assert t.evidence_regions[0].region != t.evidence_regions[1].region
+
+def test_037_f_g_missing_roi_roundtrip_stays_missing():
+    t=_ctarget037([_ereg037("a",1,"oa",roi=False),_ereg037("b",2,"ob")])
+    loaded=CandidateEvidenceTarget.model_validate_json(t.model_dump_json())
+    assert loaded.evidence_regions[0].region is None
+
+def test_037_h_composite_discriminating_test_remains_one_test():
+    regions=[_ereg037("a",1,"oa"),_ereg037("b",2,"ob")]
+    test=DiscriminatingTest(id="t",prediction_ids=["p1","p2"],evidence_sought="opaque_token",
+        source_observation_ids=["oa","ob"],evidence_regions=regions)
+    assert test.photo_index is None and len(test.evidence_regions)==2
+
+def test_037_p_source_order_is_not_world_identity():
+    a=_ctarget037([_ereg037("a",1,"oa"),_ereg037("b",2,"ob")])
+    b=_ctarget037([_ereg037("b",2,"ob"),_ereg037("a",1,"oa")])
+    def world(t):
+        return {(r.source_id,r.observation_ref,r.photo_index,r.region.model_dump_json() if r.region else None)
+                for r in t.evidence_regions}
+    assert world(a)==world(b)
+
+def test_037_q_duplicate_source_rejected():
+    with pytest.raises(ValueError):
+        _ctarget037([_ereg037("dup",1,"oa"),_ereg037("dup",2,"ob")])
+
+def test_037_r_occlusion_does_not_create_negative_outcome():
+    t=_ctarget037([_ereg037("a",1,"oa",visibility=VisibilityStatus.OCCLUDED),
+                   _ereg037("b",2,"ob")])
+    assert t.evidence_regions[0].visibility is VisibilityStatus.OCCLUDED
+    assert not hasattr(t.evidence_regions[0],"observed_value")
+
+def test_037_s_composite_without_sufficiency_rule_cannot_claim_discrimination():
+    t=_ctarget037([_ereg037("a",1,"oa"),_ereg037("b",2,"ob")])
+    assert t.testable is False
+    test=DiscriminatingTest(id="t",prediction_ids=["p1","p2"],evidence_sought="opaque_token",
+        source_observation_ids=["oa","ob"],evidence_regions=t.evidence_regions)
+    assert test.composite_sufficiency_rule is None
+
+def test_037_t_workspace_roundtrip_preserves_composite_test_provenance():
+    regions=[_ereg037("a",1,"oa"),_ereg037("b",2,"ob",roi=False)]
+    predictions=[ObservablePrediction(id="p1",hypothesis_id="h1",statement="opaque"),
+                 ObservablePrediction(id="p2",hypothesis_id="h2",statement="opaque")]
+    test=DiscriminatingTest(id="t",prediction_ids=["p1","p2"],evidence_sought="opaque_token",
+        source_observation_ids=["oa","ob"],evidence_regions=regions)
+    inquiry=VisualInquiry(id="i",question="opaque",hypothesis_ids=["h1","h2"],
+        predictions=predictions,tests=[test])
+    hs=[OpenHypothesis(id="h1",subject_refs=["oa"],statement="opaque"),
+        OpenHypothesis(id="h2",subject_refs=["oa"],statement="opaque")]
+    workspace=MultiViewWorkspace(photo_count=2,
+        pass_1=MultiViewPass(pass_number=1,hypotheses=hs),
+        pass_2=MultiViewPass(pass_number=2),inquiries=[inquiry])
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.inquiries[0].tests[0].evidence_regions==regions
+
+def test_037_u_legacy_discriminating_test_roundtrip_unchanged():
+    raw={"id":"legacy","photo_index":1,"region":{"x0":.1,"y0":.1,"x1":.2,"y1":.2},
+         "prediction_ids":["p1","p2"],"evidence_sought":"continuation",
+         "source_observation_ids":["o"]}
+    test=DiscriminatingTest.model_validate(raw)
+    assert test.evidence_regions==[]
+    assert DiscriminatingTest.model_validate_json(test.model_dump_json()).region==test.region
