@@ -50,6 +50,8 @@ from brickhouse.vision.multiview import (
     build_identity_enquiry_bootstrap_request,
     build_rich_multiview_bootstrap_request,
     RichVisualBootstrapResponse,
+    RichIdentityCue,
+    RichEvidenceProvenance,
     import_rich_visual_bootstrap_response,
     derive_identity_world_representation_dependencies,
     PerceptualEvidenceLevel,
