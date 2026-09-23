@@ -44,3 +44,20 @@ dd { margin: 5px 0 0; font-weight: 700; }
 @media (max-width: 700px) { .document { width: min(100% - 16px, 1040px); margin-top: 12px; } .cover, .step-card { border-radius: 12px; padding: 18px; } dl { grid-template-columns: 1fr 1fr; } .step-heading { grid-template-columns: 58px minmax(0,1fr); } .step-number { width: 52px; height: 52px; font-size: 24px; } .step-heading-meta { grid-column: 1 / -1; text-align: left; } .part-list { grid-template-columns: 1fr; } }
 @page { size: A4 portrait; margin: 0; }
 @media print { :root, body { background: white; } .no-print { display: none !important; } .document { width: auto; margin: 0; } .cover, .step-card { box-shadow: none; border-radius: 0; margin: 0; padding: 9mm 10mm; } .cover { border: 0; min-height: 297mm; height: 297mm; page-break-after: always; } .step-card { border-top: 3px solid #e5a15f; min-height: 297mm; height: 297mm; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; } .step-card:last-child { page-break-after: auto; } .step-heading { flex: 0 0 auto; margin-bottom: 3mm; padding-bottom: 3mm; } .step-number { width: 16mm; height: 16mm; font-size: 7mm; } .rotation-cue { flex: 0 0 auto; margin: -1mm 0 2mm; padding: 1mm 2mm; } .parts-tray { flex: 0 0 auto; margin-bottom: 3mm; padding: 2mm 2.5mm; } .part-list { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1.5mm; } .visual-part-row { min-height: 14mm; } .part-icon { width: 13mm; height: 10mm; } .visual-slot { margin-bottom: 3mm; flex: 1 1 auto; min-height: 0; display: flex; align-items: center; } .step-preview { width: 100%; max-height: 184mm; } .step-footer { flex: 0 0 auto; padding-top: 1mm; } }
+
+/* NOTICE-VISUAL-GRAMMAR-011: isolated witness step only. */
+.grammar-011-step .visual-slot { border-color:#d0d5dd; background:#fbfcfe; }
+.grammar-011-step .step-preview { min-height:520px; }
+.grammar-011-step .visual-part-row { min-height:76px; }
+.grammar-011-step .part-icon { width:72px; height:56px; }
+@media (max-width:700px) {
+  .toolbar { position:static; padding:8px; gap:6px; }
+  .toolbar > *:not([href="./index.html"]):not(.button) { display:none; }
+  .grammar-011-step { padding:12px; }
+  .grammar-011-step .step-heading { margin-bottom:10px; padding-bottom:10px; }
+  .grammar-011-step .step-heading-meta { display:none; }
+  .grammar-011-step .parts-tray { margin-bottom:8px; }
+  .grammar-011-step .visual-slot { margin:0; }
+  .grammar-011-step .step-preview { min-height:0; width:100%; aspect-ratio:4/3; }
+  .grammar-011-step .step-footer { display:none; }
+}
