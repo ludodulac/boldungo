@@ -50,6 +50,7 @@ from brickhouse.vision.multiview import (
     build_rich_multiview_bootstrap_request,
     RichVisualBootstrapResponse,
     import_rich_visual_bootstrap_response,
+    derive_identity_world_representation_dependencies,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -3726,3 +3727,14 @@ def test_063_same_only_cue_does_not_create_identity_competition():
     workspace=import_rich_visual_bootstrap_response(request,RichVisualBootstrapResponse.model_validate(payload))
     assert workspace.pass_1.identities[0].inquiry_state is IdentityInquiryState.NOT_ENQUIRABLE
     assert detect_identity_uncertainties(workspace.pass_1.identities,workspace.pass_1.observations)==[]
+
+
+def test_063_identity_competition_has_generic_future_entity_partition_dependency_without_score():
+    request=build_rich_multiview_bootstrap_request("rich",["a.jpg","b.jpg"])
+    workspace=import_rich_visual_bootstrap_response(request,RichVisualBootstrapResponse.model_validate(_rich_063_payload()))
+    uncertainties=detect_identity_uncertainties(workspace.pass_1.identities,workspace.pass_1.observations)
+    dependencies=derive_identity_world_representation_dependencies(uncertainties)
+    assert len(dependencies)==1
+    assert dependencies[0].upstream_ref==uncertainties[0].id
+    assert dependencies[0].downstream_kind=="future_world_representation"
+    assert dependencies[0].downstream_ref=="physical-entity-partition:idc"
