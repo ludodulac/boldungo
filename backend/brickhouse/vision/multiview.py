@@ -574,6 +574,45 @@ class EvidenceRegion(BaseModel):
     visibility: VisibilityStatus = VisibilityStatus.VISIBLE
 
 
+class IdentityDiscriminant(BaseModel):
+    """Explicit perceptual contract supplied for one identity candidate; never inferred."""
+
+    id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    property_name: str = Field(min_length=1)
+    source_ids_by_observation: dict[str, str] = Field(min_length=2)
+    outcomes_by_alternative: dict[str, list[str]] = Field(min_length=2)
+    required_source_ids: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_identity_discriminant(self) -> "IdentityDiscriminant":
+        source_ids = list(self.source_ids_by_observation.values())
+        if len(source_ids) != len(set(source_ids)):
+            raise ValueError("identity discriminant source IDs must be unique")
+        if len(self.required_source_ids) != len(set(self.required_source_ids)):
+            raise ValueError("identity discriminant required source IDs must be unique")
+        if not set(self.required_source_ids).issubset(source_ids):
+            raise ValueError("identity discriminant requires unknown source ID")
+        if any(not outcomes for outcomes in self.outcomes_by_alternative.values()):
+            raise ValueError("every identity alternative requires at least one outcome")
+        all_outcomes = [outcome for outcomes in self.outcomes_by_alternative.values() for outcome in outcomes]
+        if len(all_outcomes) != len(set(all_outcomes)):
+            raise ValueError("each perceptual outcome must map to exactly one identity alternative")
+        return self
+
+
+class IdentityInquiryArtifacts(BaseModel):
+    """Identity-specific input adapter feeding the existing generic inquiry pipeline."""
+
+    hypotheses: list[OpenHypothesis]
+    predictions: list[ObservablePrediction]
+    question: DiscriminatingQuestion
+    target: CandidateEvidenceTarget
+    assessment: DiscriminationAssessment
+    selection: EvidenceTargetSelection
+    inquiry: "VisualInquiry"
+
+
 class CandidateEvidenceTarget(BaseModel):
     """One atomic target, optionally composed of several visual sources."""
 
@@ -587,6 +626,7 @@ class CandidateEvidenceTarget(BaseModel):
     reason: str = Field(min_length=1)
     evidence_regions: list[EvidenceRegion] = Field(default_factory=list)
     requires_exhaustive_sources: bool = True
+    composite_sufficiency: CompositeSufficiencyContract | None = None
 
     @model_validator(mode="after")
     def validate_evidence_shape(self) -> "CandidateEvidenceTarget":
@@ -596,6 +636,8 @@ class CandidateEvidenceTarget(BaseModel):
                 raise ValueError("composite evidence source IDs must be unique")
             if self.photo_index is not None or self.region is not None:
                 raise ValueError("composite target cannot also carry legacy photo/region")
+            if self.composite_sufficiency is not None and not set(self.composite_sufficiency.required_source_ids).issubset(source_ids):
+                raise ValueError("composite target sufficiency references unknown source ID")
             refs = [item.observation_ref for item in self.evidence_regions if item.observation_ref]
             if set(refs) != set(self.source_observation_ids):
                 raise ValueError("composite evidence provenance must match source observations")
@@ -1255,6 +1297,7 @@ def build_executable_visual_inquiry(
             evidence_sought=target.discriminant_property,
             source_observation_ids=list(target.source_observation_ids),
             evidence_regions=list(target.evidence_regions),
+            composite_sufficiency=target.composite_sufficiency,
         )
     else:
         test = DiscriminatingTest(
@@ -1271,6 +1314,120 @@ def build_executable_visual_inquiry(
         hypothesis_ids=list(question.hypothesis_ids),
         predictions=[prediction_by_id[item] for item in question.prediction_ids],
         tests=[test],
+    )
+
+
+def build_identity_discriminant_inquiry(
+    candidate: IdentityCandidate,
+    uncertainty: StructuredUncertainty,
+    discriminant: IdentityDiscriminant | None,
+    observations: list[LocalObservation],
+) -> IdentityInquiryArtifacts | None:
+    """Consume an explicitly supplied identity discriminant; infer no identity semantics."""
+
+    if discriminant is None:
+        return None
+    if uncertainty.source_kind != "identity_candidate" or uncertainty.source_ref != candidate.id:
+        raise ValueError("identity uncertainty does not belong to candidate")
+    if discriminant.identity_candidate_id != candidate.id:
+        raise ValueError("identity discriminant belongs to another candidate")
+    if set(discriminant.source_ids_by_observation) != set(candidate.observation_ids):
+        raise ValueError("identity discriminant must reference exactly candidate observations")
+    observation_by_id = {item.id: item for item in observations}
+    if not set(candidate.observation_ids).issubset(observation_by_id):
+        raise ValueError("identity discriminant references unknown observation")
+
+    alternatives = [item.value for item in candidate.open_alternatives]
+    if set(discriminant.outcomes_by_alternative) != set(alternatives):
+        raise ValueError("identity discriminant must map every and only open alternative")
+    # The current generic question model has one expected outcome per hypothesis.
+    # Multiple outcomes per alternative are valid contractually but cannot be represented
+    # by this vertical slice, so fail closed rather than inventing a policy.
+    if any(len(items) != 1 for items in discriminant.outcomes_by_alternative.values()):
+        return None
+    mapped = {alt: values[0] for alt, values in discriminant.outcomes_by_alternative.items()}
+    if len(set(mapped.values())) < 2:
+        return None
+
+    hypothesis_ids = [f"{uncertainty.id}-{index}" for index, _ in enumerate(alternatives)]
+    hypotheses = [
+        OpenHypothesis(
+            id=hypothesis_id,
+            subject_refs=[candidate.id],
+            statement="Structured identity alternative supplied by explicit inquiry contract.",
+            competing_with=[other for other in hypothesis_ids if other != hypothesis_id],
+            claim=HypothesisClaim(subject_ref=candidate.id, relation=alternative),
+            source_uncertainty_id=uncertainty.id,
+        )
+        for hypothesis_id, alternative in zip(hypothesis_ids, alternatives)
+    ]
+    predictions = [
+        ObservablePrediction(
+            id=f"derived-{hypothesis.id}",
+            hypothesis_id=hypothesis.id,
+            statement="Opaque perceptual outcome supplied by explicit identity discriminant.",
+            observable_properties=[
+                ObservableProperty(name=discriminant.property_name, value=mapped[hypothesis.claim.relation])
+            ],
+        )
+        for hypothesis in hypotheses
+    ]
+    question = derive_discriminating_question(predictions)
+    if question is None:
+        return None
+
+    evidence_regions = [
+        EvidenceRegion(
+            source_id=discriminant.source_ids_by_observation[observation_id],
+            observation_ref=observation_id,
+            photo_index=observation_by_id[observation_id].photo_index,
+            region=observation_by_id[observation_id].region,
+            visibility=observation_by_id[observation_id].visibility,
+        )
+        for observation_id in candidate.observation_ids
+    ]
+    target = CandidateEvidenceTarget(
+        source_observation_ids=list(candidate.observation_ids),
+        discriminant_property=discriminant.property_name,
+        visibility=VisibilityStatus.VISIBLE,
+        testable=all(
+            observation_by_id[item].status is ClaimStatus.OBSERVED
+            and observation_by_id[item].visibility is VisibilityStatus.VISIBLE
+            for item in candidate.observation_ids
+        ),
+        reason="Explicit identity discriminant supplies this atomic multiview evidence target.",
+        evidence_regions=evidence_regions,
+        requires_exhaustive_sources=False,
+        composite_sufficiency=CompositeSufficiencyContract(
+            required_source_ids=list(discriminant.required_source_ids)
+        ),
+    )
+    assessment = DiscriminationAssessment(
+        target=target,
+        potential=(
+            DiscriminationPotential.DISCRIMINATING
+            if target.testable else DiscriminationPotential.NONE
+        ),
+        discriminant_applicability=(
+            ApplicabilityState.APPLICABLE if target.testable else ApplicabilityState.UNKNOWN
+        ),
+        expected_outcomes_distinct=True,
+        reason="Applicability is explicitly licensed by the supplied structured discriminant.",
+    )
+    selection = select_discrimination_targets([assessment])
+    inquiry = build_executable_visual_inquiry(
+        uncertainty, hypotheses, predictions, question, [assessment], selection
+    )
+    if inquiry is None:
+        return None
+    return IdentityInquiryArtifacts(
+        hypotheses=hypotheses,
+        predictions=predictions,
+        question=question,
+        target=target,
+        assessment=assessment,
+        selection=selection,
+        inquiry=inquiry,
     )
 
 
@@ -1632,6 +1789,7 @@ class MultiViewWorkspace(BaseModel):
     pass_1: MultiViewPass
     pass_2: MultiViewPass
     inquiries: list[VisualInquiry] = Field(default_factory=list)
+    identity_discriminants: list[IdentityDiscriminant] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
@@ -1651,6 +1809,17 @@ class MultiViewWorkspace(BaseModel):
             for assessment in phase.view_assessments:
                 if assessment.photo_index > self.photo_count:
                     raise ValueError("view assessment references photo outside supplied input")
+        identities = {item.id: item for item in self.pass_1.identities + self.pass_2.identities}
+        discriminant_ids = [item.id for item in self.identity_discriminants]
+        if len(discriminant_ids) != len(set(discriminant_ids)):
+            raise ValueError("workspace identity discriminant IDs must be unique")
+        for discriminant in self.identity_discriminants:
+            candidate = identities.get(discriminant.identity_candidate_id)
+            if candidate is None:
+                raise ValueError("identity discriminant references unknown identity candidate")
+            if set(discriminant.source_ids_by_observation) != set(candidate.observation_ids):
+                raise ValueError("identity discriminant observations must exactly match identity candidate")
+
         hypothesis_ids = {item.id for item in self.pass_1.hypotheses} | {
             item.id for item in self.pass_2.hypotheses
         }
