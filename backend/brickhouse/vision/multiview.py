@@ -2346,8 +2346,15 @@ def build_rich_multiview_bootstrap_request(
             "oriented_relation != automatic_inverse_or_converse",
             "visible_contact_or_connection_only != hidden_topology",
         ],
-        "response_schema": visual_bootstrap_response_schema(),
-        "response_invariants": visual_bootstrap_response_invariants(),
+        "response_schema": rich_visual_bootstrap_response_schema(),
+        "response_invariants": [
+            "schema_version MUST be 0.5 and bootstrap_id/photo_count MUST exactly match the request.",
+            "Observation and identity candidate IDs MUST be unique; every reference MUST resolve.",
+            "Every evidence provenance observation_ref/photo_index/ROI MUST exactly match its referenced observation.",
+            "Identity cue polarity MUST be SAME or DISTINCT and epistemic_level MUST remain CUE; cues never establish identity.",
+            "Relation evidence is oriented exactly subject_ref -> relation_token -> object_ref; no inverse/converse is implied.",
+            "Perceptual ambiguities require at least two distinct alternatives with explicit provenance; UNKNOWN alone never creates alternatives.",
+        ],
         "response_example": None,
     })
 
