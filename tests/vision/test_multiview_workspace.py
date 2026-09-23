@@ -4111,7 +4111,7 @@ def test_069_real_068_response_ingests_without_identity_promotion_and_survives_r
     assert len(workspace.property_correspondences)==1
     record=workspace.property_correspondences[0]
     assert record.correspondence.epistemic_level=="COMPARABLE_VISUAL_PROPERTY"
-    candidate=next(x for x in workspace.pass_2.identities if x.id=="idc_sidewall_p2_p4")
+    candidate=next(x for x in [*workspace.pass_1.identities,*workspace.pass_2.identities] if x.id=="idc_sidewall_p2_p4")
     assert candidate.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
     loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
     assert loaded.property_correspondences==workspace.property_correspondences
