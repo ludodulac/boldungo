@@ -2457,7 +2457,7 @@ def _bundle038(n=2, same_photo=False, missing_roi=False, exhaustive=True):
         hypothesis_ids=["h-alpha","h-beta"],prediction_ids=["p-alpha","p-beta"],
         discriminants=[DiscriminatingProperty(property_name="synthetic_relation",
             expected_outcomes={"h-alpha":"alpha","h-beta":"beta"})],
-        evidence_needed="opaque",human_readable_question="opaque?")
+        evidence_needed=["opaque"],human_readable_question="opaque?")
     test=DiscriminatingTest(id="tc",prediction_ids=["p-alpha","p-beta"],
         evidence_sought="synthetic_relation",source_observation_ids=[f"o{i}" for i in range(n)],
         evidence_regions=regions)
@@ -2497,7 +2497,7 @@ def test_038_a_b_historical_request_response_import_preserved():
     p2=ObservablePrediction(id="p2",hypothesis_id="h2",statement="x",observable_properties=[ObservableProperty(name="continuation",value="absent")])
     q=DiscriminatingQuestion(hypothesis_ids=["h1","h2"],prediction_ids=["p1","p2"],
         discriminants=[DiscriminatingProperty(property_name="continuation",expected_outcomes={"h1":"visible","h2":"absent"})],
-        evidence_needed="x",human_readable_question="x")
+        evidence_needed=["x"],human_readable_question="x")
     target=CandidateEvidenceTarget(photo_index=1,region=observation.region,source_observation_ids=["legacy-o"],
         discriminant_property="continuation",visibility=VisibilityStatus.VISIBLE,testable=True,reason="legacy")
     test=DiscriminatingTest(id="tl",photo_index=1,region=observation.region,prediction_ids=["p1","p2"],
