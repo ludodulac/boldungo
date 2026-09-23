@@ -1321,6 +1321,23 @@ def derive_reasoning_dependencies_from_hypotheses(
     return result
 
 
+def derive_identity_world_representation_dependencies(
+    uncertainties: list[StructuredUncertainty],
+) -> list[ReasoningDependency]:
+    """Identity SAME-vs-DISTINCT changes only the future physical-entity partition; no architectural priority is inferred."""
+    return [
+        ReasoningDependency(
+            upstream_ref=item.id,
+            downstream_ref=f"physical-entity-partition:{item.source_ref}",
+            downstream_kind="future_world_representation",
+        )
+        for item in uncertainties
+        if item.source_kind == "identity_candidate"
+        and item.source_ref is not None
+        and set(item.open_alternatives) == {IdentityStatus.SAME_PHYSICAL_OBJECT.value, IdentityStatus.INCOMPATIBLE.value}
+    ]
+
+
 def derive_existing_structured_uncertainties(
     workspace: "MultiViewWorkspace",
 ) -> list[StructuredUncertainty]:
