@@ -564,16 +564,44 @@ def derive_discriminating_question(
     )
 
 
-class CandidateEvidenceTarget(BaseModel):
-    """Existing observation region that is traceably relevant to a discriminant."""
+class EvidenceRegion(BaseModel):
+    """One visual source in an atomic evidence target; region may be genuinely unknown."""
 
+    source_id: str = Field(min_length=1)
+    observation_ref: str | None = Field(default=None, min_length=1)
     photo_index: int = Field(ge=1)
-    region: NormalizedImageRegion
+    region: NormalizedImageRegion | None = None
+    visibility: VisibilityStatus = VisibilityStatus.VISIBLE
+
+
+class CandidateEvidenceTarget(BaseModel):
+    """One atomic target, optionally composed of several visual sources."""
+
+    # Legacy mono-source representation remains readable for 008-032.
+    photo_index: int | None = Field(default=None, ge=1)
+    region: NormalizedImageRegion | None = None
     source_observation_ids: list[str] = Field(min_length=1)
     discriminant_property: str = Field(min_length=1)
-    visibility: VisibilityStatus
+    visibility: VisibilityStatus = VisibilityStatus.VISIBLE
     testable: bool
     reason: str = Field(min_length=1)
+    evidence_regions: list[EvidenceRegion] = Field(default_factory=list)
+    requires_exhaustive_sources: bool = True
+
+    @model_validator(mode="after")
+    def validate_evidence_shape(self) -> "CandidateEvidenceTarget":
+        if self.evidence_regions:
+            source_ids = [item.source_id for item in self.evidence_regions]
+            if len(source_ids) != len(set(source_ids)):
+                raise ValueError("composite evidence source IDs must be unique")
+            if self.photo_index is not None or self.region is not None:
+                raise ValueError("composite target cannot also carry legacy photo/region")
+            refs = [item.observation_ref for item in self.evidence_regions if item.observation_ref]
+            if set(refs) != set(self.source_observation_ids):
+                raise ValueError("composite evidence provenance must match source observations")
+        elif self.photo_index is None or self.region is None:
+            raise ValueError("legacy target requires photo_index and region")
+        return self
 
 
 def derive_candidate_evidence_targets(
@@ -739,9 +767,21 @@ def select_discrimination_targets(
         return EvidenceTargetSelection(
             reason="No candidate can currently expose a discriminating outcome."
         )
-    canonical = sorted(
-        best,
-        key=lambda item: (
+    def target_key(item: CandidateEvidenceTarget) -> tuple:
+        if item.evidence_regions:
+            sources = tuple(sorted(
+                (
+                    source.source_id,
+                    source.photo_index,
+                    None if source.region is None else (
+                        source.region.x0, source.region.y0, source.region.x1, source.region.y1
+                    ),
+                )
+                for source in item.evidence_regions
+            ))
+            return (1, sources, tuple(sorted(item.source_observation_ids)), item.discriminant_property)
+        return (
+            0,
             item.photo_index,
             item.region.x0,
             item.region.y0,
@@ -749,8 +789,9 @@ def select_discrimination_targets(
             item.region.y1,
             tuple(item.source_observation_ids),
             item.discriminant_property,
-        ),
-    )
+        )
+
+    canonical = sorted(best, key=target_key)
     return EvidenceTargetSelection(
         best_candidates=canonical,
         tied=len(canonical) > 1,
@@ -763,14 +804,28 @@ def select_discrimination_targets(
 
 
 class DiscriminatingTest(BaseModel):
-    """One photo region where competing predictions are expected to differ."""
+    """One atomic test; composite evidence is never exploded into independent tests."""
 
     id: str = Field(min_length=1)
-    photo_index: int = Field(ge=1)
-    region: NormalizedImageRegion
+    photo_index: int | None = Field(default=None, ge=1)
+    region: NormalizedImageRegion | None = None
     prediction_ids: list[str] = Field(min_length=2)
     evidence_sought: str = Field(min_length=1)
     source_observation_ids: list[str] = Field(default_factory=list)
+    evidence_regions: list[EvidenceRegion] = Field(default_factory=list)
+    composite_sufficiency_rule: str | None = None
+
+    @model_validator(mode="after")
+    def validate_test_evidence_shape(self) -> "DiscriminatingTest":
+        if self.evidence_regions:
+            source_ids = [item.source_id for item in self.evidence_regions]
+            if len(source_ids) != len(set(source_ids)):
+                raise ValueError("composite test source IDs must be unique")
+            if self.photo_index is not None or self.region is not None:
+                raise ValueError("composite test cannot also carry legacy photo/region")
+        elif self.photo_index is None or self.region is None:
+            raise ValueError("legacy test requires photo_index and region")
+        return self
 
 
 class InquiryTestResult(BaseModel):
@@ -1140,14 +1195,26 @@ def build_executable_visual_inquiry(
         return None
 
     source_token = "-".join(sorted(target.source_observation_ids))
-    test = DiscriminatingTest(
-        id=f"test-{uncertainty.id}-{target.photo_index}-{target.discriminant_property}-{source_token}",
-        photo_index=target.photo_index,
-        region=target.region,
-        prediction_ids=list(question.prediction_ids),
-        evidence_sought=target.discriminant_property,
-        source_observation_ids=list(target.source_observation_ids),
-    )
+    if target.evidence_regions:
+        # Transport is now lossless through the persisted inquiry.  Without an explicit
+        # composite sufficiency rule, however, execution must remain fail-closed.
+        test = DiscriminatingTest(
+            id=f"test-{uncertainty.id}-composite-{target.discriminant_property}-{source_token}",
+            prediction_ids=list(question.prediction_ids),
+            evidence_sought=target.discriminant_property,
+            source_observation_ids=list(target.source_observation_ids),
+            evidence_regions=list(target.evidence_regions),
+            composite_sufficiency_rule=None,
+        )
+    else:
+        test = DiscriminatingTest(
+            id=f"test-{uncertainty.id}-{target.photo_index}-{target.discriminant_property}-{source_token}",
+            photo_index=target.photo_index,
+            region=target.region,
+            prediction_ids=list(question.prediction_ids),
+            evidence_sought=target.discriminant_property,
+            source_observation_ids=list(target.source_observation_ids),
+        )
     return VisualInquiry(
         id=f"inquiry-{uncertainty.id}",
         question=question.human_readable_question,
@@ -1424,6 +1491,9 @@ class MultiViewWorkspace(BaseModel):
                     f"inquiry references unknown hypotheses: {sorted(unknown_hypotheses)}"
                 )
             for test in inquiry.tests:
-                if test.photo_index > self.photo_count:
+                if test.evidence_regions:
+                    if any(source.photo_index > self.photo_count for source in test.evidence_regions):
+                        raise ValueError("inquiry test evidence references photo outside supplied input")
+                elif test.photo_index is not None and test.photo_index > self.photo_count:
                     raise ValueError("inquiry test references photo outside supplied input")
         return self
