@@ -10,6 +10,10 @@ from brickhouse.vision.multiview import (
     import_visual_inquiry_batch_response,
     build_relation_pair_batch_request,
     build_relation_alternative_batch_request,
+    record_relation_alternative_batch_response,
+    ReasoningDependency,
+    assess_investigation_impact,
+    select_impactful_investigations,
     VisualInquiryBatchResult,
     VisualInquiryBatchResponse,
     VisualInquiryBatchRequest,
@@ -3573,3 +3577,44 @@ def test_059_router_batches_fresh_pairs_into_relation_alternative_requests():
     assert len(batch.investigations)==2
     assert all(x.protocol=="relation_alternative" for x in batch.investigations)
     assert [x.request.subject_ref for x in batch.investigations]==["element-a","element-c"]
+
+
+def test_060_batch_inconclusive_results_persist_exact_exhaustion_memory():
+    observations=_pair_obs_050()
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=observations),pass_2=MultiViewPass(pass_number=2))
+    p1=import_relation_pair_producer_response(_pair_req_050(),_pair_resp_050())
+    p2=p1.model_copy(update={"id":"pair-2","subject_ref":"c","object_ref":"d"})
+    batch=build_relation_alternative_batch_request("b60",workspace,[p1,p2])
+    results=[]
+    for item in batch.investigations:
+        q=item.request
+        response=RelationAlternativeProducerResponse(producer_request_id=q.producer_request_id,subject_ref=q.subject_ref,object_ref=q.object_ref,status="no_reliable_alternatives",sources=q.sources)
+        results.append(VisualInquiryBatchResult(investigation_id=item.investigation_id,protocol="relation_alternative",response=response))
+    updated=record_relation_alternative_batch_response(batch,VisualInquiryBatchResponse(batch_request_id="b60",results=results),[p1,p2])
+    assert all(x.relation is None and not x.open_alternatives for x in updated)
+    assert [x.investigations[0].investigation_id for x in updated]==[x.investigation_id for x in batch.investigations]
+    assert [x.investigations[0].producer_request_id for x in updated]==[x.request.producer_request_id for x in batch.investigations]
+    loaded=MultiViewWorkspace.model_validate_json(MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=observations,relations=updated),pass_2=MultiViewPass(pass_number=2)).model_dump_json())
+    assert len(loaded.pass_1.relations)==2 and all(len(x.investigations)==1 for x in loaded.pass_1.relations)
+
+
+def test_060_impact_requires_open_testable_uncertainty_and_explicit_downstream_dependency():
+    u=StructuredUncertainty(id="u",subject_ref="o1",property_name="p",source_observation_ids=["o1"],open_alternatives=["a","b"])
+    no_dep=assess_investigation_impact(u,discriminating_testable=True,exhausted_or_redundant=False,dependencies=[])
+    assert no_dep.investigation_available and no_dep.addresses_open_uncertainty
+    assert not no_dep.can_modify_shared_state and no_dep.blocked
+    dep=ReasoningDependency(upstream_ref="u",downstream_ref="h1",downstream_kind="hypothesis")
+    useful=assess_investigation_impact(u,discriminating_testable=True,exhausted_or_redundant=False,dependencies=[dep])
+    assert useful.can_modify_shared_state and not useful.blocked
+    exhausted=assess_investigation_impact(u,discriminating_testable=True,exhausted_or_redundant=True,dependencies=[dep])
+    assert not exhausted.investigation_available and not exhausted.can_modify_shared_state
+
+
+def test_060_impact_selection_uses_dependency_set_dominance_and_preserves_ties():
+    def a(uid,refs):
+        u=StructuredUncertainty(id=uid,subject_ref="o1",property_name="p",source_observation_ids=["o1"],open_alternatives=["a","b"])
+        deps=[ReasoningDependency(upstream_ref=uid,downstream_ref=r,downstream_kind="hypothesis") for r in refs]
+        return assess_investigation_impact(u,discriminating_testable=True,exhausted_or_redundant=False,dependencies=deps)
+    narrow=a("u1",["h1"]); broad=a("u2",["h1","h2"]); incomparable=a("u3",["h3"])
+    selected=select_impactful_investigations([narrow,broad,incomparable])
+    assert [x.uncertainty_id for x in selected]==["u2","u3"]
