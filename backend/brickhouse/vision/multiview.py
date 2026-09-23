@@ -187,6 +187,7 @@ class ArchitecturalRelationCandidate(BaseModel):
     source_observation_ids_by_element: dict[str, list[str]] = Field(default_factory=dict)
     visual_evidence_source_ids: list[str] = Field(default_factory=list)
     investigations: list[RelationInvestigationRecord] = Field(default_factory=list)
+    batch_investigation_id: str | None = Field(default=None, min_length=1)
     inquiry_state: RelationInquiryState = RelationInquiryState.NOT_ENQUIRABLE
     open_alternatives: list[RelationAlternative] = Field(default_factory=list)
 
@@ -1162,6 +1163,8 @@ def import_visual_inquiry_batch_response(
                 if evidence in seen_pair_evidence:
                     raise ValueError("duplicate relation-pair evidence set inside batch")
                 seen_pair_evidence.add(evidence)
+            if imported_pair is not None:
+                imported_pair = imported_pair.model_copy(update={"batch_investigation_id": result.investigation_id})
             imported.append(imported_pair)
         else:
             if not isinstance(result.response, RelationAlternativeProducerResponse):
@@ -1196,6 +1199,33 @@ def build_relation_pair_batch_request(
             protocol="relation_pair", request=req
         ))
     return VisualInquiryBatchRequest(batch_request_id=batch_request_id,investigations=items)
+
+
+def build_relation_alternative_batch_request(
+    batch_request_id: str,
+    workspace: "MultiViewWorkspace",
+    candidates: list[ArchitecturalRelationCandidate],
+) -> VisualInquiryBatchRequest:
+    """Batch independent next-step relation-alternative requests selected by the existing router."""
+    if not 2 <= len(candidates) <= 5:
+        raise ValueError("relation-alternative batch requires between 2 and 5 candidates")
+    items: list[VisualInquiryBatchItem] = []
+    seen_candidate_ids: set[str] = set()
+    for index, candidate in enumerate(candidates, start=1):
+        if candidate.id in seen_candidate_ids:
+            raise ValueError("relation-alternative batch candidates must be unique")
+        seen_candidate_ids.add(candidate.id)
+        request = build_next_relation_loop_request(
+            f"{batch_request_id}-alternative-{index}", workspace, candidate
+        )
+        if not isinstance(request, RelationAlternativeProducerRequest):
+            raise ValueError("candidate is not ready for relation-alternative routing")
+        items.append(VisualInquiryBatchItem(
+            investigation_id=f"{batch_request_id}-investigation-{index}",
+            protocol="relation_alternative",
+            request=request,
+        ))
+    return VisualInquiryBatchRequest(batch_request_id=batch_request_id, investigations=items)
 
 
 class IdentityDiscriminant(BaseModel):
