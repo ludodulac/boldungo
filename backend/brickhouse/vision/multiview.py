@@ -33,6 +33,7 @@ class IdentityStatus(str, Enum):
     LIKELY_SAME = "likely_same"
     UNRESOLVED = "unresolved"
     INCOMPATIBLE = "incompatible"
+    CANDIDATE = "candidate"
 
 
 class CertaintyLevel(str, Enum):
@@ -2351,6 +2352,71 @@ def build_rich_multiview_bootstrap_request(
     })
 
 
+def import_rich_visual_bootstrap_response(
+    request: VisualBootstrapRequest,
+    response: RichVisualBootstrapResponse,
+) -> "MultiViewWorkspace":
+    """Import rich perception into the same workspace without promoting perceptual evidence."""
+    if response.schema_version != "0.5" or request.schema_version != "0.5":
+        raise ValueError("rich bootstrap exchange requires schema_version 0.5")
+    if response.bootstrap_id != request.bootstrap_id:
+        raise ValueError("rich bootstrap response ID does not match request")
+    if response.photo_count != len(request.photos):
+        raise ValueError("rich bootstrap response photo count does not match request")
+    expected_indexes={item.photo_index for item in request.photos}
+    if any(item.photo_index not in expected_indexes for item in response.observations):
+        raise ValueError("rich bootstrap observation references unexpected photo")
+
+    visibility_map={
+        "VISIBLE": VisibilityStatus.VISIBLE,
+        "PARTLY_OCCLUDED": VisibilityStatus.PARTLY_OCCLUDED,
+        "OCCLUDED": VisibilityStatus.OCCLUDED,
+        "NON_VISIBLE": VisibilityStatus.NON_VISIBLE,
+    }
+    observations=[]
+    for item in response.observations:
+        visibility=visibility_map[item.visibility]
+        status=ClaimStatus.OBSERVED if visibility in {VisibilityStatus.VISIBLE, VisibilityStatus.PARTLY_OCCLUDED} else ClaimStatus.UNKNOWN
+        observations.append(LocalObservation(
+            id=item.observation_id,
+            photo_index=item.photo_index,
+            status=status,
+            visibility=visibility,
+            region=NormalizedImageRegion(x0=item.roi[0],y0=item.roi[1],x1=item.roi[2],y1=item.roi[3]),
+            proposed_category=item.category_proposal,
+            statement="Pixel-grounded rich bootstrap observation.",
+            certainty=AspectCertainty(
+                existence=CertaintyLevel.CERTAIN if status is ClaimStatus.OBSERVED else CertaintyLevel.UNKNOWN,
+                category=CertaintyLevel.PLAUSIBLE,
+            ),
+            observable_properties=set(item.observable_properties),
+            observed_property_states=item.observed_property_states,
+        ))
+
+    cues_by_candidate: dict[str, set[str]] = {}
+    for cue in response.identity_evidence:
+        cues_by_candidate.setdefault(cue.identity_candidate_ref,set()).add(cue.polarity)
+    identities=[]
+    for item in response.identity_candidates:
+        explicit_competition=cues_by_candidate.get(item.identity_candidate_id,set()) == {"SAME","DISTINCT"}
+        identities.append(IdentityCandidate(
+            id=item.identity_candidate_id,
+            observation_ids=list(item.observation_refs),
+            status=IdentityStatus.CANDIDATE,
+            certainty=CertaintyLevel.UNKNOWN,
+            inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES if explicit_competition else IdentityInquiryState.NOT_ENQUIRABLE,
+            open_alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE] if explicit_competition else [],
+        ))
+    return MultiViewWorkspace(
+        photo_count=response.photo_count,
+        pass_1=MultiViewPass(pass_number=1,observations=observations,identities=identities),
+        pass_2=MultiViewPass(pass_number=2),
+        rich_identity_cues=list(response.identity_evidence),
+        rich_relation_evidence=list(response.relation_evidence),
+        rich_perceptual_ambiguities=list(response.perceptual_ambiguities),
+    )
+
+
 def import_visual_bootstrap_response(
     request: VisualBootstrapRequest,
     response: VisualBootstrapResponse,
@@ -3124,6 +3190,9 @@ class MultiViewWorkspace(BaseModel):
     inquiries: list[VisualInquiry] = Field(default_factory=list)
     identity_discriminants: list[IdentityDiscriminant] = Field(default_factory=list)
     reasoning_dependencies: list[ReasoningDependency] = Field(default_factory=list)
+    rich_identity_cues: list[RichIdentityCue] = Field(default_factory=list)
+    rich_relation_evidence: list[RichRelationEvidence] = Field(default_factory=list)
+    rich_perceptual_ambiguities: list[RichPerceptualAmbiguity] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
