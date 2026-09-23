@@ -1,0 +1,14 @@
+name: Experiment 047 targeted tests
+on:
+  pull_request:
+    branches: [experiment/inconclusive-investigation-memory-044]
+jobs:
+  targeted-tests:
+    if: github.head_ref == 'experiment/relation-open-alternatives-047'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12', cache: pip}
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q tests/vision/test_multiview_workspace.py tests/survey/test_multiview_workspace_bridge.py tests/survey/test_reasoning_state.py
