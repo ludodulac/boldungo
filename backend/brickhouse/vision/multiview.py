@@ -767,9 +767,21 @@ def select_discrimination_targets(
         return EvidenceTargetSelection(
             reason="No candidate can currently expose a discriminating outcome."
         )
-    canonical = sorted(
-        best,
-        key=lambda item: (
+    def target_key(item: CandidateEvidenceTarget) -> tuple:
+        if item.evidence_regions:
+            sources = tuple(sorted(
+                (
+                    source.source_id,
+                    source.photo_index,
+                    None if source.region is None else (
+                        source.region.x0, source.region.y0, source.region.x1, source.region.y1
+                    ),
+                )
+                for source in item.evidence_regions
+            ))
+            return (1, sources, tuple(sorted(item.source_observation_ids)), item.discriminant_property)
+        return (
+            0,
             item.photo_index,
             item.region.x0,
             item.region.y0,
@@ -777,8 +789,9 @@ def select_discrimination_targets(
             item.region.y1,
             tuple(item.source_observation_ids),
             item.discriminant_property,
-        ),
-    )
+        )
+
+    canonical = sorted(best, key=target_key)
     return EvidenceTargetSelection(
         best_candidates=canonical,
         tied=len(canonical) > 1,
@@ -1182,14 +1195,26 @@ def build_executable_visual_inquiry(
         return None
 
     source_token = "-".join(sorted(target.source_observation_ids))
-    test = DiscriminatingTest(
-        id=f"test-{uncertainty.id}-{target.photo_index}-{target.discriminant_property}-{source_token}",
-        photo_index=target.photo_index,
-        region=target.region,
-        prediction_ids=list(question.prediction_ids),
-        evidence_sought=target.discriminant_property,
-        source_observation_ids=list(target.source_observation_ids),
-    )
+    if target.evidence_regions:
+        # Transport is now lossless through the persisted inquiry.  Without an explicit
+        # composite sufficiency rule, however, execution must remain fail-closed.
+        test = DiscriminatingTest(
+            id=f"test-{uncertainty.id}-composite-{target.discriminant_property}-{source_token}",
+            prediction_ids=list(question.prediction_ids),
+            evidence_sought=target.discriminant_property,
+            source_observation_ids=list(target.source_observation_ids),
+            evidence_regions=list(target.evidence_regions),
+            composite_sufficiency_rule=None,
+        )
+    else:
+        test = DiscriminatingTest(
+            id=f"test-{uncertainty.id}-{target.photo_index}-{target.discriminant_property}-{source_token}",
+            photo_index=target.photo_index,
+            region=target.region,
+            prediction_ids=list(question.prediction_ids),
+            evidence_sought=target.discriminant_property,
+            source_observation_ids=list(target.source_observation_ids),
+        )
     return VisualInquiry(
         id=f"inquiry-{uncertainty.id}",
         question=question.human_readable_question,
@@ -1466,6 +1491,9 @@ class MultiViewWorkspace(BaseModel):
                     f"inquiry references unknown hypotheses: {sorted(unknown_hypotheses)}"
                 )
             for test in inquiry.tests:
-                if test.photo_index > self.photo_count:
+                if test.evidence_regions:
+                    if any(source.photo_index > self.photo_count for source in test.evidence_regions):
+                        raise ValueError("inquiry test evidence references photo outside supplied input")
+                elif test.photo_index is not None and test.photo_index > self.photo_count:
                     raise ValueError("inquiry test references photo outside supplied input")
         return self
