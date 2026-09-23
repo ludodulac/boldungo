@@ -1088,6 +1088,116 @@ def build_next_relation_loop_request(
     )
 
 
+class VisualInquiryBatchItem(BaseModel):
+    """One independent, already-validated visual producer request."""
+    model_config = ConfigDict(extra="forbid")
+    investigation_id: str = Field(min_length=1)
+    protocol: Literal["relation_pair", "relation_alternative"]
+    request: RelationPairProducerRequest | RelationAlternativeProducerRequest
+
+
+class VisualInquiryBatchRequest(BaseModel):
+    """Transport envelope only: investigations remain independent contracts."""
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    batch_request_id: str = Field(min_length=1)
+    investigations: list[VisualInquiryBatchItem] = Field(min_length=2, max_length=5)
+    batch_invariants: list[str] = Field(default_factory=lambda: ["Each result answers exactly one investigation_id.", "PAIR_PROPOSED visual_evidence_source_ids must be unique across relation_pair results in this batch."])
+
+    @model_validator(mode="after")
+    def validate_investigations(self) -> "VisualInquiryBatchRequest":
+        ids=[item.investigation_id for item in self.investigations]
+        if len(ids)!=len(set(ids)):
+            raise ValueError("batch investigation_id values must be unique")
+        for item in self.investigations:
+            expected = "relation_pair" if isinstance(item.request, RelationPairProducerRequest) else "relation_alternative"
+            if item.protocol != expected:
+                raise ValueError("batch protocol must match embedded request contract")
+        return self
+
+
+class VisualInquiryBatchResult(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    investigation_id: str = Field(min_length=1)
+    protocol: Literal["relation_pair", "relation_alternative"]
+    response: RelationPairProducerResponse | RelationAlternativeProducerResponse
+
+
+class VisualInquiryBatchResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    batch_request_id: str = Field(min_length=1)
+    results: list[VisualInquiryBatchResult] = Field(min_length=1, max_length=5)
+
+    @model_validator(mode="after")
+    def validate_results(self) -> "VisualInquiryBatchResponse":
+        ids=[item.investigation_id for item in self.results]
+        if len(ids)!=len(set(ids)):
+            raise ValueError("batch result investigation_id values must be unique")
+        return self
+
+
+def import_visual_inquiry_batch_response(
+    request: VisualInquiryBatchRequest,
+    response: VisualInquiryBatchResponse,
+) -> list[ArchitecturalRelationCandidate | None]:
+    """Validate and import every result only against its own embedded request."""
+    if response.batch_request_id != request.batch_request_id:
+        raise ValueError("batch_request_id mismatch")
+    expected={item.investigation_id:item for item in request.investigations}
+    if set(item.investigation_id for item in response.results) != set(expected):
+        raise ValueError("batch results must match investigations exactly")
+    imported=[]
+    seen_pair_evidence: set[tuple[str, ...]] = set()
+    for result in response.results:
+        item=expected[result.investigation_id]
+        if result.protocol != item.protocol:
+            raise ValueError("batch result protocol mismatch")
+        if item.protocol=="relation_pair":
+            if not isinstance(result.response, RelationPairProducerResponse):
+                raise ValueError("wrong response contract for relation_pair")
+            imported_pair=import_relation_pair_producer_response(item.request,result.response)
+            if imported_pair is not None:
+                evidence=tuple(sorted(imported_pair.visual_evidence_source_ids))
+                if evidence in seen_pair_evidence:
+                    raise ValueError("duplicate relation-pair evidence set inside batch")
+                seen_pair_evidence.add(evidence)
+            imported.append(imported_pair)
+        else:
+            if not isinstance(result.response, RelationAlternativeProducerResponse):
+                raise ValueError("wrong response contract for relation_alternative")
+            imported.append(import_relation_alternative_producer_response(item.request,result.response))
+    return imported
+
+
+def build_relation_pair_batch_request(
+    batch_request_id: str,
+    workspace: "MultiViewWorkspace",
+    *,
+    max_investigations: int = 5,
+) -> VisualInquiryBatchRequest:
+    """Create independent pair-discovery investigations from generic persisted state."""
+    if not 2 <= max_investigations <= 5:
+        raise ValueError("batch size must be between 2 and 5")
+    observations=[*workspace.pass_1.observations,*workspace.pass_2.observations]
+    identities=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    relations=[*workspace.pass_1.relations,*workspace.pass_2.relations]
+    exhausted=exhausted_relation_pair_evidence_sets(relations)
+    items=[]
+    # Independent opaque request ids; observer remains responsible for selecting each pair.
+    # To avoid artificial duplicates inside the salve, each later request also excludes
+    # the exact evidence set selected by earlier returned results only on a future batch.
+    for index in range(max_investigations):
+        req=build_relation_pair_producer_request(
+            f"{batch_request_id}-pair-{index+1}", observations, identities, exhausted
+        )
+        items.append(VisualInquiryBatchItem(
+            investigation_id=f"{batch_request_id}-investigation-{index+1}",
+            protocol="relation_pair", request=req
+        ))
+    return VisualInquiryBatchRequest(batch_request_id=batch_request_id,investigations=items)
+
+
 class IdentityDiscriminant(BaseModel):
     """Explicit perceptual contract supplied for one identity candidate; never inferred."""
 

@@ -7,6 +7,11 @@ import pytest
 
 from brickhouse.vision.multiview import (
     AspectCertainty,
+    import_visual_inquiry_batch_response,
+    build_relation_pair_batch_request,
+    VisualInquiryBatchResult,
+    VisualInquiryBatchResponse,
+    VisualInquiryBatchRequest,
     RelationPairProducerRequest,
     RelationAlternativeProducerRequest,
     build_next_relation_loop_request,
@@ -3507,3 +3512,24 @@ def test_053_loop_router_routes_exhausted_state_back_to_pair_producer():
     request=build_next_relation_loop_request("next-pair",workspace)
     assert isinstance(request,RelationPairProducerRequest)
     assert request.excluded_exact_evidence_sets==[["o1","o2"]]
+
+
+def test_058_batch_builds_multiple_independent_requests_without_architectural_choice():
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=_pair_obs_050()),pass_2=MultiViewPass(pass_number=2))
+    batch=build_relation_pair_batch_request("batch-058",workspace,max_investigations=3)
+    assert len(batch.investigations)==3
+    assert len({x.investigation_id for x in batch.investigations})==3
+    assert all(x.protocol=="relation_pair" for x in batch.investigations)
+    assert all(x.request.sources for x in batch.investigations)
+
+def test_058_batch_import_binds_each_result_to_its_own_request():
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=_pair_obs_050()),pass_2=MultiViewPass(pass_number=2))
+    batch=build_relation_pair_batch_request("batch-058",workspace,max_investigations=2)
+    r1=_pair_resp_050().model_copy(update={"producer_request_id":batch.investigations[0].request.producer_request_id})
+    r2=_pair_resp_050().model_copy(update={"producer_request_id":batch.investigations[1].request.producer_request_id})
+    response=VisualInquiryBatchResponse(batch_request_id="batch-058",results=[
+        VisualInquiryBatchResult(investigation_id=batch.investigations[0].investigation_id,protocol="relation_pair",response=r1),
+        VisualInquiryBatchResult(investigation_id=batch.investigations[1].investigation_id,protocol="relation_pair",response=r2),
+    ])
+    with pytest.raises(ValueError,match="duplicate relation-pair evidence set"):
+        import_visual_inquiry_batch_response(batch,response)
