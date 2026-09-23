@@ -2135,6 +2135,13 @@ class MultiViewWorkspace(BaseModel):
                 unknown = set(identity.observation_ids) - known_ids
                 if unknown:
                     raise ValueError(f"identity references unknown observations: {sorted(unknown)}")
+            for relation in phase.relations:
+                for alternative in relation.open_alternatives:
+                    unknown = set(alternative.source_observation_ids) - known_ids
+                    if unknown:
+                        raise ValueError(
+                            f"relation alternative provenance references unknown observations: {sorted(unknown)}"
+                        )
             for item in phase.observations:
                 if item.photo_index > self.photo_count:
                     raise ValueError("observation references photo outside supplied input")
