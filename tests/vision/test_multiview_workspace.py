@@ -7,6 +7,7 @@ import pytest
 
 from brickhouse.vision.multiview import (
     AspectCertainty,
+    ArchitecturalRelationCandidate,
     CertaintyLevel,
     ClaimStatus,
     Contradiction,
