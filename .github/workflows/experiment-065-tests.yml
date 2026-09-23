@@ -1,0 +1,16 @@
+name: Experiment 065 identity negative memory tests
+on:
+  push:
+    branches: [experiment/identity-negative-memory-065]
+  pull_request:
+    branches: [experiment/identity-cue-discriminant-064]
+jobs:
+  targeted-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: pytest -q tests/vision/test_multiview_workspace.py -k "065 or 064"
