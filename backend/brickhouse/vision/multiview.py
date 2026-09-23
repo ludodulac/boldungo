@@ -3461,6 +3461,183 @@ def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> M
         contradictions=contradictions, insufficiently_connected_components=insufficient,
     )
 
+
+class MissingConstraintPlannerState(str, Enum):
+    EXECUTABLE_QUERY = "EXECUTABLE_QUERY"
+    NO_STRUCTURED_PROPERTY = "NO_STRUCTURED_PROPERTY"
+    NO_DISCRIMINATING_MAPPING = "NO_DISCRIMINATING_MAPPING"
+    EXHAUSTED = "EXHAUSTED"
+    INSUFFICIENT_PROVENANCE = "INSUFFICIENT_PROVENANCE"
+
+
+class StructuredPropertyCandidate(BaseModel):
+    """Property token already present in structured workspace state; its name is never semantically interpreted."""
+    model_config = ConfigDict(extra="forbid")
+    observation_ref: str = Field(min_length=1)
+    property_name: str = Field(min_length=1)
+    source_kind: Literal["observable_property", "observed_property_state", "registry_property", "existing_discriminant"]
+    state: str | None = None
+    photo_index: int = Field(ge=1)
+    roi: NormalizedImageRegion | None = None
+    visibility: VisibilityStatus
+
+
+class MissingConstraintPlannerDecision(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    missing_constraint_id: str = Field(min_length=1)
+    state: MissingConstraintPlannerState
+    candidate_properties: list[StructuredPropertyCandidate] = Field(default_factory=list)
+    rejected_properties: dict[str, str] = Field(default_factory=dict)
+    negative_memory_matches: list[str] = Field(default_factory=list)
+    missing_structured_information: list[str] = Field(default_factory=list)
+
+
+def identity_discriminant_equivalence_signature(
+    request: IdentityDiscriminantProducerRequest,
+) -> tuple:
+    """Stable perceptual signature: ignores request/token naming, prose wording and source ordering."""
+    sources = tuple(sorted(
+        (item.observation_ref, item.photo_index, tuple(item.region) if item.region is not None else None)
+        for item in request.sources
+    ))
+    cue_provenance = tuple(sorted(
+        (
+            cue.polarity,
+            tuple(sorted(
+                (p.observation_ref, p.photo_index, tuple(p.roi))
+                for p in cue.provenance
+            )),
+        )
+        for cue in request.cues
+    ))
+    return (
+        request.identity_candidate_id,
+        tuple(sorted(request.observation_ids)),
+        sources,
+        tuple(sorted(request.open_alternatives)),
+        cue_provenance,
+    )
+
+
+def plan_missing_constraint_perceptual_query(
+    workspace: "MultiViewWorkspace",
+    graph: MultiViewWorldConstraintGraph,
+    missing_constraint: MissingWorldConstraint,
+) -> MissingConstraintPlannerDecision:
+    """Plan only from the graph-selected gap and structured properties. No prose parsing or creative fallback."""
+    if missing_constraint.id not in {item.id for item in graph.missing_constraints}:
+        raise ValueError("planner input must be a missing constraint from the supplied graph")
+
+    observations = {
+        item.id: item for item in [*workspace.pass_1.observations, *workspace.pass_2.observations]
+    }
+    selected = [observations[item] for item in missing_constraint.source_observation_refs if item in observations]
+    if len(selected) != len(missing_constraint.source_observation_refs):
+        return MissingConstraintPlannerDecision(
+            missing_constraint_id=missing_constraint.id,
+            state=MissingConstraintPlannerState.INSUFFICIENT_PROVENANCE,
+            missing_structured_information=["source_observation"],
+        )
+
+    candidates: list[StructuredPropertyCandidate] = []
+    for observation in selected:
+        for property_name in sorted(observation.observable_properties or set()):
+            candidates.append(StructuredPropertyCandidate(
+                observation_ref=observation.id, property_name=property_name,
+                source_kind="observable_property", photo_index=observation.photo_index,
+                roi=observation.region, visibility=observation.visibility,
+            ))
+        for property_name, state in sorted((observation.observed_property_states or {}).items()):
+            candidates.append(StructuredPropertyCandidate(
+                observation_ref=observation.id, property_name=property_name,
+                source_kind="observed_property_state", state=state,
+                photo_index=observation.photo_index, roi=observation.region,
+                visibility=observation.visibility,
+            ))
+
+    if not candidates:
+        return MissingConstraintPlannerDecision(
+            missing_constraint_id=missing_constraint.id,
+            state=MissingConstraintPlannerState.NO_STRUCTURED_PROPERTY,
+            missing_structured_information=["structured_observable_property"],
+        )
+
+    rejected: dict[str, str] = {}
+    provenance_ok: list[StructuredPropertyCandidate] = []
+    for item in candidates:
+        key=f"{item.observation_ref}:{item.property_name}"
+        if item.roi is None or item.visibility not in {VisibilityStatus.VISIBLE, VisibilityStatus.PARTLY_OCCLUDED}:
+            rejected[key]="INSUFFICIENT_PROVENANCE"
+        else:
+            provenance_ok.append(item)
+    if not provenance_ok:
+        return MissingConstraintPlannerDecision(
+            missing_constraint_id=missing_constraint.id,
+            state=MissingConstraintPlannerState.INSUFFICIENT_PROVENANCE,
+            candidate_properties=candidates, rejected_properties=rejected,
+            missing_structured_information=["visible_roi"],
+        )
+
+    uncertainty = next(
+        (item for item in derive_existing_structured_uncertainties(workspace)
+         if item.id == missing_constraint.source_uncertainty_id),
+        None,
+    )
+    if uncertainty is None:
+        raise ValueError("missing constraint references unknown structured uncertainty")
+
+    # A property is discriminating only if structured predictions already map the same property
+    # to different outcomes for the competing organizations. Property-name similarity is not evidence.
+    mapped_discriminants: list[IdentityDiscriminant] = []
+    if uncertainty.source_kind == "identity_candidate" and uncertainty.source_ref is not None:
+        mapped_discriminants = [
+            item for item in workspace.identity_discriminants
+            if item.identity_candidate_id == uncertainty.source_ref
+            and set(item.outcomes_by_alternative) == set(uncertainty.open_alternatives)
+        ]
+
+    negative_matches: list[str] = []
+    if uncertainty.source_kind == "identity_candidate" and uncertainty.source_ref is not None:
+        for record in workspace.identity_discriminant_investigations:
+            if record.identity_candidate_id != uncertainty.source_ref:
+                continue
+            negative_matches.append(str(identity_discriminant_equivalence_signature(record.request)))
+
+    if not mapped_discriminants:
+        for item in provenance_ok:
+            key=f"{item.observation_ref}:{item.property_name}"
+            rejected.setdefault(key, "NO_STRUCTURED_MAPPING_TO_COMPETING_ORGANIZATIONS")
+        return MissingConstraintPlannerDecision(
+            missing_constraint_id=missing_constraint.id,
+            state=MissingConstraintPlannerState.NO_DISCRIMINATING_MAPPING,
+            candidate_properties=candidates, rejected_properties=rejected,
+            negative_memory_matches=negative_matches,
+            missing_structured_information=[
+                "cross_observation_property_correspondence",
+                "property_outcome_mapping_to_competing_world_organizations",
+            ],
+        )
+
+    # Existing structured discriminants are not silently converted into a new visual request.
+    # If every mapped discriminant belongs to a candidate with terminal negative memory, report EXHAUSTED.
+    if negative_matches:
+        return MissingConstraintPlannerDecision(
+            missing_constraint_id=missing_constraint.id,
+            state=MissingConstraintPlannerState.EXHAUSTED,
+            candidate_properties=candidates, rejected_properties=rejected,
+            negative_memory_matches=negative_matches,
+        )
+
+    # The current workspace has no generic request contract that maps an IdentityDiscriminant back
+    # to arbitrary canonical observation properties. Refuse to invent one.
+    return MissingConstraintPlannerDecision(
+        missing_constraint_id=missing_constraint.id,
+        state=MissingConstraintPlannerState.NO_DISCRIMINATING_MAPPING,
+        candidate_properties=candidates, rejected_properties=rejected,
+        negative_memory_matches=negative_matches,
+        missing_structured_information=["executable_property_outcome_mapping"],
+    )
+
 class MultiViewWorkspace(BaseModel):
     schema_version: Literal["0.1"] = "0.1"
     photo_count: int = Field(ge=1)
