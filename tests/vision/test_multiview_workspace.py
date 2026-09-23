@@ -2074,3 +2074,100 @@ def test_030_strict_response_rejects_extra_fields():
     *_,request=_request030()
     with pytest.raises(ValueError):
         VisualEvidenceResponse.model_validate(_response030(request,unexpected="nope"))
+
+
+# Experiment 032 — persisted resolution memory without rewriting observations.
+
+def _resolved032():
+    observation,uncertainty,hypotheses,predictions,question,_,assessments,selection=_chain029()
+    inquiry=build_executable_visual_inquiry(
+        uncertainty,hypotheses,predictions,question,assessments,selection)
+    assert inquiry is not None
+    request=build_visual_inquiry_request(
+        inquiry,question,hypotheses,selection.best_candidates[0])
+    response=VisualEvidenceResponse.model_validate(_response030(request))
+    result=import_visual_evidence_response(request,response)
+    resolved=apply_inquiry_test(inquiry,result)
+    assert resolved.state is InquiryState.RESOLVED
+    return observation,uncertainty,hypotheses,resolved
+
+def _detect032(observation,hypotheses,inquiries):
+    return detect_continuity_uncertainties(
+        [observation], inquiries=inquiries, hypotheses=hypotheses)
+
+def test_032_a_without_inquiry_remains_open():
+    observation=_obs026({"continuation"})
+    assert len(_detect032(observation,[],[])) == 1
+
+def test_032_b_open_inquiry_remains_open():
+    observation,_,hypotheses,resolved=_resolved032()
+    opened=resolved.model_copy(deep=True)
+    opened.state=InquiryState.OPEN
+    opened.resolved_hypothesis_id=None
+    opened.resolution_test_id=None
+    assert len(_detect032(observation,hypotheses,[opened])) == 1
+
+def test_032_c_resolved_coherent_is_not_open():
+    observation,_,hypotheses,resolved=_resolved032()
+    assert _detect032(observation,hypotheses,[resolved]) == []
+
+def test_032_d_historical_observation_is_unchanged():
+    observation,_,hypotheses,resolved=_resolved032()
+    before=observation.model_dump(mode="json")
+    assert _detect032(observation,hypotheses,[resolved]) == []
+    assert observation.model_dump(mode="json") == before
+    assert observation.observed_property_states is None
+
+def test_032_e_workspace_roundtrip_preserves_resolution_suppression():
+    observation,_,hypotheses,resolved=_resolved032()
+    workspace=MultiViewWorkspace(
+        photo_count=1,
+        pass_1=MultiViewPass(pass_number=1,observations=[observation],hypotheses=hypotheses),
+        pass_2=MultiViewPass(pass_number=2),
+        inquiries=[resolved],
+    )
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert detect_continuity_uncertainties(
+        loaded.pass_1.observations,
+        inquiries=loaded.inquiries,
+        hypotheses=loaded.pass_1.hypotheses + loaded.pass_2.hypotheses,
+    ) == []
+    assert loaded.pass_1.observations[0].observed_property_states is None
+
+def test_032_f_missing_resolution_test_does_not_close():
+    observation,_,hypotheses,resolved=_resolved032()
+    broken=resolved.model_copy(deep=True)
+    broken.resolution_test_id=None
+    assert len(_detect032(observation,hypotheses,[broken])) == 1
+
+def test_032_g_nondiscriminating_resolution_result_does_not_close():
+    observation,_,hypotheses,resolved=_resolved032()
+    broken=resolved.model_copy(deep=True)
+    broken.test_results[0].discriminating=False
+    assert len(_detect032(observation,hypotheses,[broken])) == 1
+
+def test_032_h_wrong_subject_does_not_close():
+    observation,_,hypotheses,resolved=_resolved032()
+    bad=[item.model_copy(deep=True) for item in hypotheses]
+    target=next(item for item in bad if item.id == resolved.resolved_hypothesis_id)
+    target.claim.subject_ref="other-subject"
+    assert len(_detect032(observation,bad,[resolved])) == 1
+
+def test_032_i_other_uncertainty_does_not_close():
+    observation,_,hypotheses,resolved=_resolved032()
+    bad=[item.model_copy(deep=True) for item in hypotheses]
+    target=next(item for item in bad if item.id == resolved.resolved_hypothesis_id)
+    target.source_uncertainty_id="other-uncertainty"
+    assert len(_detect032(observation,bad,[resolved])) == 1
+
+def test_032_j_irreducible_unknown_is_not_observed_fact_and_not_resolved():
+    observation,_,hypotheses,resolved=_resolved032()
+    irreducible=resolved.model_copy(deep=True)
+    irreducible.state=InquiryState.IRREDUCIBLE_UNKNOWN
+    irreducible.resolved_hypothesis_id=None
+    irreducible.resolution_test_id=None
+    irreducible.viable_hypothesis_ids=list(irreducible.hypothesis_ids)
+    irreducible.information_missing="No accessible discriminating evidence remains."
+    irreducible.stop_reason="Available candidate evidence cannot distinguish the remaining hypotheses."
+    assert len(_detect032(observation,hypotheses,[irreducible])) == 1
+    assert observation.observed_property_states is None

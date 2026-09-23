@@ -236,12 +236,70 @@ class StructuredUncertainty(BaseModel):
 
 def detect_continuity_uncertainties(
     observations: list[LocalObservation],
+    *,
+    inquiries: list["VisualInquiry"] | None = None,
+    hypotheses: list[OpenHypothesis] | None = None,
 ) -> list[StructuredUncertainty]:
-    """Detect only relevant-but-unresolved continuity; missing mention is not uncertainty."""
+    """Detect open continuity uncertainty while preserving historical observations.
+
+    Persisted inquiries are acquired knowledge.  A resolved inquiry suppresses
+    redetection only when its structured hypothesis/test provenance proves that
+    it resolves the same subject and uncertainty/property family.
+    """
 
     grouped: dict[str, list[LocalObservation]] = {}
     for observation in observations:
         grouped.setdefault(observation.id, []).append(observation)
+
+    inquiries = inquiries or []
+    hypotheses = hypotheses or []
+    hypothesis_by_id = {item.id: item for item in hypotheses}
+
+    def coherently_resolved(uncertainty: StructuredUncertainty) -> bool:
+        for inquiry in inquiries:
+            if inquiry.state is not InquiryState.RESOLVED:
+                continue
+            if not inquiry.resolved_hypothesis_id or not inquiry.resolution_test_id:
+                continue
+            resolved = hypothesis_by_id.get(inquiry.resolved_hypothesis_id)
+            if resolved is None or resolved.claim is None:
+                continue
+            if resolved.source_uncertainty_id != uncertainty.id:
+                continue
+            if resolved.claim.subject_ref != uncertainty.subject_ref:
+                continue
+            property_spec = (
+                INQUIRY_PROPERTY_REGISTRY.get("continuation")
+                if uncertainty.property_name == "continuity"
+                else None
+            )
+            if property_spec is None or resolved.claim.relation not in property_spec.competing_hypothesis_states:
+                continue
+            test = next(
+                (item for item in inquiry.tests if item.id == inquiry.resolution_test_id),
+                None,
+            )
+            if test is None or test.evidence_sought != property_spec.id:
+                continue
+            result = next(
+                (
+                    item for item in inquiry.test_results
+                    if item.test_id == inquiry.resolution_test_id and item.discriminating
+                ),
+                None,
+            )
+            if result is None:
+                continue
+            resolved_predictions = [
+                item.id for item in inquiry.predictions
+                if item.hypothesis_id == resolved.id
+            ]
+            if len(resolved_predictions) != 1:
+                continue
+            if resolved_predictions[0] not in result.compatible_prediction_ids:
+                continue
+            return True
+        return False
 
     uncertainties: list[StructuredUncertainty] = []
     for subject_ref, subject_observations in grouped.items():
@@ -265,14 +323,15 @@ def detect_continuity_uncertainties(
             continue
 
         source_ids = sorted({item.id for item in relevant})
-        uncertainties.append(
-            StructuredUncertainty(
-                id=f"uncertainty-{subject_ref}-continuity",
-                subject_ref=subject_ref,
-                property_name="continuity",
-                source_observation_ids=source_ids,
-            )
+        uncertainty = StructuredUncertainty(
+            id=f"uncertainty-{subject_ref}-continuity",
+            subject_ref=subject_ref,
+            property_name="continuity",
+            source_observation_ids=source_ids,
         )
+        if coherently_resolved(uncertainty):
+            continue
+        uncertainties.append(uncertainty)
     return uncertainties
 
 
