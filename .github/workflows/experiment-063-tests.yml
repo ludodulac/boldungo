@@ -1,5 +1,5 @@
 name: Experiment 063 rich perception ingestion
-on: [pull_request]
+on: [pull_request, push]
 jobs:
   targeted-tests:
     runs-on: ubuntu-24.04
