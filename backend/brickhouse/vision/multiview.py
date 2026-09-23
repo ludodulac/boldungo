@@ -3906,6 +3906,25 @@ PROPERTY_OUTCOME_MAPPING_INVARIANTS=[
 ]
 
 
+
+def validate_property_outcome_mapping_response(
+    request:PropertyOutcomeMappingRequest,response:PropertyOutcomeMappingResponse
+)->PropertyOutcomeMappingResponse:
+    if (response.request_id!=request.request_id or response.missing_constraint_id!=request.missing_constraint_id
+        or response.identity_candidate_id!=request.identity_candidate_id):
+        raise ValueError("mapping response identifiers do not match request")
+    vectors=[]
+    for item in response.mappings or []:
+        if item.outcome_token not in request.allowed_outcomes:
+            raise ValueError("mapping response uses unavailable outcome token")
+        if set(item.compatibility_by_organization)!=set(request.competing_organizations):
+            raise ValueError("mapping compatibility must exactly cover competing organizations")
+        vectors.append(tuple(item.compatibility_by_organization[x] for x in request.competing_organizations))
+    if response.status is PropertyOutcomeMappingStatus.MAPPING_AVAILABLE:
+        if len(vectors)<2 or len(set(vectors))<2:
+            raise ValueError("MAPPING_AVAILABLE requires observably different organization compatibility vectors")
+    return response
+
 def build_property_outcome_mapping_request(
     workspace:"MultiViewWorkspace", graph:MultiViewWorldConstraintGraph, missing_constraint:MissingWorldConstraint,
 )->PropertyOutcomeMappingRequest|None:
