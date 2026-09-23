@@ -12,6 +12,8 @@ from brickhouse.vision.multiview import (
     Contradiction,
     IdentityCandidate,
     IdentityStatus,
+    IdentityInquiryState,
+    detect_identity_uncertainties,
     LocalObservation,
     DiscriminatingTest,
     InquiryState,
@@ -2171,3 +2173,156 @@ def test_032_j_irreducible_unknown_is_not_observed_fact_and_not_resolved():
     irreducible.stop_reason="Available candidate evidence cannot distinguish the remaining hypotheses."
     assert len(_detect032(observation,hypotheses,[irreducible])) == 1
     assert observation.observed_property_states is None
+
+
+# Experiment 035 — explicit epistemic contract for enquirable identity.
+
+def _idobs035(identifier: str, photo: int, *, roi=True, statement="opaque", category="opaque"):
+    return LocalObservation(
+        id=identifier,
+        photo_index=photo,
+        status=ClaimStatus.OBSERVED,
+        visibility=VisibilityStatus.VISIBLE,
+        region=NormalizedImageRegion(x0=0.1,y0=0.1,x1=0.2,y1=0.2) if roi else None,
+        statement=statement,
+        proposed_category=category,
+        certainty=AspectCertainty(existence=CertaintyLevel.CERTAIN),
+    )
+
+def _candidate035(*, status=IdentityStatus.LIKELY_SAME, certainty=CertaintyLevel.PLAUSIBLE,
+                  ids=None, inquiry_state=IdentityInquiryState.NOT_ENQUIRABLE, alternatives=None):
+    return IdentityCandidate(
+        id="candidate-opaque",
+        observation_ids=ids or ["obs-a","obs-b"],
+        status=status,
+        certainty=certainty,
+        inquiry_state=inquiry_state,
+        open_alternatives=alternatives or [],
+    )
+
+def _enquirable035(ids=None):
+    return _candidate035(
+        ids=ids,
+        inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+        alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT, IdentityStatus.INCOMPATIBLE],
+    )
+
+def test_035_a_legacy_likely_same_is_fail_closed():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    assert detect_identity_uncertainties([_candidate035()],obs)==[]
+
+def test_035_b_legacy_unresolved_is_fail_closed():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    candidate=_candidate035(status=IdentityStatus.UNRESOLVED,certainty=CertaintyLevel.UNKNOWN)
+    assert detect_identity_uncertainties([candidate],obs)==[]
+
+def test_035_c_acquired_identity_creates_no_uncertainty():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    candidate=_candidate035(status=IdentityStatus.SAME_PHYSICAL_OBJECT,certainty=CertaintyLevel.CERTAIN)
+    assert detect_identity_uncertainties([candidate],obs)==[]
+
+def test_035_d_acquired_incompatibility_creates_no_uncertainty():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    candidate=_candidate035(status=IdentityStatus.INCOMPATIBLE,certainty=CertaintyLevel.CERTAIN)
+    assert detect_identity_uncertainties([candidate],obs)==[]
+
+def test_035_e_explicit_competition_creates_one_uncertainty():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    found=detect_identity_uncertainties([_enquirable035()],obs)
+    assert len(found)==1
+    assert found[0].source_kind=="identity_candidate"
+    assert found[0].source_ref=="candidate-opaque"
+    assert found[0].property_name=="identity"
+    assert found[0].open_alternatives==["same_physical_object","incompatible"]
+
+def test_035_f_enquirable_without_sufficient_alternatives_fails_validation():
+    with pytest.raises(ValueError):
+        _candidate035(inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+                      alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT])
+
+def test_035_g_non_enquirable_with_open_alternatives_fails_validation():
+    with pytest.raises(ValueError):
+        _candidate035(alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE])
+
+@pytest.mark.parametrize("status", [IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE])
+def test_035_h_acquired_state_cannot_be_open(status):
+    with pytest.raises(ValueError):
+        _candidate035(status=status,certainty=CertaintyLevel.CERTAIN,
+                      inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+                      alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE])
+
+def test_035_i_two_source_observations_are_preserved():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    u=detect_identity_uncertainties([_enquirable035()],obs)[0]
+    assert u.source_observation_ids==["obs-a","obs-b"]
+
+def test_035_j_three_source_observations_are_preserved():
+    ids=["obs-a","obs-b","obs-c"]
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2),_idobs035("obs-c",3)]
+    u=detect_identity_uncertainties([_enquirable035(ids)],obs)[0]
+    assert u.source_observation_ids==ids
+
+def test_035_k_photo_indexes_remain_recoverable_from_provenance():
+    obs=[_idobs035("obs-a",2),_idobs035("obs-b",5)]
+    u=detect_identity_uncertainties([_enquirable035()],obs)[0]
+    by_id={x.id:x for x in obs}
+    assert [by_id[x].photo_index for x in u.source_observation_ids]==[2,5]
+
+def test_035_l_existing_roi_is_preserved_without_copy_or_invention():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    u=detect_identity_uncertainties([_enquirable035()],obs)[0]
+    by_id={x.id:x for x in obs}
+    assert by_id[u.source_observation_ids[0]].region==obs[0].region
+
+def test_035_m_missing_roi_stays_missing():
+    obs=[_idobs035("obs-a",1,roi=False),_idobs035("obs-b",2)]
+    u=detect_identity_uncertainties([_enquirable035()],obs)[0]
+    by_id={x.id:x for x in obs}
+    assert by_id[u.source_observation_ids[0]].region is None
+
+def test_035_n_o_p_detector_ignores_text_category_and_id_semantics():
+    a=_idobs035("meaningless-X",1,statement="contradictory prose one",category="roof")
+    b=_idobs035("meaningless-Y",2,statement="unrelated prose two",category="stair")
+    candidate=IdentityCandidate(
+        id="semantically-empty-id",
+        observation_ids=[a.id,b.id],
+        status=IdentityStatus.LIKELY_SAME,
+        certainty=CertaintyLevel.PLAUSIBLE,
+        inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE],
+    )
+    u=detect_identity_uncertainties([candidate],[a,b])[0]
+    assert u.source_ref=="semantically-empty-id"
+    assert u.source_observation_ids==["meaningless-X","meaningless-Y"]
+
+def test_035_q_workspace_roundtrip_preserves_identity_contract_and_source():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    candidate=_enquirable035()
+    workspace=MultiViewWorkspace(photo_count=2,
+        pass_1=MultiViewPass(pass_number=1,observations=obs,identities=[candidate]),
+        pass_2=MultiViewPass(pass_number=2))
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.pass_1.identities[0].inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
+    assert detect_identity_uncertainties(loaded.pass_1.identities,loaded.pass_1.observations)[0].source_ref==candidate.id
+
+def test_035_r_legacy_workspace_without_new_fields_loads_fail_closed():
+    obs=[_idobs035("obs-a",1),_idobs035("obs-b",2)]
+    legacy={"schema_version":"0.1","photo_count":2,
+      "pass_1":{"pass_number":1,"observations":[x.model_dump(mode="json") for x in obs],
+        "identities":[{"id":"legacy","observation_ids":["obs-a","obs-b"],
+          "status":"likely_same","certainty":"plausible"}]},
+      "pass_2":{"pass_number":2}}
+    loaded=MultiViewWorkspace.model_validate(legacy)
+    candidate=loaded.pass_1.identities[0]
+    assert candidate.inquiry_state is IdentityInquiryState.NOT_ENQUIRABLE
+    assert candidate.open_alternatives==[]
+    assert detect_identity_uncertainties([candidate],loaded.pass_1.observations)==[]
+
+def test_035_s_continuation_uncertainty_shape_remains_backward_compatible():
+    observation=_obs026({"continuation"})
+    u=detect_continuity_uncertainties([observation])[0]
+    assert u.subject_ref==observation.id
+    assert u.source_kind=="observation"
+    assert u.source_ref is None
+    assert u.open_alternatives==[]
+    assert len(derive_competing_hypotheses(u))==2

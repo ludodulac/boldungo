@@ -92,7 +92,17 @@ class ViewAssessment(BaseModel):
 IDENTITY_CANDIDATE_RESPONSE_INVARIANTS = (
     "observation_ids MUST contain unique IDs.",
     "If status='same_physical_object', certainty MUST be 'certain' or 'plausible'.",
+    "Legacy/default inquiry_state='not_enquirable' MUST carry no open_alternatives.",
+    "inquiry_state='open_alternatives' requires at least two unique explicit alternatives: exactly 'same_physical_object' and 'incompatible'.",
+    "A CERTAIN same_physical_object or CERTAIN incompatible candidate MUST NOT simultaneously declare open alternatives.",
 )
+
+
+class IdentityInquiryState(str, Enum):
+    """Whether an identity candidate itself licenses an autonomous inquiry."""
+
+    NOT_ENQUIRABLE = "not_enquirable"
+    OPEN_ALTERNATIVES = "open_alternatives"
 
 
 class IdentityCandidate(BaseModel):
@@ -103,6 +113,8 @@ class IdentityCandidate(BaseModel):
     corroborating_photo_indexes: list[int] = Field(default_factory=list)
     conflicting_photo_indexes: list[int] = Field(default_factory=list)
     certainty: CertaintyLevel = CertaintyLevel.UNKNOWN
+    inquiry_state: IdentityInquiryState = IdentityInquiryState.NOT_ENQUIRABLE
+    open_alternatives: list[IdentityStatus] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_identity(self) -> "IdentityCandidate":
@@ -113,8 +125,19 @@ class IdentityCandidate(BaseModel):
             CertaintyLevel.PLAUSIBLE,
         }:
             raise ValueError("same physical object identity needs explicit support")
-        if self.status is IdentityStatus.INCOMPATIBLE and self.certainty is CertaintyLevel.CERTAIN:
+
+        if self.inquiry_state is IdentityInquiryState.NOT_ENQUIRABLE:
+            if self.open_alternatives:
+                raise ValueError("non-enquirable identity cannot carry open alternatives")
             return self
+
+        if self.status in {IdentityStatus.SAME_PHYSICAL_OBJECT, IdentityStatus.INCOMPATIBLE} and self.certainty is CertaintyLevel.CERTAIN:
+            raise ValueError("acquired identity state cannot simultaneously declare open alternatives")
+        if len(self.open_alternatives) < 2 or len(self.open_alternatives) != len(set(self.open_alternatives)):
+            raise ValueError("enquirable identity requires at least two unique explicit alternatives")
+        allowed = {IdentityStatus.SAME_PHYSICAL_OBJECT, IdentityStatus.INCOMPATIBLE}
+        if set(self.open_alternatives) != allowed:
+            raise ValueError("identity inquiry alternatives must explicitly be same_physical_object and incompatible")
         return self
 
 
@@ -225,13 +248,53 @@ def inquiry_property_registry_payload() -> list[dict]:
 
 
 class StructuredUncertainty(BaseModel):
-    """Local unresolved property with explicit observation provenance."""
+    """Unresolved structured competition with explicit source/provenance."""
 
     id: str = Field(min_length=1)
-    subject_ref: str = Field(min_length=1)
+    subject_ref: str | None = Field(default=None, min_length=1)
     property_name: str = Field(min_length=1)
     source_observation_ids: list[str] = Field(min_length=1)
     resolved_state: str | None = None
+    source_ref: str | None = Field(default=None, min_length=1)
+    source_kind: str = Field(default="observation", min_length=1)
+    open_alternatives: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_uncertainty_source(self) -> "StructuredUncertainty":
+        if self.source_kind == "observation" and self.subject_ref is None:
+            raise ValueError("observation uncertainty requires subject_ref")
+        if self.source_kind == "identity_candidate":
+            if self.source_ref is None:
+                raise ValueError("identity uncertainty requires source_ref")
+            if len(self.open_alternatives) < 2:
+                raise ValueError("identity uncertainty requires explicit open alternatives")
+        return self
+
+
+def detect_identity_uncertainties(
+    identities: list[IdentityCandidate],
+    observations: list[LocalObservation],
+) -> list[StructuredUncertainty]:
+    """Lift only explicitly enquirable identity competitions; infer nothing."""
+
+    observation_ids = {item.id for item in observations}
+    result: list[StructuredUncertainty] = []
+    for candidate in identities:
+        if candidate.inquiry_state is not IdentityInquiryState.OPEN_ALTERNATIVES:
+            continue
+        if not set(candidate.observation_ids).issubset(observation_ids):
+            continue
+        result.append(
+            StructuredUncertainty(
+                id=f"identity-uncertainty-{candidate.id}",
+                property_name="identity",
+                source_observation_ids=list(candidate.observation_ids),
+                source_ref=candidate.id,
+                source_kind="identity_candidate",
+                open_alternatives=[item.value for item in candidate.open_alternatives],
+            )
+        )
+    return result
 
 
 def detect_continuity_uncertainties(
