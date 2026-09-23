@@ -7,6 +7,12 @@ import pytest
 
 from brickhouse.vision.multiview import (
     AspectCertainty,
+    import_relation_pair_producer_response,
+    build_relation_pair_producer_request,
+    RelationPairElement,
+    RelationPairProducerSource,
+    RelationPairProducerResponse,
+    RelationPairProducerStatus,
     import_relation_alternative_producer_response,
     build_relation_alternative_producer_request,
     RelationAlternativeProposal,
@@ -3382,3 +3388,76 @@ def test_048_inconclusive_with_alternatives_rejected():
                 RelationAlternativeProposal(relation_token="relation_alpha",source_observation_ids=["obs-a"]),
                 RelationAlternativeProposal(relation_token="relation_beta",source_observation_ids=["obs-b"])],
             relation_descriptions={"relation_alpha":"A","relation_beta":"B"})
+
+
+# Experiment 050 — strict visual discovery of a relation-worthy pair.
+
+def _pair_obs_050():
+    return [
+        LocalObservation(id="o1",photo_index=1,status=ClaimStatus.OBSERVED,visibility=VisibilityStatus.VISIBLE,
+            region=NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2),proposed_category="synthetic-a",statement="Synthetic A."),
+        LocalObservation(id="o2",photo_index=2,status=ClaimStatus.OBSERVED,visibility=VisibilityStatus.VISIBLE,
+            region=NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4),proposed_category="synthetic-b",statement="Synthetic B."),
+    ]
+
+def _pair_req_050():
+    return build_relation_pair_producer_request("pair-request-050",_pair_obs_050(),[])
+
+def _pair_resp_050(status=RelationPairProducerStatus.PAIR_PROPOSED):
+    req=_pair_req_050()
+    kw=dict(schema_version="0.1",producer_request_id=req.producer_request_id,status=status,sources=req.sources)
+    if status is RelationPairProducerStatus.PAIR_PROPOSED:
+        kw.update(subject=RelationPairElement(element_ref="element-a",source_observation_ids=["o1"]),
+            object=RelationPairElement(element_ref="element-b",source_observation_ids=["o2"]),
+            visual_evidence_source_ids=["o1","o2"])
+    return RelationPairProducerResponse(**kw)
+
+def test_050_valid_pair_creates_non_enquirable_relationless_candidate():
+    candidate=import_relation_pair_producer_response(_pair_req_050(),_pair_resp_050())
+    assert candidate.subject_ref=="element-a" and candidate.object_ref=="element-b"
+    assert candidate.relation is None
+    assert candidate.inquiry_state is RelationInquiryState.NOT_ENQUIRABLE
+    assert candidate.open_alternatives==[]
+
+@pytest.mark.parametrize("status",[RelationPairProducerStatus.NO_RELIABLE_PAIR,RelationPairProducerStatus.INSUFFICIENT_VISUAL_EVIDENCE])
+def test_050_inconclusive_creates_no_pair(status):
+    assert import_relation_pair_producer_response(_pair_req_050(),_pair_resp_050(status)) is None
+
+def test_050_same_element_rejected():
+    req=_pair_req_050()
+    with pytest.raises(ValueError):
+        RelationPairProducerResponse(producer_request_id=req.producer_request_id,status="pair_proposed",sources=req.sources,
+            subject=RelationPairElement(element_ref="same",source_observation_ids=["o1"]),
+            object=RelationPairElement(element_ref="same",source_observation_ids=["o2"]),visual_evidence_source_ids=["o1","o2"])
+
+def test_050_unknown_or_outside_source_rejected():
+    response=_pair_resp_050().model_copy(update={"subject":RelationPairElement(element_ref="a",source_observation_ids=["unknown"])})
+    with pytest.raises(ValueError): import_relation_pair_producer_response(_pair_req_050(),response)
+
+@pytest.mark.parametrize("field,value",[
+    ("photo_index",9),
+    ("region",NormalizedImageRegion(x0=.5,y0=.5,x1=.6,y1=.6)),
+    ("statement","changed provenance"),
+])
+def test_050_source_mismatch_rejected(field,value):
+    response=_pair_resp_050(); bad=response.sources[0].model_copy(update={field:value})
+    response=response.model_copy(update={"sources":[bad,*response.sources[1:]]})
+    with pytest.raises(ValueError): import_relation_pair_producer_response(_pair_req_050(),response)
+
+def test_050_extra_field_rejected():
+    payload=_pair_resp_050().model_dump(); payload["extra"]="x"
+    with pytest.raises(ValueError): RelationPairProducerResponse.model_validate(payload)
+
+def test_050_persistence_reload_preserves_relationless_candidate():
+    candidate=import_relation_pair_producer_response(_pair_req_050(),_pair_resp_050())
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=_pair_obs_050(),relations=[candidate]),pass_2=MultiViewPass(pass_number=2))
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.pass_1.relations[0]==candidate
+    assert loaded.pass_1.relations[0].relation is None
+
+def test_050_inconclusive_payload_rejected():
+    req=_pair_req_050()
+    with pytest.raises(ValueError):
+        RelationPairProducerResponse(producer_request_id=req.producer_request_id,status="no_reliable_pair",sources=req.sources,
+            subject=RelationPairElement(element_ref="a",source_observation_ids=["o1"]),
+            object=RelationPairElement(element_ref="b",source_observation_ids=["o2"]),visual_evidence_source_ids=["o1","o2"])
