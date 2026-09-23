@@ -4383,6 +4383,8 @@ def test_073_world_hypothesis_is_deterministic_disposable_and_preserves_open_bra
     levels={a.epistemic_level for a in h1.organizations[0].assertions}
     assert {"OBSERVED","CUE","COMPARABLE_VISUAL_PROPERTY","CANDIDATE","AMBIGUOUS","EXHAUSTED"}.issubset(levels)
     assert all(a.epistemic_level!="OBSERVED" for a in h1.organizations[0].assertions if a.evidence_type=="IDENTITY_CANDIDATE")
+    assert all(a.provenance for a in h1.organizations[0].assertions)
+    assert all(p.observation_ref and p.photo_index and len(p.roi)==4 for a in h1.organizations[0].assertions for p in a.provenance)
     html=render_world_hypothesis_html(h1)
     assert "MONDE CENTRAL" in html and "Organisations concurrentes" in html and "Aucune géométrie 3D" in html
     print("WORLD_HYPOTHESIS_073="+h1.model_dump_json())
