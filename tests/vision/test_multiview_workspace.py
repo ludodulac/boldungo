@@ -116,6 +116,9 @@ from brickhouse.vision.multiview import (
     inquiry_property_registry_payload,
     INQUIRY_PROPERTY_REGISTRY,
 
+    IdentityDiscriminantInvestigationRecord,
+    record_identity_discriminant_investigation,
+    identity_discriminant_request_exhausted,
 )
 from brickhouse.vision.openai_provider import PhotoInput, analyze_building_photos
 from brickhouse.survey.models import NormalizedImageRegion
@@ -3769,3 +3772,34 @@ def test_064_discriminant_available_is_not_identity_resolution():
     assert discriminant is not None
     assert candidate.status is IdentityStatus.CANDIDATE
     assert candidate.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
+
+
+def test_065_negative_identity_discriminant_memory_survives_reload_and_blocks_exact_repeat():
+    candidate=IdentityCandidate(id="idc",observation_ids=["o1","o2"],status=IdentityStatus.LIKELY_SAME,certainty=CertaintyLevel.PLAUSIBLE,inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,open_alternatives=["same_physical_object","incompatible"])
+    observations=_pair_obs_050()
+    cues=[
+        RichIdentityCue(identity_candidate_ref="idc",polarity="SAME",epistemic_level="CUE",cue="same cue",provenance=[RichEvidenceProvenance(observation_ref="o1",photo_index=1,roi=(0.1,0.1,0.2,0.2))]),
+        RichIdentityCue(identity_candidate_ref="idc",polarity="DISTINCT",epistemic_level="CUE",cue="distinct cue",provenance=[RichEvidenceProvenance(observation_ref="o2",photo_index=2,roi=(0.3,0.3,0.4,0.4))]),
+    ]
+    observations=[observations[0].model_copy(update={"region":NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)}),observations[1].model_copy(update={"region":NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4)})]
+    request=build_identity_discriminant_producer_request(candidate,observations,cues)
+    response=IdentityDiscriminantProducerResponse(request_id=request.request_id,identity_candidate_id="idc",status="no_reliable_discriminant")
+    record=record_identity_discriminant_investigation("identity-uncertainty-idc",request,response)
+    assert record is not None and identity_discriminant_request_exhausted(request,[record])
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=observations,identities=[candidate]),pass_2=MultiViewPass(pass_number=2),rich_identity_cues=cues,identity_discriminant_investigations=[record])
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.pass_1.identities[0].inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
+    assert not loaded.identity_discriminants
+    assert identity_discriminant_request_exhausted(request,loaded.identity_discriminant_investigations)
+
+
+def test_065_new_identity_cue_makes_discriminant_request_non_identical():
+    candidate=IdentityCandidate(id="idc",observation_ids=["o1","o2"],status=IdentityStatus.LIKELY_SAME,certainty=CertaintyLevel.PLAUSIBLE,inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,open_alternatives=["same_physical_object","incompatible"])
+    observations=_pair_obs_050()
+    observations=[observations[0].model_copy(update={"region":NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)}),observations[1].model_copy(update={"region":NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4)})]
+    cues=[RichIdentityCue(identity_candidate_ref="idc",polarity="SAME",epistemic_level="CUE",cue="same",provenance=[RichEvidenceProvenance(observation_ref="o1",photo_index=1,roi=(.1,.1,.2,.2))]),RichIdentityCue(identity_candidate_ref="idc",polarity="DISTINCT",epistemic_level="CUE",cue="distinct",provenance=[RichEvidenceProvenance(observation_ref="o2",photo_index=2,roi=(.3,.3,.4,.4))])]
+    request=build_identity_discriminant_producer_request(candidate,observations,cues)
+    response=IdentityDiscriminantProducerResponse(request_id=request.request_id,identity_candidate_id="idc",status="no_reliable_discriminant")
+    record=record_identity_discriminant_investigation("u",request,response)
+    changed=build_identity_discriminant_producer_request(candidate,observations,[*cues,cues[0].model_copy(update={"cue":"new same evidence"})])
+    assert changed is not None and not identity_discriminant_request_exhausted(changed,[record])
