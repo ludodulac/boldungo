@@ -43,6 +43,7 @@ from brickhouse.vision.multiview import (
     IdentityCandidate,
     IdentityDiscriminant,
     IdentityDiscriminantProducerStatus,
+    IdentityDiscriminantCue,
     IdentityDiscriminantProducerResponse,
     build_identity_discriminant_producer_request,
     import_identity_discriminant_producer_response,
@@ -3738,3 +3739,33 @@ def test_063_identity_competition_has_generic_future_entity_partition_dependency
     assert dependencies[0].upstream_ref==uncertainties[0].id
     assert dependencies[0].downstream_kind=="future_world_representation"
     assert dependencies[0].downstream_ref=="physical-entity-partition:idc"
+
+
+def test_064_identity_discriminant_request_requires_both_rich_cue_polarities():
+    a=_obs("a",1).model_copy(update={"region":NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)})
+    b=_obs("b",2).model_copy(update={"region":NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4)})
+    candidate=IdentityCandidate(id="idc",observation_ids=["a","b"],status=IdentityStatus.CANDIDATE,certainty=CertaintyLevel.UNKNOWN,inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,open_alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE])
+    pa=RichEvidenceProvenance(observation_ref="a",photo_index=1,roi=(.1,.1,.2,.2))
+    pb=RichEvidenceProvenance(observation_ref="b",photo_index=2,roi=(.3,.3,.4,.4))
+    same=RichIdentityCue(identity_candidate_ref="idc",polarity="SAME",epistemic_level="CUE",cue="same cue",provenance=[pa,pb])
+    distinct=RichIdentityCue(identity_candidate_ref="idc",polarity="DISTINCT",epistemic_level="CUE",cue="distinct cue",provenance=[pa,pb])
+    assert build_identity_discriminant_producer_request(candidate,[a,b],[same]) is None
+    request=build_identity_discriminant_producer_request(candidate,[a,b],[same,distinct])
+    assert request is not None
+    assert {cue.polarity for cue in request.cues}=={"SAME","DISTINCT"}
+    assert request.open_alternatives==["same_physical_object","incompatible"]
+    assert "same cue" in [cue.cue for cue in request.cues]
+
+
+def test_064_discriminant_available_is_not_identity_resolution():
+    a=_obs("a",1).model_copy(update={"region":NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)})
+    b=_obs("b",2).model_copy(update={"region":NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4)})
+    candidate=IdentityCandidate(id="idc",observation_ids=["a","b"],status=IdentityStatus.CANDIDATE,certainty=CertaintyLevel.UNKNOWN,inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,open_alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE])
+    pa=RichEvidenceProvenance(observation_ref="a",photo_index=1,roi=(.1,.1,.2,.2)); pb=RichEvidenceProvenance(observation_ref="b",photo_index=2,roi=(.3,.3,.4,.4))
+    cues=[RichIdentityCue(identity_candidate_ref="idc",polarity=p,epistemic_level="CUE",cue=p,provenance=[pa,pb]) for p in ("SAME","DISTINCT")]
+    request=build_identity_discriminant_producer_request(candidate,[a,b],cues)
+    response=IdentityDiscriminantProducerResponse(request_id=request.request_id,identity_candidate_id="idc",status=IdentityDiscriminantProducerStatus.DISCRIMINANT_AVAILABLE,property_name="perceptual_discriminant_1",property_description="opaque documented property",source_ids_by_observation={"a":"identity-source-1","b":"identity-source-2"},outcomes_by_alternative={"same_physical_object":["outcome_alpha"],"incompatible":["outcome_beta"]},outcome_descriptions={"outcome_alpha":"observable alpha","outcome_beta":"observable beta"},required_source_ids=["identity-source-1","identity-source-2"])
+    discriminant=import_identity_discriminant_producer_response(request,response)
+    assert discriminant is not None
+    assert candidate.status is IdentityStatus.CANDIDATE
+    assert candidate.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
