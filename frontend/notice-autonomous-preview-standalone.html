@@ -1,6 +1,187 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BrickHouse — Maquette 3D</title>
+    <style>
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0b1020;
+  color: #f4f7fb;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { min-height: 100vh; background: radial-gradient(circle at top left, #17233f, #0b1020 55%); }
+button, .file-button, input { font: inherit; }
+.app-shell { min-height: 100vh; display: grid; grid-template-columns: minmax(260px, 340px) 1fr; }
+.panel { padding: 28px; border-right: 1px solid rgba(255,255,255,.09); background: rgba(8,13,27,.82); backdrop-filter: blur(18px); display: flex; flex-direction: column; gap: 24px; }
+.eyebrow { margin: 0 0 8px; text-transform: uppercase; letter-spacing: .15em; font-size: 12px; opacity: .65; }
+h1 { margin: 0; font-size: clamp(30px, 4vw, 44px); line-height: 1; }
+h2 { font-size: 14px; margin: 0 0 12px; text-transform: uppercase; letter-spacing: .08em; opacity: .72; }
+.intro { margin: 14px 0 0; line-height: 1.55; opacity: .72; }
+.controls { display: grid; gap: 10px; }
+button, .file-button { border: 1px solid rgba(255,255,255,.13); border-radius: 12px; padding: 11px 14px; background: rgba(255,255,255,.07); color: inherit; cursor: pointer; text-align: center; transition: transform .15s ease, background .15s ease; }
+button:hover, .file-button:hover { background: rgba(255,255,255,.12); transform: translateY(-1px); }
+button:disabled { opacity: .4; cursor: default; transform: none; }
+#file-input { display: none; }
+.status-card, .legend { border: 1px solid rgba(255,255,255,.09); border-radius: 16px; padding: 16px; background: rgba(255,255,255,.035); }
+dl { margin: 0; display: grid; gap: 9px; }
+dl div { display: flex; justify-content: space-between; gap: 12px; }
+dt { opacity: .58; }
+dd { margin: 0; font-variant-numeric: tabular-nums; text-align: right; }
+#fidelity-card { border-color: rgba(255,207,125,.24); background: rgba(255,207,125,.055); }
+#fidelity-card .intro { margin: 0 0 10px; font-size: 12px; }
+#fidelity-list { margin: 0; padding-left: 18px; display: grid; gap: 8px; font-size: 12px; line-height: 1.45; }
+#fidelity-list strong { color: #ffcf7d; }
+.legend p { margin: 8px 0; display: flex; align-items: center; gap: 9px; opacity: .78; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.swatch.wall { background: #d8c7a4; }
+.swatch.roof { background: #565b61; }
+.swatch.timber { background: #a87845; }
+.swatch.concrete { background: #b8b8b2; }
+.swatch.masonry { background: #d4d0c5; }
+.swatch.terrain { background: #72777b; }
+.message { min-height: 1.3em; margin: 0; font-size: 13px; color: #ffcf7d; line-height: 1.45; }
+.assembly-card { display: grid; gap: 12px; }
+.assembly-card[hidden] { display: none; }
+.assembly-header { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.assembly-header strong { font-size: 14px; line-height: 1.35; }
+.assembly-header span { opacity: .72; font-size: 12px; white-space: nowrap; color: #ffd08a; }
+#assembly-range { width: 100%; accent-color: #e5a15f; }
+.assembly-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.viewer-wrap { position: sticky; top: 0; align-self: start; min-width: 0; width: 100%; height: 100vh; min-height: 0; overflow: hidden; }
+#viewer { width: 100%; height: 100%; display: block; outline: none; }
+.viewer-hint { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); padding: 8px 12px; border-radius: 999px; background: rgba(7,11,22,.68); border: 1px solid rgba(255,255,255,.08); font-size: 12px; white-space: nowrap; opacity: .7; pointer-events: none; }
+@media (max-width: 760px) {
+  .app-shell { grid-template-columns: 1fr; grid-template-rows: auto minmax(58vh, 1fr); }
+  .panel { padding: 18px; border-right: 0; border-bottom: 1px solid rgba(255,255,255,.09); gap: 16px; }
+  .viewer-wrap { position: relative; top: auto; align-self: stretch; height: 58vh; min-height: 58vh; }
+  .controls { grid-template-columns: 1fr 1fr; }
+  .controls .file-button { grid-column: 1 / -1; }
+  .legend { display: none; }
+  .viewer-hint { bottom: 12px; max-width: calc(100% - 24px); white-space: normal; text-align: center; }
+}
+
+.notice-prototype-hud{position:absolute;z-index:4;top:24px;left:24px;display:flex;align-items:center;gap:28px;padding:14px 18px;border-radius:18px;background:rgba(255,255,255,.92);color:#172033;box-shadow:0 8px 30px rgba(15,23,42,.14);pointer-events:none}
+.notice-prototype-hud[hidden]{display:none}
+.notice-prototype-hud>strong{font-size:42px;line-height:1}
+.notice-parts{display:flex;gap:20px;align-items:center;font-size:22px;font-weight:800}
+.notice-parts span{display:flex;align-items:center;gap:8px}
+.notice-part-preview{display:block;width:72px;height:44px;object-fit:contain}
+body.notice-prototype-mode{background:#f3f4f6}
+body.notice-prototype-mode .app-shell{display:block}
+body.notice-prototype-mode .panel,body.notice-prototype-mode .viewer-hint{display:none}
+body.notice-prototype-mode .viewer-wrap{position:relative;height:100vh}
+@media(max-width:760px){.notice-prototype-hud{top:12px;left:12px;gap:16px;padding:10px 12px}.notice-prototype-hud>strong{font-size:34px}.notice-parts{gap:12px;font-size:18px}body.notice-prototype-mode .viewer-wrap{height:100vh}}
+
+.notice-navigation{display:flex;gap:.5rem;justify-content:center;margin-top:.55rem;pointer-events:auto}.notice-navigation button{font:inherit;font-weight:700;padding:.5rem .75rem;border:1px solid #cbd5e1;border-radius:.55rem;background:#fff;color:#111827}.notice-navigation button:disabled{opacity:.4}body.notice-prototype-mode .site-nav-root{display:none}@media(max-width:760px){.notice-prototype-hud{right:12px;flex-wrap:wrap;gap:10px 14px}.notice-prototype-hud>strong{font-size:30px}.notice-navigation{width:100%;margin-top:0}.notice-navigation button{flex:1;min-width:0;padding:.45rem .55rem}.notice-parts{flex:1;justify-content:flex-end;flex-wrap:wrap}}
+
+/* Step 12 fixed-reference prototype: desktop/print PLI must remain immediately readable. */
+@media(min-width:761px){
+  body.notice-prototype-mode .notice-prototype-hud{gap:34px;padding:18px 22px}
+  body.notice-prototype-mode .notice-parts{gap:26px;font-size:28px}
+  body.notice-prototype-mode .notice-parts span{gap:10px}
+  body.notice-prototype-mode .notice-part-preview{width:118px;height:72px}
+}
+@media print{
+  body.notice-prototype-mode .notice-parts{gap:26px;font-size:28px}
+  body.notice-prototype-mode .notice-part-preview{width:118px;height:72px}
+}
+
+</style>
+    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.185.0/examples/jsm/"}}</script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="panel">
+        <div><p class="eyebrow">BrickHouse</p><h1>Votre maquette</h1><p class="intro">Explorez le modèle 3D, parcourez le montage et récupérez la notice ou la liste des pièces.</p></div>
+        <section class="controls" aria-label="Navigation et contrôles du modèle">
+          <a class="file-button" href="./index.html">← Accueil BrickHouse</a>
+          <a class="file-button" href="./configurator.html">Créer une autre maison</a>
+          <label class="file-button" for="file-input">Ouvrir un export JSON</label><input id="file-input" type="file" accept="application/json,.json" />
+          <button id="reset-view" type="button">Vue perspective</button>
+          <div class="assembly-buttons" aria-label="Vues architecturales canoniques"><button id="view-front" type="button">Avant</button><button id="view-rear" type="button">Arrière</button></div>
+          <div class="assembly-buttons"><button id="view-left" type="button">Gauche</button><button id="view-right" type="button">Droite</button></div>
+          <button id="load-reference-house" type="button">Charger la maison des 5 photos</button>
+          <button id="load-sample" type="button">Charger l’exemple générique</button>
+          <a class="file-button" href="./instructions.html">Ouvrir la notice</a><button id="download-bom" type="button">Télécharger la liste des pièces</button>
+        </section>
+        <section class="status-card"><h2>Maquette</h2><dl id="model-summary"><div><dt>Projet</dt><dd>—</dd></div><div><dt>Pièces</dt><dd>—</dd></div><div><dt>Types</dt><dd>—</dd></div><div><dt>Taille</dt><dd>—</dd></div></dl></section>
+        <section id="precision-card" class="status-card" hidden><h2>Précision LEGO</h2><p id="precision-summary" class="intro">—</p><p id="scale-guidance" class="intro"></p></section>
+        <section id="fidelity-card" class="status-card" hidden><h2>Fidélité architecturale</h2><p class="intro">Ces points restent estimés ou approximés dans la maquette actuelle.</p><ul id="fidelity-list"></ul></section>
+        <section id="assembly-card" class="status-card assembly-card" hidden><h2>Montage</h2><div class="assembly-header"><strong id="assembly-title">—</strong><span id="assembly-progress">—</span></div><input id="assembly-range" type="range" min="0" max="0" value="0" step="1" /><div class="assembly-buttons"><button id="assembly-prev" type="button">← Précédent</button><button id="assembly-next" type="button">Suivant →</button></div><button id="assembly-full" type="button">Voir le modèle complet</button></section>
+        <section class="legend" aria-label="Légende"><h2>Légende</h2><p><span class="swatch wall"></span>Murs</p><p><span class="swatch roof"></span>Toiture</p><p><span class="swatch timber"></span>Bois</p><p><span class="swatch concrete"></span>Béton</p><p><span class="swatch masonry"></span>Maçonnerie</p><p><span class="swatch terrain"></span>Terrain</p></section>
+        <p id="message" class="message" role="status"></p>
+      </aside>
+      <section class="viewer-wrap"><div id="notice-prototype-hud" class="notice-prototype-hud" hidden><strong>1 / 34</strong><div class="notice-parts"></div><div class="notice-navigation"><button id="notice-prev" type="button" aria-label="Étape précédente">← Précédent</button><button id="notice-next" type="button" aria-label="Étape suivante">Suivant →</button></div></div><canvas id="viewer" aria-label="Visualisation 3D du bâtiment en briques"></canvas><div class="viewer-hint">Repère canonique : avant = y faible, droite = x fort · glisser pour tourner · molette/pincer pour zoomer</div></section>
+    </main>
+    <script id="autonomous-preview-data" type="application/json">{
+  "schema_version": "0.1",
+  "building_id": "building_simple_house_001",
+  "volume_id": "vol_main",
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "building_simple_house_001",
+    "volume_id": "vol_main",
+    "width_studs": 48,
+    "depth_studs": 38,
+    "height_plates": 106,
+    "canvas_width_studs": 52,
+    "canvas_depth_studs": 42,
+    "origin_x_studs": 2,
+    "origin_y_studs": 2,
+    "parts": [
+      {"placement_id":"wall-000001","part_id":"BRICK_1X8","category":"brick","component":"wall","x_studs":2,"y_studs":2,"z_plates":0,"rotation_quarter_turns":1,"facade":"front","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000002","part_id":"BRICK_1X8","category":"brick","component":"wall","x_studs":10,"y_studs":2,"z_plates":0,"rotation_quarter_turns":1,"facade":"front","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000016","part_id":"BRICK_1X8","category":"brick","component":"wall","x_studs":2,"y_studs":7,"z_plates":0,"rotation_quarter_turns":0,"facade":"left","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000017","part_id":"BRICK_1X4","category":"brick","component":"wall","x_studs":2,"y_studs":3,"z_plates":0,"rotation_quarter_turns":0,"facade":"left","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000041","part_id":"BRICK_1X6","category":"brick","component":"wall","x_studs":2,"y_studs":2,"z_plates":3,"rotation_quarter_turns":0,"facade":"left","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000063","part_id":"BRICK_1X4","category":"brick","component":"wall","x_studs":2,"y_studs":3,"z_plates":6,"rotation_quarter_turns":0,"facade":"left","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null}
+    ]
+  },
+  "bom": {
+    "schema_version":"0.1","building_id":"building_simple_house_001","volume_id":"vol_main","total_parts":6,"unique_part_types":3,
+    "lines":[
+      {"part_id":"BRICK_1X4","category":"brick","semantic_color":null,"quantity":2},
+      {"part_id":"BRICK_1X6","category":"brick","semantic_color":null,"quantity":1},
+      {"part_id":"BRICK_1X8","category":"brick","semantic_color":null,"quantity":3}
+    ]
+  },
+  "instruction_plan": {
+    "schema_version":"0.1","building_id":"building_simple_house_001","volume_id":"vol_main","total_steps":5,"total_parts":6,
+    "steps":[
+      {"step_id":"auto-step-0001","sequence":1,"title":"Autonomous step 1","placement_ids":["wall-000001"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0002","sequence":2,"title":"Autonomous step 2","placement_ids":["wall-000017","wall-000016"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0003","sequence":3,"title":"Autonomous step 3","placement_ids":["wall-000041"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0004","sequence":4,"title":"Autonomous step 4","placement_ids":["wall-000063"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0005","sequence":5,"title":"Autonomous step 5","placement_ids":["wall-000002"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"}
+    ]
+  },
+  "assembly_plan": {
+    "schema_version":"0.1","building_id":"building_simple_house_001","volume_id":"vol_main","total_steps":5,"total_parts":6,
+    "steps":[
+      {"step_id":"auto-step-0001","sequence":1,"title":"Autonomous step 1","placement_ids":["wall-000001"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0002","sequence":2,"title":"Autonomous step 2","placement_ids":["wall-000017","wall-000016"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0003","sequence":3,"title":"Autonomous step 3","placement_ids":["wall-000041"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0004","sequence":4,"title":"Autonomous step 4","placement_ids":["wall-000063"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0005","sequence":5,"title":"Autonomous step 5","placement_ids":["wall-000002"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"}
+    ]
+  },
+  "experimental_notice_preview": {
+    "source":"generate_autonomous_instruction_plan",
+    "source_model":"docs/examples/building-model-simple-house.json",
+    "front_width_studs":48,
+    "step_limit":5,
+    "adapter":"instruction_plan_steps_exposed_as_assembly_plan_for_existing_viewer"
+  }
+}
+</script>
+    <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-const PLATE_WORLD_HEIGHT=1/2.5;const noticeMode=new URLSearchParams(window.location.search).get('notice');const noticeMatch=/^step-(\d{4})$/.exec(noticeMode??'');const noticeStepNumber=noticeMatch?Number(noticeMatch[1]):null;const noticePrototypeMode=noticeStepNumber!==null&&noticeStepNumber>=1&&noticeStepNumber<=34;const autonomousPreviewMode=noticeMode==='autonomous-preview';const canvas=document.querySelector('#viewer'),messageEl=document.querySelector('#message'),summaryEl=document.querySelector('#model-summary'),fileInput=document.querySelector('#file-input'),resetButton=document.querySelector('#reset-view'),frontButton=document.querySelector('#view-front'),rearButton=document.querySelector('#view-rear'),leftButton=document.querySelector('#view-left'),rightButton=document.querySelector('#view-right'),sampleButton=document.querySelector('#load-sample'),downloadBomButton=document.querySelector('#download-bom'),fidelityCard=document.querySelector('#fidelity-card'),fidelityList=document.querySelector('#fidelity-list'),assemblyCard=document.querySelector('#assembly-card'),assemblyTitle=document.querySelector('#assembly-title'),assemblyProgress=document.querySelector('#assembly-progress'),assemblyRange=document.querySelector('#assembly-range'),assemblyPrev=document.querySelector('#assembly-prev'),assemblyNext=document.querySelector('#assembly-next'),assemblyFull=document.querySelector('#assembly-full');
+const PLATE_WORLD_HEIGHT=1/2.5;const noticeMode='autonomous-preview';const noticeMatch=/^step-(\d{4})$/.exec(noticeMode??'');const noticeStepNumber=noticeMatch?Number(noticeMatch[1]):null;const noticePrototypeMode=noticeStepNumber!==null&&noticeStepNumber>=1&&noticeStepNumber<=34;const autonomousPreviewMode=noticeMode==='autonomous-preview';const canvas=document.querySelector('#viewer'),messageEl=document.querySelector('#message'),summaryEl=document.querySelector('#model-summary'),fileInput=document.querySelector('#file-input'),resetButton=document.querySelector('#reset-view'),frontButton=document.querySelector('#view-front'),rearButton=document.querySelector('#view-rear'),leftButton=document.querySelector('#view-left'),rightButton=document.querySelector('#view-right'),sampleButton=document.querySelector('#load-sample'),downloadBomButton=document.querySelector('#download-bom'),fidelityCard=document.querySelector('#fidelity-card'),fidelityList=document.querySelector('#fidelity-list'),assemblyCard=document.querySelector('#assembly-card'),assemblyTitle=document.querySelector('#assembly-title'),assemblyProgress=document.querySelector('#assembly-progress'),assemblyRange=document.querySelector('#assembly-range'),assemblyPrev=document.querySelector('#assembly-prev'),assemblyNext=document.querySelector('#assembly-next'),assemblyFull=document.querySelector('#assembly-full');
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x101827);const camera=new THREE.PerspectiveCamera(45,1,.1,1000);const renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.screenSpacePanning=true;scene.add(new THREE.HemisphereLight(0xdcecff,0x20283a,2.35));const keyLight=new THREE.DirectionalLight(0xfff4df,3.1);keyLight.position.set(18,28,16);keyLight.castShadow=true;scene.add(keyLight);const fillLight=new THREE.DirectionalLight(0x9ec5ff,.75);fillLight.position.set(-14,10,-18);scene.add(fillLight);const ground=new THREE.GridHelper(80,80,0x53627c,0x27344b);ground.position.y=-.01;scene.add(ground);const modelGroup=new THREE.Group();modelGroup.scale.z=-1;scene.add(modelGroup);
 const exteriorCategories=['timber','concrete','masonry','stone','metal','composite'];const palette={brick:0xd8c7a4,facade_detail:0xf2eee5,window_frame:0xf2eee5,window_pane:0x91c7e8,roof_tile:0x565b61,ridge_tile:0x565b61,timber:0xa87845,concrete:0xb8b8b2,masonry:0xd4d0c5,stone:0x96938b,metal:0x8b9299,composite:0x8d8175,terrain:0x72777b};const namedColors={off_white:0xe8e5dc,white:0xf3f3ef,cream:0xe4d7b5,beige:0xcbb991,gray:0x777b7e,grey:0x777b7e,dark_gray:0x4d5257,dark_grey:0x4d5257,black:0x24272b,dark_brown:0x49382e,brown:0x77543d,red:0xa94b42,terracotta:0xa85b46};const materials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:k==='window_pane'?.18:k==='timber'?.58:k==='metal'?.28:.48,metalness:k==='metal'?.55:0,transparent:k==='window_pane',opacity:k==='window_pane'?.58:1})]));const fadedMaterials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:.62,transparent:true,opacity:.32,depthWrite:false})]));const noticeOutlineMaterial=new THREE.LineBasicMaterial({color:0x2563eb,linewidth:1});
 const highlightMaterials=Object.fromEntries(Object.entries(palette).map(([k,c])=>[k,new THREE.MeshStandardMaterial({color:c,roughness:.34,emissive:c,emissiveIntensity:.18})]));const noticeActionMaterial=new THREE.MeshStandardMaterial({color:0xf59e0b,roughness:.28,emissive:0xf59e0b,emissiveIntensity:.34});const semanticMaterials=new Map();const edgeMaterial=new THREE.LineBasicMaterial({color:0x171b24,transparent:true,opacity:.30});const studGeometry=new THREE.CylinderGeometry(.30,.30,.15,14);const studDetailEnabled=!window.matchMedia('(max-width: 760px)').matches;let studMeshBudgetEnabled=true;let lastBundle=null,meshByPlacementId=new Map(),currentAssemblyStep=null;
@@ -182,6 +363,9 @@ async function loadNoticePrototype(){
     document.querySelector('#notice-next')?.addEventListener('click',()=>goToNoticeStep(window.__NOTICE_PROOF__?.current_sequence??1));
   }catch(e){setMessage(`NOTICE indisponible : ${e.message}`);}
 }
-async function loadAutonomousPreview(){try{const r=await fetch('./notice-autonomous-preview-export.json',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);renderBundle(await r.json(),{persist:false});showAssemblyStep(0);}catch(e){setMessage(`NOTICE autonome indisponible : ${e.message}`);}}
+async function loadAutonomousPreview(){try{const data=JSON.parse(document.querySelector('#autonomous-preview-data').textContent);renderBundle(data,{persist:false});showAssemblyStep(0);}catch(e){setMessage(`NOTICE autonome indisponible : ${e.message}`);}}
 function configureAssembly(b){const p=b.assembly_plan;if(!p?.steps?.length){assemblyCard.hidden=true;return;}assemblyCard.hidden=false;assemblyRange.min='0';assemblyRange.max=String(p.steps.length-1);assemblyRange.value='0';assemblyPrev.disabled=true;assemblyNext.disabled=p.steps.length<=1;showFullModel();}function showAssemblyStep(i){const p=lastBundle?.assembly_plan;if(!p?.steps?.length)return;const n=Math.max(0,Math.min(i,p.steps.length-1));currentAssemblyStep=n;assemblyRange.value=String(n);const prev=new Set();let cum=0;for(let j=0;j<n;j++){for(const id of p.steps[j].placement_ids)prev.add(id);cum+=p.steps[j].placement_ids.length;}const step=p.steps[n],cur=new Set(step.placement_ids);cum+=cur.size;for(const[id,m]of meshByPlacementId)setPartState(m,cur.has(id)?'current':prev.has(id)?'previous':'hidden');assemblyTitle.textContent=step.title;assemblyProgress.textContent=`Étape ${step.sequence}/${p.total_steps} · +${step.placement_ids.length} · ${cum}/${p.total_parts} pièces`;assemblyPrev.disabled=n===0;assemblyNext.disabled=n===p.steps.length-1;}function showFullModel(){for(const m of meshByPlacementId.values())setPartState(m,'normal');currentAssemblyStep=null;assemblyTitle.textContent='Modèle complet';assemblyProgress.textContent=lastBundle?.assembly_plan?`${lastBundle.assembly_plan.total_parts} pièces`:'';}
 function csvCell(value){const text=String(value??'');return /[",\n]/.test(text)?`"${text.replace(/"/g,'""')}"`:text;}function downloadBom(b){const text=['part_id,category,semantic_color,quantity',...b.bom.lines.map(l=>[l.part_id,l.category,l.semantic_color??'',l.quantity].map(csvCell).join(','))].join('\n')+'\n',blob=new Blob([text],{type:'text/csv;charset=utf-8'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=`${b.building_id}-bom.csv`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);}function renderBundle(b,{persist=true}={}){validateBundle(b);applyAppearance(b);clearModel();studMeshBudgetEnabled=b.brick_model.parts.length<=1200;for(const p of b.brick_model.parts){const m=makePartMesh(p);modelGroup.add(m);meshByPlacementId.set(p.placement_id,m);}lastBundle=b;updateSummary(b);updateFidelity(b);configureAssembly(b);frameModel();if(persist)localStorage.setItem('brickhouse.currentExport',JSON.stringify(b));setMessage('');}function loadPendingExport(){const raw=localStorage.getItem('brickhouse.pendingExport');if(!raw)return false;try{renderBundle(JSON.parse(raw));localStorage.removeItem('brickhouse.pendingExport');setMessage('Votre maquette BrickHouse est prête.');return true;}catch(error){localStorage.removeItem('brickhouse.pendingExport');setMessage(`Export généré invalide : ${error.message}`);return false;}}function loadCurrentExport(){const raw=localStorage.getItem('brickhouse.currentExport');if(!raw)return false;try{renderBundle(JSON.parse(raw),{persist:false});setMessage('Dernière maquette rechargée.');return true;}catch{localStorage.removeItem('brickhouse.currentExport');return false;}}async function loadSample(){try{const r=await fetch('./sample-export.json',{cache:'no-store'});if(!r.ok)throw new Error(`HTTP ${r.status}`);renderBundle(await r.json());setMessage('Exemple BrickHouse chargé.');}catch(e){setMessage(`Impossible de charger l’exemple : ${e.message}`);}}fileInput.addEventListener('change',async()=>{const f=fileInput.files?.[0];if(!f)return;try{renderBundle(JSON.parse(await f.text()));setMessage('Export chargé.');}catch(e){setMessage(`JSON invalide : ${e.message}`);}finally{fileInput.value='';}});resetButton.addEventListener('click',()=>{if(lastBundle)frameCanonicalView('perspective');});frontButton.addEventListener('click',()=>{if(lastBundle)frameCanonicalView('front');});rearButton.addEventListener('click',()=>{if(lastBundle)frameCanonicalView('rear');});leftButton.addEventListener('click',()=>{if(lastBundle)frameCanonicalView('left');});rightButton.addEventListener('click',()=>{if(lastBundle)frameCanonicalView('right');});sampleButton.addEventListener('click',loadSample);downloadBomButton.addEventListener('click',()=>{if(lastBundle)downloadBom(lastBundle);});assemblyRange.addEventListener('input',()=>showAssemblyStep(Number(assemblyRange.value)));assemblyPrev.addEventListener('click',()=>showAssemblyStep((currentAssemblyStep??0)-1));assemblyNext.addEventListener('click',()=>showAssemblyStep((currentAssemblyStep??-1)+1));assemblyFull.addEventListener('click',showFullModel);function resizeRenderer(){const w=canvas.clientWidth,h=canvas.clientHeight;if(canvas.width!==Math.floor(w*renderer.getPixelRatio())||canvas.height!==Math.floor(h*renderer.getPixelRatio())){renderer.setSize(w,h,false);camera.aspect=w/Math.max(h,1);camera.updateProjectionMatrix();}}renderer.setAnimationLoop(()=>{resizeRenderer();controls.update();renderer.render(scene,camera);});if(noticePrototypeMode)loadNoticePrototype();else if(autonomousPreviewMode)loadAutonomousPreview();else if(!loadPendingExport()&&!loadCurrentExport())loadSample();
+</script>
+  </body>
+</html>

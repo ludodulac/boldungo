@@ -2,7 +2,8 @@ from brickhouse.bricks.assembly import generate_assembly_plan
 from brickhouse.bricks.bom import generate_bom
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 from brickhouse.bricks.export import create_export_bundle
-from brickhouse.bricks.instructions import generate_instruction_plan
+from brickhouse.bricks.instructions import generate_instruction_plan, generate_autonomous_instruction_plan
+from brickhouse.bricks.assembly_planner import plan_supported_non_roof_parts, validate_planner_result
 
 
 def _model() -> BrickModel:
@@ -81,3 +82,17 @@ def test_export_bundle_adds_instruction_plan_without_removing_assembly_plan() ->
     ]
     assert [step.view for step in bundle.instruction_plan.steps] == [step.view for step in assembly.steps]
     assert any(step.instruction_kind == "subassembly" for step in bundle.instruction_plan.steps)
+
+
+def test_autonomous_instruction_plan_uses_stable_renderer_contract() -> None:
+    model = _model()
+    result = plan_supported_non_roof_parts(model)
+    assert validate_planner_result(model, result) == ()
+    instruction = generate_autonomous_instruction_plan(model, result, max_parts=8)
+
+    planned = [step.placement_id for step in result.steps]
+    projected = [placement_id for step in instruction.steps for placement_id in step.placement_ids]
+    assert projected == planned
+    assert instruction.total_parts == len(planned)
+    assert instruction.total_steps == len(instruction.steps)
+    assert all(step.step_id.startswith("auto-step-") for step in instruction.steps)

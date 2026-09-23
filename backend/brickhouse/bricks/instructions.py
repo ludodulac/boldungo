@@ -6,6 +6,8 @@ from typing import Literal
 from pydantic import BaseModel, Field, model_validator
 
 from .assembly import AssemblyPlan, InstructionKind, InstructionView
+from .assembly_planner import PlannerResult, build_autonomous_instruction_steps
+from .brick_model import BrickModel
 
 InstructionFocus = Literal["normal", "closeup"]
 
@@ -69,5 +71,36 @@ def generate_instruction_plan(assembly_plan: AssemblyPlan) -> InstructionPlan:
         volume_id=assembly_plan.volume_id,
         total_steps=assembly_plan.total_steps,
         total_parts=assembly_plan.total_parts,
+        steps=steps,
+    )
+
+
+def generate_autonomous_instruction_plan(
+    model: BrickModel, result: PlannerResult, *, max_parts: int = 8
+) -> InstructionPlan:
+    """Adapt an experimental autonomous plan to the stable InstructionPlan contract.
+
+    This does not replace the production AssemblyPlan path; it gives renderers a
+    contract-compatible experimental input while planner validation matures.
+    """
+    autonomous = build_autonomous_instruction_steps(model, result, max_parts=max_parts)
+    steps = [
+        InstructionStep(
+            step_id=f"auto-step-{step.sequence:04d}",
+            sequence=step.sequence,
+            title=f"Autonomous step {step.sequence}",
+            placement_ids=list(step.placement_ids),
+            phase="autonomous",
+            instruction_kind="placement",
+            focus="normal",
+            view="perspective",
+        )
+        for step in autonomous
+    ]
+    return InstructionPlan(
+        building_id=model.building_id,
+        volume_id=model.volume_id,
+        total_steps=len(steps),
+        total_parts=sum(len(step.placement_ids) for step in autonomous),
         steps=steps,
     )
