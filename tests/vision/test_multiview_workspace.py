@@ -59,6 +59,9 @@ from brickhouse.vision.multiview import (
     import_rich_visual_bootstrap_response,
     derive_identity_world_representation_dependencies,
     build_multiview_world_constraint_graph,
+    plan_missing_constraint_perceptual_query,
+    MissingConstraintPlannerState,
+    identity_discriminant_equivalence_signature,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -3976,3 +3979,61 @@ def test_066_real_post_065_graph_metrics(capsys):
     assert graph.missing_constraints[0].downstream_refs==[
         "physical-entity-partition:idc_sidewall_p2_p4"
     ]
+
+
+def test_067_real_missing_constraint_has_properties_but_no_structured_discriminating_mapping(capsys):
+    workspace=_real_workspace_post_065()
+    graph=build_multiview_world_constraint_graph(workspace)
+    missing=next(x for x in graph.missing_constraints if x.source_uncertainty_id=="identity-uncertainty-idc_sidewall_p2_p4")
+    decision=plan_missing_constraint_perceptual_query(workspace,graph,missing)
+    assert decision.state is MissingConstraintPlannerState.NO_DISCRIMINATING_MAPPING
+    actual={(x.observation_ref,x.property_name) for x in decision.candidate_properties}
+    assert actual=={
+        ("obs_p2_side_wall","light_render"),("obs_p2_side_wall","upper_window"),
+        ("obs_p4_rear_wall","upper_left_window"),("obs_p4_rear_wall","lower_right_window"),
+    }
+    assert set(decision.missing_structured_information)=={
+        "cross_observation_property_correspondence",
+        "property_outcome_mapping_to_competing_world_organizations",
+    }
+    assert len(decision.negative_memory_matches)==1
+    print("PLANNER_067="+decision.model_dump_json())
+
+
+def test_067_planner_is_deterministic_after_workspace_reload():
+    workspace=_real_workspace_post_065()
+    graph=build_multiview_world_constraint_graph(workspace)
+    missing=graph.missing_constraints[0]
+    first=plan_missing_constraint_perceptual_query(workspace,graph,missing)
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    rebuilt=build_multiview_world_constraint_graph(loaded)
+    second=plan_missing_constraint_perceptual_query(loaded,rebuilt,rebuilt.missing_constraints[0])
+    assert first.model_dump(mode="json")==second.model_dump(mode="json")
+
+
+def test_067_negative_memory_signature_ignores_request_and_opaque_token_renaming_and_source_order():
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    request=IdentityDiscriminantProducerRequest.model_validate_json(
+        (fixture_dir/"identity-discriminant-producer-request-064.json").read_text()
+    )
+    renamed=request.model_copy(update={
+        "request_id":"renamed-request",
+        "allowed_property_names":["renamed_property"],
+        "allowed_outcomes":["renamed_a","renamed_b"],
+        "sources":list(reversed(request.sources)),
+        "instruction":"different wording must not make perceptual evidence new",
+    })
+    assert identity_discriminant_equivalence_signature(request)==identity_discriminant_equivalence_signature(renamed)
+
+
+def test_067_no_properties_reports_no_structured_property_without_combinatorics():
+    workspace=_real_workspace_post_065()
+    refs={"obs_p2_side_wall","obs_p4_rear_wall"}
+    p1=workspace.pass_1.model_copy(update={"observations":[
+        x.model_copy(update={"observable_properties":None,"observed_property_states":None}) if x.id in refs else x
+        for x in workspace.pass_1.observations
+    ]})
+    workspace=workspace.model_copy(update={"pass_1":p1})
+    graph=build_multiview_world_constraint_graph(workspace)
+    decision=plan_missing_constraint_perceptual_query(workspace,graph,graph.missing_constraints[0])
+    assert decision.state is MissingConstraintPlannerState.NO_STRUCTURED_PROPERTY
