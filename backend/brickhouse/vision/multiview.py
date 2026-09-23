@@ -3273,6 +3273,194 @@ class MultiViewPass(BaseModel):
     hypotheses: list[OpenHypothesis] = Field(default_factory=list)
 
 
+
+class WorldConstraintNode(BaseModel):
+    """Traceable graph node; never a new physical-world truth."""
+    model_config = ConfigDict(extra="forbid")
+    id: str = Field(min_length=1)
+    kind: Literal["observation", "identity_candidate"]
+    source_ref: str = Field(min_length=1)
+    photo_index: int | None = Field(default=None, ge=1)
+
+
+class WorldConstraint(BaseModel):
+    """Epistemic constraint projected from already-structured workspace evidence."""
+    model_config = ConfigDict(extra="forbid")
+    id: str = Field(min_length=1)
+    kind: Literal[
+        "SAME_CUE", "DISTINCT_CUE", "PERCEPTUAL_RELATION", "CONTINUATION",
+        "VISIBILITY", "OPEN_UNCERTAINTY", "EXHAUSTED_DISCRIMINANT"
+    ]
+    node_refs: list[str] = Field(min_length=1)
+    epistemic_level: str = Field(min_length=1)
+    token: str | None = None
+    provenance: list[RichEvidenceProvenance] = Field(default_factory=list)
+    source_ref: str | None = None
+
+
+class CompetingWorldOrganization(BaseModel):
+    """One explicitly licensed organization for an already-open structured uncertainty."""
+    model_config = ConfigDict(extra="forbid")
+    id: str = Field(min_length=1)
+    source_uncertainty_id: str = Field(min_length=1)
+    alternative_token: str = Field(min_length=1)
+    affected_node_refs: list[str] = Field(min_length=1)
+
+
+class MissingWorldConstraint(BaseModel):
+    """Structural gap only; it does not invent the perceptual property needed to fill it."""
+    model_config = ConfigDict(extra="forbid")
+    id: str = Field(min_length=1)
+    kind: Literal["DISCRIMINATING_CONSTRAINT"]
+    source_uncertainty_id: str = Field(min_length=1)
+    competing_organization_ids: list[str] = Field(min_length=2)
+    source_observation_refs: list[str] = Field(min_length=1)
+    downstream_refs: list[str] = Field(default_factory=list)
+    exhausted: bool = False
+
+
+class MultiViewWorldConstraintGraph(BaseModel):
+    """Deterministic projection of MultiViewWorkspace, not a persistent truth store."""
+    model_config = ConfigDict(extra="forbid")
+    nodes: list[WorldConstraintNode] = Field(default_factory=list)
+    constraints: list[WorldConstraint] = Field(default_factory=list)
+    components: list[list[str]] = Field(default_factory=list)
+    competing_world_organizations: list[CompetingWorldOrganization] = Field(default_factory=list)
+    missing_constraints: list[MissingWorldConstraint] = Field(default_factory=list)
+    contradictions: list[str] = Field(default_factory=list)
+    insufficiently_connected_components: list[list[str]] = Field(default_factory=list)
+
+
+def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> MultiViewWorldConstraintGraph:
+    """Project only explicit structured evidence. No prose parsing, transitive identity fusion or hidden topology."""
+    observations = [*workspace.pass_1.observations, *workspace.pass_2.observations]
+    identities = [*workspace.pass_1.identities, *workspace.pass_2.identities]
+    observation_by_id = {item.id: item for item in observations}
+    identity_by_id = {item.id: item for item in identities}
+    nodes = [
+        WorldConstraintNode(id=f"observation:{item.id}", kind="observation", source_ref=item.id, photo_index=item.photo_index)
+        for item in observations
+    ] + [
+        WorldConstraintNode(id=f"identity_candidate:{item.id}", kind="identity_candidate", source_ref=item.id)
+        for item in identities
+    ]
+    constraints: list[WorldConstraint] = []
+    serial = 0
+    def add(kind: str, refs: list[str], epistemic: str, *, token: str | None = None,
+            provenance: list[RichEvidenceProvenance] | None = None, source_ref: str | None = None) -> None:
+        nonlocal serial
+        serial += 1
+        constraints.append(WorldConstraint(
+            id=f"world-constraint-{serial}", kind=kind, node_refs=refs,
+            epistemic_level=epistemic, token=token, provenance=provenance or [], source_ref=source_ref,
+        ))
+
+    for observation in observations:
+        add("VISIBILITY", [f"observation:{observation.id}"], "OBSERVED",
+            token=observation.visibility.value, source_ref=observation.id)
+        for property_name, state in (observation.observed_property_states or {}).items():
+            if property_name == "continuation":
+                add("CONTINUATION", [f"observation:{observation.id}"], "OBSERVED",
+                    token=state, source_ref=observation.id)
+
+    for cue in workspace.rich_identity_cues:
+        candidate = identity_by_id.get(cue.identity_candidate_ref)
+        if candidate is None:
+            continue
+        refs = [f"identity_candidate:{candidate.id}"] + [
+            f"observation:{item}" for item in candidate.observation_ids
+        ]
+        add(f"{cue.polarity}_CUE", refs, cue.epistemic_level, token=cue.polarity,
+            provenance=cue.provenance, source_ref=candidate.id)
+
+    for relation in workspace.rich_relation_evidence:
+        add("PERCEPTUAL_RELATION",
+            [f"observation:{relation.subject_ref}", f"observation:{relation.object_ref}"],
+            relation.epistemic_level, token=relation.relation_token,
+            provenance=relation.provenance, source_ref=f"{relation.subject_ref}->{relation.object_ref}")
+
+    uncertainties = derive_existing_structured_uncertainties(workspace)
+    organizations: list[CompetingWorldOrganization] = []
+    for uncertainty in uncertainties:
+        if uncertainty.resolved_state is not None or len(uncertainty.open_alternatives) < 2:
+            continue
+        refs: list[str] = []
+        if uncertainty.source_kind == "identity_candidate" and uncertainty.source_ref in identity_by_id:
+            candidate = identity_by_id[uncertainty.source_ref]
+            refs = [f"identity_candidate:{candidate.id}"] + [f"observation:{x}" for x in candidate.observation_ids]
+        elif uncertainty.source_ref in observation_by_id:
+            refs = [f"observation:{uncertainty.source_ref}"]
+        if refs:
+            add("OPEN_UNCERTAINTY", refs, "AMBIGUOUS", source_ref=uncertainty.id)
+            for alternative in uncertainty.open_alternatives:
+                organizations.append(CompetingWorldOrganization(
+                    id=f"world-organization:{uncertainty.id}:{alternative}",
+                    source_uncertainty_id=uncertainty.id, alternative_token=alternative,
+                    affected_node_refs=refs,
+                ))
+
+    exhausted_candidate_ids = {item.identity_candidate_id for item in workspace.identity_discriminant_investigations}
+    for candidate_id in sorted(exhausted_candidate_ids):
+        if candidate_id in identity_by_id:
+            add("EXHAUSTED_DISCRIMINANT", [f"identity_candidate:{candidate_id}"], "NEGATIVE_MEMORY",
+                source_ref=candidate_id)
+
+    # Connected components use only explicit multi-node constraints; unary metadata never invents connectivity.
+    adjacency: dict[str, set[str]] = {node.id: set() for node in nodes}
+    for constraint in constraints:
+        refs = [ref for ref in constraint.node_refs if ref in adjacency]
+        for left in refs:
+            adjacency[left].update(ref for ref in refs if ref != left)
+    components: list[list[str]] = []
+    unseen = set(adjacency)
+    while unseen:
+        start = min(unseen); stack = [start]; component: set[str] = set()
+        while stack:
+            current = stack.pop()
+            if current in component: continue
+            component.add(current); unseen.discard(current)
+            stack.extend(adjacency[current] - component)
+        components.append(sorted(component))
+
+    # SAME and DISTINCT cues are competing evidence, not a contradiction by themselves.
+    contradictions: list[str] = []
+    for identity in identities:
+        if identity.status is IdentityStatus.SAME_PHYSICAL_OBJECT and identity.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES:
+            contradictions.append(identity.id)
+
+    dependencies = workspace.reasoning_dependencies + derive_identity_world_representation_dependencies(uncertainties)
+    missing: list[MissingWorldConstraint] = []
+    for uncertainty in uncertainties:
+        org_ids = [item.id for item in organizations if item.source_uncertainty_id == uncertainty.id]
+        if len(org_ids) < 2:
+            continue
+        source_obs: list[str] = []
+        if uncertainty.source_kind == "identity_candidate" and uncertainty.source_ref in identity_by_id:
+            source_obs = list(identity_by_id[uncertainty.source_ref].observation_ids)
+        downstream = sorted({item.downstream_ref for item in dependencies if item.upstream_ref == uncertainty.id})
+        exhausted = uncertainty.source_ref in exhausted_candidate_ids
+        missing.append(MissingWorldConstraint(
+            id=f"missing-discriminating-constraint:{uncertainty.id}",
+            kind="DISCRIMINATING_CONSTRAINT", source_uncertainty_id=uncertainty.id,
+            competing_organization_ids=org_ids, source_observation_refs=source_obs,
+            downstream_refs=downstream, exhausted=exhausted,
+        ))
+
+    insufficient: list[list[str]] = []
+    for component in components:
+        photo_indexes = {
+            node.photo_index for node in nodes
+            if node.id in component and node.kind == "observation" and node.photo_index is not None
+        }
+        if len(photo_indexes) < 2:
+            insufficient.append(component)
+
+    return MultiViewWorldConstraintGraph(
+        nodes=nodes, constraints=constraints, components=components,
+        competing_world_organizations=organizations, missing_constraints=missing,
+        contradictions=contradictions, insufficiently_connected_components=insufficient,
+    )
+
 class MultiViewWorkspace(BaseModel):
     schema_version: Literal["0.1"] = "0.1"
     photo_count: int = Field(ge=1)
