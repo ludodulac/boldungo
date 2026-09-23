@@ -58,6 +58,7 @@ from brickhouse.vision.multiview import (
     RichVisualBootstrapResponse,
     import_rich_visual_bootstrap_response,
     derive_identity_world_representation_dependencies,
+    build_multiview_world_constraint_graph,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -3900,3 +3901,78 @@ def test_065_real_064_response_validates_and_persists_without_identity_promotion
         loaded.pass_1.identities[0],loaded.pass_1.observations,loaded.rich_identity_cues,
         loaded.identity_discriminant_investigations,
     ) is None
+
+
+def _real_workspace_post_065():
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    response=RichVisualBootstrapResponse.model_validate_json(
+        (fixture_dir/"visual-bootstrap-response-062.json").read_text()
+    )
+    request=build_rich_multiview_bootstrap_request(
+        "real-house-5-rich-multiview-062",
+        ["01-original.jpg","02-original.jpg","03-original.jpg","04-original.jpg","05-original.jpg"],
+    )
+    workspace=import_rich_visual_bootstrap_response(request,response)
+    request064=IdentityDiscriminantProducerRequest.model_validate_json(
+        (fixture_dir/"identity-discriminant-producer-request-064.json").read_text()
+    )
+    response064=IdentityDiscriminantProducerResponse.model_validate_json(
+        (fixture_dir/"identity-discriminant-producer-response-064.json").read_text()
+    )
+    record=record_identity_discriminant_investigation(request064,response064)
+    uncertainties=derive_existing_structured_uncertainties(workspace)
+    dependencies=derive_identity_world_representation_dependencies(uncertainties)
+    return workspace.model_copy(update={
+        "identity_discriminant_investigations":[record],
+        "reasoning_dependencies":dependencies,
+    })
+
+
+def test_066_graph_is_deterministic_projection_and_survives_workspace_reload():
+    workspace=_real_workspace_post_065()
+    graph=build_multiview_world_constraint_graph(workspace)
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    rebuilt=build_multiview_world_constraint_graph(loaded)
+    assert graph.model_dump(mode="json")==rebuilt.model_dump(mode="json")
+    assert "world_constraint_graph" not in workspace.model_fields
+    assert all(node.kind in {"observation","identity_candidate"} for node in graph.nodes)
+
+
+def test_066_no_naive_identity_transitivity_or_same_only_competition():
+    a,b,c=_obs("a",1),_obs("b",2),_obs("c",3)
+    ab=IdentityCandidate(id="ab",observation_ids=["a","b"],status=IdentityStatus.CANDIDATE)
+    bc=IdentityCandidate(id="bc",observation_ids=["b","c"],status=IdentityStatus.CANDIDATE)
+    workspace=MultiViewWorkspace(
+        photo_count=3,pass_1=MultiViewPass(pass_number=1,observations=[a,b,c],identities=[ab,bc]),
+        pass_2=MultiViewPass(pass_number=2),
+    )
+    graph=build_multiview_world_constraint_graph(workspace)
+    assert graph.competing_world_organizations==[]
+    assert not any(set(item)=={"observation:a","observation:b","observation:c"} for item in graph.components)
+
+
+def test_066_real_post_065_graph_metrics(capsys):
+    graph=build_multiview_world_constraint_graph(_real_workspace_post_065())
+    counts={
+        "nodes":len(graph.nodes),
+        "constraints":len(graph.constraints),
+        "components":len(graph.components),
+        "same":sum(x.kind=="SAME_CUE" for x in graph.constraints),
+        "distinct":sum(x.kind=="DISTINCT_CUE" for x in graph.constraints),
+        "relations":sum(x.kind=="PERCEPTUAL_RELATION" for x in graph.constraints),
+        "ambiguities":sum(x.kind=="OPEN_UNCERTAINTY" for x in graph.constraints),
+        "contradictions":len(graph.contradictions),
+        "insufficient":len(graph.insufficiently_connected_components),
+        "missing":len(graph.missing_constraints),
+        "organizations":len(graph.competing_world_organizations),
+    }
+    print("WORLD_GRAPH_066_METRICS="+json.dumps(counts,sort_keys=True))
+    assert counts["same"]==4
+    assert counts["distinct"]==1
+    assert counts["relations"]==3
+    assert counts["contradictions"]==0
+    assert counts["missing"]==1
+    assert graph.missing_constraints[0].exhausted is True
+    assert graph.missing_constraints[0].downstream_refs==[
+        "physical-entity-partition:idc_sidewall_p2_p4"
+    ]
