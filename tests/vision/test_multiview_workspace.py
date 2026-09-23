@@ -66,6 +66,9 @@ from brickhouse.vision.multiview import (
     PropertyCorrespondenceProducerResponse,
     PropertyCorrespondenceProducerStatus,
     validate_property_correspondence_response,
+    import_property_correspondence_response,
+    build_property_outcome_mapping_request,
+    mapping_request_equivalent_to_exhausted_identity_discriminant,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -4088,3 +4091,50 @@ def test_068_inconclusive_response_has_no_correspondence_payload():
         identity_candidate_id=request.identity_candidate_id,status=PropertyCorrespondenceProducerStatus.NO_RELIABLE_CORRESPONDENCE,
         correspondences=None)
     validate_property_correspondence_response(request,response)
+
+
+def _real_workspace_post_068():
+    workspace=_real_workspace_post_065()
+    graph=build_multiview_world_constraint_graph(workspace)
+    missing=next(x for x in graph.missing_constraints if x.source_uncertainty_id=="identity-uncertainty-idc_sidewall_p2_p4")
+    request=build_property_correspondence_producer_request(workspace,graph,missing)
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    response=PropertyCorrespondenceProducerResponse.model_validate_json(
+        (fixture_dir/"property-correspondence-producer-response-068.json").read_text()
+    )
+    records=import_property_correspondence_response(request,response)
+    return workspace.model_copy(update={"property_correspondences":records})
+
+
+def test_069_real_068_response_ingests_without_identity_promotion_and_survives_reload():
+    workspace=_real_workspace_post_068()
+    assert len(workspace.property_correspondences)==1
+    record=workspace.property_correspondences[0]
+    assert record.correspondence.epistemic_level=="COMPARABLE_VISUAL_PROPERTY"
+    candidate=next(x for x in workspace.pass_2.identities if x.id=="idc_sidewall_p2_p4")
+    assert candidate.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.property_correspondences==workspace.property_correspondences
+
+
+def test_069_planner_replay_leaves_only_outcome_mapping_missing():
+    workspace=_real_workspace_post_068()
+    graph=build_multiview_world_constraint_graph(workspace)
+    missing=next(x for x in graph.missing_constraints if x.source_uncertainty_id=="identity-uncertainty-idc_sidewall_p2_p4")
+    decision=plan_missing_constraint_perceptual_query(workspace,graph,missing)
+    assert decision.state is MissingConstraintPlannerState.NO_DISCRIMINATING_MAPPING
+    assert decision.missing_structured_information==["property_outcome_mapping_to_competing_world_organizations"]
+
+
+def test_069_mapping_request_is_new_structured_question_not_equivalent_to_064(capsys):
+    workspace=_real_workspace_post_068()
+    graph=build_multiview_world_constraint_graph(workspace)
+    missing=next(x for x in graph.missing_constraints if x.source_uncertainty_id=="identity-uncertainty-idc_sidewall_p2_p4")
+    request=build_property_outcome_mapping_request(workspace,graph,missing)
+    assert request is not None
+    assert request.correspondence.property_name_a=="upper_window"
+    assert request.correspondence.property_name_b=="upper_left_window"
+    assert set(request.competing_organizations)=={"same_physical_object","incompatible"}
+    assert len(request.exhausted_discriminant_signatures)==1
+    assert mapping_request_equivalent_to_exhausted_identity_discriminant(request,workspace) is False
+    print("REQUEST_069="+request.model_dump_json())
