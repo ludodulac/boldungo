@@ -74,6 +74,8 @@ from brickhouse.vision.multiview import (
     PropertyOutcomeMappingResponse,
     record_property_outcome_mapping_investigation,
     render_multiview_world_diagnostic_html,
+    audit_workspace_fragmentation,
+    build_global_multiview_connectivity_request,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -4206,3 +4208,35 @@ def test_070_world_milestone_rebuild_and_diagnostic_are_truth_preserving(capsys)
     }
     print("SUMMARY_070="+json.dumps(summary,sort_keys=True))
     print("HTML_070="+base64.b64encode(html.encode()).decode())
+
+
+def test_071_fragmentation_audit_and_global_request(capsys):
+    workspace=_real_workspace_post_069()
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    graph=build_multiview_world_constraint_graph(loaded)
+    audit=audit_workspace_fragmentation(loaded,graph)
+    assert audit["count"]==11
+    assert sum(1 for x in audit["components"] if x["has_interview_candidate"])==0
+    assert sum(1 for x in audit["components"] if x["has_local_relation"])==1
+    assert all(x["all_have_properties"] for x in audit["components"])
+    assert all(x["all_have_roi"] for x in audit["components"])
+    request=build_global_multiview_connectivity_request(loaded,graph)
+    assert request is not None
+    assert request.photo_indexes==[1,2,3,4,5]
+    assert sum(x.priority=="FRAGMENTED" for x in request.sources)==12
+    assert sum(x.priority=="ANCHOR" for x in request.sources)==10
+    assert len(request.exhausted_investigations)==2
+    assert request.existing_property_correspondences[0]["epistemic_level"]=="COMPARABLE_VISUAL_PROPERTY"
+    print("AUDIT_071="+json.dumps(audit,sort_keys=True))
+    print("REQUEST_071="+request.model_dump_json())
+
+
+def test_071_ingestion_audit_preserves_category_but_loses_property_values():
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    rich=RichVisualBootstrapResponse.model_validate_json((fixture_dir/"visual-bootstrap-response-062.json").read_text())
+    workspace=_real_workspace_post_065()
+    source={x.observation_id:x for x in rich.observations}
+    imported={x.id:x for x in workspace.pass_1.observations}
+    assert all(imported[k].proposed_category==v.category_proposal for k,v in source.items())
+    assert all(imported[k].observable_properties==set(v.observable_properties) for k,v in source.items())
+    assert any(v.observable_properties for v in source.values())
