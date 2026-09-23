@@ -3604,18 +3604,23 @@ def plan_missing_constraint_perceptual_query(
             negative_matches.append(str(identity_discriminant_equivalence_signature(record.request)))
 
     if not mapped_discriminants:
+        relevant_correspondences=[
+            record for record in workspace.property_correspondences
+            if record.missing_constraint_id==missing_constraint.id
+            and record.identity_candidate_id==uncertainty.source_ref
+        ]
         for item in provenance_ok:
             key=f"{item.observation_ref}:{item.property_name}"
             rejected.setdefault(key, "NO_STRUCTURED_MAPPING_TO_COMPETING_ORGANIZATIONS")
+        missing=["property_outcome_mapping_to_competing_world_organizations"]
+        if not relevant_correspondences:
+            missing.insert(0,"cross_observation_property_correspondence")
         return MissingConstraintPlannerDecision(
             missing_constraint_id=missing_constraint.id,
             state=MissingConstraintPlannerState.NO_DISCRIMINATING_MAPPING,
             candidate_properties=candidates, rejected_properties=rejected,
             negative_memory_matches=negative_matches,
-            missing_structured_information=[
-                "cross_observation_property_correspondence",
-                "property_outcome_mapping_to_competing_world_organizations",
-            ],
+            missing_structured_information=missing,
         )
 
     # Existing structured discriminants are not silently converted into a new visual request.
