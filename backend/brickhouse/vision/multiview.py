@@ -1622,6 +1622,78 @@ def import_identity_discriminant_producer_response(
     )
 
 
+class IdentityDiscriminantInvestigationRecord(BaseModel):
+    """Negative memory for one exact discriminant-producer attempt; it never resolves identity."""
+    model_config = ConfigDict(extra="forbid")
+    uncertainty_id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    request_id: str = Field(min_length=1)
+    observation_ids: list[str] = Field(min_length=2)
+    source_ids_by_observation: dict[str, str] = Field(min_length=2)
+    cue_fingerprints: list[str] = Field(min_length=2)
+    outcome: Literal["no_reliable_discriminant", "insufficient_visual_evidence"]
+
+    @model_validator(mode="after")
+    def validate_record(self) -> "IdentityDiscriminantInvestigationRecord":
+        if len(self.observation_ids) != len(set(self.observation_ids)):
+            raise ValueError("identity discriminant memory observations must be unique")
+        if set(self.source_ids_by_observation) != set(self.observation_ids):
+            raise ValueError("identity discriminant memory sources must exactly cover observations")
+        if len(self.cue_fingerprints) != len(set(self.cue_fingerprints)):
+            raise ValueError("identity discriminant memory cue fingerprints must be unique")
+        return self
+
+
+def _identity_cue_fingerprint(cue: IdentityDiscriminantCue) -> str:
+    provenance = sorted(
+        (item.observation_ref, item.photo_index, tuple(item.roi))
+        for item in cue.provenance
+    )
+    return repr((cue.polarity, cue.epistemic_level, cue.cue, provenance))
+
+
+def record_identity_discriminant_investigation(
+    uncertainty_id: str,
+    request: IdentityDiscriminantProducerRequest,
+    response: IdentityDiscriminantProducerResponse,
+) -> IdentityDiscriminantInvestigationRecord | None:
+    """Strict-import first, then persist only exact negative producer outcomes."""
+    imported = import_identity_discriminant_producer_response(request, response)
+    if imported is not None:
+        return None
+    if response.status not in {
+        IdentityDiscriminantProducerStatus.NO_RELIABLE_DISCRIMINANT,
+        IdentityDiscriminantProducerStatus.INSUFFICIENT_VISUAL_EVIDENCE,
+    }:
+        raise ValueError("identity discriminant memory accepts only negative outcomes")
+    return IdentityDiscriminantInvestigationRecord(
+        uncertainty_id=uncertainty_id,
+        identity_candidate_id=request.identity_candidate_id,
+        request_id=request.request_id,
+        observation_ids=list(request.observation_ids),
+        source_ids_by_observation={item.observation_ref: item.source_id for item in request.sources},
+        cue_fingerprints=sorted(_identity_cue_fingerprint(item) for item in request.cues),
+        outcome=response.status.value,
+    )
+
+
+def identity_discriminant_request_exhausted(
+    request: IdentityDiscriminantProducerRequest,
+    records: list[IdentityDiscriminantInvestigationRecord],
+) -> bool:
+    """Only the exact same candidate+sources+cues is exhausted; genuinely new evidence remains eligible."""
+    observations = list(request.observation_ids)
+    sources = {item.observation_ref: item.source_id for item in request.sources}
+    cues = sorted(_identity_cue_fingerprint(item) for item in request.cues)
+    return any(
+        item.identity_candidate_id == request.identity_candidate_id
+        and item.observation_ids == observations
+        and item.source_ids_by_observation == sources
+        and item.cue_fingerprints == cues
+        for item in records
+    )
+
+
 class IdentityInquiryArtifacts(BaseModel):
     """Identity-specific input adapter feeding the existing generic inquiry pipeline."""
 
@@ -3236,6 +3308,7 @@ class MultiViewWorkspace(BaseModel):
     rich_identity_cues: list[RichIdentityCue] = Field(default_factory=list)
     rich_relation_evidence: list[RichRelationEvidence] = Field(default_factory=list)
     rich_perceptual_ambiguities: list[RichPerceptualAmbiguity] = Field(default_factory=list)
+    identity_discriminant_investigations: list[IdentityDiscriminantInvestigationRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
