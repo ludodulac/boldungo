@@ -803,6 +803,18 @@ def select_discrimination_targets(
     )
 
 
+class CompositeSufficiencyContract(BaseModel):
+    """Minimal declarative rule: these exact source IDs must be usable."""
+
+    required_source_ids: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_required_sources(self) -> "CompositeSufficiencyContract":
+        if len(self.required_source_ids) != len(set(self.required_source_ids)):
+            raise ValueError("composite sufficiency source IDs must be unique")
+        return self
+
+
 class DiscriminatingTest(BaseModel):
     """One atomic test; composite evidence is never exploded into independent tests."""
 
@@ -813,6 +825,7 @@ class DiscriminatingTest(BaseModel):
     evidence_sought: str = Field(min_length=1)
     source_observation_ids: list[str] = Field(default_factory=list)
     evidence_regions: list[EvidenceRegion] = Field(default_factory=list)
+    composite_sufficiency: CompositeSufficiencyContract | None = None
 
     @model_validator(mode="after")
     def validate_test_evidence_shape(self) -> "DiscriminatingTest":
@@ -822,6 +835,11 @@ class DiscriminatingTest(BaseModel):
                 raise ValueError("composite test source IDs must be unique")
             if self.photo_index is not None or self.region is not None:
                 raise ValueError("composite test cannot also carry legacy photo/region")
+            if self.composite_sufficiency is not None:
+                known = set(source_ids)
+                required = self.composite_sufficiency.required_source_ids
+                if not set(required).issubset(known):
+                    raise ValueError("composite sufficiency references unknown source ID")
         elif self.photo_index is None or self.region is None:
             raise ValueError("legacy test requires photo_index and region")
         return self
@@ -850,10 +868,11 @@ class InquiryTestResult(BaseModel):
             raise ValueError(
                 "discriminating evidence requires an inspected, in-frame, sufficiently visible ROI"
             )
-        if self.discriminating and self.visibility in {
-            VisibilityStatus.OCCLUDED,
-            VisibilityStatus.NON_VISIBLE,
-        }:
+        if (
+            self.discriminating
+            and not self.composite_sources
+            and self.visibility in {VisibilityStatus.OCCLUDED, VisibilityStatus.NON_VISIBLE}
+        ):
             raise ValueError("occluded/non-visible ROI cannot provide discriminating evidence")
         return self
 
@@ -1051,6 +1070,7 @@ class VisualInquiryRequest(BaseModel):
     predictions: list[ObservablePrediction] = Field(min_length=2)
     target: CandidateEvidenceTarget
     test_id: str = Field(min_length=1)
+    composite_sufficiency: CompositeSufficiencyContract | None = None
     observability_requirements: list[str] = Field(min_length=1)
     response_schema: dict
     response_invariants: list[str] = Field(min_length=1)
@@ -1317,6 +1337,7 @@ def build_visual_inquiry_request(
         predictions=inquiry.predictions,
         target=target,
         test_id=test.id,
+        composite_sufficiency=test.composite_sufficiency,
         observability_requirements=[
             "source_identity_and_provenance_exact",
             "report_each_inspected_source_without_inventing_roi",
@@ -1372,8 +1393,37 @@ def import_visual_evidence_response(
         if response.composite_outcome is not None and response.composite_outcome not in outcomes:
             raise ValueError("composite_outcome is not an allowed structured outcome")
 
-        # 038 deliberately transports and persists the joint outcome, but there is no
-        # executable machine sufficiency policy yet. Therefore no hypothesis is eliminated.
+        # Sufficiency belongs to this exact test. Old 038 composites carry no contract
+        # and therefore remain fail-closed. A source is usable only when its local status is
+        # decisive visual evidence; inconclusive statuses are never converted to absence.
+        contract = request.composite_sufficiency
+        required = set(contract.required_source_ids) if contract is not None else set()
+        usable = {
+            item.source_id
+            for item in response.source_results
+            if item.status in {VisualEvidenceStatus.OBSERVED, VisualEvidenceStatus.NOT_OBSERVED}
+        }
+        sufficient = contract is not None and required.issubset(usable)
+        compatible = list(request.question.prediction_ids)
+        discriminating = False
+        if sufficient and response.composite_outcome is not None:
+            expected_by_hypothesis = {
+                hypothesis_id: value
+                for discriminant in request.question.discriminants
+                if discriminant.property_name == request.property_name
+                for hypothesis_id, value in discriminant.expected_outcomes.items()
+            }
+            compatible = [
+                prediction_id
+                for prediction_id in request.question.prediction_ids
+                if expected_by_hypothesis.get(
+                    next(item.hypothesis_id for item in request.predictions if item.id == prediction_id)
+                ) == response.composite_outcome
+            ]
+            if not compatible:
+                raise ValueError("structured composite_outcome matches no expected outcome")
+            discriminating = len(compatible) < len(request.question.prediction_ids)
+
         sources = [
             EvidenceRegion(
                 source_id=item.source_id,
@@ -1397,10 +1447,14 @@ def import_visual_evidence_response(
                 else VisibilityStatus.NON_VISIBLE if any(item.status is VisualEvidenceStatus.NON_VISIBLE for item in response.source_results)
                 else VisibilityStatus.VISIBLE
             ),
-            sufficient_visibility=False,
-            statement=response.comment or "Structured composite external visual evidence imported; sufficiency remains undefined.",
-            compatible_prediction_ids=list(request.question.prediction_ids),
-            discriminating=False,
+            sufficient_visibility=sufficient,
+            statement=response.comment or (
+                "Structured composite external visual evidence imported with sufficient required sources."
+                if sufficient else
+                "Structured composite external visual evidence imported; required-source sufficiency not established."
+            ),
+            compatible_prediction_ids=compatible,
+            discriminating=discriminating,
             composite_sources=sources,
             composite_source_statuses={item.source_id: item.status.value for item in response.source_results},
             composite_outcome=response.composite_outcome,

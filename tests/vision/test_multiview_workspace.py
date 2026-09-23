@@ -18,6 +18,7 @@ from brickhouse.vision.multiview import (
     EvidenceRegion,
     CandidateEvidenceTarget,
     DiscriminatingTest,
+    CompositeSufficiencyContract,
     DiscriminatingQuestion,
     DiscriminatingProperty,
     InquiryState,
@@ -2603,3 +2604,132 @@ def test_038_aa_ab_legacy_roundtrip_and_schema_are_still_machine_generated():
     test_037_u_legacy_discriminating_test_roundtrip_unchanged()
     assert visual_evidence_response_schema()==VisualEvidenceResponse.model_json_schema()
     assert visual_evidence_response_invariants()
+
+
+# Experiment 039 — minimal machine sufficiency for atomic composite tests.
+
+def _with_sufficiency039(req, inquiry, required):
+    contract=CompositeSufficiencyContract(required_source_ids=required)
+    inquiry=inquiry.model_copy(deep=True)
+    inquiry.tests[0].composite_sufficiency=contract
+    req=req.model_copy(update={"composite_sufficiency":contract})
+    return req,inquiry
+
+def test_039_a_old_038_composite_without_contract_stays_fail_closed():
+    regions,_,_,_,_,inquiry,_,req=_bundle038()
+    result=import_visual_evidence_response(req,_response038(req,regions,outcome="alpha"))
+    assert not result.sufficient_visibility and not result.discriminating
+    assert apply_inquiry_test(inquiry,result).state is InquiryState.OPEN
+
+def test_039_b_legacy_mono_continuation_unchanged():
+    test_038_a_b_historical_request_response_import_preserved()
+
+def test_039_c_d_required_occluded_or_nonvisible_is_insufficient():
+    for status in (VisualEvidenceStatus.OCCLUDED,VisualEvidenceStatus.NON_VISIBLE):
+        regions,_,_,_,_,inquiry,_,req=_bundle038()
+        req,inquiry=_with_sufficiency039(req,inquiry,["s0","s1"])
+        result=import_visual_evidence_response(req,_response038(req,regions,statuses={"s1":status},outcome="alpha"))
+        assert not result.sufficient_visibility and not result.discriminating
+
+def test_039_e_sufficient_sources_without_conclusive_outcome_do_not_discriminate():
+    regions,_,_,_,_,inquiry,_,req=_bundle038()
+    req,inquiry=_with_sufficiency039(req,inquiry,["s0","s1"])
+    response=_response038(req,regions,outcome=None,composite_status=VisualEvidenceStatus.INSUFFICIENT_EVIDENCE)
+    result=import_visual_evidence_response(req,response)
+    assert result.sufficient_visibility and result.composite_outcome is None and not result.discriminating
+
+def test_039_f_sufficient_outcome_compatible_with_all_is_nondiscriminating():
+    regions,target,preds,q,test,inquiry,hs,req=_bundle038()
+    q=q.model_copy(deep=True); q.discriminants[0].expected_outcomes={"h-alpha":"same","h-beta":"same"}
+    req=req.model_copy(update={"question":q})
+    req,inquiry=_with_sufficiency039(req,inquiry,["s0","s1"])
+    response=_response038(req,regions,outcome="same")
+    result=import_visual_evidence_response(req,response)
+    assert result.sufficient_visibility and set(result.compatible_prediction_ids)=={"p-alpha","p-beta"}
+    assert not result.discriminating
+
+def test_039_g_h_sufficient_unique_outcome_discriminates_and_apply_eliminates_only_incompatible():
+    regions,_,_,_,_,inquiry,_,req=_bundle038()
+    req,inquiry=_with_sufficiency039(req,inquiry,["s0","s1"])
+    result=import_visual_evidence_response(req,_response038(req,regions,outcome="alpha"))
+    assert result.sufficient_visibility and result.discriminating
+    assert result.compatible_prediction_ids==["p-alpha"]
+    updated=apply_inquiry_test(inquiry,result)
+    assert updated.viable_hypothesis_ids==["h-alpha"] and updated.state is InquiryState.RESOLVED
+
+def test_039_i_optional_occluded_source_does_not_break_explicit_required_set():
+    regions,_,_,_,_,inquiry,_,req=_bundle038(n=3)
+    req,inquiry=_with_sufficiency039(req,inquiry,["s0","s1"])
+    result=import_visual_evidence_response(req,_response038(req,regions,statuses={"s2":VisualEvidenceStatus.OCCLUDED},outcome="alpha"))
+    assert result.sufficient_visibility and result.discriminating
+
+def test_039_j_missing_required_source_nonexhaustive_is_insufficient_not_absent():
+    regions,_,_,_,_,inquiry,_,req=_bundle038(exhaustive=False)
+    req,inquiry=_with_sufficiency039(req,inquiry,["s0","s1"])
+    response=_response038(req,regions,outcome="alpha").model_copy(update={"source_results":_response038(req,regions).source_results[:1]})
+    result=import_visual_evidence_response(req,response)
+    assert not result.sufficient_visibility and not result.discriminating
+    assert result.composite_source_statuses=={"s0":"observed"}
+
+def test_039_k_exhaustive_missing_still_rejected_before_sufficiency():
+    regions,_,_,_,_,inquiry,_,req=_bundle038()
+    req,inquiry=_with_sufficiency039(req,inquiry,["s0"])
+    response=_response038(req,regions).model_copy(update={"source_results":_response038(req,regions).source_results[:1]})
+    with pytest.raises(ValueError): import_visual_evidence_response(req,response)
+
+def test_039_l_m_contract_unknown_or_duplicate_source_rejected():
+    regions,_,_,_,test,_,_,_= _bundle038()
+    with pytest.raises(ValueError):
+        DiscriminatingTest(id="x",prediction_ids=test.prediction_ids,evidence_sought="synthetic_relation",
+            source_observation_ids=test.source_observation_ids,evidence_regions=regions,
+            composite_sufficiency=CompositeSufficiencyContract(required_source_ids=["unknown"]))
+    with pytest.raises(ValueError):
+        CompositeSufficiencyContract(required_source_ids=["s0","s0"])
+
+def test_039_n_permutation_preserves_sufficiency():
+    regions,_,_,_,_,inquiry,_,req=_bundle038()
+    req,inquiry=_with_sufficiency039(req,inquiry,["s0","s1"])
+    a=import_visual_evidence_response(req,_response038(req,regions,outcome="alpha"))
+    b=import_visual_evidence_response(req,_response038(req,regions,outcome="alpha",order=[1,0]))
+    assert a.sufficient_visibility==b.sufficient_visibility==True
+    assert a.compatible_prediction_ids==b.compatible_prediction_ids
+
+def test_039_o_p_contract_is_structured_no_text_rule_or_parser():
+    contract=CompositeSufficiencyContract(required_source_ids=["a","b"])
+    assert contract.model_dump()=={"required_source_ids":["a","b"]}
+    assert all(isinstance(x,str) for x in contract.required_source_ids)
+
+def test_039_q_r_s_inconclusive_required_sources_never_become_negative_or_sufficient():
+    for status in (VisualEvidenceStatus.OCCLUDED,VisualEvidenceStatus.NON_VISIBLE,
+                   VisualEvidenceStatus.AMBIGUOUS,VisualEvidenceStatus.INSUFFICIENT_EVIDENCE):
+        regions,_,_,_,_,inquiry,_,req=_bundle038()
+        req,inquiry=_with_sufficiency039(req,inquiry,["s0"])
+        result=import_visual_evidence_response(req,_response038(req,regions,statuses={"s0":status},outcome="alpha"))
+        assert not result.sufficient_visibility and not result.discriminating
+        assert result.composite_source_statuses["s0"]==status.value
+
+def test_039_t_workspace_roundtrip_preserves_sufficiency_contract():
+    regions,_,_,_,_,inquiry,_,req=_bundle038()
+    req,inquiry=_with_sufficiency039(req,inquiry,["s0"])
+    result=import_visual_evidence_response(req,_response038(req,regions,outcome="alpha"))
+    updated=apply_inquiry_test(inquiry,result)
+    hs=[OpenHypothesis(id="h-alpha",subject_refs=["subject"],statement="opaque"),
+        OpenHypothesis(id="h-beta",subject_refs=["subject"],statement="opaque")]
+    ws=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,hypotheses=hs),
+        pass_2=MultiViewPass(pass_number=2),inquiries=[updated])
+    loaded=MultiViewWorkspace.model_validate_json(ws.model_dump_json())
+    assert loaded.inquiries[0].tests[0].composite_sufficiency.required_source_ids==["s0"]
+
+def test_039_u_old_038_workspace_without_contract_reloads_fail_closed():
+    regions,_,_,_,test,inquiry,_,req=_bundle038()
+    hs=[OpenHypothesis(id="h-alpha",subject_refs=["subject"],statement="opaque"),
+        OpenHypothesis(id="h-beta",subject_refs=["subject"],statement="opaque")]
+    ws=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,hypotheses=hs),
+        pass_2=MultiViewPass(pass_number=2),inquiries=[inquiry])
+    loaded=MultiViewWorkspace.model_validate_json(ws.model_dump_json())
+    assert loaded.inquiries[0].tests[0].composite_sufficiency is None
+    result=import_visual_evidence_response(req,_response038(req,regions,outcome="alpha"))
+    assert not result.sufficient_visibility and not result.discriminating
+
+def test_039_v_continuation_regression_suite_anchor():
+    test_038_a_b_historical_request_response_import_preserved()
