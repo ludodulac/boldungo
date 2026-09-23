@@ -69,6 +69,8 @@ from brickhouse.vision.multiview import (
     import_property_correspondence_response,
     build_property_outcome_mapping_request,
     mapping_request_equivalent_to_exhausted_identity_discriminant,
+    validate_property_outcome_mapping_response,
+    PropertyOutcomeMappingResponse,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -4138,3 +4140,18 @@ def test_069_mapping_request_is_new_structured_question_not_equivalent_to_064(ca
     assert len(request.exhausted_discriminant_signatures)==1
     assert mapping_request_equivalent_to_exhausted_identity_discriminant(request,workspace) is False
     print("REQUEST_069="+request.model_dump_json())
+
+
+def test_069_mapping_response_fail_closed_requires_distinct_complete_vectors():
+    workspace=_real_workspace_post_068()
+    graph=build_multiview_world_constraint_graph(workspace)
+    request=build_property_outcome_mapping_request(workspace,graph,graph.missing_constraints[0])
+    bad=PropertyOutcomeMappingResponse.model_validate({
+      "request_id":request.request_id,"missing_constraint_id":request.missing_constraint_id,
+      "identity_candidate_id":request.identity_candidate_id,"status":"MAPPING_AVAILABLE",
+      "mappings":[
+        {"outcome_token":"observable_outcome_1","compatibility_by_organization":{"same_physical_object":"COMPATIBLE","incompatible":"NON_DISCRIMINATING"}},
+        {"outcome_token":"observable_outcome_2","compatibility_by_organization":{"same_physical_object":"COMPATIBLE","incompatible":"NON_DISCRIMINATING"}}
+      ]})
+    with pytest.raises(ValueError,match="different organization compatibility"):
+        validate_property_outcome_mapping_response(request,bad)
