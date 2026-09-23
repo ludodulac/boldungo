@@ -1,0 +1,635 @@
+{
+  "schema_version": "0.5",
+  "bootstrap_id": "real-house-5-rich-multiview-062",
+  "photo_count": 5,
+  "observations": [
+    {
+      "observation_id": "obs_p1_front_upper_left_window",
+      "photo_index": 1,
+      "roi": [
+        0.17,
+        0.34,
+        0.36,
+        0.45
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "rectangular glazed opening",
+      "observable_properties": {
+        "dark_frame": true,
+        "paired_vertical_glazing": true,
+        "light_surround": true
+      }
+    },
+    {
+      "observation_id": "obs_p1_front_upper_right_window",
+      "photo_index": 1,
+      "roi": [
+        0.58,
+        0.33,
+        0.79,
+        0.45
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "rectangular glazed opening",
+      "observable_properties": {
+        "dark_frame": true,
+        "paired_vertical_glazing": true,
+        "light_surround": true
+      }
+    },
+    {
+      "observation_id": "obs_p1_front_middle_left_window",
+      "photo_index": 1,
+      "roi": [
+        0.16,
+        0.47,
+        0.36,
+        0.57
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "rectangular glazed opening",
+      "observable_properties": {
+        "dark_frame": true,
+        "paired_vertical_glazing": true,
+        "light_surround": true
+      }
+    },
+    {
+      "observation_id": "obs_p1_front_middle_right_window",
+      "photo_index": 1,
+      "roi": [
+        0.57,
+        0.47,
+        0.79,
+        0.58
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "rectangular glazed opening",
+      "observable_properties": {
+        "dark_frame": true,
+        "paired_vertical_glazing": true,
+        "light_surround": true
+      }
+    },
+    {
+      "observation_id": "obs_p1_front_lower_left_opening",
+      "photo_index": 1,
+      "roi": [
+        0.18,
+        0.61,
+        0.32,
+        0.7
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "narrow rectangular opening",
+      "observable_properties": {
+        "dark_interior": true,
+        "light_surround": true
+      }
+    },
+    {
+      "observation_id": "obs_p1_front_lower_right_door",
+      "photo_index": 1,
+      "roi": [
+        0.57,
+        0.6,
+        0.8,
+        0.72
+      ],
+      "visibility": "PARTLY_OCCLUDED",
+      "category_proposal": "glazed door-like opening",
+      "observable_properties": {
+        "white_frame": true,
+        "dark_glazing": true,
+        "vegetation_occlusion": true
+      }
+    },
+    {
+      "observation_id": "obs_p1_front_wall",
+      "photo_index": 1,
+      "roi": [
+        0.03,
+        0.28,
+        0.97,
+        0.72
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "large pale wall surface",
+      "observable_properties": {
+        "light_render": true,
+        "multiple_openings": true
+      }
+    },
+    {
+      "observation_id": "obs_p1_roof_edge",
+      "photo_index": 1,
+      "roi": [
+        0.03,
+        0.27,
+        0.96,
+        0.36
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "sloping dark roof boundary",
+      "observable_properties": {
+        "dark_edge": true,
+        "two_sloping_segments": true
+      },
+      "observed_property_states": {
+        "continuation": "CONTINUES"
+      }
+    },
+    {
+      "observation_id": "obs_p2_side_wall",
+      "photo_index": 2,
+      "roi": [
+        0.36,
+        0.16,
+        0.86,
+        0.62
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "pale side wall surface",
+      "observable_properties": {
+        "light_render": true,
+        "upper_window": true
+      }
+    },
+    {
+      "observation_id": "obs_p2_upper_window",
+      "photo_index": 2,
+      "roi": [
+        0.48,
+        0.24,
+        0.61,
+        0.37
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "tall rectangular glazed opening",
+      "observable_properties": {
+        "white_frame": true,
+        "two_vertical_panels": true
+      }
+    },
+    {
+      "observation_id": "obs_p2_stair",
+      "photo_index": 2,
+      "roi": [
+        0.18,
+        0.49,
+        0.63,
+        0.82
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "exterior stair with solid pale parapets",
+      "observable_properties": {
+        "diagonal_parapet_edges": true,
+        "steps_visible_low_right": true
+      }
+    },
+    {
+      "observation_id": "obs_p2_box_volume",
+      "photo_index": 2,
+      "roi": [
+        0.57,
+        0.45,
+        0.96,
+        0.78
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "pale rectangular projecting volume",
+      "observable_properties": {
+        "flat_top_edge": true,
+        "large_dark_opening": true
+      }
+    },
+    {
+      "observation_id": "obs_p3_box_volume",
+      "photo_index": 3,
+      "roi": [
+        0.49,
+        0.37,
+        0.92,
+        0.78
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "pale rectangular projecting volume",
+      "observable_properties": {
+        "flat_top_edge": true,
+        "large_dark_opening": true,
+        "red_planters_at_base": true
+      }
+    },
+    {
+      "observation_id": "obs_p3_tree",
+      "photo_index": 3,
+      "roi": [
+        0.17,
+        0.25,
+        0.5,
+        0.65
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "forked trunk with two spiky crowns",
+      "observable_properties": {
+        "two_crowns": true,
+        "slender_trunk": true
+      }
+    },
+    {
+      "observation_id": "obs_p3_dark_opening",
+      "photo_index": 3,
+      "roi": [
+        0.56,
+        0.54,
+        0.85,
+        0.76
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "large dark rectangular opening",
+      "observable_properties": {
+        "dark_interior": true,
+        "horizontal_top_boundary": true
+      }
+    },
+    {
+      "observation_id": "obs_p4_rear_wall",
+      "photo_index": 4,
+      "roi": [
+        0.34,
+        0.06,
+        0.72,
+        0.42
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "large pale wall surface",
+      "observable_properties": {
+        "upper_left_window": true,
+        "lower_right_window": true
+      }
+    },
+    {
+      "observation_id": "obs_p4_upper_window",
+      "photo_index": 4,
+      "roi": [
+        0.37,
+        0.1,
+        0.45,
+        0.21
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "tall rectangular glazed opening",
+      "observable_properties": {
+        "white_frame": true,
+        "two_vertical_panels": true
+      }
+    },
+    {
+      "observation_id": "obs_p4_terrace",
+      "photo_index": 4,
+      "roi": [
+        0.35,
+        0.23,
+        0.72,
+        0.43
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "raised platform with wooden railing",
+      "observable_properties": {
+        "vertical_wooden_slats": true,
+        "support_posts_visible": true
+      }
+    },
+    {
+      "observation_id": "obs_p4_stair",
+      "photo_index": 4,
+      "roi": [
+        0.19,
+        0.29,
+        0.38,
+        0.56
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "exterior stair with solid pale parapets",
+      "observable_properties": {
+        "diagonal_parapet_edges": true
+      }
+    },
+    {
+      "observation_id": "obs_p5_side_wall",
+      "photo_index": 5,
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "large pale side wall surface",
+      "observable_properties": {
+        "two_upper_openings": true,
+        "sloping_roof_edge": true,
+        "vertical_downpipe": true
+      }
+    },
+    {
+      "observation_id": "obs_p5_near_window",
+      "photo_index": 5,
+      "roi": [
+        0.62,
+        0.25,
+        0.76,
+        0.39
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "rectangular opening with shutters",
+      "observable_properties": {
+        "light_shutters": true,
+        "dark_recess": true
+      }
+    },
+    {
+      "observation_id": "obs_p5_roof_edge",
+      "photo_index": 5,
+      "roi": [
+        0.14,
+        0.02,
+        0.91,
+        0.34
+      ],
+      "visibility": "VISIBLE",
+      "category_proposal": "sloping dark roof boundary",
+      "observable_properties": {
+        "dark_edge": true,
+        "continuous_visible_run": true
+      },
+      "observed_property_states": {
+        "continuation": "CONTINUES"
+      }
+    }
+  ],
+  "identity_candidates": [
+    {
+      "identity_candidate_id": "idc_sidewall_p2_p4",
+      "observation_refs": [
+        "obs_p2_side_wall",
+        "obs_p4_rear_wall"
+      ],
+      "status": "CANDIDATE"
+    },
+    {
+      "identity_candidate_id": "idc_upperwindow_p2_p4",
+      "observation_refs": [
+        "obs_p2_upper_window",
+        "obs_p4_upper_window"
+      ],
+      "status": "CANDIDATE"
+    },
+    {
+      "identity_candidate_id": "idc_stair_p2_p4",
+      "observation_refs": [
+        "obs_p2_stair",
+        "obs_p4_stair"
+      ],
+      "status": "CANDIDATE"
+    },
+    {
+      "identity_candidate_id": "idc_box_p2_p3",
+      "observation_refs": [
+        "obs_p2_box_volume",
+        "obs_p3_box_volume"
+      ],
+      "status": "CANDIDATE"
+    }
+  ],
+  "identity_evidence": [
+    {
+      "identity_candidate_ref": "idc_sidewall_p2_p4",
+      "polarity": "SAME",
+      "epistemic_level": "CUE",
+      "cue": "Both observations show a broad pale rendered wall with a tall white-framed upper opening near one lateral edge.",
+      "provenance": [
+        {
+          "observation_ref": "obs_p2_side_wall",
+          "photo_index": 2,
+          "roi": [
+            0.36,
+            0.16,
+            0.86,
+            0.62
+          ]
+        },
+        {
+          "observation_ref": "obs_p4_rear_wall",
+          "photo_index": 4,
+          "roi": [
+            0.34,
+            0.06,
+            0.72,
+            0.42
+          ]
+        }
+      ]
+    },
+    {
+      "identity_candidate_ref": "idc_upperwindow_p2_p4",
+      "polarity": "SAME",
+      "epistemic_level": "CUE",
+      "cue": "Tall narrow proportions, white frame, and two vertical glazed panels agree across the two views.",
+      "provenance": [
+        {
+          "observation_ref": "obs_p2_upper_window",
+          "photo_index": 2,
+          "roi": [
+            0.48,
+            0.24,
+            0.61,
+            0.37
+          ]
+        },
+        {
+          "observation_ref": "obs_p4_upper_window",
+          "photo_index": 4,
+          "roi": [
+            0.37,
+            0.1,
+            0.45,
+            0.21
+          ]
+        }
+      ]
+    },
+    {
+      "identity_candidate_ref": "idc_stair_p2_p4",
+      "polarity": "SAME",
+      "epistemic_level": "CUE",
+      "cue": "Both views show a pale exterior stair characterized by matching long diagonal solid parapet edges.",
+      "provenance": [
+        {
+          "observation_ref": "obs_p2_stair",
+          "photo_index": 2,
+          "roi": [
+            0.18,
+            0.49,
+            0.63,
+            0.82
+          ]
+        },
+        {
+          "observation_ref": "obs_p4_stair",
+          "photo_index": 4,
+          "roi": [
+            0.19,
+            0.29,
+            0.38,
+            0.56
+          ]
+        }
+      ]
+    },
+    {
+      "identity_candidate_ref": "idc_box_p2_p3",
+      "polarity": "SAME",
+      "epistemic_level": "CUE",
+      "cue": "Both views show a pale box-like volume with a flat top and a broad dark rectangular opening on its visible face.",
+      "provenance": [
+        {
+          "observation_ref": "obs_p2_box_volume",
+          "photo_index": 2,
+          "roi": [
+            0.57,
+            0.45,
+            0.96,
+            0.78
+          ]
+        },
+        {
+          "observation_ref": "obs_p3_box_volume",
+          "photo_index": 3,
+          "roi": [
+            0.49,
+            0.37,
+            0.92,
+            0.78
+          ]
+        }
+      ]
+    },
+    {
+      "identity_candidate_ref": "idc_sidewall_p2_p4",
+      "polarity": "DISTINCT",
+      "epistemic_level": "CUE",
+      "cue": "The visible opening layouts differ: the photo-4 wall exposes an additional lower-right glazed opening that is not within the photo-2 wall evidence region; this is only a distinctness cue because field-of-view/occlusion can account for non-visibility.",
+      "provenance": [
+        {
+          "observation_ref": "obs_p2_side_wall",
+          "photo_index": 2,
+          "roi": [
+            0.36,
+            0.16,
+            0.86,
+            0.62
+          ]
+        },
+        {
+          "observation_ref": "obs_p4_rear_wall",
+          "photo_index": 4,
+          "roi": [
+            0.34,
+            0.06,
+            0.72,
+            0.42
+          ]
+        }
+      ]
+    }
+  ],
+  "relation_evidence": [
+    {
+      "subject_ref": "obs_p1_front_upper_left_window",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p1_front_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p1_front_upper_left_window",
+          "photo_index": 1,
+          "roi": [
+            0.17,
+            0.34,
+            0.36,
+            0.45
+          ]
+        },
+        {
+          "observation_ref": "obs_p1_front_wall",
+          "photo_index": 1,
+          "roi": [
+            0.03,
+            0.28,
+            0.97,
+            0.72
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p3_dark_opening",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p3_box_volume",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p3_dark_opening",
+          "photo_index": 3,
+          "roi": [
+            0.56,
+            0.54,
+            0.85,
+            0.76
+          ]
+        },
+        {
+          "observation_ref": "obs_p3_box_volume",
+          "photo_index": 3,
+          "roi": [
+            0.49,
+            0.37,
+            0.92,
+            0.78
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p4_terrace",
+      "relation_token": "VISUALLY_IN_FRONT_OF",
+      "object_ref": "obs_p4_rear_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p4_terrace",
+          "photo_index": 4,
+          "roi": [
+            0.35,
+            0.23,
+            0.72,
+            0.43
+          ]
+        },
+        {
+          "observation_ref": "obs_p4_rear_wall",
+          "photo_index": 4,
+          "roi": [
+            0.34,
+            0.06,
+            0.72,
+            0.42
+          ]
+        }
+      ]
+    }
+  ],
+  "perceptual_ambiguities": [],
+  "observer_comment": "Joint five-view pixel inspection. Identity entries remain candidates; SAME and DISTINCT entries are cues only. No hidden topology or inverse/converse relations are asserted, and no ambiguity was emitted without two independently visible competing readings."
+}
