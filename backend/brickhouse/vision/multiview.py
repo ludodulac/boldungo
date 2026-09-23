@@ -1295,6 +1295,48 @@ class InvestigationImpactAssessment(BaseModel):
     blocked: bool
 
 
+def derive_reasoning_dependencies_from_hypotheses(
+    uncertainties: list[StructuredUncertainty],
+    hypotheses: list[OpenHypothesis],
+) -> list[ReasoningDependency]:
+    """Lift only explicit source_uncertainty_id links already encoded by hypotheses."""
+    uncertainty_ids = {item.id for item in uncertainties}
+    result: list[ReasoningDependency] = []
+    seen: set[tuple[str, str, str]] = set()
+    for hypothesis in hypotheses:
+        source_id = hypothesis.source_uncertainty_id
+        if source_id is None or source_id not in uncertainty_ids:
+            continue
+        key = (source_id, hypothesis.id, "hypothesis")
+        if key in seen:
+            continue
+        seen.add(key)
+        result.append(ReasoningDependency(
+            upstream_ref=source_id,
+            downstream_ref=hypothesis.id,
+            downstream_kind="hypothesis",
+        ))
+    return result
+
+
+def derive_existing_structured_uncertainties(
+    workspace: "MultiViewWorkspace",
+) -> list[StructuredUncertainty]:
+    """Collect only competitions already explicitly encoded by current generic families."""
+    observations = [*workspace.pass_1.observations, *workspace.pass_2.observations]
+    identities = [*workspace.pass_1.identities, *workspace.pass_2.identities]
+    relations = [*workspace.pass_1.relations, *workspace.pass_2.relations]
+    hypotheses = [*workspace.pass_1.hypotheses, *workspace.pass_2.hypotheses]
+    uncertainties: list[StructuredUncertainty] = []
+    uncertainties.extend(detect_continuity_uncertainties(observations, inquiries=workspace.inquiries, hypotheses=hypotheses))
+    uncertainties.extend(detect_identity_uncertainties(identities, observations))
+    uncertainties.extend(detect_relation_uncertainties(relations, observations))
+    unique: dict[str, StructuredUncertainty] = {}
+    for item in uncertainties:
+        unique[item.id] = item
+    return list(unique.values())
+
+
 def assess_investigation_impact(
     uncertainty: StructuredUncertainty,
     *,

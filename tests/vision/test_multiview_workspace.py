@@ -14,6 +14,8 @@ from brickhouse.vision.multiview import (
     ReasoningDependency,
     assess_investigation_impact,
     select_impactful_investigations,
+    derive_reasoning_dependencies_from_hypotheses,
+    derive_existing_structured_uncertainties,
     VisualInquiryBatchResult,
     VisualInquiryBatchResponse,
     VisualInquiryBatchRequest,
@@ -3618,3 +3620,18 @@ def test_060_impact_selection_uses_dependency_set_dominance_and_preserves_ties()
     narrow=a("u1",["h1"]); broad=a("u2",["h1","h2"]); incomparable=a("u3",["h3"])
     selected=select_impactful_investigations([narrow,broad,incomparable])
     assert [x.uncertainty_id for x in selected]==["u2","u3"]
+
+
+def test_061_dependencies_are_lifted_only_from_explicit_hypothesis_source_links():
+    u=StructuredUncertainty(id="u",subject_ref="o1",property_name="continuation",source_observation_ids=["o1"],open_alternatives=["CONTINUES","TERMINATES"])
+    linked=OpenHypothesis(id="h1",subject_refs=["o1"],statement="A",certainty=CertaintyLevel.UNPROVEN,source_uncertainty_id="u")
+    unrelated=OpenHypothesis(id="h2",subject_refs=["o1"],statement="B",certainty=CertaintyLevel.UNPROVEN)
+    deps=derive_reasoning_dependencies_from_hypotheses([u],[linked,unrelated])
+    assert [(x.upstream_ref,x.downstream_ref,x.downstream_kind) for x in deps]==[("u","h1","hypothesis")]
+
+
+def test_061_not_enquirable_likely_same_does_not_become_identity_uncertainty():
+    observations=_pair_obs_050()
+    identity=IdentityCandidate(id="i",observation_ids=["o1","o2"],status=IdentityStatus.LIKELY_SAME,certainty=CertaintyLevel.PLAUSIBLE,inquiry_state=IdentityInquiryState.NOT_ENQUIRABLE)
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=observations,identities=[identity]),pass_2=MultiViewPass(pass_number=2))
+    assert derive_existing_structured_uncertainties(workspace)==[]
