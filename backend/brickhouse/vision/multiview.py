@@ -169,6 +169,8 @@ class ArchitecturalRelationCandidate(BaseModel):
     status: ClaimStatus = ClaimStatus.INFERRED
     certainty: CertaintyLevel = CertaintyLevel.UNKNOWN
     supporting_photo_indexes: list[int] = Field(default_factory=list)
+    source_observation_ids_by_element: dict[str, list[str]] = Field(default_factory=dict)
+    visual_evidence_source_ids: list[str] = Field(default_factory=list)
     inquiry_state: RelationInquiryState = RelationInquiryState.NOT_ENQUIRABLE
     open_alternatives: list[RelationAlternative] = Field(default_factory=list)
 
@@ -809,6 +811,11 @@ def import_relation_pair_producer_response(
             expected[source_id].photo_index
             for source_id in response.visual_evidence_source_ids
         }),
+        source_observation_ids_by_element={
+            response.subject.element_ref: list(response.subject.source_observation_ids),
+            response.object.element_ref: list(response.object.source_observation_ids),
+        },
+        visual_evidence_source_ids=list(response.visual_evidence_source_ids),
         inquiry_state=RelationInquiryState.NOT_ENQUIRABLE,
         open_alternatives=[],
     )
