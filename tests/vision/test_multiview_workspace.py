@@ -3934,7 +3934,7 @@ def test_066_graph_is_deterministic_projection_and_survives_workspace_reload():
     loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
     rebuilt=build_multiview_world_constraint_graph(loaded)
     assert graph.model_dump(mode="json")==rebuilt.model_dump(mode="json")
-    assert "world_constraint_graph" not in workspace.model_fields
+    assert "world_constraint_graph" not in MultiViewWorkspace.model_fields
     assert all(node.kind in {"observation","identity_candidate"} for node in graph.nodes)
 
 
