@@ -18,6 +18,8 @@ from brickhouse.vision.multiview import (
     EvidenceRegion,
     CandidateEvidenceTarget,
     DiscriminatingTest,
+    DiscriminatingQuestion,
+    DiscriminatingProperty,
     InquiryState,
     InquiryTestResult,
     ObservablePrediction,
@@ -36,6 +38,7 @@ from brickhouse.vision.multiview import (
     detect_continuity_uncertainties,
     VisualEvidenceStatus,
     VisualEvidenceResponse,
+    CompositeSourceResult,
     VisualInquiryRequest,
     build_visual_inquiry_request,
     visual_evidence_response_schema,
@@ -2409,7 +2412,7 @@ def test_037_s_composite_without_sufficiency_rule_cannot_claim_discrimination():
     assert t.testable is False
     test=DiscriminatingTest(id="t",prediction_ids=["p1","p2"],evidence_sought="opaque_token",
         source_observation_ids=["oa","ob"],evidence_regions=t.evidence_regions)
-    assert test.composite_sufficiency_rule is None
+    assert test.evidence_regions == t.evidence_regions and not test.model_dump().get("composite_sufficiency_rule")
 
 def test_037_t_workspace_roundtrip_preserves_composite_test_provenance():
     regions=[_ereg037("a",1,"oa"),_ereg037("b",2,"ob",roi=False)]
@@ -2434,3 +2437,169 @@ def test_037_u_legacy_discriminating_test_roundtrip_unchanged():
     test=DiscriminatingTest.model_validate(raw)
     assert test.evidence_regions==[]
     assert DiscriminatingTest.model_validate_json(test.model_dump_json()).region==test.region
+
+
+# Experiment 038 — external composite exchange, synthetic opaque tokens only.
+
+def _bundle038(n=2, same_photo=False, missing_roi=False, exhaustive=True):
+    regions=[
+        _ereg037(f"s{i}", 1 if same_photo else i+1, f"o{i}", roi=not (missing_roi and i==0))
+        for i in range(n)
+    ]
+    target=_ctarget037(regions).model_copy(update={"requires_exhaustive_sources":exhaustive})
+    preds=[
+        ObservablePrediction(id="p-alpha",hypothesis_id="h-alpha",statement="opaque",
+            observable_properties=[ObservableProperty(name="synthetic_relation",value="alpha")]),
+        ObservablePrediction(id="p-beta",hypothesis_id="h-beta",statement="opaque",
+            observable_properties=[ObservableProperty(name="synthetic_relation",value="beta")]),
+    ]
+    q=DiscriminatingQuestion(
+        hypothesis_ids=["h-alpha","h-beta"],prediction_ids=["p-alpha","p-beta"],
+        discriminants=[DiscriminatingProperty(property_name="synthetic_relation",
+            expected_outcomes={"h-alpha":"alpha","h-beta":"beta"})],
+        evidence_needed="opaque",human_readable_question="opaque?")
+    test=DiscriminatingTest(id="tc",prediction_ids=["p-alpha","p-beta"],
+        evidence_sought="synthetic_relation",source_observation_ids=[f"o{i}" for i in range(n)],
+        evidence_regions=regions)
+    inquiry=VisualInquiry(id="ic",question="opaque?",hypothesis_ids=["h-alpha","h-beta"],
+        predictions=preds,tests=[test])
+    hs=[
+        OpenHypothesis(id="h-alpha",subject_refs=["subject"],statement="opaque",
+            claim=HypothesisClaim(subject_ref="subject",relation="OPAQUE"),source_uncertainty_id="u"),
+        OpenHypothesis(id="h-beta",subject_refs=["subject"],statement="opaque",
+            claim=HypothesisClaim(subject_ref="subject",relation="OPAQUE2"),source_uncertainty_id="u"),
+    ]
+    req=build_visual_inquiry_request(inquiry,q,hs,target.model_copy(update={"discriminant_property":"synthetic_relation"}))
+    return regions,target,preds,q,test,inquiry,hs,req
+
+def _response038(req, regions, *, statuses=None, outcome="alpha", composite_status=VisualEvidenceStatus.OBSERVED, order=None):
+    statuses=statuses or {}
+    seq=list(regions if order is None else [regions[i] for i in order])
+    results=[
+        CompositeSourceResult(source_id=r.source_id,observation_ref=r.observation_ref,
+            photo_index=r.photo_index,region=r.region,status=statuses.get(r.source_id,VisualEvidenceStatus.OBSERVED))
+        for r in seq
+    ]
+    return VisualEvidenceResponse(schema_version="0.3",request_id=req.request_id,inquiry_id=req.inquiry_id,
+        test_id=req.test_id,property_name=req.property_name,source_results=results,
+        composite_status=composite_status,composite_outcome=outcome)
+
+def test_038_a_b_historical_request_response_import_preserved():
+    # Existing legacy helper exercises the exact 030 route.
+    observation=_obs("legacy-o",1)
+    observation.region=NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)
+    observation.observable_properties={"continuation"}
+    h1=OpenHypothesis(id="h1",subject_refs=["legacy-o"],statement="x",
+        claim=HypothesisClaim(subject_ref="legacy-o",relation="CONTINUES"),source_uncertainty_id="u")
+    h2=OpenHypothesis(id="h2",subject_refs=["legacy-o"],statement="x",
+        claim=HypothesisClaim(subject_ref="legacy-o",relation="TERMINATES"),source_uncertainty_id="u")
+    p1=ObservablePrediction(id="p1",hypothesis_id="h1",statement="x",observable_properties=[ObservableProperty(name="continuation",value="visible")])
+    p2=ObservablePrediction(id="p2",hypothesis_id="h2",statement="x",observable_properties=[ObservableProperty(name="continuation",value="absent")])
+    q=DiscriminatingQuestion(hypothesis_ids=["h1","h2"],prediction_ids=["p1","p2"],
+        discriminants=[DiscriminatingProperty(property_name="continuation",expected_outcomes={"h1":"visible","h2":"absent"})],
+        evidence_needed="x",human_readable_question="x")
+    target=CandidateEvidenceTarget(photo_index=1,region=observation.region,source_observation_ids=["legacy-o"],
+        discriminant_property="continuation",visibility=VisibilityStatus.VISIBLE,testable=True,reason="legacy")
+    test=DiscriminatingTest(id="tl",photo_index=1,region=observation.region,prediction_ids=["p1","p2"],
+        evidence_sought="continuation",source_observation_ids=["legacy-o"])
+    inquiry=VisualInquiry(id="il",question="x",hypothesis_ids=["h1","h2"],predictions=[p1,p2],tests=[test])
+    req=build_visual_inquiry_request(inquiry,q,[h1,h2],target)
+    assert req.schema_version=="0.2"
+    response=VisualEvidenceResponse(schema_version="0.2",request_id=req.request_id,inquiry_id=req.inquiry_id,
+        test_id=req.test_id,photo_index=1,region=observation.region,property_name="continuation",
+        status=VisualEvidenceStatus.OBSERVED,observed_value="visible",certainty=CertaintyLevel.CERTAIN,
+        source_observation_ids=["legacy-o"])
+    assert import_visual_evidence_response(req,response).discriminating is True
+
+def test_038_c_d_e_f_g_request_composite_preserves_sources_and_missing_roi():
+    for n in (2,3):
+        regions,target,_,_,_,inquiry,_,req=_bundle038(n=n,missing_roi=True)
+        assert req.schema_version=="0.3" and len(req.target.evidence_regions)==n and len(inquiry.tests)==1
+        assert req.target.evidence_regions[0].region is None
+        assert VisualInquiryRequest.model_validate_json(req.model_dump_json()).target.evidence_regions[0].region is None
+    regions,_,_,_,_,_,_,req=_bundle038(n=2,same_photo=True)
+    assert regions[0].photo_index==regions[1].photo_index and regions[0].source_id!=regions[1].source_id
+
+def test_038_h_p_complete_response_and_permutation_import():
+    regions,_,_,_,_,_,_,req=_bundle038()
+    a=import_visual_evidence_response(req,_response038(req,regions))
+    b=import_visual_evidence_response(req,_response038(req,regions,order=[1,0]))
+    assert a.composite_outcome==b.composite_outcome=="alpha"
+    assert set(a.composite_source_statuses)==set(b.composite_source_statuses)=={"s0","s1"}
+
+def test_038_i_j_k_l_m_n_o_strict_source_provenance_rejections():
+    regions,_,_,_,_,_,_,req=_bundle038()
+    good=_response038(req,regions)
+    for mutate in ("missing","extra","duplicate","obs","photo","roi","invent_roi"):
+        data=good.model_dump()
+        if mutate=="missing": data["source_results"]=data["source_results"][:1]
+        elif mutate=="extra":
+            extra=dict(data["source_results"][0]); extra["source_id"]="unknown"; data["source_results"].append(extra)
+        elif mutate=="duplicate": data["source_results"][1]["source_id"]="s0"
+        elif mutate=="obs": data["source_results"][0]["observation_ref"]="wrong"
+        elif mutate=="photo": data["source_results"][0]["photo_index"]=99
+        elif mutate=="roi": data["source_results"][0]["region"]={"x0":.6,"y0":.6,"x1":.7,"y1":.7}
+        elif mutate=="invent_roi":
+            regions2,_,_,_,_,_,_,req2=_bundle038(missing_roi=True)
+            data=_response038(req2,regions2).model_dump()
+            data["source_results"][0]["region"]={"x0":.6,"y0":.6,"x1":.7,"y1":.7}
+            with pytest.raises(ValueError): import_visual_evidence_response(req2,VisualEvidenceResponse.model_validate(data))
+            continue
+        with pytest.raises(ValueError):
+            response=VisualEvidenceResponse.model_validate(data)
+            import_visual_evidence_response(req,response)
+
+def test_038_q_r_s_local_states_never_manufacture_composite_outcome():
+    regions,_,_,_,_,_,_,req=_bundle038()
+    for status in (VisualEvidenceStatus.OCCLUDED,VisualEvidenceStatus.NON_VISIBLE):
+        response=_response038(req,regions,statuses={"s0":status},outcome=None,
+            composite_status=VisualEvidenceStatus.INSUFFICIENT_EVIDENCE)
+        result=import_visual_evidence_response(req,response)
+        assert result.composite_outcome is None and result.discriminating is False
+        assert result.composite_source_statuses["s0"]==status.value
+    response=_response038(req,regions,outcome=None,composite_status=VisualEvidenceStatus.INSUFFICIENT_EVIDENCE)
+    assert import_visual_evidence_response(req,response).composite_outcome is None
+
+def test_038_t_u_v_w_global_outcome_contract():
+    regions,_,_,_,_,_,_,req=_bundle038()
+    result=import_visual_evidence_response(req,_response038(req,regions,outcome="beta"))
+    assert result.composite_outcome=="beta" and result.discriminating is False
+    bad=_response038(req,regions,outcome="gamma")
+    with pytest.raises(ValueError): import_visual_evidence_response(req,bad)
+    data=_response038(req,regions).model_dump(); data["composite_status"]="ambiguous"
+    with pytest.raises(ValueError): VisualEvidenceResponse.model_validate(data)
+    data=_response038(req,regions).model_dump(); data["composite_outcome"]=None
+    with pytest.raises(ValueError): VisualEvidenceResponse.model_validate(data)
+
+def test_038_x_partial_nonexhaustive_transports_but_never_discriminates():
+    regions,target,preds,q,test,inquiry,hs,req=_bundle038(exhaustive=False)
+    response=_response038(req,regions)
+    response=response.model_copy(update={"source_results":response.source_results[:1]})
+    result=import_visual_evidence_response(req,response)
+    assert len(result.composite_sources)==1 and result.discriminating is False and not result.sufficient_visibility
+
+def test_038_y_apply_composite_without_machine_sufficiency_never_eliminates():
+    regions,_,_,_,_,inquiry,_,req=_bundle038()
+    result=import_visual_evidence_response(req,_response038(req,regions,outcome="alpha"))
+    updated=apply_inquiry_test(inquiry,result)
+    assert updated.state is InquiryState.OPEN and set(updated.viable_hypothesis_ids)=={"h-alpha","h-beta"}
+
+def test_038_z_atomic_roundtrip_persists_sources_statuses_and_outcome():
+    regions,_,_,_,test,inquiry,_,req=_bundle038()
+    result=import_visual_evidence_response(req,_response038(req,regions,statuses={"s1":VisualEvidenceStatus.OCCLUDED},outcome="alpha"))
+    updated=apply_inquiry_test(inquiry,result)
+    hs=[OpenHypothesis(id="h-alpha",subject_refs=["subject"],statement="opaque"),
+        OpenHypothesis(id="h-beta",subject_refs=["subject"],statement="opaque")]
+    ws=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,hypotheses=hs),
+        pass_2=MultiViewPass(pass_number=2),inquiries=[updated])
+    loaded=MultiViewWorkspace.model_validate_json(ws.model_dump_json())
+    persisted=loaded.inquiries[0].test_results[0]
+    assert persisted.composite_outcome=="alpha"
+    assert len(persisted.composite_sources)==2
+    assert persisted.composite_source_statuses["s1"]=="occluded"
+    assert len(loaded.inquiries[0].tests)==1
+
+def test_038_aa_ab_legacy_roundtrip_and_schema_are_still_machine_generated():
+    test_037_u_legacy_discriminating_test_roundtrip_unchanged()
+    assert visual_evidence_response_schema()==VisualEvidenceResponse.model_json_schema()
+    assert visual_evidence_response_invariants()
