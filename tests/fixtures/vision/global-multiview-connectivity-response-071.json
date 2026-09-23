@@ -1,0 +1,367 @@
+{
+  "schema_version": "0.1",
+  "request_id": "global-multiview-connectivity-request-071",
+  "status": "CONNECTIVITY_EVIDENCE_AVAILABLE",
+  "identity_candidates": [],
+  "identity_cues": [],
+  "property_correspondences": [
+    {
+      "observation_ref_a": "obs_p1_roof_edge",
+      "property_name_a": "dark_edge",
+      "observation_ref_b": "obs_p5_roof_edge",
+      "property_name_b": "dark_edge",
+      "provenance_a": {
+        "observation_ref": "obs_p1_roof_edge",
+        "property_name": "dark_edge",
+        "source_id": "global-connectivity-071-property-1a",
+        "photo_index": 1,
+        "roi": [
+          0.03,
+          0.27,
+          0.96,
+          0.36
+        ]
+      },
+      "provenance_b": {
+        "observation_ref": "obs_p5_roof_edge",
+        "property_name": "dark_edge",
+        "source_id": "global-connectivity-071-property-1b",
+        "photo_index": 5,
+        "roi": [
+          0.14,
+          0.02,
+          0.91,
+          0.34
+        ]
+      },
+      "epistemic_level": "COMPARABLE_VISUAL_PROPERTY"
+    },
+    {
+      "observation_ref_a": "obs_p1_front_wall",
+      "property_name_a": "light_render",
+      "observation_ref_b": "obs_p2_side_wall",
+      "property_name_b": "light_render",
+      "provenance_a": {
+        "observation_ref": "obs_p1_front_wall",
+        "property_name": "light_render",
+        "source_id": "global-connectivity-071-property-2a",
+        "photo_index": 1,
+        "roi": [
+          0.03,
+          0.28,
+          0.97,
+          0.72
+        ]
+      },
+      "provenance_b": {
+        "observation_ref": "obs_p2_side_wall",
+        "property_name": "light_render",
+        "source_id": "global-connectivity-071-property-2b",
+        "photo_index": 2,
+        "roi": [
+          0.36,
+          0.16,
+          0.86,
+          0.62
+        ]
+      },
+      "epistemic_level": "COMPARABLE_VISUAL_PROPERTY"
+    },
+    {
+      "observation_ref_a": "obs_p1_front_upper_left_window",
+      "property_name_a": "paired_vertical_glazing",
+      "observation_ref_b": "obs_p1_front_upper_right_window",
+      "property_name_b": "paired_vertical_glazing",
+      "provenance_a": {
+        "observation_ref": "obs_p1_front_upper_left_window",
+        "property_name": "paired_vertical_glazing",
+        "source_id": "global-connectivity-071-property-3a",
+        "photo_index": 1,
+        "roi": [
+          0.17,
+          0.34,
+          0.36,
+          0.45
+        ]
+      },
+      "provenance_b": {
+        "observation_ref": "obs_p1_front_upper_right_window",
+        "property_name": "paired_vertical_glazing",
+        "source_id": "global-connectivity-071-property-3b",
+        "photo_index": 1,
+        "roi": [
+          0.58,
+          0.33,
+          0.79,
+          0.45
+        ]
+      },
+      "epistemic_level": "COMPARABLE_VISUAL_PROPERTY"
+    }
+  ],
+  "perceptual_relations": [
+    {
+      "subject_ref": "obs_p1_front_upper_right_window",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p1_front_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p1_front_upper_right_window",
+          "photo_index": 1,
+          "roi": [
+            0.58,
+            0.33,
+            0.79,
+            0.45
+          ]
+        },
+        {
+          "observation_ref": "obs_p1_front_wall",
+          "photo_index": 1,
+          "roi": [
+            0.03,
+            0.28,
+            0.97,
+            0.72
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p1_front_middle_left_window",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p1_front_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p1_front_middle_left_window",
+          "photo_index": 1,
+          "roi": [
+            0.16,
+            0.47,
+            0.36,
+            0.57
+          ]
+        },
+        {
+          "observation_ref": "obs_p1_front_wall",
+          "photo_index": 1,
+          "roi": [
+            0.03,
+            0.28,
+            0.97,
+            0.72
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p1_front_middle_right_window",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p1_front_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p1_front_middle_right_window",
+          "photo_index": 1,
+          "roi": [
+            0.57,
+            0.47,
+            0.79,
+            0.58
+          ]
+        },
+        {
+          "observation_ref": "obs_p1_front_wall",
+          "photo_index": 1,
+          "roi": [
+            0.03,
+            0.28,
+            0.97,
+            0.72
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p1_front_lower_left_opening",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p1_front_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p1_front_lower_left_opening",
+          "photo_index": 1,
+          "roi": [
+            0.18,
+            0.61,
+            0.32,
+            0.7
+          ]
+        },
+        {
+          "observation_ref": "obs_p1_front_wall",
+          "photo_index": 1,
+          "roi": [
+            0.03,
+            0.28,
+            0.97,
+            0.72
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p1_front_lower_right_door",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p1_front_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p1_front_lower_right_door",
+          "photo_index": 1,
+          "roi": [
+            0.57,
+            0.6,
+            0.8,
+            0.72
+          ]
+        },
+        {
+          "observation_ref": "obs_p1_front_wall",
+          "photo_index": 1,
+          "roi": [
+            0.03,
+            0.28,
+            0.97,
+            0.72
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p2_upper_window",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p2_side_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p2_upper_window",
+          "photo_index": 2,
+          "roi": [
+            0.48,
+            0.24,
+            0.61,
+            0.37
+          ]
+        },
+        {
+          "observation_ref": "obs_p2_side_wall",
+          "photo_index": 2,
+          "roi": [
+            0.36,
+            0.16,
+            0.86,
+            0.62
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p4_upper_window",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p4_rear_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p4_upper_window",
+          "photo_index": 4,
+          "roi": [
+            0.37,
+            0.1,
+            0.45,
+            0.21
+          ]
+        },
+        {
+          "observation_ref": "obs_p4_rear_wall",
+          "photo_index": 4,
+          "roi": [
+            0.34,
+            0.06,
+            0.72,
+            0.42
+          ]
+        }
+      ]
+    },
+    {
+      "subject_ref": "obs_p5_near_window",
+      "relation_token": "VISIBLE_WITHIN",
+      "object_ref": "obs_p5_side_wall",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p5_near_window",
+          "photo_index": 5,
+          "roi": [
+            0.62,
+            0.25,
+            0.76,
+            0.39
+          ]
+        },
+        {
+          "observation_ref": "obs_p5_side_wall",
+          "photo_index": 5,
+          "roi": [
+            0.13,
+            0.04,
+            0.88,
+            0.79
+          ]
+        }
+      ]
+    }
+  ],
+  "continuities": [
+    {
+      "observation_ref": "obs_p1_roof_edge",
+      "property_name": "continuation",
+      "state": "CONTINUES",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p1_roof_edge",
+          "photo_index": 1,
+          "roi": [
+            0.03,
+            0.27,
+            0.96,
+            0.36
+          ]
+        }
+      ]
+    },
+    {
+      "observation_ref": "obs_p5_roof_edge",
+      "property_name": "continuation",
+      "state": "CONTINUES",
+      "epistemic_level": "OBSERVED",
+      "provenance": [
+        {
+          "observation_ref": "obs_p5_roof_edge",
+          "photo_index": 5,
+          "roi": [
+            0.14,
+            0.02,
+            0.91,
+            0.34
+          ]
+        }
+      ]
+    }
+  ],
+  "perceptual_ambiguities": []
+}
