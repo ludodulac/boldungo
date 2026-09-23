@@ -4303,3 +4303,35 @@ def test_072_rejects_invalid_individual_item_without_rejecting_batch():
     result=validate_global_multiview_connectivity_response(request,bad)
     assert len(result["rejected"])==1
     assert result["accepted"]["perceptual_relations"]==[]
+
+
+def test_072_photo_level_perceptual_graph_spans_all_five_views_without_identity_promotion():
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    before=_real_workspace_post_069(); _,g0=_metrics_072(before)
+    request=build_global_multiview_connectivity_request(before,g0)
+    response=GlobalMultiviewConnectivityResponse.model_validate_json((fixture_dir/"global-multiview-connectivity-response-071.json").read_text())
+    after,_=ingest_global_multiview_connectivity_response(before,request,response)
+    reloaded=MultiViewWorkspace.model_validate_json(after.model_dump_json())
+    _,graph=_metrics_072(reloaded)
+    photo_by_node={f"observation:{x.id}":x.photo_index for x in [*reloaded.pass_1.observations,*reloaded.pass_2.observations]}
+    edges=set()
+    for constraint in graph.constraints:
+        photos=sorted({photo_by_node[x] for x in constraint.node_refs if x in photo_by_node})
+        for a in photos:
+            for b in photos:
+                if a<b: edges.add((a,b))
+    reached={1}
+    changed=True
+    while changed:
+        changed=False
+        for a,b in edges:
+            if a in reached and b not in reached: reached.add(b); changed=True
+            if b in reached and a not in reached: reached.add(a); changed=True
+    assert reached=={1,2,3,4,5}
+    assert (1,2) in edges and (1,5) in edges
+    assert len(graph.insufficiently_connected_components)==2
+    weak_obs={n for comp in graph.insufficiently_connected_components for n in comp}
+    assert weak_obs=={"observation:obs_p3_tree","observation:obs_p5_near_window","observation:obs_p5_side_wall"}
+    print("PHOTO_EDGES_072="+json.dumps(sorted(edges)))
+    print("PHOTO_REACH_072="+json.dumps(sorted(reached)))
+    print("WEAK_COMPONENTS_072="+json.dumps(graph.insufficiently_connected_components,sort_keys=True))
