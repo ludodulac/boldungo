@@ -25,6 +25,7 @@ class VisibilityStatus(str, Enum):
     ABSENT = "absent"
     NON_VISIBLE = "non_visible"
     OCCLUDED = "occluded"
+    PARTLY_OCCLUDED = "partly_occluded"
 
 
 class IdentityStatus(str, Enum):
@@ -74,7 +75,7 @@ class LocalObservation(BaseModel):
 
     @model_validator(mode="after")
     def validate_visibility(self) -> "LocalObservation":
-        if self.status is ClaimStatus.OBSERVED and self.visibility is not VisibilityStatus.VISIBLE:
+        if self.status is ClaimStatus.OBSERVED and self.visibility not in {VisibilityStatus.VISIBLE, VisibilityStatus.PARTLY_OCCLUDED}:
             raise ValueError("observed local claims require visibility='visible'")
         if self.visibility in {VisibilityStatus.NON_VISIBLE, VisibilityStatus.OCCLUDED}:
             if self.certainty.existence is CertaintyLevel.CERTAIN and self.status is ClaimStatus.OBSERVED:
@@ -1982,6 +1983,138 @@ class PerceptualAmbiguity(BaseModel):
         if len(tokens) != len(set(tokens)):
             raise ValueError("perceptual ambiguity alternatives must be distinct")
         return self
+
+
+class RichBootstrapObservation(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    observation_id: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    roi: tuple[float, float, float, float]
+    visibility: Literal["VISIBLE", "PARTLY_OCCLUDED", "OCCLUDED", "NON_VISIBLE"]
+    category_proposal: str = Field(min_length=1)
+    observable_properties: dict[str, bool | str | int | float] = Field(default_factory=dict)
+    observed_property_states: dict[str, str] | None = None
+
+    @model_validator(mode="after")
+    def validate_roi(self) -> "RichBootstrapObservation":
+        x0,y0,x1,y1=self.roi
+        if not (0 <= x0 < x1 <= 1 and 0 <= y0 < y1 <= 1):
+            raise ValueError("rich bootstrap ROI must be normalized with positive area")
+        return self
+
+
+class RichIdentityCandidate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    identity_candidate_id: str = Field(min_length=1)
+    observation_refs: list[str] = Field(min_length=2)
+    status: Literal["CANDIDATE"]
+
+    @model_validator(mode="after")
+    def unique_refs(self) -> "RichIdentityCandidate":
+        if len(self.observation_refs) != len(set(self.observation_refs)):
+            raise ValueError("rich identity observation refs must be unique")
+        return self
+
+
+class RichEvidenceProvenance(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    observation_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    roi: tuple[float, float, float, float]
+
+
+class RichIdentityCue(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    identity_candidate_ref: str = Field(min_length=1)
+    polarity: Literal["SAME", "DISTINCT"]
+    epistemic_level: Literal["CUE"]
+    cue: str = Field(min_length=1)
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+
+
+class RichRelationEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    subject_ref: str = Field(min_length=1)
+    relation_token: str = Field(min_length=1)
+    object_ref: str = Field(min_length=1)
+    epistemic_level: Literal["OBSERVED", "CANDIDATE", "AMBIGUOUS", "UNKNOWN"]
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+
+
+class RichPerceptualAlternative(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    alternative_token: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+
+
+class RichPerceptualAmbiguity(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    ambiguity_id: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    epistemic_level: Literal["AMBIGUOUS"]
+    alternatives: list[RichPerceptualAlternative] = Field(min_length=2)
+
+    @model_validator(mode="after")
+    def distinct_alternatives(self) -> "RichPerceptualAmbiguity":
+        tokens=[item.alternative_token for item in self.alternatives]
+        if len(tokens) != len(set(tokens)):
+            raise ValueError("rich perceptual alternatives must be distinct")
+        return self
+
+
+class RichVisualBootstrapResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.5"]
+    bootstrap_id: str = Field(min_length=1)
+    photo_count: int = Field(ge=1)
+    observations: list[RichBootstrapObservation]
+    identity_candidates: list[RichIdentityCandidate] = Field(default_factory=list)
+    identity_evidence: list[RichIdentityCue] = Field(default_factory=list)
+    relation_evidence: list[RichRelationEvidence] = Field(default_factory=list)
+    perceptual_ambiguities: list[RichPerceptualAmbiguity] = Field(default_factory=list)
+    observer_comment: str | None = None
+
+    @model_validator(mode="after")
+    def validate_rich_response(self) -> "RichVisualBootstrapResponse":
+        observations={item.observation_id:item for item in self.observations}
+        if len(observations) != len(self.observations):
+            raise ValueError("rich bootstrap observation IDs must be unique")
+        identities={item.identity_candidate_id:item for item in self.identity_candidates}
+        if len(identities) != len(self.identity_candidates):
+            raise ValueError("rich bootstrap identity IDs must be unique")
+        for item in self.observations:
+            if item.photo_index > self.photo_count:
+                raise ValueError("rich observation references unavailable photo")
+        for identity in self.identity_candidates:
+            if set(identity.observation_refs) - set(observations):
+                raise ValueError("rich identity references unknown observation")
+        def validate_provenance(items: list[RichEvidenceProvenance]) -> None:
+            for p in items:
+                obs=observations.get(p.observation_ref)
+                if obs is None or p.photo_index != obs.photo_index or p.roi != obs.roi:
+                    raise ValueError("rich evidence provenance must exactly match observation/photo/ROI")
+        for cue in self.identity_evidence:
+            identity=identities.get(cue.identity_candidate_ref)
+            if identity is None:
+                raise ValueError("rich identity cue references unknown candidate")
+            if not {p.observation_ref for p in cue.provenance}.issubset(identity.observation_refs):
+                raise ValueError("rich identity cue provenance must belong to its candidate")
+            validate_provenance(cue.provenance)
+        for relation in self.relation_evidence:
+            if relation.subject_ref not in observations or relation.object_ref not in observations:
+                raise ValueError("rich relation references unknown observation")
+            validate_provenance(relation.provenance)
+        for ambiguity in self.perceptual_ambiguities:
+            if ambiguity.subject_ref not in observations:
+                raise ValueError("rich ambiguity references unknown observation")
+            for alternative in ambiguity.alternatives:
+                validate_provenance(alternative.provenance)
+        return self
+
+
+def rich_visual_bootstrap_response_schema() -> dict:
+    return RichVisualBootstrapResponse.model_json_schema()
 
 
 VISUAL_BOOTSTRAP_RESPONSE_INVARIANTS = (
