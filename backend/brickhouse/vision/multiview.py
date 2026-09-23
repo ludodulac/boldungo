@@ -4131,17 +4131,26 @@ class GlobalMultiviewConnectivityRequest(BaseModel):
     response_invariants:list[str]
 
 
+class GlobalVisibleContinuation(BaseModel):
+    model_config=ConfigDict(extra="forbid")
+    observation_ref:str
+    property_name:Literal["continuation"]="continuation"
+    state:Literal["CONTINUES","TERMINATES"]
+    epistemic_level:Literal["OBSERVED"]="OBSERVED"
+    provenance:list[RichEvidenceProvenance]=Field(min_length=1)
+
+
 class GlobalMultiviewConnectivityResponse(BaseModel):
     model_config=ConfigDict(extra="forbid")
     schema_version:Literal["0.1"]="0.1"
     request_id:str
     status:Literal["CONNECTIVITY_EVIDENCE_AVAILABLE","NO_ADDITIONAL_RELIABLE_CONNECTIVITY","INSUFFICIENT_VISUAL_EVIDENCE"]
-    identity_candidates:list[dict]=Field(default_factory=list)
-    identity_cues:list[dict]=Field(default_factory=list)
-    property_correspondences:list[dict]=Field(default_factory=list)
-    perceptual_relations:list[dict]=Field(default_factory=list)
-    continuities:list[dict]=Field(default_factory=list)
-    perceptual_ambiguities:list[dict]=Field(default_factory=list)
+    identity_candidates:list[RichIdentityCandidate]=Field(default_factory=list)
+    identity_cues:list[RichIdentityCue]=Field(default_factory=list)
+    property_correspondences:list[CrossObservationPropertyCorrespondence]=Field(default_factory=list)
+    perceptual_relations:list[RichRelationEvidence]=Field(default_factory=list)
+    continuities:list[GlobalVisibleContinuation]=Field(default_factory=list)
+    perceptual_ambiguities:list[RichPerceptualAmbiguity]=Field(default_factory=list)
 
 
 GLOBAL_MULTIVIEW_CONNECTIVITY_INVARIANTS=(
