@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -49,6 +50,7 @@ from brickhouse.vision.multiview import (
     IdentityDiscriminantProducerStatus,
     IdentityDiscriminantCue,
     IdentityDiscriminantProducerResponse,
+    IdentityDiscriminantProducerRequest,
     build_identity_discriminant_producer_request,
     import_identity_discriminant_producer_response,
     build_identity_enquiry_bootstrap_request,
@@ -3854,3 +3856,47 @@ def test_065_exhausted_identity_uncertainty_keeps_dependency_but_has_no_impactfu
     assert dependencies[0].downstream_ref=="physical-entity-partition:idc"
     assert assessment.blocked and not assessment.can_modify_shared_state
     assert select_impactful_investigations([assessment])==[]
+
+
+def test_065_real_064_response_validates_and_persists_without_identity_promotion():
+    fixture_dir=Path(__file__).parent/"fixtures"
+    # Repository fixture path is stable from tests/vision.
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    request=IdentityDiscriminantProducerRequest.model_validate_json(
+        (fixture_dir/"identity-discriminant-producer-request-064.json").read_text()
+    )
+    response=IdentityDiscriminantProducerResponse.model_validate_json(
+        (fixture_dir/"identity-discriminant-producer-response-064.json").read_text()
+    )
+    record=record_identity_discriminant_investigation(request,response)
+    assert record is not None
+    observations=[
+        LocalObservation(
+            id=source.observation_ref,photo_index=source.photo_index,status=ClaimStatus.OBSERVED,
+            visibility=VisibilityStatus.VISIBLE,region=source.region,statement="Source observation."
+        ) for source in request.sources
+    ]
+    candidate=IdentityCandidate(
+        id=request.identity_candidate_id,observation_ids=list(request.observation_ids),
+        status=IdentityStatus.CANDIDATE,certainty=CertaintyLevel.UNKNOWN,
+        inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[IdentityStatus(value) for value in request.open_alternatives],
+    )
+    cues=[
+        RichIdentityCue(
+            identity_candidate_ref=request.identity_candidate_id,polarity=cue.polarity,
+            epistemic_level=cue.epistemic_level,cue=cue.cue,provenance=cue.provenance,
+        ) for cue in request.cues
+    ]
+    workspace=MultiViewWorkspace(
+        photo_count=5,pass_1=MultiViewPass(pass_number=1,observations=observations,identities=[candidate]),
+        pass_2=MultiViewPass(pass_number=2),rich_identity_cues=cues,
+        identity_discriminant_investigations=[record],
+    )
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.pass_1.identities[0].status is IdentityStatus.CANDIDATE
+    assert loaded.identity_discriminants==[]
+    assert build_identity_discriminant_producer_request(
+        loaded.pass_1.identities[0],loaded.pass_1.observations,loaded.rich_identity_cues,
+        loaded.identity_discriminant_investigations,
+    ) is None
