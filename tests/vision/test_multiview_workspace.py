@@ -45,6 +45,7 @@ from brickhouse.vision.multiview import (
     IdentityDiscriminantInvestigationRecord,
     record_identity_discriminant_investigation,
     RichEvidenceProvenance,
+    RichIdentityCue,
     IdentityDiscriminantProducerStatus,
     IdentityDiscriminantCue,
     IdentityDiscriminantProducerResponse,
