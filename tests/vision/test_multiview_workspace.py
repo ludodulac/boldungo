@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import base64
+import json
 from types import SimpleNamespace
 
 import pytest
@@ -71,6 +73,8 @@ from brickhouse.vision.multiview import (
     mapping_request_equivalent_to_exhausted_identity_discriminant,
     validate_property_outcome_mapping_response,
     PropertyOutcomeMappingResponse,
+    record_property_outcome_mapping_investigation,
+    render_multiview_world_diagnostic_html,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -4155,3 +4159,51 @@ def test_069_mapping_response_fail_closed_requires_distinct_complete_vectors():
       ]})
     with pytest.raises(ValueError,match="different organization compatibility"):
         validate_property_outcome_mapping_response(request,bad)
+
+
+def _real_workspace_post_069():
+    workspace=_real_workspace_post_068()
+    graph=build_multiview_world_constraint_graph(workspace)
+    missing=next(x for x in graph.missing_constraints if x.source_uncertainty_id=="identity-uncertainty-idc_sidewall_p2_p4")
+    request=build_property_outcome_mapping_request(workspace,graph,missing)
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    response=PropertyOutcomeMappingResponse.model_validate_json((fixture_dir/"property-outcome-mapping-producer-response-069.json").read_text())
+    record=record_property_outcome_mapping_investigation(request,response)
+    return workspace.model_copy(update={"property_outcome_mapping_investigations":[record]})
+
+
+def test_070_negative_069_persists_without_identity_resolution_after_reload():
+    workspace=_real_workspace_post_069()
+    assert len(workspace.property_outcome_mapping_investigations)==1
+    assert workspace.property_outcome_mapping_investigations[0].outcome=="NO_RELIABLE_MAPPING"
+    candidate=next(x for x in [*workspace.pass_1.identities,*workspace.pass_2.identities] if x.id=="idc_sidewall_p2_p4")
+    assert candidate.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.property_outcome_mapping_investigations==workspace.property_outcome_mapping_investigations
+    assert loaded.property_correspondences==workspace.property_correspondences
+
+
+def test_070_world_milestone_rebuild_and_diagnostic_are_truth_preserving(capsys):
+    workspace=_real_workspace_post_069()
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    graph=build_multiview_world_constraint_graph(loaded)
+    html=render_multiview_world_diagnostic_html(loaded,graph)
+    assert "pas Scene 3D" in html
+    assert "obs_p2_side_wall" in html and "obs_p4_rear_wall" in html
+    assert "COMPARABLE_VISUAL_PROPERTY" in html
+    assert "NO_RELIABLE_MAPPING" in html
+    summary={
+      "observations":len([*loaded.pass_1.observations,*loaded.pass_2.observations]),
+      "identity_candidates":len([*loaded.pass_1.identities,*loaded.pass_2.identities]),
+      "relations":len(loaded.rich_relation_evidence),
+      "correspondences":len(loaded.property_correspondences),
+      "identity_negative_memories":len(loaded.identity_discriminant_investigations),
+      "mapping_negative_memories":len(loaded.property_outcome_mapping_investigations),
+      "nodes":len(graph.nodes),"constraints":len(graph.constraints),"components":len(graph.components),
+      "open_uncertainties":len([x for x in derive_existing_structured_uncertainties(loaded) if x.resolved_state is None and len(x.open_alternatives)>=2]),
+      "competing_world_organizations":len(graph.competing_world_organizations),
+      "missing_constraints":len(graph.missing_constraints),"contradictions":len(graph.contradictions),
+      "insufficient_components":len(graph.insufficiently_connected_components),
+    }
+    print("SUMMARY_070="+json.dumps(summary,sort_keys=True))
+    print("HTML_070="+base64.b64encode(html.encode()).decode())
