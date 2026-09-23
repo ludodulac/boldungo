@@ -7,6 +7,8 @@ import pytest
 
 from brickhouse.vision.multiview import (
     AspectCertainty,
+    exhausted_relation_pair_evidence_sets,
+    record_relation_investigation,
     import_relation_pair_producer_response,
     build_relation_pair_producer_request,
     RelationPairElement,
@@ -3465,3 +3467,23 @@ def test_050_inconclusive_payload_rejected():
         RelationPairProducerResponse(producer_request_id=req.producer_request_id,status="no_reliable_pair",sources=req.sources,
             subject=RelationPairElement(element_ref="a",source_observation_ids=["o1"]),
             object=RelationPairElement(element_ref="b",source_observation_ids=["o2"]),visual_evidence_source_ids=["o1","o2"])
+
+
+def test_052_exact_negative_investigation_persists_without_negative_relation():
+    pair=import_relation_pair_producer_response(_pair_req_050(),_pair_resp_050())
+    observations=_pair_obs_050()
+    req=build_relation_alternative_producer_request("r52",pair.subject_ref,pair.object_ref,observations)
+    response=RelationAlternativeProducerResponse(
+        producer_request_id="r52",subject_ref=pair.subject_ref,object_ref=pair.object_ref,
+        status=RelationAlternativeProducerStatus.NO_RELIABLE_ALTERNATIVES,sources=req.sources)
+    pair=record_relation_investigation(pair,req,response)
+    assert pair.relation is None and pair.open_alternatives==[]
+    assert exhausted_relation_pair_evidence_sets([pair])==[["o1","o2"]]
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=observations,relations=[pair]),pass_2=MultiViewPass(pass_number=2))
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert exhausted_relation_pair_evidence_sets(loaded.pass_1.relations)==[["o1","o2"]]
+
+def test_052_pair_request_excludes_only_exact_evidence_set():
+    req=build_relation_pair_producer_request("next",_pair_obs_050(),[],[["o1","o2"]])
+    assert req.excluded_exact_evidence_sets==[["o1","o2"]]
+    assert "structurally distinct evidence set remains eligible" in req.instruction

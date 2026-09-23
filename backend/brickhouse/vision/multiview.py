@@ -161,6 +161,21 @@ class RelationAlternative(BaseModel):
         return self
 
 
+class RelationInvestigationRecord(BaseModel):
+    """Persisted memory of one exact relation-producer investigation; not architectural truth."""
+    model_config = ConfigDict(extra="forbid")
+    subject_ref: str = Field(min_length=1)
+    object_ref: str = Field(min_length=1)
+    source_observation_ids: list[str] = Field(min_length=2)
+    outcome: Literal["no_reliable_alternatives", "insufficient_visual_evidence"]
+
+    @model_validator(mode="after")
+    def validate_record(self) -> "RelationInvestigationRecord":
+        if len(self.source_observation_ids) != len(set(self.source_observation_ids)):
+            raise ValueError("relation investigation source IDs must be unique")
+        return self
+
+
 class ArchitecturalRelationCandidate(BaseModel):
     id: str = Field(min_length=1)
     subject_ref: str = Field(min_length=1)
@@ -171,6 +186,7 @@ class ArchitecturalRelationCandidate(BaseModel):
     supporting_photo_indexes: list[int] = Field(default_factory=list)
     source_observation_ids_by_element: dict[str, list[str]] = Field(default_factory=dict)
     visual_evidence_source_ids: list[str] = Field(default_factory=list)
+    investigations: list[RelationInvestigationRecord] = Field(default_factory=list)
     inquiry_state: RelationInquiryState = RelationInquiryState.NOT_ENQUIRABLE
     open_alternatives: list[RelationAlternative] = Field(default_factory=list)
 
@@ -707,6 +723,7 @@ class RelationPairProducerRequest(BaseModel):
     producer_request_id: str = Field(min_length=1)
     sources: list[RelationPairProducerSource] = Field(min_length=2)
     identity_candidates: list[IdentityCandidate] = Field(default_factory=list)
+    excluded_exact_evidence_sets: list[list[str]] = Field(default_factory=list)
     instruction: str = Field(min_length=1)
     response_schema: dict
     response_invariants: list[str] = Field(min_length=1)
@@ -742,6 +759,7 @@ def build_relation_pair_producer_request(
     producer_request_id: str,
     observations: list[LocalObservation],
     identity_candidates: list[IdentityCandidate],
+    excluded_exact_evidence_sets: list[list[str]] | None = None,
 ) -> RelationPairProducerRequest:
     if len(observations) < 2:
         raise ValueError("relation pair producer requires at least two observations")
@@ -765,6 +783,7 @@ def build_relation_pair_producer_request(
         producer_request_id=producer_request_id,
         sources=sources,
         identity_candidates=identities,
+        excluded_exact_evidence_sets=excluded_exact_evidence_sets or [],
         instruction=(
             "Inspect only the supplied observation sources. Determine whether the pixels justify selecting two "
             "distinct physical elements as a pair worth later relational investigation. Do not name, suggest, "
@@ -772,7 +791,7 @@ def build_relation_pair_producer_request(
             "PAIR_PROPOSED with distinct opaque element_ref values, exact source observation provenance for "
             "each element, and the exact exposed observation IDs providing visual evidence. Existing identity "
             "candidates may be considered only at their stated status; LIKELY_SAME or UNRESOLVED is not established "
-            "identity and must not be promoted. Otherwise return NO_RELIABLE_PAIR or INSUFFICIENT_VISUAL_EVIDENCE."
+            "identity and must not be promoted. Do not propose a pair using exactly an excluded_exact_evidence_set already exhausted by prior investigation; a structurally distinct evidence set remains eligible. Otherwise return NO_RELIABLE_PAIR or INSUFFICIENT_VISUAL_EVIDENCE."
         ),
         response_schema=relation_pair_producer_response_schema(),
         response_invariants=list(RELATION_PAIR_PRODUCER_RESPONSE_INVARIANTS),
@@ -992,6 +1011,41 @@ def import_relation_alternative_producer_response(
         inquiry_state=RelationInquiryState.OPEN_ALTERNATIVES,
         open_alternatives=alternatives,
     )
+
+
+def record_relation_investigation(
+    candidate: ArchitecturalRelationCandidate,
+    request: RelationAlternativeProducerRequest,
+    response: RelationAlternativeProducerResponse,
+) -> ArchitecturalRelationCandidate:
+    """Persist only exhaustion of this exact pair+evidence investigation; infer no relation."""
+    imported = import_relation_alternative_producer_response(request, response)
+    if imported is not None:
+        return imported
+    source_ids = [item.observation_ref for item in request.sources]
+    record = RelationInvestigationRecord(
+        subject_ref=request.subject_ref,
+        object_ref=request.object_ref,
+        source_observation_ids=source_ids,
+        outcome=response.status.value,
+    )
+    existing = list(candidate.investigations)
+    if record not in existing:
+        existing.append(record)
+    return candidate.model_copy(update={"investigations": existing})
+
+
+def exhausted_relation_pair_evidence_sets(
+    relations: list[ArchitecturalRelationCandidate],
+) -> list[list[str]]:
+    """Evidence sets already exhausted by a relation producer, for pair discovery anti-loop context."""
+    result: list[list[str]] = []
+    for candidate in relations:
+        for record in candidate.investigations:
+            ids = sorted(record.source_observation_ids)
+            if ids not in result:
+                result.append(ids)
+    return result
 
 
 class IdentityDiscriminant(BaseModel):
