@@ -1533,10 +1533,42 @@ class IdentityDiscriminantProducerRequest(BaseModel):
         return self
 
 
+class IdentityDiscriminantInvestigationRecord(BaseModel):
+    """Persisted negative/terminal memory for one exact identity-discriminant producer request."""
+
+    model_config = ConfigDict(extra="forbid")
+    request: IdentityDiscriminantProducerRequest
+    outcome: Literal["no_reliable_discriminant", "insufficient_visual_evidence"]
+
+    @property
+    def identity_candidate_id(self) -> str:
+        return self.request.identity_candidate_id
+
+
+def record_identity_discriminant_investigation(
+    request: IdentityDiscriminantProducerRequest,
+    response: IdentityDiscriminantProducerResponse,
+) -> IdentityDiscriminantInvestigationRecord | None:
+    """Validate and persist only an inconclusive producer result; never resolve identity."""
+    discriminant = import_identity_discriminant_producer_response(request, response)
+    if discriminant is not None:
+        return None
+    if response.status not in {
+        IdentityDiscriminantProducerStatus.NO_RELIABLE_DISCRIMINANT,
+        IdentityDiscriminantProducerStatus.INSUFFICIENT_VISUAL_EVIDENCE,
+    }:
+        return None
+    return IdentityDiscriminantInvestigationRecord(
+        request=request,
+        outcome=response.status.value,
+    )
+
+
 def build_identity_discriminant_producer_request(
     candidate: IdentityCandidate,
     observations: list[LocalObservation],
     cues: list[RichIdentityCue] | None = None,
+    investigations: list[IdentityDiscriminantInvestigationRecord] | None = None,
 ) -> IdentityDiscriminantProducerRequest | None:
     if candidate.inquiry_state is not IdentityInquiryState.OPEN_ALTERNATIVES:
         return None
@@ -1555,7 +1587,7 @@ def build_identity_discriminant_producer_request(
         )
         for index, observation_id in enumerate(candidate.observation_ids)
     ]
-    return IdentityDiscriminantProducerRequest(
+    request = IdentityDiscriminantProducerRequest(
         request_id=f"identity-discriminant-request-{candidate.id}",
         identity_candidate_id=candidate.id,
         instruction=(
@@ -1577,6 +1609,22 @@ def build_identity_discriminant_producer_request(
         response_schema=identity_discriminant_producer_response_schema(),
         response_invariants=identity_discriminant_producer_response_invariants(),
     )
+    def evidence_signature(item: IdentityDiscriminantProducerRequest) -> dict[str, Any]:
+        return {
+            "identity_candidate_id": item.identity_candidate_id,
+            "observation_ids": item.observation_ids,
+            "sources": [source.model_dump(mode="json") for source in item.sources],
+            "cues": [cue.model_dump(mode="json") for cue in item.cues],
+            "open_alternatives": item.open_alternatives,
+            "allowed_property_names": item.allowed_property_names,
+            "allowed_outcomes": item.allowed_outcomes,
+        }
+
+    request_signature = evidence_signature(request)
+    for record in investigations or []:
+        if evidence_signature(record.request) == request_signature:
+            return None
+    return request
 
 
 def import_identity_discriminant_producer_response(
@@ -3232,6 +3280,7 @@ class MultiViewWorkspace(BaseModel):
     pass_2: MultiViewPass
     inquiries: list[VisualInquiry] = Field(default_factory=list)
     identity_discriminants: list[IdentityDiscriminant] = Field(default_factory=list)
+    identity_discriminant_investigations: list[IdentityDiscriminantInvestigationRecord] = Field(default_factory=list)
     reasoning_dependencies: list[ReasoningDependency] = Field(default_factory=list)
     rich_identity_cues: list[RichIdentityCue] = Field(default_factory=list)
     rich_relation_evidence: list[RichRelationEvidence] = Field(default_factory=list)

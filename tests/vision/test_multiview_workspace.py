@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -42,9 +43,14 @@ from brickhouse.vision.multiview import (
     Contradiction,
     IdentityCandidate,
     IdentityDiscriminant,
+    IdentityDiscriminantInvestigationRecord,
+    record_identity_discriminant_investigation,
+    RichEvidenceProvenance,
+    RichIdentityCue,
     IdentityDiscriminantProducerStatus,
     IdentityDiscriminantCue,
     IdentityDiscriminantProducerResponse,
+    IdentityDiscriminantProducerRequest,
     build_identity_discriminant_producer_request,
     import_identity_discriminant_producer_response,
     build_identity_enquiry_bootstrap_request,
@@ -3769,3 +3775,128 @@ def test_064_discriminant_available_is_not_identity_resolution():
     assert discriminant is not None
     assert candidate.status is IdentityStatus.CANDIDATE
     assert candidate.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
+
+
+def test_065_no_reliable_identity_discriminant_persists_and_blocks_exact_reproposal():
+    a=_obs("a",1).model_copy(update={"region":NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)})
+    b=_obs("b",2).model_copy(update={"region":NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4)})
+    candidate=IdentityCandidate(
+        id="idc", observation_ids=["a","b"], status=IdentityStatus.CANDIDATE,
+        certainty=CertaintyLevel.UNKNOWN, inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE],
+    )
+    pa=RichEvidenceProvenance(observation_ref="a",photo_index=1,roi=(.1,.1,.2,.2))
+    pb=RichEvidenceProvenance(observation_ref="b",photo_index=2,roi=(.3,.3,.4,.4))
+    cues=[
+        RichIdentityCue(identity_candidate_ref="idc",polarity=p,epistemic_level="CUE",cue=p,provenance=[pa,pb])
+        for p in ("SAME","DISTINCT")
+    ]
+    request=build_identity_discriminant_producer_request(candidate,[a,b],cues)
+    assert request is not None
+    response=IdentityDiscriminantProducerResponse(
+        request_id=request.request_id, identity_candidate_id="idc",
+        status=IdentityDiscriminantProducerStatus.NO_RELIABLE_DISCRIMINANT,
+    )
+    record=record_identity_discriminant_investigation(request,response)
+    assert record is not None and record.outcome=="no_reliable_discriminant"
+    workspace=MultiViewWorkspace(
+        photo_count=2,
+        pass_1=MultiViewPass(pass_number=1,observations=[a,b],identities=[candidate]),
+        pass_2=MultiViewPass(pass_number=2),
+        rich_identity_cues=cues,
+        identity_discriminant_investigations=[record],
+    )
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    loaded_candidate=loaded.pass_1.identities[0]
+    assert loaded_candidate.status is IdentityStatus.CANDIDATE
+    assert loaded_candidate.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
+    assert set(loaded_candidate.open_alternatives)=={IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE}
+    assert loaded.identity_discriminants==[]
+    assert len(loaded.identity_discriminant_investigations)==1
+    assert build_identity_discriminant_producer_request(
+        loaded_candidate, loaded.pass_1.observations, loaded.rich_identity_cues,
+        loaded.identity_discriminant_investigations,
+    ) is None
+
+
+def test_065_negative_memory_is_exact_and_does_not_exhaust_changed_evidence():
+    a=_obs("a",1).model_copy(update={"region":NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2)})
+    b=_obs("b",2).model_copy(update={"region":NormalizedImageRegion(x0=.3,y0=.3,x1=.4,y1=.4)})
+    candidate=IdentityCandidate(
+        id="idc",observation_ids=["a","b"],status=IdentityStatus.CANDIDATE,
+        inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE],
+    )
+    pa=RichEvidenceProvenance(observation_ref="a",photo_index=1,roi=(.1,.1,.2,.2))
+    pb=RichEvidenceProvenance(observation_ref="b",photo_index=2,roi=(.3,.3,.4,.4))
+    cues=[RichIdentityCue(identity_candidate_ref="idc",polarity=p,epistemic_level="CUE",cue=p,provenance=[pa,pb]) for p in ("SAME","DISTINCT")]
+    request=build_identity_discriminant_producer_request(candidate,[a,b],cues)
+    response=IdentityDiscriminantProducerResponse(
+        request_id=request.request_id,identity_candidate_id="idc",
+        status=IdentityDiscriminantProducerStatus.NO_RELIABLE_DISCRIMINANT,
+    )
+    record=record_identity_discriminant_investigation(request,response)
+    changed=[cues[0].model_copy(update={"cue":"new independent SAME cue"}),cues[1]]
+    assert build_identity_discriminant_producer_request(candidate,[a,b],changed,[record]) is not None
+
+
+def test_065_exhausted_identity_uncertainty_keeps_dependency_but_has_no_impactful_investigation():
+    a=_obs("a",1); b=_obs("b",2)
+    candidate=IdentityCandidate(
+        id="idc",observation_ids=["a","b"],status=IdentityStatus.CANDIDATE,
+        inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE],
+    )
+    uncertainty=detect_identity_uncertainties([candidate],[a,b])[0]
+    dependencies=derive_identity_world_representation_dependencies([uncertainty])
+    assessment=assess_investigation_impact(
+        uncertainty,discriminating_testable=False,exhausted_or_redundant=True,
+        dependencies=dependencies,
+    )
+    assert dependencies[0].downstream_ref=="physical-entity-partition:idc"
+    assert assessment.blocked and not assessment.can_modify_shared_state
+    assert select_impactful_investigations([assessment])==[]
+
+
+def test_065_real_064_response_validates_and_persists_without_identity_promotion():
+    fixture_dir=Path(__file__).parent/"fixtures"
+    # Repository fixture path is stable from tests/vision.
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    request=IdentityDiscriminantProducerRequest.model_validate_json(
+        (fixture_dir/"identity-discriminant-producer-request-064.json").read_text()
+    )
+    response=IdentityDiscriminantProducerResponse.model_validate_json(
+        (fixture_dir/"identity-discriminant-producer-response-064.json").read_text()
+    )
+    record=record_identity_discriminant_investigation(request,response)
+    assert record is not None
+    observations=[
+        LocalObservation(
+            id=source.observation_ref,photo_index=source.photo_index,status=ClaimStatus.OBSERVED,
+            visibility=VisibilityStatus.VISIBLE,region=source.region,statement="Source observation."
+        ) for source in request.sources
+    ]
+    candidate=IdentityCandidate(
+        id=request.identity_candidate_id,observation_ids=list(request.observation_ids),
+        status=IdentityStatus.CANDIDATE,certainty=CertaintyLevel.UNKNOWN,
+        inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[IdentityStatus(value) for value in request.open_alternatives],
+    )
+    cues=[
+        RichIdentityCue(
+            identity_candidate_ref=request.identity_candidate_id,polarity=cue.polarity,
+            epistemic_level=cue.epistemic_level,cue=cue.cue,provenance=cue.provenance,
+        ) for cue in request.cues
+    ]
+    workspace=MultiViewWorkspace(
+        photo_count=5,pass_1=MultiViewPass(pass_number=1,observations=observations,identities=[candidate]),
+        pass_2=MultiViewPass(pass_number=2),rich_identity_cues=cues,
+        identity_discriminant_investigations=[record],
+    )
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.pass_1.identities[0].status is IdentityStatus.CANDIDATE
+    assert loaded.identity_discriminants==[]
+    assert build_identity_discriminant_producer_request(
+        loaded.pass_1.identities[0],loaded.pass_1.observations,loaded.rich_identity_cues,
+        loaded.identity_discriminant_investigations,
+    ) is None

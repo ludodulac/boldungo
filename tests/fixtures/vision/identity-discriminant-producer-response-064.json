@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1",
+  "request_id": "identity-discriminant-request-idc_sidewall_p2_p4",
+  "identity_candidate_id": "idc_sidewall_p2_p4",
+  "status": "no_reliable_discriminant",
+  "property_name": null,
+  "property_description": null,
+  "source_ids_by_observation": null,
+  "outcomes_by_alternative": null,
+  "outcome_descriptions": null,
+  "required_source_ids": null
+}

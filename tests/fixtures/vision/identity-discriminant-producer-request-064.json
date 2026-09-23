@@ -1,0 +1,234 @@
+{
+  "schema_version": "0.1",
+  "request_id": "identity-discriminant-request-idc_sidewall_p2_p4",
+  "identity_candidate_id": "idc_sidewall_p2_p4",
+  "instruction": "Inspect only the supplied visual sources and the supplied SAME/DISTINCT cues with exact provenance. Treat every cue only as evidence motivating the competition, never as a conclusion. Do NOT decide whether they are the same physical object. Decide only whether the pixels support a precise perceptual discriminant whose observable outcomes would differ across the already-open alternatives. If no such reliable discriminant exists, return no_reliable_discriminant; if the exposed sources cannot establish whether such a discriminant exists, return insufficient_visual_evidence. For a proposal, return discriminant_available, choose one opaque property token and opaque outcome tokens only from the allowed lists, and document their perceptual meaning in non-executable description fields. Do not infer from architectural plausibility and do not treat non-visible/occluded evidence as absence.",
+  "observation_ids": [
+    "obs_p2_side_wall",
+    "obs_p4_rear_wall"
+  ],
+  "sources": [
+    {
+      "source_id": "identity-source-1",
+      "observation_ref": "obs_p2_side_wall",
+      "photo_index": 2,
+      "region": {
+        "x0": 0.36,
+        "y0": 0.16,
+        "x1": 0.86,
+        "y1": 0.62
+      }
+    },
+    {
+      "source_id": "identity-source-2",
+      "observation_ref": "obs_p4_rear_wall",
+      "photo_index": 4,
+      "region": {
+        "x0": 0.34,
+        "y0": 0.06,
+        "x1": 0.72,
+        "y1": 0.42
+      }
+    }
+  ],
+  "cues": [
+    {
+      "polarity": "SAME",
+      "epistemic_level": "CUE",
+      "cue": "Both observations show a broad pale rendered wall with a tall white-framed upper opening near one lateral edge.",
+      "provenance": [
+        {
+          "observation_ref": "obs_p2_side_wall",
+          "photo_index": 2,
+          "roi": [
+            0.36,
+            0.16,
+            0.86,
+            0.62
+          ]
+        },
+        {
+          "observation_ref": "obs_p4_rear_wall",
+          "photo_index": 4,
+          "roi": [
+            0.34,
+            0.06,
+            0.72,
+            0.42
+          ]
+        }
+      ]
+    },
+    {
+      "polarity": "DISTINCT",
+      "epistemic_level": "CUE",
+      "cue": "The visible opening layouts differ: the photo-4 wall exposes an additional lower-right glazed opening that is not within the photo-2 wall evidence region; this is only a distinctness cue because field-of-view/occlusion can account for non-visibility.",
+      "provenance": [
+        {
+          "observation_ref": "obs_p2_side_wall",
+          "photo_index": 2,
+          "roi": [
+            0.36,
+            0.16,
+            0.86,
+            0.62
+          ]
+        },
+        {
+          "observation_ref": "obs_p4_rear_wall",
+          "photo_index": 4,
+          "roi": [
+            0.34,
+            0.06,
+            0.72,
+            0.42
+          ]
+        }
+      ]
+    }
+  ],
+  "open_alternatives": [
+    "same_physical_object",
+    "incompatible"
+  ],
+  "allowed_property_names": [
+    "perceptual_discriminant_1",
+    "perceptual_discriminant_2",
+    "perceptual_discriminant_3"
+  ],
+  "allowed_outcomes": [
+    "outcome_alpha",
+    "outcome_beta",
+    "outcome_gamma",
+    "outcome_delta"
+  ],
+  "response_schema": {
+    "$defs": {},
+    "additionalProperties": false,
+    "properties": {
+      "schema_version": {
+        "const": "0.1",
+        "default": "0.1",
+        "type": "string"
+      },
+      "request_id": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "identity_candidate_id": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "discriminant_available",
+          "discriminant_proposed",
+          "no_reliable_discriminant",
+          "insufficient_visual_evidence"
+        ],
+        "type": "string"
+      },
+      "property_name": {
+        "anyOf": [
+          {
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "property_description": {
+        "anyOf": [
+          {
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "source_ids_by_observation": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "outcomes_by_alternative": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "outcome_descriptions": {
+        "anyOf": [
+          {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "required_source_ids": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "required": [
+      "request_id",
+      "identity_candidate_id",
+      "status"
+    ],
+    "type": "object"
+  },
+  "response_invariants": [
+    "response.request_id and identity_candidate_id MUST exactly match the request.",
+    "discriminant_available requires the complete discriminant payload; no_reliable_discriminant and insufficient_visual_evidence require every discriminant payload field to be null/absent.",
+    "The supplied SAME/DISTINCT cues are evidence for constructing a test, not identity conclusions.",
+    "property_name MUST be one of request.allowed_property_names; prose descriptions are non-executable and MUST NOT be parsed by the engine.",
+    "Every outcome token MUST be one of request.allowed_outcomes.",
+    "source_ids_by_observation MUST exactly equal the observation_ref→source_id mapping supplied by the request.",
+    "required_source_ids MUST be unique and a subset of request source IDs.",
+    "outcomes_by_alternative keys MUST exactly equal request.open_alternatives; each alternative MUST have at least one outcome; every used outcome MUST map to exactly one alternative.",
+    "A proposed discriminant MUST give observably different outcome tokens to the two alternatives; otherwise return no_reliable_discriminant.",
+    "absence of an index != proof of the opposite; non-visible != absent; occluded != absent; architectural plausibility MUST NOT be used as evidence."
+  ]
+}
