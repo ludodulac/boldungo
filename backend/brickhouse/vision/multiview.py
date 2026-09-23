@@ -3925,6 +3925,21 @@ def validate_property_outcome_mapping_response(
             raise ValueError("MAPPING_AVAILABLE requires observably different organization compatibility vectors")
     return response
 
+
+class PropertyOutcomeMappingInvestigationRecord(BaseModel):
+    model_config=ConfigDict(extra="forbid")
+    request: PropertyOutcomeMappingRequest
+    outcome: Literal["NO_RELIABLE_MAPPING","INSUFFICIENT_VISUAL_EVIDENCE"]
+
+
+def record_property_outcome_mapping_investigation(
+    request:PropertyOutcomeMappingRequest,response:PropertyOutcomeMappingResponse
+)->PropertyOutcomeMappingInvestigationRecord|None:
+    validate_property_outcome_mapping_response(request,response)
+    if response.status is PropertyOutcomeMappingStatus.MAPPING_AVAILABLE:
+        return None
+    return PropertyOutcomeMappingInvestigationRecord(request=request,outcome=response.status.value)
+
 def build_property_outcome_mapping_request(
     workspace:"MultiViewWorkspace", graph:MultiViewWorldConstraintGraph, missing_constraint:MissingWorldConstraint,
 )->PropertyOutcomeMappingRequest|None:
@@ -3996,6 +4011,7 @@ class MultiViewWorkspace(BaseModel):
     rich_relation_evidence: list[RichRelationEvidence] = Field(default_factory=list)
     rich_perceptual_ambiguities: list[RichPerceptualAmbiguity] = Field(default_factory=list)
     property_correspondences: list[PropertyCorrespondenceRecord] = Field(default_factory=list)
+    property_outcome_mapping_investigations: list[PropertyOutcomeMappingInvestigationRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
