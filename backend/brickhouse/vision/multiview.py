@@ -862,7 +862,7 @@ class VisualEvidenceStatus(str, Enum):
 
 
 class VisualInquiryRequest(BaseModel):
-    schema_version: str = "0.1"
+    schema_version: str = "0.2"
     request_id: str = Field(min_length=1)
     inquiry_id: str = Field(min_length=1)
     instruction: str = Field(min_length=1)
@@ -873,9 +873,12 @@ class VisualInquiryRequest(BaseModel):
     target: CandidateEvidenceTarget
     test_id: str = Field(min_length=1)
     observability_requirements: list[str] = Field(min_length=1)
+    response_schema: dict
+    response_invariants: list[str] = Field(min_length=1)
 
 
 class VisualEvidenceResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     schema_version: str = "0.1"
     request_id: str = Field(min_length=1)
     inquiry_id: str = Field(min_length=1)
@@ -897,6 +900,45 @@ class VisualEvidenceResponse(BaseModel):
         elif self.observed_value is not None:
             raise ValueError("inconclusive visual evidence cannot carry an observed_value")
         return self
+
+
+VISUAL_EVIDENCE_RESPONSE_INVARIANTS = [
+    (
+        "If status is 'observed' or 'not_observed', observed_value MUST be present. "
+        "These are the only decisive statuses."
+    ),
+    (
+        "If status is 'occluded', 'non_visible', 'ambiguous', or 'insufficient_evidence', "
+        "observed_value MUST be null/absent. These statuses are inconclusive and MUST NOT "
+        "be used as evidence of either visible or absent."
+    ),
+    (
+        "For a decisive response, observed_value MUST equal one of the structured expected "
+        "outcomes for request.property_name in request.question.discriminants; otherwise import fails closed."
+    ),
+    (
+        "response.request_id MUST equal request.request_id; response.inquiry_id MUST equal "
+        "request.inquiry_id; response.test_id MUST equal request.test_id."
+    ),
+    (
+        "response.photo_index MUST equal request.target.photo_index; response.region MUST equal "
+        "request.target.region; response.property_name MUST equal request.property_name."
+    ),
+    (
+        "response.source_observation_ids MUST exactly equal request.target.source_observation_ids, "
+        "including list order."
+    ),
+]
+
+
+def visual_evidence_response_schema() -> dict:
+    """Exact machine schema exposed to an external visual observer."""
+    return VisualEvidenceResponse.model_json_schema()
+
+
+def visual_evidence_response_invariants() -> list[str]:
+    """Runtime/import invariants not fully expressible by JSON Schema alone."""
+    return list(VISUAL_EVIDENCE_RESPONSE_INVARIANTS)
 
 
 def build_executable_visual_inquiry(
@@ -1042,6 +1084,8 @@ def build_visual_inquiry_request(
             "non_occluded",
             "sufficient_visibility",
         ],
+        response_schema=visual_evidence_response_schema(),
+        response_invariants=visual_evidence_response_invariants(),
     )
 
 
