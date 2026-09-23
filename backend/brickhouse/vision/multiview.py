@@ -1269,26 +1269,45 @@ def build_visual_inquiry_request(
     }
     if len(subject_refs) != 1:
         raise ValueError("visual exchange requires one structurally identified subject")
+
+    def same_composite_sources(test: DiscriminatingTest) -> bool:
+        if not target.evidence_regions or not test.evidence_regions:
+            return False
+        left = {item.source_id: item for item in target.evidence_regions}
+        right = {item.source_id: item for item in test.evidence_regions}
+        return left == right and test.source_observation_ids == target.source_observation_ids
+
     test = next(
         (
-            item
-            for item in inquiry.tests
-            if item.photo_index == target.photo_index
-            and item.region == target.region
-            and item.evidence_sought == target.discriminant_property
+            item for item in inquiry.tests
+            if item.evidence_sought == target.discriminant_property
             and (
-                not item.source_observation_ids
-                or item.source_observation_ids == target.source_observation_ids
+                same_composite_sources(item)
+                if target.evidence_regions
+                else (
+                    not item.evidence_regions
+                    and item.photo_index == target.photo_index
+                    and item.region == target.region
+                    and (not item.source_observation_ids or item.source_observation_ids == target.source_observation_ids)
+                )
             )
         ),
         None,
     )
     if test is None:
         raise ValueError("candidate target must correspond to an inquiry test")
+
+    composite = bool(target.evidence_regions)
     return VisualInquiryRequest(
+        schema_version="0.3" if composite else "0.2",
         request_id=f"request-{inquiry.id}-{test.id}",
         inquiry_id=inquiry.id,
         instruction=(
+            "Inspect jointly all referenced evidence sources and return one atomic VisualEvidenceResponse. "
+            "Report each source locally, and report the composite outcome separately. Never derive the "
+            "composite outcome by concatenating local states; if the joint evidence is insufficient, "
+            "return an inconclusive composite status."
+            if composite else
             "Inspect only the referenced photo/ROI and return a VisualEvidenceResponse JSON. "
             "Report occluded, non-visible, ambiguous, or insufficient evidence explicitly; "
             "do not infer absence from inability to see."
@@ -1300,6 +1319,10 @@ def build_visual_inquiry_request(
         target=target,
         test_id=test.id,
         observability_requirements=[
+            "source_identity_and_provenance_exact",
+            "report_each_inspected_source_without_inventing_roi",
+            "composite_outcome_separate_from_local_source_results",
+        ] if composite else [
             "region_in_frame",
             "non_occluded",
             "sufficient_visibility",
@@ -1307,6 +1330,7 @@ def build_visual_inquiry_request(
         response_schema=visual_evidence_response_schema(),
         response_invariants=visual_evidence_response_invariants(),
     )
+
 
 
 def import_visual_evidence_response(
@@ -1317,9 +1341,76 @@ def import_visual_evidence_response(
         response.request_id != request.request_id
         or response.inquiry_id != request.inquiry_id
         or response.test_id != request.test_id
-        or response.photo_index != request.target.photo_index
-        or response.region != request.target.region
         or response.property_name != request.property_name
+    ):
+        raise ValueError("visual evidence response provenance does not match request")
+
+    if request.target.evidence_regions:
+        if response.schema_version != "0.3" or not response.source_results:
+            raise ValueError("composite request requires a composite response")
+        expected = {item.source_id: item for item in request.target.evidence_regions}
+        actual = {item.source_id: item for item in response.source_results}
+        if len(actual) != len(response.source_results):
+            raise ValueError("duplicate composite response source")
+        if not set(actual).issubset(expected):
+            raise ValueError("unexpected composite response source")
+        if request.target.requires_exhaustive_sources and set(actual) != set(expected):
+            raise ValueError("composite response is missing required evidence sources")
+        for source_id, result in actual.items():
+            wanted = expected[source_id]
+            if (
+                result.observation_ref != wanted.observation_ref
+                or result.photo_index != wanted.photo_index
+                or result.region != wanted.region
+            ):
+                raise ValueError("composite source provenance does not match request")
+        outcomes = {
+            value
+            for discriminant in request.question.discriminants
+            if discriminant.property_name == request.property_name
+            for value in discriminant.expected_outcomes.values()
+        }
+        if response.composite_outcome is not None and response.composite_outcome not in outcomes:
+            raise ValueError("composite_outcome is not an allowed structured outcome")
+
+        # 038 deliberately transports and persists the joint outcome, but there is no
+        # executable machine sufficiency policy yet. Therefore no hypothesis is eliminated.
+        sources = [
+            EvidenceRegion(
+                source_id=item.source_id,
+                observation_ref=item.observation_ref,
+                photo_index=item.photo_index,
+                region=item.region,
+                visibility=(
+                    VisibilityStatus.OCCLUDED if item.status is VisualEvidenceStatus.OCCLUDED
+                    else VisibilityStatus.NON_VISIBLE if item.status is VisualEvidenceStatus.NON_VISIBLE
+                    else VisibilityStatus.VISIBLE
+                ),
+            )
+            for item in response.source_results
+        ]
+        return InquiryTestResult(
+            test_id=request.test_id,
+            inspected=True,
+            region_in_frame=all(item.status is not VisualEvidenceStatus.NON_VISIBLE for item in response.source_results),
+            visibility=(
+                VisibilityStatus.OCCLUDED if any(item.status is VisualEvidenceStatus.OCCLUDED for item in response.source_results)
+                else VisibilityStatus.NON_VISIBLE if any(item.status is VisualEvidenceStatus.NON_VISIBLE for item in response.source_results)
+                else VisibilityStatus.VISIBLE
+            ),
+            sufficient_visibility=False,
+            statement=response.comment or "Structured composite external visual evidence imported; sufficiency remains undefined.",
+            compatible_prediction_ids=list(request.question.prediction_ids),
+            discriminating=False,
+            composite_sources=sources,
+            composite_source_statuses={item.source_id: item.status.value for item in response.source_results},
+            composite_outcome=response.composite_outcome,
+        )
+
+    # Historical 030 mono-source importer semantics remain unchanged.
+    if (
+        response.photo_index != request.target.photo_index
+        or response.region != request.target.region
         or response.source_observation_ids != request.target.source_observation_ids
     ):
         raise ValueError("visual evidence response provenance does not match request")
@@ -1358,13 +1449,8 @@ def import_visual_evidence_response(
     compatible = [
         prediction_id
         for prediction_id in request.question.prediction_ids
-        if outcomes.get(
-            next(
-                item.hypothesis_id
-                for item in request.predictions
-                if item.id == prediction_id
-            )
-        ) == response.observed_value
+        if outcomes.get(next(item.hypothesis_id for item in request.predictions if item.id == prediction_id))
+        == response.observed_value
     ]
     if not compatible:
         raise ValueError("structured observed_value matches no expected outcome")
