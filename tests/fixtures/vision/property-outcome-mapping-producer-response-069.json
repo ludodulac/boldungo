@@ -1,0 +1,8 @@
+{
+  "schema_version":"0.1",
+  "request_id":"property-outcome-mapping-request:missing-discriminating-constraint:identity-uncertainty-idc_sidewall_p2_p4",
+  "missing_constraint_id":"missing-discriminating-constraint:identity-uncertainty-idc_sidewall_p2_p4",
+  "identity_candidate_id":"idc_sidewall_p2_p4",
+  "status":"NO_RELIABLE_MAPPING",
+  "mappings":null
+}

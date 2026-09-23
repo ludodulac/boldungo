@@ -3925,6 +3925,21 @@ def validate_property_outcome_mapping_response(
             raise ValueError("MAPPING_AVAILABLE requires observably different organization compatibility vectors")
     return response
 
+
+class PropertyOutcomeMappingInvestigationRecord(BaseModel):
+    model_config=ConfigDict(extra="forbid")
+    request: PropertyOutcomeMappingRequest
+    outcome: Literal["NO_RELIABLE_MAPPING","INSUFFICIENT_VISUAL_EVIDENCE"]
+
+
+def record_property_outcome_mapping_investigation(
+    request:PropertyOutcomeMappingRequest,response:PropertyOutcomeMappingResponse
+)->PropertyOutcomeMappingInvestigationRecord|None:
+    validate_property_outcome_mapping_response(request,response)
+    if response.status is PropertyOutcomeMappingStatus.MAPPING_AVAILABLE:
+        return None
+    return PropertyOutcomeMappingInvestigationRecord(request=request,outcome=response.status.value)
+
 def build_property_outcome_mapping_request(
     workspace:"MultiViewWorkspace", graph:MultiViewWorldConstraintGraph, missing_constraint:MissingWorldConstraint,
 )->PropertyOutcomeMappingRequest|None:
@@ -3996,6 +4011,7 @@ class MultiViewWorkspace(BaseModel):
     rich_relation_evidence: list[RichRelationEvidence] = Field(default_factory=list)
     rich_perceptual_ambiguities: list[RichPerceptualAmbiguity] = Field(default_factory=list)
     property_correspondences: list[PropertyCorrespondenceRecord] = Field(default_factory=list)
+    property_outcome_mapping_investigations: list[PropertyOutcomeMappingInvestigationRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
@@ -4049,3 +4065,37 @@ class MultiViewWorkspace(BaseModel):
                 elif test.photo_index is not None and test.photo_index > self.photo_count:
                     raise ValueError("inquiry test references photo outside supplied input")
         return self
+
+
+def render_multiview_world_diagnostic_html(workspace:MultiViewWorkspace,graph:MultiViewWorldConstraintGraph)->str:
+    """Presentation-only diagnostic of explicit workspace evidence; creates no new world claims."""
+    import html
+    observations=[*workspace.pass_1.observations,*workspace.pass_2.observations]
+    identities=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    by_photo={i:[] for i in range(1,workspace.photo_count+1)}
+    for o in observations: by_photo[o.photo_index].append(o)
+    rels={(r.subject_ref,r.object_ref):r for r in workspace.rich_relation_evidence}
+    def esc(x): return html.escape(str(x))
+    def card(o):
+        props=", ".join(sorted(o.observable_properties or set())) or "—"
+        states=", ".join(f"{k}={v}" for k,v in sorted((o.observed_property_states or {}).items())) or "—"
+        return f'<article class="obs"><b>{esc(o.id)}</b><span>{esc(o.visibility.value)}</span><small>propriétés: {esc(props)}<br>états: {esc(states)}<br>ROI: {esc([o.region.x0,o.region.y0,o.region.x1,o.region.y1] if o.region else "—")}</small></article>'
+    photos="".join(f'<section><h2>Photo {i}</h2>{"".join(card(o) for o in sorted(by_photo[i],key=lambda x:x.id))}</section>' for i in by_photo)
+    candidates="".join(f'<li><b>{esc(x.id)}</b> — {esc(" ↔ ".join(x.observation_ids))} <em>CANDIDAT</em></li>' for x in identities)
+    relations="".join(f'<li>{esc(r.subject_ref)} <b>{esc(r.relation_token)}</b> {esc(r.object_ref)} <em>{esc(r.epistemic_level)}</em></li>' for r in workspace.rich_relation_evidence)
+    corrs="".join(f'<li>{esc(x.correspondence.observation_ref_a)} / <b>{esc(x.correspondence.property_name_a)}</b> ↔ {esc(x.correspondence.observation_ref_b)} / <b>{esc(x.correspondence.property_name_b)}</b> <em>COMPARABLE_VISUAL_PROPERTY</em></li>' for x in workspace.property_correspondences) or "<li>aucune</li>"
+    opens=[x for x in derive_existing_structured_uncertainties(workspace) if x.resolved_state is None and len(x.open_alternatives)>=2]
+    uncertain="".join(f'<li><b>{esc(x.id)}</b>: {esc(" | ".join(x.open_alternatives))}</li>' for x in opens) or "<li>aucune</li>"
+    exhausted=[*workspace.identity_discriminant_investigations,*workspace.property_outcome_mapping_investigations]
+    exhausted_html="".join(f'<li>{esc(getattr(x,"outcome","EXHAUSTED"))}</li>' for x in exhausted) or "<li>aucune</li>"
+    return f'''<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Boldüngo — monde multivue actuel</title><style>
+body{{font:15px system-ui;margin:0;background:#f4f3ef;color:#222}}header{{padding:24px;background:#222;color:white}}main{{padding:20px;max-width:1200px;margin:auto}}.legend span,em{{padding:3px 7px;border-radius:12px;background:#ddd;font-style:normal}}.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}}section{{background:white;border:1px solid #ccc;border-radius:10px;padding:12px}}.obs{{border-left:5px solid #2f6f4e;padding:8px;margin:8px 0;background:#fafafa}}.obs span,.obs small{{display:block;margin-top:4px}}h3{{margin-top:28px}}.candidate{{border-left:5px solid #b98200}}.unknown{{border-left:5px dashed #777}}code{{white-space:pre-wrap}}</style></head><body>
+<header><h1>Boldüngo — jalon du monde actuellement compris</h1><p>Diagnostic multivue, pas Scene 3D et pas modèle LEGO. Aucune géométrie cachée n'est ajoutée.</p><div class="legend"><span>ÉTABLI = observation/relation explicite</span> <span>CANDIDAT = identité non résolue</span> <span>INCERTAIN = alternatives ouvertes</span> <span>INCONNU = non établi</span></div></header><main>
+<h3>Observations retenues par vue</h3><div class="grid">{photos}</div>
+<h3>Candidats multivues</h3><section class="candidate"><ul>{candidates}</ul></section>
+<h3>Relations perceptives établies</h3><section><ul>{relations}</ul></section>
+<h3>Correspondances perceptives entre propriétés</h3><section><ul>{corrs}</ul></section>
+<h3>Incertitudes ouvertes / organisations concurrentes</h3><section class="unknown"><ul>{uncertain}</ul><p>Organisations concurrentes: {esc(len(graph.competing_world_organizations))}. Elles restent ouvertes.</p></section>
+<h3>Mémoires négatives / investigations épuisées</h3><section class="unknown"><ul>{exhausted_html}</ul></section>
+<h3>Limite du jalon</h3><section class="unknown"><p>Les cartes sont groupées par photo et ROI. Leur placement relatif entre photos n'est pas une reconstruction géométrique. Les zones non observées restent inconnues; une non-visibilité ou une occlusion n'est jamais affichée comme une absence.</p></section>
+</main></body></html>'''
