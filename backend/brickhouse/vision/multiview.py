@@ -1102,6 +1102,7 @@ class VisualInquiryBatchRequest(BaseModel):
     schema_version: Literal["0.1"] = "0.1"
     batch_request_id: str = Field(min_length=1)
     investigations: list[VisualInquiryBatchItem] = Field(min_length=2, max_length=5)
+    batch_invariants: list[str] = Field(default_factory=lambda: ["Each result answers exactly one investigation_id.", "PAIR_PROPOSED visual_evidence_source_ids must be unique across relation_pair results in this batch."])
 
     @model_validator(mode="after")
     def validate_investigations(self) -> "VisualInquiryBatchRequest":
@@ -1147,6 +1148,7 @@ def import_visual_inquiry_batch_response(
     if set(item.investigation_id for item in response.results) != set(expected):
         raise ValueError("batch results must match investigations exactly")
     imported=[]
+    seen_pair_evidence: set[tuple[str, ...]] = set()
     for result in response.results:
         item=expected[result.investigation_id]
         if result.protocol != item.protocol:
@@ -1154,7 +1156,13 @@ def import_visual_inquiry_batch_response(
         if item.protocol=="relation_pair":
             if not isinstance(result.response, RelationPairProducerResponse):
                 raise ValueError("wrong response contract for relation_pair")
-            imported.append(import_relation_pair_producer_response(item.request,result.response))
+            imported_pair=import_relation_pair_producer_response(item.request,result.response)
+            if imported_pair is not None:
+                evidence=tuple(sorted(imported_pair.visual_evidence_source_ids))
+                if evidence in seen_pair_evidence:
+                    raise ValueError("duplicate relation-pair evidence set inside batch")
+                seen_pair_evidence.add(evidence)
+            imported.append(imported_pair)
         else:
             if not isinstance(result.response, RelationAlternativeProducerResponse):
                 raise ValueError("wrong response contract for relation_alternative")
