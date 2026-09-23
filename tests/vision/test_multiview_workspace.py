@@ -11,6 +11,8 @@ from brickhouse.vision.multiview import (
     ClaimStatus,
     Contradiction,
     IdentityCandidate,
+    IdentityDiscriminant,
+    build_identity_discriminant_inquiry,
     IdentityStatus,
     IdentityInquiryState,
     detect_identity_uncertainties,
@@ -2733,3 +2735,151 @@ def test_039_u_old_038_workspace_without_contract_reloads_fail_closed():
 
 def test_039_v_continuation_regression_suite_anchor():
     test_038_a_b_historical_request_response_import_preserved()
+
+
+# Experiment 040 — explicit identity-discriminant consumer, no identity heuristic.
+
+def _id040(n=2, regions=True):
+    obs=[]
+    for i in range(n):
+        obs.append(LocalObservation(
+            id=f"opaque-observation-{i}", photo_index=i+1, status=ClaimStatus.OBSERVED,
+            visibility=VisibilityStatus.VISIBLE,
+            region=NormalizedImageRegion(x0=.1,y0=.1,x1=.2,y1=.2) if regions and i != n-1 else None,
+            proposed_category="must-not-be-read", statement="must not be interpreted",
+        ))
+    candidate=IdentityCandidate(
+        id="opaque-candidate", observation_ids=[o.id for o in obs],
+        status=IdentityStatus.UNRESOLVED, inquiry_state=IdentityInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE],
+        corroborating_photo_indexes=[1], conflicting_photo_indexes=[2],
+    )
+    uncertainty=detect_identity_uncertainties([candidate],obs)[0]
+    sources={o.id:f"source-{i}" for i,o in enumerate(obs)}
+    disc=IdentityDiscriminant(
+        id="explicit-disc", identity_candidate_id=candidate.id,
+        property_name="opaque_perceptual_pattern", source_ids_by_observation=sources,
+        outcomes_by_alternative={
+            IdentityStatus.SAME_PHYSICAL_OBJECT.value:["MATCH_PATTERN_ALPHA"],
+            IdentityStatus.INCOMPATIBLE.value:["MATCH_PATTERN_BETA"],
+        },
+        required_source_ids=list(sources.values()),
+    )
+    return obs,candidate,uncertainty,disc
+
+def test_040_a_legacy_identity_without_035_contract_not_enquirable():
+    a,b=_obs("legacy-a",1),_obs("legacy-b",2)
+    candidate=IdentityCandidate(id="legacy",observation_ids=[a.id,b.id],
+        status=IdentityStatus.UNRESOLVED)
+    assert detect_identity_uncertainties([candidate],[a,b])==[]
+
+def test_040_b_open_alternatives_without_discriminant_stops_after_uncertainty():
+    obs,c,u,d=_id040()
+    assert u.property_name=="identity"
+    assert build_identity_discriminant_inquiry(c,u,None,obs) is None
+
+def test_040_c_d_explicit_two_and_three_observation_discriminants_preserve_sources():
+    for n in (2,3):
+        obs,c,u,d=_id040(n)
+        a=build_identity_discriminant_inquiry(c,u,d,obs)
+        assert a is not None and len(a.predictions)==2
+        assert len(a.target.evidence_regions)==n
+        assert [x.observation_ref for x in a.target.evidence_regions]==[o.id for o in obs]
+
+def test_040_e_explicit_mapping_yields_structured_discrimination():
+    obs,c,u,d=_id040()
+    a=build_identity_discriminant_inquiry(c,u,d,obs)
+    expected=a.question.discriminants[0].expected_outcomes
+    assert set(expected.values())=={"MATCH_PATTERN_ALPHA","MATCH_PATTERN_BETA"}
+
+def test_040_f_same_outcome_for_all_alternatives_fails_closed():
+    obs,c,u,d=_id040()
+    d=d.model_copy(update={"outcomes_by_alternative":{
+        IdentityStatus.SAME_PHYSICAL_OBJECT.value:["SAME_TOKEN"],
+        IdentityStatus.INCOMPATIBLE.value:["SAME_TOKEN"]}})
+    assert build_identity_discriminant_inquiry(c,u,d,obs) is None
+
+def test_040_g_h_invalid_or_missing_alternative_mapping_rejected_or_closed():
+    obs,c,u,d=_id040()
+    with pytest.raises(ValueError):
+        IdentityDiscriminant(id="x",identity_candidate_id=c.id,property_name="p",
+            source_ids_by_observation=d.source_ids_by_observation,
+            outcomes_by_alternative={"same_physical_object":["X"],"incompatible":[]},
+            required_source_ids=d.required_source_ids)
+    bad=d.model_copy(update={"outcomes_by_alternative":{"same_physical_object":["X"]}})
+    with pytest.raises(ValueError):
+        build_identity_discriminant_inquiry(c,u,bad,obs)
+
+def test_040_i_wrong_candidate_rejected():
+    obs,c,u,d=_id040()
+    with pytest.raises(ValueError):
+        build_identity_discriminant_inquiry(c,u,d.model_copy(update={"identity_candidate_id":"other"}),obs)
+
+def test_040_j_unknown_observation_rejected():
+    obs,c,u,d=_id040()
+    with pytest.raises(ValueError):
+        build_identity_discriminant_inquiry(c,u,d,obs[:-1])
+
+def test_040_k_l_unknown_required_or_duplicate_source_rejected():
+    obs,c,u,d=_id040()
+    with pytest.raises(ValueError):
+        IdentityDiscriminant(id="x",identity_candidate_id=c.id,property_name="p",
+            source_ids_by_observation=d.source_ids_by_observation,outcomes_by_alternative=d.outcomes_by_alternative,
+            required_source_ids=["unknown"])
+    with pytest.raises(ValueError):
+        IdentityDiscriminant(id="x",identity_candidate_id=c.id,property_name="p",
+            source_ids_by_observation={obs[0].id:"dup",obs[1].id:"dup"},
+            outcomes_by_alternative=d.outcomes_by_alternative,required_source_ids=["dup"])
+
+def test_040_m_n_o_roi_exact_or_none_and_never_fabricated():
+    obs,c,u,d=_id040(regions=True)
+    a=build_identity_discriminant_inquiry(c,u,d,obs)
+    assert a.target.evidence_regions[0].region==obs[0].region
+    assert a.target.evidence_regions[1].region is None
+
+def test_040_p_q_support_indexes_alone_never_create_discriminant():
+    obs,c,u,d=_id040()
+    assert c.corroborating_photo_indexes and c.conflicting_photo_indexes
+    assert build_identity_discriminant_inquiry(c,u,None,obs) is None
+
+def test_040_r_s_t_prose_category_and_ids_do_not_create_discriminant():
+    obs,c,u,d=_id040()
+    obs[0]=obs[0].model_copy(update={"statement":"MATCH_PATTERN_ALPHA same looks similar",
+                                    "proposed_category":"MATCH_PATTERN_BETA"})
+    c=c.model_copy(update={"id":"same-looking-object"})
+    u=u.model_copy(update={"source_ref":c.id})
+    assert build_identity_discriminant_inquiry(c,u,None,obs) is None
+
+def test_040_u_v_atomic_composite_target_and_test():
+    obs,c,u,d=_id040(3)
+    a=build_identity_discriminant_inquiry(c,u,d,obs)
+    assert len(a.target.evidence_regions)==3
+    assert len(a.inquiry.tests)==1 and len(a.inquiry.tests[0].evidence_regions)==3
+    assert a.inquiry.tests[0].photo_index is None and a.inquiry.tests[0].region is None
+
+def test_040_w_reuses_exact_039_sufficiency_contract():
+    obs,c,u,d=_id040()
+    a=build_identity_discriminant_inquiry(c,u,d,obs)
+    assert isinstance(a.inquiry.tests[0].composite_sufficiency,CompositeSufficiencyContract)
+    assert a.inquiry.tests[0].composite_sufficiency.required_source_ids==d.required_source_ids
+
+def test_040_x_workspace_roundtrip_preserves_discriminant_and_provenance():
+    obs,c,u,d=_id040()
+    a=build_identity_discriminant_inquiry(c,u,d,obs)
+    ws=MultiViewWorkspace(photo_count=2,
+        pass_1=MultiViewPass(pass_number=1,observations=obs,identities=[c],hypotheses=a.hypotheses),
+        pass_2=MultiViewPass(pass_number=2),inquiries=[a.inquiry],identity_discriminants=[d])
+    loaded=MultiViewWorkspace.model_validate_json(ws.model_dump_json())
+    assert loaded.identity_discriminants==[d]
+    assert loaded.inquiries[0].tests[0].evidence_regions==a.inquiry.tests[0].evidence_regions
+
+def test_040_y_old_035_workspace_without_discriminant_reloads_fail_closed():
+    obs,c,u,d=_id040()
+    ws=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=obs,identities=[c]),
+        pass_2=MultiViewPass(pass_number=2))
+    loaded=MultiViewWorkspace.model_validate_json(ws.model_dump_json())
+    assert loaded.identity_discriminants==[]
+    assert build_identity_discriminant_inquiry(c,u,None,obs) is None
+
+def test_040_z_continuation_non_regression_anchor():
+    test_039_b_legacy_mono_continuation_unchanged()
