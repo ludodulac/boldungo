@@ -641,6 +641,178 @@ class EvidenceRegion(BaseModel):
     visibility: VisibilityStatus = VisibilityStatus.VISIBLE
 
 
+class RelationPairProducerStatus(str, Enum):
+    PAIR_PROPOSED = "pair_proposed"
+    NO_RELIABLE_PAIR = "no_reliable_pair"
+    INSUFFICIENT_VISUAL_EVIDENCE = "insufficient_visual_evidence"
+
+
+class RelationPairProducerSource(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    observation_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    region: NormalizedImageRegion | None = None
+    visibility: VisibilityStatus
+    proposed_category: str | None = None
+    statement: str = Field(min_length=1)
+
+
+class RelationPairElement(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    element_ref: str = Field(min_length=1)
+    source_observation_ids: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_sources(self) -> "RelationPairElement":
+        if len(self.source_observation_ids) != len(set(self.source_observation_ids)):
+            raise ValueError("pair element source observation IDs must be unique")
+        return self
+
+
+class RelationPairProducerResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    producer_request_id: str = Field(min_length=1)
+    status: RelationPairProducerStatus
+    sources: list[RelationPairProducerSource] = Field(min_length=2)
+    subject: RelationPairElement | None = None
+    object: RelationPairElement | None = None
+    visual_evidence_source_ids: list[str] | None = None
+
+    @model_validator(mode="after")
+    def validate_shape(self) -> "RelationPairProducerResponse":
+        refs = [item.observation_ref for item in self.sources]
+        if len(refs) != len(set(refs)):
+            raise ValueError("pair producer response sources must be unique")
+        payload = (self.subject, self.object, self.visual_evidence_source_ids)
+        if self.status is RelationPairProducerStatus.PAIR_PROPOSED:
+            if any(item is None for item in payload):
+                raise ValueError("PAIR_PROPOSED requires subject, object and visual evidence provenance")
+            if self.subject.element_ref == self.object.element_ref:
+                raise ValueError("relation pair elements must be distinct")
+            if not self.visual_evidence_source_ids or len(self.visual_evidence_source_ids) != len(set(self.visual_evidence_source_ids)):
+                raise ValueError("PAIR_PROPOSED requires unique non-empty visual evidence provenance")
+        elif any(item is not None for item in payload):
+            raise ValueError("inconclusive pair producer status cannot carry pair payload")
+        return self
+
+
+class RelationPairProducerRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    producer_request_id: str = Field(min_length=1)
+    sources: list[RelationPairProducerSource] = Field(min_length=2)
+    identity_candidates: list[IdentityCandidate] = Field(default_factory=list)
+    instruction: str = Field(min_length=1)
+    response_schema: dict
+    response_invariants: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_request(self) -> "RelationPairProducerRequest":
+        refs = [item.observation_ref for item in self.sources]
+        if len(refs) != len(set(refs)):
+            raise ValueError("pair producer request observation refs must be unique")
+        known = set(refs)
+        for identity in self.identity_candidates:
+            if not set(identity.observation_ids).issubset(known):
+                raise ValueError("pair producer identity candidate references unavailable source")
+        return self
+
+
+RELATION_PAIR_PRODUCER_RESPONSE_INVARIANTS = (
+    "response.producer_request_id MUST exactly match the request.",
+    "response.sources MUST exactly match request.sources including observation_ref, photo_index, ROI, visibility, proposed_category and statement.",
+    "PAIR_PROPOSED requires two distinct element_ref values, non-empty source_observation_ids for each element, and non-empty visual_evidence_source_ids.",
+    "Every source_observation_id and visual_evidence_source_id MUST reference an observation exposed by the request.",
+    "The response proposes only a pair worth relational investigation; it MUST NOT propose, name, infer, negate, invert, or otherwise encode an architectural relation.",
+    "Identity candidates are context only. LIKELY_SAME or UNRESOLVED MUST NOT be promoted to SAME_PHYSICAL_OBJECT by the importer.",
+    "NO_RELIABLE_PAIR and INSUFFICIENT_VISUAL_EVIDENCE MUST carry no subject, object or visual evidence provenance.",
+)
+
+
+def relation_pair_producer_response_schema() -> dict:
+    return RelationPairProducerResponse.model_json_schema()
+
+
+def build_relation_pair_producer_request(
+    producer_request_id: str,
+    observations: list[LocalObservation],
+    identity_candidates: list[IdentityCandidate],
+) -> RelationPairProducerRequest:
+    if len(observations) < 2:
+        raise ValueError("relation pair producer requires at least two observations")
+    sources = [
+        RelationPairProducerSource(
+            observation_ref=item.id,
+            photo_index=item.photo_index,
+            region=item.region,
+            visibility=item.visibility,
+            proposed_category=item.proposed_category,
+            statement=item.statement,
+        )
+        for item in observations
+    ]
+    known = {item.id for item in observations}
+    identities = [
+        item for item in identity_candidates
+        if set(item.observation_ids).issubset(known)
+    ]
+    return RelationPairProducerRequest(
+        producer_request_id=producer_request_id,
+        sources=sources,
+        identity_candidates=identities,
+        instruction=(
+            "Inspect only the supplied observation sources. Determine whether the pixels justify selecting two "
+            "distinct physical elements as a pair worth later relational investigation. Do not name, suggest, "
+            "infer, negate, invert, or choose any architectural relation. If a pair is justified, return "
+            "PAIR_PROPOSED with distinct opaque element_ref values, exact source observation provenance for "
+            "each element, and the exact exposed observation IDs providing visual evidence. Existing identity "
+            "candidates may be considered only at their stated status; LIKELY_SAME or UNRESOLVED is not established "
+            "identity and must not be promoted. Otherwise return NO_RELIABLE_PAIR or INSUFFICIENT_VISUAL_EVIDENCE."
+        ),
+        response_schema=relation_pair_producer_response_schema(),
+        response_invariants=list(RELATION_PAIR_PRODUCER_RESPONSE_INVARIANTS),
+    )
+
+
+def import_relation_pair_producer_response(
+    request: RelationPairProducerRequest,
+    response: RelationPairProducerResponse,
+) -> ArchitecturalRelationCandidate | None:
+    if response.producer_request_id != request.producer_request_id:
+        raise ValueError("relation pair producer response ID does not match request")
+    expected = {item.observation_ref: item for item in request.sources}
+    if {item.observation_ref for item in response.sources} != set(expected):
+        raise ValueError("relation pair producer source set does not exactly match request")
+    for item in response.sources:
+        if item != expected[item.observation_ref]:
+            raise ValueError("relation pair producer source photo/ROI/visibility/provenance does not exactly match request")
+    if response.status is not RelationPairProducerStatus.PAIR_PROPOSED:
+        return None
+    known = set(expected)
+    for element in (response.subject, response.object):
+        if not set(element.source_observation_ids).issubset(known):
+            raise ValueError("relation pair element references source outside request")
+    if not set(response.visual_evidence_source_ids).issubset(known):
+        raise ValueError("relation pair visual evidence references source outside request")
+    # The existing relation field is required by the historical candidate model.  This sentinel
+    # explicitly means that no architectural relation has yet been supplied; it is not an alternative.
+    return ArchitecturalRelationCandidate(
+        id=f"relation-pair-{request.producer_request_id}",
+        subject_ref=response.subject.element_ref,
+        object_ref=response.object.element_ref,
+        relation="UNSPECIFIED_RELATION",
+        status=ClaimStatus.UNKNOWN,
+        certainty=CertaintyLevel.UNKNOWN,
+        supporting_photo_indexes=sorted({
+            expected[source_id].photo_index
+            for source_id in response.visual_evidence_source_ids
+        }),
+        inquiry_state=RelationInquiryState.NOT_ENQUIRABLE,
+        open_alternatives=[],
+    )
+
+
 class RelationAlternativeProducerStatus(str, Enum):
     OPEN_ALTERNATIVES = "open_alternatives"
     NO_RELIABLE_ALTERNATIVES = "no_reliable_alternatives"
