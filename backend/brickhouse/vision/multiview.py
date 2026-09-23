@@ -92,6 +92,9 @@ class ViewAssessment(BaseModel):
 IDENTITY_CANDIDATE_RESPONSE_INVARIANTS = (
     "observation_ids MUST contain unique IDs.",
     "If status='same_physical_object', certainty MUST be 'certain' or 'plausible'.",
+    "Legacy/default inquiry_state='not_enquirable' MUST carry no open_alternatives.",
+    "inquiry_state='open_alternatives' requires at least two unique explicit alternatives: exactly 'same_physical_object' and 'incompatible'.",
+    "A CERTAIN same_physical_object or CERTAIN incompatible candidate MUST NOT simultaneously declare open alternatives.",
 )
 
 
