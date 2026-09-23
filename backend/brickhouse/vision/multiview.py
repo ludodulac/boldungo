@@ -641,6 +641,179 @@ class EvidenceRegion(BaseModel):
     visibility: VisibilityStatus = VisibilityStatus.VISIBLE
 
 
+class RelationAlternativeProducerStatus(str, Enum):
+    OPEN_ALTERNATIVES = "open_alternatives"
+    NO_RELIABLE_ALTERNATIVES = "no_reliable_alternatives"
+    INSUFFICIENT_VISUAL_EVIDENCE = "insufficient_visual_evidence"
+
+
+class RelationAlternativeProducerSource(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    source_id: str = Field(min_length=1)
+    observation_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    region: NormalizedImageRegion | None = None
+    visibility: VisibilityStatus
+
+
+class RelationAlternativeProposal(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    relation_token: str = Field(min_length=1)
+    source_observation_ids: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_proposal_provenance(self) -> "RelationAlternativeProposal":
+        if len(self.source_observation_ids) != len(set(self.source_observation_ids)):
+            raise ValueError("relation proposal provenance IDs must be unique")
+        return self
+
+
+class RelationAlternativeProducerResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    producer_request_id: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    object_ref: str = Field(min_length=1)
+    status: RelationAlternativeProducerStatus
+    sources: list[RelationAlternativeProducerSource] = Field(min_length=2)
+    alternatives: list[RelationAlternativeProposal] | None = None
+    relation_descriptions: dict[str, str] | None = None
+
+    @model_validator(mode="after")
+    def validate_shape(self) -> "RelationAlternativeProducerResponse":
+        source_ids = [item.source_id for item in self.sources]
+        refs = [item.observation_ref for item in self.sources]
+        if len(source_ids) != len(set(source_ids)) or len(refs) != len(set(refs)):
+            raise ValueError("relation producer response sources must be unique")
+        if self.status is RelationAlternativeProducerStatus.OPEN_ALTERNATIVES:
+            if self.alternatives is None or len(self.alternatives) < 2:
+                raise ValueError("open relation competition requires at least two alternatives")
+            tokens = [item.relation_token for item in self.alternatives]
+            if len(tokens) != len(set(tokens)):
+                raise ValueError("open relation alternatives must be distinct")
+            if self.relation_descriptions is None or set(self.relation_descriptions) != set(tokens):
+                raise ValueError("relation descriptions must exactly cover proposed tokens")
+        elif self.alternatives is not None or self.relation_descriptions is not None:
+            raise ValueError("inconclusive relation producer status cannot carry alternatives")
+        return self
+
+
+class RelationAlternativeProducerRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    producer_request_id: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    object_ref: str = Field(min_length=1)
+    sources: list[RelationAlternativeProducerSource] = Field(min_length=2)
+    allowed_relation_tokens: list[str] = Field(min_length=2)
+    instruction: str = Field(min_length=1)
+    response_schema: dict
+    response_invariants: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_request(self) -> "RelationAlternativeProducerRequest":
+        source_ids = [item.source_id for item in self.sources]
+        refs = [item.observation_ref for item in self.sources]
+        if len(source_ids) != len(set(source_ids)) or len(refs) != len(set(refs)):
+            raise ValueError("relation producer request sources must be unique")
+        if len(self.allowed_relation_tokens) != len(set(self.allowed_relation_tokens)):
+            raise ValueError("allowed relation tokens must be unique")
+        return self
+
+
+RELATION_ALTERNATIVE_PRODUCER_RESPONSE_INVARIANTS = (
+    "producer_request_id, subject_ref and object_ref MUST exactly match the request.",
+    "response.sources MUST exactly match request.sources including source_id, observation_ref, photo_index, region and visibility.",
+    "OPEN_ALTERNATIVES requires at least two distinct alternatives; inconclusive statuses MUST carry no alternatives or descriptions.",
+    "Every relation_token MUST come from request.allowed_relation_tokens; tokens are opaque machine identifiers and relation_descriptions are documentation only.",
+    "Every alternative.source_observation_ids MUST be non-empty and contain only observation_ref values present in request.sources.",
+    "No implicit negation, inverse, converse, or additional relation may be created by the importer.",
+)
+
+
+def relation_alternative_producer_response_schema() -> dict:
+    return RelationAlternativeProducerResponse.model_json_schema()
+
+
+def build_relation_alternative_producer_request(
+    producer_request_id: str,
+    subject_ref: str,
+    object_ref: str,
+    observations: list[LocalObservation],
+) -> RelationAlternativeProducerRequest:
+    if len(observations) < 2:
+        raise ValueError("relation alternative producer requires at least two source observations")
+    sources = [
+        RelationAlternativeProducerSource(
+            source_id=f"relation-source-{index + 1}",
+            observation_ref=item.id,
+            photo_index=item.photo_index,
+            region=item.region,
+            visibility=item.visibility,
+        )
+        for index, item in enumerate(observations)
+    ]
+    return RelationAlternativeProducerRequest(
+        producer_request_id=producer_request_id,
+        subject_ref=subject_ref,
+        object_ref=object_ref,
+        sources=sources,
+        allowed_relation_tokens=["relation_alpha", "relation_beta", "relation_gamma", "relation_delta"],
+        instruction=(
+            "Inspect only the supplied sources and decide whether their pixels justify a genuine explicit "
+            "competition between relations for exactly this subject_ref/object_ref pair. If yes, return "
+            "OPEN_ALTERNATIVES with at least two distinct opaque relation tokens selected only from the "
+            "allowed list, plus non-executable descriptions and exact source observation provenance. "
+            "Do not infer a negation, inverse, converse, or alternative from uncertainty or plausibility. "
+            "If no reliable competition is supported, return NO_RELIABLE_ALTERNATIVES; if the supplied "
+            "pixels are insufficient, return INSUFFICIENT_VISUAL_EVIDENCE."
+        ),
+        response_schema=relation_alternative_producer_response_schema(),
+        response_invariants=list(RELATION_ALTERNATIVE_PRODUCER_RESPONSE_INVARIANTS),
+    )
+
+
+def import_relation_alternative_producer_response(
+    request: RelationAlternativeProducerRequest,
+    response: RelationAlternativeProducerResponse,
+) -> ArchitecturalRelationCandidate | None:
+    if response.producer_request_id != request.producer_request_id:
+        raise ValueError("relation producer response ID does not match request")
+    if response.subject_ref != request.subject_ref or response.object_ref != request.object_ref:
+        raise ValueError("relation producer subject/object does not exactly match request")
+    expected_sources = {item.source_id: item for item in request.sources}
+    if {item.source_id for item in response.sources} != set(expected_sources):
+        raise ValueError("relation producer response source set does not exactly match request")
+    for item in response.sources:
+        if item != expected_sources[item.source_id]:
+            raise ValueError("relation producer source photo/ROI/visibility/provenance does not exactly match request")
+    if response.status is not RelationAlternativeProducerStatus.OPEN_ALTERNATIVES:
+        return None
+    known_observations = {item.observation_ref for item in request.sources}
+    alternatives: list[RelationAlternative] = []
+    for proposal in response.alternatives:
+        if proposal.relation_token not in request.allowed_relation_tokens:
+            raise ValueError("relation token is not allowed by request")
+        if not set(proposal.source_observation_ids).issubset(known_observations):
+            raise ValueError("relation alternative references unknown source observation")
+        alternatives.append(
+            RelationAlternative(
+                relation=proposal.relation_token,
+                source_observation_ids=list(proposal.source_observation_ids),
+            )
+        )
+    return ArchitecturalRelationCandidate(
+        id=f"relation-candidate-{request.producer_request_id}",
+        subject_ref=request.subject_ref,
+        object_ref=request.object_ref,
+        relation=alternatives[0].relation,
+        status=ClaimStatus.INFERRED,
+        certainty=CertaintyLevel.UNKNOWN,
+        inquiry_state=RelationInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=alternatives,
+    )
+
+
 class IdentityDiscriminant(BaseModel):
     """Explicit perceptual contract supplied for one identity candidate; never inferred."""
 
