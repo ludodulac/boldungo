@@ -1127,6 +1127,8 @@ class VisualEvidenceResponse(BaseModel):
 
 
 VISUAL_EVIDENCE_RESPONSE_INVARIANTS = [
+    "Legacy: if status is 'observed' or 'not_observed', observed_value MUST be present; if status is 'occluded', 'non_visible', 'ambiguous', or 'insufficient_evidence', observed_value MUST be null/absent and MUST NOT be used as visible/absent evidence.",
+    "Legacy: response.photo_index, response.region and response.source_observation_ids MUST exactly match the mono-source request target.",
     "Legacy mono-source responses preserve the 030 contract; composite responses use schema_version 0.3 and MUST NOT carry legacy mono-source evidence fields.",
     "Composite source_results are matched by source_id, not list position; source_id values MUST be unique.",
     "Each composite source_result MUST exactly match its requested observation_ref, photo_index and region; null requested region MUST remain null.",
