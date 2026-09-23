@@ -1609,11 +1609,20 @@ def build_identity_discriminant_producer_request(
         response_schema=identity_discriminant_producer_response_schema(),
         response_invariants=identity_discriminant_producer_response_invariants(),
     )
+    def evidence_signature(item: IdentityDiscriminantProducerRequest) -> dict[str, Any]:
+        return {
+            "identity_candidate_id": item.identity_candidate_id,
+            "observation_ids": item.observation_ids,
+            "sources": [source.model_dump(mode="json") for source in item.sources],
+            "cues": [cue.model_dump(mode="json") for cue in item.cues],
+            "open_alternatives": item.open_alternatives,
+            "allowed_property_names": item.allowed_property_names,
+            "allowed_outcomes": item.allowed_outcomes,
+        }
+
+    request_signature = evidence_signature(request)
     for record in investigations or []:
-        if (
-            record.identity_candidate_id == candidate.id
-            and record.request.model_dump(mode="json") == request.model_dump(mode="json")
-        ):
+        if evidence_signature(record.request) == request_signature:
             return None
     return request
 
