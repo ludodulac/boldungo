@@ -141,6 +141,26 @@ class IdentityCandidate(BaseModel):
         return self
 
 
+class RelationInquiryState(str, Enum):
+    """Whether an explicit relation competition licenses autonomous inquiry."""
+
+    NOT_ENQUIRABLE = "not_enquirable"
+    OPEN_ALTERNATIVES = "open_alternatives"
+
+
+class RelationAlternative(BaseModel):
+    """One explicitly supplied relation for the candidate's exact subject/object pair."""
+
+    relation: str = Field(min_length=1)
+    source_observation_ids: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_provenance(self) -> "RelationAlternative":
+        if len(self.source_observation_ids) != len(set(self.source_observation_ids)):
+            raise ValueError("relation alternative provenance IDs must be unique")
+        return self
+
+
 class ArchitecturalRelationCandidate(BaseModel):
     id: str = Field(min_length=1)
     subject_ref: str = Field(min_length=1)
@@ -149,6 +169,21 @@ class ArchitecturalRelationCandidate(BaseModel):
     status: ClaimStatus = ClaimStatus.INFERRED
     certainty: CertaintyLevel = CertaintyLevel.UNKNOWN
     supporting_photo_indexes: list[int] = Field(default_factory=list)
+    inquiry_state: RelationInquiryState = RelationInquiryState.NOT_ENQUIRABLE
+    open_alternatives: list[RelationAlternative] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_relation_inquiry(self) -> "ArchitecturalRelationCandidate":
+        if self.inquiry_state is RelationInquiryState.NOT_ENQUIRABLE:
+            if self.open_alternatives:
+                raise ValueError("non-enquirable relation cannot carry open alternatives")
+            return self
+        if len(self.open_alternatives) < 2:
+            raise ValueError("enquirable relation requires at least two explicit alternatives")
+        names = [item.relation for item in self.open_alternatives]
+        if len(names) != len(set(names)):
+            raise ValueError("relation alternatives must be distinct")
+        return self
 
 
 class Contradiction(BaseModel):
@@ -292,6 +327,38 @@ def detect_identity_uncertainties(
                 source_ref=candidate.id,
                 source_kind="identity_candidate",
                 open_alternatives=[item.value for item in candidate.open_alternatives],
+            )
+        )
+    return result
+
+
+def detect_relation_uncertainties(
+    relations: list[ArchitecturalRelationCandidate],
+    observations: list[LocalObservation],
+) -> list[StructuredUncertainty]:
+    """Lift only explicit relation competitions; certainty alone never creates one."""
+
+    observation_ids = {item.id for item in observations}
+    result: list[StructuredUncertainty] = []
+    for candidate in relations:
+        if candidate.inquiry_state is not RelationInquiryState.OPEN_ALTERNATIVES:
+            continue
+        provenance = {
+            source_id
+            for alternative in candidate.open_alternatives
+            for source_id in alternative.source_observation_ids
+        }
+        if not provenance or not provenance.issubset(observation_ids):
+            continue
+        result.append(
+            StructuredUncertainty(
+                id=f"relation-uncertainty-{candidate.id}",
+                subject_ref=candidate.subject_ref,
+                property_name="relation",
+                source_observation_ids=sorted(provenance),
+                source_ref=candidate.id,
+                source_kind="relation_candidate",
+                open_alternatives=[item.relation for item in candidate.open_alternatives],
             )
         )
     return result
@@ -2068,6 +2135,13 @@ class MultiViewWorkspace(BaseModel):
                 unknown = set(identity.observation_ids) - known_ids
                 if unknown:
                     raise ValueError(f"identity references unknown observations: {sorted(unknown)}")
+            for relation in phase.relations:
+                for alternative in relation.open_alternatives:
+                    unknown = set(alternative.source_observation_ids) - known_ids
+                    if unknown:
+                        raise ValueError(
+                            f"relation alternative provenance references unknown observations: {sorted(unknown)}"
+                        )
             for item in phase.observations:
                 if item.photo_index > self.photo_count:
                     raise ValueError("observation references photo outside supplied input")
