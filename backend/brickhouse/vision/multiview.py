@@ -165,7 +165,7 @@ class ArchitecturalRelationCandidate(BaseModel):
     id: str = Field(min_length=1)
     subject_ref: str = Field(min_length=1)
     object_ref: str = Field(min_length=1)
-    relation: str = Field(min_length=1)
+    relation: str | None = Field(default=None, min_length=1)
     status: ClaimStatus = ClaimStatus.INFERRED
     certainty: CertaintyLevel = CertaintyLevel.UNKNOWN
     supporting_photo_indexes: list[int] = Field(default_factory=list)
@@ -178,6 +178,8 @@ class ArchitecturalRelationCandidate(BaseModel):
             if self.open_alternatives:
                 raise ValueError("non-enquirable relation cannot carry open alternatives")
             return self
+        if self.relation is None:
+            raise ValueError("enquirable relation candidate requires an imported relation token")
         if len(self.open_alternatives) < 2:
             raise ValueError("enquirable relation requires at least two explicit alternatives")
         names = [item.relation for item in self.open_alternatives]
@@ -795,13 +797,12 @@ def import_relation_pair_producer_response(
             raise ValueError("relation pair element references source outside request")
     if not set(response.visual_evidence_source_ids).issubset(known):
         raise ValueError("relation pair visual evidence references source outside request")
-    # The existing relation field is required by the historical candidate model.  This sentinel
-    # explicitly means that no architectural relation has yet been supplied; it is not an alternative.
+    # Pair discovery persists in the existing candidate structure with relation=None until 048 supplies alternatives.
     return ArchitecturalRelationCandidate(
         id=f"relation-pair-{request.producer_request_id}",
         subject_ref=response.subject.element_ref,
         object_ref=response.object.element_ref,
-        relation="UNSPECIFIED_RELATION",
+        relation=None,
         status=ClaimStatus.UNKNOWN,
         certainty=CertaintyLevel.UNKNOWN,
         supporting_photo_indexes=sorted({
