@@ -3638,6 +3638,187 @@ def plan_missing_constraint_perceptual_query(
         missing_structured_information=["executable_property_outcome_mapping"],
     )
 
+
+class PropertyCorrespondenceProducerStatus(str, Enum):
+    CORRESPONDENCE_AVAILABLE = "CORRESPONDENCE_AVAILABLE"
+    NO_RELIABLE_CORRESPONDENCE = "NO_RELIABLE_CORRESPONDENCE"
+    INSUFFICIENT_VISUAL_EVIDENCE = "INSUFFICIENT_VISUAL_EVIDENCE"
+
+
+class PropertyCorrespondenceSource(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    source_id: str = Field(min_length=1)
+    observation_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    roi: tuple[float, float, float, float]
+    visibility: VisibilityStatus
+    property_names: list[str] = Field(min_length=1)
+    observed_property_states: dict[str, str] = Field(default_factory=dict)
+
+
+class PropertyCorrespondenceCue(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    polarity: Literal["SAME", "DISTINCT"]
+    epistemic_level: Literal["CUE"]
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+
+
+class PropertyCorrespondenceProducerRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    request_id: str = Field(min_length=1)
+    missing_constraint_id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    observation_refs: list[str] = Field(min_length=2, max_length=2)
+    sources: list[PropertyCorrespondenceSource] = Field(min_length=2, max_length=2)
+    cues: list[PropertyCorrespondenceCue] = Field(default_factory=list)
+    instruction: str = Field(min_length=1)
+    response_schema: dict
+    response_invariants: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def validate_request(self) -> "PropertyCorrespondenceProducerRequest":
+        if len(set(self.observation_refs)) != 2:
+            raise ValueError("property correspondence requires exactly two distinct observations")
+        refs=[x.observation_ref for x in self.sources]
+        if len(set(refs)) != 2 or set(refs) != set(self.observation_refs):
+            raise ValueError("sources must exactly cover the two observations")
+        if any(len(set(x.property_names)) != len(x.property_names) for x in self.sources):
+            raise ValueError("source property names must be unique")
+        return self
+
+
+class PropertyCorrespondenceProvenance(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    observation_ref: str = Field(min_length=1)
+    property_name: str = Field(min_length=1)
+    source_id: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    roi: tuple[float, float, float, float]
+
+
+class CrossObservationPropertyCorrespondence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    observation_ref_a: str = Field(min_length=1)
+    property_name_a: str = Field(min_length=1)
+    observation_ref_b: str = Field(min_length=1)
+    property_name_b: str = Field(min_length=1)
+    provenance_a: PropertyCorrespondenceProvenance
+    provenance_b: PropertyCorrespondenceProvenance
+    epistemic_level: Literal["COMPARABLE_VISUAL_PROPERTY"]
+
+
+class PropertyCorrespondenceProducerResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"] = "0.1"
+    request_id: str = Field(min_length=1)
+    missing_constraint_id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    status: PropertyCorrespondenceProducerStatus
+    correspondences: list[CrossObservationPropertyCorrespondence] | None = None
+
+    @model_validator(mode="after")
+    def validate_shape(self) -> "PropertyCorrespondenceProducerResponse":
+        if self.status is PropertyCorrespondenceProducerStatus.CORRESPONDENCE_AVAILABLE:
+            if not self.correspondences:
+                raise ValueError("CORRESPONDENCE_AVAILABLE requires correspondence payload")
+        elif self.correspondences is not None:
+            raise ValueError("inconclusive status cannot carry correspondences")
+        return self
+
+
+def property_correspondence_response_schema() -> dict:
+    return PropertyCorrespondenceProducerResponse.model_json_schema()
+
+
+PROPERTY_CORRESPONDENCE_RESPONSE_INVARIANTS = [
+    "request_id, missing_constraint_id and identity_candidate_id MUST exactly match the request.",
+    "CORRESPONDENCE_AVAILABLE requires one or more correspondences; inconclusive statuses require correspondences=null.",
+    "Every property_name MUST be selected exactly from the property_names supplied for its observation; no new property may be invented.",
+    "Every provenance observation_ref, source_id, photo_index and roi MUST exactly match the corresponding request source.",
+    "epistemic_level MUST be COMPARABLE_VISUAL_PROPERTY.",
+    "COMPARABLE_VISUAL_PROPERTY means only that two supplied observable properties are perceptually comparable; it MUST NOT assert SAME_PHYSICAL_FEATURE, SAME_PHYSICAL_OBJECT, identity, architecture, topology or hidden geometry.",
+    "Property token spelling or similarity MUST NOT be used as evidence. Comparability must be established from the supplied pixels.",
+    "Cue descriptions are not executable semantics and MUST NOT be parsed to choose a correspondence.",
+]
+
+
+def validate_property_correspondence_response(
+    request: PropertyCorrespondenceProducerRequest,
+    response: PropertyCorrespondenceProducerResponse,
+) -> PropertyCorrespondenceProducerResponse:
+    if (response.request_id != request.request_id or
+        response.missing_constraint_id != request.missing_constraint_id or
+        response.identity_candidate_id != request.identity_candidate_id):
+        raise ValueError("property correspondence response does not match request")
+    by_ref={x.observation_ref:x for x in request.sources}
+    for item in response.correspondences or []:
+        if item.observation_ref_a == item.observation_ref_b:
+            raise ValueError("correspondence must cross observations")
+        for obs_ref, prop, provenance in [
+            (item.observation_ref_a,item.property_name_a,item.provenance_a),
+            (item.observation_ref_b,item.property_name_b,item.provenance_b),
+        ]:
+            source=by_ref.get(obs_ref)
+            if source is None or prop not in source.property_names:
+                raise ValueError("correspondence references unavailable property")
+            if (provenance.observation_ref != obs_ref or provenance.property_name != prop or
+                provenance.source_id != source.source_id or provenance.photo_index != source.photo_index or
+                provenance.roi != source.roi):
+                raise ValueError("correspondence provenance does not exactly match request")
+    return response
+
+
+def build_property_correspondence_producer_request(
+    workspace: "MultiViewWorkspace",
+    graph: MultiViewWorldConstraintGraph,
+    missing_constraint: MissingWorldConstraint,
+) -> PropertyCorrespondenceProducerRequest | None:
+    if missing_constraint.id not in {x.id for x in graph.missing_constraints}:
+        raise ValueError("request must start from a missing constraint in the supplied graph")
+    uncertainty=next((x for x in derive_existing_structured_uncertainties(workspace)
+                      if x.id==missing_constraint.source_uncertainty_id),None)
+    if uncertainty is None or uncertainty.source_kind!="identity_candidate" or uncertainty.source_ref is None:
+        return None
+    observations={x.id:x for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    if len(missing_constraint.source_observation_refs)!=2:
+        return None
+    sources=[]
+    for index,ref in enumerate(missing_constraint.source_observation_refs):
+        obs=observations.get(ref)
+        if obs is None or obs.region is None or obs.visibility not in {VisibilityStatus.VISIBLE,VisibilityStatus.PARTLY_OCCLUDED}:
+            return None
+        properties=sorted(set(obs.observable_properties or set()) | set((obs.observed_property_states or {}).keys()))
+        if not properties:
+            return None
+        sources.append(PropertyCorrespondenceSource(
+            source_id=f"property-correspondence-source-{index+1}",
+            observation_ref=ref,photo_index=obs.photo_index,
+            roi=(obs.region.x0,obs.region.y0,obs.region.x1,obs.region.y1),
+            visibility=obs.visibility,property_names=properties,
+            observed_property_states=dict(sorted((obs.observed_property_states or {}).items())),
+        ))
+    cues=[
+        PropertyCorrespondenceCue(polarity=x.polarity,epistemic_level="CUE",provenance=x.provenance)
+        for x in workspace.rich_identity_cues if x.identity_candidate_ref==uncertainty.source_ref
+    ]
+    return PropertyCorrespondenceProducerRequest(
+        request_id=f"property-correspondence-request:{missing_constraint.id}",
+        missing_constraint_id=missing_constraint.id,
+        identity_candidate_id=uncertainty.source_ref,
+        observation_refs=list(missing_constraint.source_observation_refs),
+        sources=sources,cues=cues,
+        instruction=(
+            "Inspect only the supplied visual sources and determine whether any property_name from observation A "
+            "and any property_name from observation B are manifestations of a visually comparable property for a later investigation. "
+            "Select only supplied property_name tokens. Do not infer semantics from token spelling. "
+            "COMPARABLE_VISUAL_PROPERTY does not mean the same physical feature or object and must not resolve identity. "
+            "If no reliable pixel-grounded correspondence exists return NO_RELIABLE_CORRESPONDENCE; if the evidence cannot support the task return INSUFFICIENT_VISUAL_EVIDENCE."
+        ),
+        response_schema=property_correspondence_response_schema(),
+        response_invariants=list(PROPERTY_CORRESPONDENCE_RESPONSE_INVARIANTS),
+    )
+
 class MultiViewWorkspace(BaseModel):
     schema_version: Literal["0.1"] = "0.1"
     photo_count: int = Field(ge=1)

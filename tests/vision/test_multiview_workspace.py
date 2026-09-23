@@ -62,6 +62,10 @@ from brickhouse.vision.multiview import (
     plan_missing_constraint_perceptual_query,
     MissingConstraintPlannerState,
     identity_discriminant_equivalence_signature,
+    build_property_correspondence_producer_request,
+    PropertyCorrespondenceProducerResponse,
+    PropertyCorrespondenceProducerStatus,
+    validate_property_correspondence_response,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -4037,3 +4041,50 @@ def test_067_no_properties_reports_no_structured_property_without_combinatorics(
     graph=build_multiview_world_constraint_graph(workspace)
     decision=plan_missing_constraint_perceptual_query(workspace,graph,graph.missing_constraints[0])
     assert decision.state is MissingConstraintPlannerState.NO_STRUCTURED_PROPERTY
+
+
+def test_068_real_request_contains_exact_structured_properties_and_provenance(capsys):
+    workspace=_real_workspace_post_065()
+    graph=build_multiview_world_constraint_graph(workspace)
+    missing=next(x for x in graph.missing_constraints if x.source_uncertainty_id=="identity-uncertainty-idc_sidewall_p2_p4")
+    request=build_property_correspondence_producer_request(workspace,graph,missing)
+    assert request is not None
+    by_ref={x.observation_ref:x for x in request.sources}
+    assert by_ref["obs_p2_side_wall"].property_names==["light_render","upper_window"]
+    assert by_ref["obs_p4_rear_wall"].property_names==["lower_right_window","upper_left_window"]
+    assert by_ref["obs_p2_side_wall"].roi==(0.36,0.16,0.86,0.62)
+    assert by_ref["obs_p4_rear_wall"].roi==(0.34,0.06,0.72,0.42)
+    assert by_ref["obs_p2_side_wall"].visibility is VisibilityStatus.VISIBLE
+    assert by_ref["obs_p4_rear_wall"].visibility is VisibilityStatus.VISIBLE
+    assert {x.polarity for x in request.cues}=={"SAME","DISTINCT"}
+    print("REQUEST_068="+request.model_dump_json())
+
+
+def test_068_response_cannot_invent_property_or_provenance():
+    workspace=_real_workspace_post_065()
+    graph=build_multiview_world_constraint_graph(workspace)
+    request=build_property_correspondence_producer_request(workspace,graph,graph.missing_constraints[0])
+    assert request is not None
+    a,b=request.sources
+    response=PropertyCorrespondenceProducerResponse.model_validate({
+        "request_id":request.request_id,"missing_constraint_id":request.missing_constraint_id,
+        "identity_candidate_id":request.identity_candidate_id,"status":"CORRESPONDENCE_AVAILABLE",
+        "correspondences":[{
+            "observation_ref_a":a.observation_ref,"property_name_a":"invented_property",
+            "observation_ref_b":b.observation_ref,"property_name_b":b.property_names[0],
+            "provenance_a":{"observation_ref":a.observation_ref,"property_name":"invented_property","source_id":a.source_id,"photo_index":a.photo_index,"roi":a.roi},
+            "provenance_b":{"observation_ref":b.observation_ref,"property_name":b.property_names[0],"source_id":b.source_id,"photo_index":b.photo_index,"roi":b.roi},
+            "epistemic_level":"COMPARABLE_VISUAL_PROPERTY"}]})
+    with pytest.raises(ValueError,match="unavailable property"):
+        validate_property_correspondence_response(request,response)
+
+
+def test_068_inconclusive_response_has_no_correspondence_payload():
+    workspace=_real_workspace_post_065()
+    graph=build_multiview_world_constraint_graph(workspace)
+    request=build_property_correspondence_producer_request(workspace,graph,graph.missing_constraints[0])
+    response=PropertyCorrespondenceProducerResponse(
+        request_id=request.request_id,missing_constraint_id=request.missing_constraint_id,
+        identity_candidate_id=request.identity_candidate_id,status=PropertyCorrespondenceProducerStatus.NO_RELIABLE_CORRESPONDENCE,
+        correspondences=None)
+    validate_property_correspondence_response(request,response)
