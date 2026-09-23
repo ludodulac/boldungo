@@ -4079,7 +4079,7 @@ def render_multiview_world_diagnostic_html(workspace:MultiViewWorkspace,graph:Mu
     def card(o):
         props=", ".join(sorted(o.observable_properties or set())) or "—"
         states=", ".join(f"{k}={v}" for k,v in sorted((o.observed_property_states or {}).items())) or "—"
-        return f'<article class="obs"><b>{esc(o.id)}</b><span>{esc(o.visibility.value)} · {esc(o.category_proposal or "catégorie inconnue")}</span><small>propriétés: {esc(props)}<br>états: {esc(states)}<br>ROI: {esc([o.region.x0,o.region.y0,o.region.x1,o.region.y1] if o.region else "—")}</small></article>'
+        return f'<article class="obs"><b>{esc(o.id)}</b><span>{esc(o.visibility.value)}</span><small>propriétés: {esc(props)}<br>états: {esc(states)}<br>ROI: {esc([o.region.x0,o.region.y0,o.region.x1,o.region.y1] if o.region else "—")}</small></article>'
     photos="".join(f'<section><h2>Photo {i}</h2>{"".join(card(o) for o in sorted(by_photo[i],key=lambda x:x.id))}</section>' for i in by_photo)
     candidates="".join(f'<li><b>{esc(x.id)}</b> — {esc(" ↔ ".join(x.observation_ids))} <em>CANDIDAT</em></li>' for x in identities)
     relations="".join(f'<li>{esc(r.subject_ref)} <b>{esc(r.relation_token)}</b> {esc(r.object_ref)} <em>{esc(r.epistemic_level)}</em></li>' for r in workspace.rich_relation_evidence)
