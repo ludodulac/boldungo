@@ -17,6 +17,9 @@ from brickhouse.vision.multiview import (
     build_identity_discriminant_producer_request,
     import_identity_discriminant_producer_response,
     build_identity_enquiry_bootstrap_request,
+    detect_relation_uncertainties,
+    RelationInquiryState,
+    RelationAlternative,
     exclude_already_investigated_targets,
     build_identity_discriminant_inquiry,
     IdentityStatus,
@@ -3143,3 +3146,119 @@ def test_044_e_historical_observation_is_never_rewritten():
     opened = apply_inquiry_test(inquiry, result)
     exclude_already_investigated_targets(uncertainty, assessments, [opened])
     assert observation.model_dump() == before
+
+
+# Experiment 047 — explicit competing binary relation contract.
+
+def _relation_obs_047(obs_id="obs-a"):
+    return LocalObservation(
+        id=obs_id, photo_index=1, status=ClaimStatus.OBSERVED,
+        visibility=VisibilityStatus.VISIBLE, statement="Synthetic provenance.",
+    )
+
+def test_047_a_historical_relation_is_not_enquirable():
+    old = {
+        "id":"rel-old","subject_ref":"A","object_ref":"B","relation":"RELATION_X",
+        "status":"inferred","certainty":"unknown","supporting_photo_indexes":[1],
+    }
+    candidate = ArchitecturalRelationCandidate.model_validate(old)
+    assert candidate.inquiry_state is RelationInquiryState.NOT_ENQUIRABLE
+    assert candidate.open_alternatives == []
+    assert detect_relation_uncertainties([candidate], [_relation_obs_047()]) == []
+
+def test_047_b_plausible_relation_without_explicit_alternatives_is_not_uncertainty():
+    candidate = ArchitecturalRelationCandidate(
+        id="rel-p", subject_ref="A", object_ref="B", relation="RELATION_X",
+        certainty=CertaintyLevel.PLAUSIBLE,
+    )
+    assert detect_relation_uncertainties([candidate], [_relation_obs_047()]) == []
+
+def test_047_c_unknown_relation_without_explicit_alternatives_is_not_uncertainty():
+    candidate = ArchitecturalRelationCandidate(
+        id="rel-u", subject_ref="A", object_ref="B", relation="RELATION_X",
+        certainty=CertaintyLevel.UNKNOWN,
+    )
+    assert detect_relation_uncertainties([candidate], [_relation_obs_047()]) == []
+
+def test_047_d_explicit_open_relations_lift_to_one_structured_uncertainty():
+    observations=[_relation_obs_047("obs-a"),_relation_obs_047("obs-b")]
+    candidate=ArchitecturalRelationCandidate(
+        id="rel-open",subject_ref="A",object_ref="B",relation="RELATION_X",
+        inquiry_state=RelationInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[
+            RelationAlternative(relation="RELATION_X",source_observation_ids=["obs-a"]),
+            RelationAlternative(relation="RELATION_Y",source_observation_ids=["obs-b"]),
+        ],
+    )
+    result=detect_relation_uncertainties([candidate],observations)
+    assert len(result)==1
+    assert result[0].subject_ref=="A"
+    assert result[0].source_ref=="rel-open"
+    assert result[0].source_kind=="relation_candidate"
+    assert result[0].open_alternatives==["RELATION_X","RELATION_Y"]
+    assert result[0].source_observation_ids==["obs-a","obs-b"]
+
+def test_047_e_one_alternative_rejected():
+    with pytest.raises(ValueError):
+        ArchitecturalRelationCandidate(
+            id="rel-one",subject_ref="A",object_ref="B",relation="RELATION_X",
+            inquiry_state=RelationInquiryState.OPEN_ALTERNATIVES,
+            open_alternatives=[RelationAlternative(relation="RELATION_X",source_observation_ids=["obs-a"])],
+        )
+
+def test_047_f_duplicate_alternatives_rejected():
+    with pytest.raises(ValueError):
+        ArchitecturalRelationCandidate(
+            id="rel-dupe",subject_ref="A",object_ref="B",relation="RELATION_X",
+            inquiry_state=RelationInquiryState.OPEN_ALTERNATIVES,
+            open_alternatives=[
+                RelationAlternative(relation="RELATION_X",source_observation_ids=["obs-a"]),
+                RelationAlternative(relation="RELATION_X",source_observation_ids=["obs-b"]),
+            ],
+        )
+
+def test_047_g_incoherent_provenance_fails_closed():
+    candidate=ArchitecturalRelationCandidate(
+        id="rel-prov",subject_ref="A",object_ref="B",relation="RELATION_X",
+        inquiry_state=RelationInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[
+            RelationAlternative(relation="RELATION_X",source_observation_ids=["obs-a"]),
+            RelationAlternative(relation="RELATION_Y",source_observation_ids=["missing"]),
+        ],
+    )
+    assert detect_relation_uncertainties([candidate],[_relation_obs_047("obs-a")]) == []
+
+def test_047_h_workspace_roundtrip_preserves_exact_relation_competition():
+    observations=[_relation_obs_047("obs-a"),_relation_obs_047("obs-b")]
+    candidate=ArchitecturalRelationCandidate(
+        id="rel-roundtrip",subject_ref="A",object_ref="B",relation="RELATION_X",
+        inquiry_state=RelationInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[
+            RelationAlternative(relation="RELATION_X",source_observation_ids=["obs-a"]),
+            RelationAlternative(relation="RELATION_Y",source_observation_ids=["obs-b"]),
+        ],
+    )
+    workspace=MultiViewWorkspace(
+        photo_count=1,
+        pass_1=MultiViewPass(pass_number=1,observations=observations,relations=[candidate]),
+        pass_2=MultiViewPass(pass_number=2),
+    )
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    assert loaded.pass_1.relations[0] == candidate
+    assert detect_relation_uncertainties(loaded.pass_1.relations,loaded.pass_1.observations)[0].open_alternatives == ["RELATION_X","RELATION_Y"]
+
+def test_047_workspace_rejects_unknown_relation_provenance():
+    candidate=ArchitecturalRelationCandidate(
+        id="rel-bad-workspace",subject_ref="A",object_ref="B",relation="RELATION_X",
+        inquiry_state=RelationInquiryState.OPEN_ALTERNATIVES,
+        open_alternatives=[
+            RelationAlternative(relation="RELATION_X",source_observation_ids=["obs-a"]),
+            RelationAlternative(relation="RELATION_Y",source_observation_ids=["missing"]),
+        ],
+    )
+    with pytest.raises(ValueError):
+        MultiViewWorkspace(
+            photo_count=1,
+            pass_1=MultiViewPass(pass_number=1,observations=[_relation_obs_047("obs-a")],relations=[candidate]),
+            pass_2=MultiViewPass(pass_number=2),
+        )
