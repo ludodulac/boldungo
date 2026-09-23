@@ -1426,6 +1426,7 @@ class IdentityDiscriminant(BaseModel):
 
 
 class IdentityDiscriminantProducerStatus(str, Enum):
+    DISCRIMINANT_AVAILABLE = "discriminant_available"
     DISCRIMINANT_PROPOSED = "discriminant_proposed"
     NO_RELIABLE_DISCRIMINANT = "no_reliable_discriminant"
     INSUFFICIENT_VISUAL_EVIDENCE = "insufficient_visual_evidence"
@@ -1458,7 +1459,7 @@ class IdentityDiscriminantProducerResponse(BaseModel):
             self.property_name, self.property_description, self.source_ids_by_observation,
             self.outcomes_by_alternative, self.outcome_descriptions, self.required_source_ids,
         )
-        if self.status is IdentityDiscriminantProducerStatus.DISCRIMINANT_PROPOSED:
+        if self.status in {IdentityDiscriminantProducerStatus.DISCRIMINANT_AVAILABLE, IdentityDiscriminantProducerStatus.DISCRIMINANT_PROPOSED}:
             if any(item is None for item in payload):
                 raise ValueError("proposed discriminant requires complete structured payload")
         elif any(item is not None for item in payload):
@@ -1468,7 +1469,7 @@ class IdentityDiscriminantProducerResponse(BaseModel):
 
 IDENTITY_DISCRIMINANT_PRODUCER_RESPONSE_INVARIANTS = (
     "response.request_id and identity_candidate_id MUST exactly match the request.",
-    "DISCRIMINANT_PROPOSED requires the complete discriminant payload; NO_RELIABLE_DISCRIMINANT and INSUFFICIENT_VISUAL_EVIDENCE require every discriminant payload field to be null/absent.",
+    "DISCRIMINANT_AVAILABLE (legacy DISCRIMINANT_PROPOSED accepted) requires the complete discriminant payload; NO_RELIABLE_DISCRIMINANT and INSUFFICIENT_VISUAL_EVIDENCE require every discriminant payload field to be null/absent.",
     "property_name MUST be one of request.allowed_property_names. It is an opaque machine token; property_description documents the actually observed perceptual phenomenon and MUST NOT be parsed or executed.",
     "Every outcome token MUST be one of request.allowed_outcomes. outcome_descriptions document observable outcomes and MUST NOT be parsed or executed.",
     "source_ids_by_observation MUST exactly equal the observation_ref→source_id mapping supplied by the request; no source may be invented, omitted, renamed, or duplicated.",
@@ -1488,6 +1489,14 @@ def identity_discriminant_producer_response_invariants() -> list[str]:
     return list(IDENTITY_DISCRIMINANT_PRODUCER_RESPONSE_INVARIANTS)
 
 
+class IdentityDiscriminantCue(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    polarity: Literal["SAME", "DISTINCT"]
+    epistemic_level: Literal["CUE"]
+    cue: str = Field(min_length=1)
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+
+
 class IdentityDiscriminantProducerRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     schema_version: Literal["0.1"] = "0.1"
@@ -1496,6 +1505,7 @@ class IdentityDiscriminantProducerRequest(BaseModel):
     instruction: str = Field(min_length=1)
     observation_ids: list[str] = Field(min_length=2)
     sources: list[IdentityDiscriminantProducerSource] = Field(min_length=2)
+    cues: list[IdentityDiscriminantCue] = Field(min_length=2)
     open_alternatives: list[str] = Field(min_length=2)
     allowed_property_names: list[str] = Field(min_length=1)
     allowed_outcomes: list[str] = Field(min_length=2)
@@ -1512,6 +1522,10 @@ class IdentityDiscriminantProducerRequest(BaseModel):
             raise ValueError("producer source IDs must be unique")
         if len(refs) != len(set(refs)) or set(refs) != set(self.observation_ids):
             raise ValueError("producer sources must exactly cover observations")
+        if {item.polarity for item in self.cues} != {"SAME", "DISTINCT"}:
+            raise ValueError("identity discriminant request requires explicit SAME and DISTINCT cues")
+        if any(not {p.observation_ref for p in cue.provenance}.issubset(self.observation_ids) for cue in self.cues):
+            raise ValueError("identity discriminant cue provenance must belong to candidate observations")
         if len(self.allowed_property_names) != len(set(self.allowed_property_names)):
             raise ValueError("allowed property tokens must be unique")
         if len(self.allowed_outcomes) != len(set(self.allowed_outcomes)):
@@ -1522,10 +1536,14 @@ class IdentityDiscriminantProducerRequest(BaseModel):
 def build_identity_discriminant_producer_request(
     candidate: IdentityCandidate,
     observations: list[LocalObservation],
+    cues: list[RichIdentityCue] | None = None,
 ) -> IdentityDiscriminantProducerRequest | None:
     if candidate.inquiry_state is not IdentityInquiryState.OPEN_ALTERNATIVES:
         return None
     observation_by_id = {item.id: item for item in observations}
+    relevant_cues = [item for item in (cues or []) if item.identity_candidate_ref == candidate.id]
+    if {item.polarity for item in relevant_cues} != {"SAME", "DISTINCT"}:
+        return None
     if not set(candidate.observation_ids).issubset(observation_by_id):
         raise ValueError("identity candidate references unknown observation")
     sources = [
@@ -1541,7 +1559,7 @@ def build_identity_discriminant_producer_request(
         request_id=f"identity-discriminant-request-{candidate.id}",
         identity_candidate_id=candidate.id,
         instruction=(
-            "Inspect only the supplied visual sources. Do NOT decide whether they are the same physical object. "
+            "Inspect only the supplied visual sources and the supplied SAME/DISTINCT cues with exact provenance. Treat every cue only as evidence motivating the competition, never as a conclusion. Do NOT decide whether they are the same physical object. "
             "Decide only whether the pixels support a precise perceptual discriminant whose observable outcomes "
             "would differ across the already-open alternatives. If no such reliable discriminant exists, return "
             "NO_RELIABLE_DISCRIMINANT; if the pixels cannot support the inquiry, return INSUFFICIENT_VISUAL_EVIDENCE. "
@@ -1552,6 +1570,7 @@ def build_identity_discriminant_producer_request(
         ),
         observation_ids=list(candidate.observation_ids),
         sources=sources,
+        cues=[IdentityDiscriminantCue(polarity=item.polarity, epistemic_level=item.epistemic_level, cue=item.cue, provenance=item.provenance) for item in relevant_cues],
         open_alternatives=[item.value for item in candidate.open_alternatives],
         allowed_property_names=["perceptual_discriminant_1", "perceptual_discriminant_2", "perceptual_discriminant_3"],
         allowed_outcomes=["outcome_alpha", "outcome_beta", "outcome_gamma", "outcome_delta"],
@@ -1566,7 +1585,7 @@ def import_identity_discriminant_producer_response(
 ) -> IdentityDiscriminant | None:
     if response.request_id != request.request_id or response.identity_candidate_id != request.identity_candidate_id:
         raise ValueError("identity discriminant producer response does not match request")
-    if response.status is not IdentityDiscriminantProducerStatus.DISCRIMINANT_PROPOSED:
+    if response.status not in {IdentityDiscriminantProducerStatus.DISCRIMINANT_AVAILABLE, IdentityDiscriminantProducerStatus.DISCRIMINANT_PROPOSED}:
         return None
     if response.property_name not in request.allowed_property_names:
         raise ValueError("identity discriminant property token is not allowed")
