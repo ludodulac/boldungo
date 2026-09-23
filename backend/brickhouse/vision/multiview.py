@@ -3819,6 +3819,146 @@ def build_property_correspondence_producer_request(
         response_invariants=list(PROPERTY_CORRESPONDENCE_RESPONSE_INVARIANTS),
     )
 
+
+class PropertyCorrespondenceRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    request_id: str = Field(min_length=1)
+    missing_constraint_id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    correspondence: CrossObservationPropertyCorrespondence
+
+
+def import_property_correspondence_response(
+    request: PropertyCorrespondenceProducerRequest,
+    response: PropertyCorrespondenceProducerResponse,
+) -> list[PropertyCorrespondenceRecord]:
+    validate_property_correspondence_response(request,response)
+    return [PropertyCorrespondenceRecord(
+        request_id=request.request_id,missing_constraint_id=request.missing_constraint_id,
+        identity_candidate_id=request.identity_candidate_id,correspondence=item,
+    ) for item in (response.correspondences or [])]
+
+
+class PropertyOutcomeMappingStatus(str, Enum):
+    MAPPING_AVAILABLE="MAPPING_AVAILABLE"
+    NO_RELIABLE_MAPPING="NO_RELIABLE_MAPPING"
+    INSUFFICIENT_VISUAL_EVIDENCE="INSUFFICIENT_VISUAL_EVIDENCE"
+
+
+class PropertyOutcomeCompatibility(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    outcome_token: str = Field(min_length=1)
+    compatibility_by_organization: dict[str,Literal["COMPATIBLE","INCOMPATIBLE","NON_DISCRIMINATING"]]
+
+
+class PropertyOutcomeMappingRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"]="0.1"
+    request_id: str = Field(min_length=1)
+    missing_constraint_id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    competing_organizations: list[str] = Field(min_length=2)
+    correspondence: CrossObservationPropertyCorrespondence
+    sources: list[PropertyCorrespondenceSource] = Field(min_length=2,max_length=2)
+    cues: list[PropertyCorrespondenceCue] = Field(default_factory=list)
+    exhausted_discriminant_signatures: list[str] = Field(default_factory=list)
+    allowed_outcomes: list[str] = Field(min_length=2)
+    instruction: str = Field(min_length=1)
+    response_schema: dict
+    response_invariants: list[str] = Field(min_length=1)
+
+
+class PropertyOutcomeMappingResponse(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    schema_version: Literal["0.1"]="0.1"
+    request_id: str = Field(min_length=1)
+    missing_constraint_id: str = Field(min_length=1)
+    identity_candidate_id: str = Field(min_length=1)
+    status: PropertyOutcomeMappingStatus
+    mappings: list[PropertyOutcomeCompatibility] | None=None
+
+    @model_validator(mode="after")
+    def validate_shape(self):
+        if self.status is PropertyOutcomeMappingStatus.MAPPING_AVAILABLE and not self.mappings:
+            raise ValueError("MAPPING_AVAILABLE requires mappings")
+        if self.status is not PropertyOutcomeMappingStatus.MAPPING_AVAILABLE and self.mappings is not None:
+            raise ValueError("inconclusive mapping status cannot carry mappings")
+        return self
+
+
+def property_outcome_mapping_response_schema()->dict:
+    return PropertyOutcomeMappingResponse.model_json_schema()
+
+
+PROPERTY_OUTCOME_MAPPING_INVARIANTS=[
+    "Identifiers MUST exactly match the request.",
+    "The correspondence is COMPARABLE_VISUAL_PROPERTY only and MUST NOT be promoted to physical identity.",
+    "Only request.allowed_outcomes may be used; outcome tokens are opaque.",
+    "MAPPING_AVAILABLE requires at least two outcomes whose compatibility vectors across competing organizations differ.",
+    "The observer MUST NOT answer whether the properties/features/objects are physically identical.",
+    "Non-visible or occluded evidence MUST NOT be treated as absence; architectural plausibility MUST NOT be evidence.",
+    "NO_RELIABLE_MAPPING must be returned when different organizational consequences cannot be established from pixels.",
+]
+
+
+def build_property_outcome_mapping_request(
+    workspace:"MultiViewWorkspace", graph:MultiViewWorldConstraintGraph, missing_constraint:MissingWorldConstraint,
+)->PropertyOutcomeMappingRequest|None:
+    records=[x for x in workspace.property_correspondences if x.missing_constraint_id==missing_constraint.id]
+    if not records:
+        return None
+    record=records[0]
+    organizations=[x.alternative_token for x in graph.competing_world_organizations
+                   if x.source_uncertainty_id==missing_constraint.source_uncertainty_id]
+    if len(organizations)<2:
+        return None
+    observations={x.id:x for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    corr=record.correspondence
+    sources=[]
+    for idx,(ref,prop,prov) in enumerate([
+        (corr.observation_ref_a,corr.property_name_a,corr.provenance_a),
+        (corr.observation_ref_b,corr.property_name_b,corr.provenance_b),
+    ]):
+        obs=observations[ref]
+        sources.append(PropertyCorrespondenceSource(
+            source_id=prov.source_id,observation_ref=ref,photo_index=prov.photo_index,roi=prov.roi,
+            visibility=obs.visibility,property_names=[prop],
+            observed_property_states={k:v for k,v in (obs.observed_property_states or {}).items() if k==prop},
+        ))
+    cues=[PropertyCorrespondenceCue(polarity=x.polarity,epistemic_level="CUE",provenance=x.provenance)
+          for x in workspace.rich_identity_cues if x.identity_candidate_ref==record.identity_candidate_id]
+    negatives=[str(identity_discriminant_equivalence_signature(x.request))
+               for x in workspace.identity_discriminant_investigations if x.identity_candidate_id==record.identity_candidate_id]
+    return PropertyOutcomeMappingRequest(
+        request_id=f"property-outcome-mapping-request:{missing_constraint.id}",
+        missing_constraint_id=missing_constraint.id,identity_candidate_id=record.identity_candidate_id,
+        competing_organizations=organizations,correspondence=corr,sources=sources,cues=cues,
+        exhausted_discriminant_signatures=negatives,
+        allowed_outcomes=["observable_outcome_1","observable_outcome_2","observable_outcome_3","observable_outcome_4"],
+        instruction=(
+            "For this already-established perceptual property correspondence, determine only whether the pixels support "
+            "observable outcomes whose compatibility differs across the supplied competing organizations. Do not decide "
+            "physical identity. Use only opaque allowed outcome tokens. Fail closed if consequences cannot be established. "
+            "The supplied exhausted-discriminant signatures are negative memory and must not be bypassed by renaming."
+        ),response_schema=property_outcome_mapping_response_schema(),
+        response_invariants=list(PROPERTY_OUTCOME_MAPPING_INVARIANTS),
+    )
+
+
+def mapping_request_equivalent_to_exhausted_identity_discriminant(
+    request:PropertyOutcomeMappingRequest, workspace:"MultiViewWorkspace"
+)->bool:
+    # A 069 mapping request contains a validated cross-observation correspondence as new structured
+    # perceptual evidence. It is equivalent to 064 only if an exhausted record already contained
+    # that exact structured correspondence; the 064 request schema cannot contain one.
+    for record in workspace.identity_discriminant_investigations:
+        if record.identity_candidate_id != request.identity_candidate_id:
+            continue
+        dumped=record.request.model_dump(mode="json")
+        if dumped.get("cross_observation_property_correspondence")==request.correspondence.model_dump(mode="json"):
+            return True
+    return False
+
 class MultiViewWorkspace(BaseModel):
     schema_version: Literal["0.1"] = "0.1"
     photo_count: int = Field(ge=1)
@@ -3831,6 +3971,7 @@ class MultiViewWorkspace(BaseModel):
     rich_identity_cues: list[RichIdentityCue] = Field(default_factory=list)
     rich_relation_evidence: list[RichRelationEvidence] = Field(default_factory=list)
     rich_perceptual_ambiguities: list[RichPerceptualAmbiguity] = Field(default_factory=list)
+    property_correspondences: list[PropertyCorrespondenceRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
