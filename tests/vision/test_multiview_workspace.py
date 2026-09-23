@@ -4351,7 +4351,8 @@ def _real_workspace_post_071_for_073():
 def test_073_property_values_are_preserved_at_first_responsible_ingestion():
     fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
     response=RichVisualBootstrapResponse.model_validate_json((fixture_dir/"visual-bootstrap-response-062.json").read_text())
-    workspace=import_rich_visual_bootstrap_response(response)
+    request=build_rich_multiview_bootstrap_request("real-house-5-rich-multiview-062",["01-original.jpg","02-original.jpg","03-original.jpg","04-original.jpg","05-original.jpg"])
+    workspace=import_rich_visual_bootstrap_response(request,response)
     observations={x.id:x for x in workspace.pass_1.observations}
     assert observations["obs_p1_front_wall"].observable_property_values=={"light_render":True,"multiple_openings":True}
     assert observations["obs_p1_front_wall"].observable_properties=={"light_render","multiple_openings"}
