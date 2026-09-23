@@ -1,0 +1,60 @@
+{
+  "schema_version": "0.1",
+  "building_id": "building_simple_house_001",
+  "volume_id": "vol_main",
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "building_simple_house_001",
+    "volume_id": "vol_main",
+    "width_studs": 48,
+    "depth_studs": 38,
+    "height_plates": 106,
+    "canvas_width_studs": 52,
+    "canvas_depth_studs": 42,
+    "origin_x_studs": 2,
+    "origin_y_studs": 2,
+    "parts": [
+      {"placement_id":"wall-000001","part_id":"BRICK_1X8","category":"brick","component":"wall","x_studs":2,"y_studs":2,"z_plates":0,"rotation_quarter_turns":1,"facade":"front","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000002","part_id":"BRICK_1X8","category":"brick","component":"wall","x_studs":10,"y_studs":2,"z_plates":0,"rotation_quarter_turns":1,"facade":"front","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000016","part_id":"BRICK_1X8","category":"brick","component":"wall","x_studs":2,"y_studs":7,"z_plates":0,"rotation_quarter_turns":0,"facade":"left","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000017","part_id":"BRICK_1X4","category":"brick","component":"wall","x_studs":2,"y_studs":3,"z_plates":0,"rotation_quarter_turns":0,"facade":"left","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000041","part_id":"BRICK_1X6","category":"brick","component":"wall","x_studs":2,"y_studs":2,"z_plates":3,"rotation_quarter_turns":0,"facade":"left","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null},
+      {"placement_id":"wall-000063","part_id":"BRICK_1X4","category":"brick","component":"wall","x_studs":2,"y_studs":3,"z_plates":6,"rotation_quarter_turns":0,"facade":"left","roof_side":null,"opening_id":null,"trim_role":null,"semantic_color":null}
+    ]
+  },
+  "bom": {
+    "schema_version":"0.1","building_id":"building_simple_house_001","volume_id":"vol_main","total_parts":6,"unique_part_types":3,
+    "lines":[
+      {"part_id":"BRICK_1X4","category":"brick","semantic_color":null,"quantity":2},
+      {"part_id":"BRICK_1X6","category":"brick","semantic_color":null,"quantity":1},
+      {"part_id":"BRICK_1X8","category":"brick","semantic_color":null,"quantity":3}
+    ]
+  },
+  "instruction_plan": {
+    "schema_version":"0.1","building_id":"building_simple_house_001","volume_id":"vol_main","total_steps":5,"total_parts":6,
+    "steps":[
+      {"step_id":"auto-step-0001","sequence":1,"title":"Autonomous step 1","placement_ids":["wall-000001"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0002","sequence":2,"title":"Autonomous step 2","placement_ids":["wall-000017","wall-000016"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0003","sequence":3,"title":"Autonomous step 3","placement_ids":["wall-000041"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0004","sequence":4,"title":"Autonomous step 4","placement_ids":["wall-000063"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0005","sequence":5,"title":"Autonomous step 5","placement_ids":["wall-000002"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"}
+    ]
+  },
+  "assembly_plan": {
+    "schema_version":"0.1","building_id":"building_simple_house_001","volume_id":"vol_main","total_steps":5,"total_parts":6,
+    "steps":[
+      {"step_id":"auto-step-0001","sequence":1,"title":"Autonomous step 1","placement_ids":["wall-000001"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0002","sequence":2,"title":"Autonomous step 2","placement_ids":["wall-000017","wall-000016"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0003","sequence":3,"title":"Autonomous step 3","placement_ids":["wall-000041"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0004","sequence":4,"title":"Autonomous step 4","placement_ids":["wall-000063"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"},
+      {"step_id":"auto-step-0005","sequence":5,"title":"Autonomous step 5","placement_ids":["wall-000002"],"phase":"autonomous","instruction_kind":"placement","focus":"normal","view":"perspective"}
+    ]
+  },
+  "experimental_notice_preview": {
+    "source":"generate_autonomous_instruction_plan",
+    "source_model":"docs/examples/building-model-simple-house.json",
+    "front_width_studs":48,
+    "step_limit":5,
+    "adapter":"instruction_plan_steps_exposed_as_assembly_plan_for_existing_viewer"
+  }
+}
