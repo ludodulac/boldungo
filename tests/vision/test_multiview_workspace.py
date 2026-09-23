@@ -17,6 +17,7 @@ from brickhouse.vision.multiview import (
     build_identity_discriminant_producer_request,
     import_identity_discriminant_producer_response,
     build_identity_enquiry_bootstrap_request,
+    exclude_already_investigated_targets,
     build_identity_discriminant_inquiry,
     IdentityStatus,
     IdentityInquiryState,
@@ -3051,3 +3052,94 @@ def test_041_fresh_bootstrap_is_versioned_and_does_not_embed_discriminant():
     assert req.photos[0].filename=="01-original.jpg" and len(req.photos)==5
     assert "open_alternatives" in req.instruction
     assert "subsequent machine request" in req.instruction
+
+
+# Experiment 044 — inconclusive investigations exhaust only the identical evidence target.
+
+def _continuity_044(region=None, photo_index=1, observation_id="edge"):
+    region = region or NormalizedImageRegion(x0=0.1, y0=0.2, x1=0.3, y1=0.8)
+    observation = LocalObservation(
+        id=observation_id, photo_index=photo_index, status=ClaimStatus.OBSERVED,
+        visibility=VisibilityStatus.VISIBLE, region=region, statement="Synthetic edge.",
+        observable_properties=["continuation"],
+    )
+    uncertainty = detect_continuity_uncertainties([observation])[0]
+    hypotheses = derive_competing_hypotheses(uncertainty)
+    predictions = [derive_observable_prediction(item) for item in hypotheses]
+    question = derive_discriminating_question(predictions)
+    targets = derive_candidate_evidence_targets(question, hypotheses, [observation])
+    assessments = assess_discrimination_targets(question, targets, [observation])
+    selection = select_discrimination_targets(assessments)
+    inquiry = build_executable_visual_inquiry(
+        uncertainty, hypotheses, predictions, question, assessments, selection
+    )
+    return observation, uncertainty, hypotheses, predictions, question, assessments, inquiry
+
+def test_044_a_resolved_032_suppression_remains_unchanged():
+    observation, uncertainty, hypotheses, predictions, question, assessments, inquiry = _continuity_044()
+    result = InquiryTestResult(
+        test_id=inquiry.tests[0].id, inspected=True, region_in_frame=True,
+        visibility=VisibilityStatus.VISIBLE, sufficient_visibility=True,
+        statement="Synthetic decisive result.",
+        compatible_prediction_ids=[predictions[0].id], discriminating=True,
+    )
+    resolved = apply_inquiry_test(inquiry, result)
+    assert resolved.state is InquiryState.RESOLVED
+    assert detect_continuity_uncertainties(
+        [observation], inquiries=[resolved], hypotheses=hypotheses
+    ) == []
+
+def test_044_b_open_inconclusive_identical_target_is_not_reproposed():
+    observation, uncertainty, hypotheses, predictions, question, assessments, inquiry = _continuity_044()
+    result = InquiryTestResult(
+        test_id=inquiry.tests[0].id, inspected=True, region_in_frame=True,
+        visibility=VisibilityStatus.OCCLUDED, sufficient_visibility=False,
+        statement="Synthetic occlusion.", compatible_prediction_ids=[item.id for item in predictions],
+        discriminating=False,
+    )
+    opened = apply_inquiry_test(inquiry, result)
+    available = exclude_already_investigated_targets(uncertainty, assessments, [opened])
+    assert opened.state is InquiryState.OPEN
+    assert available == []
+    assert detect_continuity_uncertainties(
+        [observation], inquiries=[opened], hypotheses=hypotheses
+    ) == [uncertainty]
+
+def test_044_c_distinct_target_remains_available():
+    observation, uncertainty, hypotheses, predictions, question, assessments, inquiry = _continuity_044()
+    result = InquiryTestResult(
+        test_id=inquiry.tests[0].id, inspected=True, region_in_frame=False,
+        visibility=VisibilityStatus.NON_VISIBLE, sufficient_visibility=False,
+        statement="Synthetic non-visible.", compatible_prediction_ids=[item.id for item in predictions],
+        discriminating=False,
+    )
+    opened = apply_inquiry_test(inquiry, result)
+    other = assessments[0].model_copy(deep=True)
+    other.target.region = NormalizedImageRegion(x0=0.4,y0=0.2,x1=0.5,y1=0.8)
+    available = exclude_already_investigated_targets(uncertainty, [assessments[0], other], [opened])
+    assert available == [other]
+
+def test_044_d_discriminating_result_still_resolves_normally():
+    observation, uncertainty, hypotheses, predictions, question, assessments, inquiry = _continuity_044()
+    result = InquiryTestResult(
+        test_id=inquiry.tests[0].id, inspected=True, region_in_frame=True,
+        visibility=VisibilityStatus.VISIBLE, sufficient_visibility=True,
+        statement="Synthetic decisive result.", compatible_prediction_ids=[predictions[1].id],
+        discriminating=True,
+    )
+    resolved = apply_inquiry_test(inquiry, result)
+    assert resolved.state is InquiryState.RESOLVED
+    assert resolved.resolved_hypothesis_id == predictions[1].hypothesis_id
+
+def test_044_e_historical_observation_is_never_rewritten():
+    observation, uncertainty, hypotheses, predictions, question, assessments, inquiry = _continuity_044()
+    before = observation.model_dump()
+    result = InquiryTestResult(
+        test_id=inquiry.tests[0].id, inspected=True, region_in_frame=True,
+        visibility=VisibilityStatus.OCCLUDED, sufficient_visibility=False,
+        statement="Synthetic occlusion.", compatible_prediction_ids=[item.id for item in predictions],
+        discriminating=False,
+    )
+    opened = apply_inquiry_test(inquiry, result)
+    exclude_already_investigated_targets(uncertainty, assessments, [opened])
+    assert observation.model_dump() == before
