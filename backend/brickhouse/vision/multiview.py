@@ -3289,7 +3289,7 @@ class WorldConstraint(BaseModel):
     id: str = Field(min_length=1)
     kind: Literal[
         "SAME_CUE", "DISTINCT_CUE", "PERCEPTUAL_RELATION", "CONTINUATION",
-        "VISIBILITY", "OPEN_UNCERTAINTY", "EXHAUSTED_DISCRIMINANT"
+        "VISIBILITY", "OPEN_UNCERTAINTY", "EXHAUSTED_DISCRIMINANT", "PROPERTY_CORRESPONDENCE"
     ]
     node_refs: list[str] = Field(min_length=1)
     epistemic_level: str = Field(min_length=1)
