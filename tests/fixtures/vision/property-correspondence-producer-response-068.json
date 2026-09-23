@@ -1,0 +1,14 @@
+{
+  "schema_version":"0.1",
+  "request_id":"property-correspondence-request:missing-discriminating-constraint:identity-uncertainty-idc_sidewall_p2_p4",
+  "missing_constraint_id":"missing-discriminating-constraint:identity-uncertainty-idc_sidewall_p2_p4",
+  "identity_candidate_id":"idc_sidewall_p2_p4",
+  "status":"CORRESPONDENCE_AVAILABLE",
+  "correspondences":[{
+    "observation_ref_a":"obs_p2_side_wall","property_name_a":"upper_window",
+    "observation_ref_b":"obs_p4_rear_wall","property_name_b":"upper_left_window",
+    "provenance_a":{"observation_ref":"obs_p2_side_wall","property_name":"upper_window","source_id":"property-correspondence-source-1","photo_index":2,"roi":[0.36,0.16,0.86,0.62]},
+    "provenance_b":{"observation_ref":"obs_p4_rear_wall","property_name":"upper_left_window","source_id":"property-correspondence-source-2","photo_index":4,"roi":[0.34,0.06,0.72,0.42]},
+    "epistemic_level":"COMPARABLE_VISUAL_PROPERTY"
+  }]
+}
