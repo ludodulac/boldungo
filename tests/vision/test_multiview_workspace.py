@@ -2346,6 +2346,8 @@ def test_035_r_legacy_workspace_without_new_fields_loads_fail_closed():
     candidate=loaded.pass_1.identities[0]
     assert candidate.inquiry_state is IdentityInquiryState.NOT_ENQUIRABLE
     assert candidate.open_alternatives==[]
+    assert candidate.source_observation_ids_by_element=={"element-a":["o1"],"element-b":["o2"]}
+    assert candidate.visual_evidence_source_ids==["o1","o2"]
     assert detect_identity_uncertainties([candidate],loaded.pass_1.observations)==[]
 
 def test_035_s_continuation_uncertainty_shape_remains_backward_compatible():
@@ -3454,6 +3456,8 @@ def test_050_persistence_reload_preserves_relationless_candidate():
     loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
     assert loaded.pass_1.relations[0]==candidate
     assert loaded.pass_1.relations[0].relation is None
+    assert loaded.pass_1.relations[0].source_observation_ids_by_element=={"element-a":["o1"],"element-b":["o2"]}
+    assert loaded.pass_1.relations[0].visual_evidence_source_ids==["o1","o2"]
 
 def test_050_inconclusive_payload_rejected():
     req=_pair_req_050()
