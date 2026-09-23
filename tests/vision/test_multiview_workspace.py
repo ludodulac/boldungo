@@ -48,6 +48,8 @@ from brickhouse.vision.multiview import (
     import_identity_discriminant_producer_response,
     build_identity_enquiry_bootstrap_request,
     build_rich_multiview_bootstrap_request,
+    RichVisualBootstrapResponse,
+    import_rich_visual_bootstrap_response,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -3675,3 +3677,52 @@ def test_062_perceptual_ambiguity_requires_two_distinct_supported_alternatives()
     cue=PerceptualCue(cue_token="c",description="Synthetic cue.",evidence_regions=[region],level="ambiguous")
     with pytest.raises(ValueError):
         PerceptualAmbiguity(id="amb",subject_ref="a",alternatives=[PerceptualAlternative(alternative_token="x",description="X",evidence_cues=[cue]),PerceptualAlternative(alternative_token="x",description="X2",evidence_cues=[cue])])
+
+
+def _rich_063_payload():
+    return {
+        "schema_version":"0.5","bootstrap_id":"rich","photo_count":2,
+        "observations":[
+            {"observation_id":"a","photo_index":1,"roi":[.1,.1,.2,.2],"visibility":"VISIBLE","category_proposal":"surface","observable_properties":{"edge":True}},
+            {"observation_id":"b","photo_index":2,"roi":[.3,.3,.4,.4],"visibility":"VISIBLE","category_proposal":"surface","observable_properties":{"edge":True}},
+        ],
+        "identity_candidates":[{"identity_candidate_id":"idc","observation_refs":["a","b"],"status":"CANDIDATE"}],
+        "identity_evidence":[
+            {"identity_candidate_ref":"idc","polarity":"SAME","epistemic_level":"CUE","cue":"same cue","provenance":[{"observation_ref":"a","photo_index":1,"roi":[.1,.1,.2,.2]},{"observation_ref":"b","photo_index":2,"roi":[.3,.3,.4,.4]}]},
+            {"identity_candidate_ref":"idc","polarity":"DISTINCT","epistemic_level":"CUE","cue":"distinct cue","provenance":[{"observation_ref":"a","photo_index":1,"roi":[.1,.1,.2,.2]},{"observation_ref":"b","photo_index":2,"roi":[.3,.3,.4,.4]}]},
+        ],
+        "relation_evidence":[{"subject_ref":"a","relation_token":"VISIBLE_WITHIN","object_ref":"b","epistemic_level":"OBSERVED","provenance":[{"observation_ref":"a","photo_index":1,"roi":[.1,.1,.2,.2]}]}],
+        "perceptual_ambiguities":[],"observer_comment":None,
+    }
+
+
+def test_063_strict_rich_wire_contract_and_import_preserve_cues_without_truth_promotion():
+    request=build_rich_multiview_bootstrap_request("rich",["a.jpg","b.jpg"])
+    response=RichVisualBootstrapResponse.model_validate(_rich_063_payload())
+    workspace=import_rich_visual_bootstrap_response(request,response)
+    assert len(workspace.rich_identity_cues)==2
+    assert len(workspace.rich_relation_evidence)==1
+    candidate=workspace.pass_1.identities[0]
+    assert candidate.status is IdentityStatus.CANDIDATE
+    assert candidate.inquiry_state is IdentityInquiryState.OPEN_ALTERNATIVES
+    assert set(candidate.open_alternatives)=={IdentityStatus.SAME_PHYSICAL_OBJECT,IdentityStatus.INCOMPATIBLE}
+    assert workspace.pass_1.relations==[]
+    uncertainties=detect_identity_uncertainties(workspace.pass_1.identities,workspace.pass_1.observations)
+    assert len(uncertainties)==1
+
+
+def test_063_strict_rich_wire_contract_rejects_wrong_provenance_and_unknown_refs():
+    payload=_rich_063_payload()
+    payload["identity_evidence"][0]["provenance"][0]["roi"]=[.11,.1,.2,.2]
+    with pytest.raises(ValueError): RichVisualBootstrapResponse.model_validate(payload)
+    payload=_rich_063_payload()
+    payload["relation_evidence"][0]["object_ref"]="missing"
+    with pytest.raises(ValueError): RichVisualBootstrapResponse.model_validate(payload)
+
+
+def test_063_same_only_cue_does_not_create_identity_competition():
+    payload=_rich_063_payload(); payload["identity_evidence"]=payload["identity_evidence"][:1]
+    request=build_rich_multiview_bootstrap_request("rich",["a.jpg","b.jpg"])
+    workspace=import_rich_visual_bootstrap_response(request,RichVisualBootstrapResponse.model_validate(payload))
+    assert workspace.pass_1.identities[0].inquiry_state is IdentityInquiryState.NOT_ENQUIRABLE
+    assert detect_identity_uncertainties(workspace.pass_1.identities,workspace.pass_1.observations)==[]
