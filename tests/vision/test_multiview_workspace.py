@@ -76,6 +76,9 @@ from brickhouse.vision.multiview import (
     render_multiview_world_diagnostic_html,
     audit_workspace_fragmentation,
     build_global_multiview_connectivity_request,
+    GlobalMultiviewConnectivityResponse,
+    validate_global_multiview_connectivity_response,
+    ingest_global_multiview_connectivity_response,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -4240,3 +4243,95 @@ def test_071_ingestion_audit_preserves_category_but_loses_property_values():
     assert all(imported[k].proposed_category==v.category_proposal for k,v in source.items())
     assert all(imported[k].observable_properties==set(v.observable_properties) for k,v in source.items())
     assert any(v.observable_properties for v in source.values())
+
+
+def _metrics_072(workspace):
+    graph=build_multiview_world_constraint_graph(workspace)
+    observations=[*workspace.pass_1.observations,*workspace.pass_2.observations]
+    identities=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    return {
+      "observations":len(observations),"identity_candidates":len(identities),
+      "identity_cues":len(workspace.rich_identity_cues),
+      "property_correspondences":len(workspace.property_correspondences),
+      "perceptual_relations":len(workspace.rich_relation_evidence),
+      "continuities":sum(1 for x in observations if (x.observed_property_states or {}).get("continuation") is not None),
+      "ambiguities":len(workspace.rich_perceptual_ambiguities),
+      "nodes":len(graph.nodes),"constraints":len(graph.constraints),"components":len(graph.components),
+      "insufficiently_connected_components":len(graph.insufficiently_connected_components),
+      "open_uncertainties":len([x for x in derive_existing_structured_uncertainties(workspace) if x.resolved_state is None and len(x.open_alternatives)>=2]),
+      "contradictions":len(graph.contradictions),
+    },graph
+
+
+def test_072_real_response_strict_ingestion_save_reload_and_deltas(capsys):
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    before=_real_workspace_post_069()
+    before_metrics,before_graph=_metrics_072(before)
+    request=build_global_multiview_connectivity_request(before,before_graph)
+    response=GlobalMultiviewConnectivityResponse.model_validate_json((fixture_dir/"global-multiview-connectivity-response-071.json").read_text())
+    validation=validate_global_multiview_connectivity_response(request,response)
+    assert validation["rejected"]==[]
+    assert [len(validation["accepted"][x]) for x in ["identity_candidates","identity_cues","property_correspondences","perceptual_relations","continuities","perceptual_ambiguities"]]==[0,0,3,8,2,0]
+    after,report=ingest_global_multiview_connectivity_response(before,request,response)
+    assert len(report["new_information"]["property_correspondences"])==3
+    assert len(report["new_information"]["perceptual_relations"])==8
+    assert report["new_information"]["continuities"]==[]
+    assert len(report["already_known_information"]["continuities"])==2
+    reloaded=MultiViewWorkspace.model_validate_json(after.model_dump_json())
+    after_metrics,after_graph=_metrics_072(reloaded)
+    assert after_metrics["property_correspondences"]==4
+    assert after_metrics["perceptual_relations"]==11
+    assert after_metrics["continuities"]==2
+    assert len(reloaded.pass_1.identities)+len(reloaded.pass_2.identities)==4
+    assert all(x.status is not IdentityStatus.SAME_PHYSICAL_OBJECT for x in [*reloaded.pass_1.identities,*reloaded.pass_2.identities])
+    print("BEFORE_072="+json.dumps(before_metrics,sort_keys=True))
+    print("AFTER_072="+json.dumps(after_metrics,sort_keys=True))
+    print("DELTAS_072="+json.dumps({k:after_metrics[k]-before_metrics[k] for k in before_metrics},sort_keys=True))
+    print("COMPONENTS_BEFORE_072="+json.dumps(before_graph.components,sort_keys=True))
+    print("COMPONENTS_AFTER_072="+json.dumps(after_graph.components,sort_keys=True))
+    print("INGEST_072="+json.dumps(report,default=lambda x:x.model_dump(mode="json") if hasattr(x,"model_dump") else str(x),sort_keys=True))
+
+
+def test_072_rejects_invalid_individual_item_without_rejecting_batch():
+    before=_real_workspace_post_069(); _,graph=_metrics_072(before)
+    request=build_global_multiview_connectivity_request(before,graph)
+    valid=GlobalMultiviewConnectivityResponse(request_id=request.request_id,status="CONNECTIVITY_EVIDENCE_AVAILABLE")
+    bad=valid.model_copy(update={"perceptual_relations":[{
+      "subject_ref":"obs_p1_front_wall","relation_token":"CONNECTED_TO","object_ref":"obs_p2_side_wall",
+      "epistemic_level":"OBSERVED","provenance":[{"observation_ref":"obs_p1_front_wall","photo_index":1,"roi":[0.03,0.28,0.97,0.72]}]}]})
+    bad=GlobalMultiviewConnectivityResponse.model_validate(bad.model_dump())
+    result=validate_global_multiview_connectivity_response(request,bad)
+    assert len(result["rejected"])==1
+    assert result["accepted"]["perceptual_relations"]==[]
+
+
+def test_072_photo_level_perceptual_graph_spans_all_five_views_without_identity_promotion():
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    before=_real_workspace_post_069(); _,g0=_metrics_072(before)
+    request=build_global_multiview_connectivity_request(before,g0)
+    response=GlobalMultiviewConnectivityResponse.model_validate_json((fixture_dir/"global-multiview-connectivity-response-071.json").read_text())
+    after,_=ingest_global_multiview_connectivity_response(before,request,response)
+    reloaded=MultiViewWorkspace.model_validate_json(after.model_dump_json())
+    _,graph=_metrics_072(reloaded)
+    photo_by_node={f"observation:{x.id}":x.photo_index for x in [*reloaded.pass_1.observations,*reloaded.pass_2.observations]}
+    edges=set()
+    for constraint in graph.constraints:
+        photos=sorted({photo_by_node[x] for x in constraint.node_refs if x in photo_by_node})
+        for a in photos:
+            for b in photos:
+                if a<b: edges.add((a,b))
+    reached={1}
+    changed=True
+    while changed:
+        changed=False
+        for a,b in edges:
+            if a in reached and b not in reached: reached.add(b); changed=True
+            if b in reached and a not in reached: reached.add(a); changed=True
+    assert reached=={1,2,3,4,5}
+    assert (1,2) in edges and (1,5) in edges
+    assert len(graph.insufficiently_connected_components)==2
+    weak_obs={n for comp in graph.insufficiently_connected_components for n in comp}
+    assert weak_obs=={"observation:obs_p3_tree","observation:obs_p5_near_window","observation:obs_p5_side_wall"}
+    print("PHOTO_EDGES_072="+json.dumps(sorted(edges)))
+    print("PHOTO_REACH_072="+json.dumps(sorted(reached)))
+    print("WEAK_COMPONENTS_072="+json.dumps(graph.insufficiently_connected_components,sort_keys=True))

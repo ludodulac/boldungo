@@ -51,3 +51,30 @@ Audit 062 → 063 → Workspace :
 Conclusion 071 : les preuves déjà acquises ne suffisent pas à créer honnêtement beaucoup plus de connectivité. Une acquisition visuelle globale cinq-vues est nécessaire. Un unique batch générique est construit : il transmet les 22 observations comme pool, marque les observations des composantes fragmentées FRAGMENTED et les autres ANCHOR, conserve candidats/cues/relations/correspondances/mémoires négatives, et demande en une réponse plusieurs connexions pixel-grounded. Aucun produit cartésien observation×observation.
 
 STOP au contact visuel 071 : ne simuler aucune réponse. Après retour réel, importer uniquement les éléments validés et remesurer le graphe avant toute Scene/LEGO.
+
+
+## 072 — ingestion réelle de la passe globale 071
+Branche experiment/ingest-global-connectivity-072, base exacte 071.
+
+Le vrai response 071 est CONNECTIVITY_EVIDENCE_AVAILABLE : 0 candidat d'identité, 0 cue d'identité, 3 correspondances de propriétés, 8 relations VISIBLE_WITHIN/OBSERVED, 2 continuations, 0 ambiguïté. Validation stricte contre le request réel : toutes les entrées sont valides, aucune rejetée.
+
+Déduplication : les 3 correspondances et 8 relations sont nouvelles. Les deux continuations (P1 roof edge et P5 roof edge = CONTINUES) existaient déjà et ne sont pas comptées comme gain.
+
+Le Workspace est save/reload sans second truth store. Aucune identité n'est promue. COMPARABLE_VISUAL_PROPERTY reste perceptif; VISIBLE_WITHIN reste relation OBSERVED; CONTINUES reste état observé.
+
+Correction de projection révélée par 072 : le graphe 070 ne projetait pas les property_correspondences persistées. 072 les projette désormais explicitement comme contraintes PROPERTY_CORRESPONDENCE / COMPARABLE_VISUAL_PROPERTY. Ce changement ne signifie jamais SAME_PHYSICAL_OBJECT, SAME_SURFACE, CONNECTED_TO ou ADJACENT_TO. Sur le baseline avant ingestion 071, cela porte le comptage de contraintes de 34 (ancien renderer 070) à 35, sans changer les 15 composantes car la correspondance 068 P2/P4 reliait des observations déjà dans la même composante via le candidat.
+
+Mesure avant 071 avec la projection corrigée : 22 observations, 4 candidats, 5 cues, 1 correspondance, 3 relations, 2 continuations, 0 ambiguïté, 26 nodes, 35 constraints, 15 components, 11 insufficient, 1 open uncertainty, 0 contradiction.
+Après 071 : 22 observations, 4 candidats, 5 cues, 4 correspondances, 11 relations, 2 continuations, 0 ambiguïté, 26 nodes, 46 constraints, 6 components, 2 insufficient, 1 open uncertainty, 0 contradiction.
+Deltas : correspondances +3, relations +8, constraints +11, components -9, insufficient -9; tout le reste 0.
+
+Composante principale après 071 : les ouvertures P1 et front_wall sont réunies localement, puis front_wall possède un pont perceptif COMPARABLE_VISUAL_PROPERTY vers P2 side_wall. Via les preuves déjà présentes, cette composante inclut aussi P2 upper_window, P4 rear_wall/upper_window/terrace et leurs candidats concernés.
+P1 roof_edge et P5 roof_edge forment une composante multivue séparée via COMPARABLE_VISUAL_PROPERTY.
+P5 near_window + side_wall forment encore une composante mono-photo; P5 n'a donc aucune identité physique établie malgré le pont perceptif de toiture.
+Les deux seules composantes insuffisantes restantes sont obs_p3_tree seul et {obs_p5_near_window, obs_p5_side_wall}.
+
+Au niveau photo, les preuves explicites forment désormais une chaîne perceptive couvrant les cinq vues : P1-P2, P1-P5, P2-P3 et P2-P4 (plus les liens existants). Cette connexité photo-level n'est pas une fusion d'identités physiques.
+
+Décision 072 : WORLD_HYPOTHESIS_READY. Justification mécanique : les cinq photos appartiennent désormais à un graphe perceptif connexe au niveau des vues; 9 des 11 composantes insuffisantes ont disparu; il reste seulement 2 îlots mono-photo; aucune contradiction; l'incertitude physique sidewall reste explicitement ouverte. La future couche WorldHypothesis doit donc être qualitative, révisable et multi-organisation, jamais une Scene métrique : elle peut agréger uniquement les contraintes explicites, conserver candidats/alternatives/provenance/niveaux épistémiques, distinguer liens perceptifs et assertions physiques, et être reconstruite/révisée à l'arrivée de nouvelles preuves.
+
+Aucun nouveau producer, request, discriminant, Scene, LEGO ou NOTICE en 072.
