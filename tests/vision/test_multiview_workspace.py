@@ -9,6 +9,7 @@ from brickhouse.vision.multiview import (
     AspectCertainty,
     import_visual_inquiry_batch_response,
     build_relation_pair_batch_request,
+    build_relation_alternative_batch_request,
     VisualInquiryBatchResult,
     VisualInquiryBatchResponse,
     VisualInquiryBatchRequest,
@@ -3533,3 +3534,42 @@ def test_058_batch_import_binds_each_result_to_its_own_request():
     ])
     with pytest.raises(ValueError,match="duplicate relation-pair evidence set"):
         import_visual_inquiry_batch_response(batch,response)
+
+
+def test_059_batch_import_persists_investigation_id_on_each_pair():
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=_pair_obs_050()),pass_2=MultiViewPass(pass_number=2))
+    batch=build_relation_pair_batch_request("batch-059",workspace,max_investigations=2)
+    r1=_pair_resp_050().model_copy(update={"producer_request_id":batch.investigations[0].request.producer_request_id})
+    r2=_pair_resp_050().model_copy(update={
+        "producer_request_id":batch.investigations[1].request.producer_request_id,
+        "subject":RelationPairElement(element_ref="element-c",source_observation_ids=["o2"]),
+        "object":RelationPairElement(element_ref="element-d",source_observation_ids=["o1"]),
+        "visual_evidence_source_ids":["o2","o1"],
+    })
+    # Distinct evidence set is required by the batch anti-duplicate invariant; add a third source.
+    o3=LocalObservation(id="o3",photo_index=2,status=ClaimStatus.OBSERVED,visibility=VisibilityStatus.VISIBLE,statement="Synthetic C.")
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=[*_pair_obs_050(),o3]),pass_2=MultiViewPass(pass_number=2))
+    batch=build_relation_pair_batch_request("batch-059",workspace,max_investigations=2)
+    def resp(item,a,b,ea,eb):
+        return RelationPairProducerResponse(producer_request_id=item.request.producer_request_id,status="pair_proposed",sources=item.request.sources,
+            subject=RelationPairElement(element_ref=a,source_observation_ids=[ea]),object=RelationPairElement(element_ref=b,source_observation_ids=[eb]),visual_evidence_source_ids=[ea,eb])
+    response=VisualInquiryBatchResponse(batch_request_id="batch-059",results=[
+        VisualInquiryBatchResult(investigation_id=batch.investigations[0].investigation_id,protocol="relation_pair",response=resp(batch.investigations[0],"a","b","o1","o2")),
+        VisualInquiryBatchResult(investigation_id=batch.investigations[1].investigation_id,protocol="relation_pair",response=resp(batch.investigations[1],"c","d","o2","o3")),
+    ])
+    imported=import_visual_inquiry_batch_response(batch,response)
+    assert [x.batch_investigation_id for x in imported]==[x.investigation_id for x in batch.investigations]
+    persisted=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=[*_pair_obs_050(),o3],relations=imported),pass_2=MultiViewPass(pass_number=2))
+    loaded=MultiViewWorkspace.model_validate_json(persisted.model_dump_json())
+    assert [x.batch_investigation_id for x in loaded.pass_1.relations]==[x.investigation_id for x in batch.investigations]
+
+
+def test_059_router_batches_fresh_pairs_into_relation_alternative_requests():
+    observations=_pair_obs_050()
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=observations),pass_2=MultiViewPass(pass_number=2))
+    p1=import_relation_pair_producer_response(_pair_req_050(),_pair_resp_050())
+    p2=p1.model_copy(update={"id":"pair-2","subject_ref":"element-c","object_ref":"element-d"})
+    batch=build_relation_alternative_batch_request("next-batch",workspace,[p1,p2])
+    assert len(batch.investigations)==2
+    assert all(x.protocol=="relation_alternative" for x in batch.investigations)
+    assert [x.request.subject_ref for x in batch.investigations]==["element-a","element-c"]
