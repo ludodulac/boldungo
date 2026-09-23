@@ -4099,3 +4099,108 @@ body{{font:15px system-ui;margin:0;background:#f4f3ef;color:#222}}header{{paddin
 <h3>Mémoires négatives / investigations épuisées</h3><section class="unknown"><ul>{exhausted_html}</ul></section>
 <h3>Limite du jalon</h3><section class="unknown"><p>Les cartes sont groupées par photo et ROI. Leur placement relatif entre photos n'est pas une reconstruction géométrique. Les zones non observées restent inconnues; une non-visibilité ou une occlusion n'est jamais affichée comme une absence.</p></section>
 </main></body></html>'''
+
+
+class GlobalMultiviewObservationSource(BaseModel):
+    model_config=ConfigDict(extra="forbid")
+    observation_ref:str
+    photo_index:int
+    roi:tuple[float,float,float,float]
+    visibility:str
+    proposed_category:str|None=None
+    property_names:list[str]=Field(default_factory=list)
+    observed_property_states:dict[str,str]=Field(default_factory=dict)
+    priority:Literal["FRAGMENTED","ANCHOR"]
+
+
+class GlobalMultiviewConnectivityRequest(BaseModel):
+    model_config=ConfigDict(extra="forbid")
+    schema_version:Literal["0.1"]="0.1"
+    request_id:str
+    photo_indexes:list[int]
+    sources:list[GlobalMultiviewObservationSource]
+    existing_identity_candidates:list[dict]
+    existing_identity_cues:list[dict]
+    existing_relations:list[dict]
+    existing_property_correspondences:list[dict]
+    exhausted_investigations:list[dict]
+    allowed_relation_tokens:list[str]
+    allowed_continuation_states:list[str]
+    instruction:str
+    response_schema:dict
+    response_invariants:list[str]
+
+
+class GlobalMultiviewConnectivityResponse(BaseModel):
+    model_config=ConfigDict(extra="forbid")
+    schema_version:Literal["0.1"]="0.1"
+    request_id:str
+    status:Literal["CONNECTIVITY_EVIDENCE_AVAILABLE","NO_ADDITIONAL_RELIABLE_CONNECTIVITY","INSUFFICIENT_VISUAL_EVIDENCE"]
+    identity_candidates:list[dict]=Field(default_factory=list)
+    identity_cues:list[dict]=Field(default_factory=list)
+    property_correspondences:list[dict]=Field(default_factory=list)
+    perceptual_relations:list[dict]=Field(default_factory=list)
+    continuities:list[dict]=Field(default_factory=list)
+    perceptual_ambiguities:list[dict]=Field(default_factory=list)
+
+
+GLOBAL_MULTIVIEW_CONNECTIVITY_INVARIANTS=(
+ "Inspect the five supplied photos together; output only pixel-supported evidence.",
+ "Do not compare every observation pair. Prioritize fragmented observations and use existing connected observations only as anchors.",
+ "Every emitted item MUST cite exact supplied observation_ref, photo_index and ROI provenance.",
+ "Identity candidates remain CANDIDATE; SAME/DISTINCT are CUE only and never resolve physical identity.",
+ "Property correspondences mean COMPARABLE_VISUAL_PROPERTY only; property_name MUST come from supplied property_names.",
+ "Perceptual relations may use only allowed_relation_tokens and remain oriented exactly as observed.",
+ "Continuities may use only supplied observation/property provenance and allowed_continuation_states.",
+ "Occluded or non-visible evidence MUST NOT be treated as absence.",
+ "Architectural plausibility, property-token spelling and category-token spelling MUST NOT be used as proof.",
+ "Existing exhausted investigations are negative memory and MUST NOT be bypassed by renaming.",
+)
+
+
+def build_global_multiview_connectivity_request(workspace:MultiViewWorkspace,graph:MultiViewWorldConstraintGraph)->GlobalMultiviewConnectivityRequest|None:
+    observations=[*workspace.pass_1.observations,*workspace.pass_2.observations]
+    node_to_component={node:i for i,comp in enumerate(graph.components) for node in comp}
+    insufficient={i for i,comp in enumerate(graph.components) if comp in graph.insufficiently_connected_components}
+    fragmented={n.source_ref for n in graph.nodes if n.kind=="observation" and node_to_component.get(n.id) in insufficient}
+    if not fragmented: return None
+    sources=[]
+    for o in sorted(observations,key=lambda x:(x.photo_index,x.id)):
+        if o.region is None: continue
+        sources.append(GlobalMultiviewObservationSource(
+          observation_ref=o.id,photo_index=o.photo_index,
+          roi=(o.region.x0,o.region.y0,o.region.x1,o.region.y1),visibility=o.visibility.value,
+          proposed_category=o.proposed_category,
+          property_names=sorted(o.observable_properties or set()),
+          observed_property_states=dict(sorted((o.observed_property_states or {}).items())),
+          priority="FRAGMENTED" if o.id in fragmented else "ANCHOR"))
+    identities=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    exhausted=[{"kind":"identity_discriminant","identity_candidate_id":x.identity_candidate_id,"outcome":x.outcome} for x in workspace.identity_discriminant_investigations]
+    exhausted += [{"kind":"property_outcome_mapping","identity_candidate_id":x.request.identity_candidate_id,"outcome":x.outcome} for x in workspace.property_outcome_mapping_investigations]
+    return GlobalMultiviewConnectivityRequest(
+      request_id="global-multiview-connectivity-request-071",
+      photo_indexes=list(range(1,workspace.photo_count+1)),sources=sources,
+      existing_identity_candidates=[{"id":x.id,"observation_refs":x.observation_ids,"status":x.status.value} for x in identities],
+      existing_identity_cues=[x.model_dump(mode="json") for x in workspace.rich_identity_cues],
+      existing_relations=[x.model_dump(mode="json") for x in workspace.rich_relation_evidence],
+      existing_property_correspondences=[x.correspondence.model_dump(mode="json") for x in workspace.property_correspondences],
+      exhausted_investigations=exhausted,
+      allowed_relation_tokens=sorted({x.relation_token for x in workspace.rich_relation_evidence}),
+      allowed_continuation_states=["CONTINUES","TERMINATES"],
+      instruction="Inspect all five photos together. Seek multiple high-information, pixel-grounded connections that can reduce fragmentation, prioritizing FRAGMENTED observations and using ANCHOR observations as context. Return multiple supported identity candidates, SAME/DISTINCT cues, comparable-property correspondences, oriented perceptual relations, visible continuities, or genuine ambiguities in one response. Do not perform an observation-by-observation Cartesian search and do not resolve identity or hidden geometry.",
+      response_schema=GlobalMultiviewConnectivityResponse.model_json_schema(),
+      response_invariants=list(GLOBAL_MULTIVIEW_CONNECTIVITY_INVARIANTS))
+
+
+def audit_workspace_fragmentation(workspace:MultiViewWorkspace,graph:MultiViewWorldConstraintGraph)->dict:
+    observations={x.id:x for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    out=[]
+    for comp in graph.insufficiently_connected_components:
+        obs=[observations[n.split(":",1)[1]] for n in comp if n.startswith("observation:")]
+        out.append({"node_refs":comp,"photo_indexes":sorted({x.photo_index for x in obs}),
+          "observation_refs":[x.id for x in obs],
+          "has_interview_candidate":any(n.startswith("identity_candidate:") for n in comp),
+          "has_local_relation":any(c.kind=="PERCEPTUAL_RELATION" and set(c.node_refs).issubset(set(comp)) for c in graph.constraints),
+          "all_have_properties":all(bool(x.observable_properties or x.observed_property_states) for x in obs),
+          "all_have_roi":all(x.region is not None for x in obs)})
+    return {"count":len(out),"components":out}
