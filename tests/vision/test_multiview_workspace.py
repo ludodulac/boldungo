@@ -7,6 +7,7 @@ import pytest
 
 from brickhouse.vision.multiview import (
     AspectCertainty,
+    build_next_relation_loop_request,
     exhausted_relation_pair_evidence_sets,
     record_relation_investigation,
     import_relation_pair_producer_response,
@@ -3487,3 +3488,22 @@ def test_052_pair_request_excludes_only_exact_evidence_set():
     req=build_relation_pair_producer_request("next",_pair_obs_050(),[],[["o1","o2"]])
     assert req.excluded_exact_evidence_sets==[["o1","o2"]]
     assert "structurally distinct evidence set remains eligible" in req.instruction
+
+
+def test_053_loop_router_routes_fresh_pair_to_relation_producer():
+    pair=import_relation_pair_producer_response(_pair_req_050(),_pair_resp_050())
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=_pair_obs_050(),relations=[pair]),pass_2=MultiViewPass(pass_number=2))
+    request=build_next_relation_loop_request("next-rel",workspace,pair)
+    assert isinstance(request,RelationAlternativeProducerRequest)
+    assert request.subject_ref=="element-a" and request.object_ref=="element-b"
+    assert [s.observation_ref for s in request.sources]==["o1","o2"]
+
+def test_053_loop_router_routes_exhausted_state_back_to_pair_producer():
+    pair=import_relation_pair_producer_response(_pair_req_050(),_pair_resp_050())
+    req=build_relation_alternative_producer_request("r53",pair.subject_ref,pair.object_ref,_pair_obs_050())
+    response=RelationAlternativeProducerResponse(producer_request_id="r53",subject_ref=pair.subject_ref,object_ref=pair.object_ref,status=RelationAlternativeProducerStatus.NO_RELIABLE_ALTERNATIVES,sources=req.sources)
+    pair=record_relation_investigation(pair,req,response)
+    workspace=MultiViewWorkspace(photo_count=2,pass_1=MultiViewPass(pass_number=1,observations=_pair_obs_050(),relations=[pair]),pass_2=MultiViewPass(pass_number=2))
+    request=build_next_relation_loop_request("next-pair",workspace)
+    assert isinstance(request,RelationPairProducerRequest)
+    assert request.excluded_exact_evidence_sets==[["o1","o2"]]
