@@ -1424,6 +1424,58 @@ def visual_evidence_response_invariants() -> list[str]:
     return list(VisualEvidenceResponse.RESPONSE_INVARIANTS)
 
 
+def exclude_already_investigated_targets(
+    uncertainty: StructuredUncertainty,
+    assessments: list[DiscriminationAssessment],
+    inquiries: list["VisualInquiry"],
+) -> list[DiscriminationAssessment]:
+    """Remove only structurally identical evidence targets already inspected.
+
+    The uncertainty remains open.  Existing inquiry test_results are the sole
+    investigation memory; no parallel truth/history store is introduced.
+    """
+
+    def same_target(test: DiscriminatingTest, target: CandidateEvidenceTarget) -> bool:
+        if test.evidence_sought != target.discriminant_property:
+            return False
+        if set(test.source_observation_ids) != set(target.source_observation_ids):
+            return False
+        if target.evidence_regions:
+            if not test.evidence_regions:
+                return False
+            left = {
+                item.source_id: (
+                    item.observation_ref, item.photo_index, item.region
+                )
+                for item in target.evidence_regions
+            }
+            right = {
+                item.source_id: (
+                    item.observation_ref, item.photo_index, item.region
+                )
+                for item in test.evidence_regions
+            }
+            return left == right
+        return (
+            not test.evidence_regions
+            and test.photo_index == target.photo_index
+            and test.region == target.region
+        )
+
+    exhausted: list[DiscriminatingTest] = []
+    for inquiry in inquiries:
+        if inquiry.id != f"inquiry-{uncertainty.id}":
+            continue
+        inspected_ids = {item.test_id for item in inquiry.test_results if item.inspected}
+        exhausted.extend(item for item in inquiry.tests if item.id in inspected_ids)
+
+    return [
+        assessment
+        for assessment in assessments
+        if not any(same_target(test, assessment.target) for test in exhausted)
+    ]
+
+
 def build_executable_visual_inquiry(
     uncertainty: StructuredUncertainty,
     hypotheses: list[OpenHypothesis],
