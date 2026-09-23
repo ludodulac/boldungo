@@ -3388,11 +3388,21 @@ def build_world_hypothesis(workspace:"MultiViewWorkspace",graph:MultiViewWorldCo
     mapping={"VISIBILITY":"OBSERVED","CONTINUATION":"OBSERVED","PERCEPTUAL_RELATION":"OBSERVED",
              "PROPERTY_CORRESPONDENCE":"COMPARABLE_VISUAL_PROPERTY","SAME_CUE":"CUE","DISTINCT_CUE":"CUE",
              "OPEN_UNCERTAINTY":"AMBIGUOUS","EXHAUSTED_DISCRIMINANT":"EXHAUSTED"}
+    def provenance_for_nodes(node_refs:list[str],source_ref:str|None=None)->list[RichEvidenceProvenance]:
+        refs=[x.split(":",1)[1] for x in node_refs if x.startswith("observation:")]
+        if not refs and source_ref in {x.id for x in identities}:
+            refs=list(next(x.observation_ids for x in identities if x.id==source_ref))
+        out=[]
+        for ref in refs:
+            o=obs_by_id.get(ref)
+            if o and o.region: out.append(RichEvidenceProvenance(observation_ref=o.id,photo_index=o.photo_index,roi=(o.region.x0,o.region.y0,o.region.x1,o.region.y1)))
+        return out
     for x in graph.constraints:
         level=mapping.get(x.kind)
         if level:
+            provenance=x.provenance or provenance_for_nodes(x.node_refs,x.source_ref)
             assertions.append(WorldHypothesisAssertion(assertion_id=x.id,node_refs=x.node_refs,evidence_type=x.kind,
-                epistemic_level=level,token=x.token,provenance=x.provenance,source_ref=x.source_ref))
+                epistemic_level=level,token=x.token,provenance=provenance,source_ref=x.source_ref))
     for candidate in identities:
         prov=[]
         for oid in candidate.observation_ids:
