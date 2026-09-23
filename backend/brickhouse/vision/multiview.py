@@ -7,7 +7,7 @@ Survey fusion or geometric reconstruction.
 from __future__ import annotations
 
 from enum import Enum
-from typing import Literal
+from typing import ClassVar, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -1076,6 +1076,19 @@ class CompositeSourceResult(BaseModel):
 
 class VisualEvidenceResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
+    RESPONSE_INVARIANTS: ClassVar[tuple[str, ...]] = (
+        "Legacy: if status is 'observed' or 'not_observed', observed_value MUST be present; if status is 'occluded', 'non_visible', 'ambiguous', or 'insufficient_evidence', observed_value MUST be null/absent and MUST NOT be used as visible/absent evidence.",
+        "Legacy: response.photo_index, response.region and response.source_observation_ids MUST exactly match the mono-source request target.",
+        "Legacy mono-source responses preserve the 030 contract; composite responses use schema_version 0.3 and MUST NOT carry legacy mono-source evidence fields.",
+        "Composite source_results are matched by source_id, not list position; source_id values MUST be unique.",
+        "Each composite source_result MUST exactly match its requested observation_ref, photo_index and region; null requested region MUST remain null.",
+        "No unknown composite source is allowed. If request.target.requires_exhaustive_sources is true, every requested source MUST occur exactly once.",
+        "A decisive composite_status ('observed' or 'not_observed') MUST carry composite_outcome; every inconclusive composite_status MUST carry no composite_outcome.",
+        "composite_outcome MUST be one of the structured outcomes allowed by request.question for request.property_name.",
+        "Local source status/value never manufactures composite_outcome. Occluded/non-visible/missing sources never imply a negative outcome.",
+        "Composite evidence has no executable sufficiency rule in schema 0.3; imported composite results MUST remain non-discriminating and fail closed.",
+        "response.request_id, inquiry_id, test_id and property_name MUST exactly match the request.",
+    )
     schema_version: str = "0.1"
     request_id: str = Field(min_length=1)
     inquiry_id: str = Field(min_length=1)
@@ -1126,30 +1139,14 @@ class VisualEvidenceResponse(BaseModel):
         return self
 
 
-VISUAL_EVIDENCE_RESPONSE_INVARIANTS = [
-    "Legacy: if status is 'observed' or 'not_observed', observed_value MUST be present; if status is 'occluded', 'non_visible', 'ambiguous', or 'insufficient_evidence', observed_value MUST be null/absent and MUST NOT be used as visible/absent evidence.",
-    "Legacy: response.photo_index, response.region and response.source_observation_ids MUST exactly match the mono-source request target.",
-    "Legacy mono-source responses preserve the 030 contract; composite responses use schema_version 0.3 and MUST NOT carry legacy mono-source evidence fields.",
-    "Composite source_results are matched by source_id, not list position; source_id values MUST be unique.",
-    "Each composite source_result MUST exactly match its requested observation_ref, photo_index and region; null requested region MUST remain null.",
-    "No unknown composite source is allowed. If request.target.requires_exhaustive_sources is true, every requested source MUST occur exactly once.",
-    "A decisive composite_status ('observed' or 'not_observed') MUST carry composite_outcome; every inconclusive composite_status MUST carry no composite_outcome.",
-    "composite_outcome MUST be one of the structured outcomes allowed by request.question for request.property_name.",
-    "Local source status/value never manufactures composite_outcome. Occluded/non-visible/missing sources never imply a negative outcome.",
-    "Composite evidence has no executable sufficiency rule in schema 0.3; imported composite results MUST remain non-discriminating and fail closed.",
-    "response.request_id, inquiry_id, test_id and property_name MUST exactly match the request.",
-]
-
-
-
 def visual_evidence_response_schema() -> dict:
     """Exact machine schema exposed to an external visual observer."""
     return VisualEvidenceResponse.model_json_schema()
 
 
 def visual_evidence_response_invariants() -> list[str]:
-    """Runtime/import invariants not fully expressible by JSON Schema alone."""
-    return list(VISUAL_EVIDENCE_RESPONSE_INVARIANTS)
+    """Machine contract owned by the exact response model/import protocol."""
+    return list(VisualEvidenceResponse.RESPONSE_INVARIANTS)
 
 
 def build_executable_visual_inquiry(
