@@ -6,7 +6,7 @@ from brickhouse.vision.multiview import (
     AssertionRevision, MultiViewWorkspace, RichEvidenceProvenance, RichVisualBootstrapResponse,
     SpatialOrganizationAssertion, SpatialOrganizationCandidate, ViewExplanationGain,
     build_rich_multiview_bootstrap_request, import_rich_visual_bootstrap_response,
-    import_p3_perception_expansion_response, import_spatial_interview_discriminant_response, import_spatial_pixel_check_response,
+    import_p3_perception_expansion_response, import_p5_perception_expansion_response, import_spatial_interview_discriminant_response, import_spatial_pixel_check_response,
     record_assertion_revision, record_spatial_organization_state,
     spatial_interview_discriminant_already_executed,
 )
@@ -334,3 +334,54 @@ def test_799_request_does_not_promote_p5_substructures_or_mutate_workspace():
     assert not any(x in obs for x in {"p5_stair_diagonal_sector","p5_platform_sector","obs_p5_stair","obs_p5_platform"})
     assert d["memory_788"]["candidate_substructures"]==["p5_stair_diagonal_sector","p5_platform_sector"]
     assert workspace.model_dump()==before
+
+
+def test_800_ingests_799_promotes_only_diagonal_revises_788_and_survives_reload():
+    workspace=_workspace_789()
+    request=json.loads((ROOT/"frontend"/"p5-perception-expansion-request-799.json").read_text())
+    response=json.loads((ROOT/"frontend"/"p5-perception-expansion-response-799.json").read_text())
+    before_ids=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    loaded=MultiViewWorkspace.model_validate_json(import_p5_perception_expansion_response(workspace,request,response).model_dump_json())
+    obs={x.id:x for x in [*loaded.pass_1.observations,*loaded.pass_2.observations]}
+    assert "obs_p5_stair_diagonal_799" in obs
+    o=obs["obs_p5_stair_diagonal_799"]
+    assert (o.region.x0,o.region.y0,o.region.x1,o.region.y1)==(0.27,0.54,0.67,0.79)
+    assert o.proposed_category=="diagonal/stair-like structural region"
+    assert o.certainty.existence.value=="certain" and o.certainty.category.value=="plausible"
+    assert not any(x in obs for x in {"obs_p5_platform_799","obs_p5_stair_platform_junction_799"})
+    rec=loaded.p5_perception_expansion_investigations[-1]
+    by={x.candidate_id:x for x in rec.candidates}
+    assert by["p5-candidate-stair-diagonal-region"].disposition=="PROMOTED_LOCAL_OBSERVATION"
+    assert by["p5-candidate-stair-diagonal-region"].localization_basis=="DIRECTLY_LOCALIZED"
+    assert by["p5-candidate-stair-diagonal-region"].semantic_status=="SUPPORTED_AS_INTERPRETATION"
+    assert by["p5-candidate-stair-diagonal-region"].provenance.roi==(0.27,0.54,0.67,0.79)
+    assert by["p5-candidate-platform-region"].outcome=="AMBIGUOUS" and by["p5-candidate-platform-region"].disposition=="WITHHELD"
+    assert by["p5-candidate-platform-region"].candidate_roi is None and by["p5-candidate-platform-region"].semantic_status=="UNCERTAIN"
+    assert by["p5-candidate-stair-platform-junction"].outcome=="NOT_OBSERVABLE" and by["p5-candidate-stair-platform-junction"].disposition=="WITHHELD"
+    assert by["p5-candidate-stair-platform-junction"].candidate_roi is None
+    assert all(x.provenance.photo_index==5 and x.provenance.pixel_cues for x in rec.candidates)
+    pred=next(x for x in loaded.spatial_view_predictions if x.prediction_id=="788-p5-sector-structure")
+    assert pred.verification_relation_tokens==["LEFT_OF","BELOW","BOUNDARY_JOINS"]  # historical trace retained
+    assert pred.current_support_status=="HISTORICAL_CANDIDATE_MEMORY"
+    rev=next(x for x in loaded.assertion_revisions if x.revision_id=="revision-800-p5-788-sector")
+    assert rev.assertion_ref=="788-p5-sector-structure" and rev.new_epistemic_state=="SUPERSEDED"
+    assert "platform remains AMBIGUOUS" in rev.reason and "junction NOT_OBSERVABLE" in rev.reason
+    assert not any(r.relation_token=="BOUNDARY_JOINS" and "obs_p5_stair_diagonal_799" in {r.subject_ref,r.object_ref} for r in loaded.rich_relation_evidence)
+    assert [*loaded.pass_1.identities,*loaded.pass_2.identities]==before_ids
+    assert rec.physical_identity_acquired is False and rec.invented_geometry_added is False
+
+
+def test_800_validation_fails_closed_and_799_cannot_create_platform_or_junction_relation():
+    workspace=_workspace_789()
+    request=json.loads((ROOT/"frontend"/"p5-perception-expansion-request-799.json").read_text())
+    response=json.loads((ROOT/"frontend"/"p5-perception-expansion-response-799.json").read_text())
+    bad=json.loads(json.dumps(response)); bad["photo_index"]=4
+    with pytest.raises(ValueError,match="identity/photo"):
+        import_p5_perception_expansion_response(workspace,request,bad)
+    bad=json.loads(json.dumps(response)); bad["candidate_results"][1]["candidate_roi"]=[0.4,0.4,0.5,0.5]
+    with pytest.raises(ValueError,match="must not have ROI"):
+        import_p5_perception_expansion_response(workspace,request,bad)
+    bad=json.loads(json.dumps(response)); bad["candidate_results"][2]["relations"]=["BOUNDARY_JOINS"]
+    # Even an allowed token cannot override the required 799 epistemic result into a persisted relation.
+    imported=import_p5_perception_expansion_response(workspace,request,bad)
+    assert not any(r.relation_token=="BOUNDARY_JOINS" and "obs_p5_stair_diagonal_799" in {r.subject_ref,r.object_ref} for r in imported.rich_relation_evidence)
