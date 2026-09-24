@@ -4785,6 +4785,89 @@ class HouseShapeModel(BaseModel):
         return self
 
 
+class SecondaryAssemblyKind(str, Enum):
+    TERRACE = "TERRACE"
+    STAIR = "STAIR"
+
+
+class SecondaryComponentKind(str, Enum):
+    PLATFORM_SURFACE_OR_REGION = "PLATFORM_SURFACE_OR_REGION"
+    VISIBLE_PLATFORM_EDGE = "VISIBLE_PLATFORM_EDGE"
+    RAILING_OR_GUARD = "RAILING_OR_GUARD"
+    SUPPORTS = "SUPPORTS"
+    BUILDING_SIDE_BOUNDARY = "BUILDING_SIDE_BOUNDARY"
+    STAIR_SIDE_BOUNDARY = "STAIR_SIDE_BOUNDARY"
+    FLIGHT_REGION = "FLIGHT_REGION"
+    ASCENT_DIRECTION = "ASCENT_DIRECTION"
+    VISIBLE_SIDE_BOUNDARY = "VISIBLE_SIDE_BOUNDARY"
+    PARAPET_OR_RAILING = "PARAPET_OR_RAILING"
+    STEP_PATTERN = "STEP_PATTERN"
+    TOP_TERMINATION = "TOP_TERMINATION"
+    BOTTOM_TERMINATION = "BOTTOM_TERMINATION"
+    LANDING = "LANDING"
+    HIDDEN_CONTINUATION = "HIDDEN_CONTINUATION"
+    CONSTRUCTIVE_ENVELOPE = "CONSTRUCTIVE_ENVELOPE"
+
+
+class SecondaryObservedComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    component_id: str = Field(min_length=1)
+    kind: SecondaryComponentKind
+    observation_refs: list[str] = Field(min_length=1)
+    photo_indexes: list[int] = Field(min_length=1)
+    statement: str = Field(min_length=1)
+    qualitative_relations: list[str] = Field(default_factory=list)
+    truth_class: Literal["OBSERVED_ARCHITECTURAL_EVIDENCE"] = "OBSERVED_ARCHITECTURAL_EVIDENCE"
+
+
+class SecondaryApproximationComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    approximation_id: str = Field(min_length=1)
+    kind: SecondaryComponentKind
+    reason: str = Field(min_length=1)
+    source_unknowns: list[str] = Field(min_length=1)
+    replacement_condition: str = Field(min_length=1)
+    truth_class: Literal["CONSTRUCTIVE_APPROXIMATION"] = "CONSTRUCTIVE_APPROXIMATION"
+    revisable: Literal[True] = True
+
+
+class SecondaryUnknownComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    unknown_id: str = Field(min_length=1)
+    statement: str = Field(min_length=1)
+
+
+class SecondaryAssemblyShapeModel(BaseModel):
+    """Concrete non-metric TERRACE or STAIR candidate without cross-view fusion."""
+    model_config = ConfigDict(extra="forbid")
+    assembly_id: str = Field(min_length=1)
+    assembly_kind: SecondaryAssemblyKind
+    primary_photo_index: int = Field(ge=1)
+    observed_components: list[SecondaryObservedComponent] = Field(min_length=1)
+    approximated_components: list[SecondaryApproximationComponent] = Field(default_factory=list)
+    unknown_components: list[SecondaryUnknownComponent] = Field(min_length=1)
+    separate_compatible_view_evidence: list[ArchitecturalEvidenceRef] = Field(default_factory=list)
+    recognizable_gate: Literal["SUPPORTED", "PARTIAL", "BLOCKED"]
+
+    @model_validator(mode="after")
+    def preserve_secondary_truth_boundary(self) -> "SecondaryAssemblyShapeModel":
+        observed_ids = {item.component_id for item in self.observed_components}
+        approximation_ids = {item.approximation_id for item in self.approximated_components}
+        if observed_ids & approximation_ids:
+            raise ValueError("secondary approximation cannot masquerade as observed evidence")
+        if any(self.primary_photo_index not in item.photo_indexes for item in self.observed_components):
+            raise ValueError("primary constructive candidate components require primary-view provenance")
+        if self.recognizable_gate == "SUPPORTED":
+            kinds = {item.kind for item in self.observed_components}
+            if self.assembly_kind == SecondaryAssemblyKind.TERRACE:
+                required = {SecondaryComponentKind.PLATFORM_SURFACE_OR_REGION, SecondaryComponentKind.VISIBLE_PLATFORM_EDGE}
+            else:
+                required = {SecondaryComponentKind.FLIGHT_REGION, SecondaryComponentKind.VISIBLE_SIDE_BOUNDARY}
+            if not required.issubset(kinds):
+                raise ValueError("SUPPORTED secondary assembly lacks its minimum observed recognizable structure")
+        return self
+
+
 class ArchitecturalSubassembly(BaseModel):
     """Minimal concrete architectural unit built from evidence without hiding unknowns."""
     model_config = ConfigDict(extra="forbid")
@@ -4860,6 +4943,8 @@ class MultiViewWorkspace(BaseModel):
     unknown_assembly_connections: list[UnknownAssemblyConnection] = Field(default_factory=list)
     recognizable_architectural_fragment_gate: RecognizableArchitecturalFragmentGate | None = None
     house_shape_model: HouseShapeModel | None = None
+    terrace_shape_model: SecondaryAssemblyShapeModel | None = None
+    stair_shape_model: SecondaryAssemblyShapeModel | None = None
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
