@@ -4680,6 +4680,95 @@ def mapping_request_equivalent_to_exhausted_identity_discriminant(
             return True
     return False
 
+
+class ArchitecturalEvidenceClass(str, Enum):
+    """Truth class for architectural assembly information."""
+    OBSERVED_ARCHITECTURAL_EVIDENCE = "OBSERVED_ARCHITECTURAL_EVIDENCE"
+    CONSTRUCTIVE_APPROXIMATION = "CONSTRUCTIVE_APPROXIMATION"
+
+
+class ArchitecturalSubassemblyKind(str, Enum):
+    HOUSE = "HOUSE"
+    TERRACE = "TERRACE"
+    STAIR = "STAIR"
+    ROOF = "ROOF"
+    OPENING = "OPENING"
+
+
+class AssemblyConnectionRelation(str, Enum):
+    ATTACHED_TO_FACE = "ATTACHED_TO_FACE"
+    SUPPORTED_BY = "SUPPORTED_BY"
+    LANDS_ON = "LANDS_ON"
+    CONNECTS_TO = "CONNECTS_TO"
+    OPENING_IN_FACE = "OPENING_IN_FACE"
+    ROOF_COVERS = "ROOF_COVERS"
+
+
+class ArchitecturalEvidenceRef(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    observation_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    statement: str = Field(min_length=1)
+    truth_class: Literal["OBSERVED_ARCHITECTURAL_EVIDENCE"] = "OBSERVED_ARCHITECTURAL_EVIDENCE"
+
+
+class ConstructiveApproximation(BaseModel):
+    """Explicitly non-observed, revisable materialization choice."""
+    model_config = ConfigDict(extra="forbid")
+    approximation_id: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+    source_unknowns: list[str] = Field(min_length=1)
+    truth_class: Literal["CONSTRUCTIVE_APPROXIMATION"] = "CONSTRUCTIVE_APPROXIMATION"
+    revisable: Literal[True] = True
+
+
+class ArchitecturalSubassembly(BaseModel):
+    """Minimal concrete architectural unit built from evidence without hiding unknowns."""
+    model_config = ConfigDict(extra="forbid")
+    assembly_id: str = Field(min_length=1)
+    kind: ArchitecturalSubassemblyKind
+    observed_evidence: list[ArchitecturalEvidenceRef] = Field(default_factory=list)
+    supported_shape_information: list[str] = Field(default_factory=list)
+    unknown_shape_information: list[str] = Field(default_factory=list)
+    constructive_approximations: list[ConstructiveApproximation] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def preserve_truth_boundary(self) -> "ArchitecturalSubassembly":
+        evidence_ids = {item.observation_ref for item in self.observed_evidence}
+        if any(item.approximation_id in evidence_ids for item in self.constructive_approximations):
+            raise ValueError("constructive approximation must not masquerade as observed evidence")
+        return self
+
+
+class AssemblyConnection(BaseModel):
+    """A supported inter-assembly connection; evidence provenance is mandatory."""
+    model_config = ConfigDict(extra="forbid")
+    connection_id: str = Field(min_length=1)
+    subject_assembly_ref: str = Field(min_length=1)
+    relation: AssemblyConnectionRelation
+    object_assembly_ref: str = Field(min_length=1)
+    evidence_refs: list[str] = Field(min_length=1)
+
+
+class UnknownAssemblyConnection(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    subject_assembly_ref: str = Field(min_length=1)
+    object_assembly_ref: str = Field(min_length=1)
+    reason: str = Field(min_length=1)
+    state: Literal["UNKNOWN_CONNECTION"] = "UNKNOWN_CONNECTION"
+
+
+class RecognizableArchitecturalFragmentGate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    status: Literal["BLOCKED", "READY"] = "BLOCKED"
+    blockers: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def require_blockers_when_blocked(self) -> "RecognizableArchitecturalFragmentGate":
+        if self.status == "BLOCKED" and not self.blockers:
+            raise ValueError("blocked recognizable-fragment gate requires explicit blockers")
+        return self
+
 class MultiViewWorkspace(BaseModel):
     schema_version: Literal["0.1"] = "0.1"
     photo_count: int = Field(ge=1)
@@ -4703,6 +4792,10 @@ class MultiViewWorkspace(BaseModel):
     p3_perception_expansion_investigations: list[P3PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
     p5_perception_expansion_investigations: list[P5PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
     p5_platform_discriminant_investigations: list[P5PlatformDiscriminantInvestigationRecord] = Field(default_factory=list)
+    architectural_subassemblies: list[ArchitecturalSubassembly] = Field(default_factory=list)
+    assembly_connections: list[AssemblyConnection] = Field(default_factory=list)
+    unknown_assembly_connections: list[UnknownAssemblyConnection] = Field(default_factory=list)
+    recognizable_architectural_fragment_gate: RecognizableArchitecturalFragmentGate | None = None
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
