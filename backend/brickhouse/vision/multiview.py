@@ -3503,6 +3503,142 @@ def import_spatial_interview_discriminant_response(
     }).model_dump())
 
 
+class P3PerceptionExpansionCandidateRecord(BaseModel):
+    """Auditable 794 perceptual evidence; promotion is separate from semantic certainty."""
+    model_config = ConfigDict(extra="forbid")
+    candidate_id: str = Field(min_length=1)
+    outcome: Literal["LOCALIZABLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    localized_roi: tuple[float,float,float,float] | None = None
+    visible_boundaries: list[str] = Field(default_factory=list)
+    pixel_cues: list[str] = Field(default_factory=list)
+    epistemic_confidence: Literal["DIRECTLY_LOCALIZED","PARTIALLY_BOUNDED","SEMANTIC_INTERPRETATION_UNCERTAIN"]
+    semantic_label: str | None = None
+    semantic_status: Literal["SUPPORTED_AS_INTERPRETATION","UNCERTAIN","WITHHELD"]
+    semantic_evidence: list[str] = Field(default_factory=list)
+    disposition: Literal["PROMOTED_LOCAL_OBSERVATION","WITHHELD"]
+    promoted_observation_ref: str | None = None
+
+    @model_validator(mode="after")
+    def validate_disposition(self) -> "P3PerceptionExpansionCandidateRecord":
+        if self.disposition=="PROMOTED_LOCAL_OBSERVATION" and not self.promoted_observation_ref:
+            raise ValueError("promoted 794 candidate requires observation ref")
+        if self.disposition=="WITHHELD" and self.promoted_observation_ref is not None:
+            raise ValueError("withheld 794 candidate cannot have observation ref")
+        return self
+
+
+class P3PerceptionExpansionInvestigationRecord(BaseModel):
+    """Persistent SEE→OBSERVER→VALIDATE→PROMOTE/WITHHOLD memory for request 794."""
+    model_config = ConfigDict(extra="forbid")
+    request_id: str = Field(min_length=1)
+    photo_index: Literal[3]
+    candidates: list[P3PerceptionExpansionCandidateRecord] = Field(min_length=4,max_length=4)
+    imported_relation_keys: list[str] = Field(default_factory=list)
+    physical_identity_acquired: Literal[False] = False
+    invented_geometry_added: Literal[False] = False
+
+
+def import_p3_perception_expansion_response(
+    workspace: "MultiViewWorkspace", request: dict, response: dict
+) -> "MultiViewWorkspace":
+    """Strict 794 ingestion. Promote only directly-localized supported regions; withhold uncertain wall semantics."""
+    schema=request["response_schema"]
+    if set(response)!=set(schema["required"]):
+        raise ValueError("794 response fields must exactly match schema")
+    if response.get("request_id")!=request["request_id"] or response.get("photo_index")!=3:
+        raise ValueError("794 request/photo mismatch")
+    if any(x.request_id==request["request_id"] for x in workspace.p3_perception_expansion_investigations):
+        raise ValueError("794 perception expansion already imported")
+    requested={x["candidate_id"] for x in request["candidate_region_searches"]}
+    results=response.get("region_results",[])
+    if len(results)!=4 or {x.get("candidate_id") for x in results}!=requested:
+        raise ValueError("794 must exactly cover four candidate IDs")
+    allowed_outcomes=set(request["allowed_outcomes"]); allowed_rel=set(request["allowed_relation_tokens"])
+    allowed_conf=set(request["allowed_epistemic_confidence"])
+    existing={x.id:x for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    promoted_ids={
+      "p3-candidate-step-diagonal-region":"obs_p3_step_diagonal_794",
+      "p3-candidate-raised-platform-region":"obs_p3_raised_platform_794",
+      "p3-candidate-visible-junction-region":"obs_p3_visible_junction_794",
+    }
+    result_by_id={x["candidate_id"]:x for x in results}
+    for x in results:
+        if x["outcome"] not in allowed_outcomes or x["epistemic_confidence"] not in allowed_conf:
+            raise ValueError("794 outcome/confidence not allowed")
+        roi=x["localized_roi"]
+        if x["outcome"]=="LOCALIZABLE":
+            if not isinstance(roi,list) or len(roi)!=4 or any(not isinstance(v,(int,float)) or v<0 or v>1 for v in roi):
+                raise ValueError("794 LOCALIZABLE requires normalized ROI")
+            if roi[0]>=roi[2] or roi[1]>=roi[3] or not x["visible_boundaries"] or not x["pixel_cues"]:
+                raise ValueError("794 LOCALIZABLE requires ordered ROI, boundaries and pixel cues")
+        sem=x["semantic_interpretation"]
+        if set(sem)!={"label","status","evidence"}:
+            raise ValueError("794 semantic interpretation shape mismatch")
+        for rel in x["relations"]:
+            if rel["relation_token"] not in allowed_rel or not rel["pixel_cues"]:
+                raise ValueError("794 relation not allowed or lacks pixel cues")
+            if rel["subject_ref"] not in requested|set(existing) or rel["object_ref"] not in requested|set(existing):
+                raise ValueError("794 relation references unknown candidate/observation")
+            if any(token in json.dumps(rel) for token in ("SAME_PHYSICAL_OBJECT","LIKELY_SAME")):
+                raise ValueError("794 cannot establish physical identity")
+    # Promotion policy: direct localization + supported interpretation. The partially-bounded UNCERTAIN wall is retained only in investigation memory.
+    observations=[]
+    for cid,oid in promoted_ids.items():
+        x=result_by_id[cid]; sem=x["semantic_interpretation"]
+        if not (x["outcome"]=="LOCALIZABLE" and x["epistemic_confidence"]=="DIRECTLY_LOCALIZED" and sem["status"]=="SUPPORTED_AS_INTERPRETATION"):
+            raise ValueError(f"794 promoted candidate lacks required direct support: {cid}")
+        r=x["localized_roi"]
+        observations.append(LocalObservation(
+            id=oid,photo_index=3,status=ClaimStatus.OBSERVED,visibility=VisibilityStatus.VISIBLE,
+            region=NormalizedImageRegion(x0=r[0],y0=r[1],x1=r[2],y1=r[3]),
+            proposed_category=sem["label"],
+            statement=f"Pixel-localized region promoted from {cid}; semantic label remains an interpretation supported by response 794.",
+            certainty=AspectCertainty(existence=CertaintyLevel.CERTAIN,category=CertaintyLevel.PLAUSIBLE,
+                                      identity=CertaintyLevel.UNKNOWN,spatial_relation=CertaintyLevel.UNKNOWN,
+                                      topology=CertaintyLevel.UNKNOWN,metric=CertaintyLevel.UNKNOWN)))
+    if any(x.id in existing for x in observations):
+        raise ValueError("794 promoted observation ID already exists")
+    data=workspace.model_copy(deep=True)
+    data.pass_2.observations.extend(observations)
+    allobs={x.id:x for x in [*data.pass_1.observations,*data.pass_2.observations]}
+    refmap={**{x:x for x in existing},**promoted_ids}
+    imported=[]
+    for x in results:
+        for rel in x["relations"]:
+            s=refmap[rel["subject_ref"]]; o=refmap[rel["object_ref"]]
+            # The uncertain wall candidate is deliberately withheld, so its relation is retained only in the investigation record.
+            if s not in allobs or o not in allobs:
+                continue
+            prov=[]
+            for ref in (s,o):
+                obs=allobs[ref]
+                prov.append(RichEvidenceProvenance(
+                    observation_ref=ref,photo_index=3,
+                    roi=(obs.region.x0,obs.region.y0,obs.region.x1,obs.region.y1),
+                    pixel_cues=list(rel["pixel_cues"])))
+            ev=RichRelationEvidence(subject_ref=s,relation_token=rel["relation_token"],object_ref=o,
+                                    epistemic_level="OBSERVED",provenance=prov)
+            key=f"{s}|{rel['relation_token']}|{o}"
+            if not any((z.subject_ref,z.relation_token,z.object_ref)==(s,rel["relation_token"],o) for z in data.rich_relation_evidence):
+                data.rich_relation_evidence.append(ev)
+            imported.append(key)
+    records=[]
+    for x in results:
+        cid=x["candidate_id"]; sem=x["semantic_interpretation"]
+        promoted=cid in promoted_ids
+        records.append(P3PerceptionExpansionCandidateRecord(
+            candidate_id=cid,outcome=x["outcome"],localized_roi=tuple(x["localized_roi"]) if x["localized_roi"] else None,
+            visible_boundaries=x["visible_boundaries"],pixel_cues=x["pixel_cues"],
+            epistemic_confidence=x["epistemic_confidence"],semantic_label=sem["label"],
+            semantic_status=sem["status"],semantic_evidence=sem["evidence"],
+            disposition="PROMOTED_LOCAL_OBSERVATION" if promoted else "WITHHELD",
+            promoted_observation_ref=promoted_ids.get(cid)))
+    data.p3_perception_expansion_investigations.append(P3PerceptionExpansionInvestigationRecord(
+        request_id=request["request_id"],photo_index=3,candidates=records,
+        imported_relation_keys=imported,physical_identity_acquired=False,invented_geometry_added=False))
+    return MultiViewWorkspace.model_validate(data.model_dump())
+
+
 class MissingWorldConstraint(BaseModel):
     """Structural gap only; it does not invent the perceptual property needed to fill it."""
     model_config = ConfigDict(extra="forbid")
@@ -4358,6 +4494,7 @@ class MultiViewWorkspace(BaseModel):
     spatial_view_predictions: list[SpatialViewPrediction] = Field(default_factory=list)
     view_explanation_gains: list[ViewExplanationGain] = Field(default_factory=list)
     spatial_interview_discriminant_investigations: list[SpatialInterViewDiscriminantInvestigationRecord] = Field(default_factory=list)
+    p3_perception_expansion_investigations: list[P3PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
