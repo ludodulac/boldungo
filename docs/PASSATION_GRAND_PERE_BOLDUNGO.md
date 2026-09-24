@@ -99,3 +99,6 @@ Test de valeur architectural : ARCHITECTURAL_ORGANIZATION_READY. Critères méca
 Un renderer HTML autonome 073 montre MONDE CENTRAL, ponts/relations avec niveaux épistémiques, deux organisations concurrentes, propositions sémantiques, incertitudes/mémoires EXHAUSTED et éléments non rattachés. Aucune géométrie 3D.
 
 Aucun nouveau contact visuel, producer, request observateur, hardcoding real-house-5 runtime, Scene finale, LEGO ou NOTICE.
+
+
+Complément livrable 073 : le JSON structuré réellement émis par le test ciblé final a été persisté dans `data/experiments/world-hypothesis/world-hypothesis-073.json`. Il est parseable, schema_version 0.1, contient 2 organisations, 19 observations centrales, 3 non rattachées, 4 identity candidates, 1 incertitude ouverte et `property_values_available=true`. Il constitue un jalon reproductible dérivé, pas un second truth store runtime.
