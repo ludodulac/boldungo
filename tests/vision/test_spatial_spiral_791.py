@@ -488,3 +488,39 @@ def test_802_milestone_records_saturation_and_only_traceable_minimal_p3_fragment
     assert d["view_explanation_gain"]["identity_acquired"] is False
     assert d["view_explanation_gain"]["invented_geometry_added"] is False
     assert d["automatic_next_request"] is False
+
+
+def test_803_minimal_world_is_exact_p3_evidence_with_display_layout_separated():
+    d=json.loads((ROOT/"frontend"/"minimal-surviving-world-803.json").read_text())
+    assert d["artifact_id"]=="minimal-surviving-world-803"
+    ev=d["WORLD_EVIDENCE"]; dl=d["DISPLAY_LAYOUT_ONLY"]
+    allowed={"obs_p3_step_diagonal_794","obs_p3_visible_junction_794","obs_p3_raised_platform_794","obs_p3_box_volume","obs_p3_dark_opening"}
+    assert {x["observation_id"] for x in ev["observations"]}==allowed
+    assert all(x["photo_index"]==3 for x in ev["observations"])
+    assert not any("p4" in json.dumps(x).lower() or "p5" in json.dumps(x).lower() for x in ev["observations"])
+    expected={
+      ("obs_p3_step_diagonal_794","TERMINATES_AGAINST","obs_p3_visible_junction_794"),
+      ("obs_p3_visible_junction_794","LEFT_OF","obs_p3_raised_platform_794"),
+      ("obs_p3_step_diagonal_794","LEFT_OF","obs_p3_box_volume"),
+      ("obs_p3_raised_platform_794","ABOVE","obs_p3_dark_opening"),
+      ("obs_p3_raised_platform_794","BOUNDARY_JOINS","obs_p3_box_volume")}
+    assert {(x["subject"],x["relation"],x["object"]) for x in ev["relations"]}==expected
+    assert {x["observation_id"] for x in dl["primitives"]}==allowed
+    assert dl["coordinate_space"].startswith("normalized UI canvas")
+    assert "non-world" in dl["coordinate_space"]
+    assert not any(k in ev for k in ("x","y","w","h","depth","camera_pose","dimensions"))
+    assert "metric dimensions" in d["UNKNOWN_PRESERVED"]
+    assert "camera pose" in d["UNKNOWN_PRESERVED"]
+    assert "hidden continuation" in d["UNKNOWN_PRESERVED"]
+    assert d["human_validation"]["automatic_match"] is False
+    assert d["human_validation"]["automatic_score"] is False
+
+
+def test_803_visualization_uses_only_artifact_and_original_p3_side_by_side():
+    h=(ROOT/"frontend"/"minimal-surviving-world-803.html").read_text()
+    assert "./benchmarks/real-house-5/03-original.jpg" in h
+    assert "./minimal-surviving-world-803.json" in h
+    assert "DISPLAY_LAYOUT_ONLY" in h and "UNKNOWN préservé" in h
+    assert "reprojection" in h
+    assert "MATCH ou SUCCESS automatique" in h
+    assert "04-original.jpg" not in h and "05-original.jpg" not in h
