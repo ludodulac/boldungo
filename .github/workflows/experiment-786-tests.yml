@@ -1,4 +1,4 @@
-name: Experiment 786-792 spatial persistence
+name: Experiment 786-793 spatial persistence
 on:
   push:
     branches: [experiment/first-spatial-spiral-p2-p5]
@@ -11,4 +11,4 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
-      - run: pytest -q -s tests/vision/test_spiral_persistence_786.py tests/vision/test_spatial_pixel_check_788.py tests/vision/test_interview_discriminant_790.py tests/vision/test_spatial_spiral_791.py tests/vision/test_interview_discriminant_792.py tests/test_first_spatial_spiral_p2_p5.py tests/vision/test_multiview_workspace.py -k "792 or 791 or 790 or 789 or 788 or 787 or 786 or 073 or 072 or 071 or 070 or 069 or 068 or 067 or 066 or 065 or 064"
+      - run: pytest -q -s tests/vision/test_spiral_persistence_786.py tests/vision/test_spatial_pixel_check_788.py tests/vision/test_interview_discriminant_790.py tests/vision/test_spatial_spiral_791.py tests/vision/test_interview_discriminant_792.py tests/test_first_spatial_spiral_p2_p5.py tests/vision/test_multiview_workspace.py -k "793 or 792 or 791 or 790 or 789 or 788 or 787 or 786 or 073 or 072 or 071 or 070 or 069 or 068 or 067 or 066 or 065 or 064"
