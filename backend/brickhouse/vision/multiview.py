@@ -2109,6 +2109,26 @@ class RichEvidenceProvenance(BaseModel):
     roi: tuple[float, float, float, float]
 
 
+class AssertionRevision(BaseModel):
+    """Persistent audit record changing whether an existing perceptual assertion may support current reasoning."""
+    model_config = ConfigDict(extra="forbid")
+    revision_id: str = Field(min_length=1)
+    assertion_ref: str = Field(min_length=1)
+    previous_status: str = Field(min_length=1)
+    new_epistemic_state: Literal["REJECTED_BY_PIXELS", "SUPERSEDED"]
+    reason: str = Field(min_length=1)
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+
+
+class RevisionImpact(BaseModel):
+    """A dependency touched by an invalidated source; affected never means automatically false."""
+    model_config = ConfigDict(extra="forbid")
+    source_ref: str = Field(min_length=1)
+    affected_ref: str = Field(min_length=1)
+    affected_kind: Literal["observation", "identity_candidate", "identity_cue", "relation", "uncertainty", "discriminant", "property_correspondence", "world_constraint", "world_hypothesis"]
+    disposition: Literal["SOURCE_INVALIDATED", "NEEDS_REEVALUATION"]
+
+
 class RichIdentityCue(BaseModel):
     model_config = ConfigDict(extra="forbid")
     identity_candidate_ref: str = Field(min_length=1)
@@ -3378,8 +3398,10 @@ class WorldHypothesis(BaseModel):
 
 def build_world_hypothesis(workspace:"MultiViewWorkspace",graph:MultiViewWorldConstraintGraph|None=None)->WorldHypothesis:
     graph=graph or build_multiview_world_constraint_graph(workspace)
-    observations=[*workspace.pass_1.observations,*workspace.pass_2.observations]
-    identities=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    invalidated=invalidated_observation_ids(workspace)
+    observations=[x for x in [*workspace.pass_1.observations,*workspace.pass_2.observations] if x.id not in invalidated]
+    active_observation_ids={x.id for x in observations}
+    identities=[x for x in [*workspace.pass_1.identities,*workspace.pass_2.identities] if set(x.observation_ids).issubset(active_observation_ids)]
     obs_by_id={x.id:x for x in observations}
     weak={n.split(":",1)[1] for comp in graph.insufficiently_connected_components for n in comp if n.startswith("observation:")}
     main=sorted(x.id for x in observations if x.id not in weak)
@@ -3459,8 +3481,11 @@ body{{font-family:system-ui;margin:0;background:#f5f3ed;color:#222}} header{{pad
 
 def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> MultiViewWorldConstraintGraph:
     """Project only explicit structured evidence. No prose parsing, transitive identity fusion or hidden topology."""
-    observations = [*workspace.pass_1.observations, *workspace.pass_2.observations]
-    identities = [*workspace.pass_1.identities, *workspace.pass_2.identities]
+    invalidated = invalidated_observation_ids(workspace)
+    observations = [x for x in [*workspace.pass_1.observations, *workspace.pass_2.observations] if x.id not in invalidated]
+    active_observation_ids = {x.id for x in observations}
+    identities = [x for x in [*workspace.pass_1.identities, *workspace.pass_2.identities]
+                  if set(x.observation_ids).issubset(active_observation_ids)]
     observation_by_id = {item.id: item for item in observations}
     identity_by_id = {item.id: item for item in identities}
     nodes = [
@@ -3490,6 +3515,8 @@ def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> M
                     token=state, source_ref=observation.id)
 
     for cue in workspace.rich_identity_cues:
+        if any(p.observation_ref in invalidated for p in cue.provenance):
+            continue
         candidate = identity_by_id.get(cue.identity_candidate_ref)
         if candidate is None:
             continue
@@ -3500,12 +3527,16 @@ def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> M
             provenance=cue.provenance, source_ref=candidate.id)
 
     for relation in workspace.rich_relation_evidence:
+        if relation.subject_ref in invalidated or relation.object_ref in invalidated or any(p.observation_ref in invalidated for p in relation.provenance):
+            continue
         add("PERCEPTUAL_RELATION",
             [f"observation:{relation.subject_ref}", f"observation:{relation.object_ref}"],
             relation.epistemic_level, token=relation.relation_token,
             provenance=relation.provenance, source_ref=f"{relation.subject_ref}->{relation.object_ref}")
 
     for record in workspace.property_correspondences:
+        if record.correspondence.observation_ref_a in invalidated or record.correspondence.observation_ref_b in invalidated:
+            continue
         corr=record.correspondence
         add("PROPERTY_CORRESPONDENCE",
             [f"observation:{corr.observation_ref_a}",f"observation:{corr.observation_ref_b}"],
@@ -4148,6 +4179,7 @@ class MultiViewWorkspace(BaseModel):
     property_correspondences: list[PropertyCorrespondenceRecord] = Field(default_factory=list)
     property_outcome_mapping_investigations: list[PropertyOutcomeMappingInvestigationRecord] = Field(default_factory=list)
     global_connectivity_request_ids: list[str] = Field(default_factory=list)
+    assertion_revisions: list[AssertionRevision] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
@@ -4200,7 +4232,73 @@ class MultiViewWorkspace(BaseModel):
                         raise ValueError("inquiry test evidence references photo outside supplied input")
                 elif test.photo_index is not None and test.photo_index > self.photo_count:
                     raise ValueError("inquiry test references photo outside supplied input")
+        revision_ids = [item.revision_id for item in self.assertion_revisions]
+        if len(revision_ids) != len(set(revision_ids)):
+            raise ValueError("workspace assertion revision IDs must be unique")
+        observations = [*self.pass_1.observations, *self.pass_2.observations]
+        by_id = {item.id: item for item in observations}
+        for revision in self.assertion_revisions:
+            observation = by_id.get(revision.assertion_ref)
+            if observation is None:
+                raise ValueError("assertion revision references unknown observation")
+            if revision.previous_status != observation.status.value:
+                raise ValueError("assertion revision previous_status must match historical observation status")
+            if any(p.observation_ref != revision.assertion_ref for p in revision.provenance):
+                raise ValueError("assertion revision provenance must reference the revised observation")
         return self
+
+
+def invalidated_observation_ids(workspace: MultiViewWorkspace) -> set[str]:
+    return {item.assertion_ref for item in workspace.assertion_revisions
+            if item.new_epistemic_state in {"REJECTED_BY_PIXELS", "SUPERSEDED"}}
+
+
+def record_assertion_revision(workspace: MultiViewWorkspace, revision: AssertionRevision) -> MultiViewWorkspace:
+    """Append audit history; never delete or rewrite the historical assertion."""
+    if revision.revision_id in {item.revision_id for item in workspace.assertion_revisions}:
+        raise ValueError("duplicate assertion revision ID")
+    return MultiViewWorkspace.model_validate(
+        workspace.model_copy(update={"assertion_revisions": [*workspace.assertion_revisions, revision]}).model_dump()
+    )
+
+
+def assess_assertion_revision_impacts(workspace: MultiViewWorkspace, assertion_ref: str) -> list[RevisionImpact]:
+    """Enumerate direct structured dependencies without declaring downstream claims false."""
+    observations = [*workspace.pass_1.observations, *workspace.pass_2.observations]
+    if assertion_ref not in {x.id for x in observations}:
+        raise ValueError("unknown revised assertion")
+    identities = [*workspace.pass_1.identities, *workspace.pass_2.identities]
+    identity_ids = {x.id for x in identities if assertion_ref in x.observation_ids}
+    impacts = [RevisionImpact(source_ref=assertion_ref, affected_ref=assertion_ref,
+                              affected_kind="observation", disposition="SOURCE_INVALIDATED")]
+    seen = {("observation", assertion_ref)}
+    def add(kind: str, ref: str) -> None:
+        key=(kind,ref)
+        if key not in seen:
+            seen.add(key)
+            impacts.append(RevisionImpact(source_ref=assertion_ref, affected_ref=ref,
+                                          affected_kind=kind, disposition="NEEDS_REEVALUATION"))
+    for x in identities:
+        if x.id in identity_ids: add("identity_candidate", x.id)
+    for i,x in enumerate(workspace.rich_identity_cues):
+        if x.identity_candidate_ref in identity_ids or any(p.observation_ref==assertion_ref for p in x.provenance):
+            add("identity_cue", f"{x.identity_candidate_ref}:{x.polarity}:{i}")
+    for i,x in enumerate(workspace.rich_relation_evidence):
+        if assertion_ref in {x.subject_ref,x.object_ref} or any(p.observation_ref==assertion_ref for p in x.provenance):
+            add("relation", f"{x.subject_ref}:{x.relation_token}:{x.object_ref}:{i}")
+    for x in derive_existing_structured_uncertainties(workspace):
+        if assertion_ref in x.source_observation_ids or x.source_ref in identity_ids:
+            add("uncertainty", x.id)
+    for x in workspace.identity_discriminants:
+        if assertion_ref in x.source_ids_by_observation:
+            add("discriminant", x.id)
+    for i,x in enumerate(workspace.property_correspondences):
+        corr=x.correspondence
+        if assertion_ref in {corr.observation_ref_a,corr.observation_ref_b}:
+            add("property_correspondence", f"{x.request_id}:{i}")
+    add("world_constraint", "derived:MultiViewWorldConstraintGraph")
+    add("world_hypothesis", "derived:WorldHypothesis")
+    return impacts
 
 
 def render_multiview_world_diagnostic_html(workspace:MultiViewWorkspace,graph:MultiViewWorldConstraintGraph)->str:
