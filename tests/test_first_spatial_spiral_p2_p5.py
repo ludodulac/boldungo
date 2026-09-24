@@ -8,7 +8,7 @@ RESPONSE=ROOT/"frontend"/"spatial-pixel-check-response-788.json"
 def test_789_visual_artifact_is_fail_closed_and_matches_imported_788():
     d=json.loads(ARTIFACT.read_text())
     r=json.loads(RESPONSE.read_text())
-    assert d["artifact_id"]=="spatial-spiral-793"
+    assert d["artifact_id"]=="p3-perception-ingestion-795"
     assert d["observer_import"]["request_id"]=="spatial-pixel-check-788"
     assert d["view_explanation_gain"]["invented_geometry_added"] is False
     assert len(d["organizations"])==1
