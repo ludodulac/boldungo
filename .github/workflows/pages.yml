@@ -121,6 +121,21 @@ jobs:
           assert data['bom']['total_parts'] == len(parts)
           PY
 
+      - name: Publish WorldHypothesis 073 visual milestone source
+        run: cp data/experiments/world-hypothesis/world-hypothesis-073.json frontend/world-hypothesis-073.json
+
+      - name: Verify WorldHypothesis visual source
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('frontend/world-hypothesis-073.json').read_text())
+          assert data['schema_version'] == '0.1'
+          assert len(data['organizations']) == 2
+          assert len(data['organizations'][0]['main_world_observation_refs']) == 19
+          assert data['property_values_available'] is True
+          PY
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
