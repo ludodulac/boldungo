@@ -296,3 +296,41 @@ def test_798_diagnostic_artifact_is_fail_closed_and_does_not_promote_p5_substruc
     assert all(x["subject_ref"]=="p5_stair_diagonal_sector" and x["object_ref"]=="p5_platform_sector" for x in p5)
     assert d["p5_substructures_are_local_observations"] is False
     assert d["composition_guard"]=="NO_COMPOSITION_WITHOUT_SHARED_PERSISTENT_NODE_OR_SUFFICIENT_ACQUIRED_CORRESPONDENCE"
+
+
+def test_799_p5_perception_expansion_request_is_bounded_fail_closed_and_non_ingesting():
+    d=json.loads((ROOT/"frontend"/"p5-perception-expansion-request-799.json").read_text())
+    assert d["request_id"]=="p5-perception-expansion-799"
+    assert d["authorized_photo"]["photo_index"]==5
+    assert d["search_sector"]=={"observation_ref":"obs_p5_side_wall","photo_index":5,"search_roi":[0.13,0.04,0.88,0.79],"status":"PERSISTENT_LOCAL_OBSERVATION"}
+    assert [x["candidate_id"] for x in d["candidate_searches"]]==[
+        "p5-candidate-stair-diagonal-region","p5-candidate-platform-region","p5-candidate-stair-platform-junction"]
+    assert d["allowed_outcomes"]==["LOCALIZABLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    assert d["allowed_relation_tokens"]==["LEFT_OF","RIGHT_OF","ABOVE","BELOW","BOUNDARY_JOINS","TERMINATES_AGAINST","NO_RELIABLE_RELATION"]
+    assert d["memory_788"]["status"]=="REVISABLE_SEARCH_MEMORY_NOT_LOCAL_OBSERVATIONS"
+    assert d["memory_788"]["prior_qualitative_relations"]==[
+        ["p5_stair_diagonal_sector","LEFT_OF","p5_platform_sector"],
+        ["p5_stair_diagonal_sector","BELOW","p5_platform_sector"],
+        ["p5_stair_diagonal_sector","BOUNDARY_JOINS","p5_platform_sector"]]
+    assert "REQUIRES_A_AND_B_SUFFICIENTLY_LOCALIZABLE" in d["candidate_searches"][2]["dependency"]
+    assert d["automatic_ingestion"] is False
+    joined=json.dumps(d)
+    assert "No LocalObservation creation" in joined
+    assert "Semantic interpretation is separate from localization" in joined
+    assert "matching candidate_id, non-empty pixel_cues" in joined
+    assert "No physical identity" in joined
+    assert "SAME_PHYSICAL_OBJECT" in joined and "LIKELY_SAME" in joined
+    assert "metric geometry" in joined and "camera pose" in joined
+    assert "P3/P4 comparison" in joined
+    assert "response may contradict it" in joined
+
+
+def test_799_request_does_not_promote_p5_substructures_or_mutate_workspace():
+    d=json.loads((ROOT/"frontend"/"p5-perception-expansion-request-799.json").read_text())
+    workspace=_workspace_789()
+    before=workspace.model_dump()
+    obs={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    assert "obs_p5_side_wall" in obs
+    assert not any(x in obs for x in {"p5_stair_diagonal_sector","p5_platform_sector","obs_p5_stair","obs_p5_platform"})
+    assert d["memory_788"]["candidate_substructures"]==["p5_stair_diagonal_sector","p5_platform_sector"]
+    assert workspace.model_dump()==before
