@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-ROOT=Path(__file__).parents[1]
+ROOT=Path(__file__).parents[2]
 REQUEST=ROOT/"frontend"/"interview-discriminant-request-790.json"
 
 def test_790_interview_discriminant_request_is_bounded_and_fail_closed():
