@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.4",
-  "artifact_id": "spatial-spiral-791",
+  "schema_version": "0.5",
+  "artifact_id": "spatial-spiral-793",
   "purpose": "First short SEE→HYPOTHESIZE→PREDICT→CHECK→REVISE→VISIBLE loop. Pixel evidence only from public real-house-5 photos 02–05.",
   "legacy_input": {
     "world_hypothesis": "world-hypothesis-073",
@@ -218,7 +218,8 @@
         "P4 wall-platform relation AMBIGUOUS",
         "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
         "metric geometry UNKNOWN",
-        "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790"
+        "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790",
+        "P3/P5 physical identity remains UNRESOLVED despite local lower-volume/opening organization compatibility"
       ]
     }
   ],
@@ -286,7 +287,8 @@
       "P4 wall-platform relation AMBIGUOUS",
       "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
       "metric geometry UNKNOWN",
-      "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790"
+      "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790",
+      "P3/P5 physical identity remains UNRESOLVED despite local lower-volume/opening organization compatibility"
     ]
   },
   "view_explanation_gain": {
@@ -317,7 +319,8 @@
       "P4 wall-platform relation AMBIGUOUS",
       "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
       "metric geometry UNKNOWN",
-      "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790"
+      "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790",
+      "P3/P5 physical identity remains UNRESOLVED despite local lower-volume/opening organization compatibility"
     ],
     "invented_geometry_added": false,
     "note": "A positive consequence in a photo does not mean the whole view is explained.",
@@ -331,9 +334,20 @@
       "identity_acquired": false,
       "invented_geometry_added": false,
       "note": "AMBIGUOUS is persistent information; no scalar score and no cross-view identity are inferred."
+    },
+    "inter_view_792": {
+      "compatible_local_organization": "P3/P5 lower-volume + opening organization",
+      "compatible_relations": [
+        "CONTAINED_WITHIN",
+        "BELOW"
+      ],
+      "p5_required_structure_observable": true,
+      "identity_acquired": false,
+      "invented_geometry_added": false,
+      "note": "Three discriminating properties are locally compatible. This reduces the incompatible-local-organization alternative for the tested properties, but does not establish physical identity."
     }
   },
-  "note": "791 persists observer result 790: P4/P5 opening-to-roof-edge relation is locally compatible as BELOW, while the inter-view correspondence remains AMBIGUOUS. No SAME_PHYSICAL_OBJECT, common physical surface, hidden continuation, camera pose, or metric geometry is added.",
+  "note": "793 persists observer result 792: P3/P5 lower-volume/opening organizations are locally compatible as CONTAINED_WITHIN and BELOW. Physical identity remains UNRESOLVED; no common physical surface, new P5 LocalObservation, hidden continuation, camera pose, or metric geometry is added.",
   "observer_import": {
     "request_id": "spatial-pixel-check-788",
     "response_file": "spatial-pixel-check-response-788.json",
@@ -378,5 +392,48 @@
     "status": "VALIDATED_AND_IMPORTED_NON_RESOLVING",
     "source_uncertainty_id": "interview-790:p4-p5-wall-sector-correspondence",
     "uncertainty_state": "OPEN"
+  },
+  "inter_view_discriminant_792": {
+    "request_id": "interview-discriminant-792",
+    "source_uncertainty_id": "interview-792:p3-p5-lower-volume-opening-correspondence",
+    "organization_ref": "org_rear_sector_787",
+    "status": "EXECUTED",
+    "outcome": "CORRESPONDENCE_COMPATIBLE",
+    "uncertainty_state": "LOCAL_COMPATIBILITY_ESTABLISHED",
+    "physical_identity": "UNRESOLVED",
+    "acquired_local_constraints": [
+      {
+        "property_token": "LOWER_OPENING_CONTAINMENT",
+        "relations": [
+          "CONTAINED_WITHIN"
+        ]
+      },
+      {
+        "property_token": "OPENING_TO_LOWER_VOLUME_TOP_BOUNDARY_ORDER",
+        "relations": [
+          "BELOW"
+        ]
+      },
+      {
+        "property_token": "LOWER_VOLUME_OPENING_BOUNDARY_CONFIGURATION",
+        "relations": [
+          "CONTAINED_WITHIN",
+          "BELOW"
+        ]
+      }
+    ],
+    "p5_localization_scope": "Pixel-local evidence inside obs_p5_side_wall discriminant ROI; no new P5 LocalObservation created.",
+    "identity_acquired": false,
+    "physical_surface_common_acquired": false,
+    "invented_geometry_added": false,
+    "repeat_policy": "The exact structured 792 discriminant signature is exhausted; rerun requires changed structured information capable of changing discriminating power."
+  },
+  "observer_import_792": {
+    "request_id": "interview-discriminant-792",
+    "response_file": "interview-discriminant-response-792.json",
+    "status": "VALIDATED_AND_IMPORTED",
+    "source_uncertainty_id": "interview-792:p3-p5-lower-volume-opening-correspondence",
+    "uncertainty_state": "LOCAL_COMPATIBILITY_ESTABLISHED",
+    "physical_identity": "UNRESOLVED"
   }
 }
