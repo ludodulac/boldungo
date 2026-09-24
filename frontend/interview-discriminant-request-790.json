@@ -1,0 +1,305 @@
+{
+  "schema_version": "0.1",
+  "request_id": "interview-discriminant-790",
+  "source_uncertainty": {
+    "uncertainty_id": "interview-790:p4-p5-wall-sector-correspondence",
+    "kind": "INTER_VIEW_SECTOR_CORRESPONDENCE",
+    "status": "OPEN",
+    "priority_state": "TIED_MINIMAL_CHOICE",
+    "statement": "It is unresolved whether the local wall-sector organization visible in P4 can correspond consistently to the local wall-sector organization visible in P5.",
+    "selection_note": "No unique globally best inter-view uncertainty is established. This bounded P4/P5 test is selected because both views have persisted structured observations and multiple visible local-layout properties, and a result can constrain two sets of already acquired spatial relations without inventing a new observation."
+  },
+  "organization_ref": "org_rear_sector_787",
+  "hypotheses_or_alternatives": [
+    {
+      "token": "LOCAL_LAYOUT_CORRESPONDENCE_COMPATIBLE",
+      "meaning": "The authorized visible local-layout properties admit a correspondence between the P4 and P5 wall sectors without a directly visible conflicting invariant. This is not SAME_PHYSICAL_OBJECT."
+    },
+    {
+      "token": "LOCAL_LAYOUT_CORRESPONDENCE_INCOMPATIBLE",
+      "meaning": "At least one authorized, directly visible local-layout property has mutually exclusive observable states across P4 and P5 that cannot be explained by framing/occlusion within the authorized pixels. This is evidence against this correspondence only."
+    }
+  ],
+  "authorized_photos": [
+    4,
+    5
+  ],
+  "authorized_observations": [
+    {
+      "observation_ref": "obs_p4_rear_wall",
+      "photo_index": 4,
+      "roi": [
+        0.34,
+        0.06,
+        0.72,
+        0.42
+      ],
+      "known_properties": [
+        "upper_left_window",
+        "lower_right_window"
+      ]
+    },
+    {
+      "observation_ref": "obs_p4_upper_window",
+      "photo_index": 4,
+      "roi": [
+        0.37,
+        0.1,
+        0.45,
+        0.21
+      ],
+      "known_properties": [
+        "white_frame",
+        "two_vertical_panels"
+      ]
+    },
+    {
+      "observation_ref": "obs_p5_side_wall",
+      "photo_index": 5,
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "known_properties": [
+        "two_upper_openings",
+        "sloping_roof_edge",
+        "vertical_downpipe"
+      ]
+    },
+    {
+      "observation_ref": "obs_p5_near_window",
+      "photo_index": 5,
+      "roi": [
+        0.62,
+        0.25,
+        0.76,
+        0.39
+      ],
+      "known_properties": [
+        "light_shutters",
+        "dark_recess"
+      ]
+    },
+    {
+      "observation_ref": "obs_p5_roof_edge",
+      "photo_index": 5,
+      "roi": [
+        0.14,
+        0.02,
+        0.91,
+        0.34
+      ],
+      "known_properties": [
+        "dark_edge",
+        "continuous_visible_run"
+      ]
+    }
+  ],
+  "discriminating_properties": [
+    {
+      "property_token": "OPENING_LAYOUT_ORDER",
+      "instruction": "Compare only directly visible qualitative ordering and relative placement of wall openings inside each authorized wall-sector ROI. Determine whether a mapping can be supported or visibly conflicts. Do not treat an opening missing from one crop as absent."
+    },
+    {
+      "property_token": "OPENING_TO_ROOF_EDGE_RELATION",
+      "instruction": "Compare the qualitative position of authorized visible openings relative to the visible sloping roof/eave boundary where both are inspectable. Use boundary/order evidence only."
+    },
+    {
+      "property_token": "DISTINCTIVE_OPENING_CONFIGURATION",
+      "instruction": "Inspect directly visible opening structure (for example panel/shutter/recess configuration) only where the authorized ROIs expose it. Use it only if the property is genuinely comparable across both views; visual resemblance alone is not correspondence."
+    },
+    {
+      "property_token": "NEIGHBOR_BOUNDARY_ORDER",
+      "instruction": "Inspect whether visible neighboring boundaries within the wall sectors provide a distinctive qualitative ordering that would be compatible or incompatible across the two views. Do not infer hidden continuation or 3D geometry."
+    }
+  ],
+  "allowed_outcomes": [
+    "CORRESPONDENCE_COMPATIBLE",
+    "CORRESPONDENCE_INCOMPATIBLE",
+    "AMBIGUOUS",
+    "NOT_OBSERVABLE"
+  ],
+  "allowed_relation_tokens": [
+    "LEFT_OF",
+    "RIGHT_OF",
+    "ABOVE",
+    "BELOW",
+    "CONTOUR_CONTINUES",
+    "BOUNDARY_JOINS",
+    "NO_RELIABLE_RELATION"
+  ],
+  "provenance_required": {
+    "photo_index": true,
+    "roi": true,
+    "observation_refs": true,
+    "pixel_cues": true,
+    "property_token": true
+  },
+  "response_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "request_id",
+      "source_uncertainty_id",
+      "organization_ref",
+      "outcome",
+      "property_results",
+      "evidence",
+      "provenance"
+    ],
+    "properties": {
+      "schema_version": {
+        "const": "0.1"
+      },
+      "request_id": {
+        "const": "interview-discriminant-790"
+      },
+      "source_uncertainty_id": {
+        "const": "interview-790:p4-p5-wall-sector-correspondence"
+      },
+      "organization_ref": {
+        "const": "org_rear_sector_787"
+      },
+      "outcome": {
+        "enum": [
+          "CORRESPONDENCE_COMPATIBLE",
+          "CORRESPONDENCE_INCOMPATIBLE",
+          "AMBIGUOUS",
+          "NOT_OBSERVABLE"
+        ]
+      },
+      "property_results": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "property_token",
+            "outcome",
+            "relation_tokens",
+            "evidence"
+          ],
+          "properties": {
+            "property_token": {
+              "enum": [
+                "OPENING_LAYOUT_ORDER",
+                "OPENING_TO_ROOF_EDGE_RELATION",
+                "DISTINCTIVE_OPENING_CONFIGURATION",
+                "NEIGHBOR_BOUNDARY_ORDER"
+              ]
+            },
+            "outcome": {
+              "enum": [
+                "CORRESPONDENCE_COMPATIBLE",
+                "CORRESPONDENCE_INCOMPATIBLE",
+                "AMBIGUOUS",
+                "NOT_OBSERVABLE"
+              ]
+            },
+            "relation_tokens": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "LEFT_OF",
+                  "RIGHT_OF",
+                  "ABOVE",
+                  "BELOW",
+                  "CONTOUR_CONTINUES",
+                  "BOUNDARY_JOINS",
+                  "NO_RELIABLE_RELATION"
+                ]
+              }
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "evidence": {
+        "type": "string",
+        "minLength": 1
+      },
+      "provenance": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "photo_index",
+            "roi",
+            "observation_refs",
+            "pixel_cues",
+            "property_token"
+          ],
+          "properties": {
+            "photo_index": {
+              "enum": [
+                4,
+                5
+              ]
+            },
+            "roi": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "observation_refs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "enum": [
+                  "obs_p4_rear_wall",
+                  "obs_p4_upper_window",
+                  "obs_p5_side_wall",
+                  "obs_p5_near_window",
+                  "obs_p5_roof_edge"
+                ]
+              }
+            },
+            "pixel_cues": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "property_token": {
+              "enum": [
+                "OPENING_LAYOUT_ORDER",
+                "OPENING_TO_ROOF_EDGE_RELATION",
+                "DISTINCTIVE_OPENING_CONFIGURATION",
+                "NEIGHBOR_BOUNDARY_ORDER"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_invariants": [
+    "Inspect only authorized photos, observations and ROIs; do not create observations.",
+    "Do not answer SAME_PHYSICAL_OBJECT or DISTINCT_PHYSICAL_OBJECTS. The request tests only whether the visible local-layout correspondence is compatible or incompatible.",
+    "Visual similarity alone can never produce CORRESPONDENCE_COMPATIBLE; the result must use discriminating local organization, ordering, boundary or configuration evidence.",
+    "CORRESPONDENCE_INCOMPATIBLE requires a directly visible mutually exclusive discriminating property; non-visibility, crop difference or occlusion is insufficient.",
+    "AMBIGUOUS remains required when relevant pixels admit multiple mappings or interpretations.",
+    "NOT_OBSERVABLE remains required when authorized pixels do not expose a property reliably enough to compare.",
+    "Every property_result property_token must come from discriminating_properties and every relation token must be allowed.",
+    "Every provenance ROI must exactly equal one authorized ROI for every observation_ref it cites, and photo_index must match that observation.",
+    "Do not infer metric geometry, camera pose, depth, hidden continuation, or physical identity across P3/P4/P5.",
+    "Do not use prior prose as pixel evidence. Prior structured state only defines what is worth testing."
+  ]
+}

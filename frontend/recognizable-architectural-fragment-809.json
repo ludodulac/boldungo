@@ -1,0 +1,23 @@
+{
+  "schema_version":"0.1",
+  "mission":"BOLDÜNGO-RECOGNIZABLE-ARCHITECTURAL-FRAGMENT-809",
+  "source_spec":"frontend/architectural-connections-808.json#recognizable-fragment-spec-808",
+  "renderer":"frontend/recognizable-architectural-fragment-809.html",
+  "display_policy":{"display_layout_is_world_geometry":false,"metric_claims":false,"automatic_recognition_validation":false},
+  "rendered_groups":[
+    {"render_id":"house-p1","assembly_ref":"house_assembly_p1_806","source":"frontend/house-assembly-806.json","truth_classes":["OBSERVED","CONSTRUCTIVE_APPROXIMATION"],"components":["facade","six openings","two-slope roof boundary","minimal roof materialization"],"world_connection_to_secondary_fragment":"UNRESOLVED"},
+    {"render_id":"local-secondary-fragment","assembly_refs":["terrace_assembly_p3_807","stair_assembly_p3_807"],"source":"frontend/terrace-stair-assembly-807.json","truth_classes":["OBSERVED","PIXEL_DERIVED_NEW","CONSTRUCTIVE_APPROXIMATION","DISPLAY_CONSTRUCTIVE_APPROXIMATION","UNKNOWN"],"components":["raised platform","repetitive railing","visible supports","inclined stair flight","lateral boundaries","display-only step pattern","unresolved stair/terrace interface"],"stair_terrace_connection":"UNKNOWN_CONNECTION"}
+  ],
+  "roof_house_connection":{"connection_ref":"conn808-roof-house","status":"SUPPORTED","pixel_evidence_ref":"px808-p1-roof-house-interface"},
+  "display_constructive_approximations":[{"display_id":"display809-stair-step-repeat","purpose":"Make a stair flight visually legible.","world_truth_promoted":false,"persisted_step_count":null,"truth_class":"DISPLAY_CONSTRUCTIVE_APPROXIMATION"}],
+  "unresolved_interfaces":[{"interface":"HOUSE_P1↔TERRACE_BEARING_SECTOR","state":"UNRESOLVED","rendering":"separate constructive groups divided by dashed unresolved boundary"},{"interface":"STAIR↔TERRACE","state":"UNKNOWN_CONNECTION","rendering":"visible dashed gap; no landing and no LANDS_ON geometry"}],
+  "public_photo_refs":["frontend/benchmarks/real-house-5/01-original.jpg","frontend/benchmarks/real-house-5/03-original.jpg","frontend/benchmarks/real-house-5/04-original.jpg"],
+  "private_assets":[],
+  "human_visual_validation":"REQUIRED",
+  "human_questions":[
+    "Est-ce que tu reconnais clairement une MAISON dans la partie HOUSE ?",
+    "Est-ce que tu reconnais clairement une TERRASSE SURÉLEVÉE dans le fragment secondaire ?",
+    "Est-ce que tu reconnais clairement un ESCALIER EXTÉRIEUR dans ce fragment ?",
+    "Est-ce que l'ensemble te paraît enfin architecturalement compréhensible, même si les raccords encore inconnus ne sont pas inventés ?"
+  ]
+}

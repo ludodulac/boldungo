@@ -1,0 +1,114 @@
+{
+  "schema_version": "0.1",
+  "request_id": "p5-perception-expansion-799",
+  "photo_index": 5,
+  "search_roi": [
+    0.13,
+    0.04,
+    0.88,
+    0.79
+  ],
+  "candidate_results": [
+    {
+      "candidate_id": "p5-candidate-stair-diagonal-region",
+      "outcome": "LOCALIZABLE",
+      "candidate_roi": [
+        0.27,
+        0.54,
+        0.67,
+        0.79
+      ],
+      "pixel_cues": [
+        "A coherent oblique built structure is visible in the lower-central portion of the authorized sector.",
+        "Two long, approximately parallel sloping boundaries delimit a pale parapet-like band, with visible step-like surfaces near its lower-right end.",
+        "The region can be bounded from surrounding wall and ground pixels without relying on the 788 label."
+      ],
+      "localization_basis": "DIRECTLY_LOCALIZED",
+      "semantic_interpretation": {
+        "label": "diagonal/stair-like structural region",
+        "status": "SUPPORTED_AS_INTERPRETATION",
+        "evidence": "The localized region contains a sustained oblique parapet-like construction and visible step-like surfaces; localization does not depend on treating every diagonal edge as a stair."
+      },
+      "relations": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "provenance": {
+        "photo_index": 5,
+        "search_roi": [
+          0.13,
+          0.04,
+          0.88,
+          0.79
+        ],
+        "candidate_id": "p5-candidate-stair-diagonal-region",
+        "pixel_cues": [
+          "Oblique pale built boundaries and step-like surfaces are directly visible in the authorized P5 pixels."
+        ]
+      }
+    },
+    {
+      "candidate_id": "p5-candidate-platform-region",
+      "outcome": "AMBIGUOUS",
+      "candidate_roi": null,
+      "pixel_cues": [
+        "A lower white annex-like mass occupies the right-central part of the authorized sector and has a near-horizontal upper boundary.",
+        "The visible pixels do not isolate a distinct horizontal walking or terrace surface from the annex wall/roof-edge configuration.",
+        "Vegetation and the frontal wall interrupt or obscure portions of the potentially relevant boundary, leaving multiple reasonable delimitations."
+      ],
+      "localization_basis": "PARTIALLY_BOUNDED",
+      "semantic_interpretation": {
+        "label": "platform/terrace-like region",
+        "status": "UNCERTAIN",
+        "evidence": "A horizontal-topped built region is perceptible, but the pixels do not justify separating a definite platform or terrace region from the surrounding annex structure."
+      },
+      "relations": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "provenance": {
+        "photo_index": 5,
+        "search_roi": [
+          0.13,
+          0.04,
+          0.88,
+          0.79
+        ],
+        "candidate_id": "p5-candidate-platform-region",
+        "pixel_cues": [
+          "Near-horizontal upper boundary of the right-central white built mass is visible, but no uniquely bounded platform surface is isolated."
+        ]
+      }
+    },
+    {
+      "candidate_id": "p5-candidate-stair-platform-junction",
+      "outcome": "NOT_OBSERVABLE",
+      "candidate_roi": null,
+      "pixel_cues": [
+        "The stair-diagonal region is localizable, but the requested platform region is not sufficiently separately localizable.",
+        "No unique visible boundary contact can therefore be isolated as a stair-platform junction.",
+        "Intervening wall and vegetation pixels prevent a direct, unambiguous junction or termination from being established."
+      ],
+      "localization_basis": "PARTIALLY_BOUNDED",
+      "semantic_interpretation": {
+        "label": "stair-platform junction",
+        "status": "UNCERTAIN",
+        "evidence": "The dependency on sufficiently localizable stair and platform regions is not met; a junction would require inventing a connection not directly isolated in the pixels."
+      },
+      "relations": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "provenance": {
+        "photo_index": 5,
+        "search_roi": [
+          0.13,
+          0.04,
+          0.88,
+          0.79
+        ],
+        "candidate_id": "p5-candidate-stair-platform-junction",
+        "pixel_cues": [
+          "No directly isolable contact boundary between a localized stair-diagonal region and a separately localized platform region is visible."
+        ]
+      }
+    }
+  ]
+}

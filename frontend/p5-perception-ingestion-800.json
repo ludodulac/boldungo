@@ -1,0 +1,60 @@
+{
+  "schema_version": "0.1",
+  "artifact_id": "p5-perception-ingestion-800",
+  "source_request": "p5-perception-expansion-799",
+  "promoted_local_observation": {
+    "id": "obs_p5_stair_diagonal_799",
+    "photo_index": 5,
+    "roi": [
+      0.27,
+      0.54,
+      0.67,
+      0.79
+    ],
+    "localization_basis": "DIRECTLY_LOCALIZED",
+    "semantic_label": "diagonal/stair-like structural region",
+    "semantic_status": "SUPPORTED_AS_INTERPRETATION",
+    "category_certainty": "PLAUSIBLE"
+  },
+  "withheld_memory": [
+    {
+      "candidate_id": "p5-candidate-platform-region",
+      "outcome": "AMBIGUOUS",
+      "localization_basis": "PARTIALLY_BOUNDED",
+      "semantic_status": "UNCERTAIN",
+      "local_observation_created": false
+    },
+    {
+      "candidate_id": "p5-candidate-stair-platform-junction",
+      "outcome": "NOT_OBSERVABLE",
+      "localization_basis": "PARTIALLY_BOUNDED",
+      "semantic_status": "UNCERTAIN",
+      "local_observation_created": false
+    }
+  ],
+  "revision_788": {
+    "prediction_ref": "788-p5-sector-structure",
+    "current_support_status": "HISTORICAL_CANDIDATE_MEMORY",
+    "revision_id": "revision-800-p5-788-sector",
+    "historical_tokens": [
+      "LEFT_OF",
+      "BELOW",
+      "BOUNDARY_JOINS"
+    ],
+    "current_relations_promoted_from_788": [],
+    "note": "788 remains traceable as historical candidate memory. 799 does not support a localized platform or junction, so BOUNDARY_JOINS is not current established perceptual truth and LEFT_OF/BELOW are not promoted between LocalObservations."
+  },
+  "organization_impact": "P5 now has one directly localized diagonal structural region. Distinct P5 platform existence/localization and stair-platform junction remain unresolved.",
+  "view_explanation_gain": {
+    "gain": [
+      "one P5 diagonal structural region directly localized"
+    ],
+    "identity_acquired": false,
+    "invented_geometry_added": false
+  },
+  "next_uncertainty": {
+    "uncertainty": "A distinct P5 platform/terrace region remains AMBIGUOUS and the stair-platform junction remains NOT_OBSERVABLE.",
+    "why_blocking": "Without a separately localized second P5 region, historical 788 step/platform relations cannot become current relations between persistent LocalObservations or safely bridge to P3/P4.",
+    "next_discriminant_type": "A minimal perceptual question that can independently localize or rule out the P5 platform-like region, preferably using genuinely new perceptual information rather than repeating the same 799 search."
+  }
+}

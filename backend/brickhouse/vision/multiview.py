@@ -6,6 +6,7 @@ Survey fusion or geometric reconstruction.
 """
 from __future__ import annotations
 
+import json
 from enum import Enum
 from typing import ClassVar, Literal
 
@@ -2107,6 +2108,27 @@ class RichEvidenceProvenance(BaseModel):
     observation_ref: str = Field(min_length=1)
     photo_index: int = Field(ge=1)
     roi: tuple[float, float, float, float]
+    pixel_cues: list[str] = Field(default_factory=list)
+
+
+class AssertionRevision(BaseModel):
+    """Persistent audit record changing whether an existing perceptual assertion may support current reasoning."""
+    model_config = ConfigDict(extra="forbid")
+    revision_id: str = Field(min_length=1)
+    assertion_ref: str = Field(min_length=1)
+    previous_status: str = Field(min_length=1)
+    new_epistemic_state: Literal["REJECTED_BY_PIXELS", "SUPERSEDED"]
+    reason: str = Field(min_length=1)
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+
+
+class RevisionImpact(BaseModel):
+    """A dependency touched by an invalidated source; affected never means automatically false."""
+    model_config = ConfigDict(extra="forbid")
+    source_ref: str = Field(min_length=1)
+    affected_ref: str = Field(min_length=1)
+    affected_kind: Literal["observation", "identity_candidate", "identity_cue", "relation", "uncertainty", "discriminant", "property_correspondence", "world_constraint", "world_hypothesis"]
+    disposition: Literal["SOURCE_INVALIDATED", "NEEDS_REEVALUATION"]
 
 
 class RichIdentityCue(BaseModel):
@@ -3309,6 +3331,520 @@ class CompetingWorldOrganization(BaseModel):
     affected_node_refs: list[str] = Field(min_length=1)
 
 
+class SpatialOrganizationAssertion(BaseModel):
+    """Qualitative candidate-world assertion; never metric geometry or acquired identity truth."""
+    model_config = ConfigDict(extra="forbid")
+    assertion_id: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    relation_token: str = Field(min_length=1)
+    object_ref: str = Field(min_length=1)
+    epistemic_level: Literal["CANDIDATE"]
+    source_observation_refs: list[str] = Field(min_length=1)
+
+
+class SpatialOrganizationCandidate(BaseModel):
+    """Persisted bounded candidate organization licensed by explicit qualitative evidence."""
+    model_config = ConfigDict(extra="forbid")
+    organization_id: str = Field(min_length=1)
+    epistemic_level: Literal["CANDIDATE"] = "CANDIDATE"
+    sector_label: str = Field(min_length=1)
+    observation_refs: list[str] = Field(min_length=1)
+    assertions: list[SpatialOrganizationAssertion] = Field(min_length=1)
+    unresolved: list[str] = Field(default_factory=list)
+
+
+class ViewPredictionVerdict(str, Enum):
+    SUPPORTED = "SUPPORTED"
+    CONTRADICTED = "CONTRADICTED"
+    AMBIGUOUS = "AMBIGUOUS"
+    NOT_OBSERVABLE = "NOT_OBSERVABLE"
+
+
+class SpatialViewPrediction(BaseModel):
+    """One falsifiable/non-observable consequence of a candidate organization in one photo."""
+    model_config = ConfigDict(extra="forbid")
+    prediction_id: str = Field(min_length=1)
+    organization_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    observation_refs: list[str] = Field(default_factory=list)
+    expected_observable_consequence: str = Field(min_length=1)
+    inspection_provenance: list[RichEvidenceProvenance] = Field(default_factory=list)
+    verification_state: ViewPredictionVerdict
+    verification_relation_tokens: list[str] = Field(default_factory=list)
+    verification_evidence: str = Field(min_length=1)
+    verification_provenance: list[RichEvidenceProvenance] = Field(default_factory=list)
+    observer_investigation_id: str = Field(min_length=1)
+    current_support_status: Literal["ACTIVE_PIXEL_SUPPORTED","HISTORICAL_CANDIDATE_MEMORY"] = "ACTIVE_PIXEL_SUPPORTED"
+
+
+class ViewExplanationGain(BaseModel):
+    """Explicit components only; deliberately no arbitrary scalar score."""
+    model_config = ConfigDict(extra="forbid")
+    organization_ref: str = Field(min_length=1)
+    constrained_photo_indexes_before: list[int] = Field(default_factory=list)
+    constrained_photo_indexes_after: list[int] = Field(default_factory=list)
+    linked_observation_refs_before: list[str] = Field(default_factory=list)
+    linked_observation_refs_after: list[str] = Field(default_factory=list)
+    supported_prediction_ids: list[str] = Field(default_factory=list)
+    contradicted_prediction_ids: list[str] = Field(default_factory=list)
+    ambiguous_prediction_ids: list[str] = Field(default_factory=list)
+    not_observable_prediction_ids: list[str] = Field(default_factory=list)
+    remaining_ambiguities: list[str] = Field(default_factory=list)
+    invented_geometry_added: Literal[False] = False
+
+
+class SpatialInterViewDiscriminantPropertyResult(BaseModel):
+    """One bounded property outcome from an inter-view discriminant; never physical identity."""
+    model_config = ConfigDict(extra="forbid")
+    property_token: str = Field(min_length=1)
+    outcome: Literal["CORRESPONDENCE_COMPATIBLE","CORRESPONDENCE_INCOMPATIBLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    relation_tokens: list[str] = Field(default_factory=list)
+    evidence: str = Field(min_length=1)
+
+
+class SpatialInterViewDiscriminantProvenance(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    photo_index: int = Field(ge=1)
+    roi: tuple[float,float,float,float]
+    observation_refs: list[str] = Field(min_length=1)
+    pixel_cues: list[str] = Field(min_length=1)
+    property_token: str = Field(min_length=1)
+
+
+class SpatialInterViewDiscriminantInvestigationRecord(BaseModel):
+    """Persisted executed inter-view test, including non-resolution and negative information."""
+    model_config = ConfigDict(extra="forbid")
+    request_id: str = Field(min_length=1)
+    source_uncertainty_id: str = Field(min_length=1)
+    organization_ref: str = Field(min_length=1)
+    request_signature: str = Field(min_length=1)
+    outcome: Literal["CORRESPONDENCE_COMPATIBLE","CORRESPONDENCE_INCOMPATIBLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    property_results: list[SpatialInterViewDiscriminantPropertyResult] = Field(min_length=1)
+    evidence: str = Field(min_length=1)
+    provenance: list[SpatialInterViewDiscriminantProvenance] = Field(min_length=1)
+    uncertainty_state: Literal["OPEN","LOCAL_COMPATIBILITY_ESTABLISHED","PARTIALLY_CONSTRAINED_NOT_FULLY_OBSERVABLE"] = "OPEN"
+    resolved: Literal[False] = False
+
+
+def _spatial_interview_discriminant_signature(request: dict) -> str:
+    """Exact structured evidence/test signature: changed evidence changes the signature."""
+    keys=("source_uncertainty","organization_ref","hypotheses_or_alternatives","authorized_photos",
+          "authorized_observations","discriminating_properties","allowed_outcomes","allowed_relation_tokens")
+    return json.dumps({key:request.get(key) for key in keys},sort_keys=True,separators=(",",":"))
+
+
+def spatial_interview_discriminant_already_executed(workspace: "MultiViewWorkspace", request: dict) -> bool:
+    signature=_spatial_interview_discriminant_signature(request)
+    return any(item.request_signature==signature for item in workspace.spatial_interview_discriminant_investigations)
+
+
+def import_spatial_interview_discriminant_response(
+    workspace: "MultiViewWorkspace", request: dict, response: dict
+) -> "MultiViewWorkspace":
+    """Strictly import one executed inter-view discriminant without resolving physical identity."""
+    schema=request.get("response_schema",{})
+    required=set(schema.get("required",[]))
+    if set(response)!=required:
+        raise ValueError("inter-view discriminant response fields must exactly match response schema")
+    for key in ("request_id","source_uncertainty_id","organization_ref"):
+        expected=schema.get("properties",{}).get(key,{}).get("const")
+        if expected is not None and response.get(key)!=expected:
+            raise ValueError(f"inter-view discriminant {key} mismatch")
+    if response["organization_ref"] not in {x.organization_id for x in workspace.spatial_organizations}:
+        raise ValueError("inter-view discriminant references unknown spatial organization")
+    if spatial_interview_discriminant_already_executed(workspace,request):
+        raise ValueError("equivalent inter-view discriminant already executed without new structured information")
+    allowed_outcomes=set(request.get("allowed_outcomes",[]))
+    allowed_relations=set(request.get("allowed_relation_tokens",[]))
+    if response.get("outcome") not in allowed_outcomes:
+        raise ValueError("inter-view discriminant global outcome is not allowed")
+    requested_properties={x["property_token"] for x in request.get("discriminating_properties",[])}
+    results=response.get("property_results",[])
+    if len(results)!=len(requested_properties) or {x.get("property_token") for x in results}!=requested_properties:
+        raise ValueError("inter-view discriminant property results must exactly cover requested properties")
+    for result in results:
+        if set(result)!={"property_token","outcome","relation_tokens","evidence"}:
+            raise ValueError("inter-view discriminant property result shape mismatch")
+        if result["outcome"] not in allowed_outcomes or not result["evidence"]:
+            raise ValueError("inter-view discriminant property result is invalid")
+        relations=result.get("relation_tokens",[])
+        if len(relations)!=len(set(relations)) or not set(relations).issubset(allowed_relations):
+            raise ValueError("inter-view discriminant relation token is invalid or duplicated")
+    sources={x["observation_ref"]:x for x in request.get("authorized_observations",[])}
+    allowed_photos=set(request.get("authorized_photos",[]))
+    provenance=response.get("provenance",[])
+    if not provenance:
+        raise ValueError("inter-view discriminant requires pixel provenance")
+    seen_properties=set()
+    for item in provenance:
+        if set(item)!={"photo_index","roi","observation_refs","pixel_cues","property_token"}:
+            raise ValueError("inter-view discriminant provenance shape mismatch")
+        if item["property_token"] not in requested_properties or item["photo_index"] not in allowed_photos:
+            raise ValueError("inter-view discriminant provenance is outside authorized request")
+        if not item["observation_refs"] or not item["pixel_cues"]:
+            raise ValueError("inter-view discriminant provenance requires observations and pixel cues")
+        for ref in item["observation_refs"]:
+            source=sources.get(ref)
+            if source is None or source["photo_index"]!=item["photo_index"] or source["roi"]!=item["roi"]:
+                raise ValueError("inter-view discriminant provenance does not exactly match authorized observation ROI")
+        seen_properties.add(item["property_token"])
+    if seen_properties!=requested_properties:
+        raise ValueError("every discriminating property requires pixel provenance")
+    record=SpatialInterViewDiscriminantInvestigationRecord(
+        request_id=response["request_id"],source_uncertainty_id=response["source_uncertainty_id"],
+        organization_ref=response["organization_ref"],request_signature=_spatial_interview_discriminant_signature(request),
+        outcome=response["outcome"],
+        property_results=[SpatialInterViewDiscriminantPropertyResult.model_validate(x) for x in results],
+        evidence=response["evidence"],
+        provenance=[SpatialInterViewDiscriminantProvenance.model_validate(x) for x in provenance],
+        uncertainty_state=("LOCAL_COMPATIBILITY_ESTABLISHED" if response["outcome"]=="CORRESPONDENCE_COMPATIBLE" else ("PARTIALLY_CONSTRAINED_NOT_FULLY_OBSERVABLE" if response["outcome"]=="NOT_OBSERVABLE" and any(x["outcome"]=="CORRESPONDENCE_COMPATIBLE" for x in results) else "OPEN")),resolved=False,
+    )
+    return MultiViewWorkspace.model_validate(workspace.model_copy(update={
+        "spatial_interview_discriminant_investigations":[*workspace.spatial_interview_discriminant_investigations,record]
+    }).model_dump())
+
+
+class P3PerceptionExpansionCandidateRecord(BaseModel):
+    """Auditable 794 perceptual evidence; promotion is separate from semantic certainty."""
+    model_config = ConfigDict(extra="forbid")
+    candidate_id: str = Field(min_length=1)
+    outcome: Literal["LOCALIZABLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    localized_roi: tuple[float,float,float,float] | None = None
+    visible_boundaries: list[str] = Field(default_factory=list)
+    pixel_cues: list[str] = Field(default_factory=list)
+    epistemic_confidence: Literal["DIRECTLY_LOCALIZED","PARTIALLY_BOUNDED","SEMANTIC_INTERPRETATION_UNCERTAIN"]
+    semantic_label: str | None = None
+    semantic_status: Literal["SUPPORTED_AS_INTERPRETATION","UNCERTAIN","WITHHELD"]
+    semantic_evidence: list[str] = Field(default_factory=list)
+    disposition: Literal["PROMOTED_LOCAL_OBSERVATION","WITHHELD"]
+    promoted_observation_ref: str | None = None
+
+    @model_validator(mode="after")
+    def validate_disposition(self) -> "P3PerceptionExpansionCandidateRecord":
+        if self.disposition=="PROMOTED_LOCAL_OBSERVATION" and not self.promoted_observation_ref:
+            raise ValueError("promoted 794 candidate requires observation ref")
+        if self.disposition=="WITHHELD" and self.promoted_observation_ref is not None:
+            raise ValueError("withheld 794 candidate cannot have observation ref")
+        return self
+
+
+class P3PerceptionExpansionInvestigationRecord(BaseModel):
+    """Persistent SEE→OBSERVER→VALIDATE→PROMOTE/WITHHOLD memory for request 794."""
+    model_config = ConfigDict(extra="forbid")
+    request_id: str = Field(min_length=1)
+    photo_index: Literal[3]
+    candidates: list[P3PerceptionExpansionCandidateRecord] = Field(min_length=4,max_length=4)
+    imported_relation_keys: list[str] = Field(default_factory=list)
+    physical_identity_acquired: Literal[False] = False
+    invented_geometry_added: Literal[False] = False
+
+
+def import_p3_perception_expansion_response(
+    workspace: "MultiViewWorkspace", request: dict, response: dict
+) -> "MultiViewWorkspace":
+    """Strict 794 ingestion. Promote only directly-localized supported regions; withhold uncertain wall semantics."""
+    schema=request["response_schema"]
+    if set(response)!=set(schema["required"]):
+        raise ValueError("794 response fields must exactly match schema")
+    if response.get("request_id")!=request["request_id"] or response.get("photo_index")!=3:
+        raise ValueError("794 request/photo mismatch")
+    if any(x.request_id==request["request_id"] for x in workspace.p3_perception_expansion_investigations):
+        raise ValueError("794 perception expansion already imported")
+    requested={x["candidate_id"] for x in request["candidate_region_searches"]}
+    results=response.get("region_results",[])
+    if len(results)!=4 or {x.get("candidate_id") for x in results}!=requested:
+        raise ValueError("794 must exactly cover four candidate IDs")
+    allowed_outcomes=set(request["allowed_outcomes"]); allowed_rel=set(request["allowed_relation_tokens"])
+    allowed_conf=set(request["allowed_epistemic_confidence"])
+    existing={x.id:x for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    promoted_ids={
+      "p3-candidate-step-diagonal-region":"obs_p3_step_diagonal_794",
+      "p3-candidate-raised-platform-region":"obs_p3_raised_platform_794",
+      "p3-candidate-visible-junction-region":"obs_p3_visible_junction_794",
+    }
+    result_by_id={x["candidate_id"]:x for x in results}
+    result_required=set(schema["properties"]["region_results"]["items"]["required"])
+    forbidden=("P4","P5","SAME_PHYSICAL_OBJECT","LIKELY_SAME","metric geometry","camera pose")
+    for x in results:
+        if set(x)!=result_required:
+            raise ValueError("794 candidate result shape mismatch")
+        if any(token in json.dumps(x) for token in forbidden):
+            raise ValueError("794 response contains forbidden inter-view/geometry conclusion")
+        if x["outcome"] not in allowed_outcomes or x["epistemic_confidence"] not in allowed_conf:
+            raise ValueError("794 outcome/confidence not allowed")
+        roi=x["localized_roi"]
+        if x["outcome"]=="LOCALIZABLE":
+            if not isinstance(roi,list) or len(roi)!=4 or any(not isinstance(v,(int,float)) or v<0 or v>1 for v in roi):
+                raise ValueError("794 LOCALIZABLE requires normalized ROI")
+            if roi[0]>=roi[2] or roi[1]>=roi[3] or not x["visible_boundaries"] or not x["pixel_cues"]:
+                raise ValueError("794 LOCALIZABLE requires ordered ROI, boundaries and pixel cues")
+        sem=x["semantic_interpretation"]
+        if set(sem)!={"label","status","evidence"}:
+            raise ValueError("794 semantic interpretation shape mismatch")
+        for rel in x["relations"]:
+            if set(rel)!={"relation_token","subject_ref","object_ref","pixel_cues"}:
+                raise ValueError("794 relation shape mismatch")
+            if rel["relation_token"] not in allowed_rel or not rel["pixel_cues"]:
+                raise ValueError("794 relation not allowed or lacks pixel cues")
+            if rel["subject_ref"] not in requested|set(existing) or rel["object_ref"] not in requested|set(existing):
+                raise ValueError("794 relation references unknown candidate/observation")
+            if any(token in json.dumps(rel) for token in ("SAME_PHYSICAL_OBJECT","LIKELY_SAME")):
+                raise ValueError("794 cannot establish physical identity")
+    # Promotion policy: direct localization + supported interpretation. The partially-bounded UNCERTAIN wall is retained only in investigation memory.
+    observations=[]
+    for cid,oid in promoted_ids.items():
+        x=result_by_id[cid]; sem=x["semantic_interpretation"]
+        if not (x["outcome"]=="LOCALIZABLE" and x["epistemic_confidence"]=="DIRECTLY_LOCALIZED" and sem["status"]=="SUPPORTED_AS_INTERPRETATION"):
+            raise ValueError(f"794 promoted candidate lacks required direct support: {cid}")
+        r=x["localized_roi"]
+        observations.append(LocalObservation(
+            id=oid,photo_index=3,status=ClaimStatus.OBSERVED,visibility=VisibilityStatus.VISIBLE,
+            region=NormalizedImageRegion(x0=r[0],y0=r[1],x1=r[2],y1=r[3]),
+            proposed_category=sem["label"],
+            statement=f"Pixel-localized region promoted from {cid}; semantic label remains an interpretation supported by response 794.",
+            certainty=AspectCertainty(existence=CertaintyLevel.CERTAIN,category=CertaintyLevel.PLAUSIBLE,
+                                      identity=CertaintyLevel.UNKNOWN,spatial_relation=CertaintyLevel.UNKNOWN,
+                                      topology=CertaintyLevel.UNKNOWN,metric=CertaintyLevel.UNKNOWN)))
+    if any(x.id in existing for x in observations):
+        raise ValueError("794 promoted observation ID already exists")
+    data=workspace.model_copy(deep=True)
+    data.pass_2.observations.extend(observations)
+    allobs={x.id:x for x in [*data.pass_1.observations,*data.pass_2.observations]}
+    refmap={**{x:x for x in existing},**promoted_ids}
+    imported=[]
+    for x in results:
+        for rel in x["relations"]:
+            s=refmap.get(rel["subject_ref"]); o=refmap.get(rel["object_ref"])
+            # The uncertain wall candidate is deliberately withheld, so its relation is retained only in the investigation record.
+            if s is None or o is None or s not in allobs or o not in allobs:
+                continue
+            prov=[]
+            for ref in (s,o):
+                obs=allobs[ref]
+                prov.append(RichEvidenceProvenance(
+                    observation_ref=ref,photo_index=3,
+                    roi=(obs.region.x0,obs.region.y0,obs.region.x1,obs.region.y1),
+                    pixel_cues=list(rel["pixel_cues"])))
+            ev=RichRelationEvidence(subject_ref=s,relation_token=rel["relation_token"],object_ref=o,
+                                    epistemic_level="OBSERVED",provenance=prov)
+            key=f"{s}|{rel['relation_token']}|{o}"
+            if not any((z.subject_ref,z.relation_token,z.object_ref)==(s,rel["relation_token"],o) for z in data.rich_relation_evidence):
+                data.rich_relation_evidence.append(ev)
+            imported.append(key)
+    records=[]
+    for x in results:
+        cid=x["candidate_id"]; sem=x["semantic_interpretation"]
+        promoted=cid in promoted_ids
+        records.append(P3PerceptionExpansionCandidateRecord(
+            candidate_id=cid,outcome=x["outcome"],localized_roi=tuple(x["localized_roi"]) if x["localized_roi"] else None,
+            visible_boundaries=x["visible_boundaries"],pixel_cues=x["pixel_cues"],
+            epistemic_confidence=x["epistemic_confidence"],semantic_label=sem["label"],
+            semantic_status=sem["status"],semantic_evidence=sem["evidence"],
+            disposition="PROMOTED_LOCAL_OBSERVATION" if promoted else "WITHHELD",
+            promoted_observation_ref=promoted_ids.get(cid)))
+    data.p3_perception_expansion_investigations.append(P3PerceptionExpansionInvestigationRecord(
+        request_id=request["request_id"],photo_index=3,candidates=records,
+        imported_relation_keys=imported,physical_identity_acquired=False,invented_geometry_added=False))
+    return MultiViewWorkspace.model_validate(data.model_dump())
+
+
+class P5PerceptionExpansionCandidateRecord(BaseModel):
+    """Auditable 799 P5 localization memory; semantics remain separate from localization."""
+    model_config = ConfigDict(extra="forbid")
+    candidate_id: str
+    outcome: Literal["LOCALIZABLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    candidate_roi: tuple[float,float,float,float] | None = None
+    localization_basis: Literal["DIRECTLY_LOCALIZED","PARTIALLY_BOUNDED"]
+    pixel_cues: list[str] = Field(min_length=1)
+    semantic_label: str
+    semantic_status: Literal["SUPPORTED_AS_INTERPRETATION","UNCERTAIN"]
+    semantic_evidence: str
+    relations: list[str] = Field(default_factory=list)
+    provenance: RichEvidenceProvenance
+    disposition: Literal["PROMOTED_LOCAL_OBSERVATION","WITHHELD"]
+    promoted_observation_ref: str | None = None
+
+
+class P5PerceptionExpansionInvestigationRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    request_id: str
+    photo_index: Literal[5]
+    search_roi: tuple[float,float,float,float]
+    candidates: list[P5PerceptionExpansionCandidateRecord] = Field(min_length=3,max_length=3)
+    revised_prediction_ref: Literal["788-p5-sector-structure"]
+    revision_state: Literal["HISTORICAL_CANDIDATE_MEMORY"]
+    physical_identity_acquired: Literal[False] = False
+    invented_geometry_added: Literal[False] = False
+
+
+def import_p5_perception_expansion_response(workspace:"MultiViewWorkspace", request:dict, response:dict)->"MultiViewWorkspace":
+    """Strict 799 ingestion: promote only the directly localized diagonal; downgrade 788 P5 candidate memory."""
+    if set(response)!=set(request["response_required_fields"]):
+        raise ValueError("799 response fields mismatch")
+    if response["schema_version"]!="0.1" or response["request_id"]!=request["request_id"] or response["photo_index"]!=5:
+        raise ValueError("799 response identity/photo mismatch")
+    search=tuple(request["search_sector"]["search_roi"])
+    if tuple(response["search_roi"])!=search:
+        raise ValueError("799 search ROI mismatch")
+    if any(x.request_id==request["request_id"] for x in workspace.p5_perception_expansion_investigations):
+        raise ValueError("799 perception expansion already imported")
+    expected=[x["candidate_id"] for x in request["candidate_searches"]]
+    results=response["candidate_results"]
+    if len(results)!=3 or sorted(x.get("candidate_id") for x in results)!=sorted(expected):
+        raise ValueError("799 must exactly cover three candidate IDs")
+    allowed_out=set(request["allowed_outcomes"]); allowed_basis=set(request["allowed_localization_basis"])
+    allowed_sem=set(request["allowed_semantic_status"]); allowed_rel=set(request["allowed_relation_tokens"])
+    required=set(request["candidate_result_required_fields"])
+    by={}
+    for x in results:
+        if set(x)!=required or x["outcome"] not in allowed_out or x["localization_basis"] not in allowed_basis:
+            raise ValueError("799 candidate shape/outcome/basis invalid")
+        if not x["pixel_cues"] or any(r not in allowed_rel for r in x["relations"]):
+            raise ValueError("799 cues/relations invalid")
+        sem=x["semantic_interpretation"]
+        if set(sem)!=set(request["semantic_interpretation_required_fields"]) or sem["status"] not in allowed_sem:
+            raise ValueError("799 semantic interpretation invalid")
+        p=x["provenance"]
+        if set(p)!=set(request["provenance_required_fields"]) or p["photo_index"]!=5 or tuple(p["search_roi"])!=search or p["candidate_id"]!=x["candidate_id"] or not p["pixel_cues"]:
+            raise ValueError("799 provenance invalid")
+        roi=x["candidate_roi"]
+        if x["outcome"]=="LOCALIZABLE":
+            if not isinstance(roi,list) or len(roi)!=4 or not (search[0]<=roi[0]<roi[2]<=search[2] and search[1]<=roi[1]<roi[3]<=search[3]):
+                raise ValueError("799 LOCALIZABLE ROI invalid")
+        elif roi is not None:
+            raise ValueError("799 non-localizable candidate must not have ROI")
+        forbidden=("SAME_PHYSICAL_OBJECT","LIKELY_SAME","COMMON_PHYSICAL_SURFACE","metric geometry","camera pose","hidden continuation","P3","P4")
+        if any(t in json.dumps(x) for t in forbidden):
+            raise ValueError("799 forbidden identity/inter-view/geometry content")
+        by[x["candidate_id"]]=x
+    stair=by["p5-candidate-stair-diagonal-region"]
+    if not (stair["outcome"]=="LOCALIZABLE" and stair["localization_basis"]=="DIRECTLY_LOCALIZED" and stair["semantic_interpretation"]["status"]=="SUPPORTED_AS_INTERPRETATION"):
+        raise ValueError("799 stair candidate lacks stable direct localization")
+    if by["p5-candidate-platform-region"]["outcome"]!="AMBIGUOUS" or by["p5-candidate-stair-platform-junction"]["outcome"]!="NOT_OBSERVABLE":
+        raise ValueError("799 platform/junction epistemic outcomes mismatch")
+    existing={o.id for o in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    oid="obs_p5_stair_diagonal_799"
+    if oid in existing:
+        raise ValueError("799 promoted observation ID conflict")
+    r=stair["candidate_roi"]; sem=stair["semantic_interpretation"]
+    obs=LocalObservation(id=oid,photo_index=5,status=ClaimStatus.OBSERVED,visibility=VisibilityStatus.VISIBLE,
+        region=NormalizedImageRegion(x0=r[0],y0=r[1],x1=r[2],y1=r[3]),proposed_category=sem["label"],
+        statement="Directly localized P5 diagonal region from 799; stair-like category remains SUPPORTED_AS_INTERPRETATION, not ontological certainty.",
+        certainty=AspectCertainty(existence=CertaintyLevel.CERTAIN,category=CertaintyLevel.PLAUSIBLE,identity=CertaintyLevel.UNKNOWN,
+                                  spatial_relation=CertaintyLevel.UNKNOWN,topology=CertaintyLevel.UNKNOWN,metric=CertaintyLevel.UNKNOWN))
+    data=workspace.model_copy(deep=True); data.pass_2.observations.append(obs)
+    records=[]
+    for x in results:
+        promoted=x["candidate_id"]=="p5-candidate-stair-diagonal-region"
+        prov=RichEvidenceProvenance(observation_ref=(oid if promoted else "obs_p5_side_wall"),photo_index=5,
+            roi=(tuple(x["candidate_roi"]) if promoted else search),pixel_cues=list(x["provenance"]["pixel_cues"]))
+        records.append(P5PerceptionExpansionCandidateRecord(candidate_id=x["candidate_id"],outcome=x["outcome"],
+            candidate_roi=(tuple(x["candidate_roi"]) if x["candidate_roi"] else None),localization_basis=x["localization_basis"],
+            pixel_cues=list(x["pixel_cues"]),semantic_label=x["semantic_interpretation"]["label"],semantic_status=x["semantic_interpretation"]["status"],
+            semantic_evidence=x["semantic_interpretation"]["evidence"],relations=list(x["relations"]),provenance=prov,
+            disposition=("PROMOTED_LOCAL_OBSERVATION" if promoted else "WITHHELD"),promoted_observation_ref=(oid if promoted else None)))
+    pred=next((p for p in data.spatial_view_predictions if p.prediction_id=="788-p5-sector-structure"),None)
+    if pred is None: raise ValueError("799 requires historical 788 P5 prediction")
+    pred.current_support_status="HISTORICAL_CANDIDATE_MEMORY"
+    revision=AssertionRevision(revision_id="revision-800-p5-788-sector",assertion_ref="788-p5-sector-structure",
+        previous_status="SUPPORTED_PIXEL_GROUNDED_PREDICTION",new_epistemic_state="SUPERSEDED",
+        reason="799 directly localizes only the diagonal candidate; platform remains AMBIGUOUS and junction NOT_OBSERVABLE, so 788 LEFT_OF/BELOW/BOUNDARY_JOINS remain historical candidate memory rather than current established local relations.",
+        provenance=[RichEvidenceProvenance(observation_ref="obs_p5_side_wall",photo_index=5,roi=search,
+            pixel_cues=list(by["p5-candidate-platform-region"]["pixel_cues"])+list(by["p5-candidate-stair-platform-junction"]["pixel_cues"]))])
+    if revision.revision_id in {x.revision_id for x in data.assertion_revisions}: raise ValueError("799 revision already recorded")
+    data.assertion_revisions.append(revision)
+    data.p5_perception_expansion_investigations.append(P5PerceptionExpansionInvestigationRecord(
+        request_id=request["request_id"],photo_index=5,search_roi=search,candidates=records,
+        revised_prediction_ref="788-p5-sector-structure",revision_state="HISTORICAL_CANDIDATE_MEMORY",
+        physical_identity_acquired=False,invented_geometry_added=False))
+    return MultiViewWorkspace.model_validate(data.model_dump())
+
+
+class P5PlatformDiscriminantInvestigationRecord(BaseModel):
+    """Auditable 801 boundary discriminant memory; NOT_OBSERVABLE is not contradiction or absence."""
+    model_config = ConfigDict(extra="forbid")
+    request_id: Literal["p5-platform-discriminant-801"]
+    photo_index: Literal[5]
+    property_token: Literal["HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"]
+    outcome: Literal["SUPPORTED","CONTRADICTED","AMBIGUOUS","NOT_OBSERVABLE"]
+    relation_tokens: list[Literal["CONTOUR_CONTINUES","BOUNDARY_JOINS","TERMINATES_AGAINST","NO_RELIABLE_RELATION"]]
+    evidence: str = Field(min_length=1)
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+    semantic_label: str = Field(min_length=1)
+    semantic_status: Literal["SUPPORTED_AS_INTERPRETATION","UNCERTAIN"]
+    semantic_evidence: str = Field(min_length=1)
+    saturation_state: Literal["P5_PLATFORM_LOCAL_PERCEPTION_SATURATED"]
+    saturation_basis: list[str] = Field(min_length=2)
+    physical_identity_acquired: Literal[False] = False
+    invented_geometry_added: Literal[False] = False
+
+
+def import_p5_platform_discriminant_response(workspace:"MultiViewWorkspace", request:dict, response:dict)->"MultiViewWorkspace":
+    """Strict 802 ingestion of the 801 P5-only boundary result; creates no observations or relations."""
+    schema=request["response_schema"]
+    required=set(schema["required"])
+    if set(response)!=required:
+        raise ValueError("801 response fields mismatch")
+    props=schema["properties"]
+    constants={"schema_version":"0.1","request_id":"p5-platform-discriminant-801","photo_index":5,
+               "property_token":"HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"}
+    if any(response[k]!=v for k,v in constants.items()):
+        raise ValueError("801 response identity/property mismatch")
+    if response["outcome"] not in props["outcome"]["enum"]:
+        raise ValueError("801 outcome invalid")
+    allowed_rel=set(request["allowed_relation_tokens"])
+    if not isinstance(response["relation_tokens"],list) or len(response["relation_tokens"])!=len(set(response["relation_tokens"])) or any(x not in allowed_rel for x in response["relation_tokens"]):
+        raise ValueError("801 relation tokens invalid")
+    if response["outcome"]!="NOT_OBSERVABLE" or response["relation_tokens"]!=["NO_RELIABLE_RELATION"]:
+        raise ValueError("802 expected exact fail-closed 801 result")
+    if not response["evidence"]:
+        raise ValueError("801 evidence empty")
+    authorized={x["observation_ref"]:(x["photo_index"],tuple(x["roi"])) for x in request["authorized_observations"]}
+    provenance=[]
+    for p in response["provenance"]:
+        if set(p)!={"photo_index","roi","observation_refs","pixel_cues","property_token"} or p["photo_index"]!=5 or p["property_token"]!=constants["property_token"] or not p["pixel_cues"] or not p["observation_refs"]:
+            raise ValueError("801 provenance invalid")
+        for obs_ref in p["observation_refs"]:
+            if obs_ref not in authorized or authorized[obs_ref]!=(5,tuple(p["roi"])):
+                raise ValueError("801 provenance outside authorized observation ROI")
+        provenance.append(RichEvidenceProvenance(observation_ref=p["observation_refs"][0],photo_index=5,roi=tuple(p["roi"]),pixel_cues=list(p["pixel_cues"])))
+    sem=response["semantic_interpretation"]
+    if set(sem)!={"label","status","evidence"} or sem["status"]!="UNCERTAIN" or not sem["evidence"]:
+        raise ValueError("801 semantic interpretation invalid")
+    if any(x.request_id==request["request_id"] for x in workspace.p5_platform_discriminant_investigations):
+        raise ValueError("801 discriminant already imported")
+    if not workspace.p5_perception_expansion_investigations:
+        raise ValueError("802 requires persisted 799 investigation")
+    inv799=next((x for x in workspace.p5_perception_expansion_investigations if x.request_id=="p5-perception-expansion-799"),None)
+    if inv799 is None:
+        raise ValueError("802 requires 799 memory")
+    by={x.candidate_id:x for x in inv799.candidates}
+    if by["p5-candidate-platform-region"].outcome!="AMBIGUOUS" or by["p5-candidate-stair-platform-junction"].outcome!="NOT_OBSERVABLE":
+        raise ValueError("802 saturation requires unresolved 799 platform and junction")
+    pred=next((x for x in workspace.spatial_view_predictions if x.prediction_id=="788-p5-sector-structure"),None)
+    if pred is None or pred.current_support_status!="HISTORICAL_CANDIDATE_MEMORY":
+        raise ValueError("802 requires historical 788 memory")
+    before_obs={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    before_rel=[x.model_dump() for x in workspace.rich_relation_evidence]
+    before_ids=[x.model_dump() for x in [*workspace.pass_1.identities,*workspace.pass_2.identities]]
+    data=workspace.model_copy(deep=True)
+    data.p5_platform_discriminant_investigations.append(P5PlatformDiscriminantInvestigationRecord(
+        request_id=request["request_id"],photo_index=5,property_token=response["property_token"],
+        outcome=response["outcome"],relation_tokens=list(response["relation_tokens"]),evidence=response["evidence"],
+        provenance=provenance,semantic_label=sem["label"],semantic_status=sem["status"],semantic_evidence=sem["evidence"],
+        saturation_state="P5_PLATFORM_LOCAL_PERCEPTION_SATURATED",
+        saturation_basis=["799 platform direct localization remained AMBIGUOUS","801 independent surface/face boundary separation is NOT_OBSERVABLE"],
+        physical_identity_acquired=False,invented_geometry_added=False))
+    loaded=MultiViewWorkspace.model_validate(data.model_dump())
+    if {x.id for x in [*loaded.pass_1.observations,*loaded.pass_2.observations]}!=before_obs:
+        raise ValueError("802 must not create observations")
+    if [x.model_dump() for x in loaded.rich_relation_evidence]!=before_rel:
+        raise ValueError("802 must not create perceptual relations")
+    if [x.model_dump() for x in [*loaded.pass_1.identities,*loaded.pass_2.identities]]!=before_ids:
+        raise ValueError("802 must not create identity")
+    return loaded
+
+
 class MissingWorldConstraint(BaseModel):
     """Structural gap only; it does not invent the perceptual property needed to fill it."""
     model_config = ConfigDict(extra="forbid")
@@ -3378,8 +3914,10 @@ class WorldHypothesis(BaseModel):
 
 def build_world_hypothesis(workspace:"MultiViewWorkspace",graph:MultiViewWorldConstraintGraph|None=None)->WorldHypothesis:
     graph=graph or build_multiview_world_constraint_graph(workspace)
-    observations=[*workspace.pass_1.observations,*workspace.pass_2.observations]
-    identities=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    invalidated=invalidated_observation_ids(workspace)
+    observations=[x for x in [*workspace.pass_1.observations,*workspace.pass_2.observations] if x.id not in invalidated]
+    active_observation_ids={x.id for x in observations}
+    identities=[x for x in [*workspace.pass_1.identities,*workspace.pass_2.identities] if set(x.observation_ids).issubset(active_observation_ids)]
     obs_by_id={x.id:x for x in observations}
     weak={n.split(":",1)[1] for comp in graph.insufficiently_connected_components for n in comp if n.startswith("observation:")}
     main=sorted(x.id for x in observations if x.id not in weak)
@@ -3416,7 +3954,7 @@ def build_world_hypothesis(workspace:"MultiViewWorkspace",graph:MultiViewWorldCo
         if o.proposed_category and o.region:
             semantic.append(WorldHypothesisSemanticProposal(observation_ref=o.id,proposed_category=o.proposed_category,
                 category_certainty=o.certainty.category,provenance=RichEvidenceProvenance(observation_ref=o.id,photo_index=o.photo_index,roi=(o.region.x0,o.region.y0,o.region.x1,o.region.y1))))
-    open_uncertainties=[x for x in derive_existing_structured_uncertainties(workspace) if x.resolved_state is None and len(x.open_alternatives)>=2]
+    open_uncertainties=[x for x in derive_existing_structured_uncertainties(workspace) if x.resolved_state is None and len(x.open_alternatives)>=2 and not (set(x.source_observation_ids) & invalidated) and (x.source_kind != "identity_candidate" or x.source_ref in {i.id for i in identities})]
     alternatives=[(x.id,x.open_alternatives) for x in open_uncertainties]
     branches=[{}]
     for uid,tokens in alternatives:
@@ -3459,8 +3997,11 @@ body{{font-family:system-ui;margin:0;background:#f5f3ed;color:#222}} header{{pad
 
 def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> MultiViewWorldConstraintGraph:
     """Project only explicit structured evidence. No prose parsing, transitive identity fusion or hidden topology."""
-    observations = [*workspace.pass_1.observations, *workspace.pass_2.observations]
-    identities = [*workspace.pass_1.identities, *workspace.pass_2.identities]
+    invalidated = invalidated_observation_ids(workspace)
+    observations = [x for x in [*workspace.pass_1.observations, *workspace.pass_2.observations] if x.id not in invalidated]
+    active_observation_ids = {x.id for x in observations}
+    identities = [x for x in [*workspace.pass_1.identities, *workspace.pass_2.identities]
+                  if set(x.observation_ids).issubset(active_observation_ids)]
     observation_by_id = {item.id: item for item in observations}
     identity_by_id = {item.id: item for item in identities}
     nodes = [
@@ -3490,6 +4031,8 @@ def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> M
                     token=state, source_ref=observation.id)
 
     for cue in workspace.rich_identity_cues:
+        if any(p.observation_ref in invalidated for p in cue.provenance):
+            continue
         candidate = identity_by_id.get(cue.identity_candidate_ref)
         if candidate is None:
             continue
@@ -3500,12 +4043,16 @@ def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> M
             provenance=cue.provenance, source_ref=candidate.id)
 
     for relation in workspace.rich_relation_evidence:
+        if relation.subject_ref in invalidated or relation.object_ref in invalidated or any(p.observation_ref in invalidated for p in relation.provenance):
+            continue
         add("PERCEPTUAL_RELATION",
             [f"observation:{relation.subject_ref}", f"observation:{relation.object_ref}"],
             relation.epistemic_level, token=relation.relation_token,
             provenance=relation.provenance, source_ref=f"{relation.subject_ref}->{relation.object_ref}")
 
     for record in workspace.property_correspondences:
+        if record.correspondence.observation_ref_a in invalidated or record.correspondence.observation_ref_b in invalidated:
+            continue
         corr=record.correspondence
         add("PROPERTY_CORRESPONDENCE",
             [f"observation:{corr.observation_ref_a}",f"observation:{corr.observation_ref_b}"],
@@ -4133,6 +4680,355 @@ def mapping_request_equivalent_to_exhausted_identity_discriminant(
             return True
     return False
 
+
+class ArchitecturalEvidenceClass(str, Enum):
+    """Truth class for architectural assembly information."""
+    OBSERVED_ARCHITECTURAL_EVIDENCE = "OBSERVED_ARCHITECTURAL_EVIDENCE"
+    CONSTRUCTIVE_APPROXIMATION = "CONSTRUCTIVE_APPROXIMATION"
+
+
+class ArchitecturalSubassemblyKind(str, Enum):
+    HOUSE = "HOUSE"
+    TERRACE = "TERRACE"
+    STAIR = "STAIR"
+    ROOF = "ROOF"
+    OPENING = "OPENING"
+
+
+class AssemblyConnectionRelation(str, Enum):
+    ATTACHED_TO_FACE = "ATTACHED_TO_FACE"
+    SUPPORTED_BY = "SUPPORTED_BY"
+    LANDS_ON = "LANDS_ON"
+    CONNECTS_TO = "CONNECTS_TO"
+    OPENING_IN_FACE = "OPENING_IN_FACE"
+    ROOF_COVERS = "ROOF_COVERS"
+
+
+class ArchitecturalEvidenceRef(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    observation_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    statement: str = Field(min_length=1)
+    truth_class: Literal["OBSERVED_ARCHITECTURAL_EVIDENCE"] = "OBSERVED_ARCHITECTURAL_EVIDENCE"
+
+
+class ConstructiveApproximation(BaseModel):
+    """Explicitly non-observed, revisable materialization choice."""
+    model_config = ConfigDict(extra="forbid")
+    approximation_id: str = Field(min_length=1)
+    description: str = Field(min_length=1)
+    source_unknowns: list[str] = Field(min_length=1)
+    truth_class: Literal["CONSTRUCTIVE_APPROXIMATION"] = "CONSTRUCTIVE_APPROXIMATION"
+    revisable: Literal[True] = True
+
+
+class HouseComponentKind(str, Enum):
+    WALL_FACE = "WALL_FACE"
+    OPENING = "OPENING"
+    ROOF_BOUNDARY = "ROOF_BOUNDARY"
+    LEVEL_OR_VERTICAL_BAND = "LEVEL_OR_VERTICAL_BAND"
+    VISIBLE_OUTLINE = "VISIBLE_OUTLINE"
+    CONSTRUCTIVE_ENVELOPE = "CONSTRUCTIVE_ENVELOPE"
+
+
+class HouseObservedComponent(BaseModel):
+    """House component whose architectural content is directly grounded in persisted observations."""
+    model_config = ConfigDict(extra="forbid")
+    component_id: str = Field(min_length=1)
+    kind: HouseComponentKind
+    observation_refs: list[str] = Field(min_length=1)
+    photo_indexes: list[int] = Field(min_length=1)
+    statement: str = Field(min_length=1)
+    qualitative_relations: list[str] = Field(default_factory=list)
+    truth_class: Literal["OBSERVED_ARCHITECTURAL_EVIDENCE"] = "OBSERVED_ARCHITECTURAL_EVIDENCE"
+
+
+class HouseApproximationComponent(BaseModel):
+    """Constructive-only house geometry required for materialization, never perceptual truth."""
+    model_config = ConfigDict(extra="forbid")
+    approximation_id: str = Field(min_length=1)
+    kind: HouseComponentKind
+    reason: str = Field(min_length=1)
+    source_unknowns: list[str] = Field(min_length=1)
+    replacement_condition: str = Field(min_length=1)
+    truth_class: Literal["CONSTRUCTIVE_APPROXIMATION"] = "CONSTRUCTIVE_APPROXIMATION"
+    revisable: Literal[True] = True
+
+
+class HouseUnknownComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    unknown_id: str = Field(min_length=1)
+    statement: str = Field(min_length=1)
+
+
+class HouseShapeModel(BaseModel):
+    """Concrete, LEGO-oriented but non-metric partial HOUSE representation."""
+    model_config = ConfigDict(extra="forbid")
+    assembly_id: str = Field(min_length=1)
+    observed_components: list[HouseObservedComponent] = Field(min_length=1)
+    approximated_components: list[HouseApproximationComponent] = Field(default_factory=list)
+    unknown_components: list[HouseUnknownComponent] = Field(min_length=1)
+    separate_house_candidate_evidence: list[ArchitecturalEvidenceRef] = Field(default_factory=list)
+    recognizable_gate: Literal["SUPPORTED", "PARTIAL", "BLOCKED"]
+
+    @model_validator(mode="after")
+    def preserve_house_truth_boundary(self) -> "HouseShapeModel":
+        observed_ids = {item.component_id for item in self.observed_components}
+        approximation_ids = {item.approximation_id for item in self.approximated_components}
+        if observed_ids & approximation_ids:
+            raise ValueError("house approximation cannot masquerade as an observed component")
+        if self.recognizable_gate == "SUPPORTED":
+            kinds = {item.kind for item in self.observed_components}
+            required = {HouseComponentKind.WALL_FACE, HouseComponentKind.OPENING, HouseComponentKind.ROOF_BOUNDARY}
+            if not required.issubset(kinds):
+                raise ValueError("SUPPORTED house requires observed wall face, opening and roof boundary")
+        return self
+
+
+class SecondaryAssemblyKind(str, Enum):
+    TERRACE = "TERRACE"
+    STAIR = "STAIR"
+
+
+class SecondaryComponentKind(str, Enum):
+    PLATFORM_SURFACE_OR_REGION = "PLATFORM_SURFACE_OR_REGION"
+    VISIBLE_PLATFORM_EDGE = "VISIBLE_PLATFORM_EDGE"
+    RAILING_OR_GUARD = "RAILING_OR_GUARD"
+    SUPPORTS = "SUPPORTS"
+    BUILDING_SIDE_BOUNDARY = "BUILDING_SIDE_BOUNDARY"
+    STAIR_SIDE_BOUNDARY = "STAIR_SIDE_BOUNDARY"
+    FLIGHT_REGION = "FLIGHT_REGION"
+    ASCENT_DIRECTION = "ASCENT_DIRECTION"
+    VISIBLE_SIDE_BOUNDARY = "VISIBLE_SIDE_BOUNDARY"
+    PARAPET_OR_RAILING = "PARAPET_OR_RAILING"
+    STEP_PATTERN = "STEP_PATTERN"
+    TOP_TERMINATION = "TOP_TERMINATION"
+    BOTTOM_TERMINATION = "BOTTOM_TERMINATION"
+    LANDING = "LANDING"
+    HIDDEN_CONTINUATION = "HIDDEN_CONTINUATION"
+    CONSTRUCTIVE_ENVELOPE = "CONSTRUCTIVE_ENVELOPE"
+
+
+class SecondaryObservedComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    component_id: str = Field(min_length=1)
+    kind: SecondaryComponentKind
+    observation_refs: list[str] = Field(min_length=1)
+    photo_indexes: list[int] = Field(min_length=1)
+    statement: str = Field(min_length=1)
+    qualitative_relations: list[str] = Field(default_factory=list)
+    truth_class: Literal["OBSERVED_ARCHITECTURAL_EVIDENCE"] = "OBSERVED_ARCHITECTURAL_EVIDENCE"
+
+
+class SecondaryApproximationComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    approximation_id: str = Field(min_length=1)
+    kind: SecondaryComponentKind
+    reason: str = Field(min_length=1)
+    source_unknowns: list[str] = Field(min_length=1)
+    replacement_condition: str = Field(min_length=1)
+    truth_class: Literal["CONSTRUCTIVE_APPROXIMATION"] = "CONSTRUCTIVE_APPROXIMATION"
+    revisable: Literal[True] = True
+
+
+class SecondaryUnknownComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    unknown_id: str = Field(min_length=1)
+    statement: str = Field(min_length=1)
+
+
+class SecondaryAssemblyShapeModel(BaseModel):
+    """Concrete non-metric TERRACE or STAIR candidate without cross-view fusion."""
+    model_config = ConfigDict(extra="forbid")
+    assembly_id: str = Field(min_length=1)
+    assembly_kind: SecondaryAssemblyKind
+    primary_photo_index: int = Field(ge=1)
+    observed_components: list[SecondaryObservedComponent] = Field(min_length=1)
+    approximated_components: list[SecondaryApproximationComponent] = Field(default_factory=list)
+    unknown_components: list[SecondaryUnknownComponent] = Field(min_length=1)
+    separate_compatible_view_evidence: list[ArchitecturalEvidenceRef] = Field(default_factory=list)
+    recognizable_gate: Literal["SUPPORTED", "PARTIAL", "BLOCKED"]
+
+    @model_validator(mode="after")
+    def preserve_secondary_truth_boundary(self) -> "SecondaryAssemblyShapeModel":
+        observed_ids = {item.component_id for item in self.observed_components}
+        approximation_ids = {item.approximation_id for item in self.approximated_components}
+        if observed_ids & approximation_ids:
+            raise ValueError("secondary approximation cannot masquerade as observed evidence")
+        if any(self.primary_photo_index not in item.photo_indexes for item in self.observed_components):
+            raise ValueError("primary constructive candidate components require primary-view provenance")
+        if self.recognizable_gate == "SUPPORTED":
+            kinds = {item.kind for item in self.observed_components}
+            if self.assembly_kind == SecondaryAssemblyKind.TERRACE:
+                required = {SecondaryComponentKind.PLATFORM_SURFACE_OR_REGION, SecondaryComponentKind.VISIBLE_PLATFORM_EDGE}
+            else:
+                required = {SecondaryComponentKind.FLIGHT_REGION, SecondaryComponentKind.VISIBLE_SIDE_BOUNDARY}
+            if not required.issubset(kinds):
+                raise ValueError("SUPPORTED secondary assembly lacks its minimum observed recognizable structure")
+        return self
+
+
+class ArchitecturalSubassembly(BaseModel):
+    """Minimal concrete architectural unit built from evidence without hiding unknowns."""
+    model_config = ConfigDict(extra="forbid")
+    assembly_id: str = Field(min_length=1)
+    kind: ArchitecturalSubassemblyKind
+    observed_evidence: list[ArchitecturalEvidenceRef] = Field(default_factory=list)
+    supported_shape_information: list[str] = Field(default_factory=list)
+    unknown_shape_information: list[str] = Field(default_factory=list)
+    constructive_approximations: list[ConstructiveApproximation] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def preserve_truth_boundary(self) -> "ArchitecturalSubassembly":
+        evidence_ids = {item.observation_ref for item in self.observed_evidence}
+        if any(item.approximation_id in evidence_ids for item in self.constructive_approximations):
+            raise ValueError("constructive approximation must not masquerade as observed evidence")
+        return self
+
+
+class PixelDerivedArchitecturalEvidence(BaseModel):
+    """New 808 pixel evidence; never retroactively rewritten as a persisted observation."""
+    model_config = ConfigDict(extra="forbid")
+    pixel_evidence_id: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    roi: tuple[float, float, float, float]
+    property_tested: str = Field(min_length=1)
+    observed_result: str = Field(min_length=1)
+    epistemic_status: Literal["OBSERVED", "SUPPORTS_TOPOLOGY", "AMBIGUOUS", "NOT_OBSERVABLE"]
+    provenance: str = Field(min_length=1)
+    truth_class: Literal["NEW_PIXEL_DERIVED_ARCHITECTURAL_EVIDENCE"] = "NEW_PIXEL_DERIVED_ARCHITECTURAL_EVIDENCE"
+
+
+class ArchitecturalConnectionStatus(str, Enum):
+    SUPPORTED = "SUPPORTED"
+    COMPATIBLE_BUT_UNRESOLVED = "COMPATIBLE_BUT_UNRESOLVED"
+    UNKNOWN_CONNECTION = "UNKNOWN_CONNECTION"
+
+
+class ArchitecturalTopologyRelation(str, Enum):
+    ATTACHED_TO_FACE = "ATTACHED_TO_FACE"
+    SUPPORTED_BY = "SUPPORTED_BY"
+    LANDS_ON = "LANDS_ON"
+    CONNECTS_TO = "CONNECTS_TO"
+    TERMINATES_AT_TERRACE_BOUNDARY = "TERMINATES_AT_TERRACE_BOUNDARY"
+    VISIBLE_ADJACENCY = "VISIBLE_ADJACENCY"
+    OPENING_IN_FACE = "OPENING_IN_FACE"
+    ROOF_COVERS = "ROOF_COVERS"
+
+
+class ArchitecturalConnectionRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    connection_id: str = Field(min_length=1)
+    subject_assembly: str = Field(min_length=1)
+    relation: ArchitecturalTopologyRelation
+    object_assembly_or_sector: str = Field(min_length=1)
+    status: ArchitecturalConnectionStatus
+    evidence_refs: list[str] = Field(default_factory=list)
+    pixel_evidence_refs: list[str] = Field(default_factory=list)
+    unknowns: list[str] = Field(default_factory=list)
+    revisable: Literal[True] = True
+
+    @model_validator(mode="after")
+    def supported_connection_requires_evidence(self) -> "ArchitecturalConnectionRecord":
+        if self.status == ArchitecturalConnectionStatus.SUPPORTED and not (self.evidence_refs or self.pixel_evidence_refs):
+            raise ValueError("SUPPORTED architectural connection requires evidence provenance")
+        return self
+
+
+class ArchitecturalCorrespondenceRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    correspondence_id: str = Field(min_length=1)
+    sectors: list[str] = Field(min_length=2)
+    status: Literal[
+        "ESTABLISHED_CORRESPONDENCE",
+        "SUPPORTED_CORRESPONDENCE_CANDIDATE",
+        "COMPATIBLE_ONLY",
+        "UNRESOLVED",
+        "CONTRADICTED",
+    ]
+    evidence_refs: list[str] = Field(default_factory=list)
+    pixel_evidence_refs: list[str] = Field(default_factory=list)
+    unknowns: list[str] = Field(default_factory=list)
+
+
+class RecognizableFragmentSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    spec_id: str = Field(min_length=1)
+    assembly_refs: list[str] = Field(min_length=2)
+    connection_refs: list[str] = Field(min_length=1)
+    observed_refs: list[str] = Field(default_factory=list)
+    pixel_derived_new_refs: list[str] = Field(default_factory=list)
+    constructive_approximation_refs: list[str] = Field(default_factory=list)
+    unknowns: list[str] = Field(default_factory=list)
+
+
+class ArchitecturalConnectionModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    model_id: str = Field(min_length=1)
+    pixel_evidence: list[PixelDerivedArchitecturalEvidence] = Field(default_factory=list)
+    correspondences: list[ArchitecturalCorrespondenceRecord] = Field(default_factory=list)
+    connections: list[ArchitecturalConnectionRecord] = Field(min_length=1)
+    house_recognizable: Literal["SUPPORTED"]
+    terrace_recognizable: Literal["SUPPORTED"]
+    stair_recognizable: Literal["SUPPORTED"]
+    evidence_approximation_separated: Literal[True] = True
+    hidden_geometry_presented_as_observed: Literal[False] = False
+    global_gate: Literal["BLOCKED", "READY"]
+    recognizable_fragment_spec: RecognizableFragmentSpec | None = None
+
+    @model_validator(mode="after")
+    def gate_fails_closed(self) -> "ArchitecturalConnectionModel":
+        structural_relations = {
+            ArchitecturalTopologyRelation.ATTACHED_TO_FACE,
+            ArchitecturalTopologyRelation.SUPPORTED_BY,
+            ArchitecturalTopologyRelation.LANDS_ON,
+            ArchitecturalTopologyRelation.CONNECTS_TO,
+            ArchitecturalTopologyRelation.TERMINATES_AT_TERRACE_BOUNDARY,
+            ArchitecturalTopologyRelation.ROOF_COVERS,
+        }
+        supported_structural = [
+            item for item in self.connections
+            if item.status == ArchitecturalConnectionStatus.SUPPORTED and item.relation in structural_relations
+        ]
+        if self.global_gate == "READY":
+            if not supported_structural:
+                raise ValueError("READY requires a supported structural interassembly connection")
+            if self.recognizable_fragment_spec is None:
+                raise ValueError("READY requires RECOGNIZABLE_FRAGMENT_SPEC")
+        elif self.recognizable_fragment_spec is not None:
+            raise ValueError("RECOGNIZABLE_FRAGMENT_SPEC is forbidden while gate is BLOCKED")
+        return self
+
+
+class AssemblyConnection(BaseModel):
+    """A supported inter-assembly connection; evidence provenance is mandatory."""
+    model_config = ConfigDict(extra="forbid")
+    connection_id: str = Field(min_length=1)
+    subject_assembly_ref: str = Field(min_length=1)
+    relation: AssemblyConnectionRelation
+    object_assembly_ref: str = Field(min_length=1)
+    evidence_refs: list[str] = Field(min_length=1)
+
+
+class UnknownAssemblyConnection(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    subject_assembly_ref: str = Field(min_length=1)
+    object_assembly_ref: str = Field(min_length=1)
+    reason: str = Field(min_length=1)
+    state: Literal["UNKNOWN_CONNECTION"] = "UNKNOWN_CONNECTION"
+
+
+class RecognizableArchitecturalFragmentGate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    status: Literal["BLOCKED", "READY"] = "BLOCKED"
+    blockers: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def require_blockers_when_blocked(self) -> "RecognizableArchitecturalFragmentGate":
+        if self.status == "BLOCKED" and not self.blockers:
+            raise ValueError("blocked recognizable-fragment gate requires explicit blockers")
+        return self
+
 class MultiViewWorkspace(BaseModel):
     schema_version: Literal["0.1"] = "0.1"
     photo_count: int = Field(ge=1)
@@ -4148,6 +5044,22 @@ class MultiViewWorkspace(BaseModel):
     property_correspondences: list[PropertyCorrespondenceRecord] = Field(default_factory=list)
     property_outcome_mapping_investigations: list[PropertyOutcomeMappingInvestigationRecord] = Field(default_factory=list)
     global_connectivity_request_ids: list[str] = Field(default_factory=list)
+    assertion_revisions: list[AssertionRevision] = Field(default_factory=list)
+    spatial_organizations: list[SpatialOrganizationCandidate] = Field(default_factory=list)
+    spatial_view_predictions: list[SpatialViewPrediction] = Field(default_factory=list)
+    view_explanation_gains: list[ViewExplanationGain] = Field(default_factory=list)
+    spatial_interview_discriminant_investigations: list[SpatialInterViewDiscriminantInvestigationRecord] = Field(default_factory=list)
+    p3_perception_expansion_investigations: list[P3PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
+    p5_perception_expansion_investigations: list[P5PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
+    p5_platform_discriminant_investigations: list[P5PlatformDiscriminantInvestigationRecord] = Field(default_factory=list)
+    architectural_subassemblies: list[ArchitecturalSubassembly] = Field(default_factory=list)
+    assembly_connections: list[AssemblyConnection] = Field(default_factory=list)
+    unknown_assembly_connections: list[UnknownAssemblyConnection] = Field(default_factory=list)
+    recognizable_architectural_fragment_gate: RecognizableArchitecturalFragmentGate | None = None
+    house_shape_model: HouseShapeModel | None = None
+    terrace_shape_model: SecondaryAssemblyShapeModel | None = None
+    stair_shape_model: SecondaryAssemblyShapeModel | None = None
+    architectural_connection_model: ArchitecturalConnectionModel | None = None
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
@@ -4200,7 +5112,234 @@ class MultiViewWorkspace(BaseModel):
                         raise ValueError("inquiry test evidence references photo outside supplied input")
                 elif test.photo_index is not None and test.photo_index > self.photo_count:
                     raise ValueError("inquiry test references photo outside supplied input")
+        revision_ids = [item.revision_id for item in self.assertion_revisions]
+        if len(revision_ids) != len(set(revision_ids)):
+            raise ValueError("workspace assertion revision IDs must be unique")
+        observations = [*self.pass_1.observations, *self.pass_2.observations]
+        by_id = {item.id: item for item in observations}
+        prediction_by_id = {item.prediction_id:item for item in self.spatial_view_predictions}
+        for revision in self.assertion_revisions:
+            observation = by_id.get(revision.assertion_ref)
+            prediction = prediction_by_id.get(revision.assertion_ref)
+            if observation is None and prediction is None:
+                raise ValueError("assertion revision references unknown assertion")
+            if observation is not None:
+                if revision.previous_status != observation.status.value:
+                    raise ValueError("assertion revision previous_status must match historical observation status")
+                if any(p.observation_ref != revision.assertion_ref for p in revision.provenance):
+                    raise ValueError("observation revision provenance must reference the revised observation")
+            else:
+                allowed_refs=set(prediction.observation_refs)
+                if any(p.observation_ref not in allowed_refs for p in revision.provenance):
+                    raise ValueError("prediction revision provenance must reference a source observation")
+        organization_ids = [item.organization_id for item in self.spatial_organizations]
+        if len(organization_ids) != len(set(organization_ids)):
+            raise ValueError("spatial organization IDs must be unique")
+        if len(self.spatial_organizations) > 2:
+            raise ValueError("bounded spatial organization experiment permits at most two organizations")
+        active_known_ids = known_ids - {item.assertion_ref for item in self.assertion_revisions
+                                      if item.new_epistemic_state in {"REJECTED_BY_PIXELS", "SUPERSEDED"}}
+        for organization in self.spatial_organizations:
+            if not set(organization.observation_refs).issubset(active_known_ids):
+                raise ValueError("spatial organization references unknown or invalidated observation")
+            for assertion in organization.assertions:
+                if not set(assertion.source_observation_refs).issubset(active_known_ids):
+                    raise ValueError("spatial organization assertion references unknown or invalidated source")
+        organization_id_set = set(organization_ids)
+        prediction_ids = [item.prediction_id for item in self.spatial_view_predictions]
+        if len(prediction_ids) != len(set(prediction_ids)):
+            raise ValueError("spatial prediction IDs must be unique")
+        for prediction in self.spatial_view_predictions:
+            if prediction.organization_ref not in organization_id_set:
+                raise ValueError("spatial prediction references unknown organization")
+            if prediction.photo_index > self.photo_count:
+                raise ValueError("spatial prediction references photo outside supplied input")
+            if not set(prediction.observation_refs).issubset(active_known_ids):
+                raise ValueError("spatial prediction references unknown or invalidated observation")
+            for provenance in [*prediction.inspection_provenance, *prediction.verification_provenance]:
+                if provenance.photo_index != prediction.photo_index:
+                    raise ValueError("prediction provenance must belong to prediction photo")
+        gain_refs = [item.organization_ref for item in self.view_explanation_gains]
+        if len(gain_refs) != len(set(gain_refs)):
+            raise ValueError("at most one explanation gain record per organization")
+        if not set(gain_refs).issubset(organization_id_set):
+            raise ValueError("view explanation gain references unknown organization")
+        interview_signatures=[x.request_signature for x in self.spatial_interview_discriminant_investigations]
+        if len(interview_signatures)!=len(set(interview_signatures)):
+            raise ValueError("inter-view discriminant investigation signatures must be unique")
+        for record in self.spatial_interview_discriminant_investigations:
+            if record.organization_ref not in organization_id_set:
+                raise ValueError("inter-view discriminant investigation references unknown organization")
+            for provenance in record.provenance:
+                if provenance.photo_index > self.photo_count or not set(provenance.observation_refs).issubset(known_ids):
+                    raise ValueError("inter-view discriminant provenance references unknown observation or photo")
         return self
+
+
+def import_spatial_pixel_check_response(
+    workspace: MultiViewWorkspace,
+    request: dict,
+    response: dict,
+) -> MultiViewWorkspace:
+    """Import a bounded external spatial pixel-check into existing SpatialViewPrediction memory."""
+    if response.get("request_id") != request.get("request_id"):
+        raise ValueError("spatial pixel-check request_id mismatch")
+    if response.get("organization_ref") != request.get("organization_ref"):
+        raise ValueError("spatial pixel-check organization_ref mismatch")
+    organization_ref = response["organization_ref"]
+    if organization_ref not in {item.organization_id for item in workspace.spatial_organizations}:
+        raise ValueError("spatial pixel-check references unknown workspace organization")
+    tests = {item["test_id"]: item for item in request.get("spatial_tests", [])}
+    results = response.get("results", [])
+    if len(results) != len(tests) or {item.get("test_id") for item in results} != set(tests):
+        raise ValueError("spatial pixel-check results must exactly cover request tests")
+    allowed_verdicts = set(request.get("allowed_verdict_tokens", []))
+    allowed_relations = set(request.get("allowed_relation_tokens", []))
+    source_by_ref = {item["observation_ref"]: item for item in request.get("observations", [])}
+    allowed_photos = set(request.get("allowed_photos", []))
+    imported = []
+    for result in results:
+        test = tests[result["test_id"]]
+        if result.get("verdict") not in allowed_verdicts:
+            raise ValueError("spatial pixel-check verdict token is not allowed")
+        relation_tokens = result.get("relation_tokens", [])
+        if len(relation_tokens) != len(set(relation_tokens)) or not set(relation_tokens).issubset(allowed_relations):
+            raise ValueError("spatial pixel-check relation token is not allowed or duplicated")
+        if not result.get("evidence"):
+            raise ValueError("spatial pixel-check requires non-empty evidence")
+        test_photo = test["photo_index"]
+        if test_photo not in allowed_photos:
+            raise ValueError("spatial pixel-check test photo is not allowed")
+        test_refs = set(test["observation_refs"])
+        verification_provenance = []
+        for provenance in result.get("provenance", []):
+            if provenance.get("photo_index") != test_photo:
+                raise ValueError("spatial pixel-check provenance photo must match test photo")
+            refs = provenance.get("observation_refs", [])
+            if not refs or not set(refs).issubset(test_refs):
+                raise ValueError("spatial pixel-check provenance references observation outside test")
+            roi = tuple(provenance.get("roi", []))
+            if len(roi) != 4 or any(not isinstance(value, (int, float)) or value < 0 or value > 1 for value in roi):
+                raise ValueError("spatial pixel-check provenance ROI is invalid")
+            cues = provenance.get("pixel_cues", [])
+            if not cues or any(not isinstance(cue, str) or not cue for cue in cues):
+                raise ValueError("spatial pixel-check provenance requires pixel cues")
+            for ref in refs:
+                source = source_by_ref.get(ref)
+                if source is None or source["photo_index"] != test_photo:
+                    raise ValueError("spatial pixel-check provenance source is not authorized")
+                if tuple(source["roi"]) != roi:
+                    raise ValueError("spatial pixel-check provenance ROI must exactly match authorized observation ROI")
+                verification_provenance.append(RichEvidenceProvenance(
+                    observation_ref=ref, photo_index=test_photo, roi=roi, pixel_cues=list(cues)
+                ))
+        if not verification_provenance:
+            raise ValueError("spatial pixel-check result requires provenance")
+        inspection_provenance = [
+            RichEvidenceProvenance(
+                observation_ref=ref,
+                photo_index=test_photo,
+                roi=tuple(source_by_ref[ref]["roi"]),
+            )
+            for ref in test["observation_refs"]
+        ]
+        imported.append(SpatialViewPrediction(
+            prediction_id=result["test_id"],
+            organization_ref=organization_ref,
+            photo_index=test_photo,
+            observation_refs=list(test["observation_refs"]),
+            expected_observable_consequence=test["question"],
+            inspection_provenance=inspection_provenance,
+            verification_state=result["verdict"],
+            verification_relation_tokens=list(relation_tokens),
+            verification_evidence=result["evidence"],
+            verification_provenance=verification_provenance,
+            observer_investigation_id=request["request_id"],
+        ))
+    prior = [item for item in workspace.spatial_view_predictions if item.prediction_id not in tests]
+    return MultiViewWorkspace.model_validate(
+        workspace.model_copy(update={"spatial_view_predictions": [*prior, *imported]}).model_dump()
+    )
+
+
+def record_spatial_organization_state(
+    workspace: MultiViewWorkspace,
+    organization: SpatialOrganizationCandidate,
+    gain: ViewExplanationGain,
+) -> MultiViewWorkspace:
+    """Replace the current state of one existing candidate organization and its explicit gain components."""
+    if organization.organization_id not in {item.organization_id for item in workspace.spatial_organizations}:
+        raise ValueError("spatial organization state update requires an existing organization")
+    if gain.organization_ref != organization.organization_id:
+        raise ValueError("spatial organization gain must reference updated organization")
+    organizations = [
+        organization if item.organization_id == organization.organization_id else item
+        for item in workspace.spatial_organizations
+    ]
+    gains = [item for item in workspace.view_explanation_gains if item.organization_ref != organization.organization_id]
+    return MultiViewWorkspace.model_validate(
+        workspace.model_copy(update={
+            "spatial_organizations": organizations,
+            "view_explanation_gains": [*gains, gain],
+        }).model_dump()
+    )
+
+
+def invalidated_observation_ids(workspace: MultiViewWorkspace) -> set[str]:
+    observation_ids={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    return {item.assertion_ref for item in workspace.assertion_revisions
+            if item.assertion_ref in observation_ids and item.new_epistemic_state in {"REJECTED_BY_PIXELS", "SUPERSEDED"}}
+
+
+def record_assertion_revision(workspace: MultiViewWorkspace, revision: AssertionRevision) -> MultiViewWorkspace:
+    """Append audit history; never delete or rewrite the historical assertion."""
+    if revision.revision_id in {item.revision_id for item in workspace.assertion_revisions}:
+        raise ValueError("duplicate assertion revision ID")
+    return MultiViewWorkspace.model_validate(
+        workspace.model_copy(update={"assertion_revisions": [*workspace.assertion_revisions, revision]}).model_dump()
+    )
+
+
+def assess_assertion_revision_impacts(workspace: MultiViewWorkspace, assertion_ref: str) -> list[RevisionImpact]:
+    """Enumerate direct structured dependencies without declaring downstream claims false."""
+    observations = [*workspace.pass_1.observations, *workspace.pass_2.observations]
+    if assertion_ref not in {x.id for x in observations}:
+        raise ValueError("unknown revised assertion")
+    identities = [*workspace.pass_1.identities, *workspace.pass_2.identities]
+    identity_ids = {x.id for x in identities if assertion_ref in x.observation_ids}
+    impacts = [RevisionImpact(source_ref=assertion_ref, affected_ref=assertion_ref,
+                              affected_kind="observation", disposition="SOURCE_INVALIDATED")]
+    seen = {("observation", assertion_ref)}
+    def add(kind: str, ref: str) -> None:
+        key=(kind,ref)
+        if key not in seen:
+            seen.add(key)
+            impacts.append(RevisionImpact(source_ref=assertion_ref, affected_ref=ref,
+                                          affected_kind=kind, disposition="NEEDS_REEVALUATION"))
+    for x in identities:
+        if x.id in identity_ids: add("identity_candidate", x.id)
+    for i,x in enumerate(workspace.rich_identity_cues):
+        if x.identity_candidate_ref in identity_ids or any(p.observation_ref==assertion_ref for p in x.provenance):
+            add("identity_cue", f"{x.identity_candidate_ref}:{x.polarity}:{i}")
+    for i,x in enumerate(workspace.rich_relation_evidence):
+        if assertion_ref in {x.subject_ref,x.object_ref} or any(p.observation_ref==assertion_ref for p in x.provenance):
+            add("relation", f"{x.subject_ref}:{x.relation_token}:{x.object_ref}:{i}")
+    for x in derive_existing_structured_uncertainties(workspace):
+        if assertion_ref in x.source_observation_ids or x.source_ref in identity_ids:
+            add("uncertainty", x.id)
+    for x in workspace.identity_discriminants:
+        if assertion_ref in x.source_ids_by_observation:
+            add("discriminant", x.id)
+    for i,x in enumerate(workspace.identity_discriminant_investigations):
+        if x.identity_candidate_id in identity_ids:
+            add("discriminant", f"investigation:{x.identity_candidate_id}:{i}")
+    for i,x in enumerate(workspace.property_correspondences):
+        corr=x.correspondence
+        if assertion_ref in {corr.observation_ref_a,corr.observation_ref_b}:
+            add("property_correspondence", f"{x.request_id}:{i}")
+    add("world_constraint", "derived:MultiViewWorldConstraintGraph")
+    add("world_hypothesis", "derived:WorldHypothesis")
+    return impacts
 
 
 def render_multiview_world_diagnostic_html(workspace:MultiViewWorkspace,graph:MultiViewWorldConstraintGraph)->str:

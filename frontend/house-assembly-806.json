@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1",
+  "mission": "BOLDÜNGO-ARCHITECTURAL-ASSEMBLY-LOT-A-HOUSE-806",
+  "source_baseline": "4fd316874a290f4e696ab0c48ef95b40376b779a",
+  "source_evidence_audit": {
+    "primary_photo_index": 1,
+    "primary_source": "tests/fixtures/vision/visual-bootstrap-response-062.json",
+    "persisted_p1_observations": ["obs_p1_front_wall","obs_p1_roof_edge","obs_p1_front_upper_left_window","obs_p1_front_upper_right_window","obs_p1_front_middle_left_window","obs_p1_front_middle_right_window","obs_p1_front_lower_left_opening","obs_p1_front_lower_right_door"],
+    "explicit_p1_relation_evidence": [{"subject_ref":"obs_p1_front_upper_left_window","relation":"VISIBLE_WITHIN","object_ref":"obs_p1_front_wall","epistemic_level":"OBSERVED"}],
+    "audit_note": "Only the upper-left P1 window has an explicit persisted VISIBLE_WITHIN relation in bootstrap 062. Other P1 openings remain directly observed components in the same P1 facade evidence region; 806 does not fabricate historical relation records for them.",
+    "rejected_observations_still_excluded": ["obs_p2_stair","obs_p2_box_volume"]
+  },
+  "house_shape_model": {
+    "assembly_id": "house_assembly_p1_806",
+    "recognizable_gate": "SUPPORTED",
+    "observed_components": [
+      {"component_id":"p1-main-wall-face","kind":"WALL_FACE","observation_refs":["obs_p1_front_wall"],"photo_indexes":[1],"statement":"Large pale front wall surface with multiple visible openings.","qualitative_relations":["PRIMARY_OBSERVED_FACE"]},
+      {"component_id":"p1-upper-opening-band","kind":"LEVEL_OR_VERTICAL_BAND","observation_refs":["obs_p1_front_upper_left_window","obs_p1_front_upper_right_window"],"photo_indexes":[1],"statement":"Two directly observed glazed openings occupy the upper visual band of the P1 facade.","qualitative_relations":["upper_left LEFT_OF upper_right","upper_band ABOVE middle_band"]},
+      {"component_id":"p1-middle-opening-band","kind":"LEVEL_OR_VERTICAL_BAND","observation_refs":["obs_p1_front_middle_left_window","obs_p1_front_middle_right_window"],"photo_indexes":[1],"statement":"Two directly observed glazed openings occupy a middle visual band below the upper pair.","qualitative_relations":["middle_left LEFT_OF middle_right","middle_band BELOW upper_band","middle_band ABOVE lower_band"]},
+      {"component_id":"p1-lower-opening-band","kind":"LEVEL_OR_VERTICAL_BAND","observation_refs":["obs_p1_front_lower_left_opening","obs_p1_front_lower_right_door"],"photo_indexes":[1],"statement":"A narrow lower-left opening and a partly occluded glazed door-like opening occupy a lower visual band.","qualitative_relations":["lower_left LEFT_OF lower_right_door","lower_band BELOW middle_band"]},
+      {"component_id":"p1-opening-upper-left","kind":"OPENING","observation_refs":["obs_p1_front_upper_left_window","obs_p1_front_wall"],"photo_indexes":[1],"statement":"Visible rectangular glazed opening with dark frame, paired vertical glazing and light surround.","qualitative_relations":["VISIBLE_WITHIN p1-main-wall-face"]},
+      {"component_id":"p1-opening-upper-right","kind":"OPENING","observation_refs":["obs_p1_front_upper_right_window"],"photo_indexes":[1],"statement":"Visible rectangular glazed opening with dark frame, paired vertical glazing and light surround.","qualitative_relations":["RIGHT_OF p1-opening-upper-left","ABOVE p1-opening-middle-right"]},
+      {"component_id":"p1-opening-middle-left","kind":"OPENING","observation_refs":["obs_p1_front_middle_left_window"],"photo_indexes":[1],"statement":"Visible rectangular glazed opening with dark frame, paired vertical glazing and light surround.","qualitative_relations":["BELOW p1-opening-upper-left","LEFT_OF p1-opening-middle-right"]},
+      {"component_id":"p1-opening-middle-right","kind":"OPENING","observation_refs":["obs_p1_front_middle_right_window"],"photo_indexes":[1],"statement":"Visible rectangular glazed opening with dark frame, paired vertical glazing and light surround.","qualitative_relations":["BELOW p1-opening-upper-right","RIGHT_OF p1-opening-middle-left"]},
+      {"component_id":"p1-opening-lower-left","kind":"OPENING","observation_refs":["obs_p1_front_lower_left_opening"],"photo_indexes":[1],"statement":"Visible narrow rectangular opening with dark interior and light surround.","qualitative_relations":["BELOW p1-opening-middle-left","LEFT_OF p1-opening-lower-right-door"]},
+      {"component_id":"p1-opening-lower-right-door","kind":"OPENING","observation_refs":["obs_p1_front_lower_right_door"],"photo_indexes":[1],"statement":"Partly occluded glazed door-like opening with white frame and dark glazing.","qualitative_relations":["BELOW p1-opening-middle-right","RIGHT_OF p1-opening-lower-left"]},
+      {"component_id":"p1-roof-boundary","kind":"ROOF_BOUNDARY","observation_refs":["obs_p1_roof_edge"],"photo_indexes":[1],"statement":"Visible sloping dark roof boundary composed of two sloping segments; persisted continuation state is CONTINUES.","qualitative_relations":["ABOVE p1-main-wall-face","TWO_SLOPING_SEGMENTS","CONTINUES"]},
+      {"component_id":"p1-visible-facade-outline","kind":"VISIBLE_OUTLINE","observation_refs":["obs_p1_front_wall","obs_p1_roof_edge"],"photo_indexes":[1],"statement":"Recognizable facade silhouette is constrained by the observed wall surface and its sloping upper roof boundary; exact side and bottom physical boundaries are not promoted from ROI edges.","qualitative_relations":["ROOF_BOUNDARY ABOVE WALL_FACE"]}
+    ],
+    "approximated_components": [
+      {"approximation_id":"approx-p1-constructive-envelope-thickness","kind":"CONSTRUCTIVE_ENVELOPE","reason":"A non-zero thickness is required to materialize the observed facade as a future buildable assembly, but facade depth is not observed.","source_unknowns":["house-depth","wall-thickness"],"replacement_condition":"Replace when metric or otherwise sufficiently constrained depth/thickness evidence is acquired.","truth_class":"CONSTRUCTIVE_APPROXIMATION","revisable":true},
+      {"approximation_id":"approx-p1-roof-materialization","kind":"CONSTRUCTIVE_ENVELOPE","reason":"A future physical model may require material behind the observed two-segment roof boundary, while no closed roof volume is observed.","source_unknowns":["roof-depth","roof-metric-pitch","roof-hidden-topology","roof-3d-ridge"],"replacement_condition":"Replace when roof volume/topology and metric constraints are supported by evidence.","truth_class":"CONSTRUCTIVE_APPROXIMATION","revisable":true}
+    ],
+    "unknown_components": [
+      {"unknown_id":"house-depth","statement":"Physical depth of the P1 house body is UNKNOWN."},
+      {"unknown_id":"wall-thickness","statement":"Physical wall thickness is UNKNOWN."},
+      {"unknown_id":"facade-metric-width-height","statement":"Metric facade width and height are UNKNOWN."},
+      {"unknown_id":"facade-side-bottom-outline","statement":"Exact physical side and bottom facade outline is UNKNOWN; observation ROI edges are not asserted as building edges."},
+      {"unknown_id":"floor-storey-semantics","statement":"Visual opening bands are supported, but semantic storey/floor labels and floor heights are UNKNOWN."},
+      {"unknown_id":"opening-metric-dimensions","statement":"Metric opening dimensions, recess depths and exact frame geometry are UNKNOWN."},
+      {"unknown_id":"roof-depth","statement":"Roof depth is UNKNOWN."},
+      {"unknown_id":"roof-metric-pitch","statement":"Metric roof pitch is UNKNOWN."},
+      {"unknown_id":"roof-hidden-topology","statement":"Hidden roof topology and number of roof planes are UNKNOWN."},
+      {"unknown_id":"roof-3d-ridge","statement":"3D ridge position/form is UNKNOWN."},
+      {"unknown_id":"cross-view-house-identity","statement":"Physical correspondence between P1 facade and P2/P4/P5 house-like wall evidence is UNRESOLVED."}
+    ],
+    "separate_house_candidate_evidence": [
+      {"observation_ref":"obs_p2_side_wall","photo_index":2,"statement":"Persisted pale side-wall observation retained separately; not fused with P1 HOUSE."},
+      {"observation_ref":"obs_p2_upper_window","photo_index":2,"statement":"Persisted upper-window observation retained with P2 context; not fused with P1 HOUSE."},
+      {"observation_ref":"obs_p4_rear_wall","photo_index":4,"statement":"Persisted pale wall sector with opening evidence retained separately; not fused with P1 HOUSE."},
+      {"observation_ref":"obs_p4_upper_window","photo_index":4,"statement":"Persisted P4 upper-window evidence retained separately; not fused with P1 HOUSE."},
+      {"observation_ref":"obs_p5_side_wall","photo_index":5,"statement":"Persisted pale side-wall sector retained separately; not fused with P1 HOUSE."},
+      {"observation_ref":"obs_p5_near_window","photo_index":5,"statement":"Persisted P5 opening with shutters retained separately; not fused with P1 HOUSE."},
+      {"observation_ref":"obs_p5_roof_edge","photo_index":5,"statement":"Persisted P5 sloping roof-edge evidence retained separately; not fused with P1 roof geometry."}
+    ]
+  },
+  "opening_integration": {
+    "source_rule":"Direct P1 observations define six opening components. Only the upper-left opening carries an explicit historical VISIBLE_WITHIN relation; the remaining openings use their own P1 observation provenance and qualitative image ordering, not invented cross-view or historical relations.",
+    "no_symmetry_completion":true,
+    "metric_dimensions_invented":false
+  },
+  "roof_integration": {
+    "observed_boundary_ref":"obs_p1_roof_edge",
+    "observed_shape":"two sloping segments",
+    "closed_roof_volume_observed":false,
+    "historical_hardcoded_roof_reused_as_evidence":false
+  },
+  "lego_readiness": {
+    "status":"PARTIAL_INTERFACE_READY",
+    "exposes":["observed primary face","six observed openings","qualitative opening bands/order","observed two-segment roof boundary","explicit constructive-envelope approximations","explicit unknowns"],
+    "excludes":["brick selection","bill of materials","metric dimensions","final LEGO model","assembly instructions"]
+  },
+  "global_gate": {
+    "gate":"RECOGNIZABLE_ARCHITECTURAL_FRAGMENT_READY",
+    "status":"BLOCKED",
+    "reason":"HOUSE Lot A alone does not establish the required recognizable secondary assembly or a sufficiently constrained structural interassembly connection."
+  }
+}

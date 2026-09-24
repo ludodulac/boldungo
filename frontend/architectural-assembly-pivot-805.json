@@ -1,0 +1,307 @@
+{
+  "schema_version": "0.1",
+  "artifact_id": "architectural-assembly-pivot-805",
+  "mission": "BOLDÜNGO-ARCHITECTURAL-ASSEMBLY-PIVOT-805",
+  "human_rejection_803": {
+    "HUMAN_VISUAL_VALIDATION": "REJECTED",
+    "artifact_ref": "minimal-surviving-world-803",
+    "historical_visualization_preserved": "frontend/minimal-surviving-world-803.html",
+    "world_evidence_mutated": false,
+    "lessons": [
+      "OBJECT_GRAPH_ALONE_INSUFFICIENT_FOR_RECOGNIZABLE_RECONSTRUCTION",
+      "DISPLAY_LAYOUT_MUST_NOT_SUBSTITUTE_FOR_SPATIAL_MODEL"
+    ]
+  },
+  "truth_model": {
+    "OBSERVED_ARCHITECTURAL_EVIDENCE": "Photo/persistent-perception-supported information with observation provenance.",
+    "CONSTRUCTIVE_APPROXIMATION": "Explicitly marked, revisable construction choice permitted only to materialize an UNKNOWN; never perceptual truth.",
+    "invariants": [
+      "DISPLAY_LAYOUT_ONLY from 803 is never world geometry",
+      "Historical hardcoded render dimensions are not evidence",
+      "UNKNOWN is preserved until supported"
+    ]
+  },
+  "assemblies": [
+    {
+      "assembly_id": "house_assembly",
+      "kind": "HOUSE",
+      "OBSERVED_EVIDENCE": [
+        {
+          "observation_ref": "obs_p1_front_wall",
+          "photo_index": 1,
+          "statement": "Large pale front wall surface with multiple visible openings."
+        },
+        {
+          "observation_ref": "obs_p1_roof_edge",
+          "photo_index": 1,
+          "statement": "Visible dark roof boundary with two sloping segments above the front wall."
+        },
+        {
+          "observation_ref": "obs_p4_rear_wall",
+          "photo_index": 4,
+          "statement": "Large pale wall sector with visible opening evidence."
+        },
+        {
+          "observation_ref": "obs_p5_side_wall",
+          "photo_index": 5,
+          "statement": "Large pale side-wall sector with openings and a sloping roof-edge cue."
+        }
+      ],
+      "SUPPORTED_SHAPE_INFORMATION": [
+        "P1 exposes a broad bounded facade-like wall with multiple openings.",
+        "P1 exposes a two-segment sloping roof boundary above that wall.",
+        "P4 and P5 expose additional large pale wall sectors with roof/eave context, but cross-view physical identity is unresolved.",
+        "Visible openings can be anchored to observed wall faces where VISIBLE_WITHIN evidence exists."
+      ],
+      "UNKNOWN_SHAPE_INFORMATION": [
+        "metric width/height/depth",
+        "hidden wall continuation and rear closure",
+        "3D relation between P1, P4 and P5 wall sectors",
+        "number and metric height of levels",
+        "complete building silhouette in world coordinates",
+        "exact roof volume and pitch"
+      ],
+      "CONSTRUCTIVE_APPROXIMATION_ALLOWED": [
+        "A provisional closed wall volume may later be materialized only if tagged CONSTRUCTIVE_APPROXIMATION and sourced to the hidden-closure/depth UNKNOWNs.",
+        "No metric dimension or historic hardcoded house size may be reused as evidence."
+      ],
+      "CONNECTIONS_KNOWN": [
+        "opening_p1_front_upper_left OPENING_IN_FACE house_assembly via obs_p1_front_upper_left_window + obs_p1_front_wall VISIBLE_WITHIN",
+        "opening_p1_front_upper_right OPENING_IN_FACE house_assembly via obs_p1_front_upper_right_window + obs_p1_front_wall VISIBLE_WITHIN",
+        "opening_p1_front_middle_left OPENING_IN_FACE house_assembly via obs_p1_front_middle_left_window + obs_p1_front_wall VISIBLE_WITHIN",
+        "opening_p1_front_middle_right OPENING_IN_FACE house_assembly via obs_p1_front_middle_right_window + obs_p1_front_wall VISIBLE_WITHIN"
+      ],
+      "CONNECTIONS_UNKNOWN": [
+        "roof_assembly ROOF_COVERS house_assembly",
+        "terrace_assembly ATTACHED_TO_FACE house_assembly",
+        "stair_assembly connection to house_assembly"
+      ]
+    },
+    {
+      "assembly_id": "terrace_assembly",
+      "kind": "TERRACE",
+      "OBSERVED_EVIDENCE": [
+        {
+          "observation_ref": "obs_p3_raised_platform_794",
+          "photo_index": 3,
+          "statement": "Directly localized raised platform/terrace-like region with horizontal edge, repeated railing-like verticals and visible underside/support-like edges."
+        },
+        {
+          "observation_ref": "obs_p4_terrace",
+          "photo_index": 4,
+          "statement": "Visible raised platform with wooden railing and support posts."
+        }
+      ],
+      "SUPPORTED_SHAPE_INFORMATION": [
+        "P3 supports a raised horizontal band, railing-like repeated verticals and some underside/support-like edges.",
+        "P4 supports a raised platform/terrace region with wooden railing and visible support posts.",
+        "P3 platform is ABOVE obs_p3_dark_opening and its boundary visibly joins obs_p3_box_volume."
+      ],
+      "UNKNOWN_SHAPE_INFORMATION": [
+        "metric plan dimensions",
+        "complete platform outline",
+        "number/spacing/height of supports",
+        "guard-rail complete geometry",
+        "physical identity between P3 and P4 terrace observations",
+        "structural attachment to main house",
+        "direct stair landing connection"
+      ],
+      "CONSTRUCTIVE_APPROXIMATION_ALLOWED": [
+        "A buildable slab thickness/support spacing may later be approximated only as tagged revisable construction choices."
+      ],
+      "CONNECTIONS_KNOWN": [],
+      "CONNECTIONS_UNKNOWN": [
+        "terrace_assembly ATTACHED_TO_FACE house_assembly",
+        "terrace_assembly SUPPORTED_BY support assembly",
+        "stair_assembly LANDS_ON terrace_assembly"
+      ]
+    },
+    {
+      "assembly_id": "stair_assembly",
+      "kind": "STAIR",
+      "OBSERVED_EVIDENCE": [
+        {
+          "observation_ref": "obs_p3_step_diagonal_794",
+          "photo_index": 3,
+          "statement": "Directly localized diagonal/stair-like region with oblique boundaries and repeated step-like edges."
+        },
+        {
+          "observation_ref": "obs_p4_stair",
+          "photo_index": 4,
+          "statement": "Visible exterior stair region with solid pale diagonal parapet evidence."
+        },
+        {
+          "observation_ref": "obs_p5_stair_diagonal_799",
+          "photo_index": 5,
+          "statement": "Directly localized diagonal/stair-like structural region; not a complete stair."
+        }
+      ],
+      "SUPPORTED_SHAPE_INFORMATION": [
+        "P3 supports a stair interpretation for a bounded diagonal region, not complete stair geometry.",
+        "P4 supports qualitative LEFT_OF and BELOW ordering relative to its terrace region; termination/junction is NOT_OBSERVABLE.",
+        "P5 supports only a localized diagonal/stair-like structural region; its platform and junction remain unresolved."
+      ],
+      "UNKNOWN_SHAPE_INFORMATION": [
+        "metric rise/run",
+        "step count and tread dimensions",
+        "complete flight limits",
+        "bottom landing/ground contact",
+        "top landing connection",
+        "physical identity across P3/P4/P5",
+        "complete parapet geometry"
+      ],
+      "CONSTRUCTIVE_APPROXIMATION_ALLOWED": [
+        "Step count, tread/riser dimensions and hidden landing geometry may only be introduced later as explicit revisable approximations."
+      ],
+      "CONNECTIONS_KNOWN": [],
+      "CONNECTIONS_UNKNOWN": [
+        "stair_assembly LANDS_ON terrace_assembly",
+        "stair_assembly CONNECTS_TO ground_or_lower_structure",
+        "stair_assembly ATTACHED_TO_FACE house_assembly"
+      ]
+    },
+    {
+      "assembly_id": "roof_assembly",
+      "kind": "ROOF",
+      "OBSERVED_EVIDENCE": [
+        {
+          "observation_ref": "obs_p1_roof_edge",
+          "photo_index": 1,
+          "statement": "Visible sloping dark roof boundary with two sloping segments."
+        },
+        {
+          "observation_ref": "obs_p5_roof_edge",
+          "photo_index": 5,
+          "statement": "Visible sloping dark roof boundary with continuous visible run."
+        }
+      ],
+      "SUPPORTED_SHAPE_INFORMATION": [
+        "Sloping roof/eave boundaries are directly observed in P1 and P5.",
+        "P4/P5 local wall-sector evidence places a visible opening BELOW a visible sloping roof/eave boundary."
+      ],
+      "UNKNOWN_SHAPE_INFORMATION": [
+        "complete roof topology",
+        "ridge location",
+        "number of roof planes",
+        "metric pitch",
+        "overhang depth",
+        "physical identity/connection of roof-edge observations across views"
+      ],
+      "CONSTRUCTIVE_APPROXIMATION_ALLOWED": [
+        "A closed roof solid may later be approximated only from explicit UNKNOWNs and never by reviving historical hardcoded roof geometry."
+      ],
+      "CONNECTIONS_KNOWN": [],
+      "CONNECTIONS_UNKNOWN": [
+        "roof_assembly ROOF_COVERS house_assembly"
+      ]
+    }
+  ],
+  "opening_assemblies": {
+    "observed": [
+      "P1 four upper/middle rectangular glazed openings, one lower narrow opening, one partly occluded door-like opening.",
+      "P2 upper window remains usable; rejected legacy P2 stair and box-volume observations are excluded.",
+      "P3 large dark rectangular opening is observed VISIBLE_WITHIN obs_p3_box_volume.",
+      "P4 upper window is observed; other wall opening evidence exists at wall-sector level.",
+      "P5 near window with shutters and wall-sector opening cues are observed."
+    ],
+    "supported_face_context": [
+      "P1 front openings have observed VISIBLE_WITHIN relation to obs_p1_front_wall.",
+      "P3 dark opening has observed VISIBLE_WITHIN/CONTAINED_WITHIN support relative to obs_p3_box_volume."
+    ],
+    "unknown": [
+      "cross-view opening identities",
+      "complete opening dimensions",
+      "hidden frame/recess geometry",
+      "whether P3 projecting volume is part of the main HOUSE assembly"
+    ]
+  },
+  "supported_connections": [
+    {
+      "connection_id": "p1_front_opening_left_upper",
+      "subject_assembly_ref": "opening_p1_front_upper_left",
+      "relation": "OPENING_IN_FACE",
+      "object_assembly_ref": "house_assembly",
+      "evidence_refs": [
+        "obs_p1_front_upper_left_window",
+        "obs_p1_front_wall"
+      ]
+    },
+    {
+      "connection_id": "p3_dark_opening_in_projecting_volume",
+      "subject_assembly_ref": "opening_p3_dark",
+      "relation": "OPENING_IN_FACE",
+      "object_assembly_ref": "projecting_volume_p3_unassigned",
+      "evidence_refs": [
+        "obs_p3_dark_opening",
+        "obs_p3_box_volume"
+      ]
+    }
+  ],
+  "unknown_connections": [
+    {
+      "subject_assembly_ref": "terrace_assembly",
+      "object_assembly_ref": "house_assembly",
+      "state": "UNKNOWN_CONNECTION",
+      "reason": "P4 terrace is visually in front of the wall and P3 platform joins a projecting volume boundary, but structural attachment to the main HOUSE is not established."
+    },
+    {
+      "subject_assembly_ref": "stair_assembly",
+      "object_assembly_ref": "terrace_assembly",
+      "state": "UNKNOWN_CONNECTION",
+      "reason": "P3 has a local termination/junction chain and P4 has LEFT_OF/BELOW compatibility, but a direct stair-to-terrace structural landing/junction is not established; P5 junction is NOT_OBSERVABLE."
+    },
+    {
+      "subject_assembly_ref": "roof_assembly",
+      "object_assembly_ref": "house_assembly",
+      "state": "UNKNOWN_CONNECTION",
+      "reason": "Roof/eave boundaries are observed above wall/opening sectors, but full roof-to-house topology is not established."
+    }
+  ],
+  "gate": {
+    "name": "RECOGNIZABLE_ARCHITECTURAL_FRAGMENT_READY",
+    "status": "BLOCKED",
+    "requirements": {
+      "recognizable_house_assembly": "PARTIALLY_CONSTRAINED_NOT_YET_WORLD_ASSEMBLED",
+      "recognizable_secondary_assembly": "LOCAL_TERRACE_AND_STAIR_SHAPES_SUPPORTED",
+      "supported_structural_interassembly_connection": "MISSING",
+      "evidence_approximation_separation": "SATISFIED",
+      "hidden_geometry_presented_as_observed": "NO"
+    },
+    "blockers": [
+      "HOUSE: convert the strong P1 facade/opening/roof-boundary evidence into a concrete but explicitly partial house subassembly without assuming unobserved depth/closure or cross-view identity.",
+      "TERRACE+STAIR: establish enough complete local shape for one secondary assembly and a supported structural landing/attachment relation; current P3/P4/P5 evidence does not yet establish that connection.",
+      "CONNECTION: establish at least one structural inter-assembly connection involving HOUSE and/or the chosen TERRACE/STAIR fragment; current supported connections are opening-to-face only."
+    ]
+  },
+  "short_resolution_plan": [
+    {
+      "lot": "LOT A — HOUSE",
+      "goal": "Consolidate P1 facade, openings and roof-boundary evidence into a recognizable partial HOUSE assembly; use P4/P5 only as separate evidence until correspondence is established; keep depth/closure as explicit constructive approximation if needed."
+    },
+    {
+      "lot": "LOT B — TERRACE + STAIR",
+      "goal": "Consolidate P3/P4 persistent platform and stair evidence into concrete secondary subassemblies, resolving only shape information that materially determines a buildable local form; do not repeat saturated P5 platform tests."
+    },
+    {
+      "lot": "LOT C — CONNECTIONS",
+      "goal": "Resolve the minimum structural raccord needed between HOUSE, TERRACE and STAIR using already localized regions and bundled discriminants; unsupported raccords remain UNKNOWN_CONNECTION."
+    },
+    {
+      "lot": "NEXT HUMAN VISUAL STOP",
+      "goal": "Only after the gate is genuinely satisfied, render one recognizable architectural fragment with evidence and constructive approximations visibly separated."
+    }
+  ],
+  "human_interaction_policy": [
+    "No human validation after each property.",
+    "No LEFT_OF-by-LEFT_OF round trips.",
+    "No new abstract visualization.",
+    "Next human visual stop must be concrete and architecturally recognizable."
+  ],
+  "forbidden_as_evidence": [
+    "frontend/minimal-surviving-world-803.json DISPLAY_LAYOUT_ONLY coordinates",
+    "historical hardcoded house/roof/stair/terrace render dimensions",
+    "rejected obs_p2_stair",
+    "rejected obs_p2_box_volume",
+    "historical 788 P5 BOUNDARY_JOINS memory"
+  ]
+}

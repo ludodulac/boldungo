@@ -1,0 +1,87 @@
+{
+  "schema_version": "0.1",
+  "artifact_id": "p5-existing-constraint-bridge-798",
+  "issue_798": "EXISTING_CONSTRAINTS_INFORM_BUT_DO_NOT_BRIDGE",
+  "basis": "Structured persistent state only; no pixel inspection performed.",
+  "p5_relations": [
+    {
+      "relation": "LEFT_OF",
+      "subject_ref": "p5_stair_diagonal_sector",
+      "object_ref": "p5_platform_sector",
+      "source_observation_ref": "obs_p5_side_wall",
+      "source_prediction_id": "788-p5-sector-structure",
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "epistemic_level": "SUPPORTED_PIXEL_GROUNDED_PREDICTION",
+      "provenance_kind": "existing verification provenance from 788/789"
+    },
+    {
+      "relation": "BELOW",
+      "subject_ref": "p5_stair_diagonal_sector",
+      "object_ref": "p5_platform_sector",
+      "source_observation_ref": "obs_p5_side_wall",
+      "source_prediction_id": "788-p5-sector-structure",
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "epistemic_level": "SUPPORTED_PIXEL_GROUNDED_PREDICTION",
+      "provenance_kind": "existing verification provenance from 788/789"
+    },
+    {
+      "relation": "BOUNDARY_JOINS",
+      "subject_ref": "p5_stair_diagonal_sector",
+      "object_ref": "p5_platform_sector",
+      "source_observation_ref": "obs_p5_side_wall",
+      "source_prediction_id": "788-p5-sector-structure",
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "epistemic_level": "SUPPORTED_PIXEL_GROUNDED_PREDICTION",
+      "provenance_kind": "existing verification provenance from 788/789"
+    }
+  ],
+  "p5_substructures_are_local_observations": false,
+  "composition_checks": [
+    {
+      "sources": [
+        "788/789 P5 sector structure",
+        "796/797 P3/P4 step-platform correspondence"
+      ],
+      "result": "BLOCKED",
+      "reason": "P5 stair/platform sectors are not separate LocalObservation nodes and no acquired correspondence maps them to P3 or P4 step/platform nodes."
+    },
+    {
+      "sources": [
+        "792/793 P3/P5 lower-volume/opening correspondence",
+        "796/797 P3/P4 step-platform correspondence"
+      ],
+      "result": "BLOCKED",
+      "reason": "The acquired correspondences constrain different local structures and provide no shared persistent node linking P5 lower-volume/opening to P5 stair/platform or P4 step/platform."
+    },
+    {
+      "sources": [
+        "790/791 P4/P5 opening-to-roof-edge compatibility",
+        "796/797 P3/P4 step-platform correspondence"
+      ],
+      "result": "BLOCKED",
+      "reason": "Local BELOW compatibility does not identify wall/opening/roof nodes across views and does not connect them to step/platform nodes."
+    }
+  ],
+  "composition_guard": "NO_COMPOSITION_WITHOUT_SHARED_PERSISTENT_NODE_OR_SUFFICIENT_ACQUIRED_CORRESPONDENCE",
+  "new_constraint_persisted": false,
+  "new_request_created": false,
+  "identity_acquired": false,
+  "invented_geometry_added": false,
+  "unique_missing_information": "A correspondence that explicitly links the P5 stair/platform sector organization from 788 to an already persistent P3 or P4 step/platform organization, while preserving that the P5 substructures are not yet separate LocalObservations.",
+  "view_explanation_gain": "NO_NEW_GAIN; diagnostic only. Existing P5 constraints inform the next discriminant but do not safely bridge the views."
+}

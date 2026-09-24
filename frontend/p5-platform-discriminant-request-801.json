@@ -1,0 +1,240 @@
+{
+  "schema_version": "0.1",
+  "request_id": "p5-platform-discriminant-801",
+  "purpose": "P5-only boundary-structure discriminant. Do not repeat 799 localization. Test whether a newly specified local boundary property can separate a horizontal-surface candidate from an adjacent vertical-face organization inside already authorized persistent P5 observations.",
+  "source_uncertainty": {
+    "uncertainty_id": "p5-platform-801:surface-face-boundary-separation",
+    "status": "OPEN",
+    "statement": "799 could not separately localize a platform/terrace-like region. It remains unknown whether visible boundary organization provides independent evidence for a distinct approximately horizontal surface versus an inseparable built-mass boundary."
+  },
+  "authorized_photo": {
+    "photo_index": 5,
+    "image": "benchmarks/real-house-5/05-original.jpg"
+  },
+  "authorized_observations": [
+    {
+      "observation_ref": "obs_p5_side_wall",
+      "photo_index": 5,
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "role": "broad persisted search context only"
+    },
+    {
+      "observation_ref": "obs_p5_stair_diagonal_799",
+      "photo_index": 5,
+      "roi": [
+        0.27,
+        0.54,
+        0.67,
+        0.79
+      ],
+      "role": "current directly localized structural reference"
+    }
+  ],
+  "anti_repeat_memory": {
+    "memory_788": {
+      "source_prediction_id": "788-p5-sector-structure",
+      "status": "HISTORICAL_CANDIDATE_MEMORY",
+      "historical_tokens": [
+        "LEFT_OF",
+        "BELOW",
+        "BOUNDARY_JOINS"
+      ],
+      "rule": "Historical tokens are not current perceptual relations and must not be reconfirmed or restored."
+    },
+    "investigation_799": {
+      "platform": {
+        "candidate_id": "p5-candidate-platform-region",
+        "outcome": "AMBIGUOUS",
+        "candidate_roi": null,
+        "semantic_status": "UNCERTAIN"
+      },
+      "junction": {
+        "candidate_id": "p5-candidate-stair-platform-junction",
+        "outcome": "NOT_OBSERVABLE",
+        "candidate_roi": null,
+        "semantic_status": "UNCERTAIN"
+      },
+      "current_localization": {
+        "observation_ref": "obs_p5_stair_diagonal_799",
+        "roi": [
+          0.27,
+          0.54,
+          0.67,
+          0.79
+        ],
+        "localization_basis": "DIRECTLY_LOCALIZED",
+        "semantic_status": "SUPPORTED_AS_INTERPRETATION"
+      }
+    },
+    "forbidden_repetition": "Do not ask whether a platform/terrace region is LOCALIZABLE and do not reuse the 799 candidate-localization task. The new evidence sought is boundary/surface-face separation only."
+  },
+  "new_information_sought": {
+    "property_token": "HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION",
+    "instruction": "Inside obs_p5_side_wall, inspect whether pixels expose a directly visible boundary configuration that distinguishes an approximately horizontal surface region from an adjacent approximately vertical face region. Use obs_p5_stair_diagonal_799 only as an already localized reference boundary if it helps delimit the inspection; do not require or assume contact with it. The tested evidence must be a visible surface/face orientation change, corner, contour interruption/continuation, or equivalent boundary separation that is independent of merely seeing a horizontal-topped built mass. Do not assign the semantic label platform/terrace from shape alone."
+  },
+  "allowed_outcomes": [
+    "SUPPORTED",
+    "CONTRADICTED",
+    "AMBIGUOUS",
+    "NOT_OBSERVABLE"
+  ],
+  "outcome_semantics": {
+    "SUPPORTED": "Authorized pixels directly expose a boundary configuration separating an approximately horizontal surface candidate from an adjacent approximately vertical face candidate. This supports perceptual separation only, not platform/terrace semantics.",
+    "CONTRADICTED": "Authorized pixels directly expose a boundary organization incompatible with the proposed surface/face separation at the tested location. This does not prove absence of every possible platform elsewhere.",
+    "AMBIGUOUS": "Relevant pixels are visible but admit multiple boundary/surface organizations.",
+    "NOT_OBSERVABLE": "Authorized pixels do not expose the tested boundary property reliably enough. This is fail-closed and is not contradiction."
+  },
+  "allowed_relation_tokens": [
+    "CONTOUR_CONTINUES",
+    "BOUNDARY_JOINS",
+    "TERMINATES_AGAINST",
+    "NO_RELIABLE_RELATION"
+  ],
+  "response_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "request_id",
+      "photo_index",
+      "property_token",
+      "outcome",
+      "relation_tokens",
+      "evidence",
+      "provenance",
+      "semantic_interpretation"
+    ],
+    "properties": {
+      "schema_version": {
+        "const": "0.1"
+      },
+      "request_id": {
+        "const": "p5-platform-discriminant-801"
+      },
+      "photo_index": {
+        "const": 5
+      },
+      "property_token": {
+        "const": "HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"
+      },
+      "outcome": {
+        "enum": [
+          "SUPPORTED",
+          "CONTRADICTED",
+          "AMBIGUOUS",
+          "NOT_OBSERVABLE"
+        ]
+      },
+      "relation_tokens": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "enum": [
+            "CONTOUR_CONTINUES",
+            "BOUNDARY_JOINS",
+            "TERMINATES_AGAINST",
+            "NO_RELIABLE_RELATION"
+          ]
+        }
+      },
+      "evidence": {
+        "type": "string",
+        "minLength": 1
+      },
+      "provenance": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "photo_index",
+            "roi",
+            "observation_refs",
+            "pixel_cues",
+            "property_token"
+          ],
+          "properties": {
+            "photo_index": {
+              "const": 5
+            },
+            "roi": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "observation_refs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "enum": [
+                  "obs_p5_side_wall",
+                  "obs_p5_stair_diagonal_799"
+                ]
+              }
+            },
+            "pixel_cues": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "property_token": {
+              "const": "HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"
+            }
+          }
+        }
+      },
+      "semantic_interpretation": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "status",
+          "evidence"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "SUPPORTED_AS_INTERPRETATION",
+              "UNCERTAIN"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  },
+  "response_invariants": [
+    "Inspect P5 only and only the exact authorized observation ROIs.",
+    "Every provenance ROI must exactly equal the ROI of each observation_ref it cites; do not create a new candidate ROI in this relational/boundary test.",
+    "Test only HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION. Do not repeat 799 by asking whether p5-candidate-platform-region is LOCALIZABLE.",
+    "SUPPORTED requires new directly visible boundary evidence separating surface and face; a near-horizontal upper boundary alone is insufficient because 799 already observed that cue without isolating a platform.",
+    "AMBIGUOUS is required when pixels admit multiple boundary organizations. NOT_OBSERVABLE is required when the property is not reliably exposed. Neither may be converted to contradiction.",
+    "Do not restore 788 LEFT_OF, BELOW or BOUNDARY_JOINS as current relations. BOUNDARY_JOINS may appear in the response only if directly observed for the newly tested surface/face boundary property; it must not assert stair-platform contact.",
+    "obs_p5_stair_diagonal_799 is the only new current P5 localization from 799. The 799 platform and junction candidates remain unpromoted.",
+    "Semantic interpretation is separate from boundary support. SUPPORTED does not establish a platform/terrace ontological category.",
+    "No physical identity, SAME_PHYSICAL_OBJECT, LIKELY_SAME, metric geometry, camera pose, depth, hidden continuation, or cross-view inference.",
+    "No LocalObservation creation and no automatic ingestion."
+  ],
+  "automatic_ingestion": false
+}

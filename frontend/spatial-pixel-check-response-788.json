@@ -1,0 +1,251 @@
+{
+  "schema_version": "0.1",
+  "request_id": "spatial-pixel-check-788",
+  "organization_ref": "org_rear_sector_787",
+  "results": [
+    {
+      "test_id": "788-p3-volume-opening",
+      "verdict": "SUPPORTED",
+      "relation_tokens": [
+        "CONTAINED_WITHIN"
+      ],
+      "evidence": "Dans le ROI autorisé de P3, l'ouverture sombre est bordée à gauche, à droite et au-dessus par les surfaces claires du volume inférieur; ses limites restent à l'intérieur du contour visible de ce volume.",
+      "provenance": [
+        {
+          "photo_index": 3,
+          "roi": [
+            0.49,
+            0.37,
+            0.92,
+            0.78
+          ],
+          "observation_refs": [
+            "obs_p3_box_volume"
+          ],
+          "pixel_cues": [
+            "surface claire visible au-dessus de l'ouverture sombre",
+            "montants/surfaces clairs visibles de part et d'autre de l'ouverture",
+            "contour extérieur du volume visible au-delà du contour de l'ouverture"
+          ]
+        },
+        {
+          "photo_index": 3,
+          "roi": [
+            0.56,
+            0.54,
+            0.85,
+            0.76
+          ],
+          "observation_refs": [
+            "obs_p3_dark_opening"
+          ],
+          "pixel_cues": [
+            "bord supérieur sombre horizontal nettement délimité",
+            "bords latéraux de l'ouverture visibles contre les surfaces claires"
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "788-p3-visible-junctions",
+      "verdict": "AMBIGUOUS",
+      "relation_tokens": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "evidence": "Le ROI montre plusieurs limites du volume inférieur et des surfaces voisines, mais les pixels autorisés ne permettent pas d'établir de façon univoque un raccord physique précis avec un mur ou secteur surélevé adjacent.",
+      "provenance": [
+        {
+          "photo_index": 3,
+          "roi": [
+            0.49,
+            0.37,
+            0.92,
+            0.78
+          ],
+          "observation_refs": [
+            "obs_p3_box_volume"
+          ],
+          "pixel_cues": [
+            "arête supérieure du volume clair visible",
+            "arête verticale droite du volume visible",
+            "superpositions partielles avec végétation et structures voisines",
+            "aucune jonction mur-volume non ambiguë dans ce ROI"
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "788-p4-stair-platform",
+      "verdict": "NOT_OBSERVABLE",
+      "relation_tokens": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "evidence": "Le ROI autorisé de l'escalier contient une portion d'escalier/parapet, mais le ROI fourni pour obs_p4_terrace ne contient pas de continuité suffisamment identifiable du garde-corps/plateforme bois permettant de tester directement leur raccord.",
+      "provenance": [
+        {
+          "photo_index": 4,
+          "roi": [
+            0.19,
+            0.29,
+            0.38,
+            0.56
+          ],
+          "observation_refs": [
+            "obs_p4_stair"
+          ],
+          "pixel_cues": [
+            "bord diagonal clair du parapet visible",
+            "portion supérieure de l'escalier partiellement masquée par le palmier"
+          ]
+        },
+        {
+          "photo_index": 4,
+          "roi": [
+            0.35,
+            0.23,
+            0.72,
+            0.43
+          ],
+          "observation_refs": [
+            "obs_p4_terrace"
+          ],
+          "pixel_cues": [
+            "surface claire et végétation visibles dans le ROI",
+            "pas de raccord escalier-garde-corps bois suffisamment localisable dans le ROI autorisé"
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "788-p4-wall-platform",
+      "verdict": "AMBIGUOUS",
+      "relation_tokens": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "evidence": "Les ROI du mur et de la plateforme se recouvrent en image et montrent des limites claires, mais aucune occultation ou jonction suffisamment nette dans les pixels autorisés ne distingue de façon fiable 'devant', 'attaché à' ou 'se terminant contre'.",
+      "provenance": [
+        {
+          "photo_index": 4,
+          "roi": [
+            0.34,
+            0.06,
+            0.72,
+            0.42
+          ],
+          "observation_refs": [
+            "obs_p4_rear_wall"
+          ],
+          "pixel_cues": [
+            "grande surface murale claire continue",
+            "limite de toiture oblique visible au-dessus"
+          ]
+        },
+        {
+          "photo_index": 4,
+          "roi": [
+            0.35,
+            0.23,
+            0.72,
+            0.43
+          ],
+          "observation_refs": [
+            "obs_p4_terrace"
+          ],
+          "pixel_cues": [
+            "limites claires superposées au secteur mural en projection",
+            "absence d'indice d'occultation non ambigu distinguant les alternatives demandées"
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "788-p4-left-right-order",
+      "verdict": "SUPPORTED",
+      "relation_tokens": [
+        "LEFT_OF",
+        "BELOW"
+      ],
+      "evidence": "Dans P4, le ROI de l'escalier est directement situé à gauche et plus bas dans l'image que la majeure partie du secteur mur/plateforme ciblé. Cette contrainte est uniquement un ordre qualitatif visible en projection; elle n'établit ni identité physique ni profondeur.",
+      "provenance": [
+        {
+          "photo_index": 4,
+          "roi": [
+            0.19,
+            0.29,
+            0.38,
+            0.56
+          ],
+          "observation_refs": [
+            "obs_p4_stair"
+          ],
+          "pixel_cues": [
+            "parapet diagonal de l'escalier visible dans la partie gauche du secteur ciblé",
+            "portion de l'escalier s'étendant vers le bas de l'image"
+          ]
+        },
+        {
+          "photo_index": 4,
+          "roi": [
+            0.35,
+            0.23,
+            0.72,
+            0.43
+          ],
+          "observation_refs": [
+            "obs_p4_terrace"
+          ],
+          "pixel_cues": [
+            "secteur ciblé projeté majoritairement à droite du ROI de l'escalier",
+            "secteur ciblé projeté plus haut que la partie descendante de l'escalier"
+          ]
+        },
+        {
+          "photo_index": 4,
+          "roi": [
+            0.34,
+            0.06,
+            0.72,
+            0.42
+          ],
+          "observation_refs": [
+            "obs_p4_rear_wall"
+          ],
+          "pixel_cues": [
+            "surface murale claire visible au-dessus et à droite de la majeure partie du ROI d'escalier"
+          ]
+        }
+      ]
+    },
+    {
+      "test_id": "788-p5-sector-structure",
+      "verdict": "SUPPORTED",
+      "relation_tokens": [
+        "LEFT_OF",
+        "BELOW",
+        "BOUNDARY_JOINS"
+      ],
+      "evidence": "Dans le large ROI autorisé de P5, des contraintes spatiales qualitatives sont directement visibles: un escalier/parapet clair monte depuis la gauche vers le secteur de plateforme, tandis que la plateforme à garde-corps bois s'étend vers la droite devant le mur clair. Une jonction visible existe au secteur supérieur gauche de la plateforme entre la terminaison de l'escalier/parapet et le bord de plateforme. Ces indices contraignent l'organisation sans créer de nouvelle observation ni décider d'identité inter-vues.",
+      "provenance": [
+        {
+          "photo_index": 5,
+          "roi": [
+            0.13,
+            0.04,
+            0.88,
+            0.79
+          ],
+          "observation_refs": [
+            "obs_p5_side_wall"
+          ],
+          "pixel_cues": [
+            "diagonale claire de l'escalier/parapet visible dans la partie gauche du ROI",
+            "garde-corps bois horizontal visible au centre et vers la droite du ROI",
+            "bord de plateforme horizontal visible sous le garde-corps",
+            "terminaison supérieure de l'escalier/parapet atteignant visuellement le secteur gauche de la plateforme",
+            "plateforme située au-dessous d'une partie du mur clair et s'étendant à droite de l'escalier"
+          ]
+        }
+      ]
+    }
+  ]
+}

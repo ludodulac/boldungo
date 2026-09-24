@@ -1,0 +1,132 @@
+{
+  "schema_version": "0.1",
+  "request_id": "p5-perception-expansion-799",
+  "purpose": "P5-only bounded perception expansion. Test whether 788 candidate substructures can be separately localized. 788 is revisable search memory, not ground truth.",
+  "authorized_photo": {
+    "photo_index": 5,
+    "image": "benchmarks/real-house-5/05-original.jpg"
+  },
+  "search_sector": {
+    "observation_ref": "obs_p5_side_wall",
+    "photo_index": 5,
+    "search_roi": [
+      0.13,
+      0.04,
+      0.88,
+      0.79
+    ],
+    "status": "PERSISTENT_LOCAL_OBSERVATION"
+  },
+  "memory_788": {
+    "source_prediction_id": "788-p5-sector-structure",
+    "status": "REVISABLE_SEARCH_MEMORY_NOT_LOCAL_OBSERVATIONS",
+    "candidate_substructures": [
+      "p5_stair_diagonal_sector",
+      "p5_platform_sector"
+    ],
+    "prior_qualitative_relations": [
+      [
+        "p5_stair_diagonal_sector",
+        "LEFT_OF",
+        "p5_platform_sector"
+      ],
+      [
+        "p5_stair_diagonal_sector",
+        "BELOW",
+        "p5_platform_sector"
+      ],
+      [
+        "p5_stair_diagonal_sector",
+        "BOUNDARY_JOINS",
+        "p5_platform_sector"
+      ]
+    ],
+    "warning": "Names and relations guide inspection only; they do not establish existence, boundaries, semantic category, or LocalObservation status. AMBIGUOUS or NOT_OBSERVABLE may revise 788."
+  },
+  "candidate_searches": [
+    {
+      "candidate_id": "p5-candidate-stair-diagonal-region",
+      "question": "Can authorized pixels localize a structural region corresponding to the diagonal/stair sector signaled by 788?",
+      "dependency": "NONE"
+    },
+    {
+      "candidate_id": "p5-candidate-platform-region",
+      "question": "Can authorized pixels separately localize a structural region corresponding to the platform/terrace sector signaled by 788?",
+      "dependency": "NONE"
+    },
+    {
+      "candidate_id": "p5-candidate-stair-platform-junction",
+      "question": "If A and B are sufficiently localizable, can authorized pixels localize a visible junction/termination region between them?",
+      "dependency": "REQUIRES_A_AND_B_SUFFICIENTLY_LOCALIZABLE; otherwise NOT_OBSERVABLE is permitted and no junction may be invented."
+    }
+  ],
+  "allowed_outcomes": [
+    "LOCALIZABLE",
+    "AMBIGUOUS",
+    "NOT_OBSERVABLE"
+  ],
+  "outcome_semantics": {
+    "LOCALIZABLE": "Requires normalized candidate_roi directly justified by pixels.",
+    "AMBIGUOUS": "Structure perceptible but multiple reasonable delimitations remain; candidate_roi must be null.",
+    "NOT_OBSERVABLE": "Pixels do not permit honest isolation; candidate_roi must be null."
+  },
+  "allowed_localization_basis": [
+    "DIRECTLY_LOCALIZED",
+    "PARTIALLY_BOUNDED"
+  ],
+  "allowed_semantic_status": [
+    "SUPPORTED_AS_INTERPRETATION",
+    "UNCERTAIN"
+  ],
+  "allowed_relation_tokens": [
+    "LEFT_OF",
+    "RIGHT_OF",
+    "ABOVE",
+    "BELOW",
+    "BOUNDARY_JOINS",
+    "TERMINATES_AGAINST",
+    "NO_RELIABLE_RELATION"
+  ],
+  "response_required_fields": [
+    "schema_version",
+    "request_id",
+    "photo_index",
+    "search_roi",
+    "candidate_results"
+  ],
+  "candidate_result_required_fields": [
+    "candidate_id",
+    "outcome",
+    "candidate_roi",
+    "pixel_cues",
+    "localization_basis",
+    "semantic_interpretation",
+    "relations",
+    "provenance"
+  ],
+  "semantic_interpretation_required_fields": [
+    "label",
+    "status",
+    "evidence"
+  ],
+  "provenance_required_fields": [
+    "photo_index",
+    "search_roi",
+    "candidate_id",
+    "pixel_cues"
+  ],
+  "response_invariants": [
+    "Exactly three requested candidate_id values, once each.",
+    "Only P5; no P3/P4 comparison.",
+    "Every provenance: photo_index=5, exact search_roi=[0.13,0.04,0.88,0.79], matching candidate_id, non-empty pixel_cues.",
+    "LOCALIZABLE requires candidate_roi inside search_roi and localization_basis DIRECTLY_LOCALIZED or PARTIALLY_BOUNDED.",
+    "AMBIGUOUS and NOT_OBSERVABLE require candidate_roi=null.",
+    "Semantic interpretation is separate from localization; diagonal is not automatically stair, horizontal is not automatically platform/terrace.",
+    "Candidate C is conditional; if A or B is insufficiently localizable, C may be NOT_OBSERVABLE and no junction may be invented.",
+    "788 is revisable memory, not a target to confirm; response may contradict it.",
+    "Relations optional; only directly visible allowed tokens.",
+    "No physical identity, SAME_PHYSICAL_OBJECT, LIKELY_SAME, metric geometry, camera pose, hidden continuation, external knowledge.",
+    "No LocalObservation creation and no automatic ingestion."
+  ],
+  "automatic_ingestion": false
+}

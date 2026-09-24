@@ -1,0 +1,346 @@
+{
+  "schema_version": "0.1",
+  "request_id": "composite-interview-discriminant-796",
+  "source_uncertainty": {
+    "uncertainty_id": "composite-796:p3-p4-step-platform-organization-correspondence",
+    "kind": "INTER_VIEW_COMPOSITE_ORGANIZATION_CORRESPONDENCE",
+    "status": "OPEN",
+    "priority_state": "MINIMAL_JUSTIFIED_TEST",
+    "statement": "It is unresolved whether the newly persistent P3 step/junction/platform organization is structurally compatible with the persistent P4 stair/terrace organization.",
+    "selection_note": "P4 is the minimal justified counterpart because obs_p4_stair and obs_p4_terrace are separate persistent LocalObservation entries with exact ROIs. P5 has useful 788 stair/platform-sector evidence only inside broad obs_p5_side_wall, not separate persistent stair/platform LocalObservation entries; 792 already exhausted lower-volume/opening containment/order. The P3 wall candidate from 794 remains WITHHELD and is excluded."
+  },
+  "organization_ref": "org_rear_sector_787",
+  "authorized_photos": [
+    3,
+    4
+  ],
+  "authorized_observations": [
+    {
+      "observation_ref": "obs_p3_step_diagonal_794",
+      "photo_index": 3,
+      "roi": [
+        0.104,
+        0.442,
+        0.329,
+        0.839
+      ],
+      "source": "795 promotion from p3-candidate-step-diagonal-region"
+    },
+    {
+      "observation_ref": "obs_p3_visible_junction_794",
+      "photo_index": 3,
+      "roi": [
+        0.298,
+        0.426,
+        0.369,
+        0.607
+      ],
+      "source": "795 promotion from p3-candidate-visible-junction-region"
+    },
+    {
+      "observation_ref": "obs_p3_raised_platform_794",
+      "photo_index": 3,
+      "roi": [
+        0.345,
+        0.459,
+        0.688,
+        0.675
+      ],
+      "source": "795 promotion from p3-candidate-raised-platform-region"
+    },
+    {
+      "observation_ref": "obs_p4_stair",
+      "photo_index": 4,
+      "roi": [
+        0.19,
+        0.29,
+        0.38,
+        0.56
+      ],
+      "source": "persistent LocalObservation 062"
+    },
+    {
+      "observation_ref": "obs_p4_terrace",
+      "photo_index": 4,
+      "roi": [
+        0.35,
+        0.23,
+        0.72,
+        0.43
+      ],
+      "source": "persistent LocalObservation 062"
+    }
+  ],
+  "p3_composite_structure": {
+    "epistemic_scope": "PERCEPTUAL_RELATIONS_ONLY",
+    "relations": [
+      {
+        "subject_ref": "obs_p3_step_diagonal_794",
+        "relation_token": "TERMINATES_AGAINST",
+        "object_ref": "obs_p3_visible_junction_794"
+      },
+      {
+        "subject_ref": "obs_p3_visible_junction_794",
+        "relation_token": "LEFT_OF",
+        "object_ref": "obs_p3_raised_platform_794"
+      }
+    ],
+    "context_only_relations": [
+      {
+        "subject_ref": "obs_p3_step_diagonal_794",
+        "relation_token": "LEFT_OF",
+        "object_ref": "obs_p3_box_volume"
+      },
+      {
+        "subject_ref": "obs_p3_raised_platform_794",
+        "relation_token": "ABOVE",
+        "object_ref": "obs_p3_dark_opening"
+      },
+      {
+        "subject_ref": "obs_p3_raised_platform_794",
+        "relation_token": "BOUNDARY_JOINS",
+        "object_ref": "obs_p3_box_volume"
+      }
+    ],
+    "note": "Context-only relations are not discriminating properties in 796 and must not be used to repeat the 792 lower-volume/opening test."
+  },
+  "competing_alternatives": [
+    {
+      "token": "COMPOSITE_ORGANIZATION_COMPATIBLE",
+      "meaning": "The authorized P3 and P4 pixels support a compatible qualitative multi-relation organization for the tested step/junction/platform signature, without directly visible conflict. This is correspondence evidence only, never physical identity."
+    },
+    {
+      "token": "COMPOSITE_ORGANIZATION_INCOMPATIBLE",
+      "meaning": "At least one tested structural relation has a directly visible mutually exclusive state between authorized P3 and P4 pixels. Crop, occlusion or non-observability cannot establish incompatibility."
+    }
+  ],
+  "discriminating_properties": [
+    {
+      "property_token": "STEP_TO_PLATFORM_LATERAL_ORDER",
+      "instruction": "In each authorized view, determine from visible boundaries whether the step/stair region is LEFT_OF or RIGHT_OF the platform/terrace region. Compare the qualitative relation; category resemblance is not evidence."
+    },
+    {
+      "property_token": "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION",
+      "instruction": "In P3, use the authorized step, visible-junction and platform regions to inspect the directly visible termination/junction chain. In P4, inspect only obs_p4_stair and obs_p4_terrace for an observable boundary termination/join configuration. If P4 does not expose such a relation reliably, return NOT_OBSERVABLE for this property; do not invent a junction observation."
+    },
+    {
+      "property_token": "STEP_TO_PLATFORM_VERTICAL_ORDER",
+      "instruction": "In each authorized view, determine whether the stair/step region has a directly visible ABOVE/BELOW qualitative order relative to the platform/terrace region. Return AMBIGUOUS when visible pixels admit multiple orderings and NOT_OBSERVABLE when the relation cannot reliably be inspected."
+    }
+  ],
+  "allowed_outcomes": [
+    "CORRESPONDENCE_COMPATIBLE",
+    "CORRESPONDENCE_INCOMPATIBLE",
+    "AMBIGUOUS",
+    "NOT_OBSERVABLE"
+  ],
+  "allowed_relation_tokens": [
+    "LEFT_OF",
+    "RIGHT_OF",
+    "ABOVE",
+    "BELOW",
+    "BOUNDARY_JOINS",
+    "TERMINATES_AGAINST",
+    "NO_RELIABLE_RELATION"
+  ],
+  "mandatory_pixel_provenance": {
+    "photo_index": true,
+    "roi": true,
+    "observation_refs": true,
+    "pixel_cues": true,
+    "property_token": true
+  },
+  "anti_repeat_memory": [
+    {
+      "request_id": "interview-discriminant-790",
+      "scope": "P4/P5 wall-sector local layout",
+      "exhausted": true,
+      "forbidden_repetition": [
+        "OPENING_LAYOUT_ORDER",
+        "OPENING_TO_ROOF_EDGE_RELATION",
+        "DISTINCTIVE_OPENING_CONFIGURATION",
+        "NEIGHBOR_BOUNDARY_ORDER"
+      ]
+    },
+    {
+      "request_id": "interview-discriminant-792",
+      "scope": "P3/P5 lower-volume/opening organization",
+      "exhausted": true,
+      "forbidden_repetition": [
+        "LOWER_OPENING_CONTAINMENT",
+        "OPENING_TO_LOWER_VOLUME_TOP_BOUNDARY_ORDER",
+        "LOWER_VOLUME_OPENING_BOUNDARY_CONFIGURATION",
+        "CONTAINED_WITHIN+BELOW lower-volume/opening signature"
+      ]
+    }
+  ],
+  "withheld_memory": {
+    "candidate_id": "p3-candidate-adjacent-wall-region",
+    "status": "WITHHELD",
+    "rule": "Not an authorized LocalObservation. Do not use it or any relation depending on its promotion."
+  },
+  "response_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "schema_version",
+      "request_id",
+      "source_uncertainty_id",
+      "organization_ref",
+      "outcome",
+      "property_results",
+      "evidence",
+      "provenance"
+    ],
+    "properties": {
+      "schema_version": {
+        "const": "0.1"
+      },
+      "request_id": {
+        "const": "composite-interview-discriminant-796"
+      },
+      "source_uncertainty_id": {
+        "const": "composite-796:p3-p4-step-platform-organization-correspondence"
+      },
+      "organization_ref": {
+        "const": "org_rear_sector_787"
+      },
+      "outcome": {
+        "enum": [
+          "CORRESPONDENCE_COMPATIBLE",
+          "CORRESPONDENCE_INCOMPATIBLE",
+          "AMBIGUOUS",
+          "NOT_OBSERVABLE"
+        ]
+      },
+      "property_results": {
+        "type": "array",
+        "minItems": 3,
+        "maxItems": 3,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "property_token",
+            "outcome",
+            "relation_tokens",
+            "evidence"
+          ],
+          "properties": {
+            "property_token": {
+              "enum": [
+                "STEP_TO_PLATFORM_LATERAL_ORDER",
+                "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION",
+                "STEP_TO_PLATFORM_VERTICAL_ORDER"
+              ]
+            },
+            "outcome": {
+              "enum": [
+                "CORRESPONDENCE_COMPATIBLE",
+                "CORRESPONDENCE_INCOMPATIBLE",
+                "AMBIGUOUS",
+                "NOT_OBSERVABLE"
+              ]
+            },
+            "relation_tokens": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "LEFT_OF",
+                  "RIGHT_OF",
+                  "ABOVE",
+                  "BELOW",
+                  "BOUNDARY_JOINS",
+                  "TERMINATES_AGAINST",
+                  "NO_RELIABLE_RELATION"
+                ]
+              }
+            },
+            "evidence": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "evidence": {
+        "type": "string",
+        "minLength": 1
+      },
+      "provenance": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "photo_index",
+            "roi",
+            "observation_refs",
+            "pixel_cues",
+            "property_token"
+          ],
+          "properties": {
+            "photo_index": {
+              "enum": [
+                3,
+                4
+              ]
+            },
+            "roi": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "observation_refs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "enum": [
+                  "obs_p3_step_diagonal_794",
+                  "obs_p3_visible_junction_794",
+                  "obs_p3_raised_platform_794",
+                  "obs_p4_stair",
+                  "obs_p4_terrace"
+                ]
+              }
+            },
+            "pixel_cues": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "property_token": {
+              "enum": [
+                "STEP_TO_PLATFORM_LATERAL_ORDER",
+                "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION",
+                "STEP_TO_PLATFORM_VERTICAL_ORDER"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "response_invariants": [
+    "Inspect only authorized photos, observations and exact ROIs; create no LocalObservation.",
+    "Every property result tests composite structural correspondence only. Never answer SAME_PHYSICAL_OBJECT, LIKELY_SAME or DISTINCT_PHYSICAL_OBJECTS.",
+    "CORRESPONDENCE_COMPATIBLE requires directly visible structural relation evidence in both authorized views; category or shape resemblance is insufficient.",
+    "CORRESPONDENCE_INCOMPATIBLE requires a directly visible mutually exclusive tested relation; crop, occlusion, ambiguity or non-observability is insufficient.",
+    "AMBIGUOUS and NOT_OBSERVABLE are distinct outcomes: AMBIGUOUS means visible pixels permit multiple interpretations; NOT_OBSERVABLE means the authorized pixels do not reliably expose the tested relation.",
+    "Every provenance entry must cite an exact authorized ROI for its observation_refs, plus non-empty pixel_cues and the tested property_token.",
+    "Do not repeat the 790 P4/P5 wall-layout discriminant or the 792 P3/P5 lower-volume/opening containment/order discriminant.",
+    "The P3 adjacent-wall candidate is WITHHELD and cannot be used as an observation or as support for a relation.",
+    "Do not infer metric geometry, camera pose, depth, hidden continuation, complete topology or physical identity.",
+    "No response is imported automatically. This request only prepares an external perceptual test."
+  ]
+}
