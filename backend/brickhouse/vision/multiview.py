@@ -3562,7 +3562,13 @@ def import_p3_perception_expansion_response(
       "p3-candidate-visible-junction-region":"obs_p3_visible_junction_794",
     }
     result_by_id={x["candidate_id"]:x for x in results}
+    result_required=set(schema["properties"]["region_results"]["items"]["required"])
+    forbidden=("P4","P5","SAME_PHYSICAL_OBJECT","LIKELY_SAME","metric geometry","camera pose")
     for x in results:
+        if set(x)!=result_required:
+            raise ValueError("794 candidate result shape mismatch")
+        if any(token in json.dumps(x) for token in forbidden):
+            raise ValueError("794 response contains forbidden inter-view/geometry conclusion")
         if x["outcome"] not in allowed_outcomes or x["epistemic_confidence"] not in allowed_conf:
             raise ValueError("794 outcome/confidence not allowed")
         roi=x["localized_roi"]
@@ -3575,6 +3581,8 @@ def import_p3_perception_expansion_response(
         if set(sem)!={"label","status","evidence"}:
             raise ValueError("794 semantic interpretation shape mismatch")
         for rel in x["relations"]:
+            if set(rel)!={"relation_token","subject_ref","object_ref","pixel_cues"}:
+                raise ValueError("794 relation shape mismatch")
             if rel["relation_token"] not in allowed_rel or not rel["pixel_cues"]:
                 raise ValueError("794 relation not allowed or lacks pixel cues")
             if rel["subject_ref"] not in requested|set(existing) or rel["object_ref"] not in requested|set(existing):
