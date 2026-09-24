@@ -1,0 +1,11 @@
+{
+  "schema_version": "0.1",
+  "request_id": "p5-platform-discriminant-801",
+  "photo_index": 5,
+  "property_token": "HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION",
+  "outcome": "NOT_OBSERVABLE",
+  "relation_tokens": ["NO_RELIABLE_RELATION"],
+  "evidence": "Within the authorized P5 pixels, several approximately horizontal or near-horizontal upper contours of built masses are visible, but no directly exposed local configuration reliably shows an approximately horizontal surface region and an adjacent approximately vertical face region separated by a visible orientation-changing boundary. The visible upper edges do not expose enough of a second surface, corner, or equivalent boundary organization to satisfy the tested separation property.",
+  "provenance": [{"photo_index":5,"roi":[0.13,0.04,0.88,0.79],"observation_refs":["obs_p5_side_wall"],"pixel_cues":["Approximately horizontal or near-horizontal upper contours are visible on built masses inside the authorized ROI.","At the relevant upper contours, an adjoining approximately horizontal surface region is not exposed with sufficient visible area or orientation change to distinguish it reliably from the vertical built face.","No directly visible corner or equivalent surface/face boundary configuration reliably establishes the tested separation."],"property_token":"HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"}],
+  "semantic_interpretation": {"label":"platform/terrace","status":"UNCERTAIN","evidence":"The boundary evidence is insufficient for the tested surface/face separation, and no platform or terrace semantic category is established."}
+}
