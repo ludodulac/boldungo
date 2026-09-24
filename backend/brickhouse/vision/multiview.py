@@ -3760,6 +3760,91 @@ def import_p5_perception_expansion_response(workspace:"MultiViewWorkspace", requ
     return MultiViewWorkspace.model_validate(data.model_dump())
 
 
+class P5PlatformDiscriminantInvestigationRecord(BaseModel):
+    """Auditable 801 boundary discriminant memory; NOT_OBSERVABLE is not contradiction or absence."""
+    model_config = ConfigDict(extra="forbid")
+    request_id: Literal["p5-platform-discriminant-801"]
+    photo_index: Literal[5]
+    property_token: Literal["HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"]
+    outcome: Literal["SUPPORTED","CONTRADICTED","AMBIGUOUS","NOT_OBSERVABLE"]
+    relation_tokens: list[Literal["CONTOUR_CONTINUES","BOUNDARY_JOINS","TERMINATES_AGAINST","NO_RELIABLE_RELATION"]]
+    evidence: str = Field(min_length=1)
+    provenance: list[RichEvidenceProvenance] = Field(min_length=1)
+    semantic_label: str = Field(min_length=1)
+    semantic_status: Literal["SUPPORTED_AS_INTERPRETATION","UNCERTAIN"]
+    semantic_evidence: str = Field(min_length=1)
+    saturation_state: Literal["P5_PLATFORM_LOCAL_PERCEPTION_SATURATED"]
+    saturation_basis: list[str] = Field(min_length=2)
+    physical_identity_acquired: Literal[False] = False
+    invented_geometry_added: Literal[False] = False
+
+
+def import_p5_platform_discriminant_response(workspace:"MultiViewWorkspace", request:dict, response:dict)->"MultiViewWorkspace":
+    """Strict 802 ingestion of the 801 P5-only boundary result; creates no observations or relations."""
+    schema=request["response_schema"]
+    required=set(schema["required"])
+    if set(response)!=required:
+        raise ValueError("801 response fields mismatch")
+    props=schema["properties"]
+    constants={"schema_version":"0.1","request_id":"p5-platform-discriminant-801","photo_index":5,
+               "property_token":"HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"}
+    if any(response[k]!=v for k,v in constants.items()):
+        raise ValueError("801 response identity/property mismatch")
+    if response["outcome"] not in props["outcome"]["enum"]:
+        raise ValueError("801 outcome invalid")
+    allowed_rel=set(request["allowed_relation_tokens"])
+    if not isinstance(response["relation_tokens"],list) or len(response["relation_tokens"])!=len(set(response["relation_tokens"])) or any(x not in allowed_rel for x in response["relation_tokens"]):
+        raise ValueError("801 relation tokens invalid")
+    if response["outcome"]!="NOT_OBSERVABLE" or response["relation_tokens"]!=["NO_RELIABLE_RELATION"]:
+        raise ValueError("802 expected exact fail-closed 801 result")
+    if not response["evidence"]:
+        raise ValueError("801 evidence empty")
+    authorized={x["observation_ref"]:(x["photo_index"],tuple(x["roi"])) for x in request["authorized_observations"]}
+    provenance=[]
+    for p in response["provenance"]:
+        if set(p)!={"photo_index","roi","observation_refs","pixel_cues","property_token"} or p["photo_index"]!=5 or p["property_token"]!=constants["property_token"] or not p["pixel_cues"] or not p["observation_refs"]:
+            raise ValueError("801 provenance invalid")
+        for obs_ref in p["observation_refs"]:
+            if obs_ref not in authorized or authorized[obs_ref]!=(5,tuple(p["roi"])):
+                raise ValueError("801 provenance outside authorized observation ROI")
+        provenance.append(RichEvidenceProvenance(observation_ref=p["observation_refs"][0],photo_index=5,roi=tuple(p["roi"]),pixel_cues=list(p["pixel_cues"])))
+    sem=response["semantic_interpretation"]
+    if set(sem)!={"label","status","evidence"} or sem["status"]!="UNCERTAIN" or not sem["evidence"]:
+        raise ValueError("801 semantic interpretation invalid")
+    if any(x.request_id==request["request_id"] for x in workspace.p5_platform_discriminant_investigations):
+        raise ValueError("801 discriminant already imported")
+    if not workspace.p5_perception_expansion_investigations:
+        raise ValueError("802 requires persisted 799 investigation")
+    inv799=next((x for x in workspace.p5_perception_expansion_investigations if x.request_id=="p5-perception-expansion-799"),None)
+    if inv799 is None:
+        raise ValueError("802 requires 799 memory")
+    by={x.candidate_id:x for x in inv799.candidates}
+    if by["p5-candidate-platform-region"].outcome!="AMBIGUOUS" or by["p5-candidate-stair-platform-junction"].outcome!="NOT_OBSERVABLE":
+        raise ValueError("802 saturation requires unresolved 799 platform and junction")
+    pred=next((x for x in workspace.spatial_view_predictions if x.prediction_id=="788-p5-sector-structure"),None)
+    if pred is None or pred.current_support_status!="HISTORICAL_CANDIDATE_MEMORY":
+        raise ValueError("802 requires historical 788 memory")
+    before_obs={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    before_rel=[x.model_dump() for x in workspace.rich_relation_evidence]
+    before_ids=[x.model_dump() for x in [*workspace.pass_1.identities,*workspace.pass_2.identities]]
+    data=workspace.model_copy(deep=True)
+    data.p5_platform_discriminant_investigations.append(P5PlatformDiscriminantInvestigationRecord(
+        request_id=request["request_id"],photo_index=5,property_token=response["property_token"],
+        outcome=response["outcome"],relation_tokens=list(response["relation_tokens"]),evidence=response["evidence"],
+        provenance=provenance,semantic_label=sem["label"],semantic_status=sem["status"],semantic_evidence=sem["evidence"],
+        saturation_state="P5_PLATFORM_LOCAL_PERCEPTION_SATURATED",
+        saturation_basis=["799 platform direct localization remained AMBIGUOUS","801 independent surface/face boundary separation is NOT_OBSERVABLE"],
+        physical_identity_acquired=False,invented_geometry_added=False))
+    loaded=MultiViewWorkspace.model_validate(data.model_dump())
+    if {x.id for x in [*loaded.pass_1.observations,*loaded.pass_2.observations]}!=before_obs:
+        raise ValueError("802 must not create observations")
+    if [x.model_dump() for x in loaded.rich_relation_evidence]!=before_rel:
+        raise ValueError("802 must not create perceptual relations")
+    if [x.model_dump() for x in [*loaded.pass_1.identities,*loaded.pass_2.identities]]!=before_ids:
+        raise ValueError("802 must not create identity")
+    return loaded
+
+
 class MissingWorldConstraint(BaseModel):
     """Structural gap only; it does not invent the perceptual property needed to fill it."""
     model_config = ConfigDict(extra="forbid")
@@ -4616,7 +4701,7 @@ class MultiViewWorkspace(BaseModel):
     view_explanation_gains: list[ViewExplanationGain] = Field(default_factory=list)
     spatial_interview_discriminant_investigations: list[SpatialInterViewDiscriminantInvestigationRecord] = Field(default_factory=list)
     p3_perception_expansion_investigations: list[P3PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
-    p5_perception_expansion_investigations: list[P5PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
+    p5_perception_expansion_investigations: list[P5PerceptionExpansionInvestigationRecord] = Field(default_factory=list)\n    p5_platform_discriminant_investigations: list[P5PlatformDiscriminantInvestigationRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
