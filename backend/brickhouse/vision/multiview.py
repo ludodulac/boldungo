@@ -3374,6 +3374,7 @@ class SpatialViewPrediction(BaseModel):
     verification_evidence: str = Field(min_length=1)
     verification_provenance: list[RichEvidenceProvenance] = Field(default_factory=list)
     observer_investigation_id: str = Field(min_length=1)
+    current_support_status: Literal["ACTIVE_PIXEL_SUPPORTED","HISTORICAL_CANDIDATE_MEMORY"] = "ACTIVE_PIXEL_SUPPORTED"
 
 
 class ViewExplanationGain(BaseModel):
@@ -3644,6 +3645,118 @@ def import_p3_perception_expansion_response(
     data.p3_perception_expansion_investigations.append(P3PerceptionExpansionInvestigationRecord(
         request_id=request["request_id"],photo_index=3,candidates=records,
         imported_relation_keys=imported,physical_identity_acquired=False,invented_geometry_added=False))
+    return MultiViewWorkspace.model_validate(data.model_dump())
+
+
+class P5PerceptionExpansionCandidateRecord(BaseModel):
+    """Auditable 799 P5 localization memory; semantics remain separate from localization."""
+    model_config = ConfigDict(extra="forbid")
+    candidate_id: str
+    outcome: Literal["LOCALIZABLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    candidate_roi: tuple[float,float,float,float] | None = None
+    localization_basis: Literal["DIRECTLY_LOCALIZED","PARTIALLY_BOUNDED"]
+    pixel_cues: list[str] = Field(min_length=1)
+    semantic_label: str
+    semantic_status: Literal["SUPPORTED_AS_INTERPRETATION","UNCERTAIN"]
+    semantic_evidence: str
+    relations: list[str] = Field(default_factory=list)
+    provenance: RichEvidenceProvenance
+    disposition: Literal["PROMOTED_LOCAL_OBSERVATION","WITHHELD"]
+    promoted_observation_ref: str | None = None
+
+
+class P5PerceptionExpansionInvestigationRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    request_id: str
+    photo_index: Literal[5]
+    search_roi: tuple[float,float,float,float]
+    candidates: list[P5PerceptionExpansionCandidateRecord] = Field(min_length=3,max_length=3)
+    revised_prediction_ref: Literal["788-p5-sector-structure"]
+    revision_state: Literal["HISTORICAL_CANDIDATE_MEMORY"]
+    physical_identity_acquired: Literal[False] = False
+    invented_geometry_added: Literal[False] = False
+
+
+def import_p5_perception_expansion_response(workspace:"MultiViewWorkspace", request:dict, response:dict)->"MultiViewWorkspace":
+    """Strict 799 ingestion: promote only the directly localized diagonal; downgrade 788 P5 candidate memory."""
+    if set(response)!=set(request["response_required_fields"]):
+        raise ValueError("799 response fields mismatch")
+    if response["schema_version"]!="0.1" or response["request_id"]!=request["request_id"] or response["photo_index"]!=5:
+        raise ValueError("799 response identity/photo mismatch")
+    search=tuple(request["search_sector"]["search_roi"])
+    if tuple(response["search_roi"])!=search:
+        raise ValueError("799 search ROI mismatch")
+    if any(x.request_id==request["request_id"] for x in workspace.p5_perception_expansion_investigations):
+        raise ValueError("799 perception expansion already imported")
+    expected=[x["candidate_id"] for x in request["candidate_searches"]]
+    results=response["candidate_results"]
+    if len(results)!=3 or sorted(x.get("candidate_id") for x in results)!=sorted(expected):
+        raise ValueError("799 must exactly cover three candidate IDs")
+    allowed_out=set(request["allowed_outcomes"]); allowed_basis=set(request["allowed_localization_basis"])
+    allowed_sem=set(request["allowed_semantic_status"]); allowed_rel=set(request["allowed_relation_tokens"])
+    required=set(request["candidate_result_required_fields"])
+    by={}
+    for x in results:
+        if set(x)!=required or x["outcome"] not in allowed_out or x["localization_basis"] not in allowed_basis:
+            raise ValueError("799 candidate shape/outcome/basis invalid")
+        if not x["pixel_cues"] or any(r not in allowed_rel for r in x["relations"]):
+            raise ValueError("799 cues/relations invalid")
+        sem=x["semantic_interpretation"]
+        if set(sem)!=set(request["semantic_interpretation_required_fields"]) or sem["status"] not in allowed_sem:
+            raise ValueError("799 semantic interpretation invalid")
+        p=x["provenance"]
+        if set(p)!=set(request["provenance_required_fields"]) or p["photo_index"]!=5 or tuple(p["search_roi"])!=search or p["candidate_id"]!=x["candidate_id"] or not p["pixel_cues"]:
+            raise ValueError("799 provenance invalid")
+        roi=x["candidate_roi"]
+        if x["outcome"]=="LOCALIZABLE":
+            if not isinstance(roi,list) or len(roi)!=4 or not (search[0]<=roi[0]<roi[2]<=search[2] and search[1]<=roi[1]<roi[3]<=search[3]):
+                raise ValueError("799 LOCALIZABLE ROI invalid")
+        elif roi is not None:
+            raise ValueError("799 non-localizable candidate must not have ROI")
+        forbidden=("SAME_PHYSICAL_OBJECT","LIKELY_SAME","COMMON_PHYSICAL_SURFACE","metric geometry","camera pose","hidden continuation","P3","P4")
+        if any(t in json.dumps(x) for t in forbidden):
+            raise ValueError("799 forbidden identity/inter-view/geometry content")
+        by[x["candidate_id"]]=x
+    stair=by["p5-candidate-stair-diagonal-region"]
+    if not (stair["outcome"]=="LOCALIZABLE" and stair["localization_basis"]=="DIRECTLY_LOCALIZED" and stair["semantic_interpretation"]["status"]=="SUPPORTED_AS_INTERPRETATION"):
+        raise ValueError("799 stair candidate lacks stable direct localization")
+    if by["p5-candidate-platform-region"]["outcome"]!="AMBIGUOUS" or by["p5-candidate-stair-platform-junction"]["outcome"]!="NOT_OBSERVABLE":
+        raise ValueError("799 platform/junction epistemic outcomes mismatch")
+    existing={o.id for o in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    oid="obs_p5_stair_diagonal_799"
+    if oid in existing:
+        raise ValueError("799 promoted observation ID conflict")
+    r=stair["candidate_roi"]; sem=stair["semantic_interpretation"]
+    obs=LocalObservation(id=oid,photo_index=5,status=ClaimStatus.OBSERVED,visibility=VisibilityStatus.VISIBLE,
+        region=NormalizedImageRegion(x0=r[0],y0=r[1],x1=r[2],y1=r[3]),proposed_category=sem["label"],
+        statement="Directly localized P5 diagonal region from 799; stair-like category remains SUPPORTED_AS_INTERPRETATION, not ontological certainty.",
+        certainty=AspectCertainty(existence=CertaintyLevel.CERTAIN,category=CertaintyLevel.PLAUSIBLE,identity=CertaintyLevel.UNKNOWN,
+                                  spatial_relation=CertaintyLevel.UNKNOWN,topology=CertaintyLevel.UNKNOWN,metric=CertaintyLevel.UNKNOWN))
+    data=workspace.model_copy(deep=True); data.pass_2.observations.append(obs)
+    records=[]
+    for x in results:
+        promoted=x["candidate_id"]=="p5-candidate-stair-diagonal-region"
+        prov=RichEvidenceProvenance(observation_ref=(oid if promoted else "obs_p5_side_wall"),photo_index=5,
+            roi=(tuple(x["candidate_roi"]) if promoted else search),pixel_cues=list(x["provenance"]["pixel_cues"]))
+        records.append(P5PerceptionExpansionCandidateRecord(candidate_id=x["candidate_id"],outcome=x["outcome"],
+            candidate_roi=(tuple(x["candidate_roi"]) if x["candidate_roi"] else None),localization_basis=x["localization_basis"],
+            pixel_cues=list(x["pixel_cues"]),semantic_label=x["semantic_interpretation"]["label"],semantic_status=x["semantic_interpretation"]["status"],
+            semantic_evidence=x["semantic_interpretation"]["evidence"],relations=list(x["relations"]),provenance=prov,
+            disposition=("PROMOTED_LOCAL_OBSERVATION" if promoted else "WITHHELD"),promoted_observation_ref=(oid if promoted else None)))
+    pred=next((p for p in data.spatial_view_predictions if p.prediction_id=="788-p5-sector-structure"),None)
+    if pred is None: raise ValueError("799 requires historical 788 P5 prediction")
+    pred.current_support_status="HISTORICAL_CANDIDATE_MEMORY"
+    revision=AssertionRevision(revision_id="revision-800-p5-788-sector",assertion_ref="788-p5-sector-structure",
+        previous_status="SUPPORTED_PIXEL_GROUNDED_PREDICTION",new_epistemic_state="SUPERSEDED",
+        reason="799 directly localizes only the diagonal candidate; platform remains AMBIGUOUS and junction NOT_OBSERVABLE, so 788 LEFT_OF/BELOW/BOUNDARY_JOINS remain historical candidate memory rather than current established local relations.",
+        provenance=[RichEvidenceProvenance(observation_ref="obs_p5_side_wall",photo_index=5,roi=search,
+            pixel_cues=list(by["p5-candidate-platform-region"]["pixel_cues"])+list(by["p5-candidate-stair-platform-junction"]["pixel_cues"]))])
+    if revision.revision_id in {x.revision_id for x in data.assertion_revisions}: raise ValueError("799 revision already recorded")
+    data.assertion_revisions.append(revision)
+    data.p5_perception_expansion_investigations.append(P5PerceptionExpansionInvestigationRecord(
+        request_id=request["request_id"],photo_index=5,search_roi=search,candidates=records,
+        revised_prediction_ref="788-p5-sector-structure",revision_state="HISTORICAL_CANDIDATE_MEMORY",
+        physical_identity_acquired=False,invented_geometry_added=False))
     return MultiViewWorkspace.model_validate(data.model_dump())
 
 
@@ -4503,6 +4616,7 @@ class MultiViewWorkspace(BaseModel):
     view_explanation_gains: list[ViewExplanationGain] = Field(default_factory=list)
     spatial_interview_discriminant_investigations: list[SpatialInterViewDiscriminantInvestigationRecord] = Field(default_factory=list)
     p3_perception_expansion_investigations: list[P3PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
+    p5_perception_expansion_investigations: list[P5PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
