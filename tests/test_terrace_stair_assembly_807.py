@@ -102,7 +102,7 @@ def test_807_p5_superseded_boundary_join_is_negative_memory_only():
     assert p5["boundary_separation_801"] == "NOT_OBSERVABLE"
     assert "SUPERSEDED" in p5["memory_788_boundary_joins"]
     assert p5["repeat_performed"] is False
-    constructive_blob = json.dumps(lot["terrace_shape_model"] + lot["stair_shape_model"] + lot["stair_terrace_connection"])
+    constructive_blob = json.dumps([lot["terrace_shape_model"], lot["stair_shape_model"], lot["stair_terrace_connection"]])
     assert "p5_stair_diagonal_sector" not in constructive_blob
     assert "p5_platform_sector" not in constructive_blob
 
