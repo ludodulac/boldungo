@@ -3438,7 +3438,7 @@ def build_world_hypothesis(workspace:"MultiViewWorkspace",graph:MultiViewWorldCo
         if o.proposed_category and o.region:
             semantic.append(WorldHypothesisSemanticProposal(observation_ref=o.id,proposed_category=o.proposed_category,
                 category_certainty=o.certainty.category,provenance=RichEvidenceProvenance(observation_ref=o.id,photo_index=o.photo_index,roi=(o.region.x0,o.region.y0,o.region.x1,o.region.y1))))
-    open_uncertainties=[x for x in derive_existing_structured_uncertainties(workspace) if x.resolved_state is None and len(x.open_alternatives)>=2]
+    open_uncertainties=[x for x in derive_existing_structured_uncertainties(workspace) if x.resolved_state is None and len(x.open_alternatives)>=2 and not (set(x.source_observation_ids) & invalidated) and (x.source_kind != "identity_candidate" or x.source_ref in {i.id for i in identities})]
     alternatives=[(x.id,x.open_alternatives) for x in open_uncertainties]
     branches=[{}]
     for uid,tokens in alternatives:
@@ -4292,6 +4292,9 @@ def assess_assertion_revision_impacts(workspace: MultiViewWorkspace, assertion_r
     for x in workspace.identity_discriminants:
         if assertion_ref in x.source_ids_by_observation:
             add("discriminant", x.id)
+    for i,x in enumerate(workspace.identity_discriminant_investigations):
+        if x.identity_candidate_id in identity_ids:
+            add("discriminant", f"investigation:{x.identity_candidate_id}:{i}")
     for i,x in enumerate(workspace.property_correspondences):
         corr=x.correspondence
         if assertion_ref in {corr.observation_ref_a,corr.observation_ref_b}:
