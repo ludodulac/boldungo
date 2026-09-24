@@ -4431,6 +4431,29 @@ def import_spatial_pixel_check_response(
     )
 
 
+def record_spatial_organization_state(
+    workspace: MultiViewWorkspace,
+    organization: SpatialOrganizationCandidate,
+    gain: ViewExplanationGain,
+) -> MultiViewWorkspace:
+    """Replace the current state of one existing candidate organization and its explicit gain components."""
+    if organization.organization_id not in {item.organization_id for item in workspace.spatial_organizations}:
+        raise ValueError("spatial organization state update requires an existing organization")
+    if gain.organization_ref != organization.organization_id:
+        raise ValueError("spatial organization gain must reference updated organization")
+    organizations = [
+        organization if item.organization_id == organization.organization_id else item
+        for item in workspace.spatial_organizations
+    ]
+    gains = [item for item in workspace.view_explanation_gains if item.organization_ref != organization.organization_id]
+    return MultiViewWorkspace.model_validate(
+        workspace.model_copy(update={
+            "spatial_organizations": organizations,
+            "view_explanation_gains": [*gains, gain],
+        }).model_dump()
+    )
+
+
 def invalidated_observation_ids(workspace: MultiViewWorkspace) -> set[str]:
     return {item.assertion_ref for item in workspace.assertion_revisions
             if item.new_epistemic_state in {"REJECTED_BY_PIXELS", "SUPERSEDED"}}
