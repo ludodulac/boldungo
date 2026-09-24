@@ -3329,6 +3329,66 @@ class CompetingWorldOrganization(BaseModel):
     affected_node_refs: list[str] = Field(min_length=1)
 
 
+class SpatialOrganizationAssertion(BaseModel):
+    """Qualitative candidate-world assertion; never metric geometry or acquired identity truth."""
+    model_config = ConfigDict(extra="forbid")
+    assertion_id: str = Field(min_length=1)
+    subject_ref: str = Field(min_length=1)
+    relation_token: str = Field(min_length=1)
+    object_ref: str = Field(min_length=1)
+    epistemic_level: Literal["CANDIDATE"]
+    source_observation_refs: list[str] = Field(min_length=1)
+
+
+class SpatialOrganizationCandidate(BaseModel):
+    """Persisted bounded candidate organization licensed by explicit qualitative evidence."""
+    model_config = ConfigDict(extra="forbid")
+    organization_id: str = Field(min_length=1)
+    epistemic_level: Literal["CANDIDATE"] = "CANDIDATE"
+    sector_label: str = Field(min_length=1)
+    observation_refs: list[str] = Field(min_length=1)
+    assertions: list[SpatialOrganizationAssertion] = Field(min_length=1)
+    unresolved: list[str] = Field(default_factory=list)
+
+
+class ViewPredictionVerdict(str, Enum):
+    SUPPORTED = "SUPPORTED"
+    CONTRADICTED = "CONTRADICTED"
+    AMBIGUOUS = "AMBIGUOUS"
+    NOT_OBSERVABLE = "NOT_OBSERVABLE"
+
+
+class SpatialViewPrediction(BaseModel):
+    """One falsifiable/non-observable consequence of a candidate organization in one photo."""
+    model_config = ConfigDict(extra="forbid")
+    prediction_id: str = Field(min_length=1)
+    organization_ref: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    observation_refs: list[str] = Field(default_factory=list)
+    expected_observable_consequence: str = Field(min_length=1)
+    inspection_provenance: list[RichEvidenceProvenance] = Field(default_factory=list)
+    verification_state: ViewPredictionVerdict
+    verification_evidence: str = Field(min_length=1)
+    verification_provenance: list[RichEvidenceProvenance] = Field(default_factory=list)
+    observer_investigation_id: str = Field(min_length=1)
+
+
+class ViewExplanationGain(BaseModel):
+    """Explicit components only; deliberately no arbitrary scalar score."""
+    model_config = ConfigDict(extra="forbid")
+    organization_ref: str = Field(min_length=1)
+    constrained_photo_indexes_before: list[int] = Field(default_factory=list)
+    constrained_photo_indexes_after: list[int] = Field(default_factory=list)
+    linked_observation_refs_before: list[str] = Field(default_factory=list)
+    linked_observation_refs_after: list[str] = Field(default_factory=list)
+    supported_prediction_ids: list[str] = Field(default_factory=list)
+    contradicted_prediction_ids: list[str] = Field(default_factory=list)
+    ambiguous_prediction_ids: list[str] = Field(default_factory=list)
+    not_observable_prediction_ids: list[str] = Field(default_factory=list)
+    remaining_ambiguities: list[str] = Field(default_factory=list)
+    invented_geometry_added: Literal[False] = False
+
+
 class MissingWorldConstraint(BaseModel):
     """Structural gap only; it does not invent the perceptual property needed to fill it."""
     model_config = ConfigDict(extra="forbid")
@@ -4180,6 +4240,9 @@ class MultiViewWorkspace(BaseModel):
     property_outcome_mapping_investigations: list[PropertyOutcomeMappingInvestigationRecord] = Field(default_factory=list)
     global_connectivity_request_ids: list[str] = Field(default_factory=list)
     assertion_revisions: list[AssertionRevision] = Field(default_factory=list)
+    spatial_organizations: list[SpatialOrganizationCandidate] = Field(default_factory=list)
+    spatial_view_predictions: list[SpatialViewPrediction] = Field(default_factory=list)
+    view_explanation_gains: list[ViewExplanationGain] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
@@ -4245,6 +4308,38 @@ class MultiViewWorkspace(BaseModel):
                 raise ValueError("assertion revision previous_status must match historical observation status")
             if any(p.observation_ref != revision.assertion_ref for p in revision.provenance):
                 raise ValueError("assertion revision provenance must reference the revised observation")
+        organization_ids = [item.organization_id for item in self.spatial_organizations]
+        if len(organization_ids) != len(set(organization_ids)):
+            raise ValueError("spatial organization IDs must be unique")
+        if len(self.spatial_organizations) > 2:
+            raise ValueError("bounded spatial organization experiment permits at most two organizations")
+        active_known_ids = known_ids - {item.assertion_ref for item in self.assertion_revisions
+                                      if item.new_epistemic_state in {"REJECTED_BY_PIXELS", "SUPERSEDED"}}
+        for organization in self.spatial_organizations:
+            if not set(organization.observation_refs).issubset(active_known_ids):
+                raise ValueError("spatial organization references unknown or invalidated observation")
+            for assertion in organization.assertions:
+                if not set(assertion.source_observation_refs).issubset(active_known_ids):
+                    raise ValueError("spatial organization assertion references unknown or invalidated source")
+        organization_id_set = set(organization_ids)
+        prediction_ids = [item.prediction_id for item in self.spatial_view_predictions]
+        if len(prediction_ids) != len(set(prediction_ids)):
+            raise ValueError("spatial prediction IDs must be unique")
+        for prediction in self.spatial_view_predictions:
+            if prediction.organization_ref not in organization_id_set:
+                raise ValueError("spatial prediction references unknown organization")
+            if prediction.photo_index > self.photo_count:
+                raise ValueError("spatial prediction references photo outside supplied input")
+            if not set(prediction.observation_refs).issubset(active_known_ids):
+                raise ValueError("spatial prediction references unknown or invalidated observation")
+            for provenance in [*prediction.inspection_provenance, *prediction.verification_provenance]:
+                if provenance.photo_index != prediction.photo_index:
+                    raise ValueError("prediction provenance must belong to prediction photo")
+        gain_refs = [item.organization_ref for item in self.view_explanation_gains]
+        if len(gain_refs) != len(set(gain_refs)):
+            raise ValueError("at most one explanation gain record per organization")
+        if not set(gain_refs).issubset(organization_id_set):
+            raise ValueError("view explanation gain references unknown organization")
         return self
 
 
