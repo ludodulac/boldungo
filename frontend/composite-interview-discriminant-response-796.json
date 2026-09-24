@@ -1,0 +1,244 @@
+{
+  "schema_version": "0.1",
+  "request_id": "composite-interview-discriminant-796",
+  "source_uncertainty_id": "composite-796:p3-p4-step-platform-organization-correspondence",
+  "organization_ref": "org_rear_sector_787",
+  "outcome": "NOT_OBSERVABLE",
+  "property_results": [
+    {
+      "property_token": "STEP_TO_PLATFORM_LATERAL_ORDER",
+      "outcome": "CORRESPONDENCE_COMPATIBLE",
+      "relation_tokens": [
+        "LEFT_OF"
+      ],
+      "evidence": "Dans P3, la région de marche/diagonale est directement visible à gauche de la région de plateforme. Dans P4, la région d'escalier autorisée est également principalement et directement visible à gauche de la région de terrasse autorisée. Les deux vues exposent donc le même ordre latéral qualitatif LEFT_OF."
+    },
+    {
+      "property_token": "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION",
+      "outcome": "NOT_OBSERVABLE",
+      "relation_tokens": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "evidence": "P3 expose la chaîne perceptive autorisée marche/diagonale–jonction–plateforme. Dans P4, à l'intérieur seulement des ROI obs_p4_stair et obs_p4_terrace, la zone où une terminaison/jonction comparable devrait être inspectable est masquée ou insuffisamment délimitée, notamment par la végétation et le cadrage des limites. Aucun BOUNDARY_JOINS ou TERMINATES_AGAINST comparable ne peut être établi fiablement sans inventer une jonction."
+    },
+    {
+      "property_token": "STEP_TO_PLATFORM_VERTICAL_ORDER",
+      "outcome": "CORRESPONDENCE_COMPATIBLE",
+      "relation_tokens": [
+        "BELOW"
+      ],
+      "evidence": "Dans P3, les pixels autorisés montrent la marche/diagonale montant depuis une zone plus basse vers la plateforme, avec la région de marche située qualitativement BELOW la plateforme. Dans P4, les pixels autorisés montrent de même la région d'escalier/parapet diagonal s'étendant sous la région de terrasse. Le même ordre vertical qualitatif BELOW est directement soutenu dans les deux vues."
+    }
+  ],
+  "evidence": "Deux propriétés de l'organisation composite ont une relation qualitative compatible directement visible dans P3 et P4 (LEFT_OF et BELOW). La propriété de terminaison/jonction n'est toutefois pas fiablement observable dans les ROI P4 autorisées. Conformément aux invariants, cette non-observabilité ne peut ni être transformée en compatibilité ni en incompatibilité; le résultat composite est donc NOT_OBSERVABLE.",
+  "provenance": [
+    {
+      "photo_index": 3,
+      "roi": [
+        0.104,
+        0.442,
+        0.329,
+        0.839
+      ],
+      "observation_refs": [
+        "obs_p3_step_diagonal_794"
+      ],
+      "pixel_cues": [
+        "Bande/parapet diagonal clair visible dans la partie gauche; son étendue reste à gauche de la plateforme autorisée."
+      ],
+      "property_token": "STEP_TO_PLATFORM_LATERAL_ORDER"
+    },
+    {
+      "photo_index": 3,
+      "roi": [
+        0.345,
+        0.459,
+        0.688,
+        0.675
+      ],
+      "observation_refs": [
+        "obs_p3_raised_platform_794"
+      ],
+      "pixel_cues": [
+        "Bord et garde-corps de la plateforme visibles à droite de la région de marche/diagonale."
+      ],
+      "property_token": "STEP_TO_PLATFORM_LATERAL_ORDER"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.19,
+        0.29,
+        0.38,
+        0.56
+      ],
+      "observation_refs": [
+        "obs_p4_stair"
+      ],
+      "pixel_cues": [
+        "Région d'escalier/parapet diagonal visible dans la bande gauche de la paire de ROI."
+      ],
+      "property_token": "STEP_TO_PLATFORM_LATERAL_ORDER"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.35,
+        0.23,
+        0.72,
+        0.43
+      ],
+      "observation_refs": [
+        "obs_p4_terrace"
+      ],
+      "pixel_cues": [
+        "Région de terrasse autorisée visible à droite de l'essentiel de la région d'escalier."
+      ],
+      "property_token": "STEP_TO_PLATFORM_LATERAL_ORDER"
+    },
+    {
+      "photo_index": 3,
+      "roi": [
+        0.104,
+        0.442,
+        0.329,
+        0.839
+      ],
+      "observation_refs": [
+        "obs_p3_step_diagonal_794"
+      ],
+      "pixel_cues": [
+        "La limite diagonale de la marche/parapet est visible en direction de la zone de jonction autorisée."
+      ],
+      "property_token": "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION"
+    },
+    {
+      "photo_index": 3,
+      "roi": [
+        0.298,
+        0.426,
+        0.369,
+        0.607
+      ],
+      "observation_refs": [
+        "obs_p3_visible_junction_794"
+      ],
+      "pixel_cues": [
+        "Zone de jonction P3 autorisée située entre la terminaison de la structure diagonale et la plateforme."
+      ],
+      "property_token": "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION"
+    },
+    {
+      "photo_index": 3,
+      "roi": [
+        0.345,
+        0.459,
+        0.688,
+        0.675
+      ],
+      "observation_refs": [
+        "obs_p3_raised_platform_794"
+      ],
+      "pixel_cues": [
+        "Bord de plateforme directement visible immédiatement à droite de la zone de jonction autorisée."
+      ],
+      "property_token": "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.19,
+        0.29,
+        0.38,
+        0.56
+      ],
+      "observation_refs": [
+        "obs_p4_stair"
+      ],
+      "pixel_cues": [
+        "La limite montante est partiellement occultée par le palmier dans le secteur où une terminaison vers la terrasse devrait être inspectée."
+      ],
+      "property_token": "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.35,
+        0.23,
+        0.72,
+        0.43
+      ],
+      "observation_refs": [
+        "obs_p4_terrace"
+      ],
+      "pixel_cues": [
+        "La terrasse montre une limite supérieure, mais les pixels autorisés n'exposent pas fiablement une terminaison/jonction commune avec l'escalier."
+      ],
+      "property_token": "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION"
+    },
+    {
+      "photo_index": 3,
+      "roi": [
+        0.104,
+        0.442,
+        0.329,
+        0.839
+      ],
+      "observation_refs": [
+        "obs_p3_step_diagonal_794"
+      ],
+      "pixel_cues": [
+        "La région diagonale s'étend visiblement vers le bas depuis le niveau de la plateforme."
+      ],
+      "property_token": "STEP_TO_PLATFORM_VERTICAL_ORDER"
+    },
+    {
+      "photo_index": 3,
+      "roi": [
+        0.345,
+        0.459,
+        0.688,
+        0.675
+      ],
+      "observation_refs": [
+        "obs_p3_raised_platform_794"
+      ],
+      "pixel_cues": [
+        "Le bord de plateforme forme le niveau supérieur par rapport à l'essentiel de la région de marche/diagonale."
+      ],
+      "property_token": "STEP_TO_PLATFORM_VERTICAL_ORDER"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.19,
+        0.29,
+        0.38,
+        0.56
+      ],
+      "observation_refs": [
+        "obs_p4_stair"
+      ],
+      "pixel_cues": [
+        "La région d'escalier/parapet diagonal se prolonge visiblement sous le niveau de la terrasse."
+      ],
+      "property_token": "STEP_TO_PLATFORM_VERTICAL_ORDER"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.35,
+        0.23,
+        0.72,
+        0.43
+      ],
+      "observation_refs": [
+        "obs_p4_terrace"
+      ],
+      "pixel_cues": [
+        "La limite supérieure de la terrasse est visible au-dessus de l'essentiel de la région d'escalier autorisée."
+      ],
+      "property_token": "STEP_TO_PLATFORM_VERTICAL_ORDER"
+    }
+  ]
+}
