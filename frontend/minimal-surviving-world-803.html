@@ -1,0 +1,23 @@
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Boldüngo · Minimal Surviving World 803</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1118;color:#eaf2fa;font:15px system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:22px}h1{margin:0 0 6px}.lead,.warning{color:#b9c8d7}.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{background:#121d28;border:1px solid #33485d;border-radius:14px;padding:14px}.photo{width:100%;display:block;border-radius:8px}.canvas{position:relative;aspect-ratio:4/3;background:#0e1721;border:1px dashed #6e8499;overflow:hidden}.primitive{position:absolute;border:2px solid #c6d5e3;background:rgba(198,213,227,.08);cursor:pointer}.diagonal_band{transform:skewY(-27deg);border-style:dashed}.junction_marker{border-width:3px}.open_band{border-style:dashed}.open_volume_outline{background:transparent;border-style:dotted}.opening_marker{background:#05080b}.primitive:focus,.primitive:hover{outline:3px solid #fff}.tag{position:absolute;left:3px;top:2px;font-size:10px;background:#0b1118;padding:1px 3px}.legend{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}.legend span{border:1px solid #526b82;border-radius:99px;padding:4px 8px}.relations,.inspect{margin-top:16px}.relation{padding:7px;border-top:1px solid #293b4c}code{color:#bcdcff}.unknown{color:#e0c7ff}.display{color:#ffd690}.observed{color:#a9e6b5}.interpreted{color:#ffd690}@media(max-width:850px){.compare{grid-template-columns:1fr}}
+</style>
+<main><h1>MINIMAL SURVIVING SPATIAL WORLD · 803</h1>
+<p class="lead">Comparaison humaine P3 uniquement. Le schéma de droite n'est pas une reprojection et ne reconstruit ni caméra, ni distances, ni profondeur.</p>
+<div class="legend"><span class="observed">OBSERVED / LOCALIZED</span><span class="interpreted">INTERPRETED</span><span class="unknown">UNKNOWN</span><span class="display">DISPLAY_LAYOUT_ONLY</span></div>
+<div class="compare"><section class="panel"><h2>P3 originale · référence pixels</h2><img class="photo" src="./benchmarks/real-house-5/03-original.jpg" alt="Photo P3 originale"></section>
+<section class="panel"><h2>MINIMAL SURVIVING WORLD</h2><div id="canvas" class="canvas" aria-label="Schéma qualitatif P3"></div><p class="warning"><b>DISPLAY_LAYOUT_ONLY :</b> les positions du dessin servent uniquement à rendre les relations qualitatives lisibles.</p></section></div>
+<section class="panel relations"><h2>Relations WORLD_EVIDENCE</h2><div id="relations"></div></section>
+<section class="panel inspect"><h2>Traçabilité de l'élément sélectionné</h2><div id="detail">Sélectionnez une primitive du schéma.</div></section>
+<section class="panel"><h2 class="unknown">UNKNOWN préservé</h2><div id="unknown"></div></section>
+<section class="panel"><h2>Validation humaine</h2><p>Est-ce que l'organisation spatiale minimale actuellement comprise par BOLDÜNGO ressemble effectivement à l'organisation observable dans P3 ?</p><p><b>Aucun score, MATCH ou SUCCESS automatique.</b></p></section></main>
+<script type="module">
+const a=await (await fetch('./minimal-surviving-world-803.json')).json(), ev=a.WORLD_EVIDENCE, dl=a.DISPLAY_LAYOUT_ONLY;
+const by=Object.fromEntries(ev.observations.map(o=>[o.observation_id,o]));
+for(const p of dl.primitives){const e=document.createElement('button');e.className='primitive '+p.kind;e.style.cssText='left:'+(p.x*100)+'%;top:'+(p.y*100)+'%;width:'+(p.w*100)+'%;height:'+(p.h*100)+'%';e.innerHTML='<span class="tag">'+p.observation_id.replace('obs_p3_','')+'</span>';e.onclick=()=>show(p.observation_id);canvas.append(e)}
+relations.innerHTML=ev.relations.map(r=>'<div class="relation"><code>'+r.subject+'</code> <b>'+r.relation+'</b> <code>'+r.object+'</code></div>').join('');
+unknown.innerHTML='<ul>'+a.UNKNOWN_PRESERVED.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
+function show(id){const o=by[id], rel=ev.relations.filter(r=>r.subject===id||r.object===id);detail.innerHTML='<p><b>observation_id</b>: <code>'+o.observation_id+'</code><br><b>photo_index</b>: '+o.photo_index+'<br><b>ROI source</b>: ['+o.source_roi.join(', ')+']<br><b>catégorie/interprétation</b>: '+o.category_interpretation+'<br><b>niveau de certitude</b>: <code>'+JSON.stringify(o.certainty)+'</code><br><b>rôle visuel</b>: '+o.visual_role+'</p><p><b>relations utilisées</b><br>'+rel.map(r=>r.subject+' '+r.relation+' '+r.object).join('<br>')+'</p><p class="display"><b>DISPLAY_LAYOUT_ONLY</b>: '+dl.warning+'</p>'}
+</script>
