@@ -408,7 +408,7 @@ def test_801_request_is_new_p5_only_fail_closed_and_non_ingesting():
     assert "DIRECTLY_LOCALIZED" in serialized
     assert "Do not repeat 799" in serialized
     assert "near-horizontal upper boundary alone is insufficient" in serialized
-    assert "do not restore 788 LEFT_OF, BELOW or BOUNDARY_JOINS" in serialized
+    assert "Do not restore 788 LEFT_OF, BELOW or BOUNDARY_JOINS" in serialized
     assert "No physical identity" in serialized
     assert "No LocalObservation creation" in serialized
     assert request["new_information_sought"]["property_token"] not in json.dumps(prior)
