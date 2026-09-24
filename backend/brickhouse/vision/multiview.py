@@ -4701,7 +4701,8 @@ class MultiViewWorkspace(BaseModel):
     view_explanation_gains: list[ViewExplanationGain] = Field(default_factory=list)
     spatial_interview_discriminant_investigations: list[SpatialInterViewDiscriminantInvestigationRecord] = Field(default_factory=list)
     p3_perception_expansion_investigations: list[P3PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
-    p5_perception_expansion_investigations: list[P5PerceptionExpansionInvestigationRecord] = Field(default_factory=list)\n    p5_platform_discriminant_investigations: list[P5PlatformDiscriminantInvestigationRecord] = Field(default_factory=list)
+    p5_perception_expansion_investigations: list[P5PerceptionExpansionInvestigationRecord] = Field(default_factory=list)
+    p5_platform_discriminant_investigations: list[P5PlatformDiscriminantInvestigationRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
