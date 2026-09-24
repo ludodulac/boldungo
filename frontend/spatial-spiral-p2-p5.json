@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.6",
-  "artifact_id": "p3-perception-ingestion-795",
+  "schema_version": "0.7",
+  "artifact_id": "composite-ingestion-797",
   "purpose": "First short SEE→HYPOTHESIZE→PREDICT→CHECK→REVISE→VISIBLE loop. Pixel evidence only from public real-house-5 photos 02–05.",
   "legacy_input": {
     "world_hypothesis": "world-hypothesis-073",
@@ -219,7 +219,8 @@
         "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
         "metric geometry UNKNOWN",
         "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790",
-        "P3/P5 physical identity remains UNRESOLVED despite local lower-volume/opening organization compatibility"
+        "P3/P5 physical identity remains UNRESOLVED despite local lower-volume/opening organization compatibility",
+        "P3/P4 composite signature PARTIALLY_CONSTRAINED_NOT_FULLY_OBSERVABLE after 796"
       ]
     }
   ],
@@ -350,9 +351,20 @@
       "gain": "P3 now has additional directly pixel-anchored stair-like, raised-platform and visible-junction regions with auditable 794 provenance; uncertain wall semantics remain withheld.",
       "invented_geometry_added": false,
       "identity_acquired": false
+    },
+    "inter_view_796": {
+      "gain": [
+        "independent P3/P4 lateral-order correspondence constraint: LEFT_OF",
+        "independent P3/P4 vertical-order correspondence constraint: BELOW",
+        "explicit visibility limit: P4 termination/junction NOT_OBSERVABLE"
+      ],
+      "global_outcome": "NOT_OBSERVABLE",
+      "identity_acquired": false,
+      "invented_geometry_added": false,
+      "note": "NOT_OBSERVABLE at composite-global level is epistemic memory, not failure and not incompatibility."
     }
   },
-  "note": "795 closes SEE→OBSERVER→VALIDATE→PROMOTE/WITHHOLD for P3. Three directly-localized supported regions are promotable with audit provenance; the partially-bounded UNCERTAIN wall candidate is withheld. no SAME_PHYSICAL_OBJECT and no metric geometry.",
+  "note": "797 preserves the mixed 796 result: global NOT_OBSERVABLE, lateral LEFT_OF compatible, vertical BELOW compatible, junction NOT_OBSERVABLE. no SAME_PHYSICAL_OBJECT, no LIKELY_SAME, no metric geometry.",
   "observer_import": {
     "request_id": "spatial-pixel-check-788",
     "response_file": "spatial-pixel-check-response-788.json",
@@ -468,6 +480,49 @@
       }
     ],
     "physical_identity_acquired": false,
+    "invented_geometry_added": false
+  },
+  "inter_view_discriminant_796": {
+    "request_id": "composite-interview-discriminant-796",
+    "status": "EXECUTED",
+    "global_outcome": "NOT_OBSERVABLE",
+    "global_semantics": "The complete composite signature is not fully testable; this does not negate compatible property-level constraints and is not incompatibility.",
+    "uncertainty_state": "PARTIALLY_CONSTRAINED_NOT_FULLY_OBSERVABLE",
+    "resolved": false,
+    "property_results": [
+      {
+        "property_token": "STEP_TO_PLATFORM_LATERAL_ORDER",
+        "outcome": "CORRESPONDENCE_COMPATIBLE",
+        "relations": [
+          "LEFT_OF"
+        ]
+      },
+      {
+        "property_token": "STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION",
+        "outcome": "NOT_OBSERVABLE",
+        "relations": [
+          "NO_RELIABLE_RELATION"
+        ]
+      },
+      {
+        "property_token": "STEP_TO_PLATFORM_VERTICAL_ORDER",
+        "outcome": "CORRESPONDENCE_COMPATIBLE",
+        "relations": [
+          "BELOW"
+        ]
+      }
+    ],
+    "acquired_constraints": [
+      "P3/P4 step-platform lateral order = LEFT_OF compatible",
+      "P3/P4 step-platform vertical order = BELOW compatible"
+    ],
+    "not_acquired": [
+      "No P4 BOUNDARY_JOINS or TERMINATES_AGAINST relation from 796",
+      "No physical identity",
+      "No common physical surface"
+    ],
+    "anti_repeat": "Exact structured 796 signature is exhausted; same P4 junction inspection cannot be repeated without changed structured information.",
+    "identity_acquired": false,
     "invented_geometry_added": false
   }
 }
