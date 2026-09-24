@@ -4674,14 +4674,21 @@ class MultiViewWorkspace(BaseModel):
             raise ValueError("workspace assertion revision IDs must be unique")
         observations = [*self.pass_1.observations, *self.pass_2.observations]
         by_id = {item.id: item for item in observations}
+        prediction_by_id = {item.prediction_id:item for item in self.spatial_view_predictions}
         for revision in self.assertion_revisions:
             observation = by_id.get(revision.assertion_ref)
-            if observation is None:
-                raise ValueError("assertion revision references unknown observation")
-            if revision.previous_status != observation.status.value:
-                raise ValueError("assertion revision previous_status must match historical observation status")
-            if any(p.observation_ref != revision.assertion_ref for p in revision.provenance):
-                raise ValueError("assertion revision provenance must reference the revised observation")
+            prediction = prediction_by_id.get(revision.assertion_ref)
+            if observation is None and prediction is None:
+                raise ValueError("assertion revision references unknown assertion")
+            if observation is not None:
+                if revision.previous_status != observation.status.value:
+                    raise ValueError("assertion revision previous_status must match historical observation status")
+                if any(p.observation_ref != revision.assertion_ref for p in revision.provenance):
+                    raise ValueError("observation revision provenance must reference the revised observation")
+            else:
+                allowed_refs=set(prediction.observation_refs)
+                if any(p.observation_ref not in allowed_refs for p in revision.provenance):
+                    raise ValueError("prediction revision provenance must reference a source observation")
         organization_ids = [item.organization_id for item in self.spatial_organizations]
         if len(organization_ids) != len(set(organization_ids)):
             raise ValueError("spatial organization IDs must be unique")
@@ -4836,8 +4843,9 @@ def record_spatial_organization_state(
 
 
 def invalidated_observation_ids(workspace: MultiViewWorkspace) -> set[str]:
+    observation_ids={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
     return {item.assertion_ref for item in workspace.assertion_revisions
-            if item.new_epistemic_state in {"REJECTED_BY_PIXELS", "SUPERSEDED"}}
+            if item.assertion_ref in observation_ids and item.new_epistemic_state in {"REJECTED_BY_PIXELS", "SUPERSEDED"}}
 
 
 def record_assertion_revision(workspace: MultiViewWorkspace, revision: AssertionRevision) -> MultiViewWorkspace:
