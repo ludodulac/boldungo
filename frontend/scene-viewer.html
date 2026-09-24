@@ -10,7 +10,7 @@
 <body>
   <main class="app-shell">
     <aside class="panel">
-      <div><p class="eyebrow">Boldungo · ArchitecturalScene</p><h1>Reconstruction 3D</h1><p class="intro">Cette vue montre ce que Boldungo comprend déjà de la maison avant de choisir les pièces LEGO. Les zones incertaines restent explicitement incertaines.</p></div>
+      <div><p class="eyebrow">Boldungo · ArchitecturalScene / WorldHypothesis</p><h1>Reconstruction 3D</h1><p class="intro">Cette vue montre ce que Boldungo comprend déjà de la maison avant de choisir les pièces LEGO. Les zones incertaines restent explicitement incertaines.</p></div>
       <section class="controls">
         <a class="file-button" href="./photo.html">← Retour aux photos</a>
         <a class="file-button" href="./brickhouse-reference-preview.html">Charger la référence BrickHouse</a>
@@ -26,7 +26,10 @@
     </aside>
     <section class="viewer-wrap"><canvas id="viewer" aria-label="Reconstruction architecturale 3D"></canvas><div class="viewer-hint">Aperçu architectural, pas encore une maquette LEGO · les zones inconnues restent absentes de la première maquette · glisser pour tourner · molette/pincer pour zoomer</div></section>
   </main>
-  <script type="module" src="./scene-viewer.js"></script>
+  <script type="module">
+    const worldMode = new URLSearchParams(location.search).has('world');
+    await import(worldMode ? './world-hypothesis-viewer.js' : './scene-viewer.js');
+  </script>
   <script type="module" src="./scene-platform-structure-status.js"></script>
   <script type="module" src="./scene-partial-build.js"></script>
   <script type="module" src="./site-nav.js?v=bh147-global-nav-1"></script>
