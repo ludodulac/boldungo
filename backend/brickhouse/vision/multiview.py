@@ -4722,6 +4722,69 @@ class ConstructiveApproximation(BaseModel):
     revisable: Literal[True] = True
 
 
+class HouseComponentKind(str, Enum):
+    WALL_FACE = "WALL_FACE"
+    OPENING = "OPENING"
+    ROOF_BOUNDARY = "ROOF_BOUNDARY"
+    LEVEL_OR_VERTICAL_BAND = "LEVEL_OR_VERTICAL_BAND"
+    VISIBLE_OUTLINE = "VISIBLE_OUTLINE"
+    CONSTRUCTIVE_ENVELOPE = "CONSTRUCTIVE_ENVELOPE"
+
+
+class HouseObservedComponent(BaseModel):
+    """House component whose architectural content is directly grounded in persisted observations."""
+    model_config = ConfigDict(extra="forbid")
+    component_id: str = Field(min_length=1)
+    kind: HouseComponentKind
+    observation_refs: list[str] = Field(min_length=1)
+    photo_indexes: list[int] = Field(min_length=1)
+    statement: str = Field(min_length=1)
+    qualitative_relations: list[str] = Field(default_factory=list)
+    truth_class: Literal["OBSERVED_ARCHITECTURAL_EVIDENCE"] = "OBSERVED_ARCHITECTURAL_EVIDENCE"
+
+
+class HouseApproximationComponent(BaseModel):
+    """Constructive-only house geometry required for materialization, never perceptual truth."""
+    model_config = ConfigDict(extra="forbid")
+    approximation_id: str = Field(min_length=1)
+    kind: HouseComponentKind
+    reason: str = Field(min_length=1)
+    source_unknowns: list[str] = Field(min_length=1)
+    replacement_condition: str = Field(min_length=1)
+    truth_class: Literal["CONSTRUCTIVE_APPROXIMATION"] = "CONSTRUCTIVE_APPROXIMATION"
+    revisable: Literal[True] = True
+
+
+class HouseUnknownComponent(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    unknown_id: str = Field(min_length=1)
+    statement: str = Field(min_length=1)
+
+
+class HouseShapeModel(BaseModel):
+    """Concrete, LEGO-oriented but non-metric partial HOUSE representation."""
+    model_config = ConfigDict(extra="forbid")
+    assembly_id: str = Field(min_length=1)
+    observed_components: list[HouseObservedComponent] = Field(min_length=1)
+    approximated_components: list[HouseApproximationComponent] = Field(default_factory=list)
+    unknown_components: list[HouseUnknownComponent] = Field(min_length=1)
+    separate_house_candidate_evidence: list[ArchitecturalEvidenceRef] = Field(default_factory=list)
+    recognizable_gate: Literal["SUPPORTED", "PARTIAL", "BLOCKED"]
+
+    @model_validator(mode="after")
+    def preserve_house_truth_boundary(self) -> "HouseShapeModel":
+        observed_ids = {item.component_id for item in self.observed_components}
+        approximation_ids = {item.approximation_id for item in self.approximated_components}
+        if observed_ids & approximation_ids:
+            raise ValueError("house approximation cannot masquerade as an observed component")
+        if self.recognizable_gate == "SUPPORTED":
+            kinds = {item.kind for item in self.observed_components}
+            required = {HouseComponentKind.WALL_FACE, HouseComponentKind.OPENING, HouseComponentKind.ROOF_BOUNDARY}
+            if not required.issubset(kinds):
+                raise ValueError("SUPPORTED house requires observed wall face, opening and roof boundary")
+        return self
+
+
 class ArchitecturalSubassembly(BaseModel):
     """Minimal concrete architectural unit built from evidence without hiding unknowns."""
     model_config = ConfigDict(extra="forbid")
@@ -4796,6 +4859,7 @@ class MultiViewWorkspace(BaseModel):
     assembly_connections: list[AssemblyConnection] = Field(default_factory=list)
     unknown_assembly_connections: list[UnknownAssemblyConnection] = Field(default_factory=list)
     recognizable_architectural_fragment_gate: RecognizableArchitecturalFragmentGate | None = None
+    house_shape_model: HouseShapeModel | None = None
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
