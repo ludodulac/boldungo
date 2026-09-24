@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.5",
-  "artifact_id": "spatial-spiral-793",
+  "schema_version": "0.6",
+  "artifact_id": "p3-perception-ingestion-795",
   "purpose": "First short SEE→HYPOTHESIZE→PREDICT→CHECK→REVISE→VISIBLE loop. Pixel evidence only from public real-house-5 photos 02–05.",
   "legacy_input": {
     "world_hypothesis": "world-hypothesis-073",
@@ -345,9 +345,14 @@
       "identity_acquired": false,
       "invented_geometry_added": false,
       "note": "Three discriminating properties are locally compatible. This reduces the incompatible-local-organization alternative for the tested properties, but does not establish physical identity."
+    },
+    "p3_perception_795": {
+      "gain": "P3 now has additional directly pixel-anchored stair-like, raised-platform and visible-junction regions with auditable 794 provenance; uncertain wall semantics remain withheld.",
+      "invented_geometry_added": false,
+      "identity_acquired": false
     }
   },
-  "note": "793 persists observer result 792: P3/P5 lower-volume/opening organizations are locally compatible as CONTAINED_WITHIN and BELOW. Physical identity remains UNRESOLVED; no SAME_PHYSICAL_OBJECT, common physical surface, new P5 LocalObservation, hidden continuation, camera pose, or metric geometry is added.",
+  "note": "795 closes SEE→OBSERVER→VALIDATE→PROMOTE/WITHHOLD for P3. Three directly-localized supported regions are promotable with audit provenance; the partially-bounded UNCERTAIN wall candidate is withheld. no SAME_PHYSICAL_OBJECT and no metric geometry.",
   "observer_import": {
     "request_id": "spatial-pixel-check-788",
     "response_file": "spatial-pixel-check-response-788.json",
@@ -435,5 +440,34 @@
     "source_uncertainty_id": "interview-792:p3-p5-lower-volume-opening-correspondence",
     "uncertainty_state": "LOCAL_COMPATIBILITY_ESTABLISHED",
     "physical_identity": "UNRESOLVED"
+  },
+  "p3_perception_795": {
+    "request_id": "p3-perception-expansion-794",
+    "status": "VALIDATED_AND_INGESTIBLE",
+    "promoted": [
+      {
+        "candidate_id": "p3-candidate-step-diagonal-region",
+        "observation_ref": "obs_p3_step_diagonal_794",
+        "semantic_status": "SUPPORTED_AS_INTERPRETATION"
+      },
+      {
+        "candidate_id": "p3-candidate-raised-platform-region",
+        "observation_ref": "obs_p3_raised_platform_794",
+        "semantic_status": "SUPPORTED_AS_INTERPRETATION"
+      },
+      {
+        "candidate_id": "p3-candidate-visible-junction-region",
+        "observation_ref": "obs_p3_visible_junction_794",
+        "semantic_status": "SUPPORTED_AS_INTERPRETATION"
+      }
+    ],
+    "withheld": [
+      {
+        "candidate_id": "p3-candidate-adjacent-wall-region",
+        "reason": "PARTIALLY_BOUNDED + semantic interpretation UNCERTAIN; retained as 794 perceptual evidence, not promoted as a wall LocalObservation."
+      }
+    ],
+    "physical_identity_acquired": false,
+    "invented_geometry_added": false
   }
 }
