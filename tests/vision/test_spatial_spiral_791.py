@@ -199,3 +199,51 @@ def test_795_promotions_remain_revisable_and_validation_fails_closed():
     bad=json.loads(json.dumps(response)); bad["region_results"][0]["relations"][0]["relation_token"]="SAME_PHYSICAL_OBJECT"
     with pytest.raises(ValueError):
         import_p3_perception_expansion_response(_workspace_789(),request,bad)
+
+
+def test_797_import_796_preserves_global_not_observable_and_property_level_constraints_after_reload():
+    workspace=_workspace_789()
+    req794=json.loads((ROOT/"frontend"/"p3-perception-expansion-request-794.json").read_text())
+    res794=json.loads((ROOT/"frontend"/"p3-perception-expansion-response-794.json").read_text())
+    workspace=import_p3_perception_expansion_response(workspace,req794,res794)
+    before_obs={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    before_ids=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    request=json.loads((ROOT/"frontend"/"composite-interview-discriminant-request-796.json").read_text())
+    response=json.loads((ROOT/"frontend"/"composite-interview-discriminant-response-796.json").read_text())
+    workspace=import_spatial_interview_discriminant_response(workspace,request,response)
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    record=next(x for x in loaded.spatial_interview_discriminant_investigations if x.request_id=="composite-interview-discriminant-796")
+    assert record.outcome=="NOT_OBSERVABLE"
+    assert record.uncertainty_state=="PARTIALLY_CONSTRAINED_NOT_FULLY_OBSERVABLE"
+    assert record.resolved is False
+    results={x.property_token:x for x in record.property_results}
+    assert results["STEP_TO_PLATFORM_LATERAL_ORDER"].outcome=="CORRESPONDENCE_COMPATIBLE"
+    assert results["STEP_TO_PLATFORM_LATERAL_ORDER"].relation_tokens==["LEFT_OF"]
+    assert results["STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION"].outcome=="NOT_OBSERVABLE"
+    assert results["STEP_PLATFORM_TERMINATION_JUNCTION_CONFIGURATION"].relation_tokens==["NO_RELIABLE_RELATION"]
+    assert results["STEP_TO_PLATFORM_VERTICAL_ORDER"].outcome=="CORRESPONDENCE_COMPATIBLE"
+    assert results["STEP_TO_PLATFORM_VERTICAL_ORDER"].relation_tokens==["BELOW"]
+    assert {p.photo_index for p in record.provenance}=={3,4}
+    assert all(p.pixel_cues for p in record.provenance)
+    assert any(p.roi==(0.104,0.442,0.329,0.839) for p in record.provenance)
+    assert any(p.roi==(0.19,0.29,0.38,0.56) for p in record.provenance)
+    assert spatial_interview_discriminant_already_executed(loaded,request)
+    with pytest.raises(ValueError,match="already executed"):
+        import_spatial_interview_discriminant_response(loaded,request,response)
+    assert {x.id for x in [*loaded.pass_1.observations,*loaded.pass_2.observations]}==before_obs
+    assert [*loaded.pass_1.identities,*loaded.pass_2.identities]==before_ids
+
+
+def test_797_response_796_validation_fails_closed_on_roi_identity_and_property_coverage():
+    workspace=_workspace_789()
+    request=json.loads((ROOT/"frontend"/"composite-interview-discriminant-request-796.json").read_text())
+    response=json.loads((ROOT/"frontend"/"composite-interview-discriminant-response-796.json").read_text())
+    bad=json.loads(json.dumps(response)); bad["provenance"][0]["roi"]=[0,0,1,1]
+    with pytest.raises(ValueError,match="authorized observation ROI"):
+        import_spatial_interview_discriminant_response(workspace,request,bad)
+    bad=json.loads(json.dumps(response)); bad["property_results"][0]["relation_tokens"]=["SAME_PHYSICAL_OBJECT"]
+    with pytest.raises(ValueError,match="relation token"):
+        import_spatial_interview_discriminant_response(workspace,request,bad)
+    bad=json.loads(json.dumps(response)); bad["property_results"]=bad["property_results"][:2]
+    with pytest.raises(ValueError,match="exactly cover"):
+        import_spatial_interview_discriminant_response(workspace,request,bad)
