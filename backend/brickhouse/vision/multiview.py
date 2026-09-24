@@ -4886,6 +4886,120 @@ class ArchitecturalSubassembly(BaseModel):
         return self
 
 
+class PixelDerivedArchitecturalEvidence(BaseModel):
+    """New 808 pixel evidence; never retroactively rewritten as a persisted observation."""
+    model_config = ConfigDict(extra="forbid")
+    pixel_evidence_id: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    roi: tuple[float, float, float, float]
+    property_tested: str = Field(min_length=1)
+    observed_result: str = Field(min_length=1)
+    epistemic_status: Literal["OBSERVED", "SUPPORTS_TOPOLOGY", "AMBIGUOUS", "NOT_OBSERVABLE"]
+    provenance: str = Field(min_length=1)
+    truth_class: Literal["NEW_PIXEL_DERIVED_ARCHITECTURAL_EVIDENCE"] = "NEW_PIXEL_DERIVED_ARCHITECTURAL_EVIDENCE"
+
+
+class ArchitecturalConnectionStatus(str, Enum):
+    SUPPORTED = "SUPPORTED"
+    COMPATIBLE_BUT_UNRESOLVED = "COMPATIBLE_BUT_UNRESOLVED"
+    UNKNOWN_CONNECTION = "UNKNOWN_CONNECTION"
+
+
+class ArchitecturalTopologyRelation(str, Enum):
+    ATTACHED_TO_FACE = "ATTACHED_TO_FACE"
+    SUPPORTED_BY = "SUPPORTED_BY"
+    LANDS_ON = "LANDS_ON"
+    CONNECTS_TO = "CONNECTS_TO"
+    TERMINATES_AT_TERRACE_BOUNDARY = "TERMINATES_AT_TERRACE_BOUNDARY"
+    VISIBLE_ADJACENCY = "VISIBLE_ADJACENCY"
+    OPENING_IN_FACE = "OPENING_IN_FACE"
+    ROOF_COVERS = "ROOF_COVERS"
+
+
+class ArchitecturalConnectionRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    connection_id: str = Field(min_length=1)
+    subject_assembly: str = Field(min_length=1)
+    relation: ArchitecturalTopologyRelation
+    object_assembly_or_sector: str = Field(min_length=1)
+    status: ArchitecturalConnectionStatus
+    evidence_refs: list[str] = Field(default_factory=list)
+    pixel_evidence_refs: list[str] = Field(default_factory=list)
+    unknowns: list[str] = Field(default_factory=list)
+    revisable: Literal[True] = True
+
+    @model_validator(mode="after")
+    def supported_connection_requires_evidence(self) -> "ArchitecturalConnectionRecord":
+        if self.status == ArchitecturalConnectionStatus.SUPPORTED and not (self.evidence_refs or self.pixel_evidence_refs):
+            raise ValueError("SUPPORTED architectural connection requires evidence provenance")
+        return self
+
+
+class ArchitecturalCorrespondenceRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    correspondence_id: str = Field(min_length=1)
+    sectors: list[str] = Field(min_length=2)
+    status: Literal[
+        "ESTABLISHED_CORRESPONDENCE",
+        "SUPPORTED_CORRESPONDENCE_CANDIDATE",
+        "COMPATIBLE_ONLY",
+        "UNRESOLVED",
+        "CONTRADICTED",
+    ]
+    evidence_refs: list[str] = Field(default_factory=list)
+    pixel_evidence_refs: list[str] = Field(default_factory=list)
+    unknowns: list[str] = Field(default_factory=list)
+
+
+class RecognizableFragmentSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    spec_id: str = Field(min_length=1)
+    assembly_refs: list[str] = Field(min_length=2)
+    connection_refs: list[str] = Field(min_length=1)
+    observed_refs: list[str] = Field(default_factory=list)
+    pixel_derived_new_refs: list[str] = Field(default_factory=list)
+    constructive_approximation_refs: list[str] = Field(default_factory=list)
+    unknowns: list[str] = Field(default_factory=list)
+
+
+class ArchitecturalConnectionModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    model_id: str = Field(min_length=1)
+    pixel_evidence: list[PixelDerivedArchitecturalEvidence] = Field(default_factory=list)
+    correspondences: list[ArchitecturalCorrespondenceRecord] = Field(default_factory=list)
+    connections: list[ArchitecturalConnectionRecord] = Field(min_length=1)
+    house_recognizable: Literal["SUPPORTED"]
+    terrace_recognizable: Literal["SUPPORTED"]
+    stair_recognizable: Literal["SUPPORTED"]
+    evidence_approximation_separated: Literal[True] = True
+    hidden_geometry_presented_as_observed: Literal[False] = False
+    global_gate: Literal["BLOCKED", "READY"]
+    recognizable_fragment_spec: RecognizableFragmentSpec | None = None
+
+    @model_validator(mode="after")
+    def gate_fails_closed(self) -> "ArchitecturalConnectionModel":
+        structural_relations = {
+            ArchitecturalTopologyRelation.ATTACHED_TO_FACE,
+            ArchitecturalTopologyRelation.SUPPORTED_BY,
+            ArchitecturalTopologyRelation.LANDS_ON,
+            ArchitecturalTopologyRelation.CONNECTS_TO,
+            ArchitecturalTopologyRelation.TERMINATES_AT_TERRACE_BOUNDARY,
+            ArchitecturalTopologyRelation.ROOF_COVERS,
+        }
+        supported_structural = [
+            item for item in self.connections
+            if item.status == ArchitecturalConnectionStatus.SUPPORTED and item.relation in structural_relations
+        ]
+        if self.global_gate == "READY":
+            if not supported_structural:
+                raise ValueError("READY requires a supported structural interassembly connection")
+            if self.recognizable_fragment_spec is None:
+                raise ValueError("READY requires RECOGNIZABLE_FRAGMENT_SPEC")
+        elif self.recognizable_fragment_spec is not None:
+            raise ValueError("RECOGNIZABLE_FRAGMENT_SPEC is forbidden while gate is BLOCKED")
+        return self
+
+
 class AssemblyConnection(BaseModel):
     """A supported inter-assembly connection; evidence provenance is mandatory."""
     model_config = ConfigDict(extra="forbid")
@@ -4945,6 +5059,7 @@ class MultiViewWorkspace(BaseModel):
     house_shape_model: HouseShapeModel | None = None
     terrace_shape_model: SecondaryAssemblyShapeModel | None = None
     stair_shape_model: SecondaryAssemblyShapeModel | None = None
+    architectural_connection_model: ArchitecturalConnectionModel | None = None
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
