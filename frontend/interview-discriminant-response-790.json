@@ -1,0 +1,172 @@
+{
+  "schema_version": "0.1",
+  "request_id": "interview-discriminant-790",
+  "source_uncertainty_id": "interview-790:p4-p5-wall-sector-correspondence",
+  "organization_ref": "org_rear_sector_787",
+  "outcome": "AMBIGUOUS",
+  "property_results": [
+    {
+      "property_token": "OPENING_LAYOUT_ORDER",
+      "outcome": "AMBIGUOUS",
+      "relation_tokens": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "evidence": "Within the authorized P4 rear-wall ROI, only a cropped portion of an opening is directly visible at the left edge; within the authorized P5 side-wall ROI, more than one opening-like region is visible at different vertical positions. The authorized pixels do not establish a unique cross-view opening mapping, and crop/non-visibility cannot be treated as absence."
+    },
+    {
+      "property_token": "OPENING_TO_ROOF_EDGE_RELATION",
+      "outcome": "CORRESPONDENCE_COMPATIBLE",
+      "relation_tokens": [
+        "BELOW"
+      ],
+      "evidence": "In both authorized wall-sector ROIs, a directly visible opening lies below a directly visible sloping dark roof/eave boundary. This qualitative boundary/order relation is compatible across the two views and no mutually exclusive relation is directly visible."
+    },
+    {
+      "property_token": "DISTINCTIVE_OPENING_CONFIGURATION",
+      "outcome": "NOT_OBSERVABLE",
+      "relation_tokens": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "evidence": "The authorized P4 upper-window ROI does not expose enough of the opening structure to compare panel/frame configuration reliably with the authorized P5 near-window ROI. A distinctive configuration therefore cannot be established from the authorized pixels."
+    },
+    {
+      "property_token": "NEIGHBOR_BOUNDARY_ORDER",
+      "outcome": "AMBIGUOUS",
+      "relation_tokens": [
+        "NO_RELIABLE_RELATION"
+      ],
+      "evidence": "Visible roof/eave and wall-sector boundaries are present, but the authorized pixels do not expose a distinctive neighboring-boundary ordering that uniquely constrains a P4-to-P5 correspondence. Multiple interpretations remain without inferring hidden continuation or 3D geometry."
+    }
+  ],
+  "evidence": "The authorized pixels provide one compatible qualitative relation: a visible opening is BELOW the visible sloping roof/eave boundary in both wall-sector ROIs. However, the opening layout does not yield a unique cross-view mapping, the distinctive opening configuration is not reliably comparable in the authorized P4 upper-window ROI, and neighboring boundaries do not supply a unique discriminant. No directly visible mutually exclusive property supports CORRESPONDENCE_INCOMPATIBLE. Because multiple mappings or interpretations remain possible, the required overall outcome is AMBIGUOUS.",
+  "provenance": [
+    {
+      "photo_index": 4,
+      "roi": [
+        0.34,
+        0.06,
+        0.72,
+        0.42
+      ],
+      "observation_refs": [
+        "obs_p4_rear_wall"
+      ],
+      "pixel_cues": [
+        "A cropped vertical opening edge is visible at the left side of the ROI; the sloping dark roof/eave boundary is visible above it."
+      ],
+      "property_token": "OPENING_LAYOUT_ORDER"
+    },
+    {
+      "photo_index": 5,
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "observation_refs": [
+        "obs_p5_side_wall"
+      ],
+      "pixel_cues": [
+        "The ROI exposes a prominent upper opening and another lower opening-like region, but these pixels do not establish a unique mapping to the cropped P4 opening."
+      ],
+      "property_token": "OPENING_LAYOUT_ORDER"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.34,
+        0.06,
+        0.72,
+        0.42
+      ],
+      "observation_refs": [
+        "obs_p4_rear_wall"
+      ],
+      "pixel_cues": [
+        "The visible opening portion is below the visible sloping dark roof/eave boundary."
+      ],
+      "property_token": "OPENING_TO_ROOF_EDGE_RELATION"
+    },
+    {
+      "photo_index": 5,
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "observation_refs": [
+        "obs_p5_side_wall"
+      ],
+      "pixel_cues": [
+        "The prominent visible opening is below the visible sloping dark roof/eave boundary."
+      ],
+      "property_token": "OPENING_TO_ROOF_EDGE_RELATION"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.37,
+        0.1,
+        0.45,
+        0.21
+      ],
+      "observation_refs": [
+        "obs_p4_upper_window"
+      ],
+      "pixel_cues": [
+        "The authorized ROI mainly exposes wall and the sloping roof/eave boundary; insufficient opening structure is visible for a reliable configuration comparison."
+      ],
+      "property_token": "DISTINCTIVE_OPENING_CONFIGURATION"
+    },
+    {
+      "photo_index": 5,
+      "roi": [
+        0.62,
+        0.25,
+        0.76,
+        0.39
+      ],
+      "observation_refs": [
+        "obs_p5_near_window"
+      ],
+      "pixel_cues": [
+        "The authorized ROI does not provide a mutually comparable opening configuration against the limited P4 upper-window ROI."
+      ],
+      "property_token": "DISTINCTIVE_OPENING_CONFIGURATION"
+    },
+    {
+      "photo_index": 4,
+      "roi": [
+        0.34,
+        0.06,
+        0.72,
+        0.42
+      ],
+      "observation_refs": [
+        "obs_p4_rear_wall"
+      ],
+      "pixel_cues": [
+        "A sloping roof/eave boundary and wall region are visible, but no distinctive neighboring-boundary sequence uniquely constrains correspondence."
+      ],
+      "property_token": "NEIGHBOR_BOUNDARY_ORDER"
+    },
+    {
+      "photo_index": 5,
+      "roi": [
+        0.13,
+        0.04,
+        0.88,
+        0.79
+      ],
+      "observation_refs": [
+        "obs_p5_side_wall"
+      ],
+      "pixel_cues": [
+        "Several visible wall-sector boundaries are present, but their qualitative order does not uniquely resolve the cross-view mapping without hidden-continuation or 3D inference."
+      ],
+      "property_token": "NEIGHBOR_BOUNDARY_ORDER"
+    }
+  ]
+}
