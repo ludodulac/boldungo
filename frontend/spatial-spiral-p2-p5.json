@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.1",
-  "artifact_id": "first-spatial-spiral-p2-p5",
+  "schema_version": "0.2",
+  "artifact_id": "spatial-organization-787",
   "purpose": "First short SEE→HYPOTHESIZE→PREDICT→CHECK→REVISE→VISIBLE loop. Pixel evidence only from public real-house-5 photos 02–05.",
   "legacy_input": {
     "world_hypothesis": "world-hypothesis-073",
@@ -83,135 +83,130 @@
   },
   "organizations": [
     {
-      "id": "org_shared_rear_sector",
+      "id": "org_rear_sector_787",
       "epistemic_level": "CANDIDATE",
+      "sector": "bounded rear/side sector P3-P5",
       "assertions": [
         [
-          "p4_main_wall",
-          "LIKELY_SAME_SURFACE_SECTOR",
-          "p5_main_wall"
+          "rear_side_wall_sector",
+          "COEXISTS_IN_SECTOR",
+          "lower_clear_volume"
         ],
         [
-          "p4_box",
-          "LIKELY_SAME_PHYSICAL_VOLUME",
-          "p5_box"
-        ],
-        [
-          "p4_deck",
-          "LIKELY_SAME_PLATFORM",
-          "p5_deck_edge"
-        ],
-        [
-          "p3_deck",
-          "CANDIDATE_SAME_PLATFORM",
-          "p4_deck"
-        ],
-        [
-          "p3_stair",
-          "CANDIDATE_SAME_STAIR",
-          "p5_stair"
-        ],
-        [
-          "p5_stair",
-          "VISUALLY_LEFT_OF",
-          "p5_box"
-        ],
-        [
-          "p4_box",
-          "VISUALLY_IN_FRONT_OF",
-          "p4_main_wall"
-        ],
-        [
-          "p4_deck",
-          "VISUALLY_RIGHT_OF_OR_BEHIND",
-          "p4_box"
+          "raised_timber_platform",
+          "COEXISTS_IN_SECTOR",
+          "exterior_stair"
         ]
       ],
       "predictions": [
         {
-          "photo_index": 4,
-          "prediction": "A wall + lower projecting box + deck continuation should coexist in one view with the box occluding part of the wall/deck.",
-          "check": "SUPPORTED"
-        },
-        {
-          "photo_index": 5,
-          "prediction": "The stair should lie left of the box; the tall wall opening should remain above/behind that stair-box sector; deck railing may remain visible to the right.",
-          "check": "SUPPORTED"
-        },
-        {
+          "prediction_id": "pred787-p3",
           "photo_index": 3,
-          "prediction": "A wider view should be able to show the raised deck and stair as parts of the same rear-side ensemble.",
-          "check": "SUPPORTED"
+          "observations": [
+            "obs_p3_box_volume",
+            "obs_p3_dark_opening"
+          ],
+          "consequence": "P3 exposes the clear lower volume and its large dark opening; cross-view stair/deck continuity remains unresolved.",
+          "verdict": "AMBIGUOUS"
         },
         {
-          "photo_index": 2,
-          "prediction": "This organization does not require the stair or projecting box to be visible in the street-side wall view.",
-          "check": "SUPPORTED"
-        }
-      ],
-      "revision": "SURVIVES"
-    },
-    {
-      "id": "org_legacy_p2_stair_box",
-      "epistemic_level": "CANDIDATE",
-      "assertions": [
-        [
-          "obs_p2_stair",
-          "SAME_STAIR",
-          "p5_stair"
-        ],
-        [
-          "obs_p2_box_volume",
-          "SAME_VOLUME",
-          "p4_box"
-        ]
-      ],
-      "predictions": [
+          "prediction_id": "pred787-p4",
+          "photo_index": 4,
+          "observations": [
+            "obs_p4_rear_wall",
+            "obs_p4_terrace",
+            "obs_p4_stair"
+          ],
+          "consequence": "P4 simultaneously exposes pale wall, raised timber platform and exterior stair in the bounded sector.",
+          "verdict": "SUPPORTED"
+        },
         {
+          "prediction_id": "pred787-p5",
+          "photo_index": 5,
+          "observations": [
+            "obs_p5_side_wall"
+          ],
+          "consequence": "P5 exposes the pale wall sector; the stronger stair/box/deck arrangement remains candidate pending structured observer evidence.",
+          "verdict": "AMBIGUOUS"
+        },
+        {
+          "prediction_id": "pred787-p2-control",
           "photo_index": 2,
-          "prediction": "The claimed stair and projecting box must have visible pixel support inside photo 02.",
-          "check": "CONTRADICTED"
+          "observations": [],
+          "consequence": "The P3-P5 organization does not require stair or lower volume to be observable in P2.",
+          "verdict": "NOT_OBSERVABLE"
         }
       ],
-      "revision": "REJECTED_BY_PIXELS"
+      "unresolved": [
+        "physical identity across P3/P4/P5 remains candidate",
+        "exact attachment/contact topology UNKNOWN",
+        "metric geometry UNKNOWN"
+      ]
     }
   ],
   "surviving_small_world": {
-    "status": "QUALITATIVE_PARTIAL_WORLD",
+    "status": "QUALITATIVE_PARTIAL_WORLD_CANDIDATE",
     "nodes": [
       "rear_side_wall_sector",
-      "projecting_box_volume",
+      "lower_clear_volume",
       "exterior_stair",
-      "raised_timber_deck"
+      "raised_timber_platform"
     ],
     "topology": [
       [
-        "exterior_stair",
-        "LEFT_OF",
-        "projecting_box_volume"
+        "rear_side_wall_sector",
+        "COEXISTS_IN_SECTOR",
+        "lower_clear_volume"
       ],
       [
-        "projecting_box_volume",
-        "IN_FRONT_OF_OR_PROJECTS_FROM",
-        "rear_side_wall_sector"
-      ],
-      [
-        "raised_timber_deck",
-        "CONTINUES_RIGHTWARD_FROM_REAR_SECTOR",
-        "projecting_box_volume"
+        "raised_timber_platform",
+        "COEXISTS_IN_SECTOR",
+        "exterior_stair"
       ]
     ],
     "unresolved": [
-      "Exact metric depth and dimensions",
-      "Exact attachment/contact topology between box, wall and deck",
-      "Whether P3 and P5 stair observations are the same physical stair remains candidate until a stronger discriminant is encoded",
-      "Exact correspondence of P2 wall to the P3–P5 rear-side sector",
-      "Roof planes and pitch"
+      "physical identity across P3/P4/P5 remains candidate",
+      "exact attachment/contact topology UNKNOWN",
+      "metric geometry UNKNOWN"
     ]
   },
   "view_explanation_gain": {
-    "before": "073 connected observations but #784 needed invented shell/depth/roof/deck/stair placement.",
-    "after": "The surviving world explains a shared P3/P4/P5 stair–box–deck–wall arrangement and explicitly explains why P2 need not show stair/box. Two unsupported 062 P2 observations are rejected instead of being propagated.",
+    "constrained_photo_indexes_before": [
+      3,
+      4,
+      5
+    ],
+    "constrained_photo_indexes_after": [
+      3,
+      4,
+      5
+    ],
+    "linked_observation_refs_before": [],
+    "linked_observation_refs_after": [
+      "obs_p3_box_volume",
+      "obs_p3_dark_opening",
+      "obs_p4_rear_wall",
+      "obs_p4_terrace",
+      "obs_p4_stair",
+      "obs_p5_side_wall"
+    ],
+    "supported_prediction_ids": [
+      "pred787-p4"
+    ],
+    "contradicted_prediction_ids": [],
+    "ambiguous_prediction_ids": [
+      "pred787-p3",
+      "pred787-p5"
+    ],
+    "not_observable_prediction_ids": [
+      "pred787-p2-control"
+    ],
+    "remaining_ambiguities": [
+      "physical identity across P3/P4/P5 remains candidate",
+      "exact attachment/contact topology UNKNOWN",
+      "metric geometry UNKNOWN"
+    ],
     "invented_geometry_added": false
-  }
+  },
+  "note": "787 deliberately downgrades ad-hoc 785 SUPPORTED prose where the persisted 062 workspace lacks independently structured P3/P5 stair-box-deck evidence. No second organization is invented."
 }
