@@ -3613,9 +3613,9 @@ def import_p3_perception_expansion_response(
     imported=[]
     for x in results:
         for rel in x["relations"]:
-            s=refmap[rel["subject_ref"]]; o=refmap[rel["object_ref"]]
+            s=refmap.get(rel["subject_ref"]); o=refmap.get(rel["object_ref"])
             # The uncertain wall candidate is deliberately withheld, so its relation is retained only in the investigation record.
-            if s not in allobs or o not in allobs:
+            if s is None or o is None or s not in allobs or o not in allobs:
                 continue
             prov=[]
             for ref in (s,o):
