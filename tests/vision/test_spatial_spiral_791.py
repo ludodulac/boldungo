@@ -6,7 +6,7 @@ from brickhouse.vision.multiview import (
     AssertionRevision, MultiViewWorkspace, RichEvidenceProvenance, RichVisualBootstrapResponse,
     SpatialOrganizationAssertion, SpatialOrganizationCandidate, ViewExplanationGain,
     build_rich_multiview_bootstrap_request, import_rich_visual_bootstrap_response,
-    import_spatial_interview_discriminant_response, import_spatial_pixel_check_response,
+    import_p3_perception_expansion_response, import_spatial_interview_discriminant_response, import_spatial_pixel_check_response,
     record_assertion_revision, record_spatial_organization_state,
     spatial_interview_discriminant_already_executed,
 )
@@ -145,3 +145,57 @@ def test_793_response_792_validation_fails_closed_without_promoting_p5_observati
     bad=json.loads(json.dumps(response)); bad["property_results"][0]["relation_tokens"]=["SAME_PHYSICAL_OBJECT"]
     with pytest.raises(ValueError,match="relation token"):
         import_spatial_interview_discriminant_response(workspace,request,bad)
+
+
+def test_795_import_794_promotes_supported_regions_withholds_uncertain_wall_and_survives_reload():
+    workspace=_workspace_789()
+    request=json.loads((ROOT/"frontend"/"p3-perception-expansion-request-794.json").read_text())
+    response=json.loads((ROOT/"frontend"/"p3-perception-expansion-response-794.json").read_text())
+    before_identity=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    workspace=import_p3_perception_expansion_response(workspace,request,response)
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    obs={x.id:x for x in [*loaded.pass_1.observations,*loaded.pass_2.observations]}
+    assert set(["obs_p3_step_diagonal_794","obs_p3_raised_platform_794","obs_p3_visible_junction_794"])<=set(obs)
+    assert [obs["obs_p3_step_diagonal_794"].region.x0,obs["obs_p3_step_diagonal_794"].region.y0,obs["obs_p3_step_diagonal_794"].region.x1,obs["obs_p3_step_diagonal_794"].region.y1]==[0.104,0.442,0.329,0.839]
+    assert [obs["obs_p3_raised_platform_794"].region.x0,obs["obs_p3_raised_platform_794"].region.y0,obs["obs_p3_raised_platform_794"].region.x1,obs["obs_p3_raised_platform_794"].region.y1]==[0.345,0.459,0.688,0.675]
+    assert [obs["obs_p3_visible_junction_794"].region.x0,obs["obs_p3_visible_junction_794"].region.y0,obs["obs_p3_visible_junction_794"].region.x1,obs["obs_p3_visible_junction_794"].region.y1]==[0.298,0.426,0.369,0.607]
+    assert not any(x.id=="obs_p3_adjacent_wall_794" for x in obs.values())
+    rec=loaded.p3_perception_expansion_investigations[-1]
+    assert rec.request_id=="p3-perception-expansion-794" and rec.photo_index==3
+    by={x.candidate_id:x for x in rec.candidates}
+    assert by["p3-candidate-adjacent-wall-region"].disposition=="WITHHELD"
+    assert by["p3-candidate-adjacent-wall-region"].epistemic_confidence=="PARTIALLY_BOUNDED"
+    assert by["p3-candidate-adjacent-wall-region"].semantic_status=="UNCERTAIN"
+    assert by["p3-candidate-adjacent-wall-region"].localized_roi==(0.105,0.176,0.354,0.686)
+    assert all(x.visible_boundaries and x.pixel_cues for x in rec.candidates)
+    assert rec.physical_identity_acquired is False and rec.invented_geometry_added is False
+    assert [*loaded.pass_1.identities,*loaded.pass_2.identities]==before_identity
+    keys=set(rec.imported_relation_keys)
+    assert "obs_p3_step_diagonal_794|LEFT_OF|obs_p3_box_volume" in keys
+    assert "obs_p3_raised_platform_794|ABOVE|obs_p3_dark_opening" in keys
+    assert "obs_p3_raised_platform_794|BOUNDARY_JOINS|obs_p3_box_volume" in keys
+    assert "obs_p3_step_diagonal_794|TERMINATES_AGAINST|obs_p3_visible_junction_794" in keys
+    assert "obs_p3_visible_junction_794|LEFT_OF|obs_p3_raised_platform_794" in keys
+    assert not any("adjacent_wall" in x for x in keys)
+    assert all(r.provenance and all(p.photo_index==3 and p.pixel_cues for p in r.provenance)
+               for r in loaded.rich_relation_evidence if any(y in {r.subject_ref,r.object_ref} for y in {"obs_p3_step_diagonal_794","obs_p3_raised_platform_794","obs_p3_visible_junction_794"}))
+
+
+def test_795_promotions_remain_revisable_and_validation_fails_closed():
+    workspace=_workspace_789()
+    request=json.loads((ROOT/"frontend"/"p3-perception-expansion-request-794.json").read_text())
+    response=json.loads((ROOT/"frontend"/"p3-perception-expansion-response-794.json").read_text())
+    workspace=import_p3_perception_expansion_response(workspace,request,response)
+    o=next(x for x in workspace.pass_2.observations if x.id=="obs_p3_step_diagonal_794")
+    revised=record_assertion_revision(workspace,AssertionRevision(
+        revision_id="test-795-revision",assertion_ref=o.id,previous_status=o.status.value,
+        new_epistemic_state="REJECTED_BY_PIXELS",reason="test future correction",
+        provenance=[RichEvidenceProvenance(observation_ref=o.id,photo_index=3,
+            roi=(o.region.x0,o.region.y0,o.region.x1,o.region.y1),pixel_cues=["future contradictory pixel evidence"])]))
+    assert revised.assertion_revisions[-1].assertion_ref=="obs_p3_step_diagonal_794"
+    bad=json.loads(json.dumps(response)); bad["photo_index"]=5
+    with pytest.raises(ValueError,match="request/photo mismatch"):
+        import_p3_perception_expansion_response(_workspace_789(),request,bad)
+    bad=json.loads(json.dumps(response)); bad["region_results"][0]["relations"][0]["relation_token"]="SAME_PHYSICAL_OBJECT"
+    with pytest.raises(ValueError):
+        import_p3_perception_expansion_response(_workspace_789(),request,bad)
