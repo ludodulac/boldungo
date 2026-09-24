@@ -1,0 +1,217 @@
+{
+  "schema_version": "0.1",
+  "artifact_id": "first-spatial-spiral-p2-p5",
+  "purpose": "First short SEE→HYPOTHESIZE→PREDICT→CHECK→REVISE→VISIBLE loop. Pixel evidence only from public real-house-5 photos 02–05.",
+  "legacy_input": {
+    "world_hypothesis": "world-hypothesis-073",
+    "rule": "Legacy observations are reusable only when the public pixels still support them."
+  },
+  "perception_recheck": {
+    "status": "LEGACY_PERCEPTION_REQUIRES_REVISION",
+    "rejected_legacy_observations": [
+      {
+        "observation_ref": "obs_p2_stair",
+        "reason": "Public photo 02 does not visibly contain the exterior stair described by 062; the ROI is wall/street-side content."
+      },
+      {
+        "observation_ref": "obs_p2_box_volume",
+        "reason": "Public photo 02 does not visibly contain the pale projecting box volume described by 062."
+      }
+    ],
+    "retained_or_relocalized": [
+      {
+        "id": "p2_long_wall",
+        "photo_index": 2,
+        "kind": "wall_surface",
+        "evidence": "Long pale wall with sloping eave, upper openings and vertical rainwater/downpipe elements."
+      },
+      {
+        "id": "p3_deck",
+        "photo_index": 3,
+        "kind": "raised_timber_deck",
+        "evidence": "Raised timber-railed platform on posts across the right-hand building sector."
+      },
+      {
+        "id": "p3_stair",
+        "photo_index": 3,
+        "kind": "exterior_stair",
+        "evidence": "Pale stair/parapet at left of the raised deck."
+      },
+      {
+        "id": "p4_main_wall",
+        "photo_index": 4,
+        "kind": "wall_surface",
+        "evidence": "Pale wall with tall upper opening and sloping roof/eave."
+      },
+      {
+        "id": "p4_box",
+        "photo_index": 4,
+        "kind": "projecting_box_volume",
+        "evidence": "Pale box-like lower volume with large dark opening."
+      },
+      {
+        "id": "p4_deck",
+        "photo_index": 4,
+        "kind": "raised_timber_deck",
+        "evidence": "Timber railing/platform continues behind/right of box volume."
+      },
+      {
+        "id": "p5_main_wall",
+        "photo_index": 5,
+        "kind": "wall_surface",
+        "evidence": "Same-type pale wall sector with tall upper opening and sloping eave."
+      },
+      {
+        "id": "p5_stair",
+        "photo_index": 5,
+        "kind": "exterior_stair",
+        "evidence": "Long pale diagonal parapets and visible steps."
+      },
+      {
+        "id": "p5_box",
+        "photo_index": 5,
+        "kind": "projecting_box_volume",
+        "evidence": "Pale lower box with broad dark opening."
+      },
+      {
+        "id": "p5_deck_edge",
+        "photo_index": 5,
+        "kind": "raised_timber_deck",
+        "evidence": "Timber railing visible at far right beyond box."
+      }
+    ]
+  },
+  "organizations": [
+    {
+      "id": "org_shared_rear_sector",
+      "epistemic_level": "CANDIDATE",
+      "assertions": [
+        [
+          "p4_main_wall",
+          "LIKELY_SAME_SURFACE_SECTOR",
+          "p5_main_wall"
+        ],
+        [
+          "p4_box",
+          "LIKELY_SAME_PHYSICAL_VOLUME",
+          "p5_box"
+        ],
+        [
+          "p4_deck",
+          "LIKELY_SAME_PLATFORM",
+          "p5_deck_edge"
+        ],
+        [
+          "p3_deck",
+          "CANDIDATE_SAME_PLATFORM",
+          "p4_deck"
+        ],
+        [
+          "p3_stair",
+          "CANDIDATE_SAME_STAIR",
+          "p5_stair"
+        ],
+        [
+          "p5_stair",
+          "VISUALLY_LEFT_OF",
+          "p5_box"
+        ],
+        [
+          "p4_box",
+          "VISUALLY_IN_FRONT_OF",
+          "p4_main_wall"
+        ],
+        [
+          "p4_deck",
+          "VISUALLY_RIGHT_OF_OR_BEHIND",
+          "p4_box"
+        ]
+      ],
+      "predictions": [
+        {
+          "photo_index": 4,
+          "prediction": "A wall + lower projecting box + deck continuation should coexist in one view with the box occluding part of the wall/deck.",
+          "check": "SUPPORTED"
+        },
+        {
+          "photo_index": 5,
+          "prediction": "The stair should lie left of the box; the tall wall opening should remain above/behind that stair-box sector; deck railing may remain visible to the right.",
+          "check": "SUPPORTED"
+        },
+        {
+          "photo_index": 3,
+          "prediction": "A wider view should be able to show the raised deck and stair as parts of the same rear-side ensemble.",
+          "check": "SUPPORTED"
+        },
+        {
+          "photo_index": 2,
+          "prediction": "This organization does not require the stair or projecting box to be visible in the street-side wall view.",
+          "check": "SUPPORTED"
+        }
+      ],
+      "revision": "SURVIVES"
+    },
+    {
+      "id": "org_legacy_p2_stair_box",
+      "epistemic_level": "CANDIDATE",
+      "assertions": [
+        [
+          "obs_p2_stair",
+          "SAME_STAIR",
+          "p5_stair"
+        ],
+        [
+          "obs_p2_box_volume",
+          "SAME_VOLUME",
+          "p4_box"
+        ]
+      ],
+      "predictions": [
+        {
+          "photo_index": 2,
+          "prediction": "The claimed stair and projecting box must have visible pixel support inside photo 02.",
+          "check": "CONTRADICTED"
+        }
+      ],
+      "revision": "REJECTED_BY_PIXELS"
+    }
+  ],
+  "surviving_small_world": {
+    "status": "QUALITATIVE_PARTIAL_WORLD",
+    "nodes": [
+      "rear_side_wall_sector",
+      "projecting_box_volume",
+      "exterior_stair",
+      "raised_timber_deck"
+    ],
+    "topology": [
+      [
+        "exterior_stair",
+        "LEFT_OF",
+        "projecting_box_volume"
+      ],
+      [
+        "projecting_box_volume",
+        "IN_FRONT_OF_OR_PROJECTS_FROM",
+        "rear_side_wall_sector"
+      ],
+      [
+        "raised_timber_deck",
+        "CONTINUES_RIGHTWARD_FROM_REAR_SECTOR",
+        "projecting_box_volume"
+      ]
+    ],
+    "unresolved": [
+      "Exact metric depth and dimensions",
+      "Exact attachment/contact topology between box, wall and deck",
+      "Whether P3 and P5 stair observations are the same physical stair remains candidate until a stronger discriminant is encoded",
+      "Exact correspondence of P2 wall to the P3–P5 rear-side sector",
+      "Roof planes and pitch"
+    ]
+  },
+  "view_explanation_gain": {
+    "before": "073 connected observations but #784 needed invented shell/depth/roof/deck/stair placement.",
+    "after": "The surviving world explains a shared P3/P4/P5 stair–box–deck–wall arrangement and explicitly explains why P2 need not show stair/box. Two unsupported 062 P2 observations are rejected instead of being propagated.",
+    "invented_geometry_added": false
+  }
+}
