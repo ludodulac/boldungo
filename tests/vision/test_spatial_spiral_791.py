@@ -97,3 +97,51 @@ def test_791_response_790_validation_fails_closed():
     bad=json.loads(json.dumps(response)); bad["property_results"][1]["relation_tokens"]=["SAME_PHYSICAL_OBJECT"]
     with pytest.raises(ValueError,match="relation token"):
         import_spatial_interview_discriminant_response(workspace,request,bad)
+
+
+def test_793_import_792_survives_save_reload_as_local_compatibility_not_identity():
+    workspace=_workspace_789()
+    request790=json.loads((ROOT/"frontend"/"interview-discriminant-request-790.json").read_text())
+    response790=json.loads((ROOT/"frontend"/"interview-discriminant-response-790.json").read_text())
+    workspace=import_spatial_interview_discriminant_response(workspace,request790,response790)
+    request792=json.loads((ROOT/"frontend"/"interview-discriminant-request-792.json").read_text())
+    response792=json.loads((ROOT/"frontend"/"interview-discriminant-response-792.json").read_text())
+    workspace=import_spatial_interview_discriminant_response(workspace,request792,response792)
+    loaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    records={x.request_id:x for x in loaded.spatial_interview_discriminant_investigations}
+    assert set(records)=={"interview-discriminant-790","interview-discriminant-792"}
+    record=records["interview-discriminant-792"]
+    assert record.source_uncertainty_id=="interview-792:p3-p5-lower-volume-opening-correspondence"
+    assert record.outcome=="CORRESPONDENCE_COMPATIBLE"
+    assert record.uncertainty_state=="LOCAL_COMPATIBILITY_ESTABLISHED"
+    assert record.resolved is False
+    results={x.property_token:x for x in record.property_results}
+    assert results["LOWER_OPENING_CONTAINMENT"].relation_tokens==["CONTAINED_WITHIN"]
+    assert results["OPENING_TO_LOWER_VOLUME_TOP_BOUNDARY_ORDER"].relation_tokens==["BELOW"]
+    assert results["LOWER_VOLUME_OPENING_BOUNDARY_CONFIGURATION"].relation_tokens==["CONTAINED_WITHIN","BELOW"]
+    assert {p.photo_index for p in record.provenance}=={3,5}
+    assert all(p.pixel_cues for p in record.provenance)
+    assert spatial_interview_discriminant_already_executed(loaded,request792)
+    with pytest.raises(ValueError,match="already executed"):
+        import_spatial_interview_discriminant_response(loaded,request792,response792)
+    identities=[*loaded.pass_1.identities,*loaded.pass_2.identities]
+    assert not any(set(i.observation_ids)=={"obs_p3_box_volume","obs_p5_side_wall"} for i in identities)
+    assert not any(i.status.value in {"same_physical_object","likely_same"} and "obs_p3_box_volume" in i.observation_ids for i in identities)
+
+
+def test_793_response_792_validation_fails_closed_without_promoting_p5_observation():
+    workspace=_workspace_789()
+    request=json.loads((ROOT/"frontend"/"interview-discriminant-request-792.json").read_text())
+    response=json.loads((ROOT/"frontend"/"interview-discriminant-response-792.json").read_text())
+    before={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    imported=import_spatial_interview_discriminant_response(workspace,request,response)
+    after={x.id for x in [*imported.pass_1.observations,*imported.pass_2.observations]}
+    assert after==before
+    assert "obs_p5_side_wall" in after
+    assert not any("lower" in x and x.startswith("obs_p5") for x in after if x!="obs_p5_side_wall")
+    bad=json.loads(json.dumps(response)); bad["provenance"][2]["photo_index"]=4
+    with pytest.raises(ValueError,match="outside authorized request"):
+        import_spatial_interview_discriminant_response(workspace,request,bad)
+    bad=json.loads(json.dumps(response)); bad["property_results"][0]["relation_tokens"]=["SAME_PHYSICAL_OBJECT"]
+    with pytest.raises(ValueError,match="relation token"):
+        import_spatial_interview_discriminant_response(workspace,request,bad)
