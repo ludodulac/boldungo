@@ -1,0 +1,170 @@
+{
+  "schema_version": "0.1",
+  "request_id": "p3-perception-expansion-794",
+  "photo_index": 3,
+  "region_results": [
+    {
+      "candidate_id": "p3-candidate-step-diagonal-region",
+      "outcome": "LOCALIZABLE",
+      "localized_roi": [
+        0.104,
+        0.442,
+        0.329,
+        0.839
+      ],
+      "visible_boundaries": [
+        "A directly visible bright oblique upper contour descends from the central-left sector toward the lower-left sector.",
+        "A second bright oblique contour and several short transverse/step-like edges delimit the same diagonal region."
+      ],
+      "pixel_cues": [
+        "Repeated light horizontal/near-horizontal edge segments are visible inside the diagonal region.",
+        "The region contrasts strongly with the darker wall and vegetation immediately behind/above it."
+      ],
+      "relations": [
+        {
+          "relation_token": "LEFT_OF",
+          "subject_ref": "p3-candidate-step-diagonal-region",
+          "object_ref": "obs_p3_box_volume",
+          "pixel_cues": [
+            "The diagonal bright region occupies the left side of P3 while the existing pale projecting-volume ROI begins farther right."
+          ]
+        }
+      ],
+      "epistemic_confidence": "DIRECTLY_LOCALIZED",
+      "semantic_interpretation": {
+        "label": "exterior stair",
+        "status": "SUPPORTED_AS_INTERPRETATION",
+        "evidence": [
+          "The localized region contains repeated short transverse edges together with two conspicuous oblique boundary lines."
+        ]
+      }
+    },
+    {
+      "candidate_id": "p3-candidate-raised-platform-region",
+      "outcome": "LOCALIZABLE",
+      "localized_roi": [
+        0.345,
+        0.459,
+        0.688,
+        0.675
+      ],
+      "visible_boundaries": [
+        "A long dark horizontal lower edge is directly visible beneath the region.",
+        "The upper/front edge is marked by a continuous rail-like horizontal contour with repeated vertical elements.",
+        "The right edge is visible where the repeated vertical pattern turns/terminates near the pale facade boundary."
+      ],
+      "pixel_cues": [
+        "Dense repeated vertical light-brown bars extend across the upper part of the region.",
+        "A broad horizontal slab-like band is visible directly below those repeated bars.",
+        "Vertical support-like dark/light edges descend from the underside in the central-right portion."
+      ],
+      "relations": [
+        {
+          "relation_token": "ABOVE",
+          "subject_ref": "p3-candidate-raised-platform-region",
+          "object_ref": "obs_p3_dark_opening",
+          "pixel_cues": [
+            "The platform's directly visible lower horizontal edge lies above the large dark area beneath it."
+          ]
+        },
+        {
+          "relation_token": "BOUNDARY_JOINS",
+          "subject_ref": "p3-candidate-raised-platform-region",
+          "object_ref": "obs_p3_box_volume",
+          "pixel_cues": [
+            "At the right side, the platform/railing contour visibly meets the pale projecting facade sector."
+          ]
+        }
+      ],
+      "epistemic_confidence": "DIRECTLY_LOCALIZED",
+      "semantic_interpretation": {
+        "label": "raised platform / terrace",
+        "status": "SUPPORTED_AS_INTERPRETATION",
+        "evidence": [
+          "The region is bounded by a long horizontal edge, a repeated vertical barrier-like pattern, and visible underside/support edges."
+        ]
+      }
+    },
+    {
+      "candidate_id": "p3-candidate-adjacent-wall-region",
+      "outcome": "LOCALIZABLE",
+      "localized_roi": [
+        0.105,
+        0.176,
+        0.354,
+        0.686
+      ],
+      "visible_boundaries": [
+        "The sector has a directly visible sloping roof/eave boundary along its upper edge.",
+        "Its right side is marked by a strong near-vertical change from darker gray facade pixels to the much paler adjoining facade.",
+        "Its left side is bounded in part by a visible near-vertical facade edge against the darker neighboring structure."
+      ],
+      "pixel_cues": [
+        "A broad contiguous gray planar-looking pixel field is visible between the roof edge and lower occlusions.",
+        "Several rectangular bright/dark opening-like patches lie within this gray field without destroying the larger visible facade boundary."
+      ],
+      "relations": [
+        {
+          "relation_token": "LEFT_OF",
+          "subject_ref": "p3-candidate-adjacent-wall-region",
+          "object_ref": "obs_p3_box_volume",
+          "pixel_cues": [
+            "The gray bounded sector is visibly to the left of the existing pale projecting-volume ROI."
+          ]
+        }
+      ],
+      "epistemic_confidence": "PARTIALLY_BOUNDED",
+      "semantic_interpretation": {
+        "label": "adjacent wall sector",
+        "status": "UNCERTAIN",
+        "evidence": [
+          "A large coherent gray region has visible roof and side boundaries, but its lower extent is partly interrupted by the diagonal bright structure and vegetation."
+        ]
+      }
+    },
+    {
+      "candidate_id": "p3-candidate-visible-junction-region",
+      "outcome": "LOCALIZABLE",
+      "localized_roi": [
+        0.298,
+        0.426,
+        0.369,
+        0.607
+      ],
+      "visible_boundaries": [
+        "A bright oblique contour from the diagonal region visibly terminates at/against a near-vertical pale boundary in this small sector.",
+        "The pale near-vertical boundary remains directly traceable above and below the contact zone."
+      ],
+      "pixel_cues": [
+        "A high-contrast oblique-to-vertical contour meeting is visible immediately left of the raised railing/platform sector.",
+        "The contact is visible in the pixels; no continuation behind the pale boundary is required."
+      ],
+      "relations": [
+        {
+          "relation_token": "TERMINATES_AGAINST",
+          "subject_ref": "p3-candidate-step-diagonal-region",
+          "object_ref": "p3-candidate-visible-junction-region",
+          "pixel_cues": [
+            "The upper bright oblique contour reaches the localized near-vertical pale boundary and is no longer directly visible beyond it."
+          ]
+        },
+        {
+          "relation_token": "LEFT_OF",
+          "subject_ref": "p3-candidate-visible-junction-region",
+          "object_ref": "p3-candidate-raised-platform-region",
+          "pixel_cues": [
+            "The localized contact sector lies immediately to the left of the repeated vertical railing pattern."
+          ]
+        }
+      ],
+      "epistemic_confidence": "DIRECTLY_LOCALIZED",
+      "semantic_interpretation": {
+        "label": "visible boundary/junction sector",
+        "status": "SUPPORTED_AS_INTERPRETATION",
+        "evidence": [
+          "The region is defined by a directly visible meeting of an oblique bright contour and a near-vertical pale boundary."
+        ]
+      }
+    }
+  ]
+}
