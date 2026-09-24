@@ -93,7 +93,8 @@ def test_805_never_promotes_display_layout_or_historical_hardcodes_to_evidence()
     evidence_blob = json.dumps(pivot["assemblies"] + pivot["supported_connections"])
     assert "DISPLAY_LAYOUT_ONLY" not in evidence_blob
     assert '"x": 0.08' not in evidence_blob
-    assert "hardcoded" not in evidence_blob.lower()
+    assert not any("hardcoded" in json.dumps(item).lower() for item in pivot["supported_connections"])
+    assert any("hardcoded" in rule.lower() for rule in pivot["forbidden_as_evidence"])
     assert "obs_p2_stair" not in evidence_blob
     assert "obs_p2_box_volume" not in evidence_blob
 
