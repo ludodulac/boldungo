@@ -79,6 +79,8 @@ from brickhouse.vision.multiview import (
     GlobalMultiviewConnectivityResponse,
     validate_global_multiview_connectivity_response,
     ingest_global_multiview_connectivity_response,
+    build_world_hypothesis,
+    render_world_hypothesis_html,
     PerceptualEvidenceLevel,
     PerceptualEvidenceRegion,
     PerceptualCue,
@@ -4335,3 +4337,73 @@ def test_072_photo_level_perceptual_graph_spans_all_five_views_without_identity_
     print("PHOTO_EDGES_072="+json.dumps(sorted(edges)))
     print("PHOTO_REACH_072="+json.dumps(sorted(reached)))
     print("WEAK_COMPONENTS_072="+json.dumps(graph.insufficiently_connected_components,sort_keys=True))
+
+
+def _real_workspace_post_071_for_073():
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    before=_real_workspace_post_069(); graph=build_multiview_world_constraint_graph(before)
+    request=build_global_multiview_connectivity_request(before,graph)
+    response=GlobalMultiviewConnectivityResponse.model_validate_json((fixture_dir/"global-multiview-connectivity-response-071.json").read_text())
+    after,_=ingest_global_multiview_connectivity_response(before,request,response)
+    return MultiViewWorkspace.model_validate_json(after.model_dump_json())
+
+
+def test_073_property_values_are_preserved_at_first_responsible_ingestion():
+    fixture_dir=Path(__file__).parents[1]/"fixtures"/"vision"
+    response=RichVisualBootstrapResponse.model_validate_json((fixture_dir/"visual-bootstrap-response-062.json").read_text())
+    request=build_rich_multiview_bootstrap_request("real-house-5-rich-multiview-062",["01-original.jpg","02-original.jpg","03-original.jpg","04-original.jpg","05-original.jpg"])
+    workspace=import_rich_visual_bootstrap_response(request,response)
+    observations={x.id:x for x in workspace.pass_1.observations}
+    assert observations["obs_p1_front_wall"].observable_property_values=={"light_render":True,"multiple_openings":True}
+    assert observations["obs_p1_front_wall"].observable_properties=={"light_render","multiple_openings"}
+    assert observations["obs_p1_front_wall"].proposed_category=="large pale wall surface"
+    assert observations["obs_p1_front_wall"].certainty.category is CertaintyLevel.PLAUSIBLE
+
+
+def test_073_world_hypothesis_is_deterministic_disposable_and_preserves_open_branches(capsys):
+    workspace=_real_workspace_post_071_for_073()
+    graph=build_multiview_world_constraint_graph(workspace)
+    h1=build_world_hypothesis(workspace,graph)
+    reloaded=MultiViewWorkspace.model_validate_json(workspace.model_dump_json())
+    h2=build_world_hypothesis(reloaded,build_multiview_world_constraint_graph(reloaded))
+    assert h1==h2
+    assert "world_hypothesis" not in MultiViewWorkspace.model_fields
+    assert len(h1.organizations)==2
+    assert {tuple(sorted(x.branch_assumptions.items())) for x in h1.organizations}=={
+      (("identity-uncertainty-idc_sidewall_p2_p4","same_physical_object"),),
+      (("identity-uncertainty-idc_sidewall_p2_p4","incompatible"),)}
+    assert h1.identity_candidate_refs==["idc_box_p2_p3","idc_sidewall_p2_p4","idc_stair_p2_p4","idc_upperwindow_p2_p4"]
+    assert h1.open_uncertainty_refs==["identity-uncertainty-idc_sidewall_p2_p4"]
+    assert h1.property_values_available is True
+    expected_unattached=["obs_p3_tree","obs_p5_near_window","obs_p5_side_wall"]
+    assert all(x.unattached_observation_refs==expected_unattached for x in h1.organizations)
+    assert all(len(x.main_world_observation_refs)==19 for x in h1.organizations)
+    assert len(h1.semantic_proposals)==22
+    assert all(x.epistemic_level=="CANDIDATE" for x in h1.semantic_proposals)
+    levels={a.epistemic_level for a in h1.organizations[0].assertions}
+    assert {"OBSERVED","CUE","COMPARABLE_VISUAL_PROPERTY","CANDIDATE","AMBIGUOUS","EXHAUSTED"}.issubset(levels)
+    assert all(a.epistemic_level!="OBSERVED" for a in h1.organizations[0].assertions if a.evidence_type=="IDENTITY_CANDIDATE")
+    assert all(a.provenance for a in h1.organizations[0].assertions)
+    assert all(p.observation_ref and p.photo_index and len(p.roi)==4 for a in h1.organizations[0].assertions for p in a.provenance)
+    html=render_world_hypothesis_html(h1)
+    assert "MONDE CENTRAL" in html and "Organisations concurrentes" in html and "Aucune géométrie 3D" in html
+    print("WORLD_HYPOTHESIS_073="+h1.model_dump_json())
+    print("HTML_073_B64="+__import__("base64").b64encode(html.encode()).decode())
+
+
+def test_073_architectural_organization_readiness_is_supported_by_explicit_structure(capsys):
+    workspace=_real_workspace_post_071_for_073(); graph=build_multiview_world_constraint_graph(workspace); h=build_world_hypothesis(workspace,graph)
+    relations={(x.subject_ref,x.relation_token,x.object_ref) for x in workspace.rich_relation_evidence}
+    categories={x.observation_ref:x.proposed_category for x in h.semantic_proposals}
+    # Mechanical readiness: all views span the evidence network, a large attached core exists,
+    # and explicit observed containment/front relations organize proposed surface/opening/platform semantics.
+    photos=set(h.photo_indexes)
+    core=set(h.organizations[0].main_world_observation_refs)
+    surface_refs={k for k,v in categories.items() if "surface" in v}
+    opening_refs={k for k,v in categories.items() if "opening" in v}
+    explicit_surface_opening=any(s in opening_refs and o in surface_refs and r=="VISIBLE_WITHIN" for s,r,o in relations)
+    explicit_platform_surface=any(categories.get(s,"").startswith("raised platform") and o in surface_refs and r=="VISUALLY_IN_FRONT_OF" for s,r,o in relations)
+    ready=(photos=={1,2,3,4,5} and len(core)>=15 and explicit_surface_opening and explicit_platform_surface and not graph.contradictions)
+    assert ready
+    print("ARCHITECTURAL_ORGANIZATION_073=READY")
+    print("ARCHITECTURAL_MECHANICS_073="+json.dumps({"photos":sorted(photos),"main_world_observations":len(core),"unattached":h.organizations[0].unattached_observation_refs,"explicit_surface_opening":explicit_surface_opening,"explicit_platform_surface":explicit_platform_surface,"contradictions":len(graph.contradictions)},sort_keys=True))

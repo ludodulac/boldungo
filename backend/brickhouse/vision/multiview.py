@@ -72,6 +72,7 @@ class LocalObservation(BaseModel):
     statement: str = Field(min_length=1)
     certainty: AspectCertainty = Field(default_factory=AspectCertainty)
     observable_properties: set[str] | None = None
+    observable_property_values: dict[str, bool | str | int | float] | None = None
     observed_property_states: dict[str, str] | None = None
 
     @model_validator(mode="after")
@@ -2481,6 +2482,7 @@ def import_rich_visual_bootstrap_response(
                 category=CertaintyLevel.PLAUSIBLE,
             ),
             observable_properties=set(item.observable_properties),
+            observable_property_values=dict(item.observable_properties),
             observed_property_states=item.observed_property_states,
         ))
 
@@ -3329,6 +3331,130 @@ class MultiViewWorldConstraintGraph(BaseModel):
     missing_constraints: list[MissingWorldConstraint] = Field(default_factory=list)
     contradictions: list[str] = Field(default_factory=list)
     insufficiently_connected_components: list[list[str]] = Field(default_factory=list)
+
+
+class WorldHypothesisAssertion(BaseModel):
+    """Traceable qualitative assertion copied from explicit workspace/graph evidence."""
+    model_config=ConfigDict(extra="forbid")
+    assertion_id:str
+    node_refs:list[str]=Field(min_length=1)
+    evidence_type:str
+    epistemic_level:Literal["OBSERVED","CUE","COMPARABLE_VISUAL_PROPERTY","CANDIDATE","AMBIGUOUS","UNKNOWN","EXHAUSTED"]
+    token:str|None=None
+    provenance:list[RichEvidenceProvenance]=Field(default_factory=list)
+    source_ref:str|None=None
+
+
+class WorldHypothesisSemanticProposal(BaseModel):
+    model_config=ConfigDict(extra="forbid")
+    observation_ref:str
+    proposed_category:str
+    epistemic_level:Literal["CANDIDATE"]="CANDIDATE"
+    category_certainty:CertaintyLevel
+    provenance:RichEvidenceProvenance
+
+
+class WorldHypothesisOrganization(BaseModel):
+    model_config=ConfigDict(extra="forbid")
+    organization_id:str
+    branch_assumptions:dict[str,str]=Field(default_factory=dict)
+    main_world_observation_refs:list[str]=Field(default_factory=list)
+    unattached_observation_refs:list[str]=Field(default_factory=list)
+    assertions:list[WorldHypothesisAssertion]=Field(default_factory=list)
+
+
+class WorldHypothesis(BaseModel):
+    """Deterministic, disposable projection; never persisted into MultiViewWorkspace."""
+    model_config=ConfigDict(extra="forbid")
+    schema_version:Literal["0.1"]="0.1"
+    photo_indexes:list[int]
+    organizations:list[WorldHypothesisOrganization]
+    semantic_proposals:list[WorldHypothesisSemanticProposal]
+    identity_candidate_refs:list[str]
+    open_uncertainty_refs:list[str]
+    exhausted_investigation_refs:list[str]
+    property_values_available:bool
+
+
+def build_world_hypothesis(workspace:"MultiViewWorkspace",graph:MultiViewWorldConstraintGraph|None=None)->WorldHypothesis:
+    graph=graph or build_multiview_world_constraint_graph(workspace)
+    observations=[*workspace.pass_1.observations,*workspace.pass_2.observations]
+    identities=[*workspace.pass_1.identities,*workspace.pass_2.identities]
+    obs_by_id={x.id:x for x in observations}
+    weak={n.split(":",1)[1] for comp in graph.insufficiently_connected_components for n in comp if n.startswith("observation:")}
+    main=sorted(x.id for x in observations if x.id not in weak)
+    unattached=sorted(weak)
+    assertions=[]
+    mapping={"VISIBILITY":"OBSERVED","CONTINUATION":"OBSERVED","PERCEPTUAL_RELATION":"OBSERVED",
+             "PROPERTY_CORRESPONDENCE":"COMPARABLE_VISUAL_PROPERTY","SAME_CUE":"CUE","DISTINCT_CUE":"CUE",
+             "OPEN_UNCERTAINTY":"AMBIGUOUS","EXHAUSTED_DISCRIMINANT":"EXHAUSTED"}
+    def provenance_for_nodes(node_refs:list[str],source_ref:str|None=None)->list[RichEvidenceProvenance]:
+        refs=[x.split(":",1)[1] for x in node_refs if x.startswith("observation:")]
+        if not refs and source_ref in {x.id for x in identities}:
+            refs=list(next(x.observation_ids for x in identities if x.id==source_ref))
+        out=[]
+        for ref in refs:
+            o=obs_by_id.get(ref)
+            if o and o.region: out.append(RichEvidenceProvenance(observation_ref=o.id,photo_index=o.photo_index,roi=(o.region.x0,o.region.y0,o.region.x1,o.region.y1)))
+        return out
+    for x in graph.constraints:
+        level=mapping.get(x.kind)
+        if level:
+            provenance=x.provenance or provenance_for_nodes(x.node_refs,x.source_ref)
+            assertions.append(WorldHypothesisAssertion(assertion_id=x.id,node_refs=x.node_refs,evidence_type=x.kind,
+                epistemic_level=level,token=x.token,provenance=provenance,source_ref=x.source_ref))
+    for candidate in identities:
+        prov=[]
+        for oid in candidate.observation_ids:
+            o=obs_by_id[oid]
+            if o.region: prov.append(RichEvidenceProvenance(observation_ref=o.id,photo_index=o.photo_index,roi=(o.region.x0,o.region.y0,o.region.x1,o.region.y1)))
+        assertions.append(WorldHypothesisAssertion(assertion_id=f"identity-candidate:{candidate.id}",
+            node_refs=[f"observation:{x}" for x in candidate.observation_ids],evidence_type="IDENTITY_CANDIDATE",
+            epistemic_level="CANDIDATE",token=candidate.status.value,provenance=prov,source_ref=candidate.id))
+    semantic=[]
+    for o in observations:
+        if o.proposed_category and o.region:
+            semantic.append(WorldHypothesisSemanticProposal(observation_ref=o.id,proposed_category=o.proposed_category,
+                category_certainty=o.certainty.category,provenance=RichEvidenceProvenance(observation_ref=o.id,photo_index=o.photo_index,roi=(o.region.x0,o.region.y0,o.region.x1,o.region.y1))))
+    open_uncertainties=[x for x in derive_existing_structured_uncertainties(workspace) if x.resolved_state is None and len(x.open_alternatives)>=2]
+    alternatives=[(x.id,x.open_alternatives) for x in open_uncertainties]
+    branches=[{}]
+    for uid,tokens in alternatives:
+        branches=[{**b,uid:t} for b in branches for t in tokens]
+    organizations=[WorldHypothesisOrganization(organization_id=f"world-hypothesis-organization-{i+1}",
+        branch_assumptions=b,main_world_observation_refs=main,unattached_observation_refs=unattached,assertions=assertions)
+        for i,b in enumerate(branches)]
+    exhausted=[f"identity-discriminant:{x.identity_candidate_id}:{x.outcome}" for x in workspace.identity_discriminant_investigations]
+    exhausted += [f"property-outcome-mapping:{x.request.identity_candidate_id}:{x.outcome}" for x in workspace.property_outcome_mapping_investigations]
+    return WorldHypothesis(photo_indexes=sorted({x.photo_index for x in observations}),organizations=organizations,
+        semantic_proposals=semantic,identity_candidate_refs=sorted(x.id for x in identities),
+        open_uncertainty_refs=sorted(x.id for x in open_uncertainties),exhausted_investigation_refs=sorted(exhausted),
+        property_values_available=all(x.observable_property_values is not None for x in observations))
+
+
+def render_world_hypothesis_html(hypothesis:WorldHypothesis)->str:
+    import html
+    esc=html.escape
+    orgs="".join(f"<section class='org'><h3>{esc(o.organization_id)}</h3><p><b>Branches:</b> {esc(str(o.branch_assumptions))}</p><p><b>Monde central:</b> {len(o.main_world_observation_refs)} observations</p><p><b>Non rattachées:</b> {esc(', '.join(o.unattached_observation_refs) or 'aucune')}</p></section>" for o in hypothesis.organizations)
+    sem="".join(f"<li><b>{esc(x.observation_ref)}</b> — {esc(x.proposed_category)} <span>CANDIDATE / category={esc(x.category_certainty.value)}</span></li>" for x in hypothesis.semantic_proposals)
+    bridges=[]
+    seen=set()
+    for a in hypothesis.organizations[0].assertions if hypothesis.organizations else []:
+        if a.evidence_type in {"PROPERTY_CORRESPONDENCE","PERCEPTUAL_RELATION","IDENTITY_CANDIDATE"} and len(a.node_refs)>1:
+            k=(a.evidence_type,tuple(a.node_refs),a.token)
+            if k not in seen: seen.add(k); bridges.append(f"<li><b>{esc(a.evidence_type)}</b> [{esc(a.epistemic_level)}] — {esc(' ↔ '.join(a.node_refs))} — {esc(a.token or '')}</li>")
+    return f"""<!doctype html><html><head><meta charset='utf-8'><title>Boldüngo WorldHypothesis 073</title><style>
+body{{font-family:system-ui;margin:0;background:#f5f3ed;color:#222}} header{{padding:28px;background:#202733;color:white}} main{{max-width:1200px;margin:auto;padding:24px}}
+.world{{border:3px solid #333;border-radius:22px;padding:24px;background:white;box-shadow:0 8px 30px #0001}} .core{{padding:18px;border:2px dashed #555;border-radius:16px;margin:18px 0}}
+.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}} .org,.panel{{background:#fff;border:1px solid #bbb;border-radius:14px;padding:16px}}
+.badge{{display:inline-block;padding:4px 9px;border:1px solid #777;border-radius:99px;margin:3px}} li{{margin:8px 0}} .warning{{background:#fff3cd;padding:14px;border-radius:12px}}
+</style></head><body><header><h1>WorldHypothesis 073 — un monde partagé, qualitatif et révisable</h1><p>Projection déterministe des preuves acquises. Aucune géométrie 3D ni identité implicite.</p></header><main>
+<div class='world'><h2>MONDE CENTRAL</h2><div class='core'><b>Photos participantes:</b> {' · '.join('P'+str(x) for x in hypothesis.photo_indexes)}<br><b>Niveaux:</b> OBSERVED · CUE · COMPARABLE_VISUAL_PROPERTY · CANDIDATE · AMBIGUOUS · UNKNOWN · EXHAUSTED</div>
+<h2>Ponts et relations explicites</h2><ul>{''.join(bridges)}</ul></div>
+<h2>Organisations concurrentes</h2><div class='grid'>{orgs}</div>
+<div class='grid'><section class='panel'><h2>Propositions sémantiques</h2><ul>{sem}</ul></section><section class='panel'><h2>Incertitudes & mémoire</h2><p>{esc(', '.join(hypothesis.open_uncertainty_refs))}</p><p><b>EXHAUSTED:</b> {esc(', '.join(hypothesis.exhausted_investigation_refs))}</p></section></div>
+<p class='warning'><b>Limite:</b> la connexité perceptive n'affirme ni SAME_PHYSICAL_OBJECT, ni SAME_SURFACE, ni CONNECTED_TO, ni ADJACENT_TO. Les catégories restent des propositions sémantiques candidates.</p>
+</main></body></html>"""
 
 
 def build_multiview_world_constraint_graph(workspace: "MultiViewWorkspace") -> MultiViewWorldConstraintGraph:

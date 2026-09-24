@@ -78,3 +78,27 @@ Au niveau photo, les preuves explicites forment désormais une chaîne perceptiv
 Décision 072 : WORLD_HYPOTHESIS_READY. Justification mécanique : les cinq photos appartiennent désormais à un graphe perceptif connexe au niveau des vues; 9 des 11 composantes insuffisantes ont disparu; il reste seulement 2 îlots mono-photo; aucune contradiction; l'incertitude physique sidewall reste explicitement ouverte. La future couche WorldHypothesis doit donc être qualitative, révisable et multi-organisation, jamais une Scene métrique : elle peut agréger uniquement les contraintes explicites, conserver candidats/alternatives/provenance/niveaux épistémiques, distinguer liens perceptifs et assertions physiques, et être reconstruite/révisée à l'arrivée de nouvelles preuves.
 
 Aucun nouveau producer, request, discriminant, Scene, LEGO ou NOTICE en 072.
+
+
+## 073 — première WorldHypothesis qualitative
+Base : experiment/ingest-global-connectivity-072 @ c09f2e3b9d7e1d5005cae49ce001ff6ff5911cc7.
+Branche : experiment/qualitative-world-hypothesis-073.
+
+073 introduit WorldHypothesis comme projection déterministe et jetable du MultiViewWorkspace + MultiViewWorldConstraintGraph. Elle n'est pas stockée dans MultiViewWorkspace et se reconstruit à l'identique après save/reload.
+
+État réel construit : 2 organisations concurrentes, correspondant exactement à l'unique incertitude ouverte identity-uncertainty-idc_sidewall_p2_p4 : branche same_physical_object et branche incompatible. Aucune branche n'est choisie. Les deux organisations partagent 19 observations du monde central et gardent explicitement non rattachées obs_p3_tree, obs_p5_near_window, obs_p5_side_wall. Les 4 identity candidates restent CANDIDATE.
+
+Chaque assertion WorldHypothesis conserve type de preuve, niveau épistémique et provenance observation_ref/photo_index/ROI. Les niveaux OBSERVED, CUE, COMPARABLE_VISUAL_PROPERTY, CANDIDATE, AMBIGUOUS et EXHAUSTED présents dans l'état courant restent distincts; UNKNOWN reste une valeur licenciée par le modèle et n'est pas inventée quand aucune assertion UNKNOWN n'existe. Aucune connexité ne promeut une identité ou une topologie physique.
+
+proposed_category : le champ était déjà conservé par LocalObservation et l'import 063 lui attribue certainty.category=PLAUSIBLE. 073 l'expose donc comme SemanticProposal au niveau CANDIDATE, avec la certitude category existante et la provenance ROI. Il ne devient jamais vérité physique.
+
+Perte des valeurs de propriétés : RichBootstrapObservation 062 porte observable_properties comme dict valeur, mais l'import 063 ne conservait que set(keys). Correction au premier responsable : LocalObservation ajoute observable_property_values, optionnel/rétrocompatible, et l'import riche conserve dict(item.observable_properties) tout en gardant observable_properties=set(keys) pour compatibilité. Aucune valeur n'est interprétée par son texte.
+
+Test de valeur architectural : ARCHITECTURAL_ORGANIZATION_READY. Critères mécaniques satisfaits : cinq photos présentes dans le réseau, 19 observations dans le core rattaché, 0 contradiction, relations OBSERVED VISIBLE_WITHIN entre propositions d'ouvertures et surfaces, relation OBSERVED VISUALLY_IN_FRONT_OF entre la proposition de plateforme et une surface. Cela autorise un raisonnement futur sur de grandes parties architecturales qualitatives, pas une Scene métrique.
+
+Un renderer HTML autonome 073 montre MONDE CENTRAL, ponts/relations avec niveaux épistémiques, deux organisations concurrentes, propositions sémantiques, incertitudes/mémoires EXHAUSTED et éléments non rattachés. Aucune géométrie 3D.
+
+Aucun nouveau contact visuel, producer, request observateur, hardcoding real-house-5 runtime, Scene finale, LEGO ou NOTICE.
+
+
+Complément livrable 073 : le JSON structuré réellement émis par le test ciblé final a été persisté dans `data/experiments/world-hypothesis/world-hypothesis-073.json`. Il est parseable, schema_version 0.1, contient 2 organisations, 19 observations centrales, 3 non rattachées, 4 identity candidates, 1 incertitude ouverte et `property_values_available=true`. Il constitue un jalon reproductible dérivé, pas un second truth store runtime.
