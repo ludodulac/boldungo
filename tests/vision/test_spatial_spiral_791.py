@@ -385,3 +385,42 @@ def test_800_validation_fails_closed_and_799_cannot_create_platform_or_junction_
     # Even an allowed token cannot override the required 799 epistemic result into a persisted relation.
     imported=import_p5_perception_expansion_response(workspace,request,bad)
     assert not any(r.relation_token=="BOUNDARY_JOINS" and "obs_p5_stair_diagonal_799" in {r.subject_ref,r.object_ref} for r in imported.rich_relation_evidence)
+
+
+def test_801_request_is_new_p5_only_fail_closed_and_non_ingesting():
+    request=json.loads((ROOT/"frontend"/"p5-platform-discriminant-request-801.json").read_text())
+    prior=json.loads((ROOT/"frontend"/"p5-perception-expansion-request-799.json").read_text())
+    assert request["schema_version"]=="0.1" and request["request_id"]=="p5-platform-discriminant-801"
+    assert request["authorized_photo"]["photo_index"]==5
+    refs={x["observation_ref"] for x in request["authorized_observations"]}
+    assert refs=={"obs_p5_side_wall","obs_p5_stair_diagonal_799"}
+    workspace=_workspace_789()
+    workspace=import_p5_perception_expansion_response(workspace,prior,json.loads((ROOT/"frontend"/"p5-perception-expansion-response-799.json").read_text()))
+    real={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    assert refs <= real
+    assert request["new_information_sought"]["property_token"]=="HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"
+    assert "LOCALIZABLE" not in request["allowed_outcomes"]
+    assert {"SUPPORTED","CONTRADICTED","AMBIGUOUS","NOT_OBSERVABLE"}==set(request["allowed_outcomes"])
+    assert request["automatic_ingestion"] is False
+    serialized=json.dumps(request)
+    assert "HISTORICAL_CANDIDATE_MEMORY" in serialized
+    assert '"outcome": "AMBIGUOUS"' in serialized and '"outcome": "NOT_OBSERVABLE"' in serialized
+    assert "DIRECTLY_LOCALIZED" in serialized
+    assert "Do not repeat 799" in serialized
+    assert "near-horizontal upper boundary alone is insufficient" in serialized
+    assert "do not restore 788 LEFT_OF, BELOW or BOUNDARY_JOINS" in serialized
+    assert "No physical identity" in serialized
+    assert "No LocalObservation creation" in serialized
+    assert request["new_information_sought"]["property_token"] not in json.dumps(prior)
+
+
+def test_801_request_does_not_promote_platform_or_restore_788_relations():
+    request=json.loads((ROOT/"frontend"/"p5-platform-discriminant-request-801.json").read_text())
+    refs={x["observation_ref"] for x in request["authorized_observations"]}
+    assert "p5_platform_sector" not in refs and "obs_p5_platform_799" not in refs
+    assert request["anti_repeat_memory"]["memory_788"]["status"]=="HISTORICAL_CANDIDATE_MEMORY"
+    assert request["anti_repeat_memory"]["memory_788"]["historical_tokens"]==["LEFT_OF","BELOW","BOUNDARY_JOINS"]
+    assert request["anti_repeat_memory"]["investigation_799"]["platform"]["candidate_roi"] is None
+    assert request["anti_repeat_memory"]["investigation_799"]["junction"]["candidate_roi"] is None
+    assert request["response_schema"]["properties"]["photo_index"]["const"]==5
+    assert "NOT_OBSERVABLE" in request["response_schema"]["properties"]["outcome"]["enum"]
