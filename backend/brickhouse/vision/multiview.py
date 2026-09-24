@@ -4345,6 +4345,92 @@ class MultiViewWorkspace(BaseModel):
         return self
 
 
+def import_spatial_pixel_check_response(
+    workspace: MultiViewWorkspace,
+    request: dict,
+    response: dict,
+) -> MultiViewWorkspace:
+    """Import a bounded external spatial pixel-check into existing SpatialViewPrediction memory."""
+    if response.get("request_id") != request.get("request_id"):
+        raise ValueError("spatial pixel-check request_id mismatch")
+    if response.get("organization_ref") != request.get("organization_ref"):
+        raise ValueError("spatial pixel-check organization_ref mismatch")
+    organization_ref = response["organization_ref"]
+    if organization_ref not in {item.organization_id for item in workspace.spatial_organizations}:
+        raise ValueError("spatial pixel-check references unknown workspace organization")
+    tests = {item["test_id"]: item for item in request.get("spatial_tests", [])}
+    results = response.get("results", [])
+    if len(results) != len(tests) or {item.get("test_id") for item in results} != set(tests):
+        raise ValueError("spatial pixel-check results must exactly cover request tests")
+    allowed_verdicts = set(request.get("allowed_verdict_tokens", []))
+    allowed_relations = set(request.get("allowed_relation_tokens", []))
+    source_by_ref = {item["observation_ref"]: item for item in request.get("observations", [])}
+    allowed_photos = set(request.get("allowed_photos", []))
+    imported = []
+    for result in results:
+        test = tests[result["test_id"]]
+        if result.get("verdict") not in allowed_verdicts:
+            raise ValueError("spatial pixel-check verdict token is not allowed")
+        relation_tokens = result.get("relation_tokens", [])
+        if len(relation_tokens) != len(set(relation_tokens)) or not set(relation_tokens).issubset(allowed_relations):
+            raise ValueError("spatial pixel-check relation token is not allowed or duplicated")
+        if not result.get("evidence"):
+            raise ValueError("spatial pixel-check requires non-empty evidence")
+        test_photo = test["photo_index"]
+        if test_photo not in allowed_photos:
+            raise ValueError("spatial pixel-check test photo is not allowed")
+        test_refs = set(test["observation_refs"])
+        verification_provenance = []
+        for provenance in result.get("provenance", []):
+            if provenance.get("photo_index") != test_photo:
+                raise ValueError("spatial pixel-check provenance photo must match test photo")
+            refs = provenance.get("observation_refs", [])
+            if not refs or not set(refs).issubset(test_refs):
+                raise ValueError("spatial pixel-check provenance references observation outside test")
+            roi = tuple(provenance.get("roi", []))
+            if len(roi) != 4 or any(not isinstance(value, (int, float)) or value < 0 or value > 1 for value in roi):
+                raise ValueError("spatial pixel-check provenance ROI is invalid")
+            cues = provenance.get("pixel_cues", [])
+            if not cues or any(not isinstance(cue, str) or not cue for cue in cues):
+                raise ValueError("spatial pixel-check provenance requires pixel cues")
+            for ref in refs:
+                source = source_by_ref.get(ref)
+                if source is None or source["photo_index"] != test_photo:
+                    raise ValueError("spatial pixel-check provenance source is not authorized")
+                if tuple(source["roi"]) != roi:
+                    raise ValueError("spatial pixel-check provenance ROI must exactly match authorized observation ROI")
+                verification_provenance.append(RichEvidenceProvenance(
+                    observation_ref=ref, photo_index=test_photo, roi=roi, pixel_cues=list(cues)
+                ))
+        if not verification_provenance:
+            raise ValueError("spatial pixel-check result requires provenance")
+        inspection_provenance = [
+            RichEvidenceProvenance(
+                observation_ref=ref,
+                photo_index=test_photo,
+                roi=tuple(source_by_ref[ref]["roi"]),
+            )
+            for ref in test["observation_refs"]
+        ]
+        imported.append(SpatialViewPrediction(
+            prediction_id=result["test_id"],
+            organization_ref=organization_ref,
+            photo_index=test_photo,
+            observation_refs=list(test["observation_refs"]),
+            expected_observable_consequence=test["question"],
+            inspection_provenance=inspection_provenance,
+            verification_state=result["verdict"],
+            verification_relation_tokens=list(relation_tokens),
+            verification_evidence=result["evidence"],
+            verification_provenance=verification_provenance,
+            observer_investigation_id=request["request_id"],
+        ))
+    prior = [item for item in workspace.spatial_view_predictions if item.prediction_id not in tests]
+    return MultiViewWorkspace.model_validate(
+        workspace.model_copy(update={"spatial_view_predictions": [*prior, *imported]}).model_dump()
+    )
+
+
 def invalidated_observation_ids(workspace: MultiViewWorkspace) -> set[str]:
     return {item.assertion_ref for item in workspace.assertion_revisions
             if item.new_epistemic_state in {"REJECTED_BY_PIXELS", "SUPERSEDED"}}
