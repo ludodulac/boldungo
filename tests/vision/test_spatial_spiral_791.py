@@ -247,3 +247,52 @@ def test_797_response_796_validation_fails_closed_on_roi_identity_and_property_c
     bad=json.loads(json.dumps(response)); bad["property_results"]=bad["property_results"][:2]
     with pytest.raises(ValueError,match="exactly cover"):
         import_spatial_interview_discriminant_response(workspace,request,bad)
+
+
+def test_798_existing_constraints_inform_but_do_not_bridge_without_shared_persistent_node():
+    workspace=_workspace_789()
+    req794=json.loads((ROOT/"frontend"/"p3-perception-expansion-request-794.json").read_text())
+    res794=json.loads((ROOT/"frontend"/"p3-perception-expansion-response-794.json").read_text())
+    workspace=import_p3_perception_expansion_response(workspace,req794,res794)
+    req792=json.loads((ROOT/"frontend"/"interview-discriminant-request-792.json").read_text())
+    res792=json.loads((ROOT/"frontend"/"interview-discriminant-response-792.json").read_text())
+    workspace=import_spatial_interview_discriminant_response(workspace,req792,res792)
+    req796=json.loads((ROOT/"frontend"/"composite-interview-discriminant-request-796.json").read_text())
+    res796=json.loads((ROOT/"frontend"/"composite-interview-discriminant-response-796.json").read_text())
+    workspace=import_spatial_interview_discriminant_response(workspace,req796,res796)
+    before=workspace.model_dump()
+    p5=next(x for x in workspace.spatial_view_predictions if x.prediction_id=="788-p5-sector-structure")
+    assert p5.observation_refs==["obs_p5_side_wall"]
+    assert p5.verification_relation_tokens==["LEFT_OF","BELOW","BOUNDARY_JOINS"]
+    assert all(x.observation_ref=="obs_p5_side_wall" and x.photo_index==5 and x.roi==(0.13,0.04,0.88,0.79)
+               for x in p5.verification_provenance)
+    observations={x.id for x in [*workspace.pass_1.observations,*workspace.pass_2.observations]}
+    assert "obs_p5_side_wall" in observations
+    assert not any(x in observations for x in {"p5_stair_diagonal_sector","p5_platform_sector","obs_p5_stair","obs_p5_platform"})
+    # Semantic stair/platform labels in P3/P4/P5 do not create a shared persistent node.
+    p3={"obs_p3_step_diagonal_794","obs_p3_raised_platform_794"}
+    p4={"obs_p4_stair","obs_p4_terrace"}
+    assert p3<=observations and p4<=observations and p3.isdisjoint(p4)
+    # 792 establishes local correspondence only; it explicitly does not establish physical identity.
+    r792=next(x for x in workspace.spatial_interview_discriminant_investigations if x.request_id=="interview-discriminant-792")
+    assert r792.uncertainty_state=="LOCAL_COMPATIBILITY_ESTABLISHED" and r792.resolved is False
+    r796=next(x for x in workspace.spatial_interview_discriminant_investigations if x.request_id=="composite-interview-discriminant-796")
+    assert r796.uncertainty_state=="PARTIALLY_CONSTRAINED_NOT_FULLY_OBSERVABLE" and r796.resolved is False
+    # Read-only 798: no relation, observation, identity, or provenance is invented.
+    assert workspace.model_dump()==before
+    assert not any(i.status.value in {"same_physical_object","likely_same"} for i in [*workspace.pass_1.identities,*workspace.pass_2.identities])
+
+
+def test_798_diagnostic_artifact_is_fail_closed_and_does_not_promote_p5_substructures():
+    d=json.loads((ROOT/"frontend"/"existing-constraint-bridge-798.json").read_text())
+    assert d["issue_798"]=="EXISTING_CONSTRAINTS_INFORM_BUT_DO_NOT_BRIDGE"
+    assert d["new_constraint_persisted"] is False
+    assert d["new_request_created"] is False
+    assert d["identity_acquired"] is False and d["invented_geometry_added"] is False
+    p5=d["p5_relations"]
+    assert {x["relation"] for x in p5}=={"LEFT_OF","BELOW","BOUNDARY_JOINS"}
+    assert all(x["source_observation_ref"]=="obs_p5_side_wall" for x in p5)
+    assert all(x["roi"]==[0.13,0.04,0.88,0.79] for x in p5)
+    assert all(x["subject_ref"]=="p5_stair_diagonal_sector" and x["object_ref"]=="p5_platform_sector" for x in p5)
+    assert d["p5_substructures_are_local_observations"] is False
+    assert d["composition_guard"]=="NO_COMPOSITION_WITHOUT_SHARED_PERSISTENT_NODE_OR_SUFFICIENT_ACQUIRED_CORRESPONDENCE"
