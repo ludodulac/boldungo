@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.3",
-  "artifact_id": "spatial-ingestion-789",
+  "schema_version": "0.4",
+  "artifact_id": "spatial-spiral-791",
   "purpose": "First short SEE→HYPOTHESIZE→PREDICT→CHECK→REVISE→VISIBLE loop. Pixel evidence only from public real-house-5 photos 02–05.",
   "legacy_input": {
     "world_hypothesis": "world-hypothesis-073",
@@ -217,7 +217,8 @@
         "P4 stair-platform raccord NOT_OBSERVABLE",
         "P4 wall-platform relation AMBIGUOUS",
         "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
-        "metric geometry UNKNOWN"
+        "metric geometry UNKNOWN",
+        "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790"
       ]
     }
   ],
@@ -284,7 +285,8 @@
       "P4 stair-platform raccord NOT_OBSERVABLE",
       "P4 wall-platform relation AMBIGUOUS",
       "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
-      "metric geometry UNKNOWN"
+      "metric geometry UNKNOWN",
+      "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790"
     ]
   },
   "view_explanation_gain": {
@@ -314,16 +316,67 @@
       "P4 stair-platform raccord NOT_OBSERVABLE",
       "P4 wall-platform relation AMBIGUOUS",
       "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
-      "metric geometry UNKNOWN"
+      "metric geometry UNKNOWN",
+      "P4/P5 wall-sector correspondence remains AMBIGUOUS after executed discriminant 790"
     ],
     "invented_geometry_added": false,
-    "note": "A positive consequence in a photo does not mean the whole view is explained."
+    "note": "A positive consequence in a photo does not mean the whole view is explained.",
+    "inter_view_790": {
+      "compatible_local_constraints": [
+        "P4/P5 OPENING_TO_ROOF_EDGE_RELATION = BELOW"
+      ],
+      "executed_non_resolving_discriminants": [
+        "interview-discriminant-790"
+      ],
+      "identity_acquired": false,
+      "invented_geometry_added": false,
+      "note": "AMBIGUOUS is persistent information; no scalar score and no cross-view identity are inferred."
+    }
   },
-  "note": "789 imports the controlled 788 observer response. BOUNDARY_JOINS in P5 does not establish SAME_PHYSICAL_OBJECT across views; LEFT_OF/BELOW remain qualitative image-space constraints; no metric geometry is added.",
+  "note": "791 persists observer result 790: P4/P5 opening-to-roof-edge relation is locally compatible as BELOW, while the inter-view correspondence remains AMBIGUOUS. No SAME_PHYSICAL_OBJECT, common physical surface, hidden continuation, camera pose, or metric geometry is added.",
   "observer_import": {
     "request_id": "spatial-pixel-check-788",
     "response_file": "spatial-pixel-check-response-788.json",
     "status": "VALIDATED_AND_IMPORTED",
     "rule": "Only structured verdicts, relation tokens and exact pixel provenance from response 788 may revise the candidate world."
+  },
+  "inter_view_discriminant_790": {
+    "request_id": "interview-discriminant-790",
+    "source_uncertainty_id": "interview-790:p4-p5-wall-sector-correspondence",
+    "organization_ref": "org_rear_sector_787",
+    "status": "EXECUTED_NON_RESOLVING",
+    "outcome": "AMBIGUOUS",
+    "uncertainty_state": "OPEN",
+    "acquired_local_constraint": {
+      "property_token": "OPENING_TO_ROOF_EDGE_RELATION",
+      "outcome": "CORRESPONDENCE_COMPATIBLE",
+      "relation_token": "BELOW",
+      "meaning": "In each authorized wall-sector ROI, a visible opening is below a visible sloping roof/eave boundary. This is local qualitative compatibility only."
+    },
+    "non_resolving_results": [
+      {
+        "property_token": "OPENING_LAYOUT_ORDER",
+        "outcome": "AMBIGUOUS"
+      },
+      {
+        "property_token": "DISTINCTIVE_OPENING_CONFIGURATION",
+        "outcome": "NOT_OBSERVABLE"
+      },
+      {
+        "property_token": "NEIGHBOR_BOUNDARY_ORDER",
+        "outcome": "AMBIGUOUS"
+      }
+    ],
+    "identity_acquired": false,
+    "physical_surface_common_acquired": false,
+    "invented_geometry_added": false,
+    "repeat_policy": "The exact structured discriminant signature is exhausted; rerun requires changed structured information capable of changing discriminating power."
+  },
+  "observer_import_790": {
+    "request_id": "interview-discriminant-790",
+    "response_file": "interview-discriminant-response-790.json",
+    "status": "VALIDATED_AND_IMPORTED_NON_RESOLVING",
+    "source_uncertainty_id": "interview-790:p4-p5-wall-sector-correspondence",
+    "uncertainty_state": "OPEN"
   }
 }
