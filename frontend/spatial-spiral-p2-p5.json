@@ -347,7 +347,7 @@
       "note": "Three discriminating properties are locally compatible. This reduces the incompatible-local-organization alternative for the tested properties, but does not establish physical identity."
     }
   },
-  "note": "793 persists observer result 792: P3/P5 lower-volume/opening organizations are locally compatible as CONTAINED_WITHIN and BELOW. Physical identity remains UNRESOLVED; no common physical surface, new P5 LocalObservation, hidden continuation, camera pose, or metric geometry is added.",
+  "note": "793 persists observer result 792: P3/P5 lower-volume/opening organizations are locally compatible as CONTAINED_WITHIN and BELOW. Physical identity remains UNRESOLVED; no SAME_PHYSICAL_OBJECT, common physical surface, new P5 LocalObservation, hidden continuation, camera pose, or metric geometry is added.",
   "observer_import": {
     "request_id": "spatial-pixel-check-788",
     "response_file": "spatial-pixel-check-response-788.json",
