@@ -6,7 +6,7 @@ from brickhouse.vision.multiview import (
     AssertionRevision, MultiViewWorkspace, RichEvidenceProvenance, RichVisualBootstrapResponse,
     SpatialOrganizationAssertion, SpatialOrganizationCandidate, ViewExplanationGain,
     build_rich_multiview_bootstrap_request, import_rich_visual_bootstrap_response,
-    import_p3_perception_expansion_response, import_p5_perception_expansion_response, import_spatial_interview_discriminant_response, import_spatial_pixel_check_response,
+    import_p3_perception_expansion_response, import_p5_perception_expansion_response, import_p5_platform_discriminant_response, import_spatial_interview_discriminant_response, import_spatial_pixel_check_response,
     record_assertion_revision, record_spatial_organization_state,
     spatial_interview_discriminant_already_executed,
 )
@@ -424,3 +424,67 @@ def test_801_request_does_not_promote_platform_or_restore_788_relations():
     assert request["anti_repeat_memory"]["investigation_799"]["junction"]["candidate_roi"] is None
     assert request["response_schema"]["properties"]["photo_index"]["const"]==5
     assert "NOT_OBSERVABLE" in request["response_schema"]["properties"]["outcome"]["enum"]
+
+
+def _workspace_800():
+    w=_workspace_789()
+    return import_p5_perception_expansion_response(
+        w,json.loads((ROOT/"frontend"/"p5-perception-expansion-request-799.json").read_text()),
+        json.loads((ROOT/"frontend"/"p5-perception-expansion-response-799.json").read_text()))
+
+
+def test_802_ingests_801_fail_closed_saturates_p5_and_survives_reload_without_promotion():
+    w=_workspace_800()
+    before_obs={x.id for x in [*w.pass_1.observations,*w.pass_2.observations]}
+    before_rel=[x.model_dump() for x in w.rich_relation_evidence]
+    before_ids=[x.model_dump() for x in [*w.pass_1.identities,*w.pass_2.identities]]
+    req=json.loads((ROOT/"frontend"/"p5-platform-discriminant-request-801.json").read_text())
+    res=json.loads((ROOT/"frontend"/"p5-platform-discriminant-response-801.json").read_text())
+    loaded=MultiViewWorkspace.model_validate_json(import_p5_platform_discriminant_response(w,req,res).model_dump_json())
+    rec=loaded.p5_platform_discriminant_investigations[-1]
+    assert rec.request_id=="p5-platform-discriminant-801"
+    assert rec.property_token=="HORIZONTAL_SURFACE_VERTICAL_FACE_BOUNDARY_SEPARATION"
+    assert rec.outcome=="NOT_OBSERVABLE" and rec.relation_tokens==["NO_RELIABLE_RELATION"]
+    assert rec.semantic_status=="UNCERTAIN" and rec.semantic_label=="platform/terrace"
+    assert rec.provenance[0].observation_ref=="obs_p5_side_wall"
+    assert rec.provenance[0].roi==(0.13,0.04,0.88,0.79) and rec.provenance[0].pixel_cues
+    assert rec.saturation_state=="P5_PLATFORM_LOCAL_PERCEPTION_SATURATED"
+    assert len(rec.saturation_basis)==2
+    inv799=next(x for x in loaded.p5_perception_expansion_investigations if x.request_id=="p5-perception-expansion-799")
+    by={x.candidate_id:x for x in inv799.candidates}
+    assert by["p5-candidate-platform-region"].outcome=="AMBIGUOUS"
+    assert by["p5-candidate-stair-platform-junction"].outcome=="NOT_OBSERVABLE"
+    pred=next(x for x in loaded.spatial_view_predictions if x.prediction_id=="788-p5-sector-structure")
+    assert pred.current_support_status=="HISTORICAL_CANDIDATE_MEMORY"
+    assert {x.id for x in [*loaded.pass_1.observations,*loaded.pass_2.observations]}==before_obs
+    assert not any(x in before_obs for x in {"obs_p5_platform_799","obs_p5_platform_801","obs_p5_junction_801"})
+    assert [x.model_dump() for x in loaded.rich_relation_evidence]==before_rel
+    assert [x.model_dump() for x in [*loaded.pass_1.identities,*loaded.pass_2.identities]]==before_ids
+    assert rec.physical_identity_acquired is False and rec.invented_geometry_added is False
+
+
+def test_802_validation_rejects_wrong_roi_semantics_and_non_fail_closed_result():
+    req=json.loads((ROOT/"frontend"/"p5-platform-discriminant-request-801.json").read_text())
+    res=json.loads((ROOT/"frontend"/"p5-platform-discriminant-response-801.json").read_text())
+    for mutate,match in [
+        (lambda x:x["provenance"][0].update({"roi":[0,0,1,1]}),"authorized observation ROI"),
+        (lambda x:x["semantic_interpretation"].update({"status":"SUPPORTED_AS_INTERPRETATION"}),"semantic interpretation"),
+        (lambda x:x.update({"outcome":"CONTRADICTED"}),"exact fail-closed"),
+        (lambda x:x.update({"relation_tokens":["BOUNDARY_JOINS"]}),"exact fail-closed")]:
+        bad=json.loads(json.dumps(res)); mutate(bad)
+        with pytest.raises(ValueError,match=match):
+            import_p5_platform_discriminant_response(_workspace_800(),req,bad)
+
+
+def test_802_milestone_records_saturation_and_only_traceable_minimal_p3_fragment():
+    d=json.loads((ROOT/"frontend"/"p5-platform-discriminant-ingestion-802.json").read_text())
+    assert d["saturation"]["state"]=="P5_PLATFORM_LOCAL_PERCEPTION_SATURATED"
+    assert "not ABSENCE_OF_PLATFORM" in d["saturation"]["meaning"]
+    assert d["minimal_world_visualization"]["status"]=="READY_FOR_MINIMAL_WORLD_VISUALIZATION"
+    fragment=d["minimal_world_visualization"]["fragment"]
+    assert fragment["scope"].startswith("P3-only")
+    assert set(fragment["observations"])=={"obs_p3_step_diagonal_794","obs_p3_visible_junction_794","obs_p3_raised_platform_794","obs_p3_box_volume","obs_p3_dark_opening"}
+    assert all("P4" not in x and "P5" not in x for x in fragment["relations"])
+    assert d["view_explanation_gain"]["identity_acquired"] is False
+    assert d["view_explanation_gain"]["invented_geometry_added"] is False
+    assert d["automatic_next_request"] is False
