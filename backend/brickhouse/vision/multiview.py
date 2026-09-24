@@ -2107,6 +2107,7 @@ class RichEvidenceProvenance(BaseModel):
     observation_ref: str = Field(min_length=1)
     photo_index: int = Field(ge=1)
     roi: tuple[float, float, float, float]
+    pixel_cues: list[str] = Field(default_factory=list)
 
 
 class AssertionRevision(BaseModel):
@@ -3368,6 +3369,7 @@ class SpatialViewPrediction(BaseModel):
     expected_observable_consequence: str = Field(min_length=1)
     inspection_provenance: list[RichEvidenceProvenance] = Field(default_factory=list)
     verification_state: ViewPredictionVerdict
+    verification_relation_tokens: list[str] = Field(default_factory=list)
     verification_evidence: str = Field(min_length=1)
     verification_provenance: list[RichEvidenceProvenance] = Field(default_factory=list)
     observer_investigation_id: str = Field(min_length=1)
