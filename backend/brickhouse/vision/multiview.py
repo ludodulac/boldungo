@@ -6,6 +6,7 @@ Survey fusion or geometric reconstruction.
 """
 from __future__ import annotations
 
+import json
 from enum import Enum
 from typing import ClassVar, Literal
 
@@ -3391,6 +3392,117 @@ class ViewExplanationGain(BaseModel):
     invented_geometry_added: Literal[False] = False
 
 
+class SpatialInterViewDiscriminantPropertyResult(BaseModel):
+    """One bounded property outcome from an inter-view discriminant; never physical identity."""
+    model_config = ConfigDict(extra="forbid")
+    property_token: str = Field(min_length=1)
+    outcome: Literal["CORRESPONDENCE_COMPATIBLE","CORRESPONDENCE_INCOMPATIBLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    relation_tokens: list[str] = Field(default_factory=list)
+    evidence: str = Field(min_length=1)
+
+
+class SpatialInterViewDiscriminantProvenance(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    photo_index: int = Field(ge=1)
+    roi: tuple[float,float,float,float]
+    observation_refs: list[str] = Field(min_length=1)
+    pixel_cues: list[str] = Field(min_length=1)
+    property_token: str = Field(min_length=1)
+
+
+class SpatialInterViewDiscriminantInvestigationRecord(BaseModel):
+    """Persisted executed inter-view test, including non-resolution and negative information."""
+    model_config = ConfigDict(extra="forbid")
+    request_id: str = Field(min_length=1)
+    source_uncertainty_id: str = Field(min_length=1)
+    organization_ref: str = Field(min_length=1)
+    request_signature: str = Field(min_length=1)
+    outcome: Literal["CORRESPONDENCE_COMPATIBLE","CORRESPONDENCE_INCOMPATIBLE","AMBIGUOUS","NOT_OBSERVABLE"]
+    property_results: list[SpatialInterViewDiscriminantPropertyResult] = Field(min_length=1)
+    evidence: str = Field(min_length=1)
+    provenance: list[SpatialInterViewDiscriminantProvenance] = Field(min_length=1)
+    uncertainty_state: Literal["OPEN"] = "OPEN"
+    resolved: Literal[False] = False
+
+
+def _spatial_interview_discriminant_signature(request: dict) -> str:
+    """Exact structured evidence/test signature: changed evidence changes the signature."""
+    keys=("source_uncertainty","organization_ref","hypotheses_or_alternatives","authorized_photos",
+          "authorized_observations","discriminating_properties","allowed_outcomes","allowed_relation_tokens")
+    return json.dumps({key:request.get(key) for key in keys},sort_keys=True,separators=(",",":"))
+
+
+def spatial_interview_discriminant_already_executed(workspace: "MultiViewWorkspace", request: dict) -> bool:
+    signature=_spatial_interview_discriminant_signature(request)
+    return any(item.request_signature==signature for item in workspace.spatial_interview_discriminant_investigations)
+
+
+def import_spatial_interview_discriminant_response(
+    workspace: "MultiViewWorkspace", request: dict, response: dict
+) -> "MultiViewWorkspace":
+    """Strictly import one executed inter-view discriminant without resolving physical identity."""
+    schema=request.get("response_schema",{})
+    required=set(schema.get("required",[]))
+    if set(response)!=required:
+        raise ValueError("inter-view discriminant response fields must exactly match response schema")
+    for key in ("request_id","source_uncertainty_id","organization_ref"):
+        expected=schema.get("properties",{}).get(key,{}).get("const")
+        if expected is not None and response.get(key)!=expected:
+            raise ValueError(f"inter-view discriminant {key} mismatch")
+    if response["organization_ref"] not in {x.organization_id for x in workspace.spatial_organizations}:
+        raise ValueError("inter-view discriminant references unknown spatial organization")
+    if spatial_interview_discriminant_already_executed(workspace,request):
+        raise ValueError("equivalent inter-view discriminant already executed without new structured information")
+    allowed_outcomes=set(request.get("allowed_outcomes",[]))
+    allowed_relations=set(request.get("allowed_relation_tokens",[]))
+    if response.get("outcome") not in allowed_outcomes:
+        raise ValueError("inter-view discriminant global outcome is not allowed")
+    requested_properties={x["property_token"] for x in request.get("discriminating_properties",[])}
+    results=response.get("property_results",[])
+    if len(results)!=len(requested_properties) or {x.get("property_token") for x in results}!=requested_properties:
+        raise ValueError("inter-view discriminant property results must exactly cover requested properties")
+    for result in results:
+        if set(result)!={"property_token","outcome","relation_tokens","evidence"}:
+            raise ValueError("inter-view discriminant property result shape mismatch")
+        if result["outcome"] not in allowed_outcomes or not result["evidence"]:
+            raise ValueError("inter-view discriminant property result is invalid")
+        relations=result.get("relation_tokens",[])
+        if len(relations)!=len(set(relations)) or not set(relations).issubset(allowed_relations):
+            raise ValueError("inter-view discriminant relation token is invalid or duplicated")
+    sources={x["observation_ref"]:x for x in request.get("authorized_observations",[])}
+    allowed_photos=set(request.get("authorized_photos",[]))
+    provenance=response.get("provenance",[])
+    if not provenance:
+        raise ValueError("inter-view discriminant requires pixel provenance")
+    seen_properties=set()
+    for item in provenance:
+        if set(item)!={"photo_index","roi","observation_refs","pixel_cues","property_token"}:
+            raise ValueError("inter-view discriminant provenance shape mismatch")
+        if item["property_token"] not in requested_properties or item["photo_index"] not in allowed_photos:
+            raise ValueError("inter-view discriminant provenance is outside authorized request")
+        if not item["observation_refs"] or not item["pixel_cues"]:
+            raise ValueError("inter-view discriminant provenance requires observations and pixel cues")
+        for ref in item["observation_refs"]:
+            source=sources.get(ref)
+            if source is None or source["photo_index"]!=item["photo_index"] or source["roi"]!=item["roi"]:
+                raise ValueError("inter-view discriminant provenance does not exactly match authorized observation ROI")
+        seen_properties.add(item["property_token"])
+    if seen_properties!=requested_properties:
+        raise ValueError("every discriminating property requires pixel provenance")
+    record=SpatialInterViewDiscriminantInvestigationRecord(
+        request_id=response["request_id"],source_uncertainty_id=response["source_uncertainty_id"],
+        organization_ref=response["organization_ref"],request_signature=_spatial_interview_discriminant_signature(request),
+        outcome=response["outcome"],
+        property_results=[SpatialInterViewDiscriminantPropertyResult.model_validate(x) for x in results],
+        evidence=response["evidence"],
+        provenance=[SpatialInterViewDiscriminantProvenance.model_validate(x) for x in provenance],
+        uncertainty_state="OPEN",resolved=False,
+    )
+    return MultiViewWorkspace.model_validate(workspace.model_copy(update={
+        "spatial_interview_discriminant_investigations":[*workspace.spatial_interview_discriminant_investigations,record]
+    }).model_dump())
+
+
 class MissingWorldConstraint(BaseModel):
     """Structural gap only; it does not invent the perceptual property needed to fill it."""
     model_config = ConfigDict(extra="forbid")
@@ -4245,6 +4357,7 @@ class MultiViewWorkspace(BaseModel):
     spatial_organizations: list[SpatialOrganizationCandidate] = Field(default_factory=list)
     spatial_view_predictions: list[SpatialViewPrediction] = Field(default_factory=list)
     view_explanation_gains: list[ViewExplanationGain] = Field(default_factory=list)
+    spatial_interview_discriminant_investigations: list[SpatialInterViewDiscriminantInvestigationRecord] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
@@ -4342,6 +4455,15 @@ class MultiViewWorkspace(BaseModel):
             raise ValueError("at most one explanation gain record per organization")
         if not set(gain_refs).issubset(organization_id_set):
             raise ValueError("view explanation gain references unknown organization")
+        interview_signatures=[x.request_signature for x in self.spatial_interview_discriminant_investigations]
+        if len(interview_signatures)!=len(set(interview_signatures)):
+            raise ValueError("inter-view discriminant investigation signatures must be unique")
+        for record in self.spatial_interview_discriminant_investigations:
+            if record.organization_ref not in organization_id_set:
+                raise ValueError("inter-view discriminant investigation references unknown organization")
+            for provenance in record.provenance:
+                if provenance.photo_index > self.photo_count or not set(provenance.observation_refs).issubset(known_ids):
+                    raise ValueError("inter-view discriminant provenance references unknown observation or photo")
         return self
 
 
