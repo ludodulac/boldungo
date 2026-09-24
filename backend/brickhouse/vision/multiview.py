@@ -3421,7 +3421,7 @@ class SpatialInterViewDiscriminantInvestigationRecord(BaseModel):
     property_results: list[SpatialInterViewDiscriminantPropertyResult] = Field(min_length=1)
     evidence: str = Field(min_length=1)
     provenance: list[SpatialInterViewDiscriminantProvenance] = Field(min_length=1)
-    uncertainty_state: Literal["OPEN"] = "OPEN"
+    uncertainty_state: Literal["OPEN","LOCAL_COMPATIBILITY_ESTABLISHED"] = "OPEN"
     resolved: Literal[False] = False
 
 
@@ -3496,7 +3496,7 @@ def import_spatial_interview_discriminant_response(
         property_results=[SpatialInterViewDiscriminantPropertyResult.model_validate(x) for x in results],
         evidence=response["evidence"],
         provenance=[SpatialInterViewDiscriminantProvenance.model_validate(x) for x in provenance],
-        uncertainty_state="OPEN",resolved=False,
+        uncertainty_state=("LOCAL_COMPATIBILITY_ESTABLISHED" if response["outcome"]=="CORRESPONDENCE_COMPATIBLE" else "OPEN"),resolved=False,
     )
     return MultiViewWorkspace.model_validate(workspace.model_copy(update={
         "spatial_interview_discriminant_investigations":[*workspace.spatial_interview_discriminant_investigations,record]
