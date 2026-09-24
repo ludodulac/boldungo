@@ -1,6 +1,6 @@
 {
-  "schema_version": "0.2",
-  "artifact_id": "spatial-organization-787",
+  "schema_version": "0.3",
+  "artifact_id": "spatial-ingestion-789",
   "purpose": "First short SEE→HYPOTHESIZE→PREDICT→CHECK→REVISE→VISIBLE loop. Pixel evidence only from public real-house-5 photos 02–05.",
   "legacy_input": {
     "world_hypothesis": "world-hypothesis-073",
@@ -90,62 +90,139 @@
         [
           "rear_side_wall_sector",
           "COEXISTS_IN_SECTOR",
-          "lower_clear_volume"
+          "lower_clear_volume",
+          "CANDIDATE"
         ],
         [
           "raised_timber_platform",
           "COEXISTS_IN_SECTOR",
-          "exterior_stair"
+          "exterior_stair",
+          "CANDIDATE"
+        ],
+        [
+          "dark_opening",
+          "CONTAINED_WITHIN",
+          "lower_clear_volume",
+          "ACQUIRED_BY_PIXELS_P3"
+        ],
+        [
+          "exterior_stair",
+          "LEFT_OF",
+          "platform_wall_sector",
+          "ACQUIRED_BY_PIXELS_P4"
+        ],
+        [
+          "exterior_stair",
+          "BELOW",
+          "platform_wall_sector",
+          "ACQUIRED_BY_PIXELS_P4"
+        ],
+        [
+          "p5_stair_diagonal_sector",
+          "LEFT_OF",
+          "p5_platform_sector",
+          "ACQUIRED_BY_PIXELS_P5"
+        ],
+        [
+          "p5_stair_diagonal_sector",
+          "BELOW",
+          "p5_platform_sector",
+          "ACQUIRED_BY_PIXELS_P5"
+        ],
+        [
+          "p5_stair_diagonal_sector",
+          "BOUNDARY_JOINS",
+          "p5_platform_sector",
+          "ACQUIRED_BY_PIXELS_P5"
         ]
       ],
       "predictions": [
         {
-          "prediction_id": "pred787-p3",
+          "prediction_id": "788-p3-volume-opening",
           "photo_index": 3,
           "observations": [
             "obs_p3_box_volume",
             "obs_p3_dark_opening"
           ],
-          "consequence": "P3 exposes the clear lower volume and its large dark opening; cross-view stair/deck continuity remains unresolved.",
-          "verdict": "AMBIGUOUS"
-        },
-        {
-          "prediction_id": "pred787-p4",
-          "photo_index": 4,
-          "observations": [
-            "obs_p4_rear_wall",
-            "obs_p4_terrace",
-            "obs_p4_stair"
+          "relations": [
+            "CONTAINED_WITHIN"
           ],
-          "consequence": "P4 simultaneously exposes pale wall, raised timber platform and exterior stair in the bounded sector.",
           "verdict": "SUPPORTED"
         },
         {
-          "prediction_id": "pred787-p5",
+          "prediction_id": "788-p3-visible-junctions",
+          "photo_index": 3,
+          "observations": [
+            "obs_p3_box_volume"
+          ],
+          "relations": [
+            "NO_RELIABLE_RELATION"
+          ],
+          "verdict": "AMBIGUOUS"
+        },
+        {
+          "prediction_id": "788-p4-stair-platform",
+          "photo_index": 4,
+          "observations": [
+            "obs_p4_stair",
+            "obs_p4_terrace"
+          ],
+          "relations": [
+            "NO_RELIABLE_RELATION"
+          ],
+          "verdict": "NOT_OBSERVABLE"
+        },
+        {
+          "prediction_id": "788-p4-wall-platform",
+          "photo_index": 4,
+          "observations": [
+            "obs_p4_rear_wall",
+            "obs_p4_terrace"
+          ],
+          "relations": [
+            "NO_RELIABLE_RELATION"
+          ],
+          "verdict": "AMBIGUOUS"
+        },
+        {
+          "prediction_id": "788-p4-left-right-order",
+          "photo_index": 4,
+          "observations": [
+            "obs_p4_stair",
+            "obs_p4_terrace",
+            "obs_p4_rear_wall"
+          ],
+          "relations": [
+            "LEFT_OF",
+            "BELOW"
+          ],
+          "verdict": "SUPPORTED"
+        },
+        {
+          "prediction_id": "788-p5-sector-structure",
           "photo_index": 5,
           "observations": [
             "obs_p5_side_wall"
           ],
-          "consequence": "P5 exposes the pale wall sector; the stronger stair/box/deck arrangement remains candidate pending structured observer evidence.",
-          "verdict": "AMBIGUOUS"
-        },
-        {
-          "prediction_id": "pred787-p2-control",
-          "photo_index": 2,
-          "observations": [],
-          "consequence": "The P3-P5 organization does not require stair or lower volume to be observable in P2.",
-          "verdict": "NOT_OBSERVABLE"
+          "relations": [
+            "LEFT_OF",
+            "BELOW",
+            "BOUNDARY_JOINS"
+          ],
+          "verdict": "SUPPORTED"
         }
       ],
       "unresolved": [
         "physical identity across P3/P4/P5 remains candidate",
-        "exact attachment/contact topology UNKNOWN",
+        "P4 stair-platform raccord NOT_OBSERVABLE",
+        "P4 wall-platform relation AMBIGUOUS",
+        "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
         "metric geometry UNKNOWN"
       ]
     }
   ],
   "surviving_small_world": {
-    "status": "QUALITATIVE_PARTIAL_WORLD_CANDIDATE",
+    "status": "QUALITATIVE_PARTIAL_WORLD_CANDIDATE_REVISED_BY_PIXELS",
     "nodes": [
       "rear_side_wall_sector",
       "lower_clear_volume",
@@ -156,57 +233,97 @@
       [
         "rear_side_wall_sector",
         "COEXISTS_IN_SECTOR",
-        "lower_clear_volume"
+        "lower_clear_volume",
+        "CANDIDATE"
       ],
       [
         "raised_timber_platform",
         "COEXISTS_IN_SECTOR",
-        "exterior_stair"
+        "exterior_stair",
+        "CANDIDATE"
+      ],
+      [
+        "dark_opening",
+        "CONTAINED_WITHIN",
+        "lower_clear_volume",
+        "ACQUIRED_BY_PIXELS_P3"
+      ],
+      [
+        "exterior_stair",
+        "LEFT_OF",
+        "platform_wall_sector",
+        "ACQUIRED_BY_PIXELS_P4"
+      ],
+      [
+        "exterior_stair",
+        "BELOW",
+        "platform_wall_sector",
+        "ACQUIRED_BY_PIXELS_P4"
+      ],
+      [
+        "p5_stair_diagonal_sector",
+        "LEFT_OF",
+        "p5_platform_sector",
+        "ACQUIRED_BY_PIXELS_P5"
+      ],
+      [
+        "p5_stair_diagonal_sector",
+        "BELOW",
+        "p5_platform_sector",
+        "ACQUIRED_BY_PIXELS_P5"
+      ],
+      [
+        "p5_stair_diagonal_sector",
+        "BOUNDARY_JOINS",
+        "p5_platform_sector",
+        "ACQUIRED_BY_PIXELS_P5"
       ]
     ],
     "unresolved": [
       "physical identity across P3/P4/P5 remains candidate",
-      "exact attachment/contact topology UNKNOWN",
+      "P4 stair-platform raccord NOT_OBSERVABLE",
+      "P4 wall-platform relation AMBIGUOUS",
+      "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
       "metric geometry UNKNOWN"
     ]
   },
   "view_explanation_gain": {
-    "constrained_photo_indexes_before": [
+    "baseline_artifact": "spatial-organization-787",
+    "new_supported_constraints": [
+      "P3 dark_opening CONTAINED_WITHIN lower_clear_volume",
+      "P4 exterior_stair LEFT_OF platform/wall sector",
+      "P4 exterior_stair BELOW platform/wall sector",
+      "P5 stair/diagonal sector LEFT_OF platform sector",
+      "P5 stair/diagonal sector BELOW platform sector",
+      "P5 stair/diagonal sector BOUNDARY_JOINS platform sector"
+    ],
+    "ambiguous_constraint_ids": [
+      "788-p3-visible-junctions",
+      "788-p4-wall-platform"
+    ],
+    "not_observable_constraint_ids": [
+      "788-p4-stair-platform"
+    ],
+    "positive_spatial_consequence_photo_indexes": [
       3,
       4,
       5
-    ],
-    "constrained_photo_indexes_after": [
-      3,
-      4,
-      5
-    ],
-    "linked_observation_refs_before": [],
-    "linked_observation_refs_after": [
-      "obs_p3_box_volume",
-      "obs_p3_dark_opening",
-      "obs_p4_rear_wall",
-      "obs_p4_terrace",
-      "obs_p4_stair",
-      "obs_p5_side_wall"
-    ],
-    "supported_prediction_ids": [
-      "pred787-p4"
-    ],
-    "contradicted_prediction_ids": [],
-    "ambiguous_prediction_ids": [
-      "pred787-p3",
-      "pred787-p5"
-    ],
-    "not_observable_prediction_ids": [
-      "pred787-p2-control"
     ],
     "remaining_ambiguities": [
       "physical identity across P3/P4/P5 remains candidate",
-      "exact attachment/contact topology UNKNOWN",
+      "P4 stair-platform raccord NOT_OBSERVABLE",
+      "P4 wall-platform relation AMBIGUOUS",
+      "P3 lower-volume/adjacent-wall precise junction AMBIGUOUS",
       "metric geometry UNKNOWN"
     ],
-    "invented_geometry_added": false
+    "invented_geometry_added": false,
+    "note": "A positive consequence in a photo does not mean the whole view is explained."
   },
-  "note": "787 deliberately downgrades ad-hoc 785 SUPPORTED prose where the persisted 062 workspace lacks independently structured P3/P5 stair-box-deck evidence. No second organization is invented."
+  "note": "789 imports the controlled 788 observer response. BOUNDARY_JOINS in P5 does not establish SAME_PHYSICAL_OBJECT across views; LEFT_OF/BELOW remain qualitative image-space constraints; no metric geometry is added.",
+  "observer_import": {
+    "request_id": "spatial-pixel-check-788",
+    "response_file": "spatial-pixel-check-response-788.json",
+    "status": "VALIDATED_AND_IMPORTED",
+    "rule": "Only structured verdicts, relation tokens and exact pixel provenance from response 788 may revise the candidate world."
+  }
 }
