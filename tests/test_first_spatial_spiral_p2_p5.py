@@ -8,7 +8,7 @@ RESPONSE=ROOT/"frontend"/"spatial-pixel-check-response-788.json"
 def test_789_visual_artifact_is_fail_closed_and_matches_imported_788():
     d=json.loads(ARTIFACT.read_text())
     r=json.loads(RESPONSE.read_text())
-    assert d["artifact_id"]=="spatial-ingestion-789"
+    assert d["artifact_id"]=="spatial-spiral-791"
     assert d["observer_import"]["request_id"]=="spatial-pixel-check-788"
     assert d["view_explanation_gain"]["invented_geometry_added"] is False
     assert len(d["organizations"])==1
@@ -27,3 +27,7 @@ def test_789_visual_artifact_is_fail_closed_and_matches_imported_788():
     assert "AMBIGUOUS" in unresolved
     assert "metric geometry UNKNOWN" in unresolved
     assert "SAME_PHYSICAL_OBJECT" in d["note"]
+    t=d["inter_view_discriminant_790"]
+    assert t["outcome"]=="AMBIGUOUS" and t["uncertainty_state"]=="OPEN"
+    assert t["acquired_local_constraint"]["relation_token"]=="BELOW"
+    assert t["identity_acquired"] is False and t["invented_geometry_added"] is False
