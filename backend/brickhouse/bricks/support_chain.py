@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from pydantic import BaseModel, Field
 
 from .brick_model import BrickModel, BrickModelPart
-from .catalog import create_m0_brick_catalog
+from .catalog import standard_orthogonal_definitions
 from .windows import VALIDATED_WINDOW_ASSEMBLIES
 
 
@@ -56,7 +56,7 @@ class _StructuralPartDefinition:
 
 
 def _standard_brick_definitions():
-    return {item.id: item for item in create_m0_brick_catalog().bricks}
+    return standard_orthogonal_definitions()
 
 
 def _window_frame_definitions() -> dict[str, _StructuralPartDefinition]:
@@ -74,7 +74,7 @@ def _window_frame_definitions() -> dict[str, _StructuralPartDefinition]:
 def _is_orthogonal_wall_brick(part: BrickModelPart, definitions) -> bool:
     return (
         part.component == "wall"
-        and part.category == "brick"
+        and part.category in {"brick", "plate"}
         and part.part_id in definitions
     )
 
@@ -124,8 +124,8 @@ def _wall_structural_datum(model: BrickModel, audited: list[BrickModelPart]) -> 
 def analyze_standard_brick_support_chain(model: BrickModel) -> StandardBrickSupportReport:
     """Return a transitive wall-support report without mutating ``model``.
 
-    Canonical wall bricks at the wall structural datum are anchors. Higher wall
-    bricks require direct stud overlap with a structurally reachable node ending at
+    Canonical orthogonal wall pieces at the wall structural datum are anchors. Higher wall
+    pieces require direct stud overlap with a structurally reachable node ending at
     their bottom plane. Validated window frames participate in the same graph because
     they have bottom anti-stud and top stud interfaces and an explicit known height.
     Glass panes are deliberately excluded.
