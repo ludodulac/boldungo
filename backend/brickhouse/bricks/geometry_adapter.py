@@ -46,6 +46,15 @@ CANONICAL_LDRAW_PARTS: Mapping[str, LDrawPartMapping] = {
     "BRICK_2X6": LDrawPartMapping("2456", 2, 6),
     "BRICK_2X8": LDrawPartMapping("3007", 2, 8),
     "BRICK_2X10": LDrawPartMapping("3006", 2, 10),
+    # Official LDraw standard rectangular plates. These mappings are part of
+    # the placement contract: PLACEMENT_APPROVED pieces must have verified
+    # geometry-engine identities.
+    "PLATE_1X1": LDrawPartMapping("3024", 1, 1, height_plates=1),
+    "PLATE_1X2": LDrawPartMapping("3023b", 1, 2, height_plates=1),
+    "PLATE_1X3": LDrawPartMapping("3623", 1, 3, height_plates=1),
+    "PLATE_1X4": LDrawPartMapping("3710", 1, 4, height_plates=1),
+    "PLATE_1X6": LDrawPartMapping("3666", 1, 6, height_plates=1),
+    "PLATE_1X8": LDrawPartMapping("3460", 1, 8, height_plates=1),
     # Validated modern window assemblies. Frames and panes share the same
     # canonical LDraw origin; pane geometry is inset inside that frame origin,
     # so both use the standard BrickModel-to-LDraw placement transform.
