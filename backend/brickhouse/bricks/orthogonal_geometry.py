@@ -20,7 +20,7 @@ class OrthogonalBounds:
 
 def orthogonal_bounds(part: BrickModelPart) -> OrthogonalBounds | None:
     definition = standard_orthogonal_definitions().get(part.part_id)
-    if definition is None or part.category not in {"brick", "plate"}:
+    if definition is None or part.component != "wall" or part.category not in {"brick", "plate"}:
         return None
     width, length = definition.footprint(part.rotation_quarter_turns)
     return OrthogonalBounds(
