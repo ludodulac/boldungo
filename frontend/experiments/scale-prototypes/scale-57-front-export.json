@@ -1310,7 +1310,7 @@
       },
       {
         "placement_id": "scale-57-000083",
-        "part_id": "BRICK_1X8",
+        "part_id": "BRICK_1X4",
         "category": "brick",
         "component": "wall",
         "x_studs": 32,
@@ -1328,7 +1328,7 @@
         "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
-        "x_studs": 40,
+        "x_studs": 36,
         "y_studs": 0,
         "z_plates": 33,
         "rotation_quarter_turns": 1,
@@ -1343,7 +1343,7 @@
         "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
-        "x_studs": 48,
+        "x_studs": 44,
         "y_studs": 0,
         "z_plates": 33,
         "rotation_quarter_turns": 1,
@@ -1355,10 +1355,10 @@
       },
       {
         "placement_id": "scale-57-000086",
-        "part_id": "BRICK_1X1",
+        "part_id": "BRICK_1X4",
         "category": "brick",
         "component": "wall",
-        "x_studs": 56,
+        "x_studs": 52,
         "y_studs": 0,
         "z_plates": 33,
         "rotation_quarter_turns": 1,
@@ -4925,6 +4925,21 @@
         "width_studs": 1,
         "length_studs": 1,
         "height_plates": 1
+      },
+      {
+        "placement_id": "scale-57-000315",
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 56,
+        "y_studs": 0,
+        "z_plates": 33,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
       }
     ]
   },
@@ -4932,7 +4947,7 @@
     "schema_version": "0.1",
     "building_id": "experimental-scale-prototype-57",
     "volume_id": "experimental-front-facade-57",
-    "total_parts": 314,
+    "total_parts": 315,
     "unique_part_types": 10,
     "lines": [
       {
@@ -4957,7 +4972,7 @@
         "part_id": "BRICK_1X4",
         "category": "brick",
         "semantic_color": null,
-        "quantity": 10
+        "quantity": 12
       },
       {
         "part_id": "BRICK_1X6",
@@ -4969,7 +4984,7 @@
         "part_id": "BRICK_1X8",
         "category": "brick",
         "semantic_color": null,
-        "quantity": 171
+        "quantity": 170
       },
       {
         "part_id": "PLATE_1X1",
