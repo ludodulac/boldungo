@@ -6,7 +6,7 @@ const guidanceEl=document.querySelector('#scale-guidance');
 const modelSummary=document.querySelector('#model-summary');
 
 function currentBundle(){
-  try{return JSON.parse(localStorage.getItem('brickhouse.currentExport')||'null');}catch{return null;}
+  if(window.__BRICKHOUSE_CURRENT_BUNDLE__)return window.__BRICKHOUSE_CURRENT_BUNDLE__;\n  try{return JSON.parse(localStorage.getItem('brickhouse.currentExport')||'null');}catch{return null;}
 }
 
 function renderPrecision(){
