@@ -80,7 +80,7 @@
     "parts": [
       {
         "placement_id": "scale-24-000001",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
@@ -95,10 +95,10 @@
       },
       {
         "placement_id": "scale-24-000002",
-        "part_id": "BRICK_1X4",
+        "part_id": "BRICK_1X6",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 8,
         "y_studs": 0,
         "z_plates": 0,
         "rotation_quarter_turns": 1,
@@ -260,7 +260,7 @@
       },
       {
         "placement_id": "scale-24-000013",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
@@ -275,10 +275,10 @@
       },
       {
         "placement_id": "scale-24-000014",
-        "part_id": "BRICK_1X4",
+        "part_id": "BRICK_1X6",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 8,
         "y_studs": 0,
         "z_plates": 9,
         "rotation_quarter_turns": 1,
@@ -320,7 +320,7 @@
       },
       {
         "placement_id": "scale-24-000017",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
@@ -335,10 +335,10 @@
       },
       {
         "placement_id": "scale-24-000018",
-        "part_id": "BRICK_1X4",
+        "part_id": "BRICK_1X6",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 8,
         "y_studs": 0,
         "z_plates": 12,
         "rotation_quarter_turns": 1,
@@ -380,7 +380,7 @@
       },
       {
         "placement_id": "scale-24-000021",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
@@ -395,10 +395,10 @@
       },
       {
         "placement_id": "scale-24-000022",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 8,
         "y_studs": 0,
         "z_plates": 15,
         "rotation_quarter_turns": 1,
@@ -410,10 +410,10 @@
       },
       {
         "placement_id": "scale-24-000023",
-        "part_id": "BRICK_1X4",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
-        "x_studs": 20,
+        "x_studs": 16,
         "y_studs": 0,
         "z_plates": 15,
         "rotation_quarter_turns": 1,
@@ -425,7 +425,7 @@
       },
       {
         "placement_id": "scale-24-000024",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
@@ -440,10 +440,10 @@
       },
       {
         "placement_id": "scale-24-000025",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 8,
         "y_studs": 0,
         "z_plates": 18,
         "rotation_quarter_turns": 1,
@@ -455,10 +455,10 @@
       },
       {
         "placement_id": "scale-24-000026",
-        "part_id": "BRICK_1X4",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
-        "x_studs": 20,
+        "x_studs": 16,
         "y_studs": 0,
         "z_plates": 18,
         "rotation_quarter_turns": 1,
@@ -470,7 +470,7 @@
       },
       {
         "placement_id": "scale-24-000027",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
@@ -485,10 +485,10 @@
       },
       {
         "placement_id": "scale-24-000028",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 8,
         "y_studs": 0,
         "z_plates": 21,
         "rotation_quarter_turns": 1,
@@ -500,10 +500,10 @@
       },
       {
         "placement_id": "scale-24-000029",
-        "part_id": "BRICK_1X4",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
-        "x_studs": 20,
+        "x_studs": 16,
         "y_studs": 0,
         "z_plates": 21,
         "rotation_quarter_turns": 1,
@@ -1363,12 +1363,6 @@
         "quantity": 21
       },
       {
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "semantic_color": null,
-        "quantity": 9
-      },
-      {
         "part_id": "BRICK_1X3",
         "category": "brick",
         "semantic_color": null,
@@ -1378,10 +1372,16 @@
         "part_id": "BRICK_1X4",
         "category": "brick",
         "semantic_color": null,
-        "quantity": 22
+        "quantity": 16
       },
       {
         "part_id": "BRICK_1X6",
+        "category": "brick",
+        "semantic_color": null,
+        "quantity": 15
+      },
+      {
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "semantic_color": null,
         "quantity": 12
