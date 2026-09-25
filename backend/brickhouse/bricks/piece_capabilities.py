@@ -147,7 +147,7 @@ def create_current_engine_capability_registry(
 ) -> PieceCapabilityRegistry:
     """Build the capability view for the engine that is actually implemented today."""
 
-    from .catalog import create_m0_brick_catalog
+    from .catalog import create_m0_brick_catalog, create_standard_plate_catalog
     from .roof import create_m0_roof_catalog
     from .windows import VALIDATED_WINDOW_ASSEMBLIES
 
@@ -159,6 +159,14 @@ def create_current_engine_capability_registry(
         standard_ids,
         stage=PieceCapabilityStage.PLACEMENT_APPROVED,
         notes="Validated for deterministic orthogonal wall/structure placement.",
+    )
+
+    plate_ids = {plate.id for plate in create_standard_plate_catalog().bricks}
+    registry = promote_capabilities(
+        registry,
+        plate_ids,
+        stage=PieceCapabilityStage.PLACEMENT_APPROVED,
+        notes="Validated canonical 1-plate orthogonal stud/tube geometry.",
     )
 
     roof_ids = {part.id for part in create_m0_roof_catalog().parts}
@@ -206,6 +214,8 @@ def validate_model_part_capabilities(
             + ", ".join(unsupported)
         )
 
+    from .orthogonal_geometry import validate_orthogonal_collisions
     from .support_chain import validate_standard_brick_support_chain
 
+    validate_orthogonal_collisions(model)
     validate_standard_brick_support_chain(model)
