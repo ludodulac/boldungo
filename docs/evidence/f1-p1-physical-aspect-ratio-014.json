@@ -1,0 +1,140 @@
+{
+  "schema": "boldungo.visual_measurement_evidence.v1",
+  "mission": "BOLDUNGO-F1-SOURCE-RECOVERY-014",
+  "method_version": "f1-source-recovery-014-v1",
+  "source": {
+    "path": "01-original.jpg",
+    "commit": "6cfa20caa9f5416dbf31127131990e60289e25db",
+    "git_blob_sha1": "cc920d25fcc8cd53722b37ebee1137660d131d7a",
+    "sha256": "81f064aa642f3e51c284473583e9c48016535177510b2cddde8f60676f87fa07",
+    "bytes": 145666,
+    "image_dimensions_px": {
+      "width": 691,
+      "height": 1536
+    },
+    "mapping": "P1 / main gable facade; commit adds 01..05 originals together"
+  },
+  "rectification": {
+    "model": "planar homography",
+    "source_quad_px": [
+      [
+        21,
+        527
+      ],
+      [
+        645,
+        508
+      ],
+      [
+        646,
+        1058
+      ],
+      [
+        13,
+        1034
+      ]
+    ],
+    "destination_normalized": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "note": "Facade wall plane; coordinates are audit annotations and retain uncertainty."
+  },
+  "contour_type": "A_ARCHITECTURAL_OPENING",
+  "annotations_px": {
+    "F1_TOP_LEFT": [
+      139,
+      548,
+      235,
+      661
+    ],
+    "F1_TOP_RIGHT": [
+      421,
+      532,
+      529,
+      651
+    ],
+    "F1_MIDDLE_LEFT": [
+      126,
+      723,
+      222,
+      819
+    ],
+    "F1_MIDDLE_RIGHT": [
+      414,
+      728,
+      528,
+      832
+    ]
+  },
+  "rectified_measurements": [
+    {
+      "id": "F1_TOP_LEFT",
+      "width_norm": 0.159264,
+      "height_norm": 0.220166,
+      "h_over_w": 1.382394
+    },
+    {
+      "id": "F1_TOP_RIGHT",
+      "width_norm": 0.166325,
+      "height_norm": 0.223462,
+      "h_over_w": 1.343529
+    },
+    {
+      "id": "F1_MIDDLE_LEFT",
+      "width_norm": 0.158945,
+      "height_norm": 0.185531,
+      "h_over_w": 1.167265
+    },
+    {
+      "id": "F1_MIDDLE_RIGHT",
+      "width_norm": 0.174737,
+      "height_norm": 0.19331,
+      "h_over_w": 1.106294
+    }
+  ],
+  "family": {
+    "aggregation": "mean and median of four same-contour rectified occurrence ratios; family invariant retained, occurrence spread treated as perspective/annotation/photographic uncertainty unless architectural evidence proves otherwise",
+    "mean_h_over_w": 1.24987,
+    "median_h_over_w": 1.255397,
+    "sample_sd": 0.133881,
+    "working_ratio": 1.25,
+    "plausible_interval": [
+      1.1,
+      1.4
+    ],
+    "confidence": "MEDIUM",
+    "occurrences": 4
+  },
+  "lego_conversion": {
+    "stud_mm": 8,
+    "plate_mm": 3.2,
+    "formula": "physical_H_over_W=(height_plates*3.2)/(width_studs*8.0)",
+    "candidate_heights_plates": {
+      "24_width4": 13,
+      "32_width5": 16,
+      "51_width8": 25,
+      "57_width9": 28
+    }
+  },
+  "limitations": [
+    "P1 alone",
+    "architectural opening inner masonry edge partly softened/occluded by surround and joinery",
+    "homography depends on facade-plane corner annotations",
+    "family spread is retained, not hidden"
+  ]
+}
