@@ -65,6 +65,16 @@ class BrickModelPart(BaseModel):
             if self.category not in allowed:
                 raise ValueError("facade detail parts must use a facade-compatible category")
 
+        if self.category == "plate":
+            from .catalog import create_standard_plate_catalog
+            definition = create_standard_plate_catalog().get(self.part_id)
+            geometry = (self.width_studs, self.length_studs, self.height_plates)
+            expected = (definition.width_studs, definition.length_studs, definition.height_plates)
+            if geometry != expected:
+                raise ValueError(
+                    f"plate geometry must match canonical definition {expected}, got {geometry}"
+                )
+
         if self.component != "facade_detail" and (self.opening_id is not None or self.trim_role is not None):
             raise ValueError("opening/trim provenance may only be attached to facade detail parts")
         if self.trim_role is not None and self.opening_id is None:
