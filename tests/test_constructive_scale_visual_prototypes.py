@@ -34,7 +34,11 @@ def test_scale_prototypes_are_comparable_and_valid():
                 assert cell not in cells
                 cells.add(cell)
         openings=meta["architectural_openings"]
-        assert [o["family"] for o in openings].count("repeated-large")==4\n        f1=[o for o in openings if o["family"]=="repeated-large"]\n        assert len({(o["x1"]-o["x0"],o["z1_course"]-o["z0_course"]) for o in f1})==1\n        template=meta["f1_family_template"]\n        assert {(o["x1"]-o["x0"],o["z1_course"]-o["z0_course"]) for o in f1}=={(template["width_studs"],template["height_brick_courses"])}
+        assert [o["family"] for o in openings].count("repeated-large")==4
+        f1=[o for o in openings if o["family"]=="repeated-large"]
+        assert len({(o["x1"]-o["x0"],o["z1_course"]-o["z0_course"]) for o in f1})==1
+        template=meta["f1_family_template"]
+        assert {(o["x1"]-o["x0"],o["z1_course"]-o["z0_course"]) for o in f1}=={(template["width_studs"],template["height_brick_courses"])}
         for o in openings:
             for x in range(o["x0"],o["x1"]):
                 for z in range(o["z0_course"],o["z1_course"]):
