@@ -10,7 +10,7 @@ def test_viewer_renders_display_only_studs_on_brick_like_parts() -> None:
 
     assert "const studGeometry=new THREE.CylinderGeometry(.30,.30,.15,14)" in js
     assert "studDetailEnabled=!window.matchMedia('(max-width: 760px)').matches" in js
-    assert "['brick','facade_detail','window_frame','terrain',...exteriorCategories].includes(p.category)" in js
+    assert "['brick','plate','facade_detail','window_frame','terrain',...exteriorCategories].includes(p.category)" in js
     assert "const s=new THREE.Mesh(studGeometry,mat(p))" in js
 
 

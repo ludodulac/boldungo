@@ -11,7 +11,7 @@ class BrickDefinition(BaseModel):
     """A canonical standard brick expressed in integer grid units."""
 
     id: str
-    category: Literal["brick"] = "brick"
+    category: Literal["brick", "plate"] = "brick"
     width_studs: int = Field(gt=0)
     length_studs: int = Field(gt=0)
     height_plates: int = Field(default=3, gt=0)

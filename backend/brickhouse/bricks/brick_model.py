@@ -12,7 +12,7 @@ from .spatial import SpatialBrickShell
 from .windows import WindowPartPlacement
 
 PartCategory = Literal[
-    "brick", "roof_tile", "ridge_tile", "window_frame", "window_pane",
+    "brick", "plate", "roof_tile", "ridge_tile", "window_frame", "window_pane",
     "facade_detail", "timber", "concrete", "masonry", "stone", "metal",
     "composite", "terrain",
 ]
@@ -36,14 +36,17 @@ class BrickModelPart(BaseModel):
     opening_id: str | None = None
     trim_role: TrimRole | None = None
     semantic_color: str | None = Field(default=None, min_length=1)
+    width_studs: int | None = Field(default=None, gt=0)
+    length_studs: int | None = Field(default=None, gt=0)
+    height_plates: int | None = Field(default=None, gt=0)
 
     @model_validator(mode="after")
     def validate_semantic_zone(self):
         if self.component == "wall":
             if self.facade is None or self.roof_side is not None:
                 raise ValueError("wall parts require facade and must not define roof_side")
-            if self.category != "brick":
-                raise ValueError("wall parts must use category 'brick'")
+            if self.category not in {"brick", "plate"}:
+                raise ValueError("wall parts must use an orthogonal masonry category")
         elif self.component == "roof":
             if self.roof_side is None or self.facade is not None:
                 raise ValueError("roof parts require roof_side and must not define facade")
@@ -56,11 +59,21 @@ class BrickModelPart(BaseModel):
             if self.facade is None or self.roof_side is not None:
                 raise ValueError("facade detail parts require facade and must not define roof_side")
             allowed = {
-                "brick", "window_frame", "window_pane", "facade_detail", "terrain",
+                "brick", "plate", "window_frame", "window_pane", "facade_detail", "terrain",
                 *EXTERIOR_MATERIAL_CATEGORIES,
             }
             if self.category not in allowed:
                 raise ValueError("facade detail parts must use a facade-compatible category")
+
+        if self.category == "plate":
+            from .catalog import create_standard_plate_catalog
+            definition = create_standard_plate_catalog().get(self.part_id)
+            geometry = (self.width_studs, self.length_studs, self.height_plates)
+            expected = (definition.width_studs, definition.length_studs, definition.height_plates)
+            if geometry != expected:
+                raise ValueError(
+                    f"plate geometry must match canonical definition {expected}, got {geometry}"
+                )
 
         if self.component != "facade_detail" and (self.opening_id is not None or self.trim_role is not None):
             raise ValueError("opening/trim provenance may only be attached to facade detail parts")
