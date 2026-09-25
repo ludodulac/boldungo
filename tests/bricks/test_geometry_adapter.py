@@ -1,7 +1,7 @@
 import pytest
 
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
-from brickhouse.bricks.catalog import create_m0_brick_catalog
+from brickhouse.bricks.catalog import create_m0_brick_catalog, create_standard_plate_catalog
 from brickhouse.bricks.geometry_adapter import (
     CANONICAL_LDRAW_PARTS, UnmappedCanonicalPartError, analyze_brick_model_geometry,
     brick_model_part_to_instance, brick_model_part_transform,
@@ -57,7 +57,10 @@ class FakeLibrary:
 
 def test_mapping_covers_standard_bricks_roof_slopes_ridge_tiles_and_windows():
     assert {b.id for b in create_m0_brick_catalog().bricks}.issubset(CANONICAL_LDRAW_PARTS)
+    assert {p.id for p in create_standard_plate_catalog().bricks}.issubset(CANONICAL_LDRAW_PARTS)
     expected={
+        "PLATE_1X1":"3024","PLATE_1X2":"3023b","PLATE_1X3":"3623",
+        "PLATE_1X4":"3710","PLATE_1X6":"3666","PLATE_1X8":"3460",
         "TILE_2X2":"3068b","TILE_2X3":"26603","TILE_2X4":"87079",
         "BRICK_SLOPED_18_4X2":"30363","BRICK_SLOPED_33_3X6":"3939","BRICK_SLOPED_33_3X4":"3297","BRICK_SLOPED_33_3X2":"3298",
         "BRICK_SLOPED_45_2X4":"3037","BRICK_SLOPED_45_2X3":"3038","BRICK_SLOPED_45_2X2":"3039","BRICK_SLOPED_45_2X1":"3040b",
@@ -66,7 +69,7 @@ def test_mapping_covers_standard_bricks_roof_slopes_ridge_tiles_and_windows():
         "WINDOW_1X4X3_60594":"60594","GLASS_FOR_WINDOW_1X4X3_60603":"60603",
     }
     assert {k:CANONICAL_LDRAW_PARTS[k].ldraw_id for k in expected}==expected
-    assert all(CANONICAL_LDRAW_PARTS[key].height_plates==1 for key in ("TILE_2X2","TILE_2X3","TILE_2X4"))
+    assert all(CANONICAL_LDRAW_PARTS[key].height_plates==1 for key in ("TILE_2X2","TILE_2X3","TILE_2X4","PLATE_1X1","PLATE_1X2","PLATE_1X3","PLATE_1X4","PLATE_1X6","PLATE_1X8"))
     approved_window_ids={part_id for assembly in VALIDATED_WINDOW_ASSEMBLIES for part_id in (assembly.frame_part_id,assembly.pane_part_id)}
     assert approved_window_ids.issubset(CANONICAL_LDRAW_PARTS)
 
