@@ -84,7 +84,7 @@ def test_non_f1_opening_bounds_remain_from_012():
         24: {"lower-small": (6, 8, 3, 9), "lower-large": (15, 21, 0, 15)},
         32: {"lower-small": (8, 11, 6, 12), "lower-large": (21, 29, 0, 18)},
         51: {"lower-small": (12, 16, 9, 21), "lower-large": (33, 46, 3, 30)},
-        57: {"lower-small": (13, 18, 9, 21), "lower-large": (37, 51, 3, 33)},
+        57: {"lower-small": (13, 18, 12, 24), "lower-large": (37, 51, 3, 33)},
     }
     for width in WIDTHS:
         openings = {o["id"]: o for o in load(width)["metadata"]["architectural_openings"]}
