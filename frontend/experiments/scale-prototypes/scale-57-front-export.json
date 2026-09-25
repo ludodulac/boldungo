@@ -6,14 +6,14 @@
     "experiment_kind": "EXPERIMENTAL_SCALE_PROTOTYPE",
     "front_width_studs": 57,
     "source_model": "BOLDUNGO-CONSTRUCTIVE-SCALE-DISCRIMINANTS-010",
-    "quantization_rule": "same-relative-model; positions and opening extents nearest stud; wall height ratio 0.83 converted with 8.0 mm/stud and 3.2 mm/plate, then nearest whole brick course; opening vertical positions/extents nearest brick course",
+    "quantization_rule": "same-relative-model; F1 repeated-large openings are family-first: representative family dimensions quantified once then replicated identically; other opening positions/extents nearest stud; wall height ratio 0.83 converted with 8.0 mm/stud and 3.2 mm/plate, then nearest whole brick course",
     "architectural_openings": [
       {
         "id": "upper-left",
         "family": "repeated-large",
         "x0": 11,
         "x1": 20,
-        "z0_course": 29,
+        "z0_course": 30,
         "z1_course": 38
       },
       {
@@ -21,7 +21,7 @@
         "family": "repeated-large",
         "x0": 38,
         "x1": 47,
-        "z0_course": 29,
+        "z0_course": 30,
         "z1_course": 38
       },
       {
@@ -30,7 +30,7 @@
         "x0": 11,
         "x1": 20,
         "z0_course": 17,
-        "z1_course": 24
+        "z1_course": 25
       },
       {
         "id": "middle-right",
@@ -38,7 +38,7 @@
         "x0": 38,
         "x1": 47,
         "z0_course": 17,
-        "z1_course": 24
+        "z1_course": 25
       },
       {
         "id": "lower-small",
@@ -56,7 +56,12 @@
         "z0_course": 1,
         "z1_course": 11
       }
-    ]
+    ],
+    "f1_family_template": {
+      "width_studs": 9,
+      "height_brick_courses": 8,
+      "method": "family-first representative template: width uses established common F1 width; height is the nearest integer brick-course quantization of the four-occurrence representative height (mean of the prior P1-derived occurrence estimates), then replicated identically"
+    }
   },
   "appearance": null,
   "brick_model": {
@@ -2248,7 +2253,7 @@
       },
       {
         "placement_id": "scale-57-000146",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X1",
         "category": "brick",
         "component": "wall",
         "x_studs": 10,
@@ -2278,7 +2283,7 @@
       },
       {
         "placement_id": "scale-57-000148",
-        "part_id": "BRICK_1X10",
+        "part_id": "BRICK_1X8",
         "category": "brick",
         "component": "wall",
         "x_studs": 30,
@@ -2296,7 +2301,7 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 40,
+        "x_studs": 47,
         "y_studs": 0,
         "z_plates": 72,
         "rotation_quarter_turns": 1,
@@ -2308,12 +2313,12 @@
       },
       {
         "placement_id": "scale-57-000150",
-        "part_id": "BRICK_1X6",
+        "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 50,
+        "x_studs": 0,
         "y_studs": 0,
-        "z_plates": 72,
+        "z_plates": 75,
         "rotation_quarter_turns": 1,
         "facade": "front",
         "roof_side": null,
@@ -2323,12 +2328,12 @@
       },
       {
         "placement_id": "scale-57-000151",
-        "part_id": "BRICK_1X1",
+        "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 56,
+        "x_studs": 10,
         "y_studs": 0,
-        "z_plates": 72,
+        "z_plates": 75,
         "rotation_quarter_turns": 1,
         "facade": "front",
         "roof_side": null,
@@ -2341,7 +2346,7 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 0,
+        "x_studs": 20,
         "y_studs": 0,
         "z_plates": 75,
         "rotation_quarter_turns": 1,
@@ -2356,7 +2361,7 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 30,
         "y_studs": 0,
         "z_plates": 75,
         "rotation_quarter_turns": 1,
@@ -2371,36 +2376,6 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 20,
-        "y_studs": 0,
-        "z_plates": 75,
-        "rotation_quarter_turns": 1,
-        "facade": "front",
-        "roof_side": null,
-        "opening_id": null,
-        "trim_role": null,
-        "semantic_color": null
-      },
-      {
-        "placement_id": "scale-57-000155",
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "component": "wall",
-        "x_studs": 30,
-        "y_studs": 0,
-        "z_plates": 75,
-        "rotation_quarter_turns": 1,
-        "facade": "front",
-        "roof_side": null,
-        "opening_id": null,
-        "trim_role": null,
-        "semantic_color": null
-      },
-      {
-        "placement_id": "scale-57-000156",
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "component": "wall",
         "x_studs": 40,
         "y_studs": 0,
         "z_plates": 75,
@@ -2412,7 +2387,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000157",
+        "placement_id": "scale-57-000155",
         "part_id": "BRICK_1X6",
         "category": "brick",
         "component": "wall",
@@ -2427,7 +2402,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000158",
+        "placement_id": "scale-57-000156",
         "part_id": "BRICK_1X1",
         "category": "brick",
         "component": "wall",
@@ -2442,11 +2417,41 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000159",
+        "placement_id": "scale-57-000157",
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
+        "y_studs": 0,
+        "z_plates": 78,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
+      },
+      {
+        "placement_id": "scale-57-000158",
+        "part_id": "BRICK_1X10",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 10,
+        "y_studs": 0,
+        "z_plates": 78,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
+      },
+      {
+        "placement_id": "scale-57-000159",
+        "part_id": "BRICK_1X10",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 20,
         "y_studs": 0,
         "z_plates": 78,
         "rotation_quarter_turns": 1,
@@ -2461,7 +2466,7 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 30,
         "y_studs": 0,
         "z_plates": 78,
         "rotation_quarter_turns": 1,
@@ -2476,36 +2481,6 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 20,
-        "y_studs": 0,
-        "z_plates": 78,
-        "rotation_quarter_turns": 1,
-        "facade": "front",
-        "roof_side": null,
-        "opening_id": null,
-        "trim_role": null,
-        "semantic_color": null
-      },
-      {
-        "placement_id": "scale-57-000162",
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "component": "wall",
-        "x_studs": 30,
-        "y_studs": 0,
-        "z_plates": 78,
-        "rotation_quarter_turns": 1,
-        "facade": "front",
-        "roof_side": null,
-        "opening_id": null,
-        "trim_role": null,
-        "semantic_color": null
-      },
-      {
-        "placement_id": "scale-57-000163",
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "component": "wall",
         "x_studs": 40,
         "y_studs": 0,
         "z_plates": 78,
@@ -2517,7 +2492,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000164",
+        "placement_id": "scale-57-000162",
         "part_id": "BRICK_1X6",
         "category": "brick",
         "component": "wall",
@@ -2532,7 +2507,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000165",
+        "placement_id": "scale-57-000163",
         "part_id": "BRICK_1X1",
         "category": "brick",
         "component": "wall",
@@ -2547,11 +2522,41 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000166",
+        "placement_id": "scale-57-000164",
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
+        "y_studs": 0,
+        "z_plates": 81,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
+      },
+      {
+        "placement_id": "scale-57-000165",
+        "part_id": "BRICK_1X10",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 10,
+        "y_studs": 0,
+        "z_plates": 81,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
+      },
+      {
+        "placement_id": "scale-57-000166",
+        "part_id": "BRICK_1X10",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 20,
         "y_studs": 0,
         "z_plates": 81,
         "rotation_quarter_turns": 1,
@@ -2566,7 +2571,7 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 30,
         "y_studs": 0,
         "z_plates": 81,
         "rotation_quarter_turns": 1,
@@ -2581,36 +2586,6 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 20,
-        "y_studs": 0,
-        "z_plates": 81,
-        "rotation_quarter_turns": 1,
-        "facade": "front",
-        "roof_side": null,
-        "opening_id": null,
-        "trim_role": null,
-        "semantic_color": null
-      },
-      {
-        "placement_id": "scale-57-000169",
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "component": "wall",
-        "x_studs": 30,
-        "y_studs": 0,
-        "z_plates": 81,
-        "rotation_quarter_turns": 1,
-        "facade": "front",
-        "roof_side": null,
-        "opening_id": null,
-        "trim_role": null,
-        "semantic_color": null
-      },
-      {
-        "placement_id": "scale-57-000170",
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "component": "wall",
         "x_studs": 40,
         "y_studs": 0,
         "z_plates": 81,
@@ -2622,7 +2597,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000171",
+        "placement_id": "scale-57-000169",
         "part_id": "BRICK_1X6",
         "category": "brick",
         "component": "wall",
@@ -2637,7 +2612,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000172",
+        "placement_id": "scale-57-000170",
         "part_id": "BRICK_1X1",
         "category": "brick",
         "component": "wall",
@@ -2652,11 +2627,41 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000173",
+        "placement_id": "scale-57-000171",
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
         "x_studs": 0,
+        "y_studs": 0,
+        "z_plates": 84,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
+      },
+      {
+        "placement_id": "scale-57-000172",
+        "part_id": "BRICK_1X10",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 10,
+        "y_studs": 0,
+        "z_plates": 84,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
+      },
+      {
+        "placement_id": "scale-57-000173",
+        "part_id": "BRICK_1X10",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 20,
         "y_studs": 0,
         "z_plates": 84,
         "rotation_quarter_turns": 1,
@@ -2671,7 +2676,7 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 10,
+        "x_studs": 30,
         "y_studs": 0,
         "z_plates": 84,
         "rotation_quarter_turns": 1,
@@ -2686,36 +2691,6 @@
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 20,
-        "y_studs": 0,
-        "z_plates": 84,
-        "rotation_quarter_turns": 1,
-        "facade": "front",
-        "roof_side": null,
-        "opening_id": null,
-        "trim_role": null,
-        "semantic_color": null
-      },
-      {
-        "placement_id": "scale-57-000176",
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "component": "wall",
-        "x_studs": 30,
-        "y_studs": 0,
-        "z_plates": 84,
-        "rotation_quarter_turns": 1,
-        "facade": "front",
-        "roof_side": null,
-        "opening_id": null,
-        "trim_role": null,
-        "semantic_color": null
-      },
-      {
-        "placement_id": "scale-57-000177",
-        "part_id": "BRICK_1X10",
-        "category": "brick",
-        "component": "wall",
         "x_studs": 40,
         "y_studs": 0,
         "z_plates": 84,
@@ -2727,7 +2702,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000178",
+        "placement_id": "scale-57-000176",
         "part_id": "BRICK_1X6",
         "category": "brick",
         "component": "wall",
@@ -2742,7 +2717,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000179",
+        "placement_id": "scale-57-000177",
         "part_id": "BRICK_1X1",
         "category": "brick",
         "component": "wall",
@@ -2757,7 +2732,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000180",
+        "placement_id": "scale-57-000178",
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
@@ -2772,8 +2747,8 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000181",
-        "part_id": "BRICK_1X1",
+        "placement_id": "scale-57-000179",
+        "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
         "x_studs": 10,
@@ -2787,7 +2762,7 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000182",
+        "placement_id": "scale-57-000180",
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
@@ -2802,8 +2777,8 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000183",
-        "part_id": "BRICK_1X8",
+        "placement_id": "scale-57-000181",
+        "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
         "x_studs": 30,
@@ -2817,11 +2792,41 @@
         "semantic_color": null
       },
       {
-        "placement_id": "scale-57-000184",
+        "placement_id": "scale-57-000182",
         "part_id": "BRICK_1X10",
         "category": "brick",
         "component": "wall",
-        "x_studs": 47,
+        "x_studs": 40,
+        "y_studs": 0,
+        "z_plates": 87,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
+      },
+      {
+        "placement_id": "scale-57-000183",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 50,
+        "y_studs": 0,
+        "z_plates": 87,
+        "rotation_quarter_turns": 1,
+        "facade": "front",
+        "roof_side": null,
+        "opening_id": null,
+        "trim_role": null,
+        "semantic_color": null
+      },
+      {
+        "placement_id": "scale-57-000184",
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 56,
         "y_studs": 0,
         "z_plates": 87,
         "rotation_quarter_turns": 1,
