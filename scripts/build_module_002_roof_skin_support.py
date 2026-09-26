@@ -293,7 +293,7 @@ def bundle(volume_id: str, model: dict, *, metadata: dict, issues: list[dict]) -
 
 def main() -> None:
     global parts, support_counter, skin_counter, ridge_counter
-    parts, support_counter, skin_counter, ridge_counter = [], 0, 0, 0, 0
+    parts, support_counter, skin_counter, ridge_counter = [], 0, 0, 0
     source = json.loads(SOURCE.read_text(encoding="utf-8"))
     translated = translate_module_001(source)
     roof_parts = build_roof(translated)
