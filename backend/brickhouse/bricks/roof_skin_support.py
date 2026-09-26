@@ -68,6 +68,10 @@ class SupportedRoofSkinReport(BaseModel):
         return not self.disconnected_support_ids
 
     @property
+    def support_to_host_valid(self) -> bool:
+        return not self.disconnected_support_ids
+
+    @property
     def collision_valid(self) -> bool:
         return not self.skin_envelope_collisions
 
