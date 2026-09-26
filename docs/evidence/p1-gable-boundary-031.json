@@ -1,0 +1,258 @@
+{
+  "schema_version": "boldungo.visual_measurement_evidence.v1",
+  "mission": "BOLDUNGO-P1-GABLE-BOUNDARY-MEASUREMENT-031",
+  "method_version": "p1-gable-boundary-031-v1",
+  "source": {
+    "path": "01-original.jpg",
+    "source_commit": "6cfa20caa9f5416dbf31127131990e60289e25db",
+    "git_blob_sha1": "cc920d25fcc8cd53722b37ebee1137660d131d7a",
+    "sha256": "81f064aa642f3e51c284473583e9c48016535177510b2cddde8f60676f87fa07",
+    "byte_length": 145666,
+    "width_px": 691,
+    "height_px": 1536
+  },
+  "rectification": {
+    "source_quad_px": [
+      [
+        21,
+        527
+      ],
+      [
+        645,
+        508
+      ],
+      [
+        646,
+        1058
+      ],
+      [
+        13,
+        1034
+      ]
+    ],
+    "destination_normalized": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "reused_from": "F1 source recovery 014"
+  },
+  "contour_definition": "architectural boundary between vertical gable masonry and the underside/lower edge of the sloping roof fascia; excludes antenna, chimney, vegetation, shadow and background",
+  "annotation_uncertainty": {
+    "source_point_px": "approximately ±4 px on the visible wall/roof boundary; larger local ambiguity where fascia thickness/occlusion affects the exact masonry contact",
+    "gap_top_normalized": "±0.012",
+    "confidence": "MEDIUM"
+  },
+  "gable": {
+    "left": {
+      "classification": "OBSERVED polyline; fitted segment INTERPOLATED between observed samples",
+      "observed_source_px": [
+        [
+          25,
+          535
+        ],
+        [
+          93,
+          514
+        ],
+        [
+          161,
+          494
+        ],
+        [
+          230,
+          473
+        ],
+        [
+          298,
+          452
+        ],
+        [
+          316,
+          448
+        ]
+      ],
+      "observed_rectified": [
+        [
+          0.007166,
+          0.016243
+        ],
+        [
+          0.123632,
+          -0.021431
+        ],
+        [
+          0.238152,
+          -0.056502
+        ],
+        [
+          0.352379,
+          -0.092865
+        ],
+        [
+          0.463063,
+          -0.128691
+        ],
+        [
+          0.492073,
+          -0.135061
+        ]
+      ],
+      "fitted_rectified_segment": {
+        "equation": "y = -0.313973*x + 0.018010",
+        "x_domain": [
+          0.007166,
+          0.492073
+        ]
+      }
+    },
+    "right": {
+      "classification": "OBSERVED polyline; fitted segment INTERPOLATED between observed samples",
+      "observed_source_px": [
+        [
+          316,
+          448
+        ],
+        [
+          381,
+          459
+        ],
+        [
+          447,
+          470
+        ],
+        [
+          515,
+          484
+        ],
+        [
+          580,
+          498
+        ],
+        [
+          640,
+          518
+        ]
+      ],
+      "observed_rectified": [
+        [
+          0.492073,
+          -0.135061
+        ],
+        [
+          0.59599,
+          -0.109063
+        ],
+        [
+          0.699661,
+          -0.083447
+        ],
+        [
+          0.804591,
+          -0.052509
+        ],
+        [
+          0.90313,
+          -0.022305
+        ],
+        [
+          0.99258,
+          0.018188
+        ]
+      ],
+      "fitted_rectified_segment": {
+        "equation": "y = 0.298808*x - 0.287542",
+        "x_domain": [
+          0.492073,
+          0.99258
+        ]
+      }
+    },
+    "apex": {
+      "source_px": [
+        316,
+        448
+      ],
+      "rectified": [
+        0.492073,
+        -0.135061
+      ],
+      "classification": "OBSERVED_APPROXIMATE",
+      "note": "lower roof/masonry boundary apex; not the upper roof-surface ridge point"
+    }
+  },
+  "f1_top": {
+    "left": {
+      "source_box_px": [
+        139,
+        548,
+        235,
+        661
+      ],
+      "axis_x_rectified": 0.283098,
+      "top_y_rectified": 0.050953,
+      "height_rectified_014": 0.220166,
+      "width_rectified_014": 0.159264,
+      "roof_boundary_y_same_x": -0.070875,
+      "gap_top_rectified": 0.121828,
+      "gap_top_over_h_top": 0.553346,
+      "gap_top_over_window_width": 0.764944,
+      "gap_top_uncertainty_rectified": 0.012,
+      "ratio_uncertainty": {
+        "gap_over_h_top": 0.055,
+        "gap_over_width": 0.075
+      }
+    },
+    "right": {
+      "source_box_px": [
+        421,
+        532,
+        529,
+        651
+      ],
+      "axis_x_rectified": 0.743057,
+      "top_y_rectified": 0.035466,
+      "height_rectified_014": 0.223462,
+      "width_rectified_014": 0.166325,
+      "roof_boundary_y_same_x": -0.065511,
+      "gap_top_rectified": 0.100977,
+      "gap_top_over_h_top": 0.451874,
+      "gap_top_over_window_width": 0.607105,
+      "gap_top_uncertainty_rectified": 0.012,
+      "ratio_uncertainty": {
+        "gap_over_h_top": 0.054,
+        "gap_over_width": 0.072
+      }
+    }
+  },
+  "gap_interlevel_from_030": {
+    "left": {
+      "gap_rectified": 0.1201,
+      "gap_over_h_top": 0.545,
+      "gap_over_h_middle": 0.647
+    },
+    "right": {
+      "gap_rectified": 0.1438,
+      "gap_over_h_top": 0.643,
+      "gap_over_h_middle": 0.744
+    }
+  },
+  "interpretation": {
+    "vertical_rhythm": "local gable boundary -> upper solid band -> top F1 opening -> interlevel solid band -> middle F1 opening",
+    "prototype_note": "current prototypes have a rectangular abstract top interface and therefore cannot be compared to P1 GAP_TOP by using their global wall-top directly",
+    "scale_decision": "NOT_YET"
+  }
+}
