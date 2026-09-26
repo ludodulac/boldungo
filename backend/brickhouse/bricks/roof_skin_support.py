@@ -105,6 +105,15 @@ def _footprint(part: BrickModelPart) -> set[tuple[int, int]]:
         width, length = definition.width_studs, definition.length_studs
         if part.rotation_quarter_turns % 2:
             width, length = length, width
+    elif (
+        part.component == "roof"
+        and part.category == "ridge_tile"
+        and part.width_studs is not None
+        and part.length_studs is not None
+    ):
+        width, length = part.width_studs, part.length_studs
+        if part.rotation_quarter_turns % 2:
+            width, length = length, width
     else:
         definition = standard_orthogonal_definitions().get(part.part_id)
         if definition is None:
