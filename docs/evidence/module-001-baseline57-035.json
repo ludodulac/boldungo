@@ -1,6 +1,6 @@
 {
   "schema": "boldungo.module_baseline.v1",
-  "mission": "BOLDUNGO-MODULE-001-BASELINE57-REBUILD-035",
+  "mission": "BOLDUNGO-MODULE-001-REAR-GABLE-HUMAN-GATE-036",
   "module_id": "MODULE_001_BASELINE57",
   "true_main_base": "7112aeaa97b664877b083a9dc9f71495765c27f4",
   "architectural_contract": {
@@ -16,9 +16,12 @@
     "apex_height_plates": 162
   },
   "rear_upper_envelope": {
-    "status": "ABSTRACTED_UNRESOLVED",
-    "implemented_to_eave_only": true,
-    "statement": "Rear wall terminates at the shared wall-to-eave datum. No rear gable is asserted by symmetry."
+    "status": "GABLE_ENVELOPE_CONFIRMED_BY_HUMAN_GATE_036",
+    "implemented_to_eave_only": false,
+    "gable_family": "SAME_ENVELOPE_FAMILY_AS_FRONT",
+    "apex_height_plates": 162,
+    "rear_chimneys_in_module_001": false,
+    "rear_chimneys_status": "OPTIONAL_FUTURE_GRAFT_MODULE"
   },
   "old_module": {
     "path": "frontend/module-001-export.json",
@@ -30,7 +33,7 @@
     "interior": "void",
     "course_policy": "BRICK courses through z<138; PLATE closure at z=138,139; P1 gable plates z>=140",
     "corner_ownership": "front/rear own corner cells; left/right occupy y=1..69 only",
-    "piece_count": 1825,
+    "piece_count": 1922,
     "bom": [
       {
         "part_id": "BRICK_1X1",
@@ -54,31 +57,31 @@
         "part_id": "PLATE_1X1",
         "category": "plate",
         "semantic_color": null,
-        "quantity": 20
+        "quantity": 32
       },
       {
         "part_id": "PLATE_1X2",
         "category": "plate",
         "semantic_color": null,
-        "quantity": 1
+        "quantity": 2
       },
       {
         "part_id": "PLATE_1X4",
         "category": "plate",
         "semantic_color": null,
-        "quantity": 11
+        "quantity": 18
       },
       {
         "part_id": "PLATE_1X6",
         "category": "plate",
         "semantic_color": null,
-        "quantity": 7
+        "quantity": 14
       },
       {
         "part_id": "PLATE_1X8",
         "category": "plate",
         "semantic_color": null,
-        "quantity": 130
+        "quantity": 200
       }
     ]
   },
@@ -90,5 +93,11 @@
     "inside envelope",
     "coherent corners",
     "no floating elements"
-  ]
+  ],
+  "human_visual_gate_036": {
+    "mass_gate": "PASS",
+    "rear_gable": "CONFIRMED",
+    "rear_chimneys": "EXCLUDED",
+    "rear_chimneys_status": "OPTIONAL_FUTURE_GRAFT_MODULE"
+  }
 }
