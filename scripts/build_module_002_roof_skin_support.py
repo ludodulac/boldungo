@@ -210,7 +210,9 @@ def add_inner_right_bridge() -> None:
     # in the open roof volume instead of penetrating the gable.
     for y in (0, 2, 68, 72):
         add_support("PLATE_1X3", 33, y, 158, rotation=1) # x=33..35
-        add_support("PLATE_1X1", 33, y, 159)
+        if y != 68:
+            # At y=68 the inner rail's seam bridge already occupies Z159.
+            add_support("PLATE_1X1", 33, y, 159)
 
 
 def build_roof(translated: list[dict]) -> list[dict]:
