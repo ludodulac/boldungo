@@ -1,0 +1,185 @@
+{
+  "schema": "boldungo.controlled_scale_architecture.v1",
+  "mission": "BOLDUNGO-CONTROLLED-SCALE-PROTOTYPES-033",
+  "source_evidence": [
+    "docs/evidence/p1-gable-boundary-031.json",
+    "docs/evidence/f1-p1-physical-aspect-ratio-014.json"
+  ],
+  "coordinate_system": {
+    "x": "facade width normalized, left=0 right=1",
+    "y": "same rectified metric as x, downward; base=1; gable extends to negative y",
+    "stud_mm": 8,
+    "plate_mm": 3.2
+  },
+  "observed": {
+    "rectification_source_quad_px": [
+      [
+        21,
+        527
+      ],
+      [
+        645,
+        508
+      ],
+      [
+        646,
+        1058
+      ],
+      [
+        13,
+        1034
+      ]
+    ],
+    "gable_left_points": [
+      [
+        0.007166,
+        0.016243
+      ],
+      [
+        0.123632,
+        -0.021431
+      ],
+      [
+        0.238152,
+        -0.056502
+      ],
+      [
+        0.352379,
+        -0.092865
+      ],
+      [
+        0.463063,
+        -0.128691
+      ],
+      [
+        0.492073,
+        -0.135061
+      ]
+    ],
+    "gable_right_points": [
+      [
+        0.492073,
+        -0.135061
+      ],
+      [
+        0.59599,
+        -0.109063
+      ],
+      [
+        0.699661,
+        -0.083447
+      ],
+      [
+        0.804591,
+        -0.052509
+      ],
+      [
+        0.90313,
+        -0.022305
+      ],
+      [
+        0.99258,
+        0.018188
+      ]
+    ],
+    "apex": [
+      0.492073,
+      -0.135061
+    ],
+    "f1_occurrence_widths": [
+      0.159264,
+      0.166325,
+      0.158945,
+      0.174737
+    ],
+    "f1_occurrence_h_over_w": [
+      1.382394,
+      1.343529,
+      1.167265,
+      1.106294
+    ],
+    "top_clearance_over_h": {
+      "left": 0.553346,
+      "right": 0.451874
+    },
+    "interlevel_over_h": {
+      "left": 0.545,
+      "right": 0.643
+    },
+    "lower_openings": {
+      "small": {
+        "x0": 0.23595323,
+        "x1": 0.323930565,
+        "y0": 0.7964092,
+        "y1": 0.89758373
+      },
+      "large": {
+        "x0": 0.64160216,
+        "x1": 0.89458496,
+        "y0": 0.7231097,
+        "y1": 0.99015174
+      }
+    }
+  },
+  "interpolated": {
+    "gable_left": {
+      "m": -0.313973,
+      "b": 0.01801,
+      "x_domain": [
+        0.007166,
+        0.492073
+      ]
+    },
+    "gable_right": {
+      "m": 0.298808,
+      "b": -0.287542,
+      "x_domain": [
+        0.492073,
+        0.99258
+      ]
+    }
+  },
+  "derived": {
+    "f1_family_width_norm": 0.16481775,
+    "f1_family_h_over_w": 1.25,
+    "f1_family_height_norm": 0.2060221875,
+    "column_axes": {
+      "left": 0.283098,
+      "right": 0.743057
+    },
+    "top_y": {
+      "left": 0.043126425010375,
+      "right": 0.027585446010374992
+    },
+    "middle_y": {
+      "left": 0.361430704697875,
+      "right": 0.366079900072875
+    },
+    "top_clearance_over_h": {
+      "left": 0.553346,
+      "right": 0.451874
+    },
+    "interlevel_over_h": {
+      "left": 0.545,
+      "right": 0.643
+    },
+    "facade_base_y": 1
+  },
+  "experimental_variable": {
+    "name": "FRONT_WIDTH_STUDS",
+    "values": [
+      24,
+      32,
+      51,
+      57
+    ]
+  },
+  "quantization": {
+    "rounding": "half-up nearest integer",
+    "x_axes": "nearest integer stud target; integer opening boundaries minimize centered family placement",
+    "z_boundaries": "nearest integer plate",
+    "f1_dimensions": "one family width/height per candidate",
+    "gaps": "result from quantized boundaries, never tuned independently",
+    "gable": "same fitted P1 functions sampled at stud-cell centers"
+  }
+}
