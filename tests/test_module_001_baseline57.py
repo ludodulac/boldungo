@@ -20,8 +20,12 @@ def test_module_001_baseline57_bom_envelope_collision_support():
   if p['z_plates']==0: continue
   footprint={(x,y) for x,y,z in cells(p) if z==p['z_plates']}
   assert footprint & bytop.get(p['z_plates']-1,set()), p['placement_id']
-def test_module_001_baseline57_perimeter_and_rear_abstraction():
- n=load(NEW);occ=set().union(*(cells(p) for p in n['brick_model']['parts']))
+def test_module_001_baseline57_perimeter_and_front_rear_gables():
+ n=load(NEW);ps=n['brick_model']['parts'];occ=set().union(*(cells(p) for p in ps))
  for z in range(140):
   assert all((x,0,z) in occ and (x,70,z) in occ for x in range(57));assert all((0,y,z) in occ and (56,y,z) in occ for y in range(71))
- assert not any(y==70 and z>=140 for x,y,z in occ);assert max(z for x,y,z in occ)==161
+ front=[p for p in ps if p.get('facade')=='front' and p['z_plates']>=140];rear=[p for p in ps if p.get('facade')=='rear' and p['z_plates']>=140]
+ assert front and rear
+ sig=lambda p:(p['part_id'],p['x_studs'],p['z_plates'],p['rotation_quarter_turns'],p.get('width_studs'),p.get('length_studs'),p.get('height_plates'))
+ assert sorted(map(sig,front))==sorted(map(sig,rear))
+ assert max(z for x,y,z in occ)==161
