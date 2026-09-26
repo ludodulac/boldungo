@@ -207,7 +207,12 @@ def validate_model_part_capabilities(
     """
 
     approved = registry.approved_ids()
-    unsupported = sorted({part.part_id for part in model.parts if part.part_id not in approved})
+    from .roof_skin_support import is_supported_roof_skin_part
+    unsupported = sorted({
+        part.part_id
+        for part in model.parts
+        if part.part_id not in approved and not is_supported_roof_skin_part(part)
+    })
     if unsupported:
         raise ValueError(
             "BrickModel contains parts that are not approved for deterministic placement: "
