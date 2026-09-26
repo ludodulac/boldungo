@@ -1,0 +1,94 @@
+{
+  "schema": "boldungo.module_baseline.v1",
+  "mission": "BOLDUNGO-MODULE-001-BASELINE57-REBUILD-035",
+  "module_id": "MODULE_001_BASELINE57",
+  "true_main_base": "7112aeaa97b664877b083a9dc9f71495765c27f4",
+  "architectural_contract": {
+    "front_width_studs": 57,
+    "depth_studs": 71,
+    "wall_to_eave_height_plates": 140,
+    "front_gable_apex_height_plates": 162,
+    "depth_status": "LOW_CONFIDENCE_REFINABLE"
+  },
+  "front_gable": {
+    "source": "docs/evidence/p1-controlled-facade-model-033.json",
+    "implementation": "certified controlled-57 P1 gable raster above z=140",
+    "apex_height_plates": 162
+  },
+  "rear_upper_envelope": {
+    "status": "ABSTRACTED_UNRESOLVED",
+    "implemented_to_eave_only": true,
+    "statement": "Rear wall terminates at the shared wall-to-eave datum. No rear gable is asserted by symmetry."
+  },
+  "old_module": {
+    "path": "frontend/module-001-export.json",
+    "blob": "f8231a10fd1ec49bdfaaa98bd9bf8e370f5d6d36",
+    "preserved": true
+  },
+  "construction": {
+    "wall_thickness_studs": 1,
+    "interior": "void",
+    "course_policy": "BRICK courses through z<138; PLATE closure at z=138,139; P1 gable plates z>=140",
+    "corner_ownership": "front/rear own corner cells; left/right occupy y=1..69 only",
+    "piece_count": 1825,
+    "bom": [
+      {
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "semantic_color": null,
+        "quantity": 184
+      },
+      {
+        "part_id": "BRICK_1X4",
+        "category": "brick",
+        "semantic_color": null,
+        "quantity": 92
+      },
+      {
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "semantic_color": null,
+        "quantity": 1380
+      },
+      {
+        "part_id": "PLATE_1X1",
+        "category": "plate",
+        "semantic_color": null,
+        "quantity": 20
+      },
+      {
+        "part_id": "PLATE_1X2",
+        "category": "plate",
+        "semantic_color": null,
+        "quantity": 1
+      },
+      {
+        "part_id": "PLATE_1X4",
+        "category": "plate",
+        "semantic_color": null,
+        "quantity": 11
+      },
+      {
+        "part_id": "PLATE_1X6",
+        "category": "plate",
+        "semantic_color": null,
+        "quantity": 7
+      },
+      {
+        "part_id": "PLATE_1X8",
+        "category": "plate",
+        "semantic_color": null,
+        "quantity": 130
+      }
+    ]
+  },
+  "validation_contract": [
+    "export valid",
+    "BOM coherent",
+    "collision free",
+    "support chain to datum",
+    "inside envelope",
+    "coherent corners",
+    "no floating elements"
+  ]
+}
