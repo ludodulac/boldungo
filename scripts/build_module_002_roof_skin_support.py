@@ -152,6 +152,28 @@ def add_longitudinal_rail(x: int, bottom_z: int) -> None:
         add_support("PLATE_1X2", x, seam - 1, bottom_z - 1)
 
 
+def add_inner_right_rail() -> None:
+    """Rail under the innermost right skin course, interrupted at both gables.
+
+    At y=1/71 the existing masonry reaches the skin base itself, so putting a
+    rail below it would penetrate MODULE 001.  Those two skin elements are
+    supported directly by the pignons; the open-volume rail sections on either
+    side remain tied to the adjacent x=35 rail.
+    """
+    add_support("PLATE_1X1", 33, 0, 160)
+    segments = [
+        (2, "PLATE_1X8"), (10, "PLATE_1X8"), (18, "PLATE_1X8"),
+        (26, "PLATE_1X8"), (34, "PLATE_1X8"), (42, "PLATE_1X8"),
+        (50, "PLATE_1X8"), (58, "PLATE_1X6"), (64, "PLATE_1X4"),
+        (68, "PLATE_1X3"),
+    ]
+    for y, part_id in segments:
+        add_support(part_id, 33, y, 160)
+    for seam in (10, 18, 26, 34, 42, 50, 58, 64, 68):
+        add_support("PLATE_1X2", 33, seam - 1, 159)
+    add_support("PLATE_1X1", 33, 72, 160)
+
+
 def add_vertical_stack(x: int, y: int, bottom_z: int, top_z: int) -> None:
     if top_z < bottom_z:
         raise ValueError(f"negative support stack at {(x, y)}: {bottom_z}>{top_z}")
@@ -186,7 +208,7 @@ def add_inner_right_bridge() -> None:
     # The innermost right 5404 course sits one plate below the masonry apex at
     # its footprint.  Connect its rail sideways to the adjacent supported rail
     # in the open roof volume instead of penetrating the gable.
-    for y in (2, 68):
+    for y in (0, 2, 68, 72):
         add_support("PLATE_1X3", 33, y, 158, rotation=1) # x=33..35
         add_support("PLATE_1X1", 33, y, 159)
 
@@ -202,8 +224,11 @@ def build_roof(translated: list[dict]) -> list[dict]:
                 add_skin(side, start_x, y, base_z)
 
     for course, base_z in enumerate(SKIN_PROFILE):
-        for x in (left_support_x[course], right_support_x[course]):
-            add_longitudinal_rail(x, base_z - 1)
+        add_longitudinal_rail(left_support_x[course], base_z - 1)
+        if course == len(SKIN_PROFILE) - 1:
+            add_inner_right_rail()
+        else:
+            add_longitudinal_rail(right_support_x[course], base_z - 1)
 
     add_eave_cantilever_anchors()
 
