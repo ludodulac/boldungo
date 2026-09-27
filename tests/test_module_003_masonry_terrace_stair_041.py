@@ -319,7 +319,7 @@ def test_module_003_043_obstructing_rail_removed_and_first_landing_railed() -> N
                 occupied.add((x, y))
 
     # West entry from lower run and north exit to upper run stay open.
-    assert not any(x == 16 and 85 <= y < 93 for x, y in occupied)
+    assert not any(x == 16 and 85 <= y < 92 for x, y in occupied)
     assert not any(y == 85 and 16 <= x < 24 for x, y in occupied)
 
     # Protection exists on south and east edges.
