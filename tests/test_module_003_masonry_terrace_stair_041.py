@@ -110,14 +110,14 @@ def test_module_003_preserves_large_lower_void() -> None:
     module = load(MODULE)
     model = BrickModel.model_validate(module["brick_model"])
 
-    # Deliberately open covered bay under the platform:
-    # X [16,22), Y [44,61), Z [0,36).
+    # Deliberately open covered bay under the platform after the 042 rearward shift:
+    # X [16,22), Y [54,71), Z [0,36).
     for part in model.parts:
         bounds = orthogonal_bounds(part)
         assert bounds is not None
         intersects = (
             max(bounds.x0, 16) < min(bounds.x1, 22)
-            and max(bounds.y0, 44) < min(bounds.y1, 61)
+            and max(bounds.y0, 54) < min(bounds.y1, 71)
             and max(bounds.z0, 0) < min(bounds.z1, 36)
         )
         assert not intersects, part.placement_id
@@ -162,7 +162,7 @@ def test_module_003_position_and_interfaces_are_host_relative() -> None:
     interfaces = module["metadata"]["interfaces"]
 
     assert geometry["main_masonry_envelope"] == {
-        "x": [7, 24], "y": [44, 62], "z": [0, 49]
+        "x": [7, 24], "y": [54, 72], "z": [0, 49]
     }
     assert interfaces["TO_HOUSE"]["plane_x"] == 24
     assert interfaces["TO_GROUND"] == {"z": 0}
@@ -171,7 +171,7 @@ def test_module_003_position_and_interfaces_are_host_relative() -> None:
 
     model = BrickModel.model_validate(combined["brick_model"])
     assert (model.width_studs, model.depth_studs, model.height_plates) == (57, 71, 164)
-    assert (model.canvas_width_studs, model.canvas_depth_studs) == (83, 83)
+    assert (model.canvas_width_studs, model.canvas_depth_studs) == (83, 93)
     assert (model.origin_x_studs, model.origin_y_studs) == (24, 1)
 
     module_parts = combined["brick_model"]["parts"][4794:]
@@ -181,3 +181,59 @@ def test_module_003_position_and_interfaces_are_host_relative() -> None:
 def test_module_003_records_viewer_ux_debt_without_viewer_change() -> None:
     module = load(MODULE)
     assert module["metadata"]["viewer_debt"] == "DIRECT_VIEWER_OPENING_UX = NEEDS_FUTURE_FIX"
+
+
+def test_module_003_042_stair_is_rearward_and_outside_house_footprint() -> None:
+    module = load(MODULE)
+    combined = load(COMBINED)
+    geometry = module["metadata"]["geometry"]
+
+    assert module["metadata"]["rearward_translation_studs"] == 10
+    assert module["metadata"]["host_house_rear_plane_y"] == 72
+    assert geometry["stair_upper"] == {
+        "x": [7, 15], "y": [72, 85], "z": [24, 49]
+    }
+    assert geometry["stair_lower"] == {
+        "x": [0, 7], "y": [85, 93], "z": [0, 24]
+    }
+    assert geometry["turn_landing"] == {
+        "x": [7, 15], "y": [85, 93], "walking_top_z": 24
+    }
+
+    # Host footprint in the corrected combined frame:
+    # X [24,81), Y [1,72). Every stair placement must remain outside it.
+    stair_parts = [
+        part for part in combined["brick_model"]["parts"][4794:]
+        if "stair-" in part["placement_id"]
+    ]
+    assert stair_parts
+    definitions = standard_orthogonal_definitions()
+    for part in stair_parts:
+        definition = definitions[part["part_id"]]
+        width, length = definition.footprint(part["rotation_quarter_turns"])
+        overlaps_house = (
+            max(part["x_studs"], 24) < min(part["x_studs"] + width, 81)
+            and max(part["y_studs"], 1) < min(part["y_studs"] + length, 72)
+        )
+        assert not overlaps_house, part["placement_id"]
+
+    upper_treads = [
+        part for part in stair_parts
+        if "stair-upper-tread" in part["placement_id"]
+    ]
+    assert min(part["y_studs"] for part in upper_treads) == 72
+
+
+def test_module_003_042_translation_preserves_topology_levels_void_and_piece_count() -> None:
+    module = load(MODULE)
+    assert module["bom"]["total_parts"] == 564
+    assert module["metadata"]["prototype_tread_tops"] == {
+        "lower": [3, 6, 9, 12, 16, 20, 24],
+        "upper": [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49],
+    }
+    assert module["metadata"]["level_model"]["ground_low_level_z"] == 0
+    assert module["metadata"]["level_model"]["intermediate_turn_level_z"] == 24
+    assert module["metadata"]["level_model"]["upper_masonry_platform_z"] == 49
+    assert module["metadata"]["geometry"]["lower_void"] == {
+        "x": [16, 22], "y": [54, 71], "z": [0, 36]
+    }
