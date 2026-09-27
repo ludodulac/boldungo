@@ -16,7 +16,7 @@ PartCategory = Literal[
     "facade_detail", "timber", "concrete", "masonry", "stone", "metal",
     "composite", "terrain",
 ]
-PartComponent = Literal["wall", "roof", "facade_detail"]
+PartComponent = Literal["wall", "roof", "roof_support", "facade_detail"]
 EXTERIOR_MATERIAL_CATEGORIES = {
     "timber", "concrete", "masonry", "stone", "metal", "composite",
 }
@@ -55,6 +55,11 @@ class BrickModelPart(BaseModel):
                 raise ValueError(
                     f"roof part on side {self.roof_side!r} must use category {expected!r}"
                 )
+        elif self.component == "roof_support":
+            if self.facade is not None or self.roof_side is not None:
+                raise ValueError("roof support parts must not define facade or roof_side")
+            if self.category not in {"brick", "plate"}:
+                raise ValueError("roof support parts must use an orthogonal stud/tube category")
         else:
             if self.facade is None or self.roof_side is not None:
                 raise ValueError("facade detail parts require facade and must not define roof_side")

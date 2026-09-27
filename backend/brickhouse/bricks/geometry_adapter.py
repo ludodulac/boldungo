@@ -72,6 +72,7 @@ CANONICAL_LDRAW_PARTS: Mapping[str, LDrawPartMapping] = {
     # their longitudinal axis and rise toward local +Z, but their origins are
     # not centered on the footprint, so placement is bbox-anchored below.
     "BRICK_SLOPED_18_4X2": LDrawPartMapping("30363", 4, 2, placement_kind="slope"),
+    "BRICK_SLOPED_18_2X1X2_3": LDrawPartMapping("5404", 2, 1, height_plates=2, placement_kind="slope"),
     "BRICK_SLOPED_33_3X6": LDrawPartMapping("3939", 3, 6, placement_kind="slope"),
     "BRICK_SLOPED_33_3X4": LDrawPartMapping("3297", 3, 4, placement_kind="slope"),
     "BRICK_SLOPED_33_3X2": LDrawPartMapping("3298", 3, 2, placement_kind="slope"),

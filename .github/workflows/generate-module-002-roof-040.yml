@@ -1,0 +1,51 @@
+name: Generate MODULE 002 roof prototype 040
+
+on:
+  push:
+    branches:
+      - feat/module-002-roof-skin-support-040
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install project
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine[dev]"
+
+      - name: Generate MODULE 002 and combined viewer bundles
+        run: python scripts/build_module_002_roof_skin_support.py
+
+      - name: Run mission 040 targeted tests
+        run: pytest -q tests/test_module_002_roof_skin_support_040.py
+
+      - name: Check viewer JavaScript
+        run: node --check frontend/viewer.js
+
+      - name: Commit deterministic generated bundles
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/module-002-roof-export.json frontend/module-001-plus-module-002-roof-export.json
+          if git diff --cached --quiet; then
+            echo "Generated bundles already current."
+            exit 0
+          fi
+          git commit -m "040: generate module 002 roof prototype"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
