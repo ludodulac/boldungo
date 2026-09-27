@@ -220,5 +220,114 @@
     ],
     "rationale": "Coarse monotone LEGO raster preserves start, turn, total rise and platform arrival without claiming actual stair-step metrics."
   },
-  "ux_debt": "DIRECT_VIEWER_OPENING_UX = NEEDS_FUTURE_FIX"
+  "ux_debt": "DIRECT_VIEWER_OPENING_UX = NEEDS_FUTURE_FIX",
+  "human_gate_correction_042": {
+    "status": "POSITION_RELATIVE_TO_HOUSE_FAIL_LOCAL",
+    "topology_status": "HUMAN_PASS_PRESERVED",
+    "current_overlap_cause": "No literal XY solid intersection with the host: the stair is already outside the house in X. The local visual error comes from the upper run occupying Y62..75 while the host depth extends to rear plane Y72, so Y62..72 shares ten studs of house-depth projection.",
+    "photo_evidence_for_rearward_offset": [
+      "P3 keeps the stair/masonry circulation visibly outside the principal house mass.",
+      "P4 places the masonry complex at the rear-side zone and shows the stair wrapping outside it rather than disappearing into the body.",
+      "P5 recuts the stair from the rear-side angle and is consistent with the circulation sitting farther rearward than the 041 placement."
+    ],
+    "human_constraint": "The real stair remains entirely outside the house footprint at the wall and is slightly farther rearward; this is qualitative and does not provide a metric.",
+    "correction": {
+      "kind": "RIGID_MODULE_003_TRANSLATION",
+      "axis": "+Y_REARWARD",
+      "studs": 10,
+      "derivation": "Minimum integer shift that moves the nearest upper-run coordinate from Y62 to host rear plane Y72; no extra offset is claimed.",
+      "preserves": [
+        "two runs",
+        "turn",
+        "landing",
+        "lower void",
+        "upper platform",
+        "Z0_to_Z49",
+        "piece count"
+      ],
+      "does_not_change": [
+        "MODULE_001",
+        "MODULE_002",
+        "Z45/Z49 relation",
+        "timber terrace geometry"
+      ]
+    },
+    "corrected_geometry": {
+      "main_masonry_envelope": {
+        "x": [
+          7,
+          24
+        ],
+        "y": [
+          54,
+          72
+        ],
+        "z": [
+          0,
+          49
+        ]
+      },
+      "upper_platform": {
+        "x": [
+          7,
+          24
+        ],
+        "y": [
+          54,
+          72
+        ],
+        "walking_top_z": 49
+      },
+      "lower_void": {
+        "x": [
+          16,
+          22
+        ],
+        "y": [
+          54,
+          71
+        ],
+        "z": [
+          0,
+          36
+        ]
+      },
+      "stair_lower": {
+        "x": [
+          0,
+          7
+        ],
+        "y": [
+          85,
+          93
+        ],
+        "z_start": 0,
+        "z_end": 24
+      },
+      "turn_landing": {
+        "x": [
+          7,
+          15
+        ],
+        "y": [
+          85,
+          93
+        ],
+        "walking_top_z": 24
+      },
+      "stair_upper": {
+        "x": [
+          7,
+          15
+        ],
+        "y": [
+          72,
+          85
+        ],
+        "z_start": 24,
+        "z_end": 49
+      },
+      "house_rear_plane_y": 72
+    }
+  }
 }
