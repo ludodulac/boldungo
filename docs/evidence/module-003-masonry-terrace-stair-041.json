@@ -428,5 +428,119 @@
       "MODULE_002",
       "Z45/Z49 relation"
     ]
+  },
+  "human_gate_refinement_044": {
+    "status": "HUMAN_DETAIL_REFINEMENT",
+    "frozen_from_043": [
+      "platform global position",
+      "042 +10 Y rearward position",
+      "043 stair +9 X lateral position",
+      "two-run topology",
+      "turn landing",
+      "Z0 -> Z24 -> Z49",
+      "circulation",
+      "MODULE_001",
+      "MODULE_002"
+    ],
+    "correction_1_platform_edge": {
+      "human_declared_relation": "The exposed platform edge beside the stair arrival requires fall protection while the stair opening remains passable.",
+      "photo_confirmed_geometry": [
+        "P3 shows a protected masonry edge adjacent to the stair/platform zone rather than an unrestricted drop.",
+        "P4/P5 keep the stair arrival distinct from the protected outer platform edge."
+      ],
+      "constructive_approximation": {
+        "rear_edge_guard": {
+          "x": [
+            8,
+            16
+          ],
+          "y": 71,
+          "z": [
+            49,
+            61
+          ]
+        },
+        "stair_arrival_open_x": [
+          16,
+          23
+        ],
+        "note": "Coordinates are LEGO constructive quantization; no metric dimension is inferred from the human markup."
+      }
+    },
+    "correction_2_lower_openings": {
+      "human_declared_relation": "The visually false lower opening must be closed and the human-marked real lower opening must remain/open in the correct face.",
+      "photo_confirmed_geometry": [
+        "P4 and P5 directly show the large real rectangular opening on the rear face below the masonry platform.",
+        "P2/P3 do not support a second through-opening on the opposite/front lower face."
+      ],
+      "constructive_approximation": {
+        "false_front_opening_closed": {
+          "x": [
+            8,
+            23
+          ],
+          "y": 54,
+          "z": [
+            0,
+            48
+          ]
+        },
+        "real_rear_opening_preserved": {
+          "x": [
+            15,
+            22
+          ],
+          "y": 71,
+          "z": [
+            0,
+            36
+          ]
+        },
+        "lower_void_preserved": {
+          "x": [
+            16,
+            22
+          ],
+          "y": [
+            55,
+            71
+          ],
+          "z": [
+            0,
+            36
+          ]
+        },
+        "note": "The void principle remains; only its visible face distribution is corrected."
+      }
+    },
+    "correction_3_smooth_parapets": {
+      "human_declared_relation": "Stair parapets have a smooth, continuous upper silhouette rather than a crenellated sequence of brick tops.",
+      "photo_confirmed_geometry": [
+        "P3 and especially P5 show continuous sloping masonry parapet tops along the stair runs."
+      ],
+      "constructive_approximation": {
+        "method": "placement-approved BRICK_SLOPED_45_2X1 cap courses over the existing parapet bodies",
+        "preserves": "all tread, stringer, run and level coordinates",
+        "note": "Shape proxy only; this mission does not generalize the technique or optimize piece selection."
+      }
+    },
+    "correction_4_wall_continuity": {
+      "human_declared_relation": "The house-side/left stair parapet must continue the wall plane rather than begin after a visible offset.",
+      "photo_confirmed_geometry": [
+        "P5 shows the upper stair parapet joining the adjacent wall line without a detached lateral gap."
+      ],
+      "constructive_approximation": {
+        "continuity_column": {
+          "x": 23,
+          "y": 71,
+          "z": [
+            49,
+            58
+          ]
+        },
+        "host_wall_plane_x": 24,
+        "relation": "column outer face X24 is flush with host wall plane; existing upper parapet continues at X23/Y72"
+      }
+    }
   }
 }
