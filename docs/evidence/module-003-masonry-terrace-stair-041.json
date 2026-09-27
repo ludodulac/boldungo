@@ -1,0 +1,224 @@
+{
+  "schema_version": "0.1",
+  "mission": "BOLDUNGO-MODULE-003-MASONRY-TERRACE-STAIR-041",
+  "module_id": "MODULE_003_MASONRY_TERRACE_STAIR",
+  "true_main_base": "7dccd45f3e03e88f0641d7acf1102f140d2f45e4",
+  "source_policy": {
+    "photo_set": "frontend/benchmarks/real-house-5/01-original.jpg ... 05-original.jpg",
+    "mission_view_roles": {
+      "P1": "FRONT",
+      "P2": "LEFT_SIDE",
+      "P3": "LEFT_SIDE",
+      "P4": "REAR",
+      "P5": "RIGHT_SIDE"
+    },
+    "note": "Mission 041 roles are used as the working constraint frame; geometric traces are tied to photo indices rather than reopened facade classification."
+  },
+  "photo_evidence": {
+    "P1": {
+      "sha": "cc920d25fcc8cd53722b37ebee1137660d131d7a",
+      "role": "FRONT",
+      "use": "Global host envelope only; no local stair metric inferred."
+    },
+    "P2": {
+      "sha": "fcfaee14cfe35bb3a533090e3dc54134a5740f01",
+      "role": "LEFT_SIDE",
+      "use": "Long host side and strong grade change constrain low-level context."
+    },
+    "P3": {
+      "sha": "b2c35332a0025c77ee040b389a3f6b059fba3886",
+      "role": "LEFT_SIDE",
+      "use": "Raised timber deck, its supports, masonry stair at left, upper circulation zone and house contact are visible."
+    },
+    "P4": {
+      "sha": "46bf6251e38d0d6f0daae221e74bb3d50e4f6428",
+      "role": "REAR",
+      "use": "Upper masonry platform, tall masonry faces, large lower opening/covered void, stair parapets and timber-deck adjacency are visible."
+    },
+    "P5": {
+      "sha": "62765f486abc444436c98a5dabf8dae50087c959",
+      "role": "RIGHT_SIDE",
+      "use": "Stair system is recut from another angle; lower and upper portions are non-collinear and the upper portion reaches the masonry platform."
+    }
+  },
+  "observed_geometry": [
+    "A real horizontal upper masonry walking surface is visible adjacent to the house.",
+    "Tall white masonry faces support/bound the upper platform.",
+    "A large dark lower opening/covered void remains visibly open under part of the masonry platform.",
+    "Solid parapet/side-wall edges accompany the exterior stair.",
+    "At least two stair portions with a direction change are required by the multi-view traces; a single straight flight does not explain P3/P4/P5 together.",
+    "The upper stair portion reaches the upper masonry platform.",
+    "The timber deck is a distinct raised system adjacent to the masonry complex and remains outside MODULE 003."
+  ],
+  "user_declared": [
+    "Owner-confirmed topology: exactly two major stair runs with one turn; no metric run dimensions supplied.",
+    "Owner-confirmed descent route: from the masonry platform, one run extends beyond the rear plane, turns left, then the second run descends to the low courtyard; ascent is the reverse.",
+    "Owner-confirmed platform relation: masonry platform and timber platform are distinct walking surfaces connected by exactly one step; exact step height is unresolved."
+  ],
+  "competing_hypotheses": [
+    {
+      "id": "H1",
+      "geometry": "two major runs with one turn and an intermediate landing/turn zone",
+      "status": "SELECTED",
+      "reason": "Explains the non-collinear visible stair portions, altitude gain, platform arrival and cross-view reappearance with minimum geometry."
+    },
+    {
+      "id": "H2",
+      "geometry": "single straight run",
+      "status": "REJECTED",
+      "reason": "Contradicts the distinct non-collinear stair portions and confirmed turning zone visible across P3/P4/P5."
+    },
+    {
+      "id": "H3",
+      "geometry": "three or more major runs",
+      "status": "REJECTED_FOR_PROTOTYPE",
+      "reason": "No additional major direction change is required by the five-photo evidence; it would add unsupported geometry."
+    }
+  ],
+  "inferred_geometry": {
+    "coordinate_frame": "Combined viewer frame after shifting MODULE_001+002 +21 studs in X; house left plane becomes X=24.",
+    "main_masonry_envelope": {
+      "x": [
+        7,
+        24
+      ],
+      "y": [
+        44,
+        62
+      ],
+      "z": [
+        0,
+        49
+      ]
+    },
+    "upper_platform": {
+      "x": [
+        7,
+        24
+      ],
+      "y": [
+        44,
+        62
+      ],
+      "walking_top_z": 49
+    },
+    "lower_void": {
+      "x": [
+        16,
+        22
+      ],
+      "y": [
+        44,
+        61
+      ],
+      "z": [
+        0,
+        36
+      ],
+      "status": "MUST_REMAIN_EMPTY"
+    },
+    "stair_lower": {
+      "x": [
+        0,
+        7
+      ],
+      "y": [
+        75,
+        83
+      ],
+      "z_start": 0,
+      "z_end": 24
+    },
+    "turn_landing": {
+      "x": [
+        7,
+        15
+      ],
+      "y": [
+        75,
+        83
+      ],
+      "walking_top_z": 24
+    },
+    "stair_upper": {
+      "x": [
+        7,
+        15
+      ],
+      "y": [
+        62,
+        75
+      ],
+      "z_start": 24,
+      "z_end": 49
+    },
+    "house_interface": {
+      "plane_x": 24,
+      "y": [
+        44,
+        62
+      ],
+      "z_top": 49
+    },
+    "future_wood_terrace_interface": {
+      "walking_level_z": 45,
+      "relation_to_masonry_platform": "one step lower",
+      "plan_span_status": "UNRESOLVED_REFINABLE"
+    }
+  },
+  "level_model": {
+    "ground_low_level_z": 0,
+    "intermediate_turn_level_z": 24,
+    "upper_masonry_platform_z": 49,
+    "house_interface_z": 49,
+    "future_wood_terrace_interface_z": 45,
+    "note": "Z values are constructive prototype quantization, not survey measurements. Altitude is conserved by the two ascending runs."
+  },
+  "circulation_path": {
+    "ascent": [
+      "LOW courtyard at Z0",
+      "lower run: +X to Z24",
+      "turn/landing at Z24",
+      "upper run: -Y to Z49",
+      "UPPER masonry platform at Z49"
+    ],
+    "monotone_vertical": true,
+    "exact_tread_count_status": "PROTOTYPE_ONLY_NOT_ARCHITECTURAL_TRUTH"
+  },
+  "unresolved": [
+    "Exact real tread count, riser height and tread depth.",
+    "Exact dimensions of the turning landing.",
+    "Exact masonry wall/parapet thicknesses.",
+    "Exact full depth/shape of the covered lower void beyond the directly constrained open bay.",
+    "Exact plan span and step geometry of the future timber-deck connection.",
+    "Final LEGO connection detail between MODULE 003 and MODULE 001."
+  ],
+  "prototype_quantization": {
+    "lower_tread_tops": [
+      3,
+      6,
+      9,
+      12,
+      16,
+      20,
+      24
+    ],
+    "upper_tread_tops": [
+      26,
+      28,
+      30,
+      32,
+      34,
+      36,
+      38,
+      40,
+      42,
+      44,
+      46,
+      48,
+      49
+    ],
+    "rationale": "Coarse monotone LEGO raster preserves start, turn, total rise and platform arrival without claiming actual stair-step metrics."
+  },
+  "ux_debt": "DIRECT_VIEWER_OPENING_UX = NEEDS_FUTURE_FIX"
+}
