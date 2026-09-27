@@ -1,9 +1,10 @@
-name: Generate MODULE 003 masonry terrace stair 041
+name: Generate MODULE 003 masonry terrace stair 041/042
 
 on:
   push:
     branches:
       - feat/module-003-masonry-terrace-stair-041
+      - fix/module-003-rearward-position-042
 
 permissions:
   contents: write
@@ -32,7 +33,7 @@ jobs:
       - name: Generate MODULE 003 and combined viewer bundle
         run: python scripts/build_module_003_masonry_terrace_stair.py
 
-      - name: Run mission 041 targeted tests
+      - name: Run MODULE 003 targeted tests
         run: pytest -q tests/test_module_003_masonry_terrace_stair_041.py
 
       - name: Commit deterministic generated bundles
@@ -44,5 +45,5 @@ jobs:
             echo "Generated bundles already current."
             exit 0
           fi
-          git commit -m "041: generate module 003 masonry terrace stair"
+          git commit -m "042: regenerate module 003 rearward position"
           git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -27,6 +27,10 @@ COMBINED_VOLUME_ID = "module-001-plus-module-002-plus-module-003"
 
 SOURCE_SHIFT_X = 21
 HOUSE_LEFT_PLANE_X = 24
+HOUSE_FRONT_Y = 1
+HOUSE_DEPTH = 71
+HOUSE_REAR_PLANE_Y = HOUSE_FRONT_Y + HOUSE_DEPTH
+MODULE_REARWARD_SHIFT = 10
 
 PART_DIMS = {
     "BRICK_1X1": (1, 1, 3),
@@ -202,6 +206,14 @@ def _build_module_003() -> list[dict]:
     _add("PLATE_1X2", 6, 76, 24, 1, "stair-turn-bridge")
     _add("PLATE_1X2", 8, 61, 49, 0, "stair-platform-bridge")
 
+    # 042 human-gate correction: preserve the complete 041 topology and move
+    # MODULE 003 rearward as one rigid local assembly. The +10-stud shift is
+    # the smallest integer translation that moves the nearest upper-run cell
+    # from Y62 to the host rear plane Y72, eliminating shared house-depth
+    # projection without changing any X/Z geometry, tread raster or void.
+    for part in parts:
+        part["y_studs"] += MODULE_REARWARD_SHIFT
+
     return parts
 
 
@@ -249,10 +261,12 @@ def main() -> None:
 
     metadata = {
         "module_id": MODULE_ID,
-        "mission": "BOLDUNGO-MODULE-003-MASONRY-TERRACE-STAIR-041",
+        "mission": "BOLDUNGO-MODULE-003-HUMAN-GATE-CORRECTION-042",
         "source_evidence": "docs/evidence/module-003-masonry-terrace-stair-041.json",
         "structure_type": "HOLLOW_MASONRY_PLATFORM_PLUS_TURNING_STAIR",
         "host_house_left_plane_x": HOUSE_LEFT_PLANE_X,
+        "host_house_rear_plane_y": HOUSE_REAR_PLANE_Y,
+        "rearward_translation_studs": MODULE_REARWARD_SHIFT,
         "level_model": {
             "ground_low_level_z": 0,
             "intermediate_turn_level_z": 24,
@@ -260,15 +274,15 @@ def main() -> None:
             "future_wood_terrace_interface_z": 45,
         },
         "geometry": {
-            "main_masonry_envelope": {"x": [7, 24], "y": [44, 62], "z": [0, 49]},
-            "upper_platform": {"x": [7, 24], "y": [44, 62], "walking_top_z": 49},
-            "lower_void": {"x": [16, 22], "y": [44, 61], "z": [0, 36]},
-            "stair_lower": {"x": [0, 7], "y": [75, 83], "z": [0, 24]},
-            "turn_landing": {"x": [7, 15], "y": [75, 83], "walking_top_z": 24},
-            "stair_upper": {"x": [7, 15], "y": [62, 75], "z": [24, 49]},
+            "main_masonry_envelope": {"x": [7, 24], "y": [54, 72], "z": [0, 49]},
+            "upper_platform": {"x": [7, 24], "y": [54, 72], "walking_top_z": 49},
+            "lower_void": {"x": [16, 22], "y": [54, 71], "z": [0, 36]},
+            "stair_lower": {"x": [0, 7], "y": [85, 93], "z": [0, 24]},
+            "turn_landing": {"x": [7, 15], "y": [85, 93], "walking_top_z": 24},
+            "stair_upper": {"x": [7, 15], "y": [72, 85], "z": [24, 49]},
         },
         "interfaces": {
-            "TO_HOUSE": {"plane_x": 24, "y": [44, 62], "z_top": 49, "final_lego_connection": "DEFERRED"},
+            "TO_HOUSE": {"plane_x": 24, "y": [54, 72], "z_top": 49, "final_lego_connection": "DEFERRED"},
             "TO_GROUND": {"z": 0},
             "TO_FUTURE_WOOD_TERRACE": {
                 "walking_level_z": 45,
@@ -299,7 +313,7 @@ def main() -> None:
             "code": "MODULE_003_LOCAL_METRICS_REFINABLE",
             "severity": "info",
             "object_id": MODULE_VOLUME_ID,
-            "message": "Topology is fixed for the prototype; local platform, tread, parapet and void dimensions remain refinable.",
+            "message": "041 topology is preserved; 042 applies only a +10 stud rearward rigid translation. Local metrics remain refinable.",
         },
         {
             "code": "WOOD_TERRACE_INTERFACE_PLAN_UNRESOLVED",
@@ -323,9 +337,9 @@ def main() -> None:
         "depth_studs": 39,
         "height_plates": 61,
         "canvas_width_studs": 24,
-        "canvas_depth_studs": 83,
+        "canvas_depth_studs": 93,
         "origin_x_studs": 0,
-        "origin_y_studs": 44,
+        "origin_y_studs": 54,
         "parts": module_parts,
     }
     module_bundle = _bundle(MODULE_VOLUME_ID, module_model, metadata, issues[:2])
@@ -354,7 +368,7 @@ def main() -> None:
         "depth_studs": source["brick_model"]["depth_studs"],
         "height_plates": max(source["brick_model"]["height_plates"], 61),
         "canvas_width_studs": source["brick_model"]["canvas_width_studs"] + SOURCE_SHIFT_X,
-        "canvas_depth_studs": 83,
+        "canvas_depth_studs": 93,
         "origin_x_studs": source["brick_model"]["origin_x_studs"] + SOURCE_SHIFT_X,
         "origin_y_studs": source["brick_model"]["origin_y_studs"],
         "parts": combined_parts,
@@ -374,7 +388,7 @@ def main() -> None:
         "combined_piece_count": len(combined_parts),
         "upper_platform_z": 49,
         "intermediate_turn_z": 24,
-        "lower_void": [16, 22, 44, 61, 0, 36],
+        "lower_void": [16, 22, 54, 71, 0, 36],
     }, sort_keys=True))
 
 
