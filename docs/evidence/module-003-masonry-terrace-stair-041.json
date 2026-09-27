@@ -329,5 +329,104 @@
       },
       "house_rear_plane_y": 72
     }
+  },
+  "human_gate_refinement_043": {
+    "status": "LOCAL_STAIR_REFINEMENT",
+    "platform_position": "HUMAN_PASS_FROZEN",
+    "platform_global_geometry": "HUMAN_PASS_FOR_CURRENT_CONSTRUCTIVE_STAGE",
+    "rearward_position_042": "HUMAN_PASS_FROZEN",
+    "stair_current_lateral_offset": {
+      "house_wall_x": 24,
+      "upper_stair_before_x": [
+        7,
+        15
+      ],
+      "gap_to_wall_studs": 9
+    },
+    "correction": {
+      "stair_and_landing_translation": {
+        "axis": "+X_TOWARD_HOUSE_WALL",
+        "studs": 9
+      },
+      "derivation": "Minimum integer translation that moves upper stair envelope X7..15 to X16..24, touching but not crossing house wall plane X24.",
+      "platform_translation_studs": 0,
+      "rearward_translation_preserved_studs": 10,
+      "z_change": 0
+    },
+    "obstructing_rail": {
+      "id": "platform-parapet-rear",
+      "location_before_removal": {
+        "x": [
+          15,
+          23
+        ],
+        "y": 71,
+        "z": [
+          49,
+          61
+        ]
+      },
+      "reason": "After stair +9 X, this local rear platform parapet lies directly across the high stair/platform circulation opening.",
+      "action": "REMOVE_LOCAL_SEGMENT_ONLY"
+    },
+    "first_landing_rails": {
+      "landing": {
+        "x": [
+          16,
+          24
+        ],
+        "y": [
+          85,
+          93
+        ],
+        "walking_top_z": 24
+      },
+      "rail_segments": [
+        {
+          "edge": "south",
+          "x": [
+            16,
+            24
+          ],
+          "y": 92,
+          "z": [
+            24,
+            33
+          ]
+        },
+        {
+          "edge": "east",
+          "x": 23,
+          "y": [
+            86,
+            92
+          ],
+          "z": [
+            24,
+            33
+          ]
+        }
+      ],
+      "entry_open": {
+        "edge": "west",
+        "x": 16
+      },
+      "exit_open": {
+        "edge": "north",
+        "y": 85
+      },
+      "form": "L_SHAPED_SIMPLE_MASONRY_RAIL"
+    },
+    "preserves": [
+      "platform geometry and position",
+      "042 +10 Y rearward correction",
+      "two stair runs",
+      "turn",
+      "lower void",
+      "Z0_to_Z24_to_Z49",
+      "MODULE_001",
+      "MODULE_002",
+      "Z45/Z49 relation"
+    ]
   }
 }
