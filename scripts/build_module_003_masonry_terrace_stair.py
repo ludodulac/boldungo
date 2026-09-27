@@ -31,6 +31,7 @@ HOUSE_FRONT_Y = 1
 HOUSE_DEPTH = 71
 HOUSE_REAR_PLANE_Y = HOUSE_FRONT_Y + HOUSE_DEPTH
 MODULE_REARWARD_SHIFT = 10
+STAIR_LATERAL_SHIFT = 9
 
 PART_DIMS = {
     "BRICK_1X1": (1, 1, 3),
@@ -160,10 +161,10 @@ def _build_module_003() -> list[dict]:
         _add("PLATE_1X8", 15, y, 48, 1, "upper-platform")
         _add("PLATE_1X1", 23, y, 48, 0, "upper-platform")
 
-    # Significant masonry parapets only.
+    # Significant masonry parapets only. 043 keeps the validated outer
+    # parapet but opens the former rear parapet at the stair/platform arrival.
     for z in range(49, 61, 3):
         _tile_line("y", 44, 62, 7, z, plate=False, subcomponent="platform-parapet-outer")
-        _tile_line("x", 15, 23, 61, z, plate=False, subcomponent="platform-parapet-rear", facade="rear")
 
     # Lower run: coarse seven-tread raster, low courtyard -> turn level Z24.
     lower_levels = [3, 6, 9, 12, 16, 20, 24]
@@ -175,6 +176,13 @@ def _build_module_003() -> list[dict]:
         _add("PLATE_1X8", 7, y, 23, 1, "stair-landing")
     for x in (7, 14):
         _wall_line("y", 75, 83, x, 23, "stair-landing-support")
+
+    # 043: add simple L-shaped protection to the first/turn landing while
+    # leaving its west entry from the lower run and north exit to the upper
+    # run completely open. Three brick courses match the coarse stair rails.
+    for z in (24, 27, 30):
+        _tile_line("x", 7, 15, 82, z, plate=False, subcomponent="stair-first-landing-rail")
+        _tile_line("y", 76, 82, 14, z, plate=False, subcomponent="stair-first-landing-rail")
 
     # Upper run: 13-tread coarse raster, turn level Z24 -> platform Z49.
     upper_levels = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49]
@@ -213,6 +221,14 @@ def _build_module_003() -> list[dict]:
     # projection without changing any X/Z geometry, tread raster or void.
     for part in parts:
         part["y_studs"] += MODULE_REARWARD_SHIFT
+
+    # 043 human-gate refinement: the masonry platform stays frozen. Move only
+    # the stair/landing circulation toward the house wall. The upper run was
+    # X7..15 with the house wall at X24, so +9 studs is the minimum integer
+    # translation that makes its outer edge meet X24 without crossing it.
+    for part in parts:
+        if "-stair-" in part["placement_id"]:
+            part["x_studs"] += STAIR_LATERAL_SHIFT
 
     return parts
 
@@ -261,12 +277,15 @@ def main() -> None:
 
     metadata = {
         "module_id": MODULE_ID,
-        "mission": "BOLDUNGO-MODULE-003-HUMAN-GATE-CORRECTION-042",
+        "mission": "BOLDUNGO-MODULE-003-LOCAL-STAIR-REFINEMENT-043",
         "source_evidence": "docs/evidence/module-003-masonry-terrace-stair-041.json",
         "structure_type": "HOLLOW_MASONRY_PLATFORM_PLUS_TURNING_STAIR",
         "host_house_left_plane_x": HOUSE_LEFT_PLANE_X,
         "host_house_rear_plane_y": HOUSE_REAR_PLANE_Y,
         "rearward_translation_studs": MODULE_REARWARD_SHIFT,
+        "stair_lateral_translation_studs": STAIR_LATERAL_SHIFT,
+        "obstructing_rail_removed": "platform-parapet-rear",
+        "first_landing_rails": "L_SHAPED_ENTRY_EXIT_OPEN",
         "level_model": {
             "ground_low_level_z": 0,
             "intermediate_turn_level_z": 24,
@@ -277,9 +296,9 @@ def main() -> None:
             "main_masonry_envelope": {"x": [7, 24], "y": [54, 72], "z": [0, 49]},
             "upper_platform": {"x": [7, 24], "y": [54, 72], "walking_top_z": 49},
             "lower_void": {"x": [16, 22], "y": [54, 71], "z": [0, 36]},
-            "stair_lower": {"x": [0, 7], "y": [85, 93], "z": [0, 24]},
-            "turn_landing": {"x": [7, 15], "y": [85, 93], "walking_top_z": 24},
-            "stair_upper": {"x": [7, 15], "y": [72, 85], "z": [24, 49]},
+            "stair_lower": {"x": [9, 16], "y": [85, 93], "z": [0, 24]},
+            "turn_landing": {"x": [16, 24], "y": [85, 93], "walking_top_z": 24},
+            "stair_upper": {"x": [16, 24], "y": [72, 85], "z": [24, 49]},
         },
         "interfaces": {
             "TO_HOUSE": {"plane_x": 24, "y": [54, 72], "z_top": 49, "final_lego_connection": "DEFERRED"},
@@ -313,7 +332,7 @@ def main() -> None:
             "code": "MODULE_003_LOCAL_METRICS_REFINABLE",
             "severity": "info",
             "object_id": MODULE_VOLUME_ID,
-            "message": "041 topology is preserved; 042 applies only a +10 stud rearward rigid translation. Local metrics remain refinable.",
+            "message": "041 topology and 042 rearward position are preserved; 043 moves only the stair/landing +9 X, opens the stair/platform arrival, and adds first-landing rails.",
         },
         {
             "code": "WOOD_TERRACE_INTERFACE_PLAN_UNRESOLVED",
