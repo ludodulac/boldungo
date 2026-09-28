@@ -928,5 +928,123 @@
       "Timber terrace plan interface remains refinable and is not built in MODULE003.",
       "Coarse tread counts are constructive quantization, not measured architectural truth."
     ]
+  },
+  "human_refinement_052": {
+    "mission": "BOLDUNGO-MODULE-003-HUMAN-REFINEMENT-052",
+    "human_verdict_on_051": "GLOBAL_VISUAL_PASS_REFINEMENT_REQUIRED",
+    "preserved": [
+      "two runs",
+      "turn landing",
+      "direction change",
+      "global levels",
+      "rearward position",
+      "house-side position",
+      "VOID_01",
+      "VOID_01 ground opening",
+      "upper volume",
+      "previously validated platform-edge protection",
+      "051 overall architecture"
+    ],
+    "corrections": {
+      "stair_solid_mass": {
+        "observation": "051 treads read as hollow shelves; real stair is masonry mass under the treads.",
+        "action": "Fill masonry below preserved tread footprints for both runs without entering VOID_01.",
+        "gates": [
+          "STAIR_RUNS_HAVE_SOLID_MASONRY_MASS",
+          "MAJOR_VOID_REMAINS_UNOCCUPIED"
+        ]
+      },
+      "parapet_alignment": {
+        "observation": "Longitudinal run parapet is laterally offset from the first landing parapet.",
+        "action": "Move only the house-side run parapet envelope one stud to the landing parapet plane; stair and landing footprints remain unchanged.",
+        "gate": "RUN_PARAPET_ALIGNS_WITH_LANDING_PARAPET"
+      },
+      "parapet_break": {
+        "observation": "A real small local break exists, but the 051 break is much too large.",
+        "action": "Raise only the two landing-parapet cells nearest RUN_02 to create a local taper; preserve a one-plate non-zero break.",
+        "gate": "LANDING_PARAPET_BREAK_REMAINS_LOCAL"
+      },
+      "stair_wall_termination": {
+        "observation": "The stair-side wall continues too deeply behind VOID_01 in 051; reality opens after the entrance and the house wall remains the deeper boundary.",
+        "action": "Remove the long inner boundary wall, retain only a short entry sidewall, and carry the ceiling from outer support spines with horizontal carriers outside VOID_01.",
+        "gates": [
+          "STAIR_WALL_TERMINATES_AT_MAJOR_VOID",
+          "MAJOR_VOID_DEPTH_NOT_BLOCKED_BY_STAIR_WALL",
+          "HOUSE_WALL_REMAINS_DEEP_BOUNDARY"
+        ]
+      },
+      "interior_recess": {
+        "status": "NOT_OBSERVABLE_FROM_CURRENT_PHOTOS",
+        "action": "NO_GEOMETRY_ADDED",
+        "rule": "PARTIAL-OBSERVABILITY-DOES-NOT-BLOCK-CONSTRUCTION",
+        "required_future_evidence": "PHOTO_FROM_OR_TOWARD_INTERIOR_OF_PASSAGE"
+      }
+    },
+    "constructive_quantization": {
+      "void_01": {
+        "x": [
+          16,
+          23
+        ],
+        "y": [
+          55,
+          71
+        ],
+        "z": [
+          0,
+          48
+        ]
+      },
+      "deep_side_open_y": [
+        55,
+        69
+      ],
+      "entry_sidewall": {
+        "x": 15,
+        "y": [
+          69,
+          72
+        ],
+        "z": [
+          0,
+          45
+        ]
+      },
+      "parapet_alignment_x": 23,
+      "landing_break": {
+        "baseline_top_z": 33,
+        "local_transition_tops_z": [
+          39,
+          36
+        ],
+        "nearest_run_parapet_top_z": 40,
+        "nearest_break_plates": 1
+      }
+    },
+    "semantic_requirements": [
+      "STAIR_RUNS_HAVE_SOLID_MASONRY_MASS",
+      "MAJOR_VOID_REMAINS_UNOCCUPIED",
+      "RUN_PARAPET_ALIGNS_WITH_LANDING_PARAPET",
+      "LANDING_PARAPET_BREAK_REMAINS_LOCAL",
+      "STAIR_WALL_TERMINATES_AT_MAJOR_VOID",
+      "MAJOR_VOID_DEPTH_NOT_BLOCKED_BY_STAIR_WALL",
+      "HOUSE_WALL_REMAINS_DEEP_BOUNDARY",
+      "CIRCULATION_HAS_TWO_RUNS",
+      "TURN_LANDING_EXISTS",
+      "CIRCULATION_REACHES_HOUSE_LEVEL",
+      "MAJOR_VOID_EXISTS",
+      "MAJOR_VOID_OPEN_TO_GROUND",
+      "MAJOR_VOID_HAS_UPPER_BOUNDARY",
+      "MAJOR_VOID_VOLUME_IS_UNOCCUPIED",
+      "MAJOR_VOID_IS_NOT_LOCAL_WINDOW",
+      "NO_SOLID_COLLISION",
+      "ALL_REQUIRED_SOLIDS_SUPPORTED"
+    ],
+    "scope": {
+      "MODULE_001": "UNCHANGED",
+      "MODULE_002": "UNCHANGED",
+      "MODULE_004": "NOT_STARTED",
+      "viewer": "UNCHANGED"
+    }
   }
 }
