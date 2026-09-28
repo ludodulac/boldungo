@@ -1,0 +1,78 @@
+{
+  "schema": "boldungo.module004.coarse_lego.v1",
+  "mission": "BOLDUNGO-061-MODULE004-COARSE-LEGO",
+  "base_main": "ab137ad14cc3f13b47aaa67b9392184515fa5c04",
+  "source_visual": {
+    "base_photos_received": "5/5",
+    "permitted_source": "five BASE_PHOTOS attached to mission 061",
+    "blind_analysis": "BOLDUNGO-060",
+    "blind_analysis_status": "ACCEPTED",
+    "ready_for_coarse_lego": true
+  },
+  "surviving_model_060": {
+    "system": "raised wood terrace",
+    "form": "coarse rectangular horizontal deck",
+    "house_relation": "back edge spatially adjacent to rear facade",
+    "free_edges": [
+      "front",
+      "right"
+    ],
+    "railing_edges": [
+      "front",
+      "right"
+    ],
+    "primary_underspace": "large open void",
+    "observed_structure": [
+      "front rim beam",
+      "right side rim",
+      "one visible front vertical post",
+      "diagonal braces"
+    ],
+    "module003_relation": "high-level neighbor but structurally distinct",
+    "exact_module003_connection": "NOT_OBSERVABLE",
+    "hidden_supports": "UNKNOWN"
+  },
+  "constructive_abstraction_061": {
+    "dimensions_status": "COARSE_REFINABLE",
+    "footprint_studs": {
+      "width": 48,
+      "depth": 18
+    },
+    "walking_level_relation": "uses existing reserved future wood terrace interface level from MODULE003 metadata",
+    "floor": "single coarse horizontal plate layer; no plank detailing",
+    "observed_supports_implemented": [
+      "front rim beam",
+      "right rim beam",
+      "one visible front post"
+    ],
+    "observed_supports_deferred": [
+      {
+        "role": "diagonal braces",
+        "reason": "current orthogonal engine lacks an honest diagonal beam primitive; do not fake with solid wedges"
+      }
+    ],
+    "constructive_supports_added": [],
+    "railing": {
+      "front": "top rail + repeated verticals",
+      "right": "top rail + repeated verticals",
+      "house_edge": "none asserted",
+      "left_edge": "partially occluded; none asserted"
+    },
+    "house_fixation": "NOT_OBSERVABLE_NOT_ENCODED",
+    "module003_connection": "NOT_OBSERVABLE_NOT_ENCODED"
+  },
+  "semantic_requirements": [
+    "WOOD_TERRACE_PRIMARY_UNDERSPACE_REMAINS_OPEN",
+    "WOOD_TERRACE_REMAINS_STRUCTURALLY_DISTINCT_FROM_MASONRY_MODULE003",
+    "WOOD_TERRACE_BACK_EDGE_IS_ADJACENT_TO_REAR_HOUSE_PLANE",
+    "WOOD_TERRACE_RAILING_OCCUPIES_FRONT_AND_RIGHT_FREE_EDGES",
+    "NO_UNOBSERVED_BACK_RAILING",
+    "NO_HIDDEN_SUPPORT_PROMOTED_TO_OBSERVED"
+  ],
+  "frozen_modules": {
+    "MODULE001": "UNCHANGED",
+    "MODULE002": "UNCHANGED",
+    "MODULE003": "UNCHANGED"
+  },
+  "human_gate": "REQUIRED_AFTER_TECHNICAL_PASS"
+}
