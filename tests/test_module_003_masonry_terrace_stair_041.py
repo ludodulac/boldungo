@@ -76,7 +76,7 @@ def test_051_scope_source_unchanged_and_confidence_separated() -> None:
     combined = load(COMBINED)
     source = load(SOURCE)
 
-    assert module["metadata"]["mission"] == "BOLDUNGO-055-MODULE003-LOCAL-PARAPET-GAP"
+    assert module["metadata"]["mission"] == "BOLDUNGO-057-PARAPET-PROFILE-CANONIZE-AND-APPLY"
     assert module["metadata"]["structure_type"] == "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR"
 
     confidence = module["metadata"]["subsystem_confidence"]
@@ -721,4 +721,93 @@ def test_055_stair_parapet_has_no_unintended_large_gap_at_landing_junction() -> 
     for y in range(nearest_run_y, nearest_landing_y + 1):
         for z in range(common_bottom, common_top):
             assert (plane_x, y, z) in protected_cells
+
+def _upper_profile_top_by_y(bounds: list[OrthogonalBounds], plane_x: int) -> dict[int, int]:
+    tops: dict[int, int] = {}
+    for bound in bounds:
+        if not (bound.x0 <= plane_x < bound.x1):
+            continue
+        for y in range(bound.y0, bound.y1):
+            tops[y] = max(tops.get(y, bound.z1), bound.z1)
+    return tops
+
+
+def test_057_architectural_upper_profile_continues_across_slope_to_horizontal_transition() -> None:
+    _module, _model, parts = model_and_parts()
+
+    run_house = parts_with("stair-upper-parapet-house-body", parts)
+    landing = parts_with("stair-first-landing-rail", parts)
+    bridge = parts_with("stair-landing-parapet-gap-bridge", parts)
+    transition = parts_with("stair-landing-parapet-local-transition", parts)
+    continuation = parts_with("stair-landing-parapet-profile-continuation", parts)
+    assert run_house and landing and bridge and transition and continuation
+
+    run_bounds = [visible_orthogonal_bounds(part) for part in run_house]
+    landing_bounds = [visible_orthogonal_bounds(part) for part in landing]
+    bridge_bounds = [visible_orthogonal_bounds(part) for part in bridge]
+    transition_bounds = [visible_orthogonal_bounds(part) for part in transition]
+    continuation_bounds = [visible_orthogonal_bounds(part) for part in continuation]
+    all_bounds = [
+        *run_bounds,
+        *landing_bounds,
+        *bridge_bounds,
+        *transition_bounds,
+        *continuation_bounds,
+    ]
+    assert all(bound is not None for bound in all_bounds)
+
+    longitudinal = [
+        bound for bound in landing_bounds
+        if (bound.x1 - bound.x0) == 1 and (bound.y1 - bound.y0) > 1
+    ]
+    assert longitudinal
+
+    run_x = {bound.x0 for bound in run_bounds}
+    landing_x = {bound.x0 for bound in longitudinal}
+    assert len(run_x) == 1
+    assert run_x == landing_x
+    plane_x = next(iter(run_x))
+
+    # The run itself must carry an ascending upper profile toward the upper
+    # level. This is a profile property, not a mass-connectivity assertion.
+    run_profile = _upper_profile_top_by_y(run_bounds, plane_x)
+    assert run_profile
+    nearest_run_y = max(run_profile)
+    run_from_landing_upward = [
+        run_profile[y] for y in sorted(run_profile, reverse=True)
+    ]
+    assert len(set(run_from_landing_upward)) >= 3
+    assert all(
+        next_top >= top
+        for top, next_top in zip(
+            run_from_landing_upward,
+            run_from_landing_upward[1:],
+        )
+    )
+
+    # The established landing parapet is horizontal. Its visible top must
+    # remain one horizontal profile from the 055 bridge through the complete
+    # longitudinal landing segment; a 39 -> 36 -> 33 taper would fail here
+    # even though the masonry remains materially connected.
+    landing_profile = _upper_profile_top_by_y(
+        [*longitudinal, *bridge_bounds, *transition_bounds, *continuation_bounds],
+        plane_x,
+    )
+    horizontal_y0 = min(bound.y0 for bound in bridge_bounds)
+    horizontal_y1 = max(bound.y1 for bound in longitudinal)
+    horizontal_tops = [
+        landing_profile[y] for y in range(horizontal_y0, horizontal_y1)
+    ]
+    assert len(horizontal_tops) >= 3
+    assert len(set(horizontal_tops)) == 1
+    horizontal_top = horizontal_tops[0]
+
+    # ARCHITECTURAL_UPPER_PROFILE_CONTINUES_ACROSS_SLOPE_TO_HORIZONTAL_TRANSITION:
+    # the slope endpoint and horizontal continuation meet within the engine's
+    # one-plate constructive quantization, without inventing a photographic
+    # metric or permitting a local profile notch.
+    run_endpoint_top = run_profile[nearest_run_y]
+    plate_quantization = standard_orthogonal_definitions()["PLATE_1X1"].height_plates
+    assert horizontal_top <= run_endpoint_top
+    assert run_endpoint_top - horizontal_top <= plate_quantization
 
