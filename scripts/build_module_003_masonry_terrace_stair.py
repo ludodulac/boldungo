@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """Build MODULE_003_MASONRY_TERRACE_STAIR and the combined M001+M002+M003 bundle.
 
-Mission 057 applies the canonized architectural upper-profile continuity rule
-to the HUMAN-PASS 055 geometry:
-- preserve mass continuity at the RUN_02 / landing junction,
-- preserve the existing run, landing, platform, void and global levels,
-- keep the one-plate constructive quantization at the junction,
-- extend the established landing parapet top horizontally instead of tapering it
-  through an unsupported local truncation.
+Mission 059 applies EDGE-IDENTITY-BEFORE-PROFILE-CONTINUITY to the
+HUMAN-FAIL 057 application while preserving the valid 055 mass correction:
+- keep mass continuity at the RUN_02 / landing junction,
+- preserve run, landing, platform, void and global levels,
+- remove only the unsupported 057 propagation of the raised junction level,
+- retain the existing low landing boundary and local transition into the sloping run.
 
-Exact photographic LEGO height remains non-metric; only the profile topology is protected.
+Exact photographic LEGO height remains non-metric; edge identity and profile topology are protected.
 """
 from __future__ import annotations
 
@@ -345,24 +344,11 @@ def _build_module_003() -> list[dict]:
         "stair-landing-parapet-local-transition",
     )
 
-    # 057 ARCHITECTURAL-UPPER-PROFILE-CONTINUITY:
-    # 055 proved material continuity, but the visible top still tapered
-    # 39 -> 36 -> 33 across a landing that is geometrically horizontal.
-    # Fill only the missing cells above that existing longitudinal parapet so
-    # its top remains horizontal at the already-established Z39 junction level.
-    # This does not claim Z39 as photographic metric truth; it preserves the
-    # inferred slope -> junction -> horizontal profile topology while retaining
-    # the one-plate constructive residual to RUN_02's nearest top Z40.
-    _tile_line(
-        "y", 77, 82, 14, 36,
-        plate=False,
-        subcomponent="stair-landing-parapet-profile-continuation",
-    )
-    _tile_line(
-        "y", 78, 82, 14, 33,
-        plate=False,
-        subcomponent="stair-landing-parapet-profile-continuation",
-    )
+    # 059 EDGE-IDENTITY-BEFORE-PROFILE-CONTINUITY:
+    # Do not propagate the raised junction level across the whole landing rail.
+    # The photo-inferred identity chain is the lower landing boundary -> local
+    # transition -> RUN_02 sloping parapet. The 052/055 geometry already
+    # represents that topology; no extra longitudinal top course is added.
 
     # STAIR_RUN_02: preserve the 052 path, width, start and arrival, but
     # constrain the hidden step rhythm by the directly observed lower-run family.
@@ -481,7 +467,7 @@ def main() -> None:
 
     metadata = {
         "module_id": MODULE_ID,
-        "mission": "BOLDUNGO-057-PARAPET-PROFILE-CANONIZE-AND-APPLY",
+        "mission": "BOLDUNGO-059-EDGE-IDENTITY-CANONIZE-AND-CORRECT",
         "source_evidence": "docs/evidence/module-003-masonry-terrace-stair-041.json",
         "structure_type": "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR",
         "host_house_left_plane_x": HOUSE_LEFT_PLANE_X,
@@ -528,18 +514,30 @@ def main() -> None:
         },
         "human_refinement_057": {
             "rule": "ARCHITECTURAL-UPPER-PROFILE-CONTINUITY",
+            "rule_status": "VALID",
+            "application_status": "CONTRADICTED_BY_058_WRONG_EDGE_IDENTITY",
             "mass_vs_profile": "MASS_CONTINUITY != UPPER_PROFILE_CONTINUITY",
+            "wrong_geometry_action": "PROPAGATED_RAISED_JUNCTION_LEVEL_ACROSS_LONGITUDINAL_LANDING_TOP",
+            "superseded_by": "BOLDUNGO-059-EDGE-IDENTITY-CANONIZE-AND-CORRECT",
+        },
+        "human_refinement_059": {
+            "rule": "EDGE-IDENTITY-BEFORE-PROFILE-CONTINUITY",
+            "reasoning_order": "EDGE_IDENTITY -> MASS/PROFILE_CONTINUITY_CHECK -> LEGO_TRANSLATION",
+            "forbidden_reasoning": "GEOMETRIC_PROXIMITY -> PROFILE_CONTINUITY",
+            "identity_evidence_status": "INFERRED_FROM_P3_P4_P5",
+            "confirmed_profile_chain": [
+                "LANDING_LOWER_BOUNDARY_TOP",
+                "LOCAL_TRANSITION",
+                "UPPER_RUN_SLOPING_PARAPET_TOP"
+            ],
+            "rejected_profile_edge": "057_RAISED_LONGITUDINAL_TOP",
+            "geometry_action": "REMOVE_ONLY_057_RAISED_LONGITUDINAL_TOP_PROPAGATION",
             "photo_metric_status": "NOT_OBSERVABLE",
-            "profile_topology": "INCLINED_RUN_TO_JUNCTION_TO_HORIZONTAL_LANDING",
-            "geometry_action": "FILL_ONLY_MISSING_TOP_CELLS_ABOVE_EXISTING_LONGITUDINAL_LANDING_PARAPET",
-            "world_plane_x": 23,
-            "nearest_run_profile_top_z": 40,
-            "horizontal_landing_profile_top_z": 39,
-            "constructive_quantization_residual_plates": 1,
             "circulation_changed": False,
             "steps_changed": False,
             "void_01_changed": False,
             "platform_changed": False,
+            "module_position_changed": False,
         },
         "human_refinement_055": {
             "parapet_landing_junction": {
