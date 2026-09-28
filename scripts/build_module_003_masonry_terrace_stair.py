@@ -234,13 +234,22 @@ def _build_module_003() -> list[dict]:
     # 047 human correction: create the real opening on the x-strong face.
     # The opening is a constructive approximation of the annotated region:
     # after the frozen +10 Y shift it occupies Y57..65 and Z0..36 on the
-    # visible X24 plane. Full-height jambs and a four-course lintel remain.
-    _wall_line("y", 44, 47, 23, 48, "main-house-wall-front-jamb")
-    _wall_line("y", 55, 62, 23, 48, "main-house-wall-rear-jamb")
-    for z in range(36, 48, 3):
+    # visible X24 plane.
+    #
+    # 047B constructive segmentation: jambs stop at the opening head (Z36),
+    # one lintel course spans across the opening with one-stud bearing on each
+    # jamb, then the solid wall resumes above it. This preserves the exact
+    # functional VOID while eliminating same-volume jamb/lintel overlap.
+    _wall_line("y", 44, 47, 23, 36, "main-house-wall-front-jamb")
+    _wall_line("y", 55, 62, 23, 36, "main-house-wall-rear-jamb")
+    _tile_line(
+        "y", 46, 56, 23, 36, plate=False,
+        subcomponent="main-house-wall-opening-lintel",
+    )
+    for z in range(39, 48, 3):
         _tile_line(
-            "y", 46, 56, 23, z, plate=False,
-            subcomponent="main-house-wall-opening-lintel",
+            "y", 44, 62, 23, z, plate=False,
+            subcomponent="main-house-wall-upper-closure",
         )
 
     _wall_line("y", 44, 61, 15, 48, "main-internal-support")

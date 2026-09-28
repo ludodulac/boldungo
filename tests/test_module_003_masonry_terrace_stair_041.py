@@ -31,11 +31,11 @@ def test_module_003_artifact_counts_levels_and_scope() -> None:
     source = load(SOURCE)
 
     assert module["metadata"]["module_id"] == "MODULE_003_MASONRY_TERRACE_STAIR"
-    assert module["bom"]["total_parts"] == 729
-    assert combined["metadata"]["module_003_piece_count"] == 729
+    assert module["bom"]["total_parts"] == 720
+    assert combined["metadata"]["module_003_piece_count"] == 720
     assert combined["metadata"]["module_001_plus_002_piece_count"] == 4794
-    assert combined["metadata"]["combined_piece_count"] == 5523
-    assert combined["bom"]["total_parts"] == 5523
+    assert combined["metadata"]["combined_piece_count"] == 5514
+    assert combined["bom"]["total_parts"] == 5514
 
     levels = module["metadata"]["level_model"]
     assert levels == {
@@ -77,12 +77,12 @@ def test_module_003_artifact_counts_levels_and_scope() -> None:
 def test_module_003_bom_is_exact_and_approved() -> None:
     module = load(MODULE)
     expected = {
-        "BRICK_1X1": 268,
+        "BRICK_1X1": 264,
         "BRICK_1X2": 28,
-        "BRICK_1X3": 22,
+        "BRICK_1X3": 18,
         "BRICK_1X4": 24,
-        "BRICK_1X6": 80,
-        "BRICK_1X8": 123,
+        "BRICK_1X6": 76,
+        "BRICK_1X8": 126,
         "BRICK_SLOPED_45_2X1": 18,
         "PLATE_1X1": 94,
         "PLATE_1X2": 2,
@@ -101,7 +101,7 @@ def test_module_003_solids_have_no_collision_and_reach_ground() -> None:
     module = load(MODULE)
     model = BrickModel.model_validate(module["brick_model"])
     bill = BillOfMaterials.model_validate(module["bom"])
-    assert bill.total_parts == len(model.parts) == 729
+    assert bill.total_parts == len(model.parts) == 720
     assert len({part.placement_id for part in model.parts}) == len(model.parts)
 
     registry = create_current_engine_capability_registry(MASTER)
@@ -250,7 +250,7 @@ def test_module_003_042_stair_is_rearward_and_outside_house_footprint() -> None:
 
 def test_module_003_042_rearward_translation_preserves_topology_levels_and_void() -> None:
     module = load(MODULE)
-    assert module["bom"]["total_parts"] == 729
+    assert module["bom"]["total_parts"] == 720
     assert module["metadata"]["prototype_tread_tops"] == {
         "lower": [3, 6, 9, 12, 16, 20, 24],
         "upper": [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49],
@@ -354,7 +354,7 @@ def test_module_003_043_obstructing_rail_removed_and_first_landing_railed() -> N
 def test_module_003_043_circulation_and_collision_scope() -> None:
     module = load(MODULE)
     model = BrickModel.model_validate(module["brick_model"])
-    assert module["bom"]["total_parts"] == 729
+    assert module["bom"]["total_parts"] == 720
     assert orthogonal_collisions(model) == []
 
     support = analyze_standard_brick_support_chain(model)
