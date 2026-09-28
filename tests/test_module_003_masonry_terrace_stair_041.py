@@ -76,7 +76,7 @@ def test_051_scope_source_unchanged_and_confidence_separated() -> None:
     combined = load(COMBINED)
     source = load(SOURCE)
 
-    assert module["metadata"]["mission"] == "BOLDUNGO-MODULE-003-HUMAN-REFINEMENT-052"
+    assert module["metadata"]["mission"] == "BOLDUNGO-BASE-PHOTOS-BLIND-LEARNING-AND-MODULE003-REFINEMENT-054"
     assert module["metadata"]["structure_type"] == "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR"
 
     confidence = module["metadata"]["subsystem_confidence"]
@@ -514,3 +514,144 @@ def test_052_interior_recess_remains_explicitly_not_observable() -> None:
     assert recess["status"] == "NOT_OBSERVABLE_FROM_CURRENT_PHOTOS"
     assert recess["geometry_added"] is False
     assert recess["required_future_evidence"] == "PHOTO_FROM_OR_TOWARD_INTERIOR_OF_PASSAGE"
+
+
+
+def _tread_top(part) -> int:
+    bounds = orthogonal_bounds(part)
+    assert bounds is not None
+    return bounds.z1
+
+
+def _distinct_risers(parts: list, base_level: int) -> list[int]:
+    tops = sorted({_tread_top(part) for part in parts})
+    assert tops
+    return [tops[0] - base_level, *[b - a for a, b in zip(tops, tops[1:])]]
+
+
+def _giron_spans_by_top(parts: list, axis: str) -> list[int]:
+    grouped: dict[int, list] = {}
+    for part in parts:
+        grouped.setdefault(_tread_top(part), []).append(orthogonal_bounds(part))
+    spans: list[int] = []
+    for bounds in grouped.values():
+        assert all(bound is not None for bound in bounds)
+        if axis == "x":
+            spans.append(max(bound.x1 for bound in bounds) - min(bound.x0 for bound in bounds))
+        else:
+            spans.append(max(bound.y1 for bound in bounds) - min(bound.y0 for bound in bounds))
+    return sorted(spans)
+
+
+def test_054_upper_run_step_module_matches_observed_stair_family() -> None:
+    module, _model, parts = model_and_parts()
+    lower = parts_with("stair-lower-tread", parts)
+    upper = parts_with("stair-upper-tread", parts)
+    assert lower and upper
+
+    levels = module["metadata"]["level_model"]
+    lower_risers = _distinct_risers(lower, levels["ground_low_level_z"])
+    upper_risers = _distinct_risers(upper, levels["intermediate_turn_level_z"])
+
+    # UPPER_RUN_STEP_MODULE_MATCHES_OBSERVED_STAIR_FAMILY:
+    # the hidden run uses risers of the same order as the observed run,
+    # without claiming an exact photographic tread count.
+    assert min(upper_risers) >= min(lower_risers)
+    assert max(upper_risers) <= max(lower_risers)
+    assert len(set(_tread_top(part) for part in upper)) <= (
+        len(set(_tread_top(part) for part in lower)) + 1
+    )
+
+    lower_girons = _giron_spans_by_top(lower, "x")
+    upper_girons = _giron_spans_by_top(upper, "y")
+    lower_median = lower_girons[len(lower_girons) // 2]
+    upper_median = upper_girons[len(upper_girons) // 2]
+    assert 0.5 <= upper_median / lower_median <= 2.5
+
+    # UPPER_RUN_DOES_NOT_USE_UNJUSTIFIED_MICRO_STEPS:
+    # no hidden riser is smaller than the smallest directly observed family riser.
+    assert min(upper_risers) >= min(lower_risers)
+
+
+def test_054_no_unobserved_void_under_stair_and_platform_void_distinct() -> None:
+    module, model, parts = model_and_parts()
+    solid = cells_for(model)
+
+    # NO_UNOBSERVED_VOID_UNDER_STAIR:
+    # every cell beneath the preserved lower-run treads and turn landing
+    # is masonry down to the ground datum.
+    lower = parts_with("stair-lower-tread", parts)
+    landing = [
+        part for part in parts_with("stair-landing-", parts)
+        if "support" not in part.placement_id
+        and "rail" not in part.placement_id
+        and "transition" not in part.placement_id
+        and "solid-mass" not in part.placement_id
+    ]
+    assert lower and landing
+    for surface in [*lower, *landing]:
+        bounds = orthogonal_bounds(surface)
+        assert bounds is not None
+        for x in range(bounds.x0, bounds.x1):
+            for y in range(bounds.y0, bounds.y1):
+                for z in range(module["metadata"]["level_model"]["ground_low_level_z"], bounds.z0):
+                    assert (x, y, z) in solid
+
+    # PLATFORM_VOID_REMAINS_DISTINCT_FROM_STAIR_MASS +
+    # MAJOR_PLATFORM_VOID_PRESERVED.
+    void = module["metadata"]["geometry"]["void_01"]
+    assert void["classification"] == "MAJOR_ARCHITECTURAL_VOID"
+    for x in range(*void["x"]):
+        for y in range(*void["y"]):
+            for z in range(*void["z"]):
+                assert (x, y, z) not in solid
+
+    stair_mass = [
+        *parts_with("stair-lower-solid-mass", parts),
+        *parts_with("stair-landing-solid-mass", parts),
+        *parts_with("stair-upper-solid-mass", parts),
+    ]
+    assert stair_mass
+    for part in stair_mass:
+        bounds = orthogonal_bounds(part)
+        assert bounds is not None
+        overlaps_void = (
+            max(bounds.x0, void["x"][0]) < min(bounds.x1, void["x"][1])
+            and max(bounds.y0, void["y"][0]) < min(bounds.y1, void["y"][1])
+            and max(bounds.z0, void["z"][0]) < min(bounds.z1, void["z"][1])
+        )
+        assert not overlaps_void
+
+
+def test_054_platform_face_coplanar_across_floor_boundary() -> None:
+    module, model, parts = model_and_parts()
+    solid = cells_for(model)
+    platform = module["metadata"]["geometry"]["upper_platform"]
+
+    carriers = parts_with("void-ceiling-carrier", parts)
+    assert carriers
+    carrier_bounds = [orthogonal_bounds(part) for part in carriers]
+    assert all(bound is not None for bound in carrier_bounds)
+    floor_boundary_z = min(bound.z0 for bound in carrier_bounds)
+
+    outer_plane_x = platform["x"][0]
+    platform_top_z = platform["walking_top_z"]
+
+    # MASONRY_PLATFORM_FACE_IS_COPLANAR_ACROSS_FLOOR_BOUNDARY:
+    # the actual occupied exterior plane stays present continuously through
+    # the constructive floor boundary.
+    for y in range(*platform["y"]):
+        for z in range(floor_boundary_z, platform_top_z):
+            assert (outer_plane_x, y, z) in solid
+
+    # FLOOR_BOUNDARY_DOES_NOT_IMPLY_DEPTH_CHANGE:
+    # the minimum exterior X at the boundary is the same immediately below,
+    # through, and immediately above the carrier datum.
+    probe_z = [floor_boundary_z - 1, floor_boundary_z, platform_top_z - 1]
+    for y in range(*platform["y"]):
+        minima = []
+        for z in probe_z:
+            xs = [x for x, yy, zz in solid if yy == y and zz == z]
+            assert xs
+            minima.append(min(xs))
+        assert minima == [outer_plane_x, outer_plane_x, outer_plane_x]
