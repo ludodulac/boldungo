@@ -530,6 +530,16 @@ def main() -> None:
                 "LOCAL_TRANSITION",
                 "UPPER_RUN_SLOPING_PARAPET_TOP"
             ],
+            "edge_identity": {
+                "chain_id": "STAIR_TURN_BOUNDARY_CHAIN",
+                "status": "CONFIRMED_INFERRED",
+                "members": [
+                    "LANDING_LOWER_BOUNDARY_TOP",
+                    "LOCAL_TRANSITION",
+                    "UPPER_RUN_SLOPING_PARAPET_TOP"
+                ],
+                "excluded": ["057_RAISED_LONGITUDINAL_TOP"],
+            },
             "rejected_profile_edge": "057_RAISED_LONGITUDINAL_TOP",
             "geometry_action": "REMOVE_ONLY_057_RAISED_LONGITUDINAL_TOP_PROPAGATION",
             "photo_metric_status": "NOT_OBSERVABLE",
