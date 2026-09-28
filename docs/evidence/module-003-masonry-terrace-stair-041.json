@@ -542,5 +542,240 @@
         "relation": "column outer face X24 is flush with host wall plane; existing upper parapet continues at X23/Y72"
       }
     }
+  },
+  "human_correction_047": {
+    "status": "MAPPED_HUMAN_CORRECTION_IMPLEMENTED",
+    "mapping_source": "Human-annotated published viewer capture supplied in 046_RESUME, cross-checked against P2/P3/P4/P5.",
+    "frozen_mapping": {
+      "human_false_region": {
+        "human_relation": "The crossed-out opening under the small turn landing must not exist.",
+        "model_face": "Y_LOW_FRONT_OF_TURN_LANDING",
+        "constructive_region": {
+          "x": [
+            17,
+            23
+          ],
+          "y": 85,
+          "z": [
+            0,
+            23
+          ]
+        },
+        "transformation": "VOID_TO_SOLID",
+        "derivation": "Derived from the actual turn-landing footprint after frozen +10Y/+9X transforms; interior span only, between the two existing landing supports."
+      },
+      "human_real_region": {
+        "human_relation": "The orange rectangle marks the opening that must exist on the visible right/x-strong face of the main masonry mass.",
+        "model_face": "X_STRONG_RIGHT_FACE_OF_MAIN_MASONRY",
+        "constructive_region": {
+          "visible_plane_x": 24,
+          "wall_cell_x": 23,
+          "y": [
+            57,
+            65
+          ],
+          "z": [
+            0,
+            36
+          ]
+        },
+        "transformation": "SOLID_TO_VOID",
+        "derivation": "Eight-stud doorway-scale constructive approximation on the x-strong wall, preserving full-height jambs, a lintel, the upper platform and the internal lower void. Orange annotation is not treated as a metric measurement."
+      },
+      "distinct_preexisting_rear_opening": {
+        "face": "Y_HIGH_REAR",
+        "region": {
+          "x": [
+            15,
+            22
+          ],
+          "y": 71,
+          "z": [
+            0,
+            36
+          ]
+        },
+        "role": "PRESERVED_BUT_NOT_USED_AS_THE_HUMAN_REAL_OPENING"
+      }
+    },
+    "correction_2_before_after": {
+      "before": {
+        "turn_landing_front_region": "VOID",
+        "x_strong_real_region": "SOLID",
+        "rear_opening": "ALREADY_VOID"
+      },
+      "after": {
+        "turn_landing_front_region": "SOLID",
+        "x_strong_real_region": "VOID",
+        "rear_opening": "UNCHANGED_VOID",
+        "lower_void": {
+          "x": [
+            16,
+            23
+          ],
+          "y": [
+            55,
+            71
+          ],
+          "z": [
+            0,
+            36
+          ]
+        }
+      }
+    },
+    "correction_3_target_envelope": {
+      "rationale": "Replace the old peak-forming parapet courses rather than adding caps above them.",
+      "lower": {
+        "ascent_axis": "+X",
+        "rails_y": [
+          85,
+          92
+        ],
+        "segments": [
+          {
+            "from": [
+              9,
+              24
+            ],
+            "to": [
+              11,
+              27
+            ]
+          },
+          {
+            "from": [
+              11,
+              27
+            ],
+            "to": [
+              13,
+              30
+            ]
+          },
+          {
+            "from": [
+              13,
+              30
+            ],
+            "to": [
+              15,
+              33
+            ]
+          }
+        ],
+        "terminal": {
+          "x": [
+            15,
+            16
+          ],
+          "z": 33
+        }
+      },
+      "upper": {
+        "ascent_axis": "-Y",
+        "rails_x": [
+          16,
+          24
+        ],
+        "segments": [
+          {
+            "from": [
+              85,
+              40
+            ],
+            "to": [
+              83,
+              43
+            ]
+          },
+          {
+            "from": [
+              83,
+              43
+            ],
+            "to": [
+              81,
+              46
+            ]
+          },
+          {
+            "from": [
+              81,
+              46
+            ],
+            "to": [
+              79,
+              49
+            ]
+          },
+          {
+            "from": [
+              79,
+              49
+            ],
+            "to": [
+              77,
+              52
+            ]
+          },
+          {
+            "from": [
+              77,
+              52
+            ],
+            "to": [
+              75,
+              55
+            ]
+          },
+          {
+            "from": [
+              75,
+              55
+            ],
+            "to": [
+              73,
+              58
+            ]
+          }
+        ],
+        "terminal": {
+          "y": [
+            72,
+            73
+          ],
+          "z": 58
+        }
+      },
+      "constructive_approximation": "Approved BRICK_SLOPED_45_2X1 segments are chained endpoint-to-endpoint. Body height is rebuilt under each segment so no legacy parapet peak protrudes. The visible slope category is facade_detail so the renderer uses the masonry/facade material rather than roof material.",
+      "geometric_error_to_selected_constructive_envelope_plates": 0
+    },
+    "correction_4_wall_continuity": {
+      "host_visible_wall_plane": {
+        "value": 24,
+        "validation": "Semantic test derives this plane from the actual translated MODULE001 left-wall geometry in the combined bundle."
+      },
+      "parapet_visible_outer_plane_before": 23,
+      "parapet_visible_outer_plane_after": 24,
+      "change": "Only the visible house-side upper parapet is moved from pre-transform X14 to X15, becoming X24 after the frozen stair +9X transform. Treads and stringers retain their 043 coordinates.",
+      "longitudinal_junction": "Host rear plane Y72 meets first house-side parapet cell Y72 on the same visible X24 plane through Z49..58."
+    },
+    "preserved": {
+      "module_001": "UNCHANGED",
+      "module_002": "UNCHANGED",
+      "global_module_003_position": "UNCHANGED",
+      "rearward_translation_042": 10,
+      "stair_lateral_translation_043": 9,
+      "platform_position": "UNCHANGED",
+      "platform_edge_protection_044": "UNCHANGED",
+      "circulation": "UNCHANGED",
+      "levels": [
+        0,
+        24,
+        49
+      ],
+      "two_run_turning_stair": "UNCHANGED"
+    }
   }
 }
