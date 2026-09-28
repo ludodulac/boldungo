@@ -1,4 +1,4 @@
-name: Generate MODULE 003 masonry terrace stair 041/042/043/044/047/051/052/054/055/057
+name: Generate MODULE 003 masonry terrace stair 041/042/043/044/047/051/052/054/055/057/059
 
 on:
   push:
@@ -13,6 +13,7 @@ on:
       - fix/module-003-base-photo-refinement-054
       - fix/module-003-local-parapet-gap-055
       - fix/module-003-parapet-profile-057
+      - fix/module-003-edge-identity-059
 
 permissions:
   contents: write
@@ -53,5 +54,5 @@ jobs:
             echo "Generated bundles already current."
             exit 0
           fi
-          git commit -m "057: regenerate parapet upper-profile correction"
+          git commit -m "059: regenerate edge-identity parapet correction"
           git push origin "HEAD:${GITHUB_REF_NAME}"

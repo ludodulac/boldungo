@@ -76,7 +76,7 @@ def test_051_scope_source_unchanged_and_confidence_separated() -> None:
     combined = load(COMBINED)
     source = load(SOURCE)
 
-    assert module["metadata"]["mission"] == "BOLDUNGO-057-PARAPET-PROFILE-CANONIZE-AND-APPLY"
+    assert module["metadata"]["mission"] == "BOLDUNGO-059-EDGE-IDENTITY-CANONIZE-AND-CORRECT"
     assert module["metadata"]["structure_type"] == "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR"
 
     confidence = module["metadata"]["subsystem_confidence"]
@@ -732,28 +732,51 @@ def _upper_profile_top_by_y(bounds: list[OrthogonalBounds], plane_x: int) -> dic
     return tops
 
 
+def _edge_identity_confirmed(segments: list[dict]) -> bool:
+    if not segments:
+        return False
+    chain_ids = {segment.get("chain_id") for segment in segments}
+    return (
+        None not in chain_ids
+        and len(chain_ids) == 1
+        and all(
+            segment.get("identity_status") in {"CONFIRMED", "CONFIRMED_INFERRED"}
+            for segment in segments
+        )
+    )
+
+
 def test_057_architectural_upper_profile_continues_across_slope_to_horizontal_transition() -> None:
-    _module, _model, parts = model_and_parts()
+    module, _model, parts = model_and_parts()
+
+    identity = module["metadata"]["human_refinement_059"]["edge_identity"]
+    chain_id = identity["chain_id"]
+    current_chain = [
+        {
+            "role": role,
+            "chain_id": chain_id,
+            "identity_status": identity["status"],
+        }
+        for role in identity["members"]
+    ]
+
+    # 059 precondition: the 057 continuity rule is only legal after the
+    # architectural edge identity has independently been established.
+    assert _edge_identity_confirmed(current_chain)
 
     run_house = parts_with("stair-upper-parapet-house-body", parts)
     landing = parts_with("stair-first-landing-rail", parts)
     bridge = parts_with("stair-landing-parapet-gap-bridge", parts)
     transition = parts_with("stair-landing-parapet-local-transition", parts)
     continuation = parts_with("stair-landing-parapet-profile-continuation", parts)
-    assert run_house and landing and bridge and transition and continuation
+    assert run_house and landing and bridge and transition
+    assert not continuation
 
     run_bounds = [visible_orthogonal_bounds(part) for part in run_house]
     landing_bounds = [visible_orthogonal_bounds(part) for part in landing]
     bridge_bounds = [visible_orthogonal_bounds(part) for part in bridge]
     transition_bounds = [visible_orthogonal_bounds(part) for part in transition]
-    continuation_bounds = [visible_orthogonal_bounds(part) for part in continuation]
-    all_bounds = [
-        *run_bounds,
-        *landing_bounds,
-        *bridge_bounds,
-        *transition_bounds,
-        *continuation_bounds,
-    ]
+    all_bounds = [*run_bounds, *landing_bounds, *bridge_bounds, *transition_bounds]
     assert all(bound is not None for bound in all_bounds)
 
     longitudinal = [
@@ -768,8 +791,7 @@ def test_057_architectural_upper_profile_continues_across_slope_to_horizontal_tr
     assert run_x == landing_x
     plane_x = next(iter(run_x))
 
-    # The run itself must carry an ascending upper profile toward the upper
-    # level. This is a profile property, not a mass-connectivity assertion.
+    # The RUN_02 top remains a genuine ascending profile.
     run_profile = _upper_profile_top_by_y(run_bounds, plane_x)
     assert run_profile
     nearest_run_y = max(run_profile)
@@ -785,29 +807,90 @@ def test_057_architectural_upper_profile_continues_across_slope_to_horizontal_tr
         )
     )
 
-    # The established landing parapet is horizontal. Its visible top must
-    # remain one horizontal profile from the 055 bridge through the complete
-    # longitudinal landing segment; a 39 -> 36 -> 33 taper would fail here
-    # even though the masonry remains materially connected.
+    # The confirmed landing edge identity is the lower boundary top, not the
+    # raised 057 line. Its own baseline must therefore remain horizontal.
+    baseline_profile = _upper_profile_top_by_y(longitudinal, plane_x)
+    assert baseline_profile
+    baseline_tops = set(baseline_profile.values())
+    assert len(baseline_tops) == 1
+    baseline_top = next(iter(baseline_tops))
+
+    # The local 052/055 transition is allowed to bridge between the low landing
+    # boundary and the sloping run, but it must remain local rather than
+    # propagating the junction height across the full landing.
     landing_profile = _upper_profile_top_by_y(
-        [*longitudinal, *bridge_bounds, *transition_bounds, *continuation_bounds],
+        [*longitudinal, *bridge_bounds, *transition_bounds],
         plane_x,
     )
-    horizontal_y0 = min(bound.y0 for bound in bridge_bounds)
-    horizontal_y1 = max(bound.y1 for bound in longitudinal)
-    horizontal_tops = [
-        landing_profile[y] for y in range(horizontal_y0, horizontal_y1)
+    raised_landing_y = [
+        y for y, top in landing_profile.items() if top > baseline_top
     ]
-    assert len(horizontal_tops) >= 3
-    assert len(set(horizontal_tops)) == 1
-    horizontal_top = horizontal_tops[0]
+    assert raised_landing_y
+    assert max(raised_landing_y) - min(raised_landing_y) + 1 <= 3
 
-    # ARCHITECTURAL_UPPER_PROFILE_CONTINUES_ACROSS_SLOPE_TO_HORIZONTAL_TRANSITION:
-    # the slope endpoint and horizontal continuation meet within the engine's
-    # one-plate constructive quantization, without inventing a photographic
-    # metric or permitting a local profile notch.
     run_endpoint_top = run_profile[nearest_run_y]
-    plate_quantization = standard_orthogonal_definitions()["PLATE_1X1"].height_plates
-    assert horizontal_top <= run_endpoint_top
-    assert run_endpoint_top - horizontal_top <= plate_quantization
+    profile_from_run_to_landing = [
+        run_endpoint_top,
+        *[landing_profile[y] for y in sorted(landing_profile)],
+    ]
 
+    # ARCHITECTURAL_UPPER_PROFILE_CONTINUES_ACROSS_SLOPE_TO_HORIZONTAL_TRANSITION
+    # under CONFIRMED_EDGE_IDENTITY: descending from the run toward the landing
+    # may quantize locally, but it cannot rise again or invent a high horizontal
+    # continuation. It must settle onto the demonstrated low landing boundary.
+    assert all(
+        next_top <= top
+        for top, next_top in zip(
+            profile_from_run_to_landing,
+            profile_from_run_to_landing[1:],
+        )
+    )
+    assert profile_from_run_to_landing[-1] == baseline_top
+    assert run_endpoint_top > baseline_top
+
+
+def test_059_architectural_profile_continuity_requires_confirmed_edge_identity() -> None:
+    module, _model, _parts = model_and_parts()
+    identity = module["metadata"]["human_refinement_059"]["edge_identity"]
+
+    confirmed = [
+        {
+            "role": role,
+            "chain_id": identity["chain_id"],
+            "identity_status": identity["status"],
+        }
+        for role in identity["members"]
+    ]
+
+    # ARCHITECTURAL_PROFILE_CONTINUITY_REQUIRES_CONFIRMED_EDGE_IDENTITY
+    assert _edge_identity_confirmed(confirmed)
+    assert "057_RAISED_LONGITUDINAL_TOP" in identity["excluded"]
+
+    # Scientific negative regression for the 057 failure:
+    # geometry may be connected, coplanar and height-compatible, yet continuity
+    # is rejected when it fuses two different architectural edge identities.
+    wrong_057_candidate = [
+        {
+            "role": "UPPER_RUN_SLOPING_PARAPET_TOP",
+            "chain_id": "STAIR_TURN_BOUNDARY_CHAIN",
+            "identity_status": "CONFIRMED_INFERRED",
+            "mass_connected": True,
+            "coplanar": True,
+            "height_compatible": True,
+        },
+        {
+            "role": "057_RAISED_LONGITUDINAL_TOP",
+            "chain_id": "DIFFERENT_ARCHITECTURAL_EDGE",
+            "identity_status": "CONFIRMED",
+            "mass_connected": True,
+            "coplanar": True,
+            "height_compatible": True,
+        },
+    ]
+    assert all(
+        segment["mass_connected"]
+        and segment["coplanar"]
+        and segment["height_compatible"]
+        for segment in wrong_057_candidate
+    )
+    assert not _edge_identity_confirmed(wrong_057_candidate)
