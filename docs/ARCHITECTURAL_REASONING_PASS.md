@@ -36,6 +36,29 @@ Les objets liés physiquement sont résolus ensemble. Une relation `connects_to`
 
 Exemple escalier → bâtiment : l’extrémité haute, le mur receveur, le niveau d’arrivée et la position du bâtiment doivent être compatibles simultanément. Il est interdit d’estimer l’escalier et le bâtiment séparément puis de déclarer la relation `resolved` si leurs métriques ne se touchent pas.
 
+## 3.1 Continuité du profil architectural visible
+
+**Règle canonique : `ARCHITECTURAL-UPPER-PROFILE-CONTINUITY`.**
+
+Lorsqu'un même élément architectural de bordure visible — par exemple parapet, mur d'escalier, garde-corps maçonné plein, rampe pleine, bordure ou acrotère — traverse une transition de pente, deux propriétés doivent être préservées et validées séparément :
+
+- continuité de masse ;
+- continuité du profil supérieur visible.
+
+Invariant explicite :
+
+`MASS_CONTINUITY != UPPER_PROFILE_CONTINUITY`
+
+Une géométrie peut donc être matériellement continue tout en étant visuellement fausse si son sommet introduit une troncature, une encoche, une terminaison anticipée ou un décrochement local sans preuve.
+
+Si les photographies permettent de lire un même élément comme :
+
+`segment incliné → jonction → segment horizontal`
+
+la traduction constructive doit préserver cette topologie de silhouette à travers la jonction. Le changement de pente est autorisé ; l'invention d'une nouvelle rupture de profil ne l'est pas.
+
+Cette règle ne fixe aucune métrique non observable. Les hauteurs, longueurs et quantifications LEGO exactes peuvent rester estimées ou inconnues. Ce qui est protégé est la continuité architecturale du profil et son changement de régime (incliné puis horizontal), pas une cote arbitraire.
+
 ## 4. Audit contradictoire
 
 Avant sérialisation, rechercher activement les contradictions :
