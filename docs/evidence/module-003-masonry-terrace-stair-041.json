@@ -777,5 +777,156 @@
       ],
       "two_run_turning_stair": "UNCHANGED"
     }
+  },
+  "volumetric_rebuild_051": {
+    "mission": "BOLDUNGO-MODULE-003-VOLUMETRIC-REBUILD-051",
+    "learning_basis": {
+      "chain": "3 BASE PHOTOS -> BLIND 048 -> WITHHELD VALIDATION 049 -> CANONIZATION 050",
+      "major_void": "CONFIRMED",
+      "small_local_opening_rejection": "CONFIRMED",
+      "envelope": "PARTIALLY_CONFIRMED",
+      "circulation": "TWO_RUNS_WITH_TURN_CONFIRMED_BY_VALIDATION_SET",
+      "interfaces": "PARTIALLY_CONFIRMED",
+      "metrics": "REFINABLE"
+    },
+    "subsystem_confidence": {
+      "ENVELOPE": "HIGH",
+      "MAJOR_VOID": "HIGH",
+      "CIRCULATION": "HIGH",
+      "INTERFACES": "MEDIUM",
+      "METRICS": "LOW"
+    },
+    "normalized_decomposition": {
+      "STAIR_RUN_01": "GROUND -> TURN_LANDING",
+      "TURN_LANDING": "DIRECTION_CHANGE_AT_INTERMEDIATE_LEVEL",
+      "STAIR_RUN_02": "TURN_LANDING -> HOUSE_LEVEL",
+      "UPPER_ARRIVAL": "HOUSE_LEVEL_AND_UPPER_PLATFORM",
+      "PARAPETS": "STAIR_BOUNDS_PLUS_HUMAN_PASS_044_PLATFORM_EDGE_PROTECTION",
+      "VOID_01": "FIRST_CLASS_MAJOR_NEGATIVE_SPACE_OPEN_TO_GROUND",
+      "VOID_BOUNDARIES": "MASONRY_X_LOW / OPEN_X_HIGH / OPEN_Y_LOW / OPEN_Y_HIGH_BELOW_ARRIVAL / GROUND / PLATFORM_CEILING",
+      "UPPER_SOLIDS": "TWO_BOUNDARY_SUPPORT_WALLS_PLUS_PLATFORM_NOT_SOLID_BLOCK",
+      "HOUSE_INTERFACE": "RUN_02_REACHES_HOUSE_LEVEL_FINAL_CONNECTION_DEFERRED",
+      "TIMBER_TERRACE_INTERFACE": "ADJACENT_HIGH_LEVEL_INTERFACE_PLAN_REFINABLE"
+    },
+    "coarse_lego_geometry": {
+      "preserved_human_placement": {
+        "rearward_translation_y_studs": 10,
+        "stair_lateral_translation_x_studs": 9
+      },
+      "levels": {
+        "ground": 0,
+        "turn": 24,
+        "house_level": 49,
+        "future_timber_interface": 45
+      },
+      "upper_system_envelope": {
+        "x": [
+          7,
+          23
+        ],
+        "y": [
+          54,
+          72
+        ],
+        "z": [
+          0,
+          49
+        ]
+      },
+      "VOID_01": {
+        "x": [
+          16,
+          23
+        ],
+        "y": [
+          55,
+          71
+        ],
+        "z": [
+          0,
+          48
+        ],
+        "open_to_ground": true,
+        "upper_boundary_z": 48
+      },
+      "stair_run_01": {
+        "x": [
+          9,
+          16
+        ],
+        "y": [
+          85,
+          93
+        ],
+        "z": [
+          0,
+          24
+        ]
+      },
+      "turn_landing": {
+        "x": [
+          16,
+          24
+        ],
+        "y": [
+          85,
+          93
+        ],
+        "z": 24
+      },
+      "stair_run_02": {
+        "x": [
+          16,
+          24
+        ],
+        "y": [
+          72,
+          85
+        ],
+        "z": [
+          24,
+          49
+        ]
+      }
+    },
+    "old_047_geometry": {
+      "reused": [
+        "two-run circulation raster",
+        "rearward human-approved placement",
+        "stair lateral human-approved placement",
+        "continuous coarse stair parapets",
+        "HUMAN-PASS 044 platform-edge protection",
+        "global levels 0 -> 24 -> 49"
+      ],
+      "removed_or_rebuilt": [
+        "solid-block-like main masonry envelope",
+        "x-strong local opening jamb/lintel construction",
+        "front lower false-opening closure patch",
+        "rear local opening wall/lintel patch",
+        "full X23 wall strip under upper platform",
+        "old interpretation of lower negative space as a local opening problem"
+      ]
+    },
+    "semantic_requirements": [
+      "CIRCULATION_HAS_TWO_RUNS",
+      "TURN_LANDING_EXISTS",
+      "CIRCULATION_REACHES_HOUSE_LEVEL",
+      "MAJOR_VOID_EXISTS",
+      "MAJOR_VOID_OPEN_TO_GROUND",
+      "MAJOR_VOID_HAS_UPPER_BOUNDARY",
+      "MAJOR_VOID_VOLUME_IS_UNOCCUPIED",
+      "MAJOR_VOID_IS_NOT_LOCAL_WINDOW",
+      "VOID_AND_STAIR_SHARE_ARCHITECTURAL_SYSTEM",
+      "SUBSYSTEM_CONFIDENCE_SEPARATED",
+      "HUMAN_VALIDATED_POSITION_PRESERVED",
+      "HUMAN_VALIDATED_RAILING_PRESERVED",
+      "NO_SOLID_COLLISION",
+      "ALL_REQUIRED_SOLIDS_SUPPORTED"
+    ],
+    "caveats": [
+      "VOID_01 exact metric depth remains refinable.",
+      "Timber terrace plan interface remains refinable and is not built in MODULE003.",
+      "Coarse tread counts are constructive quantization, not measured architectural truth."
+    ]
   }
 }
