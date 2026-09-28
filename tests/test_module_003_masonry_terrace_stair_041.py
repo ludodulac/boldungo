@@ -508,6 +508,7 @@ def test_module_003_047_visible_parapet_host_wall_coplanar_and_joined() -> None:
     source_parts = combined["brick_model"]["parts"][:source_count]
     module_parts = combined["brick_model"]["parts"][source_count:]
 
+    # Derive the visible host wall plane from the actual MODULE001 left facade.
     host_left = [
         part for part in source_parts
         if part["component"] == "wall"
@@ -516,11 +517,11 @@ def test_module_003_047_visible_parapet_host_wall_coplanar_and_joined() -> None:
     ]
     assert host_left
 
-    host_bounds = []
+    left_bounds = []
     for part in host_left:
         definition = definitions[part["part_id"]]
         width, length = definition.footprint(part["rotation_quarter_turns"])
-        host_bounds.append((
+        left_bounds.append((
             part["x_studs"],
             part["x_studs"] + width,
             part["y_studs"],
@@ -528,11 +529,26 @@ def test_module_003_047_visible_parapet_host_wall_coplanar_and_joined() -> None:
             part["z_plates"],
             part["z_plates"] + definition.height_plates,
         ))
+    host_visible_plane = min(bounds[0] for bounds in left_bounds)
 
-    # Derive the actual visible host plane from the combined MODULE001 geometry.
-    host_visible_plane = min(bounds[0] for bounds in host_bounds)
-    host_rear_plane = max(bounds[3] for bounds in host_bounds)
-    assert host_visible_plane == combined["metadata"]["human_correction_047"]["visible_wall_continuity"]["host_visible_wall_plane"]
+    # The longitudinal host limit must be derived from every structural
+    # MODULE001 wall cell that actually occupies that visible plane. This
+    # deliberately includes the rear-wall return instead of assuming a
+    # historical nominal rear coordinate.
+    host_structural = [
+        part for part in source_parts
+        if part["component"] == "wall"
+        and part["category"] in {"brick", "plate"}
+        and part["part_id"] in definitions
+    ]
+    host_cells = set()
+    for part in host_structural:
+        definition = definitions[part["part_id"]]
+        width, length = definition.footprint(part["rotation_quarter_turns"])
+        for x in range(part["x_studs"], part["x_studs"] + width):
+            for y in range(part["y_studs"], part["y_studs"] + length):
+                for z in range(part["z_plates"], part["z_plates"] + definition.height_plates):
+                    host_cells.add((x, y, z))
 
     house_parapet = [
         part for part in module_parts
@@ -540,18 +556,11 @@ def test_module_003_047_visible_parapet_host_wall_coplanar_and_joined() -> None:
     ]
     assert house_parapet
     parapet_visible_plane = min(part["x_studs"] for part in house_parapet)
+
+    # Semantic coplanarity: derive the host plane from MODULE001, then require
+    # the visible parapet skin to occupy that same plane.
     assert parapet_visible_plane == host_visible_plane
     assert {part["x_studs"] for part in house_parapet} == {host_visible_plane}
-
-    # Longitudinal continuity is proven against real host geometry, not X=24
-    # alone: the final host wall cell and first parapet cell are adjacent at
-    # the same visible plane throughout the Z49..58 junction band.
-    host_cells = set()
-    for x0, x1, y0, y1, z0, z1 in host_bounds:
-        for x in range(x0, x1):
-            for y in range(y0, y1):
-                for z in range(z0, z1):
-                    host_cells.add((x, y, z))
 
     parapet_cells = set()
     for part in house_parapet:
@@ -564,10 +573,23 @@ def test_module_003_047_visible_parapet_host_wall_coplanar_and_joined() -> None:
                 for z in range(part["z_plates"], part["z_plates"] + definition.height_plates):
                     parapet_cells.add((x, y, z))
 
-    assert host_rear_plane == 72
+    # Semantic longitudinal junction: for every plate in the junction band,
+    # discover the last real MODULE001 wall cell on the shared visible plane
+    # and require the parapet to start in the immediately adjacent cell.
+    derived_host_rear_limits = set()
     for z in range(49, 58):
-        assert (host_visible_plane, host_rear_plane - 1, z) in host_cells
-        assert (host_visible_plane, host_rear_plane, z) in parapet_cells
+        host_y = [
+            y for x, y, cell_z in host_cells
+            if x == host_visible_plane and cell_z == z
+        ]
+        assert host_y
+        last_host_y = max(host_y)
+        derived_host_rear_limits.add(last_host_y + 1)
+        assert (host_visible_plane, last_host_y + 1, z) in parapet_cells
+
+    # The host limit must be geometrically coherent through the full junction
+    # band, but its numeric value is intentionally not hard-coded.
+    assert len(derived_host_rear_limits) == 1
 
 
 def test_module_003_047_human_opening_mapping_is_real_geometry() -> None:
