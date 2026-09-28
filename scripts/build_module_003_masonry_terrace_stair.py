@@ -325,6 +325,16 @@ def _build_module_003() -> list[dict]:
     # 052: keep the real local break but remove the exaggerated 051 height
     # jump. Only the two cells nearest RUN_02 are raised: Z39 then Z36,
     # tapering immediately back to the unchanged landing parapet top Z33.
+    # 055: close the unintended one-stud vertical slit between the house-side
+    # RUN_02 parapet (ending at local Y74) and the longitudinal landing rail
+    # (starting at local Y76). Fill only local Y75 from the landing walking
+    # surface Z24 to Z39, preserving the accepted one-plate top irregularity
+    # against the nearest RUN_02 parapet top Z40.
+    _stack_1x1(
+        14, 75, 24, 39,
+        "stair-landing-parapet-gap-bridge",
+    )
+
     _stack_1x1(
         14, 76, 33, 39,
         "stair-landing-parapet-local-transition",
@@ -451,7 +461,7 @@ def main() -> None:
 
     metadata = {
         "module_id": MODULE_ID,
-        "mission": "BOLDUNGO-BASE-PHOTOS-BLIND-LEARNING-AND-MODULE003-REFINEMENT-054",
+        "mission": "BOLDUNGO-055-MODULE003-LOCAL-PARAPET-GAP",
         "source_evidence": "docs/evidence/module-003-masonry-terrace-stair-041.json",
         "structure_type": "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR",
         "host_house_left_plane_x": HOUSE_LEFT_PLANE_X,
@@ -494,6 +504,18 @@ def main() -> None:
                 "photo_status": "NOT_OBSERVABLE",
                 "rule": "NO-UNSUPPORTED-DEPTH-CHANGE",
                 "exterior_face": "COPLANAR_ACROSS_FLOOR_BOUNDARY",
+            },
+        },
+        "human_refinement_055": {
+            "parapet_landing_junction": {
+                "cause": "MISSING_ONE_STUD_BRIDGE_SEGMENT_BETWEEN_RUN_AND_LANDING",
+                "gap_before_world": {"x": 23, "y": 85, "z": [24, 39]},
+                "gap_height_plates": 15,
+                "bridge_world": {"x": 23, "y": 85, "z": [24, 39]},
+                "nearest_run_parapet_top_z": 40,
+                "bridge_top_z": 39,
+                "accepted_local_top_irregularity_plates": 1,
+                "other_geometry_changed": False,
             },
         },
         "human_refinement_052": {
