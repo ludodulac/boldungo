@@ -1,0 +1,72 @@
+{
+  "schema_version": "0.1",
+  "mission": "BOLDUNGO-061-MODULE004-COARSE-LEGO",
+  "module_id": "MODULE_004_WOOD_TERRACE",
+  "analysis_source": "BOLDUNGO-060-MODULE004-BLIND-WOOD-TERRACE-RECONSTRUCTION",
+  "source_policy": {
+    "photo_count": 5,
+    "analysis_status": "ACCEPTED",
+    "construction_rule": "TRANSLATE_SURVIVING_MODEL_060_WITHOUT_NEW_PHOTO_ANALYSIS"
+  },
+  "surviving_model_060": {
+    "target": "WOOD_TERRACE",
+    "ready_for_coarse_lego": true,
+    "observed": [
+      "ELEVATED_HORIZONTAL_WOOD_PLATFORM",
+      "PRIMARY_UNDERSPACE_OPEN",
+      "FRONT_RAILING",
+      "RIGHT_RAILING",
+      "FRONT_EDGE_BEAM",
+      "RIGHT_EDGE_BEAM",
+      "AT_LEAST_ONE_FRONT_VERTICAL_SUPPORT",
+      "DIAGONAL_BRACING_VISIBLE",
+      "HOUSE_ADJACENCY"
+    ],
+    "inferred": [
+      "COARSE_RECTANGULAR_FOOTPRINT",
+      "REAR_EDGE_ADJACENT_TO_HOUSE",
+      "HIGH_LEVEL_ADJACENCY_TO_MODULE003"
+    ],
+    "not_observable": [
+      "EXACT_METRIC_DIMENSIONS",
+      "EXACT_HOUSE_ATTACHMENT_MECHANISM",
+      "EXACT_SUPPORT_COUNT",
+      "EXACT_MODULE003_CONNECTION_DETAIL",
+      "EXACT_DECK_BOARD_LAYOUT"
+    ]
+  },
+  "coarse_constructive_choices_061": {
+    "metric_status": "COARSE_REFINABLE",
+    "footprint_world": {
+      "x": [24, 56],
+      "y": [72, 88]
+    },
+    "footprint_ratio": "2_TO_1",
+    "house_rear_plane_y": 72,
+    "deck_walking_top_z": 49,
+    "level_interpretation": "COARSE_EQUAL_LEVEL_PROXY_TO_MODULE003_UPPER_LEVEL_NOT_PHOTOGRAPHIC_METRIC_TRUTH",
+    "module003_adjacency_plane_x": 24,
+    "front_edge_y": 87,
+    "right_edge_x": 55,
+    "observed_front_post_proxy": {
+      "x": 40,
+      "y": 87,
+      "z": [0, 45],
+      "status": "OBSERVED_SUPPORT_TRANSLATED_COARSELY"
+    },
+    "diagonal_braces": {
+      "photo_status": "OBSERVED",
+      "lego_status": "NOT_TRANSLATED_IN_061",
+      "reason": "NO_HONEST_SLENDER_DIAGONAL_PRIMITIVE_IN_CURRENT_COARSE_ORTHOGONAL_TRANSLATION"
+    },
+    "constructive_supports_added": []
+  },
+  "semantic_requirements": [
+    "WOOD_TERRACE_PRIMARY_UNDERSPACE_REMAINS_OPEN",
+    "WOOD_TERRACE_REMAINS_STRUCTURALLY_DISTINCT_FROM_MASONRY_MODULE003",
+    "HOUSE_EDGE_HAS_NO_AUTOMATIC_RAILING",
+    "OBSERVED_SUPPORTS_ARE_NOT_CONFUSED_WITH_CONSTRUCTIVE_SUPPORTS",
+    "FRONT_AND_RIGHT_RAILING_SIGNATURE_EXISTS",
+    "MODULE001_MODULE002_MODULE003_SOURCE_PARTS_UNCHANGED"
+  ]
+}
