@@ -1046,5 +1046,96 @@
       "MODULE_004": "NOT_STARTED",
       "viewer": "UNCHANGED"
     }
+  },
+  "base_photo_blind_learning_054": {
+    "mission": "BOLDUNGO-BASE-PHOTOS-BLIND-LEARNING-AND-MODULE003-REFINEMENT-054",
+    "protocol": {
+      "input": "EXACTLY_5_BASE_PHOTOS_INITIAL_HOUSE_SET",
+      "forbidden": [
+        "LEGO_MODEL",
+        "VIEWER_CAPTURE",
+        "HUMAN_ANNOTATION",
+        "052_CORRECTION",
+        "EXTRA_CLOSEUP_PHOTOS"
+      ]
+    },
+    "blind_results": {
+      "two_run_circulation": "RECOVERED",
+      "turning_landing": "PROBABLE",
+      "preferred_turn": "APPROXIMATELY_180_DEGREES",
+      "major_platform_void": "RECOVERED",
+      "wood_terrace_void": "RECOVERED_DISTINCT",
+      "open_void_under_first_run": "NOT_RECOVERED",
+      "lower_run_visible_steps": "REGULAR",
+      "upper_run_exact_step_count": "NOT_OBSERVABLE",
+      "upper_run_constraint": "USE_OBSERVED_LOWER_RUN_FAMILY",
+      "local_platform_depth_detail": "NOT_CERTIFIABLE"
+    },
+    "local_refinements": {
+      "upper_run": {
+        "before_tread_tops": [
+          26,
+          28,
+          30,
+          32,
+          34,
+          36,
+          38,
+          40,
+          42,
+          44,
+          46,
+          48,
+          49
+        ],
+        "after_tread_tops": [
+          27,
+          27,
+          30,
+          30,
+          34,
+          34,
+          38,
+          38,
+          42,
+          42,
+          46,
+          46,
+          49
+        ],
+        "exact_count_claimed": false,
+        "property": "FAMILY_CONSISTENT_STEP_MODULE"
+      },
+      "stair_mass": {
+        "false_open_region": "UNDER_TURN_LANDING_OF_LOWER_STAIR_SYSTEM",
+        "action": "FILL_AS_MASONRY",
+        "major_platform_void": "UNCHANGED"
+      },
+      "platform_face": {
+        "action": "REMOVE_UNSUPPORTED_DEPTH_RECESS",
+        "rule": "NO-UNSUPPORTED-DEPTH-CHANGE",
+        "exterior_face": "COPLANAR_ACROSS_FLOOR_BOUNDARY"
+      }
+    },
+    "semantic_requirements": [
+      "UPPER_RUN_STEP_MODULE_MATCHES_OBSERVED_STAIR_FAMILY",
+      "UPPER_RUN_DOES_NOT_USE_UNJUSTIFIED_MICRO_STEPS",
+      "NO_UNOBSERVED_VOID_UNDER_STAIR",
+      "PLATFORM_VOID_REMAINS_DISTINCT_FROM_STAIR_MASS",
+      "MAJOR_PLATFORM_VOID_PRESERVED",
+      "MASONRY_PLATFORM_FACE_IS_COPLANAR_ACROSS_FLOOR_BOUNDARY",
+      "FLOOR_BOUNDARY_DOES_NOT_IMPLY_DEPTH_CHANGE"
+    ],
+    "preserved": [
+      "052 two-run circulation",
+      "052 turn landing",
+      "052 global levels",
+      "052 rearward and house-side position",
+      "052 major VOID_01",
+      "052 stair wall termination",
+      "052 parapet alignment and local break",
+      "MODULE001",
+      "MODULE002"
+    ]
   }
 }

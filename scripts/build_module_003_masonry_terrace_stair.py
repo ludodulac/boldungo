@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """Build MODULE_003_MASONRY_TERRACE_STAIR and the combined M001+M002+M003 bundle.
 
-Mission 052 locally refines the HUMAN-PASS 051 volumetric rebuild:
-- keep the two-run turning circulation and first-class major void,
-- make both stair runs read as solid masonry masses under their treads,
-- align the longitudinal run parapet with the turn-landing parapet,
-- reduce the landing parapet break to a small local irregularity,
-- terminate the stair-side wall at the major-void entrance so the void opens in depth,
-- keep the unobserved interior recess explicitly unknown.
+Mission 054 applies only blind-base-photo learnings to the HUMAN-PASS 052 geometry:
+- preserve the two-run circulation and first-class platform void,
+- regularize the hidden upper-run step family from the directly observed lower run,
+- remove the unsupported hollow under the lower stair/turn assembly,
+- remove an unsupported local platform depth recess by keeping the exterior face coplanar,
+- keep exact hidden step metrics and unobserved micro-depth details explicitly non-metric.
 
-The tread raster and local metrics remain prototype quantization, not metric truth.
+The hidden upper-run step count remains a constructive approximation, not an observed metric truth.
 """
 from __future__ import annotations
 
@@ -245,7 +244,10 @@ def _build_module_003() -> list[dict]:
     # boundary. The ceiling is carried without recreating a corridor wall:
     # two adjacent outer support spines stop at Z45 and short horizontal
     # carriers bridge to X16, entirely outside VOID_01 (which starts at X16).
-    _wall_line("y", 44, 62, 7, 45, "upper-system-outer-support-wall")
+    # 054 NO-UNSUPPORTED-DEPTH-CHANGE: keep the exterior masonry face
+    # coplanar through the floor/ceiling boundary. The outer support wall now
+    # reaches the platform underside instead of stepping inward for three plates.
+    _wall_line("y", 44, 62, 7, 48, "upper-system-outer-support-wall")
     _wall_line("y", 44, 62, 8, 45, "upper-system-inner-support-spine")
     _wall_line("y", 59, 62, 15, 45, "void-entry-sidewall")
 
@@ -296,6 +298,16 @@ def _build_module_003() -> list[dict]:
     for x in (7, 14):
         _wall_line("y", 75, 83, x, 23, "stair-landing-support")
 
+    # 054 POSITIVE-EVIDENCE-BEFORE-VOID: the five base photos do not establish
+    # an open void beneath the lower stair/turn assembly. Fill the interior
+    # under the turn landing as masonry mass. This is spatially separate from
+    # VOID_01 beneath the upper platform.
+    for y in range(75, 83):
+        _wall_line(
+            "x", 8, 14, y, 23,
+            "stair-landing-solid-mass",
+        )
+
     # Preserve the landing protection with entry from STAIR_RUN_01 and exit
     # toward STAIR_RUN_02 unobstructed.
     for z in (24, 27, 30):
@@ -322,9 +334,12 @@ def _build_module_003() -> list[dict]:
         "stair-landing-parapet-local-transition",
     )
 
-    # STAIR_RUN_02: distinct second run, changing direction at the landing and
-    # rising toward the house / upper arrival level Z49.
-    upper_levels = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49]
+    # STAIR_RUN_02: preserve the 052 path, width, start and arrival, but
+    # constrain the hidden step rhythm by the directly observed lower-run family.
+    # Consecutive equal tops create broader constructive treads; the seven
+    # distinct rise levels use the same 3/4-plate riser family as RUN_01.
+    # This is a family-consistent approximation, not an observed exact count.
+    upper_levels = [27, 27, 30, 30, 34, 34, 38, 38, 42, 42, 46, 46, 49]
     upper_y = list(range(74, 61, -1))
     for y, top in zip(upper_y, upper_levels):
         _wall_line(
@@ -436,7 +451,7 @@ def main() -> None:
 
     metadata = {
         "module_id": MODULE_ID,
-        "mission": "BOLDUNGO-MODULE-003-HUMAN-REFINEMENT-052",
+        "mission": "BOLDUNGO-BASE-PHOTOS-BLIND-LEARNING-AND-MODULE003-REFINEMENT-054",
         "source_evidence": "docs/evidence/module-003-masonry-terrace-stair-041.json",
         "structure_type": "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR",
         "host_house_left_plane_x": HOUSE_LEFT_PLANE_X,
@@ -449,6 +464,37 @@ def main() -> None:
             "CIRCULATION": "HIGH",
             "INTERFACES": "MEDIUM",
             "METRICS": "LOW",
+        },
+        "base_photo_blind_experiment_054": {
+            "source": "EXACTLY_5_BASE_PHOTOS_ONLY",
+            "two_run_circulation": "PHOTO_DEDUCIBLE",
+            "turning_landing": "PARTIALLY_DEDUCIBLE_PROBABLE",
+            "major_platform_void": "PHOTO_DEDUCIBLE",
+            "wood_terrace_void": "PHOTO_DEDUCIBLE_DISTINCT_IDENTITY",
+            "open_void_under_first_run": "NOT_DEMONSTRATED",
+            "lower_run_step_pattern": "PHOTO_DEDUCIBLE_REGULAR",
+            "upper_run_exact_step_count": "NOT_OBSERVABLE",
+            "upper_run_pattern_constraint": "OBSERVED_LOWER_RUN_FAMILY",
+            "local_platform_depth_change": "NOT_OBSERVABLE",
+        },
+        "human_refinement_054": {
+            "upper_run_step_family": {
+                "exact_count_observed": False,
+                "constraint_source": "LOWER_RUN_OBSERVED_PATTERN",
+                "lower_distinct_tread_tops": [3, 6, 9, 12, 16, 20, 24],
+                "upper_constructive_tread_tops": [27, 27, 30, 30, 34, 34, 38, 38, 42, 42, 46, 46, 49],
+                "upper_distinct_tread_tops": [27, 30, 34, 38, 42, 46, 49],
+            },
+            "false_stair_void": {
+                "status_before": "HOLLOW_UNDER_TURN_LANDING",
+                "status_after": "SOLID_MASONRY_MASS",
+                "platform_major_void_affected": False,
+            },
+            "platform_depth_recess": {
+                "photo_status": "NOT_OBSERVABLE",
+                "rule": "NO-UNSUPPORTED-DEPTH-CHANGE",
+                "exterior_face": "COPLANAR_ACROSS_FLOOR_BOUNDARY",
+            },
         },
         "human_refinement_052": {
             "stair_solid_mass": {
@@ -600,7 +646,8 @@ def main() -> None:
         ],
         "prototype_tread_tops": {
             "run_01": [3, 6, 9, 12, 16, 20, 24],
-            "run_02": [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49],
+            "run_02": [27, 27, 30, 30, 34, 34, 38, 38, 42, 42, 46, 46, 49],
+            "run_02_exact_count_status": "NOT_OBSERVABLE_CONSTRUCTIVE_APPROXIMATION",
         },
         "piece_counts": {
             "module_003": len(module_parts),
@@ -610,6 +657,18 @@ def main() -> None:
     }
 
     issues = [
+        {
+            "code": "UPPER_RUN_EXACT_STEP_COUNT_NOT_OBSERVABLE",
+            "severity": "info",
+            "object_id": MODULE_VOLUME_ID,
+            "message": "The five base photos do not expose the exact upper-run step count. Mission 054 constrains its constructive rhythm from the observed lower-run family without claiming an exact photographic metric.",
+        },
+        {
+            "code": "LOCAL_PLATFORM_DEPTH_DETAIL_NOT_OBSERVABLE",
+            "severity": "info",
+            "object_id": MODULE_VOLUME_ID,
+            "message": "No local depth change is introduced at the floor boundary without positive photographic evidence; the exterior masonry face remains coplanar.",
+        },
         {
             "code": "INTERIOR_RECESS_NOT_OBSERVABLE",
             "severity": "info",
