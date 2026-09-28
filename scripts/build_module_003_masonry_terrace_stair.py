@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Build MODULE_003_MASONRY_TERRACE_STAIR and the combined M001+M002+M003 bundle.
 
-Mission 041 keeps the photographic topology coarse and explicit:
-- one hollow masonry platform/support volume with a preserved lower void,
-- a two-run turning circulation path,
-- parapets significant to the silhouette,
-- a host contact plane and a future timber-deck interface.
+Mission 051 rebuilds MODULE003 from the validated architectural decomposition:
+- two-run turning circulation,
+- a first-class major architectural void open to ground,
+- upper platform/ceiling carried by explicit masonry boundary walls,
+- parapets and the HUMAN-PASS 044 platform-edge protection,
+- house and future timber-terrace interfaces kept separately refinable.
 
-The tread raster is prototype quantization, not a claim about real tread count.
+The tread raster and local metrics remain prototype quantization, not metric truth.
 """
 from __future__ import annotations
 
@@ -227,105 +228,75 @@ def _build_module_003() -> list[dict]:
     global parts, counter
     parts, counter = [], 0
 
-    # Hollow masonry support volume: three longitudinal support walls plus
-    # a rear wall with a deliberately preserved lower opening.
-    _wall_line("y", 44, 62, 7, 48, "main-outer-wall")
-
-    # 047 human correction: create the real opening on the x-strong face.
-    # The opening is a constructive approximation of the annotated region:
-    # after the frozen +10 Y shift it occupies Y57..65 and Z0..36 on the
-    # visible X24 plane.
+    # 051 FORM-BEFORE-PIECES rebuild.
     #
-    # 047B constructive segmentation: jambs stop at the opening head (Z36),
-    # one lintel course spans across the opening with one-stud bearing on each
-    # jamb, then the solid wall resumes above it. This preserves the exact
-    # functional VOID while eliminating same-volume jamb/lintel overlap.
-    _wall_line("y", 44, 47, 23, 36, "main-house-wall-front-jamb")
-    _wall_line("y", 55, 62, 23, 36, "main-house-wall-rear-jamb")
-    _tile_line(
-        "y", 44, 62, 23, 36, plate=False,
-        subcomponent="main-house-wall-opening-lintel",
-    )
-    for z in range(39, 48, 3):
-        _tile_line(
-            "y", 44, 62, 23, z, plate=False,
-            subcomponent="main-house-wall-upper-closure",
-        )
+    # The upper masonry system is no longer a rectangular solid with local
+    # openings cut into it. It is represented as two longitudinal masonry
+    # boundary walls carrying a horizontal upper platform. The full-height
+    # space on the x-strong side of the inner boundary wall is intentionally
+    # left empty from ground to the underside of the platform: this is VOID_01.
+    #
+    # Local coordinates below are translated rearward by the frozen +10 Y
+    # human-approved placement at the end of the build.
+    _wall_line("y", 44, 62, 7, 48, "upper-system-outer-support-wall")
+    _wall_line("y", 44, 62, 15, 48, "void-01-boundary-support-wall")
 
-    _wall_line("y", 44, 61, 15, 48, "main-internal-support")
-
-    # 044 human-detail correction: photographs P4/P5 support the large rear
-    # opening, not a second through-opening on the opposite/front lower face.
-    # Close that false face while keeping the covered lower bay hollow behind it.
-    for z in range(0, 48, 3):
-        _tile_line(
-            "x", 8, 15, 44, z, plate=False,
-            subcomponent="lower-false-opening-closure", facade="front",
-        )
-        _tile_line(
-            "x", 16, 23, 44, z, plate=False,
-            subcomponent="lower-false-opening-closure", facade="front",
-        )
-
-    for z in range(0, 36, 3):
-        _add("BRICK_1X6", 8, 61, z, 1, "rear-wall-left", "rear")
-        _add("BRICK_1X1", 14, 61, z, 0, "rear-wall-left", "rear")
-        _add("BRICK_1X1", 22, 61, z, 0, "rear-wall-right-pier", "rear")
-
-    # Lintel across the lower opening. The right 1x8 reaches the right pier,
-    # so every lintel course remains physically supported.
-    for z in range(36, 48, 3):
-        _add("BRICK_1X6", 8, 61, z, 1, "rear-lintel", "rear")
-        _add("BRICK_1X1", 14, 61, z, 0, "rear-lintel", "rear")
-        _add("BRICK_1X8", 15, 61, z, 1, "rear-lintel", "rear")
-
-    # Upper walking platform at top Z49.
+    # Upper platform / ceiling of VOID_01. Two 1x8 plates per row span X7..23.
+    # Each row is structurally supported by one of the two boundary walls.
+    # The old X23 vertical wall strip and local opening/lintel construction are
+    # deliberately absent: the negative space is the architectural primitive.
     for y in range(44, 62):
         _add("PLATE_1X8", 7, y, 48, 1, "upper-platform")
         _add("PLATE_1X8", 15, y, 48, 1, "upper-platform")
-        _add("PLATE_1X1", 23, y, 48, 0, "upper-platform")
 
-    # Significant masonry parapets only. 043 keeps the validated outer
-    # parapet but opens the former rear parapet at the stair/platform arrival.
-    for z in range(49, 61, 3):
-        _tile_line("y", 44, 62, 7, z, plate=False, subcomponent="platform-parapet-outer")
-
-    # 044: protect the exposed rear platform edge outside the stair arrival.
-    # X16..22 stays open for circulation; the X8..15 guard joins the existing
-    # outer parapet at X7 without restoring the obstructing 043 parapet.
+    # Outer platform parapet retained because it belongs to the established
+    # silhouette and does not contradict the first-class void.
     for z in range(49, 61, 3):
         _tile_line(
-            "x", 8, 16, 61, z, plate=False,
-            subcomponent="platform-edge-fall-protection", facade="rear",
+            "y", 44, 62, 7, z,
+            plate=False,
+            subcomponent="platform-parapet-outer",
         )
 
-    # Lower run: coarse seven-tread raster, low courtyard -> turn level Z24.
+    # HUMAN-PASS 044: preserve the exposed-edge protection exactly in its
+    # architectural role. The stair-arrival zone X16+ stays open.
+    for z in range(49, 61, 3):
+        _tile_line(
+            "x", 8, 16, 61, z,
+            plate=False,
+            subcomponent="platform-edge-fall-protection",
+            facade="rear",
+        )
+
+    # STAIR_RUN_01: coarse lower run from ground toward turn level Z24.
     lower_levels = [3, 6, 9, 12, 16, 20, 24]
     for x, top in enumerate(lower_levels):
         _add("PLATE_1X8", x, 75, top - 1, 0, "stair-lower-tread")
 
-    # Turning landing at Z24, supported by two sparse edge walls.
+    # TURN_LANDING: horizontal turning surface at Z24. Only the two side
+    # support walls are structural; the space beneath the landing is not
+    # artificially filled as part of the old 047 patch logic.
     for y in range(75, 83):
         _add("PLATE_1X8", 7, y, 23, 1, "stair-landing")
     for x in (7, 14):
         _wall_line("y", 75, 83, x, 23, "stair-landing-support")
 
-    # 047 human correction: the annotated false opening is the visible void
-    # under the turn landing on its y-low/front face. Fill only the interior
-    # span between the existing landing supports, up to the landing underside.
-    _wall_line(
-        "x", 8, 14, 75, 23,
-        "stair-false-opening-closure", facade="front",
-    )
-
-    # 043: add simple L-shaped protection to the first/turn landing while
-    # leaving its west entry from the lower run and north exit to the upper
-    # run completely open. Three brick courses match the coarse stair rails.
+    # Preserve the landing protection with entry from STAIR_RUN_01 and exit
+    # toward STAIR_RUN_02 unobstructed.
     for z in (24, 27, 30):
-        _tile_line("x", 7, 15, 82, z, plate=False, subcomponent="stair-first-landing-rail")
-        _tile_line("y", 76, 82, 14, z, plate=False, subcomponent="stair-first-landing-rail")
+        _tile_line(
+            "x", 7, 15, 82, z,
+            plate=False,
+            subcomponent="stair-first-landing-rail",
+        )
+        _tile_line(
+            "y", 76, 82, 14, z,
+            plate=False,
+            subcomponent="stair-first-landing-rail",
+        )
 
-    # Upper run: 13-tread coarse raster, turn level Z24 -> platform Z49.
+    # STAIR_RUN_02: distinct second run, changing direction at the landing and
+    # rising toward the house / upper arrival level Z49.
     upper_levels = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49]
     upper_y = list(range(74, 61, -1))
     for y, top in zip(upper_y, upper_levels):
@@ -340,14 +311,9 @@ def _build_module_003() -> list[dict]:
         (7, 14), "stair-upper-stringer",
     )
 
-    # 047: replace the crenellated 043/044 parapets instead of adding caps
-    # above them. The target upper envelope is a continuous chain of approved
-    # 45-degree 2x1 slopes, with a one-stud flat terminal at each arrival.
-    #
-    # Lower run target after transforms:
-    #   X9/Z24 -> X11/Z27 -> X13/Z30 -> X15/Z33, terminal X15..16/Z33.
-    # This intentionally raises the low end relative to the coarse tread raster
-    # so the visible top is continuous rather than a sequence of 3/4-plate peaks.
+    # Coarse parapet envelopes retained from the latest constructive refinement.
+    # Their form remains refinable, but they preserve continuous ascent rather
+    # than reintroducing the old crenellated silhouette.
     lower_body_tops = (24, 24, 27, 27, 30, 30, 33)
     for x, tread_top, body_top in zip(range(0, 7), lower_levels, lower_body_tops):
         for y in (75, 82):
@@ -362,20 +328,12 @@ def _build_module_003() -> list[dict]:
                 "stair-lower-parapet-smooth-cap",
             )
 
-    # Upper run target after transforms:
-    #   Y85/Z40 -> Y83/Z43 -> ... -> Y73/Z58, terminal Y72..73/Z58.
-    # Rotation 1 makes each wedge rise toward decreasing model Y, which is the
-    # actual ascent direction of the upper flight.
     upper_body_tops = (40, 40, 43, 43, 46, 46, 49, 49, 52, 52, 55, 55, 58)
     for y, tread_top, body_top in zip(upper_y, upper_levels, upper_body_tops):
         _stack_1x1(
             7, y, tread_top, body_top,
             "stair-upper-parapet-outer-body",
         )
-        # House-side visible parapet is local-only and moves from X23 to X24
-        # without moving the tread/stringer. facade_detail keeps the visible
-        # masonry geometry explicit without pretending the shifted skin is a
-        # new grounded wall support chain.
         _stack_1x1(
             15, y, tread_top, body_top,
             "stair-upper-parapet-house-body",
@@ -391,29 +349,22 @@ def _build_module_003() -> list[dict]:
                 "BRICK_SLOPED_45_2X1", x, y, z, 1, role,
             )
 
-    # Minimal stud/tube bridges joining the lower run to the turn and the upper
-    # run to the masonry platform. They are not architectural tread claims.
+    # Minimal constructive bridges keep circulation continuous without claiming
+    # exact photographic tread dimensions.
     _add("PLATE_1X2", 6, 76, 24, 1, "stair-turn-bridge")
     _add("PLATE_1X2", 8, 61, 49, 0, "stair-platform-bridge")
 
-    # 042 human-gate correction: preserve the complete 041 topology and move
-    # MODULE 003 rearward as one rigid local assembly. The +10-stud shift is
-    # the smallest integer translation that moves the nearest upper-run cell
-    # from Y62 to the host rear plane Y72, eliminating shared house-depth
-    # projection without changing any X/Z geometry, tread raster or void.
+    # Preserve the human-approved rearward placement of the MODULE003 system.
     for part in parts:
         part["y_studs"] += MODULE_REARWARD_SHIFT
 
-    # 043 human-gate refinement: the masonry platform stays frozen. Move only
-    # the stair/landing circulation toward the house wall. The upper run was
-    # X7..15 with the house wall at X24, so +9 studs is the minimum integer
-    # translation that makes its outer edge meet X24 without crossing it.
+    # Preserve the human-approved lateral stair placement against the house.
+    # Only stair/landing circulation elements receive this local translation.
     for part in parts:
         if "-stair-" in part["placement_id"]:
             part["x_studs"] += STAIR_LATERAL_SHIFT
 
     return parts
-
 
 def _bom(volume_id: str, model_parts: list[dict]) -> dict:
     counts = Counter((part["part_id"], part["category"]) for part in model_parts)
@@ -459,77 +410,91 @@ def main() -> None:
 
     metadata = {
         "module_id": MODULE_ID,
-        "mission": "BOLDUNGO-MODULE-003-HUMAN-CORRECTION-IMPLEMENTATION-047",
+        "mission": "BOLDUNGO-MODULE-003-VOLUMETRIC-REBUILD-051",
         "source_evidence": "docs/evidence/module-003-masonry-terrace-stair-041.json",
-        "structure_type": "HOLLOW_MASONRY_PLATFORM_PLUS_TURNING_STAIR",
+        "structure_type": "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR",
         "host_house_left_plane_x": HOUSE_LEFT_PLANE_X,
         "host_house_rear_plane_y": HOUSE_REAR_PLANE_Y,
         "rearward_translation_studs": MODULE_REARWARD_SHIFT,
         "stair_lateral_translation_studs": STAIR_LATERAL_SHIFT,
-        "obstructing_rail_removed": "platform-parapet-rear",
-        "first_landing_rails": "L_SHAPED_ENTRY_EXIT_OPEN",
-        "human_detail_refinement_044": {
-            "platform_edge_fall_protection": {
+        "subsystem_confidence": {
+            "ENVELOPE": "HIGH",
+            "MAJOR_VOID": "HIGH",
+            "CIRCULATION": "HIGH",
+            "INTERFACES": "MEDIUM",
+            "METRICS": "LOW",
+        },
+        "normalized_decomposition": {
+            "STAIR_RUN_01": {
+                "relation": "GROUND_TO_TURN_LANDING",
+                "orientation": "+X",
+                "level": [0, 24],
+                "metrics": "COARSE_REFINABLE",
+            },
+            "TURN_LANDING": {
+                "relation": "CONNECTS_RUN_01_TO_RUN_02_WITH_DIRECTION_CHANGE",
+                "level": 24,
+                "metrics": "COARSE_REFINABLE",
+            },
+            "STAIR_RUN_02": {
+                "relation": "TURN_LANDING_TO_HOUSE_LEVEL",
+                "orientation": "-Y",
+                "level": [24, 49],
+                "metrics": "COARSE_REFINABLE",
+            },
+            "UPPER_ARRIVAL": {
+                "relation": "RUN_02_TO_HOUSE_LEVEL_AND_UPPER_PLATFORM",
+                "level": 49,
+            },
+            "PARAPETS": {
+                "relation": "BOUND_STAIR_AND_PROTECT_EXPOSED_PLATFORM_EDGE",
+                "detail": "REFINABLE",
+            },
+            "VOID_01": {
+                "relation": "FIRST_CLASS_MAJOR_NEGATIVE_SPACE_UNDER_UPPER_PLATFORM",
+                "open_to_ground": True,
+                "upper_boundary_z": 48,
+                "depth_status": "COARSE_CONFIRMED_EXACT_METRIC_REFINABLE",
+            },
+            "VOID_BOUNDARIES": {
+                "x_low": "MASONRY_SUPPORT_WALL_AT_X15",
+                "x_high": "OPEN",
+                "y_low": "OPEN",
+                "y_high": "OPEN_BELOW_UPPER_ARRIVAL_ZONE",
+                "z_low": "GROUND_Z0",
+                "z_high": "UPPER_PLATFORM_UNDERSIDE_Z48",
+            },
+            "UPPER_SOLIDS": {
+                "relation": "TWO_MASONRY_BOUNDARY_WALLS_PLUS_HORIZONTAL_PLATFORM",
+                "not_a_solid_block": True,
+            },
+            "HOUSE_INTERFACE": {
+                "relation": "RUN_02_REACHES_HOUSE_LEVEL",
+                "detail": "FINAL_LEGO_CONNECTION_DEFERRED",
+            },
+            "TIMBER_TERRACE_INTERFACE": {
+                "relation": "ADJACENT_FUTURE_HIGH_LEVEL_SYSTEM",
+                "detail": "PLAN_SPAN_UNRESOLVED_REFINABLE",
+            },
+        },
+        "preserved_human_constraints": {
+            "general_stair_recognition": "PRESERVED",
+            "rearward_position": {
+                "status": "PRESERVED",
+                "translation_y_studs": MODULE_REARWARD_SHIFT,
+            },
+            "stair_house_proximity": {
+                "status": "PRESERVED",
+                "translation_x_studs": STAIR_LATERAL_SHIFT,
+            },
+            "platform_edge_protection_044": {
+                "status": "HUMAN_PASS_PRESERVED",
                 "rear_edge_x": [8, 16],
                 "y": 71,
                 "z": [49, 61],
                 "stair_arrival_open_x": [16, 23],
             },
-            "status": "HUMAN_PASS_ONLY_FOR_CORRECTION_1",
-        },
-        "human_correction_047": {
-            "opening_mapping": {
-                "human_false_region": {
-                    "relation": "VOID_TO_SOLID",
-                    "face": "Y_LOW_FRONT_OF_TURN_LANDING",
-                    "x": [17, 23], "y": 85, "z": [0, 23],
-                },
-                "human_real_region": {
-                    "relation": "SOLID_TO_VOID",
-                    "face": "X_STRONG_RIGHT_FACE_OF_MAIN_MASONRY",
-                    "visible_plane_x": 24,
-                    "wall_cell_x": 23,
-                    "y": [57, 65], "z": [0, 36],
-                },
-                "rear_opening_is_distinct": {
-                    "face": "Y_HIGH_REAR",
-                    "x": [15, 22], "y": 71, "z": [0, 36],
-                },
-            },
-            "parapet_target_envelope": {
-                "lower": {
-                    "axis": "+X",
-                    "rails_y": [85, 92],
-                    "segments": [
-                        {"from": [9, 24], "to": [11, 27]},
-                        {"from": [11, 27], "to": [13, 30]},
-                        {"from": [13, 30], "to": [15, 33]},
-                    ],
-                    "terminal": {"x": [15, 16], "z": 33},
-                },
-                "upper": {
-                    "axis": "-Y",
-                    "rails_x": [16, 24],
-                    "segments": [
-                        {"from": [85, 40], "to": [83, 43]},
-                        {"from": [83, 43], "to": [81, 46]},
-                        {"from": [81, 46], "to": [79, 49]},
-                        {"from": [79, 49], "to": [77, 52]},
-                        {"from": [77, 52], "to": [75, 55]},
-                        {"from": [75, 55], "to": [73, 58]},
-                    ],
-                    "terminal": {"y": [72, 73], "z": 58},
-                },
-                "catalog_approximation": "CONTINUOUS_APPROVED_45_DEGREE_SEGMENTS",
-                "target_error_plates": 0,
-            },
-            "visible_wall_continuity": {
-                "host_visible_wall_plane": 24,
-                "parapet_visible_outer_plane_before": 23,
-                "parapet_visible_outer_plane_after": 24,
-                "house_side_parapet_x": 24,
-                "junction_y": 72,
-            },
+            "global_levels": "PRESERVED",
         },
         "level_model": {
             "ground_low_level_z": 0,
@@ -538,32 +503,45 @@ def main() -> None:
             "future_wood_terrace_interface_z": 45,
         },
         "geometry": {
-            "main_masonry_envelope": {"x": [7, 24], "y": [54, 72], "z": [0, 49]},
-            "upper_platform": {"x": [7, 24], "y": [54, 72], "walking_top_z": 49},
-            "lower_void": {"x": [16, 23], "y": [55, 71], "z": [0, 36]},
-            "stair_lower": {"x": [9, 16], "y": [85, 93], "z": [0, 24]},
+            "upper_system_envelope": {"x": [7, 23], "y": [54, 72], "z": [0, 49]},
+            "upper_platform": {"x": [7, 23], "y": [54, 72], "walking_top_z": 49},
+            "void_01": {
+                "x": [16, 23],
+                "y": [55, 71],
+                "z": [0, 48],
+                "open_to_ground": True,
+                "upper_boundary_z": 48,
+                "classification": "MAJOR_ARCHITECTURAL_VOID",
+            },
+            "stair_run_01": {"x": [9, 16], "y": [85, 93], "z": [0, 24]},
             "turn_landing": {"x": [16, 24], "y": [85, 93], "walking_top_z": 24},
-            "stair_upper": {"x": [16, 24], "y": [72, 85], "z": [24, 49]},
+            "stair_run_02": {"x": [16, 24], "y": [72, 85], "z": [24, 49]},
+            "upper_arrival": {"house_plane_x": 24, "walking_top_z": 49},
         },
         "interfaces": {
-            "TO_HOUSE": {"plane_x": 24, "y": [54, 72], "z_top": 49, "final_lego_connection": "DEFERRED"},
+            "TO_HOUSE": {
+                "plane_x": 24,
+                "z_top": 49,
+                "final_lego_connection": "DEFERRED",
+            },
             "TO_GROUND": {"z": 0},
             "TO_FUTURE_WOOD_TERRACE": {
                 "walking_level_z": 45,
-                "relation": "ONE_STEP_BELOW_MASONRY_PLATFORM",
+                "relation": "ADJACENT_HIGH_LEVEL_INTERFACE",
                 "plan_span": "UNRESOLVED_REFINABLE",
             },
         },
         "circulation_path": [
-            "LOW_Z0",
-            "LOWER_RUN_TO_Z24",
+            "GROUND_Z0",
+            "STAIR_RUN_01_TO_Z24",
             "TURN_LANDING_Z24",
-            "UPPER_RUN_TO_Z49",
-            "UPPER_PLATFORM_Z49",
+            "DIRECTION_CHANGE",
+            "STAIR_RUN_02_TO_Z49",
+            "HOUSE_LEVEL_Z49",
         ],
         "prototype_tread_tops": {
-            "lower": [3, 6, 9, 12, 16, 20, 24],
-            "upper": [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49],
+            "run_01": [3, 6, 9, 12, 16, 20, 24],
+            "run_02": [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49],
         },
         "piece_counts": {
             "module_003": len(module_parts),
@@ -574,22 +552,28 @@ def main() -> None:
 
     issues = [
         {
-            "code": "MODULE_003_LOCAL_METRICS_REFINABLE",
+            "code": "MODULE_003_051_METRICS_REFINABLE",
             "severity": "info",
             "object_id": MODULE_VOLUME_ID,
-            "message": "041 topology, 042 rearward position, 043 stair placement and the HUMAN-PASS 044 platform-edge guard are preserved. 047 closes the annotated turn-landing void, creates a distinct x-strong opening in the main masonry, replaces the crenellated parapet top with continuous approved slope chains, and moves only the visible house-side parapet skin to the host wall plane.",
+            "message": "051 rebuilds MODULE003 from the validated two-run circulation and first-class major void. Envelope and major-void topology are high confidence; local metrics and fine interfaces remain refinable.",
+        },
+        {
+            "code": "VOID_01_DEPTH_METRIC_REFINABLE",
+            "severity": "info",
+            "object_id": MODULE_VOLUME_ID,
+            "message": "VOID_01 is architecturally established as a large ground-open negative space with an upper boundary. Its exact metric depth remains refinable.",
         },
         {
             "code": "WOOD_TERRACE_INTERFACE_PLAN_UNRESOLVED",
             "severity": "info",
             "object_id": MODULE_VOLUME_ID,
-            "message": "The future timber terrace is not built in MODULE 003; only its lower walking-level interface is reserved.",
+            "message": "The future timber terrace is not built in MODULE003; only the high-level interface remains reserved.",
         },
         {
             "code": "DIRECT_VIEWER_OPENING_UX_NEEDS_FUTURE_FIX",
             "severity": "info",
             "object_id": COMBINED_VOLUME_ID,
-            "message": "Known human-gate viewer opening UX debt is recorded but intentionally not addressed in mission 041.",
+            "message": "Known viewer-opening UX debt is recorded but intentionally not addressed in mission 051.",
         },
     ]
 
@@ -652,7 +636,7 @@ def main() -> None:
         "combined_piece_count": len(combined_parts),
         "upper_platform_z": 49,
         "intermediate_turn_z": 24,
-        "lower_void": [16, 23, 55, 71, 0, 36],
+        "void_01": [16, 23, 55, 71, 0, 48],
     }, sort_keys=True))
 
 
