@@ -6,7 +6,7 @@ from pathlib import Path
 from brickhouse.bricks.bom import BillOfMaterials
 from brickhouse.bricks.brick_model import BrickModel
 from brickhouse.bricks.catalog import standard_orthogonal_definitions
-from brickhouse.bricks.orthogonal_geometry import orthogonal_bounds, orthogonal_collisions
+from brickhouse.bricks.orthogonal_geometry import OrthogonalBounds, orthogonal_bounds, orthogonal_collisions
 from brickhouse.bricks.piece_capabilities import (
     PieceCapabilityStage,
     create_current_engine_capability_registry,
@@ -46,6 +46,29 @@ def cells_for(model: BrickModel) -> set[tuple[int, int, int]]:
 
 def parts_with(fragment: str, parts: list) -> list:
     return [part for part in parts if fragment in part.placement_id]
+
+
+def visible_orthogonal_bounds(part) -> OrthogonalBounds | None:
+    """Geometric bounds for an orthogonal visible shape regardless of support domain.
+
+    orthogonal_bounds() deliberately excludes facade_detail because that helper
+    belongs to structural collision/support auditing. 052 parapet alignment is
+    a visible-envelope requirement, so derive the same physical footprint from
+    the canonical orthogonal part definition without reclassifying the part.
+    """
+    definition = standard_orthogonal_definitions().get(part.part_id)
+    if definition is None:
+        return None
+    width, length = definition.footprint(part.rotation_quarter_turns)
+    return OrthogonalBounds(
+        placement_id=part.placement_id,
+        x0=part.x_studs,
+        x1=part.x_studs + width,
+        y0=part.y_studs,
+        y1=part.y_studs + length,
+        z0=part.z_plates,
+        z1=part.z_plates + definition.height_plates,
+    )
 
 
 def test_051_scope_source_unchanged_and_confidence_separated() -> None:
@@ -395,9 +418,9 @@ def test_052_run_parapet_aligns_with_landing_and_break_remains_local() -> None:
     transition = parts_with("stair-landing-parapet-local-transition", parts)
     assert run_house and landing and transition
 
-    run_bounds = [orthogonal_bounds(part) for part in run_house]
-    landing_bounds = [orthogonal_bounds(part) for part in landing]
-    transition_bounds = [orthogonal_bounds(part) for part in transition]
+    run_bounds = [visible_orthogonal_bounds(part) for part in run_house]
+    landing_bounds = [visible_orthogonal_bounds(part) for part in landing]
+    transition_bounds = [visible_orthogonal_bounds(part) for part in transition]
     assert all(bound is not None for bound in [*run_bounds, *landing_bounds, *transition_bounds])
 
     # RUN_PARAPET_ALIGNS_WITH_LANDING_PARAPET:
