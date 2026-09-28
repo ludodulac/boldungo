@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Build MODULE_003_MASONRY_TERRACE_STAIR and the combined M001+M002+M003 bundle.
 
-Mission 054 applies only blind-base-photo learnings to the HUMAN-PASS 052 geometry:
-- preserve the two-run circulation and first-class platform void,
-- regularize the hidden upper-run step family from the directly observed lower run,
-- remove the unsupported hollow under the lower stair/turn assembly,
-- remove an unsupported local platform depth recess by keeping the exterior face coplanar,
-- keep exact hidden step metrics and unobserved micro-depth details explicitly non-metric.
+Mission 057 applies the canonized architectural upper-profile continuity rule
+to the HUMAN-PASS 055 geometry:
+- preserve mass continuity at the RUN_02 / landing junction,
+- preserve the existing run, landing, platform, void and global levels,
+- keep the one-plate constructive quantization at the junction,
+- extend the established landing parapet top horizontally instead of tapering it
+  through an unsupported local truncation.
 
-The hidden upper-run step count remains a constructive approximation, not an observed metric truth.
+Exact photographic LEGO height remains non-metric; only the profile topology is protected.
 """
 from __future__ import annotations
 
@@ -344,6 +345,25 @@ def _build_module_003() -> list[dict]:
         "stair-landing-parapet-local-transition",
     )
 
+    # 057 ARCHITECTURAL-UPPER-PROFILE-CONTINUITY:
+    # 055 proved material continuity, but the visible top still tapered
+    # 39 -> 36 -> 33 across a landing that is geometrically horizontal.
+    # Fill only the missing cells above that existing longitudinal parapet so
+    # its top remains horizontal at the already-established Z39 junction level.
+    # This does not claim Z39 as photographic metric truth; it preserves the
+    # inferred slope -> junction -> horizontal profile topology while retaining
+    # the one-plate constructive residual to RUN_02's nearest top Z40.
+    _tile_line(
+        "y", 77, 82, 14, 36,
+        plate=False,
+        subcomponent="stair-landing-parapet-profile-continuation",
+    )
+    _tile_line(
+        "y", 78, 82, 14, 33,
+        plate=False,
+        subcomponent="stair-landing-parapet-profile-continuation",
+    )
+
     # STAIR_RUN_02: preserve the 052 path, width, start and arrival, but
     # constrain the hidden step rhythm by the directly observed lower-run family.
     # Consecutive equal tops create broader constructive treads; the seven
@@ -461,7 +481,7 @@ def main() -> None:
 
     metadata = {
         "module_id": MODULE_ID,
-        "mission": "BOLDUNGO-055-MODULE003-LOCAL-PARAPET-GAP",
+        "mission": "BOLDUNGO-057-PARAPET-PROFILE-CANONIZE-AND-APPLY",
         "source_evidence": "docs/evidence/module-003-masonry-terrace-stair-041.json",
         "structure_type": "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR",
         "host_house_left_plane_x": HOUSE_LEFT_PLANE_X,
@@ -505,6 +525,21 @@ def main() -> None:
                 "rule": "NO-UNSUPPORTED-DEPTH-CHANGE",
                 "exterior_face": "COPLANAR_ACROSS_FLOOR_BOUNDARY",
             },
+        },
+        "human_refinement_057": {
+            "rule": "ARCHITECTURAL-UPPER-PROFILE-CONTINUITY",
+            "mass_vs_profile": "MASS_CONTINUITY != UPPER_PROFILE_CONTINUITY",
+            "photo_metric_status": "NOT_OBSERVABLE",
+            "profile_topology": "INCLINED_RUN_TO_JUNCTION_TO_HORIZONTAL_LANDING",
+            "geometry_action": "FILL_ONLY_MISSING_TOP_CELLS_ABOVE_EXISTING_LONGITUDINAL_LANDING_PARAPET",
+            "world_plane_x": 23,
+            "nearest_run_profile_top_z": 40,
+            "horizontal_landing_profile_top_z": 39,
+            "constructive_quantization_residual_plates": 1,
+            "circulation_changed": False,
+            "steps_changed": False,
+            "void_01_changed": False,
+            "platform_changed": False,
         },
         "human_refinement_055": {
             "parapet_landing_junction": {
