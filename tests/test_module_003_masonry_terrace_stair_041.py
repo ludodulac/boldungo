@@ -53,7 +53,7 @@ def test_051_scope_source_unchanged_and_confidence_separated() -> None:
     combined = load(COMBINED)
     source = load(SOURCE)
 
-    assert module["metadata"]["mission"] == "BOLDUNGO-MODULE-003-VOLUMETRIC-REBUILD-051"
+    assert module["metadata"]["mission"] == "BOLDUNGO-MODULE-003-HUMAN-REFINEMENT-052"
     assert module["metadata"]["structure_type"] == "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR"
 
     confidence = module["metadata"]["subsystem_confidence"]
@@ -343,3 +343,151 @@ def test_051_normalized_decomposition_and_interfaces_are_explicit() -> None:
     assert normalized["STAIR_RUN_01"]["orientation"] != normalized["STAIR_RUN_02"]["orientation"]
     assert normalized["HOUSE_INTERFACE"]["detail"] == "FINAL_LEGO_CONNECTION_DEFERRED"
     assert normalized["TIMBER_TERRACE_INTERFACE"]["detail"] == "PLAN_SPAN_UNRESOLVED_REFINABLE"
+
+
+
+def test_052_stair_runs_have_solid_masonry_mass_and_void_remains_unoccupied() -> None:
+    module, model, parts = model_and_parts()
+    void = module["metadata"]["geometry"]["void_01"]
+
+    def occupied_by(fragment: str) -> set[tuple[int, int, int]]:
+        occupied: set[tuple[int, int, int]] = set()
+        for part in parts_with(fragment, parts):
+            bounds = orthogonal_bounds(part)
+            assert bounds is not None
+            for x in range(bounds.x0, bounds.x1):
+                for y in range(bounds.y0, bounds.y1):
+                    for z in range(bounds.z0, bounds.z1):
+                        occupied.add((x, y, z))
+        return occupied
+
+    # STAIR_RUNS_HAVE_SOLID_MASONRY_MASS:
+    # every cell directly below every preserved tread is masonry down to ground.
+    for tread_fragment, mass_fragment in (
+        ("stair-lower-tread", "stair-lower-solid-mass"),
+        ("stair-upper-tread", "stair-upper-solid-mass"),
+    ):
+        mass = occupied_by(mass_fragment)
+        treads = parts_with(tread_fragment, parts)
+        assert treads
+        for tread in treads:
+            bounds = orthogonal_bounds(tread)
+            assert bounds is not None
+            for x in range(bounds.x0, bounds.x1):
+                for y in range(bounds.y0, bounds.y1):
+                    for z in range(0, bounds.z0):
+                        assert (x, y, z) in mass
+
+    # MAJOR_VOID_REMAINS_UNOCCUPIED: the stair fill is physically separate
+    # from the established first-class architectural void.
+    solid = cells_for(model)
+    for x in range(*void["x"]):
+        for y in range(*void["y"]):
+            for z in range(*void["z"]):
+                assert (x, y, z) not in solid
+
+
+def test_052_run_parapet_aligns_with_landing_and_break_remains_local() -> None:
+    _module, _model, parts = model_and_parts()
+
+    run_house = parts_with("stair-upper-parapet-house-body", parts)
+    landing = parts_with("stair-first-landing-rail", parts)
+    transition = parts_with("stair-landing-parapet-local-transition", parts)
+    assert run_house and landing and transition
+
+    run_bounds = [orthogonal_bounds(part) for part in run_house]
+    landing_bounds = [orthogonal_bounds(part) for part in landing]
+    transition_bounds = [orthogonal_bounds(part) for part in transition]
+    assert all(bound is not None for bound in [*run_bounds, *landing_bounds, *transition_bounds])
+
+    # RUN_PARAPET_ALIGNS_WITH_LANDING_PARAPET:
+    # derive the landing's longitudinal rail from its one-stud X thickness.
+    longitudinal = [
+        bound for bound in landing_bounds
+        if (bound.x1 - bound.x0) == 1 and (bound.y1 - bound.y0) > 1
+    ]
+    assert longitudinal
+    landing_x = {bound.x0 for bound in longitudinal}
+    run_x = {bound.x0 for bound in run_bounds}
+    assert len(landing_x) == 1
+    assert run_x == landing_x
+
+    # LANDING_PARAPET_BREAK_REMAINS_LOCAL:
+    # the raised correction occupies only the two cells nearest RUN_02 and
+    # leaves a non-zero but <=2-plate break to the nearest run parapet top.
+    transition_y0 = min(bound.y0 for bound in transition_bounds)
+    transition_y1 = max(bound.y1 for bound in transition_bounds)
+    assert transition_y1 - transition_y0 <= 2
+
+    transition_top = max(bound.z1 for bound in transition_bounds)
+    nearest_run_y = max(bound.y0 for bound in run_bounds)
+    nearest_run_top = max(
+        bound.z1 for bound in run_bounds
+        if bound.y0 == nearest_run_y
+    )
+    break_plates = abs(nearest_run_top - transition_top)
+    assert 1 <= break_plates <= 2
+
+
+def test_052_stair_wall_terminates_and_house_remains_deep_boundary() -> None:
+    module, model, parts = model_and_parts()
+    combined = load(COMBINED)
+    refinement = module["metadata"]["human_refinement_052"]["stair_wall_termination"]
+    void = module["metadata"]["geometry"]["void_01"]
+
+    sidewall = parts_with("void-entry-sidewall", parts)
+    assert sidewall
+    side_bounds = [orthogonal_bounds(part) for part in sidewall]
+    assert all(bound is not None for bound in side_bounds)
+
+    side_y0 = min(bound.y0 for bound in side_bounds)
+    side_y1 = max(bound.y1 for bound in side_bounds)
+    assert [side_y0, side_y1] == refinement["sidewall_y"]
+    assert side_y0 > void["y"][0]
+
+    # STAIR_WALL_TERMINATES_AT_MAJOR_VOID + MAJOR_VOID_DEPTH_NOT_BLOCKED_BY_STAIR_WALL:
+    # below the ceiling-carrier zone, the former long X-low corridor wall is
+    # absent throughout the deep portion of VOID_01.
+    solid = cells_for(model)
+    deep_y0, deep_y1 = refinement["deep_open_region_y"]
+    side_x = refinement["sidewall_x"]
+    carrier_bottom_z = min(
+        orthogonal_bounds(part).z0
+        for part in parts_with("void-ceiling-carrier", parts)
+    )
+    for y in range(deep_y0, deep_y1):
+        for z in range(void["z"][0], carrier_bottom_z):
+            assert (side_x, y, z) not in solid
+
+    # HOUSE_WALL_REMAINS_DEEP_BOUNDARY:
+    # derive the real host wall plane from MODULE001/002 source geometry and
+    # require substantial longitudinal coverage beside the newly opened depth.
+    source_count = combined["metadata"]["module_001_plus_002_piece_count"]
+    combined_model = BrickModel.model_validate(combined["brick_model"])
+    source_parts = combined_model.parts[:source_count]
+    host_left = [
+        part for part in source_parts
+        if part.component == "wall" and part.facade == "left"
+    ]
+    assert host_left
+    host_bounds = [orthogonal_bounds(part) for part in host_left]
+    host_bounds = [bound for bound in host_bounds if bound is not None]
+    host_plane = min(bound.x0 for bound in host_bounds)
+    assert host_plane == module["metadata"]["interfaces"]["TO_HOUSE"]["plane_x"]
+
+    deep_y = set(range(deep_y0, deep_y1))
+    host_y_coverage: set[int] = set()
+    for bound in host_bounds:
+        if bound.x0 <= host_plane < bound.x1 and bound.z0 < void["z"][1]:
+            host_y_coverage.update(range(bound.y0, bound.y1))
+    covered = deep_y.intersection(host_y_coverage)
+    assert covered
+    assert len(covered) / len(deep_y) >= 0.5
+
+
+def test_052_interior_recess_remains_explicitly_not_observable() -> None:
+    module = load(MODULE)
+    recess = module["metadata"]["human_refinement_052"]["interior_recess"]
+    assert recess["status"] == "NOT_OBSERVABLE_FROM_CURRENT_PHOTOS"
+    assert recess["geometry_added"] is False
+    assert recess["required_future_evidence"] == "PHOTO_FROM_OR_TOWARD_INTERIOR_OF_PASSAGE"
