@@ -76,7 +76,7 @@ def test_051_scope_source_unchanged_and_confidence_separated() -> None:
     combined = load(COMBINED)
     source = load(SOURCE)
 
-    assert module["metadata"]["mission"] == "BOLDUNGO-BASE-PHOTOS-BLIND-LEARNING-AND-MODULE003-REFINEMENT-054"
+    assert module["metadata"]["mission"] == "BOLDUNGO-055-MODULE003-LOCAL-PARAPET-GAP"
     assert module["metadata"]["structure_type"] == "WALLS_PLUS_PLATFORM_AROUND_MAJOR_VOID_AND_TWO_RUN_STAIR"
 
     confidence = module["metadata"]["subsystem_confidence"]
@@ -655,3 +655,70 @@ def test_054_platform_face_coplanar_across_floor_boundary() -> None:
             assert xs
             minima.append(min(xs))
         assert minima == [outer_plane_x, outer_plane_x, outer_plane_x]
+
+def test_055_stair_parapet_has_no_unintended_large_gap_at_landing_junction() -> None:
+    _module, _model, parts = model_and_parts()
+
+    run_house = parts_with("stair-upper-parapet-house-body", parts)
+    landing = parts_with("stair-first-landing-rail", parts)
+    transition = parts_with("stair-landing-parapet-local-transition", parts)
+    bridge = parts_with("stair-landing-parapet-gap-bridge", parts)
+    assert run_house and landing and transition
+
+    run_bounds = [visible_orthogonal_bounds(part) for part in run_house]
+    landing_bounds = [visible_orthogonal_bounds(part) for part in landing]
+    transition_bounds = [visible_orthogonal_bounds(part) for part in transition]
+    bridge_bounds = [visible_orthogonal_bounds(part) for part in bridge]
+    all_bounds = [*run_bounds, *landing_bounds, *transition_bounds, *bridge_bounds]
+    assert all(bound is not None for bound in all_bounds)
+
+    # Derive the junction from the actual geometry rather than checking for a
+    # named replacement piece. The house-side RUN_02 parapet and the landing's
+    # longitudinal rail must occupy one common X plane with no empty Y column
+    # through their substantial shared vertical band.
+    longitudinal = [
+        bound for bound in landing_bounds
+        if (bound.x1 - bound.x0) == 1 and (bound.y1 - bound.y0) > 1
+    ]
+    assert longitudinal
+
+    run_x = {bound.x0 for bound in run_bounds}
+    landing_x = {bound.x0 for bound in longitudinal}
+    assert len(run_x) == 1
+    assert run_x == landing_x
+    plane_x = next(iter(run_x))
+
+    nearest_run_y = max(bound.y0 for bound in run_bounds)
+    nearest_landing_y = min(bound.y0 for bound in longitudinal)
+    assert nearest_landing_y > nearest_run_y
+
+    run_endpoint = [bound for bound in run_bounds if bound.y0 == nearest_run_y]
+    landing_endpoint = [
+        bound for bound in [*longitudinal, *transition_bounds]
+        if bound.y0 == nearest_landing_y
+    ]
+    assert run_endpoint and landing_endpoint
+
+    common_bottom = max(
+        min(bound.z0 for bound in run_endpoint),
+        min(bound.z0 for bound in landing_endpoint),
+    )
+    common_top = min(
+        max(bound.z1 for bound in run_endpoint),
+        max(bound.z1 for bound in landing_endpoint),
+    )
+    assert common_top - common_bottom >= 9
+
+    protected_cells: set[tuple[int, int, int]] = set()
+    for bound in [*run_bounds, *longitudinal, *transition_bounds, *bridge_bounds]:
+        if not (bound.x0 <= plane_x < bound.x1):
+            continue
+        for y in range(bound.y0, bound.y1):
+            for z in range(bound.z0, bound.z1):
+                protected_cells.add((plane_x, y, z))
+
+    # STAIR_PARAPET_HAS_NO_UNINTENDED_LARGE_GAP_AT_LANDING_JUNCTION
+    for y in range(nearest_run_y, nearest_landing_y + 1):
+        for z in range(common_bottom, common_top):
+            assert (plane_x, y, z) in protected_cells
+
