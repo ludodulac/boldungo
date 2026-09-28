@@ -1,4 +1,4 @@
-name: Generate MODULE 003 masonry terrace stair 041/042/043/044
+name: Generate MODULE 003 masonry terrace stair 041/042/043/044/047
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
       - fix/module-003-rearward-position-042
       - fix/module-003-local-stair-refinement-043
       - fix/module-003-human-detail-refinement-044
+      - fix/module-003-human-correction-047
 
 permissions:
   contents: write
@@ -47,5 +48,5 @@ jobs:
             echo "Generated bundles already current."
             exit 0
           fi
-          git commit -m "044: regenerate human detail refinement"
+          git commit -m "047: regenerate mapped human corrections"
           git push origin "HEAD:${GITHUB_REF_NAME}"
