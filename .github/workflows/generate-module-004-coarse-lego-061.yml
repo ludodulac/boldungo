@@ -1,0 +1,48 @@
+name: Generate MODULE 004 coarse wood terrace 061
+
+on:
+  push:
+    branches:
+      - feat/module-004-coarse-lego-061
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install project
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine[dev]"
+
+      - name: Generate MODULE 004 and combined viewer bundle
+        run: python scripts/build_module_004_wood_terrace.py
+
+      - name: Run MODULE 004 targeted tests
+        run: pytest -q tests/test_module_004_wood_terrace_061.py
+
+      - name: Commit deterministic generated bundles
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/module-004-wood-terrace-export.json frontend/module-001-plus-module-002-plus-module-003-plus-module-004-export.json
+          if git diff --cached --quiet; then
+            echo "Generated bundles already current."
+            exit 0
+          fi
+          git commit -m "061: regenerate MODULE004 coarse bundle"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
