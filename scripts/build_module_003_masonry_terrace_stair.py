@@ -243,7 +243,7 @@ def _build_module_003() -> list[dict]:
     _wall_line("y", 44, 47, 23, 36, "main-house-wall-front-jamb")
     _wall_line("y", 55, 62, 23, 36, "main-house-wall-rear-jamb")
     _tile_line(
-        "y", 46, 56, 23, 36, plate=False,
+        "y", 44, 62, 23, 36, plate=False,
         subcomponent="main-house-wall-opening-lintel",
     )
     for z in range(39, 48, 3):
