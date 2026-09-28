@@ -59,6 +59,30 @@ la traduction constructive doit préserver cette topologie de silhouette à trav
 
 Cette règle ne fixe aucune métrique non observable. Les hauteurs, longueurs et quantifications LEGO exactes peuvent rester estimées ou inconnues. Ce qui est protégé est la continuité architecturale du profil et son changement de régime (incliné puis horizontal), pas une cote arbitraire.
 
+## 3.2 Identité d'arête avant continuité de profil
+
+**Règle canonique : `EDGE-IDENTITY-BEFORE-PROFILE-CONTINUITY`.**
+
+Avant d'appliquer une contrainte de continuité, de prolongement ou de lissage à un profil architectural, Boldüngo doit d'abord établir que les segments appartiennent réellement au même élément architectural ou à une même chaîne de bordure démontrée.
+
+Ordre obligatoire de raisonnement :
+
+`EDGE_IDENTITY → MASS/PROFILE_CONTINUITY_CHECK → LEGO_TRANSLATION`
+
+Ordre interdit :
+
+`GEOMETRIC_PROXIMITY → PROFILE_CONTINUITY`
+
+En particulier :
+
+`COPLANAR + CONNECTED + HEIGHT_COMPATIBLE` n'implique pas `SAME_ARCHITECTURAL_EDGE`.
+
+L'identité peut être soutenue par l'appartenance au même mur, parapet ou volume, une jonction physique réelle, la continuité multi-vue, l'ordre d'occultation, un changement de direction architecturalement explicable, les niveaux relatifs et la relation à la circulation, aux plateformes et aux volumes voisins.
+
+Ne suffisent jamais seuls : proximité, coplanarité, contact, hauteur compatible, continuité matérielle ou possibilité de tracer une ligne continue.
+
+Une règle de continuité ne doit jamais décider elle-même de l'identité des arêtes. Si l'identité n'est pas confirmée, la continuité correspondante reste non résolue et ne doit pas être matérialisée par la traduction LEGO.
+
 ## 4. Audit contradictoire
 
 Avant sérialisation, rechercher activement les contradictions :
