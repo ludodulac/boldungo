@@ -31,11 +31,11 @@ def test_module_003_artifact_counts_levels_and_scope() -> None:
     source = load(SOURCE)
 
     assert module["metadata"]["module_id"] == "MODULE_003_MASONRY_TERRACE_STAIR"
-    assert module["bom"]["total_parts"] == 661
-    assert combined["metadata"]["module_003_piece_count"] == 661
+    assert module["bom"]["total_parts"] == 729
+    assert combined["metadata"]["module_003_piece_count"] == 729
     assert combined["metadata"]["module_001_plus_002_piece_count"] == 4794
-    assert combined["metadata"]["combined_piece_count"] == 5455
-    assert combined["bom"]["total_parts"] == 5455
+    assert combined["metadata"]["combined_piece_count"] == 5523
+    assert combined["bom"]["total_parts"] == 5523
 
     levels = module["metadata"]["level_model"]
     assert levels == {
@@ -53,13 +53,13 @@ def test_module_003_artifact_counts_levels_and_scope() -> None:
     ]
 
     parts = module["brick_model"]["parts"]
-    assert {part["category"] for part in parts} <= {"brick", "plate", "roof_tile"}
-    assert {part["component"] for part in parts} <= {"wall", "roof"}
-    slope_caps = [part for part in parts if "parapet-smooth-cap" in part["placement_id"]]
-    assert len(slope_caps) == 24
+    assert {part["category"] for part in parts} <= {"brick", "plate", "facade_detail"}
+    assert {part["component"] for part in parts} <= {"wall", "facade_detail"}
+    slope_caps = [part for part in parts if "parapet-" in part["placement_id"] and "smooth-cap" in part["placement_id"]]
+    assert len(slope_caps) == 18
     assert {part["part_id"] for part in slope_caps} == {"BRICK_SLOPED_45_2X1"}
-    assert {part["category"] for part in slope_caps} == {"roof_tile"}
-    assert {part["component"] for part in slope_caps} == {"roof"}
+    assert {part["category"] for part in slope_caps} == {"facade_detail"}
+    assert {part["component"] for part in slope_caps} == {"facade_detail"}
     forbidden = ("timber", "chimney", "antenna", "gutter", "window", "door", "roof")
     assert not any(
         any(word in (part["placement_id"] + " " + part["part_id"]).lower() for word in forbidden)
@@ -77,15 +77,16 @@ def test_module_003_artifact_counts_levels_and_scope() -> None:
 def test_module_003_bom_is_exact_and_approved() -> None:
     module = load(MODULE)
     expected = {
-        "BRICK_1X1": 225,
-        "BRICK_1X2": 40,
-        "BRICK_1X3": 6,
+        "BRICK_1X1": 268,
+        "BRICK_1X2": 28,
+        "BRICK_1X3": 22,
         "BRICK_1X4": 24,
-        "BRICK_1X6": 57,
-        "BRICK_1X8": 151,
-        "BRICK_SLOPED_45_2X1": 24,
-        "PLATE_1X1": 64,
+        "BRICK_1X6": 80,
+        "BRICK_1X8": 123,
+        "BRICK_SLOPED_45_2X1": 18,
+        "PLATE_1X1": 94,
         "PLATE_1X2": 2,
+        "PLATE_1X6": 2,
         "PLATE_1X8": 68,
     }
     actual = {line["part_id"]: line["quantity"] for line in module["bom"]["lines"]}
@@ -100,7 +101,7 @@ def test_module_003_solids_have_no_collision_and_reach_ground() -> None:
     module = load(MODULE)
     model = BrickModel.model_validate(module["brick_model"])
     bill = BillOfMaterials.model_validate(module["bom"])
-    assert bill.total_parts == len(model.parts) == 661
+    assert bill.total_parts == len(model.parts) == 729
     assert len({part.placement_id for part in model.parts}) == len(model.parts)
 
     registry = create_current_engine_capability_registry(MASTER)
@@ -116,14 +117,14 @@ def test_module_003_preserves_large_lower_void() -> None:
     module = load(MODULE)
     model = BrickModel.model_validate(module["brick_model"])
 
-    # Deliberately open covered bay under the platform after the 044 face correction:
-    # X [16,22), Y [55,71), Z [0,36). Y54 is now the closed false front face.
+    # Deliberately open covered bay under the platform after the 047 mapped-opening correction:
+    # X [16,23), Y [55,71), Z [0,36). The new x-strong opening opens into this bay.
     for part in model.parts:
         bounds = orthogonal_bounds(part)
         if bounds is None:
             continue
         intersects = (
-            max(bounds.x0, 16) < min(bounds.x1, 22)
+            max(bounds.x0, 16) < min(bounds.x1, 23)
             and max(bounds.y0, 55) < min(bounds.y1, 71)
             and max(bounds.z0, 0) < min(bounds.z1, 36)
         )
@@ -182,7 +183,23 @@ def test_module_003_position_and_interfaces_are_host_relative() -> None:
     assert (model.origin_x_studs, model.origin_y_studs) == (24, 1)
 
     module_parts = combined["brick_model"]["parts"][4794:]
-    assert max(part["x_studs"] + (part["length_studs"] if part["rotation_quarter_turns"] % 2 else part["width_studs"]) for part in module_parts) <= 24
+    house_visible = [
+        part for part in module_parts
+        if "stair-upper-parapet-house-" in part["placement_id"]
+    ]
+    core_parts = [
+        part for part in module_parts
+        if part not in house_visible
+    ]
+    assert max(
+        part["x_studs"] + (
+            part["length_studs"] if part["rotation_quarter_turns"] % 2
+            else part["width_studs"]
+        )
+        for part in core_parts
+    ) <= 24
+    assert house_visible
+    assert {part["x_studs"] for part in house_visible} == {24}
 
 
 def test_module_003_records_viewer_ux_debt_without_viewer_change() -> None:
@@ -233,7 +250,7 @@ def test_module_003_042_stair_is_rearward_and_outside_house_footprint() -> None:
 
 def test_module_003_042_rearward_translation_preserves_topology_levels_and_void() -> None:
     module = load(MODULE)
-    assert module["bom"]["total_parts"] == 661
+    assert module["bom"]["total_parts"] == 729
     assert module["metadata"]["prototype_tread_tops"] == {
         "lower": [3, 6, 9, 12, 16, 20, 24],
         "upper": [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 49],
@@ -242,7 +259,7 @@ def test_module_003_042_rearward_translation_preserves_topology_levels_and_void(
     assert module["metadata"]["level_model"]["intermediate_turn_level_z"] == 24
     assert module["metadata"]["level_model"]["upper_masonry_platform_z"] == 49
     assert module["metadata"]["geometry"]["lower_void"] == {
-        "x": [16, 22], "y": [55, 71], "z": [0, 36]
+        "x": [16, 23], "y": [55, 71], "z": [0, 36]
     }
 
 
@@ -259,7 +276,7 @@ def test_module_003_043_platform_and_rearward_position_are_frozen() -> None:
         "x": [7, 24], "y": [54, 72], "walking_top_z": 49
     }
     assert geometry["lower_void"] == {
-        "x": [16, 22], "y": [55, 71], "z": [0, 36]
+        "x": [16, 23], "y": [55, 71], "z": [0, 36]
     }
 
 
@@ -337,7 +354,7 @@ def test_module_003_043_obstructing_rail_removed_and_first_landing_railed() -> N
 def test_module_003_043_circulation_and_collision_scope() -> None:
     module = load(MODULE)
     model = BrickModel.model_validate(module["brick_model"])
-    assert module["bom"]["total_parts"] == 661
+    assert module["bom"]["total_parts"] == 729
     assert orthogonal_collisions(model) == []
 
     support = analyze_standard_brick_support_chain(model)
@@ -402,64 +419,281 @@ def test_module_003_044_false_front_opening_closed_real_rear_opening_preserved()
     assert not any((x, z) in rear_cells for x in range(15, 22) for z in range(0, 36))
 
     lower_void = module["metadata"]["geometry"]["lower_void"]
-    assert lower_void == {"x": [16, 22], "y": [55, 71], "z": [0, 36]}
+    assert lower_void == {"x": [16, 23], "y": [55, 71], "z": [0, 36]}
     for part in model.parts:
         bounds = orthogonal_bounds(part)
         if bounds is None:
             continue
         intersects = (
-            max(bounds.x0, 16) < min(bounds.x1, 22)
+            max(bounds.x0, 16) < min(bounds.x1, 23)
             and max(bounds.y0, 55) < min(bounds.y1, 71)
             and max(bounds.z0, 0) < min(bounds.z1, 36)
         )
         assert not intersects, part.placement_id
 
 
-def test_module_003_044_stair_parapet_caps_are_continuous_approved_proxy() -> None:
+
+def test_module_003_047_stair_parapet_top_envelope_continuous() -> None:
     module = load(MODULE)
     parts = module["brick_model"]["parts"]
+    target = module["metadata"]["human_correction_047"]["parapet_target_envelope"]
+
     caps = [
         part for part in parts
-        if "parapet-smooth-cap" in part["placement_id"]
+        if "parapet-" in part["placement_id"] and "smooth-cap" in part["placement_id"]
     ]
-    assert len(caps) == 24
+    assert len(caps) == 18
     assert {part["part_id"] for part in caps} == {"BRICK_SLOPED_45_2X1"}
-    assert {part["roof_side"] for part in caps} == {"slope"}
+    assert {part["category"] for part in caps} == {"facade_detail"}
+    assert {part["component"] for part in caps} == {"facade_detail"}
 
-    lower = [part for part in caps if "stair-lower-" in part["placement_id"]]
-    upper = [part for part in caps if "stair-upper-" in part["placement_id"]]
-    assert len(lower) == 12
-    assert len(upper) == 12
-    assert {part["y_studs"] for part in lower} == {85, 92}
-    assert {part["x_studs"] for part in lower} == {9, 10, 11, 12, 13, 14}
-    assert {part["x_studs"] for part in upper} == {16, 23}
-    assert {part["y_studs"] for part in upper} == {72, 74, 76, 78, 80, 82}
+    lower_caps = [part for part in caps if "stair-lower-" in part["placement_id"]]
+    assert len(lower_caps) == 6
+    for rail_y in target["lower"]["rails_y"]:
+        rail = sorted(
+            (part for part in lower_caps if part["y_studs"] == rail_y),
+            key=lambda part: part["x_studs"],
+        )
+        actual = [
+            {
+                "from": [part["x_studs"], part["z_plates"]],
+                "to": [part["x_studs"] + 2, part["z_plates"] + 3],
+            }
+            for part in rail
+        ]
+        assert actual == target["lower"]["segments"]
+        for first, second in zip(actual, actual[1:]):
+            assert first["to"] == second["from"]
+        assert all(
+            first["to"][1] > first["from"][1]
+            for first in actual
+        )
+
+    upper_caps = [part for part in caps if "stair-upper-" in part["placement_id"]]
+    assert len(upper_caps) == 12
+    for rail_x in target["upper"]["rails_x"]:
+        rail = sorted(
+            (part for part in upper_caps if part["x_studs"] == rail_x),
+            key=lambda part: part["y_studs"],
+            reverse=True,
+        )
+        actual = [
+            {
+                "from": [part["y_studs"] + 2, part["z_plates"]],
+                "to": [part["y_studs"], part["z_plates"] + 3],
+            }
+            for part in rail
+        ]
+        assert actual == target["upper"]["segments"]
+        for first, second in zip(actual, actual[1:]):
+            assert first["to"] == second["from"]
+        assert all(
+            first["to"][0] < first["from"][0]
+            and first["to"][1] > first["from"][1]
+            for first in actual
+        )
+
+    # The target is exactly representable by the approved slope chain selected
+    # for 047, so the geometric envelope error is zero plates.
+    assert target["target_error_plates"] == 0
 
     registry = create_current_engine_capability_registry(MASTER)
     assert registry.get("BRICK_SLOPED_45_2X1").stage >= PieceCapabilityStage.PLACEMENT_APPROVED
 
 
-def test_module_003_044_house_side_parapet_continues_wall_plane() -> None:
+def test_module_003_047_visible_parapet_host_wall_coplanar_and_joined() -> None:
+    combined = load(COMBINED)
+    definitions = standard_orthogonal_definitions()
+    source_count = combined["metadata"]["module_001_plus_002_piece_count"]
+    source_parts = combined["brick_model"]["parts"][:source_count]
+    module_parts = combined["brick_model"]["parts"][source_count:]
+
+    host_left = [
+        part for part in source_parts
+        if part["component"] == "wall"
+        and part.get("facade") == "left"
+        and part["part_id"] in definitions
+    ]
+    assert host_left
+
+    host_bounds = []
+    for part in host_left:
+        definition = definitions[part["part_id"]]
+        width, length = definition.footprint(part["rotation_quarter_turns"])
+        host_bounds.append((
+            part["x_studs"],
+            part["x_studs"] + width,
+            part["y_studs"],
+            part["y_studs"] + length,
+            part["z_plates"],
+            part["z_plates"] + definition.height_plates,
+        ))
+
+    # Derive the actual visible host plane from the combined MODULE001 geometry.
+    host_visible_plane = min(bounds[0] for bounds in host_bounds)
+    host_rear_plane = max(bounds[3] for bounds in host_bounds)
+    assert host_visible_plane == combined["metadata"]["human_correction_047"]["visible_wall_continuity"]["host_visible_wall_plane"]
+
+    house_parapet = [
+        part for part in module_parts
+        if "stair-upper-parapet-house-" in part["placement_id"]
+    ]
+    assert house_parapet
+    parapet_visible_plane = min(part["x_studs"] for part in house_parapet)
+    assert parapet_visible_plane == host_visible_plane
+    assert {part["x_studs"] for part in house_parapet} == {host_visible_plane}
+
+    # Longitudinal continuity is proven against real host geometry, not X=24
+    # alone: the final host wall cell and first parapet cell are adjacent at
+    # the same visible plane throughout the Z49..58 junction band.
+    host_cells = set()
+    for x0, x1, y0, y1, z0, z1 in host_bounds:
+        for x in range(x0, x1):
+            for y in range(y0, y1):
+                for z in range(z0, z1):
+                    host_cells.add((x, y, z))
+
+    parapet_cells = set()
+    for part in house_parapet:
+        definition = definitions.get(part["part_id"])
+        if definition is None:
+            continue
+        width, length = definition.footprint(part["rotation_quarter_turns"])
+        for x in range(part["x_studs"], part["x_studs"] + width):
+            for y in range(part["y_studs"], part["y_studs"] + length):
+                for z in range(part["z_plates"], part["z_plates"] + definition.height_plates):
+                    parapet_cells.add((x, y, z))
+
+    assert host_rear_plane == 72
+    for z in range(49, 58):
+        assert (host_visible_plane, host_rear_plane - 1, z) in host_cells
+        assert (host_visible_plane, host_rear_plane, z) in parapet_cells
+
+
+def test_module_003_047_human_opening_mapping_is_real_geometry() -> None:
+    module = load(MODULE)
+    model = BrickModel.model_validate(module["brick_model"])
+    definitions = standard_orthogonal_definitions()
+
+    solid = set()
+    for part in model.parts:
+        definition = definitions.get(part.part_id)
+        if definition is None or part.category not in {"brick", "plate"}:
+            continue
+        width, length = definition.footprint(part.rotation_quarter_turns)
+        for x in range(part.x_studs, part.x_studs + width):
+            for y in range(part.y_studs, part.y_studs + length):
+                for z in range(part.z_plates, part.z_plates + definition.height_plates):
+                    solid.add((x, y, z))
+
+    # HUMAN_FALSE_REGION is derived from the actual turn-landing footprint:
+    # the front/y-low interior span below the landing must now be solid.
+    landing = [
+        part for part in model.parts
+        if "stair-landing-" in part.placement_id
+        and "support" not in part.placement_id
+    ]
+    landing_bounds = [orthogonal_bounds(part) for part in landing]
+    assert all(bounds is not None for bounds in landing_bounds)
+    false_y = min(bounds.y0 for bounds in landing_bounds if bounds is not None)
+    landing_x0 = min(bounds.x0 for bounds in landing_bounds if bounds is not None)
+    landing_x1 = max(bounds.x1 for bounds in landing_bounds if bounds is not None)
+    landing_bottom = min(bounds.z0 for bounds in landing_bounds if bounds is not None)
+    for x in range(landing_x0 + 1, landing_x1 - 1):
+        for z in range(0, landing_bottom):
+            assert (x, false_y, z) in solid
+
+    # Discover the real opening from the resulting x-strong main-wall geometry.
+    main_wall = [
+        part for part in model.parts
+        if "main-house-wall-" in part.placement_id
+        and part.part_id in definitions
+    ]
+    assert main_wall
+    wall_x = {part.x_studs for part in main_wall}
+    assert len(wall_x) == 1
+    wall_x = next(iter(wall_x))
+
+    wall_y0 = min(part.y_studs for part in main_wall)
+    wall_y1 = max(
+        part.y_studs + definitions[part.part_id].footprint(part.rotation_quarter_turns)[1]
+        for part in main_wall
+    )
+    empty_y = [
+        y for y in range(wall_y0, wall_y1)
+        if all((wall_x, y, z) not in solid for z in range(0, 36))
+    ]
+    assert empty_y == list(range(57, 65))
+
+    opening = module["metadata"]["human_correction_047"]["opening_mapping"]["human_real_region"]
+    assert opening["face"] == "X_STRONG_RIGHT_FACE_OF_MAIN_MASONRY"
+    assert opening["visible_plane_x"] == wall_x + 1
+    assert opening["y"] == [empty_y[0], empty_y[-1] + 1]
+
+    # The opening communicates with the preserved lower void immediately
+    # behind the removed x-strong wall cells.
+    for y in empty_y:
+        for z in range(0, 36):
+            assert (wall_x - 1, y, z) not in solid
+
+    # The old rear opening is still geometrically distinct and is not being
+    # used as a substitute for the newly carved x-strong opening.
+    rear_y = module["metadata"]["human_correction_047"]["opening_mapping"]["rear_opening_is_distinct"]["y"]
+    assert rear_y != false_y
+    assert all(
+        (x, rear_y, z) not in solid
+        for x in range(15, 22)
+        for z in range(0, 36)
+    )
+
+
+
+def test_module_003_047_no_old_parapet_peak_above_target_envelope() -> None:
     module = load(MODULE)
     parts = module["brick_model"]["parts"]
-    continuity = [
-        part for part in parts
-        if "stair-house-wall-continuity" in part["placement_id"]
-    ]
-    assert len(continuity) == 3
-    assert {(part["x_studs"], part["y_studs"]) for part in continuity} == {(23, 71)}
-    assert {part["z_plates"] for part in continuity} == {49, 52, 55}
-    assert all(part["x_studs"] + 1 == 24 for part in continuity)
+    definitions = standard_orthogonal_definitions()
 
-    house_side_upper = [
-        part for part in parts
-        if "stair-upper-parapet" in part["placement_id"]
+    assert not any(
+        "stair-house-wall-continuity" in part["placement_id"]
+        for part in parts
+    )
+    assert not any(
+        "stair-lower-parapet-" in part["placement_id"]
+        and "body" not in part["placement_id"]
         and "smooth-cap" not in part["placement_id"]
-        and part["x_studs"] == 23
-        and part["y_studs"] == 72
-    ]
-    assert house_side_upper
-    assert max(part["z_plates"] + 3 for part in continuity) == 58
+        for part in parts
+    )
+    assert not any(
+        "stair-upper-parapet-" in part["placement_id"]
+        and "body" not in part["placement_id"]
+        and "smooth-cap" not in part["placement_id"]
+        for part in parts
+    )
+
+    body_tops = {}
+    for part in parts:
+        if "parapet-" not in part["placement_id"] or "body" not in part["placement_id"]:
+            continue
+        definition = definitions[part["part_id"]]
+        width, length = definition.footprint(part["rotation_quarter_turns"])
+        top = part["z_plates"] + definition.height_plates
+        for x in range(part["x_studs"], part["x_studs"] + width):
+            for y in range(part["y_studs"], part["y_studs"] + length):
+                body_tops[(x, y)] = max(body_tops.get((x, y), 0), top)
+
+    # Lower cap bases are the maximum permissible body top under each slope.
+    for y in (85, 92):
+        for x, base in ((9, 24), (11, 27), (13, 30)):
+            assert body_tops[(x, y)] == base
+            assert body_tops[(x + 1, y)] == base
+        assert body_tops[(15, y)] == 33
+
+    # Upper cap bases follow the same rule on both visible rails.
+    for x in (16, 24):
+        for y, base in ((83, 40), (81, 43), (79, 46), (77, 49), (75, 52), (73, 55)):
+            assert body_tops[(x, y)] == base
+            assert body_tops[(x, y + 1)] == base
+        assert body_tops[(x, 72)] == 58
 
 
 def test_module_003_044_global_geometry_circulation_levels_and_collision_scope() -> None:
