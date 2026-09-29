@@ -8,6 +8,7 @@ or LEGO Pick a Brick export.
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field, model_validator
@@ -24,10 +25,11 @@ class PartColorAvailabilityEvidence(BaseModel):
     status: AvailabilityStatus
     source: str = Field(min_length=1)
     available_quantity: int | None = Field(default=None, ge=0)
+    observed_at: datetime | None = None
 
 
 class PartColorAvailabilityRegistry(BaseModel):
-    schema_version: str = "0.2"
+    schema_version: str = "0.3"
     evidence: list[PartColorAvailabilityEvidence]
 
     @model_validator(mode="after")
