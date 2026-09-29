@@ -129,6 +129,7 @@ def procurement_preparation_csv(report: ProcurementPreparationReport) -> str:
     live_reasons = {
         "live_part_color_availability_unverified",
         "available_quantity_unknown",
+        "live_quantity_observation_time_missing",
         "insufficient_available_quantity",
     }
     live_only = {
@@ -146,6 +147,11 @@ def procurement_preparation_csv(report: ProcurementPreparationReport) -> str:
             )
         elif blocker.reason == "available_quantity_unknown":
             detail = f"required={blocker.required_quantity};available=unknown"
+        elif blocker.reason == "live_quantity_observation_time_missing":
+            detail = (
+                f"required={blocker.required_quantity};"
+                f"available={blocker.available_quantity};observed_at=missing"
+            )
         rows.append(
             (
                 "live_stock",
