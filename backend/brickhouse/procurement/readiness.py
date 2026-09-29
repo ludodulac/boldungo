@@ -153,6 +153,18 @@ def assess_order_readiness(
             )
             continue
 
+        if evidence.observed_at is None:
+            blockers.append(
+                OrderReadinessBlocker(
+                    part_id=requirement.part_id,
+                    purchase_color_key=requirement.purchase_color_key,
+                    reason="live_quantity_observation_time_missing",
+                    required_quantity=requirement.required_quantity,
+                    available_quantity=evidence.available_quantity,
+                )
+            )
+            continue
+
         if evidence.available_quantity < requirement.required_quantity:
             shortage = requirement.required_quantity - evidence.available_quantity
             shortage_total += shortage
