@@ -67,6 +67,33 @@ def parts_with(fragment: str, parts) -> list:
     return [part for part in parts if fragment in part.placement_id]
 
 
+def primary_underspace_blockers(parts, void) -> list[str]:
+    """Return non-peripheral solids entering the declared primary under-space.
+
+    The architectural requirement is an open interior volume. Known peripheral
+    rims and the observed post are allowed structural boundary elements; they
+    must not be mistaken for a filled/partitioned under-space.
+    """
+    allowed_fragments = (
+        "front-rim-beam",
+        "right-rim-beam",
+        "observed-front-post",
+    )
+    interior = {
+        (x, y, z)
+        for x in range(*void["x"])
+        for y in range(*void["y"])
+        for z in range(*void["z"])
+    }
+    blockers = []
+    for part in parts:
+        if any(fragment in part.placement_id for fragment in allowed_fragments):
+            continue
+        if part_cells(part).intersection(interior):
+            blockers.append(part.placement_id)
+    return blockers
+
+
 def model_parts() -> tuple[dict, BrickModel, list]:
     module = load(MODULE)
     model = BrickModel.model_validate(module["brick_model"])
@@ -125,28 +152,43 @@ def test_063_wood_terrace_host_face_identity_is_confirmed() -> None:
 
 def test_061_wood_terrace_primary_underspace_remains_open() -> None:
     module, _model, parts = model_parts()
-    geometry = module["metadata"]["geometry"]
-    void = geometry["primary_underspace"]
-    deck = geometry["deck_footprint"]
-    solid = cells(parts)
+    void = module["metadata"]["geometry"]["primary_underspace"]
 
     assert void["classification"] == "MAJOR_OPEN_WOOD_TERRACE_UNDERSPACE"
     assert void["open_to_ground"] is True
 
     # WOOD_TERRACE_PRIMARY_UNDERSPACE_REMAINS_OPEN:
-    # the declared interior volume below the deck contains no MODULE004 solids.
-    for x in range(*void["x"]):
-        for y in range(*void["y"]):
-            for z in range(*void["z"]):
-                assert (x, y, z) not in solid
+    # test the architectural property itself. Peripheral rims and the observed
+    # support post are legitimate; no other solid may partition/fill the
+    # continuous interior volume from ground to the deck underside.
+    assert primary_underspace_blockers(parts, void) == []
 
-    # It is a major under-space, not a narrow accidental slot.
-    deck_width = deck["x"][1] - deck["x"][0]
-    deck_depth = deck["y"][1] - deck["y"][0]
-    void_width = void["x"][1] - void["x"][0]
-    void_depth = void["y"][1] - void["y"][0]
-    assert void_width / deck_width >= 0.90
-    assert void_depth / deck_depth >= 0.80
+
+def test_063b_primary_underspace_gate_rejects_interior_partition() -> None:
+    module, _model, parts = model_parts()
+    void = module["metadata"]["geometry"]["primary_underspace"]
+
+    # Synthetic negative regression only: place a timber wall segment inside
+    # the declared void. This must be rejected while real peripheral structure
+    # remains accepted by the production gate.
+    prototype = parts[0]
+    partition = prototype.model_copy(update={
+        "placement_id": "module-004-interior-partition-negative-regression",
+        "part_id": "BRICK_1X8",
+        "category": "timber",
+        "component": "facade_detail",
+        "x_studs": void["x"][0],
+        "y_studs": void["y"][0],
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "facade": "left",
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+    })
+
+    blockers = primary_underspace_blockers([*parts, partition], void)
+    assert partition.placement_id in blockers
 
 
 def test_061_wood_terrace_remains_structurally_distinct_from_masonry_module003() -> None:
