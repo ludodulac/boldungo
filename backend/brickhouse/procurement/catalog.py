@@ -17,8 +17,8 @@ EquivalencePolicy = Literal["bricklink_catalog_item", "exact_catalog_item"]
 
 class PartCrosswalkEntry(BaseModel):
     engine_id: str = Field(min_length=1)
-    bricklink_item_no: str = Field(min_length=1)
-    ldraw_id: str = Field(min_length=1)
+    bricklink_item_no: str | None = Field(default=None, min_length=1)
+    ldraw_id: str | None = Field(default=None, min_length=1)
     rebrickable_part_num: str = Field(min_length=1)
     mapping_status: MappingStatus
     equivalence_policy: EquivalencePolicy
