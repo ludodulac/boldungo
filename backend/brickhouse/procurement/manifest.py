@@ -93,3 +93,14 @@ def generate_canonical_order_package(
         order_lines=order_lines,
         bags=bags,
     )
+
+
+def generate_canonical_order_package_from_bundle(bundle) -> CanonicalOrderPackage:
+    """Create a procurement package directly from a finished BrickExportBundle.
+
+    The bundle must already contain the canonical BagPlan produced by the normal
+    instruction/export pipeline. Procurement never invents or regroups bags here.
+    """
+    if bundle.bag_plan is None:
+        raise ValueError("BrickExportBundle has no BagPlan; procurement package cannot be generated")
+    return generate_canonical_order_package(bundle.brick_model, bundle.bag_plan)
