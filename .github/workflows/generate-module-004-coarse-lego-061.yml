@@ -33,7 +33,7 @@ jobs:
         run: python scripts/build_module_004_wood_terrace.py
 
       - name: Run MODULE 004 targeted tests
-        run: pytest -q tests/test_module_004_wood_terrace_061.py
+        run: pytest -q tests/test_module_004_wood_terrace_061.py tests/scene/test_host_face_identity.py
 
       - name: Commit deterministic generated bundles
         run: |
@@ -44,5 +44,5 @@ jobs:
             echo "Generated bundles already current."
             exit 0
           fi
-          git commit -m "061: regenerate MODULE004 coarse bundle"
+          git commit -m "063: regenerate MODULE004 host-face correction"
           git push origin "HEAD:${GITHUB_REF_NAME}"
