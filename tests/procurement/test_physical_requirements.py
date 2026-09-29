@@ -236,40 +236,6 @@ def test_three_canonical_lines_to_same_physical_pair_become_one_requirement_100(
 
 
 def test_bags_remain_separate_while_master_physical_requirement_aggregates():
-    a = OrderLine(
-        part_id="BRICK_2X4",
-        category="brick",
-        semantic_color="warm stone",
-        quantity=30,
-    )
-    b = OrderLine(
-        part_id="BRICK_2X4",
-        category="brick",
-        semantic_color="slightly darker stone",
-        quantity=70,
-    )
-    package = _package(
-        [a.model_copy(update={"quantity": 60}), b.model_copy(update={"quantity": 40})],
-        bags=[
-            BagOrderManifest(
-                bag_number=1,
-                phases=["Structure"],
-                assembly_step_ids=["s1"],
-                total_parts=30,
-                lines=[a],
-            ),
-            BagOrderManifest(
-                bag_number=2,
-                phases=["Structure"],
-                assembly_step_ids=["s2"],
-                total_parts=70,
-                lines=[b],
-            ),
-        ],
-    )
-
-    # The deliberately different semantic split above is invalid as a canonical
-    # conservation example, so construct a valid 30 + 70 package directly.
     package = _package(
         [
             OrderLine(
