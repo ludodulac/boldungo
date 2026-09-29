@@ -32,7 +32,7 @@ MODULE_VOLUME_ID = "module-004-wood-terrace"
 COMBINED_VOLUME_ID = "module-001-plus-module-002-plus-module-003-plus-module-004"
 
 # Coarse constructive spans selected only after the relational constraints:
-# rear-house adjacency, high-level adjacency to MODULE003, and open under-space.
+# confirmed LEFT-face adjacency, high-level adjacency to MODULE003, and open under-space.
 COARSE_WIDTH_STUDS = 48
 COARSE_DEPTH_STUDS = 18
 RAILING_HEIGHT_PLATES = 12
@@ -122,30 +122,6 @@ def _placement_dims(part: dict) -> tuple[int, int, int]:
     if part["rotation_quarter_turns"] % 2:
         width, length = length, width
     return width, length, height
-
-
-def _rotate_061_rear_hypothesis_to_left_host(
-    part: dict,
-    *,
-    old_x0: int,
-    old_y0: int,
-    host_x: int,
-    new_y0: int,
-) -> None:
-    """Rotate the complete 061 local geometry onto the confirmed LEFT host face.
-
-    The transformation preserves each part ID, subcomponent, Z coordinate and
-    local adjacency. Old +X (along the contradicted REAR host) becomes +Y along
-    the LEFT facade; old +Y (outward) becomes -X outward from that facade.
-    """
-
-    width, length, _height = _placement_dims(part)
-    old_y1 = part["y_studs"] + length
-    part["x_studs"] = host_x - (old_y1 - old_y0)
-    part["y_studs"] = new_y0 + (part["x_studs"] + (old_y1 - old_y0) - host_x)
-    # The preceding expression would use the rewritten x; restore the local
-    # longitudinal coordinate from the original placement instead.
-    # This assignment is intentionally overwritten below from preserved values.
 
 
 def _build_module_004(source: dict) -> tuple[list[dict], dict]:
