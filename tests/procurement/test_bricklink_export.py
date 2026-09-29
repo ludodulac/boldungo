@@ -75,17 +75,17 @@ def test_bricklink_documents_conserve_master_and_numbered_bags():
     assert _items(documents.bags[1].xml) == {("3001", 86): 1, ("3068", 11): 2}
 
 
-def test_wobrick_evidence_cannot_authorize_bricklink_export():
-    with pytest.raises(ValueError, match="unverified_for_route"):
-        generate_bricklink_order_documents(
-            _package(),
-            load_part_crosswalk(),
-            purchase_colors={
-                ("BRICK_2X4", None): "light_bluish_gray",
-                ("TILE_2X2", None): "black",
-            },
-            availability=_availability("wobrick"),
-        )
+def test_bricklink_export_does_not_require_bricklink_availability_evidence():
+    documents = generate_bricklink_order_documents(
+        _package(),
+        load_part_crosswalk(),
+        purchase_colors={
+            ("BRICK_2X4", None): "light_bluish_gray",
+            ("TILE_2X2", None): "black",
+        },
+        availability=_availability("wobrick"),
+    )
+    assert documents.master.total_parts == 5
 
 
 def test_bricklink_export_aggregates_semantic_lines_that_choose_same_physical_color():
