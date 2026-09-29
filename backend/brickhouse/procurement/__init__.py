@@ -32,6 +32,7 @@ from .manifest import (
 )
 from .models import BagOrderManifest, CanonicalOrderPackage, OrderLine
 from .packing import BagPackingSheet, KitPackingDocumentSet, generate_kit_packing_documents
+from .order_flow import get_order_options, prepare_order, prepare_order_zip
 from .readiness import OrderReadinessReport, assess_order_readiness
 from .rebrickable import build_bricklink_catalog_availability_from_rebrickable
 from .supplier_package import (
@@ -78,6 +79,9 @@ __all__ = [
     "generate_canonical_order_package",
     "generate_canonical_order_package_from_bundle",
     "generate_kit_packing_documents",
+    "get_order_options",
+    "prepare_order",
+    "prepare_order_zip",
     "generate_supplier_handoff_package",
     "build_user_order_options",
     "generate_handoff_from_user_order_option",
