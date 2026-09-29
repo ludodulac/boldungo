@@ -229,3 +229,24 @@ mold or reference and require the supplier to report unavailable lines first.
 
 The readiness note deliberately states that document/catalog readiness is not a
 live stock reservation. Live availability remains a separate, stricter gate.
+
+
+## Conservative color resolution
+
+`color_resolution.py` can recover purchase colors from the existing
+`BrickExportBundle.appearance`/Building appearance data, but only when the
+architectural color is already an exact canonical purchase-color key after
+format normalization.
+
+Safe examples include `Light Bluish Gray -> light_bluish_gray` and
+`dark-brown -> dark_brown`.
+
+It deliberately refuses similarity substitutions such as:
+
+- `off_white -> white`;
+- `dark_gray -> dark_bluish_gray`;
+- `slightly darker beige -> tan`.
+
+Missing appearance, window-pane color without explicit evidence, or descriptive
+semantic colors therefore remain unresolved and are emitted in an auditable CSV
+for a later evidence-backed or human color decision.

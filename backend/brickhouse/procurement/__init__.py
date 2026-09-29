@@ -8,6 +8,11 @@ from .availability import (
 from .bricklink import BrickLinkOrderDocuments, generate_bricklink_order_documents
 from .catalog import PartCrosswalk, load_part_crosswalk
 from .colors import ColorCrosswalk, load_color_crosswalk
+from .color_resolution import (
+    PurchaseColorResolutionReport,
+    color_resolution_csv,
+    resolve_purchase_colors_from_appearance,
+)
 from .manifest import (
     generate_canonical_order_package,
     generate_canonical_order_package_from_bundle,
@@ -33,11 +38,13 @@ __all__ = [
     "OrderReadinessReport",
     "PartColorAvailabilityEvidence",
     "PartColorAvailabilityRegistry",
+    "PurchaseColorResolutionReport",
     "PartCrosswalk",
     "SupplierRoute",
     "SupplierHandoffPackage",
     "WobrickOrderDocuments",
     "assess_order_readiness",
+    "color_resolution_csv",
     "generate_bricklink_order_documents",
     "generate_canonical_order_package",
     "generate_canonical_order_package_from_bundle",
@@ -46,5 +53,6 @@ __all__ = [
     "generate_wobrick_order_documents",
     "load_color_crosswalk",
     "load_part_crosswalk",
+    "resolve_purchase_colors_from_appearance",
     "supplier_handoff_zip_bytes",
 ]
