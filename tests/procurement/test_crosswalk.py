@@ -125,6 +125,7 @@ def test_unknown_part_blocks_readiness_even_with_route_evidence():
     crosswalk = PartCrosswalk(entries=[
         PartCrosswalkEntry(
             engine_id="BRICK_2X4", bricklink_item_no="3001", ldraw_id="3001",
+            rebrickable_part_num="3001",
             mapping_status="verified_catalog_identity",
             equivalence_policy="bricklink_catalog_item",
             verification_source="test", ldraw_verification_source="test",
