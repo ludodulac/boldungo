@@ -33,6 +33,7 @@ from .manifest import (
 from .models import BagOrderManifest, CanonicalOrderPackage, OrderLine
 from .packing import BagPackingSheet, KitPackingDocumentSet, generate_kit_packing_documents
 from .readiness import OrderReadinessReport, assess_order_readiness
+from .rebrickable import build_bricklink_catalog_availability_from_rebrickable
 from .supplier_package import (
     SupplierHandoffPackage,
     generate_supplier_handoff_package,
@@ -62,6 +63,7 @@ __all__ = [
     "assess_order_readiness",
     "color_resolution_csv",
     "build_procurement_preparation_report",
+    "build_bricklink_catalog_availability_from_rebrickable",
     "generate_bricklink_order_documents",
     "generate_canonical_order_package",
     "generate_canonical_order_package_from_bundle",

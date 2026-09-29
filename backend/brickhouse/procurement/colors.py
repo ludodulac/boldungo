@@ -19,6 +19,7 @@ class ColorCrosswalkEntry(BaseModel):
     lego_color_name: str = Field(min_length=1)
     lego_color_id: int = Field(gt=0)
     ldraw_color_id: int = Field(ge=0)
+    rebrickable_color_id: int = Field(ge=0)
     gobricks_color_no: str = Field(min_length=3, max_length=3)
     mapping_status: ColorMappingStatus
     verification_source: str = Field(min_length=1)

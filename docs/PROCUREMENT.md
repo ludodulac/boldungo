@@ -280,3 +280,25 @@ The report exposes `DOCUMENT_READY` and `LIVE_ORDER_READY` separately and can
 render a CSV listing the exact blocking line and reason. Thus a user can see
 "off_white is not a canonical purchase color" or "live stock not verified"
 instead of receiving a generic order failure.
+
+
+## Rebrickable catalog verification
+
+The crosswalk now stores Rebrickable part numbers separately from BrickLink and
+LDraw identities. This is necessary for cases such as:
+
+- BrickLink `3023` / LDraw `3023b` / Rebrickable `3023`;
+- BrickLink `3068` / LDraw `3068b` / Rebrickable `3068b`;
+- BrickLink `60603` / LDraw `86210` / Rebrickable `60603`.
+
+The color crosswalk also stores Rebrickable color IDs sourced from the
+Rebrickable color dataset already present in this repository.
+
+`rebrickable.py` can query the v3
+`/lego/parts/{part_num}/colors/` endpoint for only the part types actually used
+by an order. The API key is passed at runtime via the Authorization header and is
+not written into URLs or artifacts. The default verifier spaces requests by
+1.05 seconds to respect Rebrickable's documented throttling guidance.
+
+Positive results create `catalog_supported` evidence for the BrickLink route.
+They deliberately do not create Wobrick or Pick a Brick stock evidence.

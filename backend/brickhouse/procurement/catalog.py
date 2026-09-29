@@ -19,6 +19,7 @@ class PartCrosswalkEntry(BaseModel):
     engine_id: str = Field(min_length=1)
     bricklink_item_no: str = Field(min_length=1)
     ldraw_id: str = Field(min_length=1)
+    rebrickable_part_num: str = Field(min_length=1)
     mapping_status: MappingStatus
     equivalence_policy: EquivalencePolicy
     verification_source: str = Field(min_length=1)
