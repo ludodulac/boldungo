@@ -15,6 +15,9 @@ class OrderReadinessBlocker(BaseModel):
     semantic_color: str | None = None
     purchase_color_key: str | None = None
     reason: str = Field(min_length=1)
+    required_quantity: int | None = Field(default=None, gt=0)
+    available_quantity: int | None = Field(default=None, ge=0)
+    shortage_quantity: int = Field(default=0, ge=0)
 
 
 class OrderReadinessReport(BaseModel):
@@ -23,6 +26,8 @@ class OrderReadinessReport(BaseModel):
     part_identity_resolved_lines: int = Field(ge=0)
     purchase_color_resolved_lines: int = Field(ge=0)
     part_color_verified_lines: int = Field(ge=0)
+    quantity_covered_lines: int = Field(ge=0)
+    shortage_total: int = Field(ge=0)
     require_live_availability: bool = False
     blockers: list[OrderReadinessBlocker]
 
@@ -51,6 +56,8 @@ def assess_order_readiness(
     part_ok = 0
     color_ok = 0
     availability_ok = 0
+    quantity_covered = 0
+    shortage_total = 0
 
     for line in package.order_lines:
         key = (line.part_id, line.semantic_color)
@@ -88,12 +95,10 @@ def assess_order_readiness(
             continue
 
         color_ok += 1
+        evidence = availability.evidence_for(route, line.part_id, color_key)
 
-        if not availability.supports(
-            route,
-            line.part_id,
-            color_key,
-            require_live=require_live_availability,
+        if evidence is None or (
+            require_live_availability and evidence.status != "live_available"
         ):
             blockers.append(
                 OrderReadinessBlocker(
@@ -105,11 +110,45 @@ def assess_order_readiness(
                         if require_live_availability
                         else "part_color_availability_unverified_for_route"
                     ),
+                    required_quantity=line.quantity if require_live_availability else None,
                 )
             )
             continue
 
         availability_ok += 1
+
+        if not require_live_availability:
+            continue
+
+        if evidence.available_quantity is None:
+            blockers.append(
+                OrderReadinessBlocker(
+                    part_id=line.part_id,
+                    semantic_color=line.semantic_color,
+                    purchase_color_key=color_key,
+                    reason="available_quantity_unknown",
+                    required_quantity=line.quantity,
+                )
+            )
+            continue
+
+        if evidence.available_quantity < line.quantity:
+            shortage = line.quantity - evidence.available_quantity
+            shortage_total += shortage
+            blockers.append(
+                OrderReadinessBlocker(
+                    part_id=line.part_id,
+                    semantic_color=line.semantic_color,
+                    purchase_color_key=color_key,
+                    reason="insufficient_available_quantity",
+                    required_quantity=line.quantity,
+                    available_quantity=evidence.available_quantity,
+                    shortage_quantity=shortage,
+                )
+            )
+            continue
+
+        quantity_covered += 1
 
     return OrderReadinessReport(
         route=route,
@@ -117,6 +156,8 @@ def assess_order_readiness(
         part_identity_resolved_lines=part_ok,
         purchase_color_resolved_lines=color_ok,
         part_color_verified_lines=availability_ok,
+        quantity_covered_lines=quantity_covered,
+        shortage_total=shortage_total,
         require_live_availability=require_live_availability,
         blockers=blockers,
     )
