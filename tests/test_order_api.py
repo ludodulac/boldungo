@@ -107,8 +107,7 @@ def _install_catalog_evidence(monkeypatch):
     )
 
 
-def test_order_options_http_uses_backend_totals_and_keeps_live_distinct(monkeypatch):
-    _install_catalog_evidence(monkeypatch)
+def test_order_options_http_uses_backend_totals_and_keeps_live_distinct():
     bundle = _bundle()
 
     response = client.post(
@@ -125,8 +124,7 @@ def test_order_options_http_uses_backend_totals_and_keeps_live_distinct(monkeypa
     assert all(option["live_order_ready"] is False for option in payload["options"])
 
 
-def test_bricklink_document_ready_downloads_nonempty_backend_zip(monkeypatch):
-    _install_catalog_evidence(monkeypatch)
+def test_bricklink_document_ready_downloads_nonempty_backend_zip_without_stock_evidence():
     bundle = _bundle()
 
     response = client.post(
@@ -146,8 +144,7 @@ def test_bricklink_document_ready_downloads_nonempty_backend_zip(monkeypatch):
         assert "bags/BAG_03_BRICKLINK.xml" in names
 
 
-def test_wobrick_document_ready_downloads_nonempty_backend_zip(monkeypatch):
-    _install_catalog_evidence(monkeypatch)
+def test_wobrick_document_ready_downloads_nonempty_backend_zip_without_stock_evidence():
     bundle = _bundle()
 
     response = client.post(
@@ -165,8 +162,7 @@ def test_wobrick_document_ready_downloads_nonempty_backend_zip(monkeypatch):
         assert "bags/BAG_03_WOBRICK.csv" in names
 
 
-def test_document_ready_without_live_stock_still_downloads(monkeypatch):
-    _install_catalog_evidence(monkeypatch)
+def test_document_ready_without_live_stock_still_downloads():
     bundle = _bundle()
     options = client.post(
         "/api/v1/order-options",
@@ -185,8 +181,7 @@ def test_document_ready_without_live_stock_still_downloads(monkeypatch):
     assert len(response.content) > 0
 
 
-def test_unresolved_color_blocks_zip_and_returns_human_message(monkeypatch):
-    _install_catalog_evidence(monkeypatch)
+def test_unresolved_color_blocks_zip_and_returns_human_message():
     bundle = _bundle("off_white")
 
     options_response = client.post(
@@ -211,8 +206,7 @@ def test_unresolved_color_blocks_zip_and_returns_human_message(monkeypatch):
     assert "finalisée" in download.json()["detail"]
 
 
-def test_bundle_without_bag_plan_is_human_blocked_and_no_zip(monkeypatch):
-    _install_catalog_evidence(monkeypatch)
+def test_bundle_without_bag_plan_is_human_blocked_and_no_zip():
     bundle = _bundle(with_bags=False)
 
     options = client.post(
