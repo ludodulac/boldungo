@@ -50,12 +50,13 @@ def _module1(part: dict) -> bool:
     return part["placement_id"].startswith("module-001-b57-")
 
 
-def test_module005_has_12_constructed_openings() -> None:
-    data = module5()
-    assert data["opening_count"] == 12
-    assert len(data["opening_rasters"]) == 12
-    assert {item["opening_id"] for item in data["opening_rasters"]} == {
-        f"OPENING_{index:03d}" for index in range(1, 13)
+def test_module005_has_11_constructed_openings() -> None:
+    opening = rasters()
+    assert module5()["opening_count"] == 11
+    assert set(opening) == {
+        "OPENING_001", "OPENING_002", "OPENING_003", "OPENING_004",
+        "OPENING_005", "OPENING_006", "OPENING_007", "OPENING_009",
+        "OPENING_010", "OPENING_011", "OPENING_012",
     }
 
 
@@ -66,52 +67,78 @@ def test_ambiguous_b10_is_not_constructed() -> None:
     assert "OPENING_CANDIDATE_B10" not in rasters()
 
 
-def test_face_a_has_two_persistent_opening_centerlines() -> None:
+def test_opening_006_reaches_architectural_base() -> None:
+    opening = rasters()["OPENING_006"]
+    grid = opening["wall_local_grid"]
+    assert grid["z_bricks"] == 0
+    assert opening["bottom_photo_status"] == "OBSERVED_TO_BASE"
+
+
+def test_opening_005_is_short_and_elevated_above_base() -> None:
     opening = rasters()
-
-    def doubled_center(opening_id: str) -> int:
-        grid = opening[opening_id]["wall_local_grid"]
-        return 2 * grid["x_studs"] + grid["width_studs"]
-
-    assert {doubled_center(i) for i in ("OPENING_001", "OPENING_003", "OPENING_005")} == {29}
-    assert {doubled_center(i) for i in ("OPENING_002", "OPENING_004", "OPENING_006")} == {81}
-
-
-def test_face_a_low_openings_preserve_different_widths() -> None:
-    opening = rasters()
-    width = lambda opening_id: opening[opening_id]["wall_local_grid"]["width_studs"]
-    assert width("OPENING_005") < width("OPENING_001")
-    assert width("OPENING_006") > width("OPENING_002")
-    assert width("OPENING_005") != width("OPENING_006")
+    five = opening["OPENING_005"]
+    five_grid = five["wall_local_grid"]
+    three_grid = opening["OPENING_003"]["wall_local_grid"]
+    assert five["height_class"] == "SHORT"
+    assert five["bottom_relation"] == "ELEVATED_ABOVE_ARCHITECTURAL_BASE"
+    assert five_grid["z_bricks"] > 0
+    assert five_grid["height_bricks"] < three_grid["height_bricks"]
+    assert 2 * five_grid["x_studs"] + five_grid["width_studs"] == 29
 
 
-def test_face_b_upper_openings_share_architectural_level() -> None:
-    opening = rasters()
-    seven = opening["OPENING_007"]["wall_local_grid"]
-    eight = opening["OPENING_008"]["wall_local_grid"]
-    assert seven["z_bricks"] == eight["z_bricks"]
-    assert seven["height_bricks"] == eight["height_bricks"]
+def test_face_b_has_one_certain_upper_opening() -> None:
+    data = module5()["constraint_translation"]
+    assert data["face_b_certain_upper_openings"] == ["OPENING_007"]
+    assert data["face_b_certain_low_openings"] == ["OPENING_009"]
 
 
-def test_glass_block_opening_009_exists_as_opening_entity() -> None:
+def test_rejected_opening_008_is_not_constructed_on_face_b() -> None:
+    data = module5()
+    rejected = data["rejected_openings"]["OPENING_008"]
+    assert rejected["status"] == "REJECTED_AS_FACE_B_OPENING"
+    assert rejected["constructed"] is False
+    assert rejected["relocated"] is False
+    assert "OPENING_008" not in rasters()
+
+
+def test_opening_009_terrain_occlusion_does_not_certify_sill() -> None:
     opening = rasters()["OPENING_009"]
-    assert opening["type"] == "GLASS_BLOCK_OPENING"
-    assert opening["provenance"]["identity_face_order_type"] == "PHOTO_CONSTRAINED_070"
+    assert opening["terrain_occlusion_approximation"] == "CONSTRUCTIVE_APPROXIMATION_DUE_TO_TERRAIN_OCCLUSION"
+    assert opening["exact_sill_photo_status"] == "NOT_OBSERVABLE"
+    assert opening["visible_terrain_edge_is_certified_sill"] is False
 
 
-def test_face_c_opening_011_retains_occlusion_approximation_provenance() -> None:
+def test_opening_011_extends_toward_circulation_level() -> None:
     opening = rasters()["OPENING_011"]
-    assert opening["occlusion_approximation"] == "CONSTRUCTIVE_APPROXIMATION_DUE_TO_OCCLUSION"
-    assert set(opening["unknown_photo_components"]) == {"BOTTOM", "ACTUAL_HEIGHT"}
-    assert opening["photo_relative_range"]["bottom"] is None
-    assert opening["provenance"]["exact_grid_selection"] == "CONSTRUCTIVE_APPROXIMATION_072"
+    grid = opening["wall_local_grid"]
+    bottom_plates = grid["z_bricks"] * 3
+    assert opening["type"] == "PROBABLE_DOOR_OR_TALL_ACCESS_OPENING"
+    assert opening["bottom_relation"] == "TOWARD_MODULE003_CIRCULATION_LEVEL"
+    assert opening["approximation"] == "CONSTRUCTIVE_APPROXIMATION_WITH_PHOTO_SUPPORTED_CONTINUITY"
+    assert abs(bottom_plates - opening["module003_circulation_level_plates"]) <= 1
 
 
-def test_face_c_opening_012_does_not_use_visible_occluder_as_certified_sill() -> None:
-    opening = rasters()["OPENING_012"]
-    assert opening["visible_occluder_is_certified_sill"] is False
-    assert opening["occlusion_approximation"] == "CONSTRUCTIVE_APPROXIMATION_DUE_TO_OCCLUSION"
-    assert "ACTUAL_BOTTOM" in opening["unknown_photo_components"]
+def test_opening_011_exact_sill_remains_uncertain() -> None:
+    opening = rasters()["OPENING_011"]
+    assert opening["exact_sill_photo_status"] == "NOT_OBSERVABLE"
+    assert opening["exact_door_geometry_observed"] is False
+    assert "EXACT_SILL" in opening["unknown_photo_components"]
+
+
+def test_untargeted_opening_rasters_are_unchanged_from_072() -> None:
+    opening = rasters()
+    expected = {
+        "OPENING_001": (10, 32, 9, 11),
+        "OPENING_002": (35, 32, 11, 11),
+        "OPENING_003": (10, 18, 9, 10),
+        "OPENING_004": (35, 18, 11, 10),
+        "OPENING_007": (40, 28, 9, 9),
+        "OPENING_010": (40, 32, 7, 10),
+        "OPENING_012": (9, 15, 10, 12),
+    }
+    for opening_id, values in expected.items():
+        grid = opening[opening_id]["wall_local_grid"]
+        assert (grid["x_studs"], grid["z_bricks"], grid["width_studs"], grid["height_bricks"]) == values
 
 
 def test_openings_are_negative_space_not_decorative_overlays() -> None:
@@ -119,10 +146,11 @@ def test_openings_are_negative_space_not_decorative_overlays() -> None:
     data = output["metadata"]["module_005"]
     assert data["negative_space"]["implementation"] == "REAL_WALL_MATERIAL_REMOVAL_AND_RETILING"
     assert data["negative_space"]["decorative_overlay"] is False
+    assert data["opening_surrounds"]["constructed_in_074"] is False
+    assert data["terrain"]["constructed_in_074"] is False
     assert data["module_005_piece_count"] == 0
 
     parts = output["brick_model"]["parts"]
-    opening = rasters()
     frame = {
         "front_x0": 24,
         "front_y": 1,
@@ -131,7 +159,7 @@ def test_openings_are_negative_space_not_decorative_overlays() -> None:
         "side_y0": 2,
     }
     occupied = _cells([part for part in parts if _module1(part) and part["z_plates"] < 138])
-    for item in opening.values():
+    for item in rasters().values():
         grid = item["wall_local_grid"]
         z0 = grid["z_bricks"] * 3
         z1 = (grid["z_bricks"] + grid["height_bricks"]) * 3
@@ -152,7 +180,7 @@ def test_module002_003_004_geometry_unchanged() -> None:
     assert output_other == source_other
 
 
-def test_module001_outside_openings_preserved_as_occupied_geometry() -> None:
+def test_module001_outside_current_opening_voids_preserved() -> None:
     source = load(SOURCE)
     output = load(OUTPUT)
     before = _cells([part for part in source["brick_model"]["parts"] if _module1(part)])

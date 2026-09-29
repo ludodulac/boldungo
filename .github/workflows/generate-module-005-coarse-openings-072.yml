@@ -1,4 +1,4 @@
-name: Generate MODULE 005 coarse openings 072
+name: Generate MODULE 005 targeted recovery 074
 
 on:
   push:
@@ -29,10 +29,10 @@ jobs:
           python -m pip install -e ".[dev]"
           python -m pip install -e "./lego_geometry_engine[dev]"
 
-      - name: Generate MODULE 005 combined viewer bundle
+      - name: Generate MODULE 005 corrected combined viewer bundle
         run: python scripts/build_module_005_openings.py
 
-      - name: Run MODULE 005 targeted tests
+      - name: Run MODULE 005 targeted recovery tests
         run: pytest -q tests/test_module_005_openings_072.py
 
       - name: Commit deterministic generated bundle
@@ -44,5 +44,5 @@ jobs:
             echo "Generated bundle already current."
             exit 0
           fi
-          git commit -m "072: regenerate MODULE005 coarse openings"
+          git commit -m "074: regenerate MODULE005 targeted recovery"
           git push origin "HEAD:${GITHUB_REF_NAME}"

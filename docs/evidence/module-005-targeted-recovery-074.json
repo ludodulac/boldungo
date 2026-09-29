@@ -1,0 +1,67 @@
+{
+  "schema": "boldungo.module005.targeted_recovery.v1",
+  "mission": "BOLDUNGO-074-MODULE005-TARGETED-HUMAN-FAIL-RECOVERY",
+  "technical_base": {
+    "pr": 814,
+    "branch": "feat/module-005-coarse-openings-072",
+    "start_head": "8798b27263f831eaa872edbd5ed8ee1d4ad4f49c",
+    "source_072_status": "TECHNICALLY_GREEN_HUMAN_VISUAL_FAIL"
+  },
+  "blind_recovery_source": "BOLDUNGO-073-MODULE005-HUMAN-FAIL-BLIND-RECOVERY",
+  "corrections": {
+    "OPENING_006": {
+      "photo_bottom_status": "OBSERVED_TO_BASE",
+      "constructive_action": "VOID_REACHES_WALL_BASE",
+      "large_masonry_band_below": "REJECTED"
+    },
+    "OPENING_005": {
+      "height_class": "SHORT",
+      "width_class": "NARROW",
+      "bottom_relation": "ELEVATED_ABOVE_BASE",
+      "centerline_family": "LEFT_FACE_A_COLUMN_PRESERVED"
+    },
+    "OPENING_008": {
+      "status": "REJECTED_AS_FACE_B_OPENING",
+      "constructed": false,
+      "relocated": false
+    },
+    "OPENING_009": {
+      "status": "CONFIRMED_GLASS_BLOCK_OPENING",
+      "visible_portion": "TRUNCATED_BY_RISING_TERRAIN",
+      "exact_sill": "NOT_OBSERVABLE",
+      "constructive_bottom": "CONSTRUCTIVE_APPROXIMATION_DUE_TO_TERRAIN_OCCLUSION",
+      "terrain_built": false
+    },
+    "OPENING_011": {
+      "type": "PROBABLE_DOOR_OR_TALL_ACCESS_OPENING",
+      "continuity": "SUPPORTED_PROBABLE",
+      "bottom_relation": "PROBABLY_TO_MODULE003_CIRCULATION_LEVEL",
+      "exact_sill": "NOT_OBSERVABLE",
+      "exact_door_geometry_observed": false,
+      "constructive_bottom": "CONSTRUCTIVE_APPROXIMATION_WITH_PHOTO_SUPPORTED_CONTINUITY"
+    }
+  },
+  "excluded_from_074": [
+    "opening_surround_geometry",
+    "terrain",
+    "sidewalk",
+    "detailed_joinery",
+    "MODULE001 global scale changes",
+    "MODULE002",
+    "MODULE003",
+    "MODULE004"
+  ],
+  "semantic_requirements": [
+    "MODULE005_HAS_11_CONSTRUCTED_OPENINGS",
+    "AMBIGUOUS_B10_IS_NOT_CONSTRUCTED",
+    "OPENING_006_REACHES_ARCHITECTURAL_BASE",
+    "OPENING_005_IS_SHORT_AND_ELEVATED_ABOVE_BASE",
+    "FACE_B_HAS_ONE_CERTAIN_UPPER_OPENING",
+    "REJECTED_OPENING_008_IS_NOT_CONSTRUCTED_ON_FACE_B",
+    "OPENING_009_TERRAIN_OCCLUSION_DOES_NOT_CERTIFY_SILL",
+    "OPENING_011_EXTENDS_TOWARD_CIRCULATION_LEVEL",
+    "OPENING_011_EXACT_SILL_REMAINS_UNCERTAIN",
+    "OPENINGS_ARE_NEGATIVE_SPACE_NOT_DECORATIVE_OVERLAYS",
+    "MODULE002_003_004_GEOMETRY_UNCHANGED"
+  ]
+}

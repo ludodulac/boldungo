@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Build MODULE005 as true negative-space openings cut into existing MODULE001 walls.
+"""Build MODULE005 true negative-space openings in the frozen MODULE001 walls.
 
-Mission 072 translates the accepted 070 opening identities and 071 relative
-geometry onto the frozen MODULE001 wall grid. It does not re-infer architecture.
-Exact brick-grid coordinates selected inside accepted relative ranges are
-constructive approximations and remain labelled as such.
+Mission 074 applies only the accepted blind-recovery corrections from 073 to
+the technically green 072 state. Architecture is not re-inferred here.
+Photographic constraints remain distinct from exact LEGO grid choices.
 """
 from __future__ import annotations
 
@@ -21,7 +20,7 @@ COMBINED_OUT = ROOT / "frontend" / "module-001-plus-module-002-plus-module-003-p
 
 BUILDING_ID = "real-house-progressive"
 COMBINED_VOLUME_ID = "module-001-plus-module-002-plus-module-003-plus-module-004-plus-module-005"
-WALL_BRICK_COURSES = 46  # z=0..137; existing Z138/Z139 plate closure remains untouched.
+WALL_BRICK_COURSES = 46  # z=0..137; existing Z138/Z139 closure remains untouched.
 
 FACE_MAPPING = {
     "FACE_A": "front",
@@ -38,23 +37,55 @@ PART_DIMS = {
     "BRICK_1X8": (1, 8, 3),
 }
 
-# Accepted 071 ranges resolved jointly, not as twelve independent rectangles.
-# x_studs is wall-local. z_bricks uses standard three-plate wall courses.
+# Accepted 070/071 map with only the targeted 073 recovery applied:
+# - 006 reaches architectural base,
+# - 005 is short and elevated,
+# - 008 is rejected from FACE_B and not relocated,
+# - 009 sill remains terrain-occlusion-uncertain,
+# - 011 extends toward MODULE003 circulation level with uncertain exact sill.
 OPENINGS = {
     "OPENING_001": {"face": "FACE_A", "type": "WINDOW", "x_studs": 10, "z_bricks": 32, "width_studs": 9, "height_bricks": 11},
     "OPENING_002": {"face": "FACE_A", "type": "WINDOW", "x_studs": 35, "z_bricks": 32, "width_studs": 11, "height_bricks": 11},
     "OPENING_003": {"face": "FACE_A", "type": "WINDOW", "x_studs": 10, "z_bricks": 18, "width_studs": 9, "height_bricks": 10},
     "OPENING_004": {"face": "FACE_A", "type": "WINDOW", "x_studs": 35, "z_bricks": 18, "width_studs": 11, "height_bricks": 10},
-    "OPENING_005": {"face": "FACE_A", "type": "SMALL_LOW_OPENING", "x_studs": 12, "z_bricks": 3, "width_studs": 5, "height_bricks": 9},
-    "OPENING_006": {"face": "FACE_A", "type": "LARGE_GLAZED_OPENING", "x_studs": 34, "z_bricks": 2, "width_studs": 13, "height_bricks": 12},
+    "OPENING_005": {
+        "face": "FACE_A", "type": "SMALL_LOW_OPENING",
+        "x_studs": 12, "z_bricks": 8, "width_studs": 5, "height_bricks": 6,
+        "height_class": "SHORT",
+        "bottom_relation": "ELEVATED_ABOVE_ARCHITECTURAL_BASE",
+        "recovery_status": "PHOTO_CONSTRAINED_073",
+    },
+    "OPENING_006": {
+        "face": "FACE_A", "type": "LARGE_GLAZED_OPENING",
+        "x_studs": 34, "z_bricks": 0, "width_studs": 13, "height_bricks": 14,
+        "bottom_photo_status": "OBSERVED_TO_BASE",
+        "recovery_status": "PHOTO_CONSTRAINED_073",
+    },
     "OPENING_007": {"face": "FACE_B", "type": "WINDOW", "x_studs": 40, "z_bricks": 28, "width_studs": 9, "height_bricks": 9},
-    "OPENING_008": {"face": "FACE_B", "type": "WINDOW", "x_studs": 58, "z_bricks": 28, "width_studs": 8, "height_bricks": 9},
-    "OPENING_009": {"face": "FACE_B", "type": "GLASS_BLOCK_OPENING", "x_studs": 44, "z_bricks": 6, "width_studs": 9, "height_bricks": 9},
+    "OPENING_009": {
+        "face": "FACE_B", "type": "GLASS_BLOCK_OPENING",
+        "x_studs": 44, "z_bricks": 2, "width_studs": 9, "height_bricks": 13,
+        "terrain_occlusion_approximation": "CONSTRUCTIVE_APPROXIMATION_DUE_TO_TERRAIN_OCCLUSION",
+        "exact_sill_photo_status": "NOT_OBSERVABLE",
+        "visible_terrain_edge_is_certified_sill": False,
+        "recovery_status": "PHOTO_CONSTRAINED_073",
+    },
     "OPENING_010": {"face": "FACE_C", "type": "WINDOW", "x_studs": 40, "z_bricks": 32, "width_studs": 7, "height_bricks": 10},
     "OPENING_011": {
-        "face": "FACE_C", "type": "UNKNOWN_OPENING", "x_studs": 40, "z_bricks": 18, "width_studs": 7, "height_bricks": 9,
-        "approximation": "CONSTRUCTIVE_APPROXIMATION_DUE_TO_OCCLUSION",
-        "unknown_photo_components": ["BOTTOM", "ACTUAL_HEIGHT"],
+        "face": "FACE_C",
+        "type": "PROBABLE_DOOR_OR_TALL_ACCESS_OPENING",
+        "x_studs": 40,
+        "z_bricks": 16,
+        "width_studs": 7,
+        "height_bricks": 11,
+        "approximation": "CONSTRUCTIVE_APPROXIMATION_WITH_PHOTO_SUPPORTED_CONTINUITY",
+        "exact_sill_photo_status": "NOT_OBSERVABLE",
+        "bottom_relation": "TOWARD_MODULE003_CIRCULATION_LEVEL",
+        "module003_circulation_level_plates": 49,
+        "constructive_bottom_plates": 48,
+        "exact_door_geometry_observed": False,
+        "unknown_photo_components": ["EXACT_SILL", "EXACT_HEIGHT", "EXACT_DOOR_GEOMETRY"],
+        "recovery_status": "PHOTO_SUPPORTED_CONTINUITY_073",
     },
     "OPENING_012": {
         "face": "FACE_C", "type": "LARGE_GLAZED_OPENING", "x_studs": 9, "z_bricks": 15, "width_studs": 10, "height_bricks": 12,
@@ -64,18 +95,27 @@ OPENINGS = {
     },
 }
 
+REJECTED_OPENINGS = {
+    "OPENING_008": {
+        "previous_face": "FACE_B",
+        "status": "REJECTED_AS_FACE_B_OPENING",
+        "constructed": False,
+        "relocated": False,
+        "source": "BOLDUNGO-073-MODULE005-HUMAN-FAIL-BLIND-RECOVERY",
+    },
+}
+
 RELATIVE_RANGES = {
     "OPENING_001": {"left": [0.16, 0.20], "right": [0.32, 0.36], "bottom": [0.66, 0.72], "top": [0.90, 0.95]},
     "OPENING_002": {"left": [0.60, 0.64], "right": [0.78, 0.82], "bottom": [0.67, 0.73], "top": [0.91, 0.96]},
     "OPENING_003": {"left": [0.15, 0.19], "right": [0.31, 0.35], "bottom": [0.36, 0.42], "top": [0.56, 0.62]},
     "OPENING_004": {"left": [0.59, 0.63], "right": [0.79, 0.83], "bottom": [0.35, 0.41], "top": [0.57, 0.63]},
-    "OPENING_005": {"left": [0.18, 0.22], "right": [0.28, 0.32], "bottom": [0.05, 0.10], "top": [0.22, 0.28]},
-    "OPENING_006": {"left": [0.58, 0.62], "right": [0.82, 0.86], "bottom": [0.02, 0.08], "top": [0.25, 0.32]},
+    "OPENING_005": {"status": "SUPERSEDED_BY_073_SHORT_ELEVATED_RECOVERY", "top_relation": "APPROX_COMPARABLE_TO_OPENING_006"},
+    "OPENING_006": {"bottom": "OBSERVED_TO_BASE_073", "top": "PRESERVE_072_COARSE_HEAD_LEVEL"},
     "OPENING_007": {"left": [0.55, 0.65], "right": [0.68, 0.77], "bottom": [0.56, 0.65], "top": [0.75, 0.84]},
-    "OPENING_008": {"left": [0.82, 0.90], "right": [0.93, 1.00], "bottom": [0.52, 0.62], "top": [0.70, 0.81]},
-    "OPENING_009": {"left": [0.62, 0.70], "right": [0.73, 0.82], "bottom": [0.10, 0.18], "top": [0.25, 0.35]},
+    "OPENING_009": {"bottom": "NOT_OBSERVABLE_DUE_TO_RISING_TERRAIN_073", "visible_portion": "TRUNCATED_BY_RISING_TERRAIN"},
     "OPENING_010": {"left": [0.07, 0.12], "right": [0.19, 0.24], "bottom": [0.64, 0.71], "top": [0.85, 0.92]},
-    "OPENING_011": {"left": [0.08, 0.14], "right": [0.17, 0.24], "bottom": None, "top": [0.51, 0.62]},
+    "OPENING_011": {"bottom": "PROBABLY_TO_CIRCULATION_LEVEL_073", "continuity": "SUPPORTED_PROBABLE", "exact_sill": "NOT_OBSERVABLE"},
     "OPENING_012": {"left": [0.59, 0.65], "right": [0.77, 0.84], "bottom": [0.27, 0.42], "top": [0.52, 0.62]},
 }
 
@@ -205,7 +245,7 @@ def _emit_wall(face_label: str, frame: dict) -> list[dict]:
 
 def _world_opening_cells(frame: dict) -> set[tuple[int, int, int]]:
     blocked: set[tuple[int, int, int]] = set()
-    for opening_id, data in OPENINGS.items():
+    for data in OPENINGS.values():
         facade = FACE_MAPPING[data["face"]]
         z0 = data["z_bricks"] * 3
         z1 = (data["z_bricks"] + data["height_bricks"]) * 3
@@ -231,23 +271,36 @@ def _opening_metadata(frame: dict) -> list[dict]:
             "face_label": data["face"],
             "host_facade": facade,
             "type": data["type"],
-            "photo_relative_range": RELATIVE_RANGES[opening_id],
+            "photo_relative_constraint": RELATIVE_RANGES[opening_id],
             "wall_local_grid": {
                 "x_studs": data["x_studs"],
                 "z_bricks": data["z_bricks"],
                 "width_studs": data["width_studs"],
                 "height_bricks": data["height_bricks"],
-                "status": "CONSTRUCTIVE_APPROXIMATION_WITHIN_ACCEPTED_071_CONSTRAINT_NETWORK",
+                "status": "CONSTRUCTIVE_APPROXIMATION_074",
             },
             "provenance": {
-                "identity_face_order_type": "PHOTO_CONSTRAINED_070",
-                "relative_geometry": "PHOTO_CONSTRAINED_RANGE_071",
-                "exact_grid_selection": "CONSTRUCTIVE_APPROXIMATION_072",
+                "base_identity": "PHOTO_CONSTRAINED_070",
+                "base_relative_geometry": "PHOTO_CONSTRAINED_071",
+                "targeted_recovery": data.get("recovery_status"),
+                "exact_grid_selection": "CONSTRUCTIVE_APPROXIMATION_074",
             },
         }
-        if "approximation" in data:
-            item["occlusion_approximation"] = data["approximation"]
-            item["unknown_photo_components"] = data["unknown_photo_components"]
+        for key in (
+            "height_class",
+            "bottom_relation",
+            "bottom_photo_status",
+            "terrain_occlusion_approximation",
+            "exact_sill_photo_status",
+            "visible_terrain_edge_is_certified_sill",
+            "approximation",
+            "module003_circulation_level_plates",
+            "constructive_bottom_plates",
+            "exact_door_geometry_observed",
+            "unknown_photo_components",
+        ):
+            if key in data:
+                item[key] = data[key]
         if opening_id == "OPENING_012":
             item["visible_occluder_is_certified_sill"] = False
         items.append(item)
@@ -289,7 +342,8 @@ def main() -> None:
 
     module5 = {
         "module_id": "MODULE_005_OPENINGS",
-        "mission": "BOLDUNGO-072-MODULE005-COARSE-LEGO-OPENINGS",
+        "mission": "BOLDUNGO-074-MODULE005-TARGETED-HUMAN-FAIL-RECOVERY",
+        "recovery_source": "BOLDUNGO-073-MODULE005-HUMAN-FAIL-BLIND-RECOVERY",
         "structure_type": "NEGATIVE_SPACE_OPENINGS_CUT_IN_EXISTING_MODULE001_WALLS",
         "face_mapping": FACE_MAPPING,
         "opening_count": len(OPENINGS),
@@ -297,15 +351,19 @@ def main() -> None:
             "status": "AMBIGUOUS_NOT_CONSTRUCTED",
             "constructed": False,
         },
+        "rejected_openings": REJECTED_OPENINGS,
         "opening_rasters": _opening_metadata(frame),
         "constraint_translation": {
-            "policy": "CONSTRAINT_NETWORK_BEFORE_INDEPENDENT_PLACEMENT",
+            "policy": "TARGETED_073_RECOVERY_ONLY",
             "face_a_centerlines": {
                 "left": ["OPENING_001", "OPENING_003", "OPENING_005"],
                 "right": ["OPENING_002", "OPENING_004", "OPENING_006"],
             },
-            "face_b_upper_level": ["OPENING_007", "OPENING_008"],
-            "face_c_occlusion_approximations": ["OPENING_011", "OPENING_012"],
+            "face_b_certain_upper_openings": ["OPENING_007"],
+            "face_b_certain_low_openings": ["OPENING_009"],
+            "face_b_rejected": ["OPENING_008"],
+            "opening_009_terrain_rule": "TERRAIN_OCCLUSION_DOES_NOT_CERTIFY_SILL",
+            "opening_011_continuity": "PHOTO_SUPPORTED_PROBABLE_TO_MODULE003_CIRCULATION_LEVEL",
             "ground_slope_is_not_opening_level": True,
         },
         "negative_space": {
@@ -313,14 +371,25 @@ def main() -> None:
             "decorative_overlay": False,
             "blocked_wall_cells": len(blocked),
         },
+        "opening_surrounds": {
+            "observed": True,
+            "different_appearance": True,
+            "relief_observed": "AMBIGUOUS",
+            "constructed_in_074": False,
+            "policy": "STRUCTURAL_VOID_FIRST",
+        },
+        "terrain": {
+            "constructed_in_074": False,
+        },
         "preservation": {
-            "module_001_outside_openings": "CELL_OCCUPANCY_IDENTICAL",
+            "module_001_outside_targeted_areas": "OCCUPIED_GEOMETRY_PRESERVED",
+            "untargeted_opening_rasters": ["OPENING_001", "OPENING_002", "OPENING_003", "OPENING_004", "OPENING_007", "OPENING_010", "OPENING_012"],
             "module_002": "BYTE_EQUIVALENT_PART_RECORDS",
             "module_003": "BYTE_EQUIVALENT_PART_RECORDS",
             "module_004": "BYTE_EQUIVALENT_PART_RECORDS",
         },
         "module_005_piece_count": 0,
-        "module_005_piece_count_note": "MODULE005 is negative-space geometry: it removes/resolves MODULE001 wall material and adds no standalone decorative pieces.",
+        "module_005_piece_count_note": "MODULE005 remains negative-space geometry and adds no decorative surround or terrain parts.",
         "module_001_piece_count_before": len(module1_before),
         "module_001_piece_count_after": len(module1_after),
         "replaced_module_001_lower_wall_parts_before": len(removed),
@@ -330,7 +399,7 @@ def main() -> None:
     metadata = {
         **source.get("metadata", {}),
         "module_id": "MODULE_001_PLUS_MODULE_002_PLUS_MODULE_003_PLUS_MODULE_004_PLUS_MODULE_005",
-        "mission_module_005": "BOLDUNGO-072-MODULE005-COARSE-LEGO-OPENINGS",
+        "mission_module_005": "BOLDUNGO-074-MODULE005-TARGETED-HUMAN-FAIL-RECOVERY",
         "source_bundle_module_001_002_003_004": SOURCE.name,
         "source_piece_count": len(source_parts),
         "combined_piece_count": len(combined_parts),
@@ -340,22 +409,28 @@ def main() -> None:
     issues = [
         *source.get("fidelity_issues", []),
         {
-            "code": "MODULE_005_COARSE_OPENING_GRID_APPROXIMATION",
+            "code": "MODULE_005_TARGETED_RECOVERY_GRID_APPROXIMATION",
             "severity": "info",
             "object_id": COMBINED_VOLUME_ID,
-            "message": "Exact stud/course selections are constructive approximations chosen inside the accepted 071 relative constraint network.",
+            "message": "074 changes only the four sectors recovered by blind audit 073; exact grid choices remain constructive approximations.",
         },
         {
-            "code": "MODULE_005_OPENING_011_OCCLUDED_BOTTOM_UNKNOWN",
+            "code": "MODULE_005_OPENING_009_TERRAIN_OCCLUDED_SILL",
+            "severity": "info",
+            "object_id": "OPENING_009",
+            "message": "The rising terrain truncates the visible lower portion; exact architectural sill remains unobserved and terrain is not built in 074.",
+        },
+        {
+            "code": "MODULE_005_OPENING_011_EXACT_SILL_UNCERTAIN",
             "severity": "info",
             "object_id": "OPENING_011",
-            "message": "Bottom and actual height are photographically unresolved; the coarse rectangle is explicitly constructive.",
+            "message": "Photo fragments support continuity toward circulation level, but exact sill and exact door geometry remain unobserved.",
         },
         {
             "code": "MODULE_005_OPENING_012_OCCLUDED_BOTTOM_UNKNOWN",
             "severity": "info",
             "object_id": "OPENING_012",
-            "message": "Terrace/railing occlusion does not certify the visible cutoff as the opening sill; the coarse bottom is constructive.",
+            "message": "Terrace/railing occlusion does not certify the visible cutoff as the opening sill; 072 coarse placement is preserved.",
         },
     ]
 
