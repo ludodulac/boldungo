@@ -208,3 +208,24 @@ evidence cannot authorize a Wobrick document.
 This creates a safe upload document but does not claim current stock. A separate
 live-availability check is still required before Boldüngo can promise that a
 single supplier can fulfill every line at that moment.
+
+
+## Supplier handoff ZIP
+
+`supplier_package.py` assembles the validated route-specific documents into one
+deterministic handoff set and ZIP. A ready package contains at least:
+
+- `00_READINESS.txt` with `UNRESOLVED_LINES=0`;
+- French and English supplier request messages;
+- master picking CSV;
+- bag labels;
+- exact reconciliation CSV;
+- one picking CSV per numbered bag;
+- the route-specific master upload file;
+- one route-specific upload file per bag.
+
+The supplier messages explicitly forbid automatic substitutions of part, color,
+mold or reference and require the supplier to report unavailable lines first.
+
+The readiness note deliberately states that document/catalog readiness is not a
+live stock reservation. Live availability remains a separate, stricter gate.
