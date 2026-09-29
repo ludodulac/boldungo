@@ -29,8 +29,8 @@ def test_two_human_supplier_cards_and_readiness_states_are_present():
     assert "Commander via Wobrick" in JS
     assert "Commande prête" in JS
     assert "Dossier de commande prêt" in JS
-    assert "Disponibilité vérifiée" in JS
-    assert "Disponibilité à vérifier chez le fournisseur" in JS
+    assert "Disponibilité vérifiée chez le fournisseur" in JS
+    assert "La disponibilité sera vérifiée chez le fournisseur" in JS
     assert "Commande à finaliser" in JS
 
 
