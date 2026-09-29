@@ -23,10 +23,11 @@ class PartColorAvailabilityEvidence(BaseModel):
     color_key: str = Field(min_length=1)
     status: AvailabilityStatus
     source: str = Field(min_length=1)
+    available_quantity: int | None = Field(default=None, ge=0)
 
 
 class PartColorAvailabilityRegistry(BaseModel):
-    schema_version: str = "0.1"
+    schema_version: str = "0.2"
     evidence: list[PartColorAvailabilityEvidence]
 
     @model_validator(mode="after")
@@ -36,6 +37,17 @@ class PartColorAvailabilityRegistry(BaseModel):
             raise ValueError("availability registry route/part/color keys must be unique")
         return self
 
+    def evidence_for(
+        self,
+        route: SupplierRoute,
+        part_id: str,
+        color_key: str,
+    ) -> PartColorAvailabilityEvidence | None:
+        for item in self.evidence:
+            if (item.route, item.part_id, item.color_key) == (route, part_id, color_key):
+                return item
+        return None
+
     def supports(
         self,
         route: SupplierRoute,
@@ -44,10 +56,9 @@ class PartColorAvailabilityRegistry(BaseModel):
         *,
         require_live: bool = False,
     ) -> bool:
-        for item in self.evidence:
-            if (item.route, item.part_id, item.color_key) != (route, part_id, color_key):
-                continue
-            if require_live:
-                return item.status == "live_available"
-            return item.status in {"catalog_supported", "live_available"}
-        return False
+        item = self.evidence_for(route, part_id, color_key)
+        if item is None:
+            return False
+        if require_live:
+            return item.status == "live_available"
+        return item.status in {"catalog_supported", "live_available"}
