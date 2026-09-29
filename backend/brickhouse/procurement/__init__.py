@@ -39,6 +39,13 @@ from .supplier_package import (
     generate_supplier_handoff_package,
     supplier_handoff_zip_bytes,
 )
+from .user_order import (
+    UserOrderBlocker,
+    UserOrderOptions,
+    UserOrderRouteOption,
+    build_user_order_options,
+    generate_handoff_from_user_order_option,
+)
 from .wobrick import WobrickOrderDocuments, generate_wobrick_order_documents
 
 __all__ = [
@@ -58,6 +65,9 @@ __all__ = [
     "PartCrosswalk",
     "SupplierRoute",
     "SupplierHandoffPackage",
+    "UserOrderBlocker",
+    "UserOrderOptions",
+    "UserOrderRouteOption",
     "SupplierConfirmationLine",
     "WobrickOrderDocuments",
     "assess_order_readiness",
@@ -69,6 +79,8 @@ __all__ = [
     "generate_canonical_order_package_from_bundle",
     "generate_kit_packing_documents",
     "generate_supplier_handoff_package",
+    "build_user_order_options",
+    "generate_handoff_from_user_order_option",
     "generate_wobrick_order_documents",
     "load_color_crosswalk",
     "parse_supplier_confirmation_csv",
