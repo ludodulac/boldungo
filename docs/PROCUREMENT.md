@@ -179,3 +179,32 @@ The next bounded tasks are:
 Procurement is downstream of BrickModel, BOM, AssemblyPlan, InstructionPlan and
 BagPlan. It must not change Survey, Scene, photo reasoning, geometry, placement,
 or construction order merely to improve supplier availability or price.
+
+
+## Wobrick / compatible-brick export
+
+The verified part crosswalk now stores a separate `ldraw_id` rather than
+assuming BrickLink and LDraw numbers are identical. This matters for real current
+parts: for example BrickLink `3068` maps to LDraw `3068b`, BrickLink `3040`
+maps to `3040b`, BrickLink `3023` maps to `3023b`, and BrickLink window
+glass `60603` maps to LDraw `86210`.
+
+The color crosswalk also stores LDraw color IDs and GoBricks color numbers using
+Wobrick's published cross-system color chart.
+
+`backend/brickhouse/procurement/wobrick.py` generates the documented Studio CSV
+columns:
+
+- `BLItemNo`;
+- `LdrawId`;
+- `BLColorId`;
+- `LDrawColorId`;
+- `Qty`.
+
+It produces one master CSV and one CSV per existing numbered bag. Generation
+requires availability evidence whose route is explicitly `wobrick`; BrickLink
+evidence cannot authorize a Wobrick document.
+
+This creates a safe upload document but does not claim current stock. A separate
+live-availability check is still required before Boldüngo can promise that a
+single supplier can fulfill every line at that moment.

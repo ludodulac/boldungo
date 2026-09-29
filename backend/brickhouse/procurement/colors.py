@@ -18,12 +18,14 @@ class ColorCrosswalkEntry(BaseModel):
     bricklink_name: str = Field(min_length=1)
     lego_color_name: str = Field(min_length=1)
     lego_color_id: int = Field(gt=0)
+    ldraw_color_id: int = Field(ge=0)
+    gobricks_color_no: str = Field(min_length=3, max_length=3)
     mapping_status: ColorMappingStatus
     verification_source: str = Field(min_length=1)
 
 
 class ColorCrosswalk(BaseModel):
-    schema_version: Literal["0.1"] = "0.1"
+    schema_version: Literal["0.2"] = "0.2"
     entries: list[ColorCrosswalkEntry]
 
     @model_validator(mode="after")
@@ -39,10 +41,7 @@ class ColorCrosswalk(BaseModel):
 
 def default_color_crosswalk_path() -> Path:
     relative = Path("data") / "procurement" / "color_crosswalk.csv"
-    candidates = (
-        Path.cwd() / relative,
-        Path(__file__).resolve().parents[3] / relative,
-    )
+    candidates = (Path.cwd() / relative, Path(__file__).resolve().parents[3] / relative)
     for candidate in candidates:
         if candidate.is_file():
             return candidate

@@ -1,9 +1,4 @@
-"""Verified supplier-bridge catalog for procurement.
-
-The crosswalk is deliberately downstream of the canonical BrickModel. Engine IDs
-remain authoritative for construction; this module only attaches externally
-recognizable catalog identities for ordering/export.
-"""
+"""Verified supplier-bridge catalog for procurement."""
 
 from __future__ import annotations
 
@@ -23,13 +18,15 @@ EquivalencePolicy = Literal["bricklink_catalog_item", "exact_catalog_item"]
 class PartCrosswalkEntry(BaseModel):
     engine_id: str = Field(min_length=1)
     bricklink_item_no: str = Field(min_length=1)
+    ldraw_id: str = Field(min_length=1)
     mapping_status: MappingStatus
     equivalence_policy: EquivalencePolicy
     verification_source: str = Field(min_length=1)
+    ldraw_verification_source: str = Field(min_length=1)
 
 
 class PartCrosswalk(BaseModel):
-    schema_version: Literal["0.1"] = "0.1"
+    schema_version: Literal["0.2"] = "0.2"
     entries: list[PartCrosswalkEntry]
 
     @model_validator(mode="after")
@@ -56,10 +53,7 @@ class CrosswalkCoverage(BaseModel):
 
 def default_part_crosswalk_path() -> Path:
     relative = Path("data") / "procurement" / "part_crosswalk.csv"
-    candidates = (
-        Path.cwd() / relative,
-        Path(__file__).resolve().parents[3] / relative,
-    )
+    candidates = (Path.cwd() / relative, Path(__file__).resolve().parents[3] / relative)
     for candidate in candidates:
         if candidate.is_file():
             return candidate
