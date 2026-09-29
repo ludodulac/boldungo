@@ -6,6 +6,7 @@ from brickhouse.procurement.catalog import (
     load_part_crosswalk,
     require_complete_approved_crosswalk,
 )
+from brickhouse.procurement.colors import load_color_crosswalk
 from brickhouse.procurement.models import BagOrderManifest, CanonicalOrderPackage, OrderLine
 from brickhouse.procurement.readiness import assess_order_readiness
 
@@ -60,16 +61,28 @@ def test_crosswalk_contains_known_roof_and_window_catalog_identities():
     assert by_id["GLASS_FOR_WINDOW_1X4X3_60603"].bricklink_item_no == "60603"
 
 
+def test_core_color_crosswalk_contains_current_architectural_colors():
+    colors = load_color_crosswalk().by_key()
+
+    assert colors["white"].bricklink_color_id == 1
+    assert colors["light_bluish_gray"].bricklink_color_id == 86
+    assert colors["dark_bluish_gray"].bricklink_color_id == 85
+    assert colors["tan"].bricklink_color_id == 2
+    assert colors["reddish_brown"].bricklink_color_id == 88
+    assert colors["trans_clear"].bricklink_color_id == 12
+
+
 def test_order_is_not_supplier_ready_until_purchase_color_is_explicit():
     report = assess_order_readiness(_package(), load_part_crosswalk())
 
     assert report.part_identity_resolved_lines == 1
     assert report.purchase_color_resolved_lines == 0
+    assert report.part_color_verified_lines == 0
     assert not report.supplier_ready
     assert [blocker.reason for blocker in report.blockers] == ["missing_purchase_color"]
 
 
-def test_order_can_pass_canonical_readiness_when_part_and_purchase_color_are_resolved():
+def test_known_color_still_blocks_until_part_color_availability_is_verified():
     report = assess_order_readiness(
         _package(),
         load_part_crosswalk(),
@@ -78,11 +91,43 @@ def test_order_can_pass_canonical_readiness_when_part_and_purchase_color_are_res
 
     assert report.part_identity_resolved_lines == 1
     assert report.purchase_color_resolved_lines == 1
+    assert report.part_color_verified_lines == 0
+    assert [blocker.reason for blocker in report.blockers] == [
+        "part_color_availability_unverified"
+    ]
+    assert not report.supplier_ready
+
+
+def test_order_is_ready_only_when_part_color_pair_is_explicitly_verified():
+    report = assess_order_readiness(
+        _package(),
+        load_part_crosswalk(),
+        purchase_colors={("BRICK_2X4", None): "light_bluish_gray"},
+        verified_part_colors={("BRICK_2X4", "light_bluish_gray")},
+    )
+
+    assert report.part_identity_resolved_lines == 1
+    assert report.purchase_color_resolved_lines == 1
+    assert report.part_color_verified_lines == 1
     assert report.blockers == []
     assert report.supplier_ready
 
 
-def test_unknown_part_blocks_readiness_even_when_a_color_was_selected():
+def test_unknown_color_key_blocks_before_availability():
+    report = assess_order_readiness(
+        _package(),
+        load_part_crosswalk(),
+        purchase_colors={("BRICK_2X4", None): "not_a_real_catalog_color"},
+        verified_part_colors={("BRICK_2X4", "not_a_real_catalog_color")},
+    )
+
+    assert not report.supplier_ready
+    assert [blocker.reason for blocker in report.blockers] == [
+        "unknown_purchase_color"
+    ]
+
+
+def test_unknown_part_blocks_readiness_even_when_color_and_pair_are_selected():
     crosswalk = PartCrosswalk(
         entries=[
             PartCrosswalkEntry(
@@ -98,6 +143,7 @@ def test_unknown_part_blocks_readiness_even_when_a_color_was_selected():
         _package("UNKNOWN_PART"),
         crosswalk,
         purchase_colors={("UNKNOWN_PART", None): "light_bluish_gray"},
+        verified_part_colors={("UNKNOWN_PART", "light_bluish_gray")},
     )
 
     assert not report.supplier_ready
