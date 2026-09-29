@@ -64,7 +64,8 @@
   "semantic_requirements": [
     "WOOD_TERRACE_PRIMARY_UNDERSPACE_REMAINS_OPEN",
     "WOOD_TERRACE_REMAINS_STRUCTURALLY_DISTINCT_FROM_MASONRY_MODULE003",
-    "WOOD_TERRACE_BACK_EDGE_IS_ADJACENT_TO_REAR_HOUSE_PLANE",
+    "WOOD_TERRACE_HOST_FACE_IDENTITY_IS_CONFIRMED",
+    "FACE_IDENTITY_REQUIRED_BEFORE_HOST_PLACEMENT",
     "WOOD_TERRACE_RAILING_OCCUPIES_FRONT_AND_RIGHT_FREE_EDGES",
     "NO_UNOBSERVED_BACK_RAILING",
     "NO_HIDDEN_SUPPORT_PROMOTED_TO_OBSERVED"
@@ -74,5 +75,40 @@
     "MODULE002": "UNCHANGED",
     "MODULE003": "UNCHANGED"
   },
-  "human_gate": "REQUIRED_AFTER_TECHNICAL_PASS"
+  "human_gate": "REQUIRED_AFTER_063_TECHNICAL_PASS",
+  "host_face_correction_063": {
+    "diagnostic_source": "BOLDUNGO-062-MODULE004-WRONG-FACADE-BLIND-DIAGNOSIS",
+    "five_base_photos_sufficient": true,
+    "old_host_face": "rear",
+    "old_host_face_status": "CONTRADICTED",
+    "new_host_face": "left",
+    "new_host_face_status": "SUPPORTED",
+    "root_cause": [
+      "SAME_SPATIAL_SECTOR_SAME_FACE_CONFUSION",
+      "LOSS_OF_FACE_IDENTITY_AT_CORNER"
+    ],
+    "general_rule": "FACE-IDENTITY-BEFORE-HOST-PLACEMENT",
+    "required_reasoning_order": [
+      "MULTIVIEW_LANDMARKS",
+      "FACE_IDENTITY",
+      "CORNER_TRANSITIONS",
+      "HOST_FACE",
+      "LOCAL_ORIENTATION",
+      "LEGO_PLACEMENT"
+    ],
+    "forbidden_inferences": [
+      "SAME_SPATIAL_SECTOR_EQ_SAME_FACE",
+      "PROXIMITY_TO_CORNER_EQ_HOST_FACE",
+      "LOCAL_PROXIMITY_EQ_GLOBAL_FACE_IDENTITY"
+    ],
+    "geometry_action": "RIGIDLY_ROTATE_AND_REPOSITION_061_LOCAL_MODULE004_ONTO_LEFT_HOST_FACE",
+    "local_geometry_preserved": true,
+    "dimensions_preserved_studs": [
+      48,
+      18
+    ],
+    "walking_level_preserved_z": 45,
+    "module003_topology": "SAME_LONGITUDINAL_LEFT_FACE_HIGH_LEVEL_NEIGHBORS",
+    "exact_module003_connection": "NOT_OBSERVABLE_NOT_ENCODED"
+  }
 }
