@@ -47,7 +47,10 @@ def _multiline_package():
     )
 
 
-def _availability(status="catalog_supported", available_quantity=None):
+OBSERVED_AT = "2026-09-29T12:00:00Z"
+
+
+def _availability(status="catalog_supported", available_quantity=None, observed_at=OBSERVED_AT):
     return PartColorAvailabilityRegistry(evidence=[
         PartColorAvailabilityEvidence(
             route="bricklink",
@@ -56,6 +59,7 @@ def _availability(status="catalog_supported", available_quantity=None):
             status=status,
             source="test",
             available_quantity=available_quantity,
+            observed_at=observed_at,
         )
     ])
 
@@ -69,6 +73,7 @@ def _multi_availability(bricks, tiles):
             status="live_available",
             source="test",
             available_quantity=bricks,
+            observed_at=OBSERVED_AT,
         ),
         PartColorAvailabilityEvidence(
             route="bricklink",
@@ -77,6 +82,7 @@ def _multi_availability(bricks, tiles):
             status="live_available",
             source="test",
             available_quantity=tiles,
+            observed_at=OBSERVED_AT,
         ),
     ])
 
@@ -291,6 +297,7 @@ def test_diagnostics_aggregate_same_physical_pair_before_live_stock_comparison()
             status="live_available",
             source="test",
             available_quantity=70,
+            observed_at=OBSERVED_AT,
         )
     ])
 
