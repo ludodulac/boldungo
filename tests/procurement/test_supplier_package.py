@@ -109,9 +109,10 @@ def test_handoff_zip_is_deterministic_and_contains_exact_named_files():
         )
 
 
-def test_handoff_refuses_wrong_route_availability():
-    with pytest.raises(ValueError, match="unresolved lines"):
-        generate_supplier_handoff_package(
-            _package(), load_part_crosswalk(), route="wobrick",
-            purchase_colors=_colors(), availability=_availability("bricklink"),
-        )
+def test_handoff_does_not_require_route_availability_for_document_export():
+    handoff = generate_supplier_handoff_package(
+        _package(), load_part_crosswalk(), route="wobrick",
+        purchase_colors=_colors(), availability=_availability("bricklink"),
+    )
+    assert handoff.route == "wobrick"
+    assert "05_ORDER_WOBRICK_MASTER.csv" in handoff.file_map()
