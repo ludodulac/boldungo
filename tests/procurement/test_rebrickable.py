@@ -1,8 +1,11 @@
+from brickhouse.building.models import Appearance, AppearanceSection
 from brickhouse.procurement.catalog import load_part_crosswalk
 from brickhouse.procurement.colors import load_color_crosswalk
+from brickhouse.procurement.diagnostics import build_procurement_preparation_report
 from brickhouse.procurement.models import BagOrderManifest, CanonicalOrderPackage, OrderLine
 from brickhouse.procurement.rebrickable import (
     build_bricklink_catalog_availability_from_rebrickable,
+    resolve_rebrickable_catalog,
 )
 
 
@@ -15,6 +18,18 @@ def _package():
         bags=[BagOrderManifest(
             bag_number=1, phases=["Structure"], assembly_step_ids=["s1"],
             total_parts=5, lines=[brick, tile],
+        )],
+    )
+
+
+def _single_brick_package():
+    brick = OrderLine(part_id="BRICK_2X4", category="brick", quantity=4)
+    return CanonicalOrderPackage(
+        building_id="house", volume_id="main", total_parts=4, unique_part_types=1,
+        total_bags=1, order_lines=[brick],
+        bags=[BagOrderManifest(
+            bag_number=1, phases=["Structure"], assembly_step_ids=["s1"],
+            total_parts=4, lines=[brick],
         )],
     )
 
@@ -69,6 +84,65 @@ def test_rebrickable_verifier_checks_unique_parts_and_builds_bricklink_catalog_e
     assert registry.supports("bricklink", "BRICK_2X4", "light_bluish_gray")
     assert registry.supports("bricklink", "TILE_2X2", "black")
     assert not registry.supports("wobrick", "BRICK_2X4", "light_bluish_gray")
+
+
+def test_rebrickable_catalog_evidence_only_enables_bricklink_document_readiness():
+    def fake_fetch(url, headers):
+        assert "/3001/colors/" in url
+        assert headers["Authorization"] == "key test-key"
+        return {
+            "results": [
+                {
+                    "color_id": 71,
+                    "elements": ["4211385"],
+                }
+            ]
+        }
+
+    package = _single_brick_package()
+    purchase_colors = {("BRICK_2X4", None): "light_bluish_gray"}
+    resolution = resolve_rebrickable_catalog(
+        package,
+        load_part_crosswalk(),
+        purchase_colors=purchase_colors,
+        api_key="test-key",
+        fetch_json=fake_fetch,
+        request_delay_seconds=0,
+    )
+
+    candidates = resolution.candidates_by_pair()
+    assert candidates[("BRICK_2X4", "light_bluish_gray")].element_ids == ["4211385"]
+
+    appearance = Appearance(
+        walls=AppearanceSection(color="light_bluish_gray")
+    )
+    bricklink = build_procurement_preparation_report(
+        package,
+        load_part_crosswalk(),
+        route="bricklink",
+        availability=resolution.availability,
+        appearance=appearance,
+    )
+    assert bricklink.document_ready
+    assert not bricklink.live_order_ready
+    assert bricklink.catalog_readiness.blockers == []
+    assert [blocker.reason for blocker in bricklink.live_readiness.blockers] == [
+        "live_part_color_availability_unverified"
+    ]
+
+    for route in ("wobrick", "gobricks", "lego_pick_a_brick"):
+        report = build_procurement_preparation_report(
+            package,
+            load_part_crosswalk(),
+            route=route,
+            availability=resolution.availability,
+            appearance=appearance,
+        )
+        assert not report.document_ready
+        assert not report.live_order_ready
+        assert [blocker.reason for blocker in report.catalog_readiness.blockers] == [
+            "part_color_availability_unverified_for_route"
+        ]
 
 
 def test_rebrickable_verifier_does_not_create_evidence_for_missing_color():
