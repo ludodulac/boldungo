@@ -18,6 +18,7 @@ from .availability import PartColorAvailabilityRegistry
 from .bricklink import generate_bricklink_order_documents
 from .catalog import PartCrosswalk
 from .colors import ColorCrosswalk, load_color_crosswalk
+from .fulfillment import supplier_confirmation_template_csv
 from .models import CanonicalOrderPackage
 from .packing import generate_kit_packing_documents
 from .readiness import assess_order_readiness
@@ -52,6 +53,7 @@ class SupplierHandoffPackage(BaseModel):
             "02_MASTER_PICKING.csv",
             "03_LABELS.txt",
             "04_RECONCILIATION.csv",
+            "06_SUPPLIER_CONFIRMATION_TEMPLATE.csv",
         }
         missing = sorted(required - set(names))
         if missing:
@@ -166,6 +168,12 @@ def generate_supplier_handoff_package(
         SupplierPackageFile(path="02_MASTER_PICKING.csv", content=packing.master_picking_csv),
         SupplierPackageFile(path="03_LABELS.txt", content=packing.labels_text + "\n"),
         SupplierPackageFile(path="04_RECONCILIATION.csv", content=packing.reconciliation_csv),
+        SupplierPackageFile(
+            path="06_SUPPLIER_CONFIRMATION_TEMPLATE.csv",
+            content=supplier_confirmation_template_csv(
+                package, part_crosswalk, purchase_colors=purchase_colors
+            ),
+        ),
     ]
 
     for sheet in packing.bag_sheets:

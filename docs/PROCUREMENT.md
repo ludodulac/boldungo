@@ -250,3 +250,19 @@ It deliberately refuses similarity substitutions such as:
 Missing appearance, window-pane color without explicit evidence, or descriptive
 semantic colors therefore remain unresolved and are emitted in an auditable CSV
 for a later evidence-backed or human color decision.
+
+
+## Supplier fulfillment confirmation
+
+An exact outgoing order is not proof that a supplier can fulfill it. The handoff
+package therefore includes `06_SUPPLIER_CONFIRMATION_TEMPLATE.csv`.
+
+Every physical part/color line is pre-filled with its required quantity and
+starts with status `pending`. The supplier can return the sheet with
+`exact_confirmed`, `unavailable`, or `substitution_proposed` plus the
+confirmed quantity.
+
+`fulfillment.py` marks the order confirmed complete only when every required
+line keeps the expected supplier reference, has status `exact_confirmed`, and
+has confirmed quantity exactly equal to required quantity. A shortage of one
+piece, a changed reference, or a proposed substitution keeps the order blocked.

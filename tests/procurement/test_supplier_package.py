@@ -69,6 +69,7 @@ def test_bricklink_handoff_contains_supplier_message_master_bags_and_reconciliat
     assert "05_ORDER_BRICKLINK_MASTER.xml" in files
     assert "bags/BAG_01_BRICKLINK.xml" in files
     assert "bags/BAG_02_PICKING.csv" in files
+    assert "06_SUPPLIER_CONFIRMATION_TEMPLATE.csv" in files
     assert "UNRESOLVED_LINES=0" in files["00_READINESS.txt"]
     assert "AUCUNE substitution" in files["01_SUPPLIER_REQUEST_FR.txt"]
     assert "NO substitution" in files["01_SUPPLIER_REQUEST_EN.txt"]
@@ -102,6 +103,7 @@ def test_handoff_zip_is_deterministic_and_contains_exact_named_files():
         assert names == sorted(names)
         assert "01_SUPPLIER_REQUEST_FR.txt" in names
         assert "bags/BAG_02_PICKING.csv" in names
+        assert "06_SUPPLIER_CONFIRMATION_TEMPLATE.csv" in names
         assert archive.read("00_READINESS.txt").decode("utf-8").startswith(
             "STATUS=READY_FOR_DOCUMENT_HANDOFF"
         )

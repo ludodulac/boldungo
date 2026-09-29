@@ -13,6 +13,13 @@ from .color_resolution import (
     color_resolution_csv,
     resolve_purchase_colors_from_appearance,
 )
+from .fulfillment import (
+    FulfillmentReport,
+    SupplierConfirmationLine,
+    parse_supplier_confirmation_csv,
+    supplier_confirmation_template_csv,
+    validate_supplier_confirmation,
+)
 from .manifest import (
     generate_canonical_order_package,
     generate_canonical_order_package_from_bundle,
@@ -34,6 +41,7 @@ __all__ = [
     "CanonicalOrderPackage",
     "ColorCrosswalk",
     "KitPackingDocumentSet",
+    "FulfillmentReport",
     "OrderLine",
     "OrderReadinessReport",
     "PartColorAvailabilityEvidence",
@@ -42,6 +50,7 @@ __all__ = [
     "PartCrosswalk",
     "SupplierRoute",
     "SupplierHandoffPackage",
+    "SupplierConfirmationLine",
     "WobrickOrderDocuments",
     "assess_order_readiness",
     "color_resolution_csv",
@@ -52,7 +61,10 @@ __all__ = [
     "generate_supplier_handoff_package",
     "generate_wobrick_order_documents",
     "load_color_crosswalk",
+    "parse_supplier_confirmation_csv",
     "load_part_crosswalk",
     "resolve_purchase_colors_from_appearance",
     "supplier_handoff_zip_bytes",
+    "supplier_confirmation_template_csv",
+    "validate_supplier_confirmation",
 ]
