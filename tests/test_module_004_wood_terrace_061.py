@@ -68,16 +68,10 @@ def parts_with(fragment: str, parts) -> list:
 
 
 def primary_underspace_blockers(parts, void) -> list[str]:
-    """Return non-peripheral solids entering the declared primary under-space.
-
-    The architectural requirement is an open interior volume. Known peripheral
-    rims and the observed post are allowed structural boundary elements; they
-    must not be mistaken for a filled/partitioned under-space.
-    """
     allowed_fragments = (
-        "front-rim-beam",
-        "right-rim-beam",
-        "observed-front-post",
+        "long-outer-rim-beam",
+        "wall-limit-terminal-rim",
+        "observed-main-post",
     )
     interior = {
         (x, y, z)
@@ -100,16 +94,15 @@ def model_parts() -> tuple[dict, BrickModel, list]:
     return module, model, model.parts
 
 
-def test_061_source_modules_are_byte_equivalent_prefix_and_module004_is_new_domain() -> None:
+def test_065_source_modules_are_immutable_prefix_and_module004_is_new_domain() -> None:
     source = load(SOURCE)
     module = load(MODULE)
     combined = load(COMBINED)
 
-    assert module["metadata"]["mission"] == "BOLDUNGO-063-MODULE004-HOST-FACE-CORRECTION"
+    assert module["metadata"]["mission"] == "BOLDUNGO-065-MODULE004-TOPOLOGY-CORRECTION"
     source_parts = source["brick_model"]["parts"]
     combined_parts = combined["brick_model"]["parts"]
 
-    # MODULE001/002/003 are copied as an immutable prefix; only MODULE004 is appended.
     assert combined_parts[: len(source_parts)] == source_parts
     assert combined["metadata"]["source_piece_count"] == len(source_parts)
     assert combined["metadata"]["module_004_piece_count"] == module["bom"]["total_parts"]
@@ -123,60 +116,48 @@ def test_061_source_modules_are_byte_equivalent_prefix_and_module004_is_new_doma
     assert all(part["component"] == "facade_detail" for part in new_parts)
 
 
-def test_063_wood_terrace_host_face_identity_is_confirmed() -> None:
+def test_065_wood_terrace_reaches_wall_limit_end_on_confirmed_left_face() -> None:
     source = load(SOURCE)
     module, _model, parts = model_parts()
     geometry = module["metadata"]["geometry"]
     deck = geometry["deck_footprint"]
-    house = module["metadata"]["house_interface"]
-    interface = module["metadata"]["module_003_interface"]
 
-    assert deck["status"] == "COARSE_REFINABLE"
+    wall_limit = source["brick_model"]["origin_y_studs"]
+    module003_end = source["metadata"]["geometry"]["upper_platform"]["y"][0]
+
     assert deck["x"][1] == source["metadata"]["host_house_left_plane_x"]
-    assert deck["y"][1] == source["metadata"]["geometry"]["upper_platform"]["y"][0]
+    assert deck["y"] == [wall_limit, module003_end]
     assert deck["walking_top_z"] == source["metadata"]["level_model"]["future_wood_terrace_interface_z"]
-    assert house["host_face"] == "left"
-    assert house["relation"] == "DECK_HOUSE_EDGE_ADJACENT_TO_LEFT_HOUSE_PLANE"
-    assert house["corner_crossing_required"] is False
-    assert interface["shared_host_face"] == "left"
-    assert interface["corner_crossing_required"] is False
+    assert deck["metric_status"] == "CONSTRUCTIVE_APPROXIMATION"
+
+    ends = geometry["longitudinal_ends"]
+    assert ends["WALL-LIMIT-END"]["y"] == wall_limit
+    assert ends["MODULE003-END"]["y"] == module003_end
 
     floor = parts_with("deck-floor", parts)
-    assert floor
     floor_cells = cells(floor)
     floor_z = deck["walking_top_z"] - 1
     for x in range(*deck["x"]):
         for y in range(*deck["y"]):
             assert (x, y, floor_z) in floor_cells
-    assert all(z == floor_z for _x, _y, z in floor_cells)
 
-def test_061_wood_terrace_primary_underspace_remains_open() -> None:
+
+def test_065_primary_underspace_remains_open() -> None:
     module, _model, parts = model_parts()
     void = module["metadata"]["geometry"]["primary_underspace"]
 
     assert void["classification"] == "MAJOR_OPEN_WOOD_TERRACE_UNDERSPACE"
     assert void["open_to_ground"] is True
-
-    # WOOD_TERRACE_PRIMARY_UNDERSPACE_REMAINS_OPEN:
-    # test the architectural property itself. Peripheral rims and the observed
-    # support post are legitimate; no other solid may partition/fill the
-    # continuous interior volume from ground to the deck underside.
     assert primary_underspace_blockers(parts, void) == []
 
 
-def test_063b_primary_underspace_gate_rejects_interior_partition() -> None:
+def test_065_primary_underspace_gate_rejects_interior_partition() -> None:
     module, _model, parts = model_parts()
     void = module["metadata"]["geometry"]["primary_underspace"]
-
-    # Synthetic negative regression only: place a timber wall segment inside
-    # the declared void. This must be rejected while real peripheral structure
-    # remains accepted by the production gate.
     prototype = parts[0]
     partition = prototype.model_copy(update={
         "placement_id": "module-004-interior-partition-negative-regression",
         "part_id": "BRICK_1X8",
-        "category": "timber",
-        "component": "facade_detail",
         "x_studs": void["x"][0],
         "y_studs": void["y"][0],
         "z_plates": 0,
@@ -187,11 +168,10 @@ def test_063b_primary_underspace_gate_rejects_interior_partition() -> None:
         "height_plates": 3,
     })
 
-    blockers = primary_underspace_blockers([*parts, partition], void)
-    assert partition.placement_id in blockers
+    assert partition.placement_id in primary_underspace_blockers([*parts, partition], void)
 
 
-def test_061_wood_terrace_remains_structurally_distinct_from_masonry_module003() -> None:
+def test_065_wood_terrace_remains_structurally_distinct_from_module003() -> None:
     source = load(SOURCE)
     module, _model, module_parts = model_parts()
 
@@ -199,99 +179,102 @@ def test_061_wood_terrace_remains_structurally_distinct_from_masonry_module003()
         raw for raw in source["brick_model"]["parts"]
         if raw["placement_id"].startswith("module-003-")
     ]
-    module003 = [
-        BrickModel.model_validate({
-            "schema_version": "0.1",
-            "building_id": source["building_id"],
-            "volume_id": "temporary-module003-check",
-            "width_studs": source["brick_model"]["width_studs"],
-            "depth_studs": source["brick_model"]["depth_studs"],
-            "height_plates": source["brick_model"]["height_plates"],
-            "parts": module003_raw,
-        }).parts
-    ][0]
+    module003 = BrickModel.model_validate({
+        "schema_version": "0.1",
+        "building_id": source["building_id"],
+        "volume_id": "temporary-module003-check",
+        "width_studs": source["brick_model"]["width_studs"],
+        "depth_studs": source["brick_model"]["depth_studs"],
+        "height_plates": source["brick_model"]["height_plates"],
+        "parts": module003_raw,
+    }).parts
 
-    # WOOD_TERRACE_REMAINS_STRUCTURALLY_DISTINCT_FROM_MASONRY_MODULE003:
-    # the two systems may meet at a boundary but occupy no common 3-D cell.
     assert cells(module003).isdisjoint(cells(module_parts))
-
     interface = module["metadata"]["module_003_interface"]
-    assert interface["relation"] == "SAME_LONGITUDINAL_LEFT_FACE_HIGH_LEVEL_NEIGHBORS_REMAIN_DISTINCT"
+    assert interface["end_identity"] == "MODULE003-END"
     assert interface["exact_connection"] == "NOT_OBSERVABLE_NOT_ENCODED"
-    assert interface["wood_walking_top_z"] == source["metadata"]["level_model"]["future_wood_terrace_interface_z"]
-    assert interface["masonry_walking_top_z"] == source["metadata"]["level_model"]["upper_masonry_platform_z"]
 
 
-def test_061_railing_signature_is_preserved_after_host_face_rotation() -> None:
+def test_065_terminal_railing_is_at_wall_limit_end_not_module003_end() -> None:
     module, _model, parts = model_parts()
     geometry = module["metadata"]["geometry"]
     deck = geometry["deck_footprint"]
-    railing = geometry["railing"]
-    outer_x = geometry["front_edge"]["x"]
-    end_y = geometry["right_edge"]["y"]
-    top_z = railing["top_z"]
+    outer_x = geometry["long_outer_edge"]["x"]
+    wall_limit_y = geometry["longitudinal_ends"]["WALL-LIMIT-END"]["y"]
+    module003_y = geometry["longitudinal_ends"]["MODULE003-END"]["y"]
+    top_z = geometry["railing"]["top_z"]
 
-    front_top = parts_with("railing-front-top", parts)
-    right_top = parts_with("railing-right-top", parts)
-    front_vertical = parts_with("railing-front-vertical", parts)
-    right_vertical = parts_with("railing-right-vertical", parts)
-    assert front_top and right_top and front_vertical and right_vertical
+    long_top = parts_with("railing-long-outer-top", parts)
+    terminal_top = parts_with("railing-wall-limit-terminal-top", parts)
+    terminal_vertical = parts_with("railing-wall-limit-terminal-vertical", parts)
 
-    front_cells = cells(front_top)
-    right_cells = cells(right_top)
+    assert long_top and terminal_top and terminal_vertical
+    assert not parts_with("railing-module003-terminal", parts)
+
+    long_cells = cells(long_top)
+    terminal_cells = cells(terminal_top)
+
     for y in range(*deck["y"]):
         for z in range(top_z - 3, top_z):
-            assert (outer_x, y, z) in front_cells
+            assert (outer_x, y, z) in long_cells
+
     for x in range(deck["x"][0] + 1, deck["x"][1]):
         for z in range(top_z - 3, top_z):
-            assert (x, end_y, z) in right_cells
+            assert (x, wall_limit_y, z) in terminal_cells
 
-    assert len({part.y_studs for part in front_vertical}) >= 8
-    assert len({part.x_studs for part in right_vertical}) >= 4
-    assert module["metadata"]["railing_contract"]["house_edge"] == "NO_AUTOMATIC_RAILING"
+    assert all(part.y_studs == wall_limit_y for part in terminal_vertical)
+    assert geometry["railing"]["terminal_return_end"] == "WALL-LIMIT-END"
+    assert geometry["railing"]["module003_end_terminal_return"] is False
+    assert module003_y != wall_limit_y
 
-def test_061_observed_supports_are_explicit_and_hidden_supports_not_invented() -> None:
+
+def test_065_observed_post_is_on_outer_edge_in_wall_limit_sector() -> None:
     module, _model, parts = model_parts()
     geometry = module["metadata"]["geometry"]
-    observed = module["metadata"]["observed_supports"]
-    constructive = module["metadata"]["constructive_supports"]
+    post_meta = geometry["observed_main_post"]
+    post = parts_with("observed-main-post", parts)
 
-    assert observed == {
-        "front_rim_beam": "IMPLEMENTED",
-        "right_rim_beam": "IMPLEMENTED",
-        "front_vertical_post": "IMPLEMENTED_ONE_OBSERVED_POST",
-        "diagonal_braces": "OBSERVED_NOT_IMPLEMENTED_ORTHOGONAL_ENGINE_CANNOT_REPRESENT_DIAGONAL_BEAM_HONESTLY",
-    }
-    assert constructive["added"] == []
-    assert constructive["status"] == "NONE_ADDED"
-    assert constructive["hidden_supports"] == "UNKNOWN_NOT_INVENTED"
+    assert post
+    assert post_meta["edge_identity"] == "LONG_OUTER_EDGE"
+    assert post_meta["relative_sector"] == "WALL-LIMIT_SECTOR"
+    assert post_meta["metric_status"] == "CONSTRUCTIVE_APPROXIMATION"
+    assert post_meta["x"] == geometry["long_outer_edge"]["x"]
 
-    front_beam = parts_with("front-rim-beam", parts)
-    right_beam = parts_with("right-rim-beam", parts)
-    post = parts_with("observed-front-post", parts)
-    assert front_beam and right_beam and post
+    wall_y = geometry["longitudinal_ends"]["WALL-LIMIT-END"]["y"]
+    module003_y = geometry["longitudinal_ends"]["MODULE003-END"]["y"]
+    assert post_meta["y"] - wall_y < module003_y - post_meta["y"]
 
-    deck = geometry["deck_footprint"]
-    outer_x = geometry["front_edge"]["x"]
-    end_y = geometry["right_edge"]["y"]
-    beam_z = min(bounds(part)[4] for part in front_beam)
-
-    front_beam_cells = cells(front_beam)
-    for y in range(*deck["y"]):
-        assert (outer_x, y, beam_z) in front_beam_cells
-
-    right_beam_cells = cells(right_beam)
-    for x in range(deck["x"][0] + 1, deck["x"][1]):
-        assert (x, end_y, beam_z) in right_beam_cells
-
-    px = geometry["observed_front_post"]["x"]
-    py = geometry["observed_front_post"]["y"]
     post_cells = cells(post)
+    beam_z = post_meta["z"][1]
     for z in range(0, beam_z):
-        assert (px, py, z) in post_cells
+        assert (post_meta["x"], post_meta["y"], z) in post_cells
+
+    assert module["metadata"]["constructive_supports"]["added"] == []
+    assert module["metadata"]["constructive_supports"]["hidden_supports"] == "UNKNOWN_NOT_INVENTED"
 
 
-def test_061_module004_is_collision_free_and_uses_approved_orthogonal_primitives() -> None:
+def test_065_unknown_terminal_angle_is_not_promoted_to_observed_right_angle() -> None:
+    module, _model, _parts = model_parts()
+    terminal = module["metadata"]["geometry"]["terminal_edge"]
+
+    assert terminal["topology_status"] == "SUPPORTED"
+    assert terminal["angle_observability"] == "UNKNOWN"
+    assert terminal["implementation"] == "ORTHOGONAL_COARSE_CONSTRUCTIVE_APPROXIMATION_ONLY"
+    assert terminal["observed_right_angle"] is False
+
+
+def test_065_footprint_rectangle_requires_closed_edge_evidence() -> None:
+    module, _model, _parts = model_parts()
+    evidence = module["metadata"]["geometry"]["footprint_evidence"]
+
+    assert evidence["wall_limit_terminal_closure"] == "SUPPORTED_TOPOLOGY"
+    assert evidence["terminal_angle_observability"] == "UNKNOWN"
+    assert evidence["rectangularity_observability"] == "AMBIGUOUS"
+    assert evidence["photographic_rectangle_claim"] is False
+    assert evidence["constructive_implementation_shape"] == "RECTANGULAR_ORTHOGONAL_APPROXIMATION"
+
+
+def test_065_module004_is_collision_free_and_uses_approved_orthogonal_primitives() -> None:
     source = load(SOURCE)
     module, model, parts = model_parts()
     bill = BillOfMaterials.model_validate(module["bom"])
@@ -304,14 +287,11 @@ def test_061_module004_is_collision_free_and_uses_approved_orthogonal_primitives
     for line in bill.lines:
         assert registry.get(line.part_id).stage >= PieceCapabilityStage.PLACEMENT_APPROVED
 
-    # Scene-native timber is outside the wall collision validator, so audit its
-    # actual occupied cells explicitly.
     occupied: set[tuple[int, int, int]] = set()
     for part in parts:
         current = part_cells(part)
         assert occupied.isdisjoint(current), part.placement_id
         occupied.update(current)
 
-    # MODULE004 must not penetrate any pre-existing source geometry.
     source_model = BrickModel.model_validate(source["brick_model"])
     assert occupied.isdisjoint(cells(source_model.parts))

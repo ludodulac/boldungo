@@ -62,12 +62,14 @@
     "module003_connection": "NOT_OBSERVABLE_NOT_ENCODED"
   },
   "semantic_requirements": [
-    "WOOD_TERRACE_PRIMARY_UNDERSPACE_REMAINS_OPEN",
-    "WOOD_TERRACE_REMAINS_STRUCTURALLY_DISTINCT_FROM_MASONRY_MODULE003",
+    "WOOD_TERRACE_REACHES_WALL_LIMIT_END",
+    "TERMINAL_RAILING_IS_AT_WALL_LIMIT_END_NOT_MODULE003_END",
+    "OBSERVED_POST_IS_ON_OUTER_EDGE_IN_WALL_LIMIT_SECTOR",
+    "UNKNOWN_TERMINAL_ANGLE_IS_NOT_PROMOTED_TO_OBSERVED_RIGHT_ANGLE",
+    "FOOTPRINT_RECTANGLE_REQUIRES_CLOSED_EDGE_EVIDENCE",
     "WOOD_TERRACE_HOST_FACE_IDENTITY_IS_CONFIRMED",
     "FACE_IDENTITY_REQUIRED_BEFORE_HOST_PLACEMENT",
-    "WOOD_TERRACE_RAILING_OCCUPIES_FRONT_AND_RIGHT_FREE_EDGES",
-    "NO_UNOBSERVED_BACK_RAILING",
+    "WOOD_TERRACE_PRIMARY_UNDERSPACE_REMAINS_OPEN",
     "NO_HIDDEN_SUPPORT_PROMOTED_TO_OBSERVED"
   ],
   "frozen_modules": {
@@ -75,7 +77,7 @@
     "MODULE002": "UNCHANGED",
     "MODULE003": "UNCHANGED"
   },
-  "human_gate": "REQUIRED_AFTER_063_TECHNICAL_PASS",
+  "human_gate": "REQUIRED_AFTER_065_TECHNICAL_PASS",
   "host_face_correction_063": {
     "diagnostic_source": "BOLDUNGO-062-MODULE004-WRONG-FACADE-BLIND-DIAGNOSIS",
     "five_base_photos_sufficient": true,
@@ -110,5 +112,50 @@
     "walking_level_preserved_z": 45,
     "module003_topology": "SAME_LONGITUDINAL_LEFT_FACE_HIGH_LEVEL_NEIGHBORS",
     "exact_module003_connection": "NOT_OBSERVABLE_NOT_ENCODED"
+  },
+  "blind_audit_064": {
+    "status": "ACCEPTED",
+    "host_face": "LEFT_HUMAN_VALIDATED",
+    "module003_end": "LONGITUDINAL_END_NEIGHBORING_MODULE003",
+    "wall_limit_end": "OPPOSITE_LONGITUDINAL_END_AT_ARCHITECTURAL_WALL_LIMIT",
+    "deck_reaches_wall_limit_end": true,
+    "terminal_closure_topology": "SUPPORTED",
+    "terminal_angle": "UNKNOWN",
+    "rectangularity": "AMBIGUOUS",
+    "railing_terminal_return": "WALL_LIMIT_END",
+    "observed_post_relation": "LONG_OUTER_EDGE_IN_WALL_LIMIT_SECTOR",
+    "observed_post_exact_metric": "NOT_OBSERVABLE",
+    "diagonal_braces": "OBSERVED_DEFERRED"
+  },
+  "topology_correction_065": {
+    "mission": "BOLDUNGO-065-MODULE004-TOPOLOGY-CORRECTION",
+    "old_longitudinal_extent_y": [
+      6,
+      54
+    ],
+    "new_longitudinal_extent_y": [
+      1,
+      54
+    ],
+    "new_extent_metric_status": "CONSTRUCTIVE_APPROXIMATION_FROM_EXISTING_HOUSE_MODEL",
+    "terminal_edge": {
+      "identity": "WALL-LIMIT-END",
+      "implementation": "ORTHOGONAL_COARSE_CONSTRUCTIVE_APPROXIMATION_ONLY",
+      "angle_observability": "UNKNOWN",
+      "observed_right_angle": false
+    },
+    "railing": {
+      "long_outer_edge": "PRESERVED",
+      "terminal_return_from": "MODULE003-END",
+      "terminal_return_to": "WALL-LIMIT-END"
+    },
+    "observed_main_post": {
+      "edge": "LONG_OUTER_EDGE",
+      "old_sector": "MODULE003_SECTOR",
+      "new_sector": "WALL_LIMIT_SECTOR",
+      "exact_metric": "CONSTRUCTIVE_APPROXIMATION"
+    },
+    "hidden_supports_added": false,
+    "modules_001_002_003_changed": false
   }
 }
