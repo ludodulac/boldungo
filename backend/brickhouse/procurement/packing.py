@@ -1,10 +1,4 @@
-"""Human-readable kit preparation documents.
-
-These documents are downstream of a supplier-ready canonical order. They do not
-choose parts, colors, bags, or construction order. They only render already
-verified procurement data into master/bag picking sheets and an exact
-reconciliation report.
-"""
+"""Human-readable kit preparation documents."""
 
 from __future__ import annotations
 
@@ -15,6 +9,7 @@ from typing import TypeAlias
 
 from pydantic import BaseModel, Field, model_validator
 
+from .availability import PartColorAvailabilityRegistry, SupplierRoute
 from .catalog import PartCrosswalk
 from .colors import ColorCrosswalk, load_color_crosswalk
 from .models import CanonicalOrderPackage, OrderLine
@@ -32,7 +27,8 @@ class BagPackingSheet(BaseModel):
 
 
 class KitPackingDocumentSet(BaseModel):
-    schema_version: str = "0.1"
+    schema_version: str = "0.2"
+    route: SupplierRoute
     building_id: str
     volume_id: str
     total_parts: int = Field(gt=0)
@@ -65,7 +61,6 @@ def _physical_counter(
     parts = part_crosswalk.by_engine_id()
     colors = color_crosswalk.by_key()
     counter: Counter[PhysicalKey] = Counter()
-
     for line in lines:
         part = parts[line.part_id]
         color_key = purchase_colors[(line.part_id, line.semantic_color)]
@@ -84,21 +79,13 @@ def _physical_counter(
 def _picking_csv(counter: Counter[PhysicalKey]) -> str:
     buffer = StringIO(newline="")
     writer = csv.writer(buffer, lineterminator="\n")
-    writer.writerow(
-        [
-            "boldungo_part_id",
-            "bricklink_item_no",
-            "purchase_color",
-            "bricklink_color_id",
-            "bricklink_color_name",
-            "quantity",
-        ]
-    )
+    writer.writerow([
+        "boldungo_part_id", "bricklink_item_no", "purchase_color",
+        "bricklink_color_id", "bricklink_color_name", "quantity",
+    ])
     for key, quantity in sorted(counter.items(), key=lambda item: item[0]):
         part_id, bricklink_item_no, color_key, color_id, color_name = key
-        writer.writerow(
-            [part_id, bricklink_item_no, color_key, color_id, color_name, quantity]
-        )
+        writer.writerow([part_id, bricklink_item_no, color_key, color_id, color_name, quantity])
     return buffer.getvalue()
 
 
@@ -108,37 +95,21 @@ def _reconciliation_csv(
 ) -> tuple[str, bool]:
     buffer = StringIO(newline="")
     writer = csv.writer(buffer, lineterminator="\n")
-    writer.writerow(
-        [
-            "boldungo_part_id",
-            "bricklink_item_no",
-            "purchase_color",
-            "bricklink_color_id",
-            "required_quantity",
-            "packed_quantity",
-            "difference",
-        ]
-    )
+    writer.writerow([
+        "boldungo_part_id", "bricklink_item_no", "purchase_color",
+        "bricklink_color_id", "required_quantity", "packed_quantity", "difference",
+    ])
     clear = True
-    keys = sorted(set(master) | set(packed))
-    for key in keys:
+    for key in sorted(set(master) | set(packed)):
         part_id, bricklink_item_no, color_key, color_id, _color_name = key
         required = master.get(key, 0)
         packed_quantity = packed.get(key, 0)
         difference = packed_quantity - required
-        if difference != 0:
-            clear = False
-        writer.writerow(
-            [
-                part_id,
-                bricklink_item_no,
-                color_key,
-                color_id,
-                required,
-                packed_quantity,
-                difference,
-            ]
-        )
+        clear = clear and difference == 0
+        writer.writerow([
+            part_id, bricklink_item_no, color_key, color_id,
+            required, packed_quantity, difference,
+        ])
     return buffer.getvalue(), clear
 
 
@@ -146,19 +117,21 @@ def generate_kit_packing_documents(
     package: CanonicalOrderPackage,
     part_crosswalk: PartCrosswalk,
     *,
+    route: SupplierRoute,
     purchase_colors: dict[tuple[str, str | None], str],
-    verified_part_colors: set[tuple[str, str]],
+    availability: PartColorAvailabilityRegistry,
     color_crosswalk: ColorCrosswalk | None = None,
 ) -> KitPackingDocumentSet:
-    """Render exact master/bag picking documents from a supplier-ready package."""
+    """Render exact master/bag picking documents for one verified supplier route."""
 
     colors = color_crosswalk or load_color_crosswalk()
     readiness = assess_order_readiness(
         package,
         part_crosswalk,
+        route=route,
+        availability=availability,
         purchase_colors=purchase_colors,
         color_crosswalk=colors,
-        verified_part_colors=verified_part_colors,
     )
     if not readiness.supplier_ready:
         details = ", ".join(
@@ -172,7 +145,6 @@ def generate_kit_packing_documents(
         color_crosswalk=colors,
         purchase_colors=purchase_colors,
     )
-
     packed: Counter[PhysicalKey] = Counter()
     sheets: list[BagPackingSheet] = []
     labels: list[str] = []
@@ -192,14 +164,12 @@ def generate_kit_packing_documents(
             f"Sac {bag.bag_number}/{package.total_bags} — "
             f"{total} pièces — {phases}"
         )
-        sheets.append(
-            BagPackingSheet(
-                bag_number=bag.bag_number,
-                label=label,
-                total_parts=total,
-                csv=_picking_csv(counter),
-            )
-        )
+        sheets.append(BagPackingSheet(
+            bag_number=bag.bag_number,
+            label=label,
+            total_parts=total,
+            csv=_picking_csv(counter),
+        ))
         labels.append(label)
 
     reconciliation_csv, clear = _reconciliation_csv(master, packed)
@@ -207,6 +177,7 @@ def generate_kit_packing_documents(
         raise ValueError("kit bag reconciliation differs from the master physical order")
 
     return KitPackingDocumentSet(
+        route=route,
         building_id=package.building_id,
         volume_id=package.volume_id,
         total_parts=sum(master.values()),

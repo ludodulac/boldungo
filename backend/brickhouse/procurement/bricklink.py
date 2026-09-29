@@ -1,8 +1,4 @@
-"""BrickLink Wanted List document generation.
-
-BrickLink XML is an output adapter only. It cannot influence the BrickModel,
-assembly order, bag assignment, or canonical quantities.
-"""
+"""BrickLink Wanted List document generation."""
 
 from __future__ import annotations
 
@@ -11,6 +7,7 @@ from xml.etree import ElementTree as ET
 
 from pydantic import BaseModel, Field, model_validator
 
+from .availability import PartColorAvailabilityRegistry
 from .catalog import PartCrosswalk
 from .colors import ColorCrosswalk, load_color_crosswalk
 from .models import CanonicalOrderPackage, OrderLine
@@ -24,7 +21,7 @@ class BrickLinkWantedListDocument(BaseModel):
 
 
 class BrickLinkOrderDocuments(BaseModel):
-    schema_version: str = "0.1"
+    schema_version: str = "0.2"
     master: BrickLinkWantedListDocument
     bags: list[BrickLinkWantedListDocument]
 
@@ -45,7 +42,6 @@ def _resolve_lines(
     parts = part_crosswalk.by_engine_id()
     colors = color_crosswalk.by_key()
     counter: Counter[tuple[str, int]] = Counter()
-
     for line in lines:
         part = parts[line.part_id]
         color_key = purchase_colors[(line.part_id, line.semantic_color)]
@@ -54,11 +50,7 @@ def _resolve_lines(
     return counter
 
 
-def _wanted_list_xml(
-    resolved: Counter[tuple[str, int]],
-    *,
-    remarks: str,
-) -> str:
+def _wanted_list_xml(resolved: Counter[tuple[str, int]], *, remarks: str) -> str:
     root = ET.Element("INVENTORY")
     for (item_id, color_id), quantity in sorted(resolved.items()):
         item = ET.SubElement(root, "ITEM")
@@ -76,29 +68,23 @@ def generate_bricklink_order_documents(
     part_crosswalk: PartCrosswalk,
     *,
     purchase_colors: dict[tuple[str, str | None], str],
-    verified_part_colors: set[tuple[str, str]],
+    availability: PartColorAvailabilityRegistry,
     color_crosswalk: ColorCrosswalk | None = None,
 ) -> BrickLinkOrderDocuments:
-    """Generate one complete Wanted List plus one Wanted List per numbered bag.
-
-    Generation fails closed until every global order line has:
-    - a verified BrickLink part identity;
-    - a known canonical purchase color;
-    - an explicit availability verification for that exact part/color pair.
-    """
+    """Generate one complete Wanted List plus one Wanted List per numbered bag."""
 
     colors = color_crosswalk or load_color_crosswalk()
     readiness = assess_order_readiness(
         package,
         part_crosswalk,
+        route="bricklink",
+        availability=availability,
         purchase_colors=purchase_colors,
         color_crosswalk=colors,
-        verified_part_colors=verified_part_colors,
     )
     if not readiness.supplier_ready:
         details = ", ".join(
-            f"{blocker.part_id}:{blocker.reason}"
-            for blocker in readiness.blockers
+            f"{blocker.part_id}:{blocker.reason}" for blocker in readiness.blockers
         )
         raise ValueError("BrickLink export blocked by unresolved procurement lines: " + details)
 
