@@ -87,12 +87,13 @@ def test_kit_documents_produce_master_bags_labels_and_zero_difference_reconcilia
     assert "Sac 2/2" in docs.labels_text
 
 
-def test_kit_documents_refuse_availability_from_another_route():
-    with pytest.raises(ValueError, match="unverified_for_route"):
-        generate_kit_packing_documents(
-            _package(),
-            load_part_crosswalk(),
-            route="wobrick",
-            purchase_colors=_colors(),
-            availability=_availability("bricklink"),
-        )
+def test_kit_documents_do_not_require_route_availability():
+    docs = generate_kit_packing_documents(
+        _package(),
+        load_part_crosswalk(),
+        route="wobrick",
+        purchase_colors=_colors(),
+        availability=_availability("bricklink"),
+    )
+    assert docs.total_parts == 5
+    assert docs.total_bags == 2
