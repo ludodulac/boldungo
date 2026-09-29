@@ -75,6 +75,37 @@ def assess_order_readiness(
                 )
             )
             continue
+
+        part = mapped[line.part_id]
+        if route == "bricklink" and not part.bricklink_item_no:
+            blockers.append(
+                OrderReadinessBlocker(
+                    part_id=line.part_id,
+                    semantic_color=line.semantic_color,
+                    reason="missing_bricklink_item_no",
+                )
+            )
+            continue
+        if route == "wobrick":
+            if not part.bricklink_item_no:
+                blockers.append(
+                    OrderReadinessBlocker(
+                        part_id=line.part_id,
+                        semantic_color=line.semantic_color,
+                        reason="missing_bricklink_item_no",
+                    )
+                )
+                continue
+            if not part.ldraw_id:
+                blockers.append(
+                    OrderReadinessBlocker(
+                        part_id=line.part_id,
+                        semantic_color=line.semantic_color,
+                        reason="missing_ldraw_id",
+                    )
+                )
+                continue
+
         part_ok += 1
 
         color_key = selected_colors.get(key)
@@ -116,31 +147,25 @@ def assess_order_readiness(
             requirement.purchase_color_key,
         )
 
-        if evidence is None or (
-            require_live_availability and evidence.status != "live_available"
-        ):
+        # Document/export readiness depends only on resolvable export identities,
+        # colors and exact quantities. Supplier availability is a separate layer.
+        if not require_live_availability:
+            if evidence is not None:
+                availability_ok += 1
+            continue
+
+        if evidence is None or evidence.status != "live_available":
             blockers.append(
                 OrderReadinessBlocker(
                     part_id=requirement.part_id,
                     purchase_color_key=requirement.purchase_color_key,
-                    reason=(
-                        "live_part_color_availability_unverified"
-                        if require_live_availability
-                        else "part_color_availability_unverified_for_route"
-                    ),
-                    required_quantity=(
-                        requirement.required_quantity
-                        if require_live_availability
-                        else None
-                    ),
+                    reason="live_part_color_availability_unverified",
+                    required_quantity=requirement.required_quantity,
                 )
             )
             continue
 
         availability_ok += 1
-
-        if not require_live_availability:
-            continue
 
         if evidence.available_quantity is None:
             blockers.append(
