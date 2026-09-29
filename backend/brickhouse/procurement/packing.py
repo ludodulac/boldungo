@@ -13,6 +13,7 @@ from .availability import PartColorAvailabilityRegistry, SupplierRoute
 from .catalog import PartCrosswalk
 from .colors import ColorCrosswalk, load_color_crosswalk
 from .models import CanonicalOrderPackage, OrderLine
+from .physical import aggregate_physical_requirements
 from .readiness import assess_order_readiness
 
 
@@ -58,23 +59,22 @@ def _physical_counter(
     color_crosswalk: ColorCrosswalk,
     purchase_colors: dict[tuple[str, str | None], str],
 ) -> Counter[PhysicalKey]:
-    parts = part_crosswalk.by_engine_id()
-    colors = color_crosswalk.by_key()
     counter: Counter[PhysicalKey] = Counter()
-    for line in lines:
-        part = parts[line.part_id]
-        color_key = purchase_colors[(line.part_id, line.semantic_color)]
-        color = colors[color_key]
+    for requirement in aggregate_physical_requirements(
+        lines,
+        part_crosswalk=part_crosswalk,
+        color_crosswalk=color_crosswalk,
+        purchase_colors=purchase_colors,
+    ):
         key: PhysicalKey = (
-            line.part_id,
-            part.bricklink_item_no,
-            color_key,
-            color.bricklink_color_id,
-            color.bricklink_name,
+            requirement.part_id,
+            requirement.supplier_part_ref,
+            requirement.purchase_color_key,
+            requirement.supplier_color_id,
+            requirement.supplier_color_name,
         )
-        counter[key] += line.quantity
+        counter[key] = requirement.required_quantity
     return counter
-
 
 def _picking_csv(counter: Counter[PhysicalKey]) -> str:
     buffer = StringIO(newline="")
