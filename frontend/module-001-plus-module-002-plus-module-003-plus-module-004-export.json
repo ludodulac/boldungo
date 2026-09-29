@@ -105361,12 +105361,6 @@
         "quantity": 350
       },
       {
-        "part_id": "BRICK_1X1",
-        "category": "timber",
-        "semantic_color": null,
-        "quantity": 79
-      },
-      {
         "part_id": "BRICK_1X2",
         "category": "brick",
         "semantic_color": null,
@@ -105397,18 +105391,6 @@
         "quantity": 1665
       },
       {
-        "part_id": "BRICK_1X8",
-        "category": "timber",
-        "semantic_color": null,
-        "quantity": 16
-      },
-      {
-        "part_id": "BRICK_SLOPED_18_2X1X2_3",
-        "category": "roof_tile",
-        "semantic_color": null,
-        "quantity": 2190
-      },
-      {
         "part_id": "BRICK_SLOPED_45_2X1",
         "category": "facade_detail",
         "semantic_color": null,
@@ -105419,12 +105401,6 @@
         "category": "plate",
         "semantic_color": null,
         "quantity": 101
-      },
-      {
-        "part_id": "PLATE_1X1",
-        "category": "timber",
-        "semantic_color": null,
-        "quantity": 108
       },
       {
         "part_id": "PLATE_1X2",
@@ -105457,12 +105433,6 @@
         "quantity": 548
       },
       {
-        "part_id": "PLATE_1X8",
-        "category": "timber",
-        "semantic_color": null,
-        "quantity": 106
-      },
-      {
         "part_id": "TILE_2X2",
         "category": "ridge_tile",
         "semantic_color": null,
@@ -105479,6 +105449,36 @@
         "category": "ridge_tile",
         "semantic_color": null,
         "quantity": 17
+      },
+      {
+        "part_id": "BRICK_SLOPED_18_2X1X2_3",
+        "category": "roof_tile",
+        "semantic_color": null,
+        "quantity": 2190
+      },
+      {
+        "part_id": "BRICK_1X1",
+        "category": "timber",
+        "semantic_color": null,
+        "quantity": 79
+      },
+      {
+        "part_id": "BRICK_1X8",
+        "category": "timber",
+        "semantic_color": null,
+        "quantity": 16
+      },
+      {
+        "part_id": "PLATE_1X1",
+        "category": "timber",
+        "semantic_color": null,
+        "quantity": 108
+      },
+      {
+        "part_id": "PLATE_1X8",
+        "category": "timber",
+        "semantic_color": null,
+        "quantity": 106
       }
     ]
   },
