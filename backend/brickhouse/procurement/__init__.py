@@ -8,13 +8,16 @@ from .manifest import (
     generate_canonical_order_package_from_bundle,
 )
 from .models import BagOrderManifest, CanonicalOrderPackage, OrderLine
+from .packing import BagPackingSheet, KitPackingDocumentSet, generate_kit_packing_documents
 from .readiness import OrderReadinessReport, assess_order_readiness
 
 __all__ = [
     "BagOrderManifest",
+    "BagPackingSheet",
     "BrickLinkOrderDocuments",
     "CanonicalOrderPackage",
     "ColorCrosswalk",
+    "KitPackingDocumentSet",
     "OrderLine",
     "OrderReadinessReport",
     "PartCrosswalk",
@@ -22,6 +25,7 @@ __all__ = [
     "generate_bricklink_order_documents",
     "generate_canonical_order_package",
     "generate_canonical_order_package_from_bundle",
+    "generate_kit_packing_documents",
     "load_color_crosswalk",
     "load_part_crosswalk",
 ]

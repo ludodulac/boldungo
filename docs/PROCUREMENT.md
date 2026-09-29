@@ -109,9 +109,27 @@ aggregated while preserving the total quantity.
 
 Generation is blocked unless the readiness gate is completely clear.
 
-## Intended final user package
+## Kit-packer documents
 
-The finished procurement feature should expose a downloadable folder containing:
+`backend/brickhouse/procurement/packing.py` generates a human-readable document
+set from the same supplier-ready package:
+
+- one master picking CSV with Boldüngo ID, BrickLink item number, physical color,
+  BrickLink color ID/name and quantity;
+- one picking CSV per existing BagPlan bag;
+- one printable text label per bag, e.g. `Sac 2/6`, including piece count and
+  construction phase(s);
+- one reconciliation CSV containing, for every physical part/color pair:
+  required quantity, packed quantity and difference.
+
+The generator refuses to return a kit document set unless every reconciliation
+difference is exactly zero. The total of all bag sheets must also equal the
+master part count.
+
+## Intended user package
+
+The finished procurement feature can therefore build toward a downloadable
+folder containing:
 
 - master human-readable picking list;
 - supplier-specific upload/order file;
@@ -152,9 +170,8 @@ The next bounded tasks are:
    appearance data without inventing colors;
 2. implement a part/color availability registry or live verifier;
 3. add verified LDraw identities for Wobrick-compatible CSV export;
-4. produce named downloadable document sets and packing sheets;
-5. add a reconciliation report suitable for a kit packer;
-6. later add supplier price/stock comparison without allowing availability or
+4. package the generated strings as named downloadable files/ZIP in the product;
+5. later add supplier price/stock comparison without allowing availability or
    price to mutate construction geometry.
 
 ## Non-interference rule
