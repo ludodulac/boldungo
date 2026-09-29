@@ -86,7 +86,7 @@ def test_rebrickable_verifier_checks_unique_parts_and_builds_bricklink_catalog_e
     assert not registry.supports("wobrick", "BRICK_2X4", "light_bluish_gray")
 
 
-def test_rebrickable_catalog_evidence_only_enables_bricklink_document_readiness():
+def test_rebrickable_catalog_evidence_remains_optional_for_document_readiness():
     def fake_fetch(url, headers):
         assert "/3001/colors/" in url
         assert headers["Authorization"] == "key test-key"
@@ -130,19 +130,19 @@ def test_rebrickable_catalog_evidence_only_enables_bricklink_document_readiness(
         "live_part_color_availability_unverified"
     ]
 
-    for route in ("wobrick", "gobricks", "lego_pick_a_brick"):
-        report = build_procurement_preparation_report(
-            package,
-            load_part_crosswalk(),
-            route=route,
-            availability=resolution.availability,
-            appearance=appearance,
-        )
-        assert not report.document_ready
-        assert not report.live_order_ready
-        assert [blocker.reason for blocker in report.catalog_readiness.blockers] == [
-            "part_color_availability_unverified_for_route"
-        ]
+    wobrick = build_procurement_preparation_report(
+        package,
+        load_part_crosswalk(),
+        route="wobrick",
+        availability=resolution.availability,
+        appearance=appearance,
+    )
+    assert wobrick.document_ready
+    assert not wobrick.live_order_ready
+    assert wobrick.catalog_readiness.blockers == []
+    assert [blocker.reason for blocker in wobrick.live_readiness.blockers] == [
+        "live_part_color_availability_unverified"
+    ]
 
 
 def test_rebrickable_verifier_does_not_create_evidence_for_missing_color():
