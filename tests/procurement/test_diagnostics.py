@@ -244,3 +244,68 @@ def test_missing_appearance_produces_explicit_color_blocker():
     assert not report.document_ready
     assert report.colors.lines[0].status == "missing_architectural_color"
     assert "COLOR_UNRESOLVED=1" in procurement_preparation_summary(report)
+
+
+def test_diagnostics_aggregate_same_physical_pair_before_live_stock_comparison():
+    first = OrderLine(
+        part_id="BRICK_2X4",
+        category="brick",
+        semantic_color="tan",
+        quantity=60,
+    )
+    second = OrderLine(
+        part_id="BRICK_2X4",
+        category="brick",
+        semantic_color=None,
+        quantity=40,
+    )
+    package = CanonicalOrderPackage(
+        building_id="house",
+        volume_id="main",
+        total_parts=100,
+        unique_part_types=2,
+        total_bags=2,
+        order_lines=[first, second],
+        bags=[
+            BagOrderManifest(
+                bag_number=1,
+                phases=["Structure"],
+                assembly_step_ids=["s1"],
+                total_parts=60,
+                lines=[first.model_copy(deep=True)],
+            ),
+            BagOrderManifest(
+                bag_number=2,
+                phases=["Structure"],
+                assembly_step_ids=["s2"],
+                total_parts=40,
+                lines=[second.model_copy(deep=True)],
+            ),
+        ],
+    )
+    availability = PartColorAvailabilityRegistry(evidence=[
+        PartColorAvailabilityEvidence(
+            route="bricklink",
+            part_id="BRICK_2X4",
+            color_key="tan",
+            status="live_available",
+            source="test",
+            available_quantity=70,
+        )
+    ])
+
+    report = build_procurement_preparation_report(
+        package,
+        load_part_crosswalk(),
+        route="bricklink",
+        availability=availability,
+        appearance=Appearance(walls=AppearanceSection(color="tan")),
+    )
+
+    assert report.document_ready
+    assert not report.live_order_ready
+    assert report.live_readiness.total_physical_requirements == 1
+    assert report.live_readiness.physical_requirements[0].required_quantity == 100
+    assert report.live_readiness.shortage_total == 30
+    assert report.live_readiness.blockers[0].shortage_quantity == 30
+    assert "SHORTAGE_TOTAL=30" in procurement_preparation_summary(report)
