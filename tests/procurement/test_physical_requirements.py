@@ -57,6 +57,9 @@ def _same_part_colors():
     }
 
 
+OBSERVED_AT = "2026-09-29T12:00:00Z"
+
+
 def _availability(part_id, color_key, quantity):
     return PartColorAvailabilityRegistry(evidence=[
         PartColorAvailabilityEvidence(
@@ -66,6 +69,7 @@ def _availability(part_id, color_key, quantity):
             status="live_available",
             source="test",
             available_quantity=quantity,
+            observed_at=OBSERVED_AT,
         )
     ])
 
