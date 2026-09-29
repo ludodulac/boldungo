@@ -1,0 +1,22 @@
+canonical_color_key,bricklink_color_id,bricklink_name,lego_color_name,lego_color_id,mapping_status,verification_source
+white,1,White,White,1,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+light_bluish_gray,86,Light Bluish Gray,Medium Stone Grey,194,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+dark_bluish_gray,85,Dark Bluish Gray,Dark Stone Grey,199,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+black,11,Black,Black,26,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+red,5,Red,Bright Red,21,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+dark_red,59,Dark Red,New Dark Red,154,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+tan,2,Tan,Brick Yellow,5,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+dark_tan,69,Dark Tan,Sand Yellow,138,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+reddish_brown,88,Reddish Brown,Reddish Brown,192,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+dark_brown,120,Dark Brown,Dark Brown,308,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+medium_nougat,150,Medium Nougat,Medium Nougat,312,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+sand_green,48,Sand Green,Sand Green,151,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+dark_green,80,Dark Green,Dark Green,141,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+green,6,Green,Dark Green,28,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+blue,7,Blue,Bright Blue,23,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+dark_blue,63,Dark Blue,Earth Blue,140,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+yellow,3,Yellow,Bright Yellow,24,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+orange,4,Orange,Bright Orange,106,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+trans_clear,12,Trans-Clear,Transparent,40,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+trans_light_blue,15,Trans-Light Blue,Tr. Light Blue,42,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
+trans_brown,13,Trans-Brown,Tr. Brown,111,verified_catalog_identity,https://www.bricklink.com/catalogColors.asp
