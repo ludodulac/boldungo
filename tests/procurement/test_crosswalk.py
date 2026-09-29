@@ -80,23 +80,24 @@ def test_order_is_not_supplier_ready_until_purchase_color_is_explicit():
     assert [b.reason for b in report.blockers] == ["missing_purchase_color"]
 
 
-def test_bricklink_evidence_does_not_authorize_wobrick_route():
+def test_bricklink_evidence_does_not_authorize_wobrick_live_readiness():
     report = assess_order_readiness(
         _package(), load_part_crosswalk(), route="wobrick",
         availability=_availability("bricklink"),
         purchase_colors={("BRICK_2X4", None): "light_bluish_gray"},
+        require_live_availability=True,
     )
     assert not report.supplier_ready
-    assert [b.reason for b in report.blockers] == ["part_color_availability_unverified_for_route"]
+    assert [b.reason for b in report.blockers] == ["live_part_color_availability_unverified"]
 
 
-def test_catalog_supported_pair_is_enough_for_document_generation_readiness():
+def test_document_generation_readiness_does_not_require_supplier_availability():
     report = assess_order_readiness(
         _package(), load_part_crosswalk(), route="bricklink",
-        availability=_availability(),
+        availability=PartColorAvailabilityRegistry(evidence=[]),
         purchase_colors={("BRICK_2X4", None): "light_bluish_gray"},
     )
-    assert report.part_color_verified_lines == 1
+    assert report.part_color_verified_lines == 0
     assert report.supplier_ready
 
 
