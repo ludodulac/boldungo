@@ -52,7 +52,7 @@ def build_procurement_preparation_report(
     appearance: Appearance | None,
     color_crosswalk: ColorCrosswalk | None = None,
 ) -> ProcurementPreparationReport:
-    """Explain color, catalog, and live-stock readiness as separate layers."""
+    """Explain color, catalog, live-stock, and quantity readiness separately."""
 
     colors = color_crosswalk or load_color_crosswalk()
     color_report = resolve_purchase_colors_from_appearance(
@@ -126,17 +126,31 @@ def procurement_preparation_csv(report: ProcurementPreparationReport) -> str:
             )
         )
 
+    live_reasons = {
+        "live_part_color_availability_unverified",
+        "available_quantity_unknown",
+        "insufficient_available_quantity",
+    }
     live_only = {
         _blocker_key(item): item
         for item in report.live_readiness.blockers
-        if item.reason == "live_part_color_availability_unverified"
+        if item.reason in live_reasons
     }
     for blocker in sorted(live_only.values(), key=_blocker_key):
+        detail = blocker.semantic_color or ""
+        if blocker.reason == "insufficient_available_quantity":
+            detail = (
+                f"required={blocker.required_quantity};"
+                f"available={blocker.available_quantity};"
+                f"shortage={blocker.shortage_quantity}"
+            )
+        elif blocker.reason == "available_quantity_unknown":
+            detail = f"required={blocker.required_quantity};available=unknown"
         rows.append(
             (
                 "live_stock",
                 blocker.part_id,
-                blocker.semantic_color or "",
+                detail,
                 blocker.purchase_color_key or "",
                 blocker.reason,
             )
@@ -160,6 +174,8 @@ def procurement_preparation_summary(report: ProcurementPreparationReport) -> str
         f"COLOR_UNRESOLVED={report.colors.unresolved_lines}\n"
         f"CATALOG_BLOCKERS={len(report.catalog_readiness.blockers)}\n"
         f"LIVE_BLOCKERS={len(report.live_readiness.blockers)}\n"
+        f"QUANTITY_COVERED_LINES={report.live_readiness.quantity_covered_lines}\n"
+        f"SHORTAGE_TOTAL={report.live_readiness.shortage_total}\n"
         f"DOCUMENT_READY={'YES' if report.document_ready else 'NO'}\n"
         f"LIVE_ORDER_READY={'YES' if report.live_order_ready else 'NO'}\n"
     )
