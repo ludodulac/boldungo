@@ -83,6 +83,10 @@ def _document_message(code: str, part_id: str, color: str | None) -> str:
         return f"Couleur physique « {color or '?'} » à résoudre pour {part_id}."
     if code == "missing_verified_part_identity":
         return f"Référence pièce à résoudre pour {part_id}."
+    if code == "missing_bricklink_item_no":
+        return f"Référence BrickLink à vérifier pour {part_id}."
+    if code == "missing_ldraw_id":
+        return f"Référence compatible à vérifier pour {part_id}."
     if code == "missing_purchase_color":
         return f"Couleur physique à résoudre pour {part_id}."
     if code == "unknown_purchase_color":
