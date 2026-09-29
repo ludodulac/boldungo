@@ -6,25 +6,28 @@ Turn a finished BrickHouse construction into an exact procurement package withou
 making the geometric engine depend on LEGO, BrickLink, GoBricks, or any other
 supplier.
 
-The first rule is conservation:
+The governing rule is conservation:
 
 > Every placement in the canonical `BrickModel` must appear exactly once in the
 > global order manifest and exactly once in a numbered bag.
 
-A supplier exporter may translate identifiers. It must never silently change a
-quantity, omit a part, or move a part to another bag.
+A supplier exporter may translate identifiers and colors. It must never silently
+change a quantity, omit a part, replace a part with an unverified equivalent, or
+move a part to another bag.
 
-## Existing upstream contracts
+## Upstream contracts reused unchanged
 
-BrickHouse already has the three inputs needed for this work:
+Procurement is downstream of existing product artifacts:
 
 1. `BrickModel` — one canonical placement per physical part.
-2. `BillOfMaterials` — exact global aggregation of part ID, category, semantic
-   color, and quantity.
-3. `BagPlan` — deterministic numbered bags derived from assembly order.
+2. `BillOfMaterials` — global aggregation of part ID, category, semantic color,
+   and quantity.
+3. `AssemblyPlan` — construction ordering.
+4. `BagPlan` — deterministic numbered bags derived from that ordering.
+5. `BrickExportBundle` — already carries BrickModel, BOM, BagPlan and appearance.
 
-`backend/brickhouse/procurement/` joins these contracts into a
-`CanonicalOrderPackage`.
+`generate_canonical_order_package_from_bundle()` can therefore start directly
+from a finished export bundle. Procurement does not create or regroup bags.
 
 ## CanonicalOrderPackage v0.1
 
@@ -38,57 +41,124 @@ The package contains:
 - assembly-step IDs assigned to that bag;
 - exact part/color quantities for that bag.
 
-The generator rejects a package if the BagPlan does not reference exactly the
-same placement IDs as the BrickModel.
+The package rejects:
 
-## Important boundary
+- a BagPlan that omits a BrickModel placement;
+- a BagPlan that references an unknown placement;
+- non-contiguous bag numbering;
+- a total quantity mismatch;
+- a bag composition that differs from the global order even when the overall
+  number of pieces happens to be the same.
 
-v0.1 is **not supplier-ready yet**.
+This last check prevents a false pass such as replacing 100 required bricks A
+with 100 bricks B.
 
-`supplier_state = canonical_only` means the quantities and bags are exact, but
-supplier part IDs and supplier color IDs have not been resolved.
+## Verified part crosswalk
 
-This boundary is intentional. BrickHouse engine IDs such as `BRICK_2X4` remain
-the source of truth for construction. Supplier identifiers are attached later.
+`data/procurement/part_crosswalk.csv` currently covers every piece promoted to
+`PLACEMENT_APPROVED` by the current engine: 35 engine IDs.
 
-## Next layer: verified supplier resolution
+The first bridge uses BrickLink catalog item numbers because they are suitable
+for Wanted List XML and are also useful to compatible-brick import tools.
 
-A future crosswalk must resolve, for each order line:
+The crosswalk includes the current standard bricks, standard plates, supported
+roof slopes, ridge tiles, and validated frame/pane window assemblies.
 
-- canonical BrickHouse `part_id`;
-- canonical/physical color selected for purchase;
-- Rebrickable/LDraw identifiers used as neutral catalog bridges where useful;
-- BrickLink item/color identifiers;
-- LEGO Pick a Brick design/element identifiers where available;
-- GoBricks / compatible-supplier SKU and color identifiers where available;
-- equivalence status for alternate molds;
-- validation status and provenance.
+Mapping presence is not the same as stock availability.
 
-No mapping should be treated as orderable until the part **and color** have both
-been verified.
+## Verified purchase-color vocabulary
 
-## Intended user outputs
+`data/procurement/color_crosswalk.csv` contains a first canonical physical
+color vocabulary with verified BrickLink color IDs and LEGO color identities.
 
-Once supplier resolution exists, the same canonical package can produce:
+Architectural descriptions such as "warm stone" or "slightly darker beige" are
+not silently converted to one of these colors. A purchase color must be selected
+explicitly or by a future evidence-backed color policy.
 
-- a human-readable master picking list;
-- a supplier-specific upload file or order-request document;
-- a missing/unresolved-parts report that must be empty before declaring the order
-  complete;
+## Fail-closed readiness gate
+
+An order line is not supplier-ready until all three conditions are true:
+
+1. **Part identity resolved** — the engine part ID has a verified external
+   catalog identity.
+2. **Purchase color resolved** — an explicit canonical physical color has been
+   chosen.
+3. **Part/color availability verified** — that exact part is known to be
+   obtainable in that exact color for the intended procurement route.
+
+A known part plus a known color is deliberately insufficient. This prevents
+Boldüngo from producing a supposedly complete order containing a physically
+nonexistent part/color combination.
+
+## BrickLink documents
+
+`backend/brickhouse/procurement/bricklink.py` generates:
+
+- one master BrickLink Wanted List XML for the entire construction;
+- one BrickLink Wanted List XML per numbered bag.
+
+The adapter emits the required Wanted List fields:
+
+- `ITEMTYPE=P`;
+- `ITEMID`;
+- `COLOR`;
+- `MINQTY`.
+
+Canonical lines that intentionally select the same physical part/color are
+aggregated while preserving the total quantity.
+
+Generation is blocked unless the readiness gate is completely clear.
+
+## Intended final user package
+
+The finished procurement feature should expose a downloadable folder containing:
+
+- master human-readable picking list;
+- supplier-specific upload/order file;
+- unresolved/missing report, which must be empty before "ready to order";
 - one packing sheet per bag;
-- bag labels such as `Sac 1 / N`, `Sac 2 / N`, etc.;
-- a final reconciliation sheet proving that the sum of all packed bags equals
-  the complete construction BOM.
+- one supplier file per bag when useful;
+- labels such as `Sac 1 / N`, `Sac 2 / N`, etc.;
+- reconciliation sheet proving all bags sum exactly to the complete BOM.
 
-This supports two operating modes:
+Two operating modes are supported by the architecture:
 
 1. **User orders parts** — Boldüngo gives the exact files/documents to submit to
-   the chosen supplier(s).
-2. **Prepared kit** — a supplier or packer receives the master order plus the bag
+   one or more suppliers.
+2. **Prepared kit** — a supplier/packer receives the master order plus bag
    manifests and returns a complete kit already split into numbered bags.
+
+## Compatible-brick route
+
+Wobrick currently documents a Studio CSV import requiring:
+
+- `BLItemNo`;
+- `LdrawId`;
+- `BLColorId`;
+- `Qty`.
+
+The current crosswalk already owns the BrickLink side. A later tranche must add
+verified LDraw identities before generating this CSV; no guessed LDraw ID should
+be emitted merely because it often resembles a BrickLink number.
+
+GoBricks/Brickwith or another compatible supplier remains an adapter downstream
+of the same canonical package.
+
+## Remaining work
+
+The next bounded tasks are:
+
+1. preserve/resolve physical colors from existing Survey/Scene/Building
+   appearance data without inventing colors;
+2. implement a part/color availability registry or live verifier;
+3. add verified LDraw identities for Wobrick-compatible CSV export;
+4. produce named downloadable document sets and packing sheets;
+5. add a reconciliation report suitable for a kit packer;
+6. later add supplier price/stock comparison without allowing availability or
+   price to mutate construction geometry.
 
 ## Non-interference rule
 
-Procurement is downstream of BrickModel, BOM, AssemblyPlan, and BagPlan. It must
-not change Survey, Scene, photo reasoning, geometry, placement, or instruction
-ordering merely to improve availability or price.
+Procurement is downstream of BrickModel, BOM, AssemblyPlan, InstructionPlan and
+BagPlan. It must not change Survey, Scene, photo reasoning, geometry, placement,
+or construction order merely to improve supplier availability or price.
