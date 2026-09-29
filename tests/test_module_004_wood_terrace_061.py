@@ -78,7 +78,7 @@ def test_061_source_modules_are_byte_equivalent_prefix_and_module004_is_new_doma
     module = load(MODULE)
     combined = load(COMBINED)
 
-    assert module["metadata"]["mission"] == "BOLDUNGO-061-MODULE004-COARSE-LEGO"
+    assert module["metadata"]["mission"] == "BOLDUNGO-063-MODULE004-HOST-FACE-CORRECTION"
     source_parts = source["brick_model"]["parts"]
     combined_parts = combined["brick_model"]["parts"]
 
@@ -96,31 +96,32 @@ def test_061_source_modules_are_byte_equivalent_prefix_and_module004_is_new_doma
     assert all(part["component"] == "facade_detail" for part in new_parts)
 
 
-def test_061_raised_rectangular_deck_is_rear_adjacent_at_reserved_high_level() -> None:
+def test_063_wood_terrace_host_face_identity_is_confirmed() -> None:
     source = load(SOURCE)
-    module, model, parts = model_parts()
+    module, _model, parts = model_parts()
     geometry = module["metadata"]["geometry"]
     deck = geometry["deck_footprint"]
+    house = module["metadata"]["house_interface"]
+    interface = module["metadata"]["module_003_interface"]
 
     assert deck["status"] == "COARSE_REFINABLE"
-    assert deck["y"][0] == source["metadata"]["host_house_rear_plane_y"]
+    assert deck["x"][1] == source["metadata"]["host_house_left_plane_x"]
+    assert deck["y"][1] == source["metadata"]["geometry"]["upper_platform"]["y"][0]
     assert deck["walking_top_z"] == source["metadata"]["level_model"]["future_wood_terrace_interface_z"]
+    assert house["host_face"] == "left"
+    assert house["relation"] == "DECK_HOUSE_EDGE_ADJACENT_TO_LEFT_HOUSE_PLANE"
+    assert house["corner_crossing_required"] is False
+    assert interface["shared_host_face"] == "left"
+    assert interface["corner_crossing_required"] is False
 
     floor = parts_with("deck-floor", parts)
     assert floor
     floor_cells = cells(floor)
     floor_z = deck["walking_top_z"] - 1
-
-    # The coarse deck surface is a complete horizontal rectangle at one level.
     for x in range(*deck["x"]):
         for y in range(*deck["y"]):
             assert (x, y, floor_z) in floor_cells
     assert all(z == floor_z for _x, _y, z in floor_cells)
-
-    house_interface = module["metadata"]["house_interface"]
-    assert house_interface["relation"] == "DECK_BACK_EDGE_ADJACENT_TO_REAR_HOUSE_PLANE"
-    assert house_interface["fixation_mechanism"] == "NOT_OBSERVABLE_NOT_ENCODED"
-
 
 def test_061_wood_terrace_primary_underspace_remains_open() -> None:
     module, _model, parts = model_parts()
@@ -173,19 +174,19 @@ def test_061_wood_terrace_remains_structurally_distinct_from_masonry_module003()
     assert cells(module003).isdisjoint(cells(module_parts))
 
     interface = module["metadata"]["module_003_interface"]
-    assert interface["relation"] == "HIGH_LEVEL_NEIGHBORS_REMAIN_DISTINCT"
+    assert interface["relation"] == "SAME_LONGITUDINAL_LEFT_FACE_HIGH_LEVEL_NEIGHBORS_REMAIN_DISTINCT"
     assert interface["exact_connection"] == "NOT_OBSERVABLE_NOT_ENCODED"
     assert interface["wood_walking_top_z"] == source["metadata"]["level_model"]["future_wood_terrace_interface_z"]
     assert interface["masonry_walking_top_z"] == source["metadata"]["level_model"]["upper_masonry_platform_z"]
 
 
-def test_061_railing_signature_is_front_right_only_with_readable_corner() -> None:
+def test_061_railing_signature_is_preserved_after_host_face_rotation() -> None:
     module, _model, parts = model_parts()
     geometry = module["metadata"]["geometry"]
     deck = geometry["deck_footprint"]
     railing = geometry["railing"]
-    front_y = geometry["front_edge"]["y"]
-    right_x = geometry["right_edge"]["x"]
+    outer_x = geometry["front_edge"]["x"]
+    end_y = geometry["right_edge"]["y"]
     top_z = railing["top_z"]
 
     front_top = parts_with("railing-front-top", parts)
@@ -194,31 +195,18 @@ def test_061_railing_signature_is_front_right_only_with_readable_corner() -> Non
     right_vertical = parts_with("railing-right-vertical", parts)
     assert front_top and right_top and front_vertical and right_vertical
 
-    front_top_cells = cells(front_top)
-    right_top_cells = cells(right_top)
-
-    # Continuous top rail across the front free edge.
-    for x in range(*deck["x"]):
+    front_cells = cells(front_top)
+    right_cells = cells(right_top)
+    for y in range(*deck["y"]):
         for z in range(top_z - 3, top_z):
-            assert (x, front_y, z) in front_top_cells
-
-    # Continuous right top rail up to the front corner; the front rail owns the corner cell.
-    for y in range(deck["y"][0], front_y):
+            assert (outer_x, y, z) in front_cells
+    for x in range(deck["x"][0] + 1, deck["x"][1]):
         for z in range(top_z - 3, top_z):
-            assert (right_x, y, z) in right_top_cells
+            assert (x, end_y, z) in right_cells
 
-    front_xs = {part.x_studs for part in front_vertical}
-    right_ys = {part.y_studs for part in right_vertical}
-    assert len(front_xs) >= 8
-    assert len(right_ys) >= 4
-    assert right_x in front_xs
-
-    contract = module["metadata"]["railing_contract"]
-    assert contract["front"] == "COARSE_TOP_RAIL_PLUS_REPEATED_VERTICALS"
-    assert contract["right"] == "COARSE_TOP_RAIL_PLUS_REPEATED_VERTICALS"
-    assert contract["house_edge"] == "NO_AUTOMATIC_RAILING"
-    assert not parts_with("railing-back", parts)
-
+    assert len({part.y_studs for part in front_vertical}) >= 8
+    assert len({part.x_studs for part in right_vertical}) >= 4
+    assert module["metadata"]["railing_contract"]["house_edge"] == "NO_AUTOMATIC_RAILING"
 
 def test_061_observed_supports_are_explicit_and_hidden_supports_not_invented() -> None:
     module, _model, parts = model_parts()
