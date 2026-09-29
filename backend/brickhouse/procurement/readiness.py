@@ -7,7 +7,8 @@ from pydantic import BaseModel, Field
 from .availability import PartColorAvailabilityRegistry, SupplierRoute
 from .catalog import PartCrosswalk
 from .colors import ColorCrosswalk, load_color_crosswalk
-from .models import CanonicalOrderPackage
+from .models import CanonicalOrderPackage, OrderLine
+from .physical import PhysicalRequirement, aggregate_physical_requirements
 
 
 class OrderReadinessBlocker(BaseModel):
@@ -23,12 +24,14 @@ class OrderReadinessBlocker(BaseModel):
 class OrderReadinessReport(BaseModel):
     route: SupplierRoute
     total_order_lines: int = Field(ge=0)
+    total_physical_requirements: int = Field(ge=0)
     part_identity_resolved_lines: int = Field(ge=0)
     purchase_color_resolved_lines: int = Field(ge=0)
     part_color_verified_lines: int = Field(ge=0)
     quantity_covered_lines: int = Field(ge=0)
     shortage_total: int = Field(ge=0)
     require_live_availability: bool = False
+    physical_requirements: list[PhysicalRequirement] = Field(default_factory=list)
     blockers: list[OrderReadinessBlocker]
 
     @property
@@ -46,10 +49,11 @@ def assess_order_readiness(
     color_crosswalk: ColorCrosswalk | None = None,
     require_live_availability: bool = False,
 ) -> OrderReadinessReport:
-    """Assess whether every order line is valid for one specific supplier route."""
+    """Assess one route after canonical lines are aggregated physically."""
 
     mapped = crosswalk.by_engine_id()
-    colors = (color_crosswalk or load_color_crosswalk()).by_key()
+    color_catalog = color_crosswalk or load_color_crosswalk()
+    colors = color_catalog.by_key()
     selected_colors = purchase_colors or {}
 
     blockers: list[OrderReadinessBlocker] = []
@@ -58,12 +62,11 @@ def assess_order_readiness(
     availability_ok = 0
     quantity_covered = 0
     shortage_total = 0
+    valid_lines: list[OrderLine] = []
 
     for line in package.order_lines:
         key = (line.part_id, line.semantic_color)
-        if line.part_id in mapped:
-            part_ok += 1
-        else:
+        if line.part_id not in mapped:
             blockers.append(
                 OrderReadinessBlocker(
                     part_id=line.part_id,
@@ -71,6 +74,8 @@ def assess_order_readiness(
                     reason="missing_verified_part_identity",
                 )
             )
+            continue
+        part_ok += 1
 
         color_key = selected_colors.get(key)
         if not color_key:
@@ -95,22 +100,39 @@ def assess_order_readiness(
             continue
 
         color_ok += 1
-        evidence = availability.evidence_for(route, line.part_id, color_key)
+        valid_lines.append(line)
+
+    physical_requirements = aggregate_physical_requirements(
+        valid_lines,
+        part_crosswalk=crosswalk,
+        color_crosswalk=color_catalog,
+        purchase_colors=selected_colors,
+    )
+
+    for requirement in physical_requirements:
+        evidence = availability.evidence_for(
+            route,
+            requirement.part_id,
+            requirement.purchase_color_key,
+        )
 
         if evidence is None or (
             require_live_availability and evidence.status != "live_available"
         ):
             blockers.append(
                 OrderReadinessBlocker(
-                    part_id=line.part_id,
-                    semantic_color=line.semantic_color,
-                    purchase_color_key=color_key,
+                    part_id=requirement.part_id,
+                    purchase_color_key=requirement.purchase_color_key,
                     reason=(
                         "live_part_color_availability_unverified"
                         if require_live_availability
                         else "part_color_availability_unverified_for_route"
                     ),
-                    required_quantity=line.quantity if require_live_availability else None,
+                    required_quantity=(
+                        requirement.required_quantity
+                        if require_live_availability
+                        else None
+                    ),
                 )
             )
             continue
@@ -123,25 +145,23 @@ def assess_order_readiness(
         if evidence.available_quantity is None:
             blockers.append(
                 OrderReadinessBlocker(
-                    part_id=line.part_id,
-                    semantic_color=line.semantic_color,
-                    purchase_color_key=color_key,
+                    part_id=requirement.part_id,
+                    purchase_color_key=requirement.purchase_color_key,
                     reason="available_quantity_unknown",
-                    required_quantity=line.quantity,
+                    required_quantity=requirement.required_quantity,
                 )
             )
             continue
 
-        if evidence.available_quantity < line.quantity:
-            shortage = line.quantity - evidence.available_quantity
+        if evidence.available_quantity < requirement.required_quantity:
+            shortage = requirement.required_quantity - evidence.available_quantity
             shortage_total += shortage
             blockers.append(
                 OrderReadinessBlocker(
-                    part_id=line.part_id,
-                    semantic_color=line.semantic_color,
-                    purchase_color_key=color_key,
+                    part_id=requirement.part_id,
+                    purchase_color_key=requirement.purchase_color_key,
                     reason="insufficient_available_quantity",
-                    required_quantity=line.quantity,
+                    required_quantity=requirement.required_quantity,
                     available_quantity=evidence.available_quantity,
                     shortage_quantity=shortage,
                 )
@@ -153,11 +173,13 @@ def assess_order_readiness(
     return OrderReadinessReport(
         route=route,
         total_order_lines=len(package.order_lines),
+        total_physical_requirements=len(physical_requirements),
         part_identity_resolved_lines=part_ok,
         purchase_color_resolved_lines=color_ok,
         part_color_verified_lines=availability_ok,
         quantity_covered_lines=quantity_covered,
         shortage_total=shortage_total,
         require_live_availability=require_live_availability,
+        physical_requirements=physical_requirements,
         blockers=blockers,
     )
