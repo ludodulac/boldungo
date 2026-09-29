@@ -85,12 +85,15 @@ class CanonicalOrderPackage(BaseModel):
         if global_counts != bag_counts:
             missing_or_wrong = sorted(
                 (
-                    identity,
-                    global_counts.get(identity, 0),
-                    bag_counts.get(identity, 0),
-                )
-                for identity in set(global_counts) | set(bag_counts)
-                if global_counts.get(identity, 0) != bag_counts.get(identity, 0)
+                    (
+                        identity,
+                        global_counts.get(identity, 0),
+                        bag_counts.get(identity, 0),
+                    )
+                    for identity in set(global_counts) | set(bag_counts)
+                    if global_counts.get(identity, 0) != bag_counts.get(identity, 0)
+                ),
+                key=lambda item: (item[0][0], item[0][1], item[0][2] or ""),
             )
             raise ValueError(
                 "bag composition does not exactly match global order lines: "
