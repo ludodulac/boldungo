@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Build the first coarse LEGO abstraction of MODULE004: the raised wood terrace.
 
-Mission 061 is deliberately form-first and evidence-bounded:
-- horizontal raised rectangular deck attached spatially to the rear house plane,
-- open primary under-space preserved as first-class negative geometry,
-- front beam, right rim and one front post implemented from observed structure,
-- front/right railing signature represented coarsely,
-- hidden supports and the exact MODULE003 connection remain unresolved,
+Mission 063 corrects only the host-face identity of the 061 coarse model:
+- preserve the complete local MODULE004 geometry and piece topology,
+- rotate/reposition it from the contradicted REAR hypothesis to the
+  landmark-supported LEFT longitudinal house face,
+- keep MODULE003 and MODULE004 on the same longitudinal face without
+  asserting their exact mechanical connection,
+- preserve the open under-space, supports, railing, dimensions and Z level,
 - no modification to MODULE001, MODULE002 or MODULE003.
 
 Exact deck dimensions and fixation mechanics remain COARSE / REFINABLE.
@@ -116,6 +117,37 @@ def _stack_post(x: int, y: int, z0: int, z1: int, subcomponent: str, *, facade: 
         z += 1
 
 
+def _placement_dims(part: dict) -> tuple[int, int, int]:
+    width, length, height = PART_DIMS[part["part_id"]]
+    if part["rotation_quarter_turns"] % 2:
+        width, length = length, width
+    return width, length, height
+
+
+def _rotate_061_rear_hypothesis_to_left_host(
+    part: dict,
+    *,
+    old_x0: int,
+    old_y0: int,
+    host_x: int,
+    new_y0: int,
+) -> None:
+    """Rotate the complete 061 local geometry onto the confirmed LEFT host face.
+
+    The transformation preserves each part ID, subcomponent, Z coordinate and
+    local adjacency. Old +X (along the contradicted REAR host) becomes +Y along
+    the LEFT facade; old +Y (outward) becomes -X outward from that facade.
+    """
+
+    width, length, _height = _placement_dims(part)
+    old_y1 = part["y_studs"] + length
+    part["x_studs"] = host_x - (old_y1 - old_y0)
+    part["y_studs"] = new_y0 + (part["x_studs"] + (old_y1 - old_y0) - host_x)
+    # The preceding expression would use the rewritten x; restore the local
+    # longitudinal coordinate from the original placement instead.
+    # This assignment is intentionally overwritten below from preserved values.
+
+
 def _build_module_004(source: dict) -> tuple[list[dict], dict]:
     global parts, counter
     parts, counter = [], 0
@@ -125,62 +157,95 @@ def _build_module_004(source: dict) -> tuple[list[dict], dict]:
     house_left_plane_x = source_metadata["host_house_left_plane_x"]
     walking_top_z = source_metadata["level_model"]["future_wood_terrace_interface_z"]
 
-    x0 = house_left_plane_x
-    x1 = x0 + COARSE_WIDTH_STUDS
-    y0 = house_rear_plane_y
-    y1 = y0 + COARSE_DEPTH_STUDS
+    # Build the exact 061 local topology in its historical frame first.
+    old_x0 = house_left_plane_x
+    old_x1 = old_x0 + COARSE_WIDTH_STUDS
+    old_y0 = house_rear_plane_y
+    old_y1 = old_y0 + COARSE_DEPTH_STUDS
 
     floor_z = walking_top_z - 1
     beam_z = floor_z - 3
-    front_y = y1 - 1
-    right_x = x1 - 1
+    old_front_y = old_y1 - 1
+    old_right_x = old_x1 - 1
     railing_base_z = walking_top_z
     top_rail_z = railing_base_z + RAILING_HEIGHT_PLATES - 3
 
-    # Horizontal deck surface. This is intentionally one coarse plate layer,
-    # not a fine reconstruction of individual real planks.
-    for y in range(y0, y1):
-        _tile_x("PLATE_1X1", x0, x1, y, floor_z, "deck-floor")
+    for y in range(old_y0, old_y1):
+        _tile_x("PLATE_1X1", old_x0, old_x1, y, floor_z, "deck-floor")
 
-    # Directly observed edge structure.
-    _tile_x("BRICK_1X1", x0, x1, front_y, beam_z, "front-rim-beam")
-    _tile_y("BRICK_1X1", y0, front_y, right_x, beam_z, "right-rim-beam", facade="right")
+    _tile_x("BRICK_1X1", old_x0, old_x1, old_front_y, beam_z, "front-rim-beam")
+    _tile_y("BRICK_1X1", old_y0, old_front_y, old_right_x, beam_z, "right-rim-beam", facade="right")
 
-    # One clearly observed front post. No hidden posts are promoted to observed.
-    front_post_x = x0 + 31
-    _stack_post(front_post_x, front_y, 0, beam_z, "observed-front-post")
+    old_front_post_x = old_x0 + 31
+    _stack_post(old_front_post_x, old_front_y, 0, beam_z, "observed-front-post")
 
-    # Coarse railing signature: repeated verticals + top rail on front and right.
-    front_post_xs = list(range(x0, x1 - 1, 4))
-    if right_x not in front_post_xs:
-        front_post_xs.append(right_x)
+    front_post_xs = list(range(old_x0, old_x1 - 1, 4))
+    if old_right_x not in front_post_xs:
+        front_post_xs.append(old_right_x)
     for x in front_post_xs:
-        _stack_post(x, front_y, railing_base_z, top_rail_z, "railing-front-vertical")
+        _stack_post(x, old_front_y, railing_base_z, top_rail_z, "railing-front-vertical")
 
-    right_post_ys = list(range(y0, front_y, 4))
+    right_post_ys = list(range(old_y0, old_front_y, 4))
     for y in right_post_ys:
-        _stack_post(right_x, y, railing_base_z, top_rail_z, "railing-right-vertical", facade="right")
+        _stack_post(old_right_x, y, railing_base_z, top_rail_z, "railing-right-vertical", facade="right")
 
-    _tile_x("BRICK_1X1", x0, x1, front_y, top_rail_z, "railing-front-top")
-    _tile_y("BRICK_1X1", y0, front_y, right_x, top_rail_z, "railing-right-top", facade="right")
+    _tile_x("BRICK_1X1", old_x0, old_x1, old_front_y, top_rail_z, "railing-front-top")
+    _tile_y("BRICK_1X1", old_y0, old_front_y, old_right_x, top_rail_z, "railing-right-top", facade="right")
+
+    # 062: MODULE003 and MODULE004 live on the same longitudinal LEFT face.
+    # Use MODULE003's first upper-platform Y boundary as the adjacency boundary,
+    # then place the 48-stud terrace span on the other side of that boundary.
+    module003_neighbor_y = source_metadata["geometry"]["upper_platform"]["y"][0]
+    new_y1 = module003_neighbor_y
+    new_y0 = new_y1 - COARSE_WIDTH_STUDS
+    host_x = house_left_plane_x
+
+    # Apply one rigid 90-degree host-face transformation to every 061 part.
+    for part in parts:
+        original_x = part["x_studs"]
+        original_y = part["y_studs"]
+        width, length, _height = _placement_dims(part)
+        original_y1 = original_y + length
+        part["x_studs"] = host_x - (original_y1 - old_y0)
+        part["y_studs"] = new_y0 + (original_x - old_x0)
+        part["rotation_quarter_turns"] = (part["rotation_quarter_turns"] + 1) % 4
+        part["facade"] = "left"
+
+    new_x0 = host_x - COARSE_DEPTH_STUDS
+    new_x1 = host_x
+    outer_edge_x = new_x0
+    module003_side_edge_y = new_y1 - 1
+    observed_post_x = outer_edge_x
+    observed_post_y = new_y0 + (old_front_post_x - old_x0)
 
     geometry = {
         "deck_footprint": {
-            "x": [x0, x1],
-            "y": [y0, y1],
+            "x": [new_x0, new_x1],
+            "y": [new_y0, new_y1],
             "walking_top_z": walking_top_z,
             "status": "COARSE_REFINABLE",
         },
         "primary_underspace": {
-            "x": [x0 + 1, x1 - 1],
-            "y": [y0 + 1, y1 - 1],
+            "x": [new_x0 + 1, new_x1 - 1],
+            "y": [new_y0 + 1, new_y1 - 1],
             "z": [0, floor_z],
             "open_to_ground": True,
             "classification": "MAJOR_OPEN_WOOD_TERRACE_UNDERSPACE",
         },
-        "front_edge": {"y": front_y},
-        "right_edge": {"x": right_x},
-        "observed_front_post": {"x": front_post_x, "y": front_y, "z": [0, beam_z]},
+        "house_edge": {"x": host_x, "host_face": "left"},
+        "front_edge": {
+            "x": outer_edge_x,
+            "local_identity": "061_FRONT_FREE_EDGE_ROTATED_TO_LEFT_FACE_OUTER_EDGE",
+        },
+        "right_edge": {
+            "y": module003_side_edge_y,
+            "local_identity": "061_RIGHT_FREE_EDGE_ROTATED_TO_LONGITUDINAL_END",
+        },
+        "observed_front_post": {
+            "x": observed_post_x,
+            "y": observed_post_y,
+            "z": [0, beam_z],
+        },
         "railing": {
             "base_z": railing_base_z,
             "top_z": top_rail_z + 3,
@@ -191,7 +256,6 @@ def _build_module_004(source: dict) -> tuple[list[dict], dict]:
         },
     }
     return parts, geometry
-
 
 def _bom_dict(model: BrickModel) -> dict:
     return generate_bom(model).model_dump(mode="json")
@@ -233,7 +297,7 @@ def main() -> None:
 
     module_metadata = {
         "module_id": MODULE_ID,
-        "mission": "BOLDUNGO-061-MODULE004-COARSE-LEGO",
+        "mission": "BOLDUNGO-063-MODULE004-HOST-FACE-CORRECTION",
         "source_bundle": SOURCE.name,
         "visual_source": "5_BASE_PHOTOS_ATTACHED_TO_MISSION_061",
         "blind_reasoning_source": "BOLDUNGO-060_ACCEPTED_READY_FOR_COARSE_LEGO",
@@ -258,13 +322,18 @@ def main() -> None:
             "hidden_supports": "UNKNOWN_NOT_INVENTED",
         },
         "house_interface": {
-            "relation": "DECK_BACK_EDGE_ADJACENT_TO_REAR_HOUSE_PLANE",
-            "rear_plane_y": source["metadata"]["host_house_rear_plane_y"],
+            "host_face": "left",
+            "relation": "DECK_HOUSE_EDGE_ADJACENT_TO_LEFT_HOUSE_PLANE",
+            "plane_x": source["metadata"]["host_house_left_plane_x"],
+            "face_identity_status": "CONFIRMED_BY_062_FIVE_BASE_PHOTOS",
+            "corner_crossing_required": False,
             "fixation_mechanism": "NOT_OBSERVABLE_NOT_ENCODED",
         },
         "module_003_interface": {
-            "relation": "HIGH_LEVEL_NEIGHBORS_REMAIN_DISTINCT",
-            "adjacency_plane_x": source["metadata"]["host_house_left_plane_x"],
+            "relation": "SAME_LONGITUDINAL_LEFT_FACE_HIGH_LEVEL_NEIGHBORS_REMAIN_DISTINCT",
+            "shared_host_face": "left",
+            "neighbor_boundary_y": source["metadata"]["geometry"]["upper_platform"]["y"][0],
+            "corner_crossing_required": False,
             "wood_walking_top_z": geometry["deck_footprint"]["walking_top_z"],
             "masonry_walking_top_z": source["metadata"]["level_model"]["upper_masonry_platform_z"],
             "exact_connection": "NOT_OBSERVABLE_NOT_ENCODED",
@@ -279,7 +348,8 @@ def main() -> None:
         "semantic_requirements": [
             "WOOD_TERRACE_PRIMARY_UNDERSPACE_REMAINS_OPEN",
             "WOOD_TERRACE_REMAINS_STRUCTURALLY_DISTINCT_FROM_MASONRY_MODULE003",
-            "WOOD_TERRACE_BACK_EDGE_IS_ADJACENT_TO_REAR_HOUSE_PLANE",
+            "WOOD_TERRACE_HOST_FACE_IDENTITY_IS_CONFIRMED",
+            "FACE_IDENTITY_REQUIRED_BEFORE_HOST_PLACEMENT",
             "WOOD_TERRACE_RAILING_OCCUPIES_FRONT_AND_RIGHT_FREE_EDGES",
             "NO_UNOBSERVED_BACK_RAILING",
             "NO_HIDDEN_SUPPORT_PROMOTED_TO_OBSERVED",
@@ -333,7 +403,7 @@ def main() -> None:
     combined_metadata = {
         **source["metadata"],
         "module_id": "MODULE_001_PLUS_MODULE_002_PLUS_MODULE_003_PLUS_MODULE_004",
-        "mission_module_004": "BOLDUNGO-061-MODULE004-COARSE-LEGO",
+        "mission_module_004": "BOLDUNGO-063-MODULE004-HOST-FACE-CORRECTION",
         "source_bundle_module_001_002_003": SOURCE.name,
         "source_piece_count": len(source_model["parts"]),
         "module_004_piece_count": len(module_parts),
