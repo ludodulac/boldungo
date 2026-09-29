@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import pytest
+from types import SimpleNamespace
 
 from brickhouse.bricks.bags import BagGroup, BagPlan
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 from brickhouse.building.models import Facade
-from brickhouse.procurement.manifest import generate_canonical_order_package
+from brickhouse.procurement.manifest import (
+    generate_canonical_order_package,
+    generate_canonical_order_package_from_bundle,
+)
 
 
 def _model() -> BrickModel:
@@ -104,3 +108,20 @@ def test_order_package_refuses_different_building_volume():
     wrong = _bag_plan().model_copy(update={"volume_id": "other"})
     with pytest.raises(ValueError, match="same building volume"):
         generate_canonical_order_package(_model(), wrong)
+
+
+def test_finished_export_bundle_can_feed_procurement_without_regrouping_bags():
+    bundle = SimpleNamespace(brick_model=_model(), bag_plan=_bag_plan())
+
+    package = generate_canonical_order_package_from_bundle(bundle)
+
+    assert package.total_parts == 3
+    assert [bag.bag_number for bag in package.bags] == [1, 2]
+    assert [bag.total_parts for bag in package.bags] == [2, 1]
+
+
+def test_finished_export_bundle_without_bag_plan_is_rejected():
+    bundle = SimpleNamespace(brick_model=_model(), bag_plan=None)
+
+    with pytest.raises(ValueError, match="has no BagPlan"):
+        generate_canonical_order_package_from_bundle(bundle)
