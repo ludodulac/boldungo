@@ -79,17 +79,17 @@ def test_wobrick_studio_csv_uses_verified_cross_system_ids_and_conserves_bags():
     ]
 
 
-def test_wobrick_export_refuses_bricklink_only_availability_evidence():
-    with pytest.raises(ValueError, match="unverified_for_route"):
-        generate_wobrick_order_documents(
-            _package(),
-            load_part_crosswalk(),
-            purchase_colors={
-                ("BRICK_2X4", None): "light_bluish_gray",
-                ("TILE_2X2", None): "black",
-            },
-            availability=_availability("bricklink"),
-        )
+def test_wobrick_export_does_not_require_wobrick_availability_evidence():
+    docs = generate_wobrick_order_documents(
+        _package(),
+        load_part_crosswalk(),
+        purchase_colors={
+            ("BRICK_2X4", None): "light_bluish_gray",
+            ("TILE_2X2", None): "black",
+        },
+        availability=_availability("bricklink"),
+    )
+    assert docs.master.total_parts == 5
 
 
 def test_wobrick_window_glass_uses_ldraw_alias_not_bricklink_number():
