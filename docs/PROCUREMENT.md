@@ -266,3 +266,17 @@ confirmed quantity.
 line keeps the expected supplier reference, has status `exact_confirmed`, and
 has confirmed quantity exactly equal to required quantity. A shortage of one
 piece, a changed reference, or a proposed substitution keeps the order blocked.
+
+
+## Preparation diagnostics
+
+`diagnostics.py` is intentionally usable before an order is ready. It separates:
+
+1. architectural/purchase color resolution;
+2. catalog support for the selected supplier route;
+3. current live availability.
+
+The report exposes `DOCUMENT_READY` and `LIVE_ORDER_READY` separately and can
+render a CSV listing the exact blocking line and reason. Thus a user can see
+"off_white is not a canonical purchase color" or "live stock not verified"
+instead of receiving a generic order failure.

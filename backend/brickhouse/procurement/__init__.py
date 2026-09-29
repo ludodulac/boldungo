@@ -13,6 +13,12 @@ from .color_resolution import (
     color_resolution_csv,
     resolve_purchase_colors_from_appearance,
 )
+from .diagnostics import (
+    ProcurementPreparationReport,
+    build_procurement_preparation_report,
+    procurement_preparation_csv,
+    procurement_preparation_summary,
+)
 from .fulfillment import (
     FulfillmentReport,
     SupplierConfirmationLine,
@@ -47,6 +53,7 @@ __all__ = [
     "PartColorAvailabilityEvidence",
     "PartColorAvailabilityRegistry",
     "PurchaseColorResolutionReport",
+    "ProcurementPreparationReport",
     "PartCrosswalk",
     "SupplierRoute",
     "SupplierHandoffPackage",
@@ -54,6 +61,7 @@ __all__ = [
     "WobrickOrderDocuments",
     "assess_order_readiness",
     "color_resolution_csv",
+    "build_procurement_preparation_report",
     "generate_bricklink_order_documents",
     "generate_canonical_order_package",
     "generate_canonical_order_package_from_bundle",
@@ -62,6 +70,8 @@ __all__ = [
     "generate_wobrick_order_documents",
     "load_color_crosswalk",
     "parse_supplier_confirmation_csv",
+    "procurement_preparation_csv",
+    "procurement_preparation_summary",
     "load_part_crosswalk",
     "resolve_purchase_colors_from_appearance",
     "supplier_handoff_zip_bytes",
