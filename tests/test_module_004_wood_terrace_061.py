@@ -230,17 +230,17 @@ def test_061_observed_supports_are_explicit_and_hidden_supports_not_invented() -
     assert front_beam and right_beam and post
 
     deck = geometry["deck_footprint"]
-    front_y = geometry["front_edge"]["y"]
-    right_x = geometry["right_edge"]["x"]
+    outer_x = geometry["front_edge"]["x"]
+    end_y = geometry["right_edge"]["y"]
     beam_z = min(bounds(part)[4] for part in front_beam)
 
     front_beam_cells = cells(front_beam)
-    for x in range(*deck["x"]):
-        assert (x, front_y, beam_z) in front_beam_cells
+    for y in range(*deck["y"]):
+        assert (outer_x, y, beam_z) in front_beam_cells
 
     right_beam_cells = cells(right_beam)
-    for y in range(deck["y"][0], front_y):
-        assert (right_x, y, beam_z) in right_beam_cells
+    for x in range(deck["x"][0] + 1, deck["x"][1]):
+        assert (x, end_y, beam_z) in right_beam_cells
 
     px = geometry["observed_front_post"]["x"]
     py = geometry["observed_front_post"]["y"]
