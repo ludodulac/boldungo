@@ -154,7 +154,7 @@ def generate_supplier_handoff_package(
                 f"TOTAL_BAGS={package.total_bags}\n"
                 "UNRESOLVED_LINES=0\n"
                 "RECONCILIATION_DIFFERENCES=0\n"
-                "NOTE=This proves document/catalog readiness, not live stock reservation.\n"
+                "NOTE=This proves document/export readiness, not live stock availability or reservation.\n"
             ),
         ),
         SupplierPackageFile(
