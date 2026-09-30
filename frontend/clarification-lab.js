@@ -277,6 +277,7 @@ function render() {
   renderSummary();
   lab.dataset.projectId = project.project_id;
   lab.dataset.fixtureId = project.clarification_fixture_id || '';
+  lab.dataset.currentClarificationId = currentItem?.clarification_id || '';
 }
 
 async function loadFixture() {
