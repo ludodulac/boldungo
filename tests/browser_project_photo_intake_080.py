@@ -103,6 +103,54 @@ def main():
             timeout=15000,
         )
 
+        # 080A mobile gate: these are not DOM-only assertions. Every required
+        # element must be visually reachable inside the dedicated scrolling area.
+        assert page.viewport_size == {"width": 390, "height": 844}
+        assert page.locator(".shell-photo-scroll").evaluate(
+            "el => ['auto', 'scroll'].includes(getComputedStyle(el).overflowY)"
+        )
+        assert page.locator(".project-intake-card").is_visible()
+        assert page.locator("#shell-primary-button").is_visible()
+
+        def assert_reachable(selector):
+            locator = page.locator(selector)
+            locator.scroll_into_view_if_needed(timeout=5000)
+            page.wait_for_timeout(80)
+            geometry = locator.evaluate(
+                """el => {
+                  const item = el.getBoundingClientRect();
+                  const scroller = document.querySelector('.shell-photo-scroll').getBoundingClientRect();
+                  const visibleHeight = Math.max(0, Math.min(item.bottom, scroller.bottom) - Math.max(item.top, scroller.top));
+                  return {
+                    visibleHeight,
+                    width: item.width,
+                    left: item.left,
+                    right: item.right,
+                    viewportWidth: window.innerWidth,
+                  };
+                }"""
+            )
+            assert geometry["visibleHeight"] >= 40, (selector, geometry)
+            assert geometry["width"] > 40, (selector, geometry)
+            assert geometry["right"] > 0 and geometry["left"] < geometry["viewportWidth"], (selector, geometry)
+
+        assert_reachable(".project-intake-card")
+        for slot in ("front", "right", "left", "rear"):
+            assert_reachable(f'[data-slot="{slot}"]')
+
+        scroll_metrics = page.locator(".shell-photo-scroll").evaluate(
+            "el => ({scrollHeight: el.scrollHeight, clientHeight: el.clientHeight, scrollTop: el.scrollTop})"
+        )
+        if scroll_metrics["scrollHeight"] > scroll_metrics["clientHeight"]:
+            page.locator('[data-slot="rear"]').scroll_into_view_if_needed()
+            page.wait_for_timeout(80)
+            assert page.locator(".shell-photo-scroll").evaluate("el => el.scrollTop") > 0
+
+        pdf_box = page.locator("#shell-primary-button").bounding_box()
+        assert pdf_box
+        assert 0 <= pdf_box["y"] < 844
+        assert pdf_box["y"] + pdf_box["height"] <= 844
+
         page.locator("#project-name").fill("Maison test 080")
         page.locator("#city").fill("Brest")
         set_hidden_value(page, "#known-width", "9.8")
