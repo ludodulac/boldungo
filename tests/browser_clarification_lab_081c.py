@@ -136,7 +136,7 @@ def main():
         project_a = page.locator("#project-picker").input_value()
         page.wait_for_function(
             "(id) => document.querySelector('#clarification-lab')?.dataset.projectId === id",
-            project_a,
+            arg=project_a,
             timeout=10000,
         )
         wait_clarification_saved(page)
@@ -179,7 +179,7 @@ def main():
         )
         page.wait_for_function(
             "(id) => document.querySelector('#clarification-lab')?.dataset.projectId === id",
-            project_a,
+            arg=project_a,
             timeout=15000,
         )
         assert lab.get_attribute("data-current-clarification-id") == "A03_STAIR_TOPOLOGY"
@@ -198,7 +198,7 @@ def main():
         assert project_b != project_a
         page.wait_for_function(
             "(id) => document.querySelector('#clarification-lab')?.dataset.projectId === id",
-            project_b,
+            arg=project_b,
             timeout=10000,
         )
         wait_clarification_saved(page)
@@ -210,7 +210,7 @@ def main():
         wait_project_saved(page)
         page.wait_for_function(
             "(id) => document.querySelector('#clarification-lab')?.dataset.projectId === id",
-            project_a,
+            arg=project_a,
             timeout=10000,
         )
         assert lab.get_attribute("data-current-clarification-id") == "A03_STAIR_TOPOLOGY"
