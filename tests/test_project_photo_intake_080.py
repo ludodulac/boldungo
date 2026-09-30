@@ -130,3 +130,21 @@ def test_benchmark_fixture_context_is_separate_from_user_project_creation() -> N
     assert "USER_PROJECT_CREATION" in loader
     assert "createProject(" not in loader
     assert "createProject('Ma maison')" not in runtime
+
+
+def test_debounced_metadata_and_group_notes_capture_values_before_ui_reload() -> None:
+    runtime = read("photo-capture-runtime.js")
+
+    project_field_start = runtime.index("function bindProjectField")
+    project_field_end = runtime.index("function bindProjectControls", project_field_start)
+    project_field_block = runtime[project_field_start:project_field_end]
+    assert "const candidate = element.value;" in project_field_block
+    assert "[field]: normalize(candidate)" in project_field_block
+    assert "normalize(element.value)" not in project_field_block
+
+    photo_slot_start = runtime.index("function bindPhotoSlot")
+    photo_slot_end = runtime.index("function bindProjectField", photo_slot_start)
+    photo_slot_block = runtime[photo_slot_start:photo_slot_end]
+    assert "const candidate = note.value;" in photo_slot_block
+    assert "updateGroupNote(activeProject.project_id, key, candidate)" in photo_slot_block
+    assert "updateGroupNote(activeProject.project_id, key, note.value)" not in photo_slot_block

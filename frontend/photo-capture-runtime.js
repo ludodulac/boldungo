@@ -310,9 +310,10 @@ function bindPhotoSlot(slot, inputSelector) {
   const note = slot.querySelector('.guided-photo-note, .detail-photo-note');
   note?.addEventListener('input', () => {
     const key = groupKeyForSlot(slot);
+    const candidate = note.value;
     debounceSave(`note:${key}`, async () => {
       if (!activeProject) return;
-      await updateGroupNote(activeProject.project_id, key, note.value);
+      await updateGroupNote(activeProject.project_id, key, candidate);
       const snapshot = await getActiveProjectSnapshot();
       activeProject = snapshot.project;
       activePhotos = snapshot.photos;
@@ -322,10 +323,11 @@ function bindPhotoSlot(slot, inputSelector) {
 
 function bindProjectField(element, field, normalize = value => value) {
   element?.addEventListener('input', () => {
+    const candidate = element.value;
     debounceSave(`project:${field}`, async () => {
       if (!activeProject) return;
       activeProject = await updateProject(activeProject.project_id, {
-        [field]: normalize(element.value),
+        [field]: normalize(candidate),
       });
       if (field === 'project_name') await refreshProjectPicker();
     });
