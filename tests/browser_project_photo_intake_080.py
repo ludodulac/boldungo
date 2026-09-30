@@ -151,7 +151,18 @@ def main():
         assert 0 <= pdf_box["y"] < 844
         assert pdf_box["y"] + pdf_box["height"] <= 844
 
-        page.locator("#project-name").fill("Maison test 080")
+        # 080B: fresh browser state must not silently create "Ma maison".
+        assert page.locator("#project-create-panel").is_visible()
+        assert page.locator("#project-create-label").text_content().strip() == "Nom du projet"
+        assert page.locator("#project-picker option").count() == 0
+
+        page.locator("#new-project-name").fill("Maison Brest")
+        page.locator("#confirm-new-project").click()
+        wait_saved(page)
+        assert page.locator("#project-name").input_value() == "Maison Brest"
+        assert page.locator("#project-picker option").all_text_contents() == ["Maison Brest"]
+        brest_project_id = page.locator("#project-picker").input_value()
+
         page.locator("#city").fill("Brest")
         set_hidden_value(page, "#known-width", "9.8")
         set_hidden_value(page, "#notes", "Rue montante, dossier persistant.")
@@ -170,26 +181,88 @@ def main():
         assert ids_for(page, "front") == ["FRONT_001"]
         assert ids_for(page, "left") == ["LEFT_001", "LEFT_002"]
         assert ids_for(page, "detail_1") == ["DETAIL_001"]
+        assert page.locator('[data-photo-id="FRONT_001"] small').text_content().strip() == IMAGES[0].name
+
+        # Reload: project name, metadata, IDs and photos survive.
+        page.reload(wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_function(
+            "() => document.documentElement.dataset.projectPhotoIntakeReady === 'true'",
+            timeout=15000,
+        )
+        assert page.locator("#project-name").input_value() == "Maison Brest"
+        assert page.locator("#project-picker").input_value() == brest_project_id
+        assert page.locator("#city").input_value() == "Brest"
+        assert page.locator("#known-width").input_value() == "9.8"
+        assert page.locator("#notes").input_value() == "Rue montante, dossier persistant."
+        assert page.locator("#studs").input_value() == "64"
+        assert page.locator('[data-slot="front"] .guided-photo-note').input_value() == "note façade avant"
+        assert ids_for(page, "front") == ["FRONT_001"]
+        assert ids_for(page, "left") == ["LEFT_001", "LEFT_002"]
+        assert ids_for(page, "detail_1") == ["DETAIL_001"]
+
+        # Additional project: opening and cancelling the form creates nothing.
+        page.locator("#new-project").click()
+        assert page.locator("#project-create-panel").is_visible()
+        assert page.locator("#project-create-label").text_content().strip() == "Nom du nouveau projet"
+        page.locator("#new-project-name").fill("Projet annulé")
+        page.locator("#cancel-new-project").click()
+        assert page.locator("#project-picker option").count() == 1
+        assert page.locator("#project-name").input_value() == "Maison Brest"
+
+        # Create second named project before any record exists for it.
+        page.locator("#new-project").click()
+        page.locator("#new-project-name").fill("Maison Nantes")
+        page.locator("#confirm-new-project").click()
+        wait_saved(page)
+        nantes_project_id = page.locator("#project-picker").input_value()
+        assert nantes_project_id != brest_project_id
+        assert set(page.locator("#project-picker option").all_text_contents()) == {"Maison Brest", "Maison Nantes"}
+        assert page.locator("#project-name").input_value() == "Maison Nantes"
+        assert ids_for(page, "front") == []
+
+        # Same canonical photo ID may exist in the second project without collision.
+        page.locator('[data-slot="front"] .guided-photo-input').set_input_files(str(IMAGES[4]))
+        wait_saved(page)
+        assert ids_for(page, "front") == ["FRONT_001"]
+        assert page.locator('[data-photo-id="FRONT_001"] small').text_content().strip() == IMAGES[4].name
+
+        # Switch projects: each project gets its own photos.
+        page.locator("#project-picker").select_option(brest_project_id)
+        wait_saved(page)
+        assert page.locator("#project-name").input_value() == "Maison Brest"
+        assert ids_for(page, "front") == ["FRONT_001"]
+        assert page.locator('[data-photo-id="FRONT_001"] small').text_content().strip() == IMAGES[0].name
+
+        page.locator("#project-picker").select_option(nantes_project_id)
+        wait_saved(page)
+        assert page.locator("#project-name").input_value() == "Maison Nantes"
+        assert ids_for(page, "front") == ["FRONT_001"]
+        assert page.locator('[data-photo-id="FRONT_001"] small').text_content().strip() == IMAGES[4].name
+
+        # Rename must not steal focus or replace text during autosave.
+        name_field = page.locator("#project-name")
+        name_field.fill("Maison Lorient")
+        wait_saved(page)
+        assert page.evaluate("document.activeElement?.id") == "project-name"
+        assert name_field.input_value() == "Maison Lorient"
+        assert "Maison Lorient" in page.locator("#project-picker option").all_text_contents()
+        assert "Maison Nantes" not in page.locator("#project-picker option").all_text_contents()
 
         page.reload(wait_until="domcontentloaded", timeout=30000)
         page.wait_for_function(
             "() => document.documentElement.dataset.projectPhotoIntakeReady === 'true'",
             timeout=15000,
         )
-        assert page.locator("#project-name").input_value() == "Maison test 080"
-        assert page.locator("#city").input_value() == "Brest"
-        assert page.locator("#known-width").input_value() == "9.8"
-        assert page.locator("#notes").input_value() == "Rue montante, dossier persistant."
-        assert page.locator("#studs").input_value() == "64"
-        assert page.locator('[data-slot="front"] .guided-photo-note').input_value() == "note façade avant"
-        assert page.locator('[data-slot="left"] .guided-photo-note').input_value() == "deux vues trois-quarts côté gauche"
-        assert page.locator('[data-slot="detail_1"] .detail-photo-note').input_value() == "dessous de terrasse"
+        assert page.locator("#project-name").input_value() == "Maison Lorient"
+        assert page.locator("#project-picker").input_value() == nantes_project_id
+        assert set(page.locator("#project-picker option").all_text_contents()) == {"Maison Brest", "Maison Lorient"}
         assert ids_for(page, "front") == ["FRONT_001"]
-        assert ids_for(page, "left") == ["LEFT_001", "LEFT_002"]
-        assert ids_for(page, "detail_1") == ["DETAIL_001"]
-        assert page.locator('[data-slot="front"] .guided-photo-input').evaluate("el => el.files.length") == 0
-        assert page.locator('[data-slot="left"] .guided-photo-input').evaluate("el => el.files.length") == 0
+        assert page.locator('[data-photo-id="FRONT_001"] small').text_content().strip() == IMAGES[4].name
 
+        # Return to Brest and retain the existing delete/reload stable-ID proof.
+        page.locator("#project-picker").select_option(brest_project_id)
+        wait_saved(page)
+        assert ids_for(page, "left") == ["LEFT_001", "LEFT_002"]
         page.locator('[data-delete-photo-id="LEFT_001"]').click()
         wait_saved(page)
         page.reload(wait_until="domcontentloaded", timeout=30000)
@@ -197,6 +270,7 @@ def main():
             "() => document.documentElement.dataset.projectPhotoIntakeReady === 'true'",
             timeout=15000,
         )
+        assert page.locator("#project-name").input_value() == "Maison Brest"
         assert ids_for(page, "left") == ["LEFT_002"]
 
         page.locator('[data-slot="left"] .guided-photo-input').set_input_files(str(IMAGES[4]))
@@ -214,9 +288,11 @@ def main():
             "() => document.documentElement.dataset.projectPhotoIntakeReady === 'true'",
             timeout=15000,
         )
+        assert page.locator("#project-name").input_value() == "Maison Brest"
         assert ids_for(page, "right") == ["RIGHT_001", "RIGHT_002", "RIGHT_003", "RIGHT_004"]
         assert "LEFT_001" not in ids_for(page, "left")
         assert ids_for(page, "left") == ["LEFT_002", "LEFT_003"]
+        assert page.locator('[data-slot="front"] .guided-photo-input').evaluate("el => el.files.length") == 0
         assert page.locator('[data-slot="right"] .guided-photo-input').evaluate("el => el.files.length") == 0
 
         with page.expect_download(timeout=30000) as download_info:
@@ -230,7 +306,7 @@ def main():
         assert len(pdf_bytes) > 5000
         assert b"FRONT_001" in pdf_bytes
         assert b"PRIMARY_FACE=FRONT" in pdf_bytes
-        assert b"Maison test 080" in pdf_bytes
+        assert b"Maison Brest" in pdf_bytes
         assert b"Brest" in pdf_bytes
         assert b"CITY = CONTEXTUAL_PRIOR" in pdf_bytes
 

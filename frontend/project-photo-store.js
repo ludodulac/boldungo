@@ -4,9 +4,10 @@ export const DETAIL_GROUP_IDS = ['detail_1', 'detail_2', 'detail_3', 'detail_4',
 export const MAX_PHOTOS_PER_GROUP = 4;
 
 const DB_NAME = 'boldungo-project-photo-intake';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE_PROJECTS = 'projects';
-const STORE_PHOTOS = 'photos';
+const LEGACY_STORE_PHOTOS = 'photos';
+const STORE_PHOTOS = 'photos_v2';
 const STORE_SETTINGS = 'settings';
 const ACTIVE_PROJECT_KEY = 'active_project_id';
 
@@ -60,12 +61,14 @@ function defaultCounters() {
   return { FRONT: 0, RIGHT: 0, LEFT: 0, REAR: 0, DETAIL: 0 };
 }
 
-export function createProjectRecord(projectName = 'Ma maison') {
+export function createProjectRecord(projectName) {
+  const normalizedName = String(projectName || '').trim();
+  if (!normalizedName) throw new Error('Nom du projet requis');
   const timestamp = nowIso();
   return {
     schema_version: PROJECT_SCHEMA_VERSION,
     project_id: \`project_\${randomId()}\`,
-    project_name: projectName,
+    project_name: normalizedName,
     city: '',
     known_front_width: null,
     general_notes: '',
@@ -79,6 +82,7 @@ export function createProjectRecord(projectName = 'Ma maison') {
       label: \`Détail \${index + 1}\`,
     })),
     orientation_confirmed: false,
+    name_confirmed: true,
     clarifications: [],
     human_facts: [],
   };
@@ -113,8 +117,21 @@ export async function openProjectDb() {
         database.createObjectStore(STORE_PROJECTS, { keyPath: 'project_id' });
       }
       if (!database.objectStoreNames.contains(STORE_PHOTOS)) {
-        const photos = database.createObjectStore(STORE_PHOTOS, { keyPath: 'photo_id' });
+        const photos = database.createObjectStore(STORE_PHOTOS, { keyPath: ['project_id', 'photo_id'] });
         photos.createIndex('project_id', 'project_id', { unique: false });
+
+        // 080B migration: retain v1 photos while moving to a composite key so
+        // FRONT_001 can exist independently in several projects.
+        if (database.objectStoreNames.contains(LEGACY_STORE_PHOTOS)) {
+          const legacy = request.transaction.objectStore(LEGACY_STORE_PHOTOS);
+          const cursorRequest = legacy.openCursor();
+          cursorRequest.onsuccess = () => {
+            const cursor = cursorRequest.result;
+            if (!cursor) return;
+            photos.put(cursor.value);
+            cursor.continue();
+          };
+        }
       }
       if (!database.objectStoreNames.contains(STORE_SETTINGS)) {
         database.createObjectStore(STORE_SETTINGS, { keyPath: 'key' });
@@ -140,7 +157,7 @@ export async function setActiveProjectId(projectId) {
   await transactionDone(tx);
 }
 
-export async function createProject(projectName = 'Ma maison') {
+export async function createProject(projectName) {
   const database = await openProjectDb();
   const project = createProjectRecord(projectName);
   const tx = database.transaction([STORE_PROJECTS, STORE_SETTINGS], 'readwrite');
@@ -176,7 +193,7 @@ export async function getActiveProject() {
     await setActiveProjectId(projects[0].project_id);
     return projects[0];
   }
-  return createProject();
+  return null;
 }
 
 export async function updateProject(projectId, patch) {
@@ -295,7 +312,7 @@ export async function deleteProjectPhoto(projectId, photoId) {
     tx.abort();
     throw new Error('Projet introuvable');
   }
-  photoStore.delete(photoId);
+  photoStore.delete([projectId, photoId]);
   projectStore.put({ ...project, updated_at: nowIso() });
   await transactionDone(tx);
 }
@@ -326,6 +343,7 @@ export async function updateGroupNote(projectId, groupKey, note) {
 
 export async function getActiveProjectSnapshot() {
   const project = await getActiveProject();
+  if (!project) return { project: null, photos: [] };
   const photos = await getProjectPhotos(project.project_id);
   return { project, photos };
 }

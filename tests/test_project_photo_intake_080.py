@@ -14,7 +14,9 @@ def test_project_schema_v1_uses_indexeddb_for_binary_photo_records() -> None:
     assert "PROJECT_SCHEMA_VERSION = 1" in store
     assert "indexedDB.open" in store
     assert "const STORE_PROJECTS = 'projects'" in store
-    assert "const STORE_PHOTOS = 'photos'" in store
+    assert "const LEGACY_STORE_PHOTOS = 'photos'" in store
+    assert "const STORE_PHOTOS = 'photos_v2'" in store
+    assert "keyPath: ['project_id', 'photo_id']" in store
     assert "const STORE_SETTINGS = 'settings'" in store
     assert "blob: file" in store
     assert "localStorage" not in store
@@ -31,7 +33,7 @@ def test_canonical_photo_ids_are_monotonic_and_not_reassigned_on_delete() -> Non
     delete_body = store.split("export async function deleteProjectPhoto", 1)[1].split(
         "export async function updateGroupNote", 1
     )[0]
-    assert "photoStore.delete(photoId)" in delete_body
+    assert "photoStore.delete([projectId, photoId])" in delete_body
     assert "photo_id_counters" not in delete_body
 
 
@@ -80,3 +82,40 @@ def test_080_browser_proof_is_wired_into_existing_ci_instead_of_parallel_infra()
     workflow = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
     assert "python tests/browser_project_photo_intake_080.py" in workflow
     assert "node --check frontend/project-photo-store.js" in workflow
+
+
+def test_project_creation_requires_explicit_name_and_no_automatic_ma_maison_project() -> None:
+    store = read("project-photo-store.js")
+    runtime = read("photo-capture-runtime.js")
+    html = read("photo.html")
+    assert "Nom du projet requis" in store
+    assert "return null;" in store
+    assert "return createProject();" not in store
+    assert "createProject('Ma maison')" not in runtime
+    assert 'id="project-create-panel"' in html
+    assert 'id="new-project-name"' in html
+    assert 'id="confirm-new-project"' in html
+    assert "showProjectCreation('first')" in runtime
+    assert "showProjectCreation('additional')" in runtime
+    assert "cancelNewProject" in runtime
+
+
+def test_project_rename_refreshes_selector_without_repopulating_name_field() -> None:
+    runtime = read("photo-capture-runtime.js")
+    rename_start = runtime.index("projectName?.addEventListener('input'")
+    rename_end = runtime.index("bindProjectField(city", rename_start)
+    rename_block = runtime[rename_start:rename_end]
+    assert "updateProject" in rename_block
+    assert "refreshProjectPicker" in rename_block
+    assert "populateFields" not in rename_block
+    assert "|| 'Ma maison'" not in rename_block
+
+
+def test_legacy_auto_project_requires_naming_without_losing_existing_record() -> None:
+    store = read("project-photo-store.js")
+    runtime = read("photo-capture-runtime.js")
+    assert "name_confirmed: true" in store
+    assert "activeProject.name_confirmed === true" in runtime
+    assert "showProjectCreation('legacy')" in runtime
+    assert "projectCreationMode === 'legacy'" in runtime
+    assert "name_confirmed: true" in runtime

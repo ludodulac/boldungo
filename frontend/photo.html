@@ -21,13 +21,26 @@
               <div><strong>Projet maison</strong><small>Vos informations et photos sont enregistrées automatiquement sur cet appareil.</small></div>
               <span id="project-save-status" class="project-save-status" role="status" aria-live="polite">Enregistrement…</span>
             </div>
-            <div class="project-open-row">
-              <label for="project-picker">Ouvrir un projet</label>
-              <div class="project-open-controls"><select id="project-picker" aria-label="Projet actif"></select><button id="new-project" type="button">Nouveau projet</button></div>
+            <div id="project-create-panel" class="project-create-panel" hidden>
+              <div class="field">
+                <label id="project-create-label" for="new-project-name">Nom du projet</label>
+                <input id="new-project-name" type="text" maxlength="120" placeholder="Ex. Maison Brest" autocomplete="off" />
+              </div>
+              <div class="project-create-actions">
+                <button id="confirm-new-project" class="primary" type="button">Créer le projet</button>
+                <button id="cancel-new-project" type="button">Annuler</button>
+              </div>
+              <small id="project-create-error" class="project-create-error" role="alert"></small>
             </div>
-            <div class="project-fields">
-              <div class="field"><label for="project-name">Nom du projet</label><input id="project-name" type="text" maxlength="120" placeholder="Ex. Maison familiale" autocomplete="off" /></div>
-              <div class="field"><label for="city">Ville de la maison — facultatif</label><input id="city" type="text" maxlength="120" placeholder="Ex. Brest, Nantes, Lorient" autocomplete="address-level2" /><small>La ville peut aider l’analyse à poser de meilleures questions. Elle ne remplace jamais ce que montrent vos photos.</small></div>
+            <div id="project-existing-controls">
+              <div class="project-open-row">
+                <label for="project-picker">Ouvrir un projet</label>
+                <div class="project-open-controls"><select id="project-picker" aria-label="Projet actif"></select><button id="new-project" type="button">Nouveau projet</button></div>
+              </div>
+              <div class="project-fields">
+                <div class="field"><label for="project-name">Nom du projet</label><input id="project-name" type="text" maxlength="120" placeholder="Ex. Maison Brest" autocomplete="off" /><small>Le nouveau nom est enregistré automatiquement sur cet appareil.</small></div>
+                <div class="field"><label for="city">Ville de la maison — facultatif</label><input id="city" type="text" maxlength="120" placeholder="Ex. Brest, Nantes, Lorient" autocomplete="address-level2" /><small>La ville peut aider l’analyse à poser de meilleures questions. Elle ne remplace jamais ce que montrent vos photos.</small></div>
+              </div>
             </div>
           </section>
         <div id="guided-photo-grid" class="guided-photo-grid">

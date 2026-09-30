@@ -18,6 +18,13 @@ const detailSlots = [...document.querySelectorAll('.detail-photo-slot')];
 const saveStatus = document.querySelector('#project-save-status');
 const projectPicker = document.querySelector('#project-picker');
 const newProjectButton = document.querySelector('#new-project');
+const projectCreatePanel = document.querySelector('#project-create-panel');
+const projectCreateLabel = document.querySelector('#project-create-label');
+const newProjectName = document.querySelector('#new-project-name');
+const confirmNewProject = document.querySelector('#confirm-new-project');
+const cancelNewProject = document.querySelector('#cancel-new-project');
+const projectCreateError = document.querySelector('#project-create-error');
+const projectExistingControls = document.querySelector('#project-existing-controls');
 const projectName = document.querySelector('#project-name');
 const city = document.querySelector('#city');
 const knownWidth = document.querySelector('#known-width');
@@ -28,6 +35,7 @@ const previewUrls = new Map();
 const debounceTimers = new Map();
 let activeProject = null;
 let activePhotos = [];
+let projectCreationMode = null;
 let saveQueue = Promise.resolve();
 window.boldungoProjectPhotoSavePromise = saveQueue;
 
@@ -190,7 +198,7 @@ function populateFields(project) {
 }
 
 async function refreshProjectPicker() {
-  if (!projectPicker || !activeProject) return;
+  if (!projectPicker) return [];
   const projects = await listProjects();
   projectPicker.replaceChildren();
   for (const project of projects) {
@@ -199,7 +207,42 @@ async function refreshProjectPicker() {
     option.textContent = project.project_name || 'Projet sans nom';
     projectPicker.appendChild(option);
   }
-  projectPicker.value = activeProject.project_id;
+  if (activeProject) projectPicker.value = activeProject.project_id;
+  return projects;
+}
+
+function setPhotoInputsEnabled(enabled) {
+  for (const slot of [...baseSlots, ...detailSlots]) {
+    const input = slot.querySelector('.guided-photo-input, .detail-photo-input');
+    if (input) input.disabled = !enabled;
+  }
+}
+
+function showProjectCreation(mode) {
+  projectCreationMode = mode;
+  const requiresInitialName = mode === 'first' || mode === 'legacy';
+  if (projectCreatePanel) projectCreatePanel.hidden = false;
+  if (projectExistingControls) projectExistingControls.hidden = requiresInitialName;
+  if (projectCreateLabel) projectCreateLabel.textContent = requiresInitialName ? 'Nom du projet' : 'Nom du nouveau projet';
+  if (confirmNewProject) confirmNewProject.textContent = requiresInitialName ? 'Créer le projet' : 'Créer';
+  if (cancelNewProject) cancelNewProject.hidden = requiresInitialName;
+  if (projectCreateError) projectCreateError.textContent = '';
+  if (newProjectName) {
+    const legacyName = mode === 'legacy' ? String(activeProject?.project_name || '').trim() : '';
+    newProjectName.value = legacyName === 'Ma maison' ? '' : legacyName;
+    window.setTimeout(() => newProjectName.focus(), 0);
+  }
+  document.querySelector('.project-intake-card')?.setAttribute('data-project-mode', mode);
+  if (requiresInitialName) setPhotoInputsEnabled(false);
+}
+
+function hideProjectCreation() {
+  projectCreationMode = null;
+  if (projectCreatePanel) projectCreatePanel.hidden = true;
+  if (projectExistingControls) projectExistingControls.hidden = false;
+  if (projectCreateError) projectCreateError.textContent = '';
+  document.querySelector('.project-intake-card')?.setAttribute('data-project-mode', 'active');
+  setPhotoInputsEnabled(Boolean(activeProject));
 }
 
 function renderAllSlots() {
@@ -211,14 +254,29 @@ async function reloadActiveProject() {
   const snapshot = await getActiveProjectSnapshot();
   activeProject = snapshot.project;
   activePhotos = snapshot.photos;
-  populateFields(activeProject);
-  await refreshProjectPicker();
+  const projects = await refreshProjectPicker();
+
+  if (activeProject) {
+    populateFields(activeProject);
+    if (activeProject.name_confirmed === true) {
+      hideProjectCreation();
+      setSaveStatus('Enregistré sur cet appareil', 'ok');
+    } else {
+      showProjectCreation('legacy');
+      setSaveStatus('Nommez votre projet', 'pending');
+    }
+  } else {
+    if (projectName) projectName.value = '';
+    if (city) city.value = '';
+    showProjectCreation('first');
+    setSaveStatus('Créez votre projet', 'pending');
+  }
+
   renderAllSlots();
   document.documentElement.dataset.projectPhotoIntakeReady = 'true';
   window.dispatchEvent(new CustomEvent('boldungo:project-photo-intake-ready', {
-    detail: { project_id: activeProject.project_id },
+    detail: { project_id: activeProject?.project_id || null, project_count: projects.length },
   }));
-  setSaveStatus('Enregistré sur cet appareil', 'ok');
 }
 
 async function addFilesFromSlot(slot, inputSelector) {
@@ -275,7 +333,22 @@ function bindProjectField(element, field, normalize = value => value) {
 }
 
 function bindProjectControls() {
-  bindProjectField(projectName, 'project_name', value => String(value || '').trim() || 'Ma maison');
+  projectName?.addEventListener('input', () => {
+    const candidate = projectName.value;
+    debounceSave('project:project_name', async () => {
+      if (!activeProject) return;
+      const normalized = String(candidate || '').trim();
+      if (!normalized) {
+        setSaveStatus('Le nom du projet est requis', 'error');
+        return;
+      }
+      const editedProjectId = activeProject.project_id;
+      activeProject = await updateProject(editedProjectId, { project_name: normalized });
+      // Only the selector is refreshed: never repopulate the input being edited.
+      await refreshProjectPicker();
+    });
+  });
+
   bindProjectField(city, 'city', value => String(value || '').trim());
   bindProjectField(knownWidth, 'known_front_width', value => {
     const number = Number(value);
@@ -298,13 +371,46 @@ function bindProjectControls() {
     await reloadActiveProject();
   }));
 
-  newProjectButton?.addEventListener('click', () => queueSave(async () => {
-    activeProject = await createProject('Ma maison');
-    activePhotos = [];
-    await reloadActiveProject();
-    projectName?.focus();
-    projectName?.select();
-  }));
+  newProjectButton?.addEventListener('click', () => {
+    showProjectCreation('additional');
+  });
+
+  cancelNewProject?.addEventListener('click', () => {
+    if (projectCreationMode !== 'additional') return;
+    hideProjectCreation();
+  });
+
+  confirmNewProject?.addEventListener('click', () => {
+    const requestedName = String(newProjectName?.value || '').trim();
+    if (!requestedName) {
+      if (projectCreateError) projectCreateError.textContent = 'Saisissez un nom de projet.';
+      newProjectName?.focus();
+      return;
+    }
+    queueSave(async () => {
+      if (projectCreationMode === 'legacy' && activeProject) {
+        activeProject = await updateProject(activeProject.project_id, {
+          project_name: requestedName,
+          name_confirmed: true,
+        });
+      } else {
+        activeProject = await createProject(requestedName);
+        activePhotos = [];
+      }
+      await reloadActiveProject();
+      projectName?.focus();
+    });
+  });
+
+  newProjectName?.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      confirmNewProject?.click();
+    } else if (event.key === 'Escape' && projectCreationMode === 'additional') {
+      event.preventDefault();
+      cancelNewProject?.click();
+    }
+  });
 }
 
 document.addEventListener('click', event => {
