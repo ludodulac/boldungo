@@ -1,0 +1,416 @@
+{
+  "schema_version": "clarification-fixture-v1",
+  "fixture_id": "real-house-5-081",
+  "source": "BOLDUNGO-081A/081B controlled technical fixture",
+  "clarifications": [
+    {
+      "clarification_id": "A01_TARGET_BOUNDARY",
+      "subject": {
+        "subject_id": "adjacent-old-volume",
+        "subject_kind": "BUILDING_BOUNDARY",
+        "attribute": "ownership"
+      },
+      "question_text": "Le volume ancien gris/maçonnerie apparente accolé à l’escalier fait-il partie de votre maison ?",
+      "question_type": "YES_NO",
+      "choices": [
+        {
+          "value": "YES",
+          "label": "Oui"
+        },
+        {
+          "value": "NO",
+          "label": "Non"
+        }
+      ],
+      "geometry_impact": "HIGH",
+      "priority": "TARGET_BOUNDARY",
+      "depends_on": [],
+      "evidence_state": "PARTIAL",
+      "answer_state": "OPEN",
+      "provenance": "PHOTO_PARTIAL",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "FORBIDDEN",
+      "answer": null,
+      "answer_note": null,
+      "requested_photo_spec": null,
+      "unknown_strategy": null,
+      "created_at": "2026-09-30T00:00:00.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A02_CHIMNEY_OWNERSHIP",
+      "subject": {
+        "subject_id": "visible-chimneys",
+        "subject_kind": "CHIMNEY",
+        "attribute": "ownership"
+      },
+      "question_text": "Les cheminées visibles au-dessus ou derrière le toit appartiennent-elles à cette maison ?",
+      "question_type": "SINGLE_CHOICE",
+      "choices": [
+        {
+          "value": "ALL",
+          "label": "Toutes"
+        },
+        {
+          "value": "SOME",
+          "label": "Certaines"
+        },
+        {
+          "value": "NONE",
+          "label": "Aucune"
+        }
+      ],
+      "geometry_impact": "HIGH",
+      "priority": "OBJECT_OWNERSHIP",
+      "depends_on": [],
+      "evidence_state": "PARTIAL",
+      "answer_state": "OPEN",
+      "provenance": "PHOTO_PARTIAL",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "ALLOWED",
+      "answer": null,
+      "answer_note": null,
+      "requested_photo_spec": null,
+      "unknown_strategy": null,
+      "created_at": "2026-09-30T00:00:01.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A02B_CHIMNEY_IDENTIFICATION",
+      "subject": {
+        "subject_id": "visible-chimneys",
+        "subject_kind": "CHIMNEY",
+        "attribute": "owned_members"
+      },
+      "question_text": "Quelles cheminées appartiennent à votre maison ?",
+      "question_type": "HUMAN_FACT_TEXT",
+      "choices": [],
+      "geometry_impact": "HIGH",
+      "priority": "OBJECT_OWNERSHIP",
+      "depends_on": [
+        {
+          "parent_clarification_id": "A02_CHIMNEY_OWNERSHIP",
+          "operator": "ANSWER_IN",
+          "values": [
+            "SOME"
+          ]
+        }
+      ],
+      "evidence_state": "NOT_OBSERVABLE",
+      "answer_state": "OPEN",
+      "provenance": "UNKNOWN",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "ALLOWED",
+      "answer": null,
+      "answer_note": null,
+      "requested_photo_spec": null,
+      "unknown_strategy": null,
+      "created_at": "2026-09-30T00:00:02.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A03_STAIR_TOPOLOGY",
+      "subject": {
+        "subject_id": "stair-exterior",
+        "subject_kind": "STAIR",
+        "attribute": "topology"
+      },
+      "question_text": "Après la volée basse visible, l’escalier continue-t-il tout droit, tourne-t-il à 90°, fait-il demi-tour, ou suit-il un autre parcours ?",
+      "question_type": "SINGLE_CHOICE",
+      "choices": [
+        {
+          "value": "STRAIGHT",
+          "label": "Tout droit"
+        },
+        {
+          "value": "TURN_90",
+          "label": "Virage à 90° / en L"
+        },
+        {
+          "value": "U_TURN",
+          "label": "Demi-tour"
+        },
+        {
+          "value": "OTHER",
+          "label": "Autre"
+        }
+      ],
+      "geometry_impact": "HIGH",
+      "priority": "TOPOLOGY",
+      "depends_on": [],
+      "evidence_state": "PARTIAL",
+      "answer_state": "OPEN",
+      "provenance": "PHOTO_PARTIAL",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "FORBIDDEN",
+      "answer": null,
+      "answer_note": null,
+      "unknown_strategy": null,
+      "requested_photo_spec": {
+        "target_subject": "stair-exterior",
+        "purpose": "Résoudre la topologie cachée de l’escalier",
+        "camera_position_hint": "Depuis le niveau haut, vue vers le bas de l’escalier",
+        "what_must_be_visible": "Marches, palier(s) et changement de direction dans le même cadre",
+        "question_ids_expected_to_resolve": [
+          "A03_STAIR_TOPOLOGY"
+        ]
+      },
+      "created_at": "2026-09-30T00:00:03.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A04_STAIR_UNDERSIDE",
+      "subject": {
+        "subject_id": "stair-exterior-underside",
+        "subject_kind": "STAIR",
+        "attribute": "underside_state"
+      },
+      "question_text": "L’escalier est-il plein dessous, ou existe-t-il un espace creux/accessible sous les marches ?",
+      "question_type": "SINGLE_CHOICE",
+      "choices": [
+        {
+          "value": "SOLID",
+          "label": "Plein"
+        },
+        {
+          "value": "VOID",
+          "label": "Creux / accessible"
+        },
+        {
+          "value": "PARTIAL",
+          "label": "Partiellement creux"
+        }
+      ],
+      "geometry_impact": "HIGH",
+      "priority": "SOLID_VOID",
+      "depends_on": [],
+      "evidence_state": "NOT_OBSERVABLE",
+      "answer_state": "OPEN",
+      "provenance": "UNKNOWN",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "ALLOWED",
+      "answer": null,
+      "answer_note": null,
+      "requested_photo_spec": null,
+      "unknown_strategy": null,
+      "created_at": "2026-09-30T00:00:04.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A05_PLATFORM_UNDERSIDE",
+      "subject": {
+        "subject_id": "platform-massive-underside",
+        "subject_kind": "PLATFORM",
+        "attribute": "underside_state"
+      },
+      "question_text": "Le grand espace sous le palier blanc est-il ouvert de part en part, fermé au fond, ou seulement partiellement ouvert ?",
+      "question_type": "SINGLE_CHOICE",
+      "choices": [
+        {
+          "value": "THROUGH",
+          "label": "Ouvert de part en part"
+        },
+        {
+          "value": "CLOSED_BACK",
+          "label": "Fermé au fond"
+        },
+        {
+          "value": "PARTIAL",
+          "label": "Partiellement ouvert"
+        }
+      ],
+      "geometry_impact": "HIGH",
+      "priority": "SOLID_VOID",
+      "depends_on": [],
+      "evidence_state": "PARTIAL",
+      "answer_state": "OPEN",
+      "provenance": "PHOTO_PARTIAL",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "ALLOWED",
+      "answer": null,
+      "answer_note": null,
+      "unknown_strategy": null,
+      "requested_photo_spec": {
+        "target_subject": "platform-massive-underside",
+        "purpose": "Distinguer niche, passage traversant ou volume partiellement fermé",
+        "camera_position_hint": "Face à l’espace sous le palier, assez bas et légèrement décalé",
+        "what_must_be_visible": "Fond et côtés de l’espace sous le palier",
+        "question_ids_expected_to_resolve": [
+          "A05_PLATFORM_UNDERSIDE"
+        ]
+      },
+      "created_at": "2026-09-30T00:00:05.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A06_HIGH_ACCESS_OPENING",
+      "subject": {
+        "subject_id": "high-access-opening",
+        "subject_kind": "OPENING",
+        "attribute": "semantic_type"
+      },
+      "question_text": "L’ouverture derrière la terrasse/palier est-elle une porte, une porte-fenêtre ou une fenêtre ?",
+      "question_type": "SINGLE_CHOICE",
+      "choices": [
+        {
+          "value": "DOOR",
+          "label": "Porte"
+        },
+        {
+          "value": "FRENCH_DOOR",
+          "label": "Porte-fenêtre"
+        },
+        {
+          "value": "WINDOW",
+          "label": "Fenêtre"
+        },
+        {
+          "value": "OTHER",
+          "label": "Autre"
+        }
+      ],
+      "geometry_impact": "HIGH",
+      "priority": "ACCESS",
+      "depends_on": [],
+      "evidence_state": "PARTIAL",
+      "answer_state": "OPEN",
+      "provenance": "PHOTO_PARTIAL",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "FORBIDDEN",
+      "answer": null,
+      "answer_note": null,
+      "requested_photo_spec": null,
+      "unknown_strategy": null,
+      "created_at": "2026-09-30T00:00:06.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A07_THRESHOLD_LEVEL",
+      "subject": {
+        "subject_id": "high-access-opening-threshold",
+        "subject_kind": "OPENING",
+        "attribute": "threshold_level"
+      },
+      "question_text": "Le seuil de cette ouverture est-il directement au même niveau que le palier, sans marche ?",
+      "question_type": "YES_NO",
+      "choices": [
+        {
+          "value": "YES",
+          "label": "Oui"
+        },
+        {
+          "value": "NO",
+          "label": "Non"
+        }
+      ],
+      "geometry_impact": "HIGH",
+      "priority": "LEVEL_CONTINUITY",
+      "depends_on": [
+        {
+          "parent_clarification_id": "A06_HIGH_ACCESS_OPENING",
+          "operator": "ANSWER_IN",
+          "values": [
+            "DOOR",
+            "FRENCH_DOOR"
+          ]
+        }
+      ],
+      "evidence_state": "NOT_OBSERVABLE",
+      "answer_state": "OPEN",
+      "provenance": "UNKNOWN",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "ALLOWED",
+      "answer": null,
+      "answer_note": null,
+      "requested_photo_spec": null,
+      "unknown_strategy": null,
+      "created_at": "2026-09-30T00:00:07.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A08_MASONRY_TO_TIMBER_CONTINUITY",
+      "subject": {
+        "subject_id": "masonry-timber-transition",
+        "subject_kind": "PLATFORM",
+        "attribute": "level_continuity"
+      },
+      "question_text": "Entre le palier maçonné et la terrasse bois, passe-t-on directement au même niveau, par une marche, ou existe-t-il un espace ?",
+      "question_type": "SINGLE_CHOICE",
+      "choices": [
+        {
+          "value": "SAME_LEVEL",
+          "label": "Même niveau"
+        },
+        {
+          "value": "STEP",
+          "label": "Une ou plusieurs marches"
+        },
+        {
+          "value": "GAP",
+          "label": "Un espace"
+        },
+        {
+          "value": "OTHER",
+          "label": "Autre"
+        }
+      ],
+      "geometry_impact": "HIGH",
+      "priority": "LEVEL_CONTINUITY",
+      "depends_on": [],
+      "evidence_state": "PARTIAL",
+      "answer_state": "OPEN",
+      "provenance": "PHOTO_PARTIAL",
+      "blocking_status": "BLOCKS_GEOMETRY",
+      "defer_policy": "FORBIDDEN",
+      "answer": null,
+      "answer_note": null,
+      "requested_photo_spec": null,
+      "unknown_strategy": null,
+      "created_at": "2026-09-30T00:00:08.000Z",
+      "answered_at": null
+    },
+    {
+      "clarification_id": "A09_ROOF_MATERIAL",
+      "subject": {
+        "subject_id": "main-roof",
+        "subject_kind": "ROOF",
+        "attribute": "material"
+      },
+      "question_text": "Savez-vous en quoi est couvert le toit principal ?",
+      "question_type": "SINGLE_CHOICE",
+      "choices": [
+        {
+          "value": "SLATE",
+          "label": "Ardoise"
+        },
+        {
+          "value": "METAL",
+          "label": "Zinc / métal"
+        },
+        {
+          "value": "TILE",
+          "label": "Tuile"
+        },
+        {
+          "value": "OTHER",
+          "label": "Autre"
+        }
+      ],
+      "geometry_impact": "NONE",
+      "priority": "MATERIAL",
+      "depends_on": [],
+      "evidence_state": "NOT_OBSERVABLE",
+      "answer_state": "OPEN",
+      "provenance": "UNKNOWN",
+      "blocking_status": "NON_BLOCKING",
+      "defer_policy": "ALLOWED",
+      "answer": null,
+      "answer_note": null,
+      "requested_photo_spec": null,
+      "unknown_strategy": null,
+      "created_at": "2026-09-30T00:00:09.000Z",
+      "answered_at": null
+    }
+  ],
+  "human_facts": []
+}
