@@ -1,0 +1,70 @@
+{
+  "schema": "boldungo.module005.photo_relational_corrections.v1",
+  "mission": "BOLDUNGO-077-MODULE005-PHOTO-RECOVERED-RELATIONAL-CORRECTIONS",
+  "base": {
+    "pr": 814,
+    "branch": "feat/module-005-coarse-openings-072",
+    "start_head": "5940b469d00ba4920b3f05bc10f06d35d0bc83c7"
+  },
+  "authorization_basis": [
+    "BOLDUNGO-075-MODULE005-POST074D-BLIND-RELATIONAL-RECOVERY-AUDIT",
+    "BOLDUNGO-076-MODULE005-POST075-RECOVERY-TO-CORRECTION-ELIGIBILITY-AUDIT"
+  ],
+  "case_a": {
+    "property": "OPENING_010_AND_011_COMMON_BAY_RELATION_TO_MODULE003_INTERFACE_SECTOR",
+    "photo_relation": "RECOVERED",
+    "exact_x": "APPROXIMATED",
+    "old_wall_local_x_studs": 40,
+    "module003_interface_world_y": [54, 72],
+    "host_side_y0": 2,
+    "bay_width_studs": 7,
+    "admissible_wall_local_x_studs": [52, 62],
+    "selected_wall_local_x_studs": 52,
+    "translation_delta_studs": 12,
+    "selection": "MINIMAL_RIGID_TRANSLATION_TO_PLACE_FULL_BAY_INSIDE_EXISTING_MODULE003_INTERFACE_SECTOR",
+    "relative_alignment_preserved": true
+  },
+  "case_d": {
+    "property": "OPENING_007_UPPER_STORY_MEMBERSHIP",
+    "photo_relation": "RECOVERED",
+    "exact_z": "APPROXIMATED",
+    "old_z_bricks": 28,
+    "height_bricks_preserved": 9,
+    "width_studs_preserved": 9,
+    "constructive_upper_story_envelope_z_bricks": [32, 43],
+    "admissible_z_bricks_for_existing_height": [32, 34],
+    "selected_z_bricks": 32,
+    "selection": "MINIMAL_VERTICAL_TRANSLATION_WHOLE_OPENING_INSIDE_RECOVERED_UPPER_STORY_ENVELOPE",
+    "same_exact_sill_claimed": false,
+    "same_exact_head_claimed": false
+  },
+  "case_e": {
+    "engine_capable": false,
+    "implemented": false,
+    "representation": "ENGINE_LIMITATION_PREVENTS_HONEST_STEP_REPRESENTATION",
+    "topology": "PHOTO_PARTIALLY_RECOVERED",
+    "dimensions": "APPROXIMATED_IF_FUTURE_CAPABILITY_EXISTS",
+    "solidity": "NOT_OBSERVABLE",
+    "photo_recovered_solid_step": false,
+    "reason": "Current BrickModel can emit physical part placements but has no topology-only non-solid transition primitive. Adding visible step geometry would invent footprint/support/underside properties not recovered in 075."
+  },
+  "forbidden_corrections_preserved": {
+    "case_b_front_small_upper": "UNCHANGED",
+    "case_c_opening_009": "UNCHANGED",
+    "opening_007_width": "UNCHANGED",
+    "opening_007_height": "UNCHANGED",
+    "solid_step_fill": "NOT_ADDED",
+    "terrain": "NOT_ADDED",
+    "sidewalk": "NOT_ADDED",
+    "surrounds": "NOT_ADDED"
+  },
+  "general_rules_canonized": [
+    "PHOTO-CONSTRAINT-PLUS-CURRENT-VIOLATION-BEFORE-CORRECTION",
+    "RELATIONAL-RECOVERY-DOES-NOT-IMPLY-EXACT-TARGET",
+    "COMMON-BAY-MUST-MOVE-AS-A-SYSTEM",
+    "STORY-BAND-CAN-CONSTRAIN-LEVEL-WITHOUT-CERTIFYING-SILL",
+    "FAMILY-COMPATIBILITY-DOES-NOT-MEAN-DIMENSION-EQUALITY",
+    "TOPOLOGY-CAN-BE-PHOTO-RECOVERED-WHILE-SOLIDITY-REMAINS-UNKNOWN",
+    "HUMAN-GROUND-TRUTH-OVERRIDE-MUST-REMAIN-LABELED"
+  ]
+}

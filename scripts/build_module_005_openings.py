@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Build MODULE005 true negative-space openings in the frozen MODULE001 walls.
 
-Mission 074 applies only the accepted blind-recovery corrections from 073 to
-the technically green 072 state. Architecture is not re-inferred here.
-Photographic constraints remain distinct from exact LEGO grid choices.
+Mission 077 applies only corrections authorized by:
+075 PHOTO RECOVERY + 076 CURRENT VIOLATION AUDIT.
+
+Exact LEGO coordinates selected from relational constraints remain constructive
+approximations. Untargeted openings and MODULE002/003/004 geometry are preserved.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 from pathlib import Path
 
@@ -20,7 +23,7 @@ COMBINED_OUT = ROOT / "frontend" / "module-001-plus-module-002-plus-module-003-p
 
 BUILDING_ID = "real-house-progressive"
 COMBINED_VOLUME_ID = "module-001-plus-module-002-plus-module-003-plus-module-004-plus-module-005"
-WALL_BRICK_COURSES = 46  # z=0..137; existing Z138/Z139 closure remains untouched.
+WALL_BRICK_COURSES = 46
 
 FACE_MAPPING = {
     "FACE_A": "front",
@@ -37,13 +40,8 @@ PART_DIMS = {
     "BRICK_1X8": (1, 8, 3),
 }
 
-# Accepted 070/071 map with only the targeted 073 recovery applied:
-# - 006 reaches architectural base,
-# - 005 is short and elevated,
-# - 008 is rejected from FACE_B and not relocated,
-# - 009 sill remains terrain-occlusion-uncertain,
-# - 011 extends toward MODULE003 circulation level with uncertain exact sill.
-OPENINGS = {
+# Certified 074 geometry. 077 derives only A and D from this state.
+BASE_OPENINGS_074 = {
     "OPENING_001": {"face": "FACE_A", "type": "WINDOW", "x_studs": 10, "z_bricks": 32, "width_studs": 9, "height_bricks": 11},
     "OPENING_002": {"face": "FACE_A", "type": "WINDOW", "x_studs": 35, "z_bricks": 32, "width_studs": 11, "height_bricks": 11},
     "OPENING_003": {"face": "FACE_A", "type": "WINDOW", "x_studs": 10, "z_bricks": 18, "width_studs": 9, "height_bricks": 10},
@@ -105,19 +103,15 @@ REJECTED_OPENINGS = {
     },
 }
 
-RELATIVE_RANGES = {
-    "OPENING_001": {"left": [0.16, 0.20], "right": [0.32, 0.36], "bottom": [0.66, 0.72], "top": [0.90, 0.95]},
-    "OPENING_002": {"left": [0.60, 0.64], "right": [0.78, 0.82], "bottom": [0.67, 0.73], "top": [0.91, 0.96]},
-    "OPENING_003": {"left": [0.15, 0.19], "right": [0.31, 0.35], "bottom": [0.36, 0.42], "top": [0.56, 0.62]},
-    "OPENING_004": {"left": [0.59, 0.63], "right": [0.79, 0.83], "bottom": [0.35, 0.41], "top": [0.57, 0.63]},
-    "OPENING_005": {"status": "SUPERSEDED_BY_073_SHORT_ELEVATED_RECOVERY", "top_relation": "APPROX_COMPARABLE_TO_OPENING_006"},
-    "OPENING_006": {"bottom": "OBSERVED_TO_BASE_073", "top": "PRESERVE_072_COARSE_HEAD_LEVEL"},
-    "OPENING_007": {"left": [0.55, 0.65], "right": [0.68, 0.77], "bottom": [0.56, 0.65], "top": [0.75, 0.84]},
-    "OPENING_009": {"bottom": "NOT_OBSERVABLE_DUE_TO_RISING_TERRAIN_073", "visible_portion": "TRUNCATED_BY_RISING_TERRAIN"},
-    "OPENING_010": {"left": [0.07, 0.12], "right": [0.19, 0.24], "bottom": [0.64, 0.71], "top": [0.85, 0.92]},
-    "OPENING_011": {"bottom": "PROBABLY_TO_CIRCULATION_LEVEL_073", "continuity": "SUPPORTED_PROBABLE", "exact_sill": "NOT_OBSERVABLE"},
-    "OPENING_012": {"left": [0.59, 0.65], "right": [0.77, 0.84], "bottom": [0.27, 0.42], "top": [0.52, 0.62]},
-}
+GENERAL_RULES_077 = [
+    "PHOTO-CONSTRAINT-PLUS-CURRENT-VIOLATION-BEFORE-CORRECTION",
+    "RELATIONAL-RECOVERY-DOES-NOT-IMPLY-EXACT-TARGET",
+    "COMMON-BAY-MUST-MOVE-AS-A-SYSTEM",
+    "STORY-BAND-CAN-CONSTRAIN-LEVEL-WITHOUT-CERTIFYING-SILL",
+    "FAMILY-COMPATIBILITY-DOES-NOT-MEAN-DIMENSION-EQUALITY",
+    "TOPOLOGY-CAN-BE-PHOTO-RECOVERED-WHILE-SOLIDITY-REMAINS-UNKNOWN",
+    "HUMAN-GROUND-TRUTH-OVERRIDE-MUST-REMAIN-LABELED",
+]
 
 
 def _module1(part: dict) -> bool:
@@ -191,7 +185,109 @@ def _infer_host_frame(parts: list[dict]) -> dict:
     return frame
 
 
-def _opening_grids(face_label: str) -> list[WallOpeningGrid]:
+def _resolve_077(openings_074: dict, source: dict, frame: dict) -> tuple[dict, dict]:
+    openings = deepcopy(openings_074)
+
+    # CASE A — preserve the 010/011 bay and move it as one rigid system into
+    # the existing MODULE003 upper-platform/interface longitudinal sector.
+    module003_y0, module003_y1 = source["metadata"]["geometry"]["upper_platform"]["y"]
+    pair_ids = ("OPENING_010", "OPENING_011")
+    old_x = {opening_id: openings[opening_id]["x_studs"] for opening_id in pair_ids}
+    widths = {opening_id: openings[opening_id]["width_studs"] for opening_id in pair_ids}
+    if len(set(old_x.values())) != 1 or len(set(widths.values())) != 1:
+        raise RuntimeError("CASE_A bay is no longer rigid/aligned at 074 base")
+
+    pair_width = widths["OPENING_010"]
+    admissible_x_min = module003_y0 - frame["side_y0"]
+    usable_sector_y1 = min(module003_y1, frame["side_y1"])
+    admissible_x_max = usable_sector_y1 - frame["side_y0"] - pair_width
+    if admissible_x_min > admissible_x_max:
+        raise RuntimeError("CASE_A has no admissible host-wall interval inside MODULE003 sector")
+
+    selected_x = max(old_x["OPENING_010"], admissible_x_min)
+    if selected_x > admissible_x_max:
+        raise RuntimeError("CASE_A minimal relational translation cannot enter MODULE003 sector")
+    delta_x = selected_x - old_x["OPENING_010"]
+    for opening_id in pair_ids:
+        openings[opening_id]["x_studs"] += delta_x
+        openings[opening_id]["case_077"] = {
+            "photo_relation": "RECOVERED_VERTICAL_BAY_RELATED_TO_MODULE003_INTERFACE_SECTOR",
+            "exact_x": "APPROXIMATED_FROM_RELATIONAL_CONSTRAINT",
+            "same_translation_delta_studs": delta_x,
+            "bay_identity": "MODULE003_ACCESS_VERTICAL_BAY",
+        }
+
+    # CASE D — keep width/height and minimally place OPENING_007 wholly inside
+    # the constructive envelope of the recovered FACE_A upper-story openings.
+    upper_refs = [openings["OPENING_001"], openings["OPENING_002"]]
+    story_band_bottom = min(item["z_bricks"] for item in upper_refs)
+    story_band_top = max(item["z_bricks"] + item["height_bricks"] for item in upper_refs)
+    seven = openings["OPENING_007"]
+    old_z = seven["z_bricks"]
+    admissible_z_min = story_band_bottom
+    admissible_z_max = story_band_top - seven["height_bricks"]
+    if admissible_z_min > admissible_z_max:
+        raise RuntimeError("CASE_D current OPENING_007 height cannot fit recovered upper-story envelope")
+    selected_z = max(old_z, admissible_z_min)
+    if selected_z > admissible_z_max:
+        raise RuntimeError("CASE_D minimal shift cannot fit recovered upper-story envelope")
+    seven["z_bricks"] = selected_z
+    seven["case_077"] = {
+        "upper_story_membership": "PHOTO_RECOVERED",
+        "exact_z": "APPROXIMATED_FROM_STORY_BAND",
+        "admissible_z_bricks": [admissible_z_min, admissible_z_max],
+        "selected_z_bricks": selected_z,
+        "same_exact_sill_as_face_a_claimed": False,
+        "same_exact_head_as_face_a_claimed": False,
+        "width_changed": False,
+        "height_changed": False,
+    }
+
+    correction = {
+        "case_a": {
+            "implemented": True,
+            "pair": list(pair_ids),
+            "old_x_studs": old_x,
+            "new_x_studs": selected_x,
+            "translation_delta_studs": delta_x,
+            "module003_interface_world_y": [module003_y0, module003_y1],
+            "host_side_world_y": [frame["side_y0"], frame["side_y1"]],
+            "admissible_wall_local_x_studs": [admissible_x_min, admissible_x_max],
+            "selection_rule": "MINIMAL_RIGID_TRANSLATION_TO_PLACE_FULL_BAY_INSIDE_EXISTING_MODULE003_INTERFACE_SECTOR",
+            "photo_relation": "RECOVERED",
+            "exact_target_x": "APPROXIMATED",
+        },
+        "case_d": {
+            "implemented": True,
+            "opening_id": "OPENING_007",
+            "old_z_bricks": old_z,
+            "new_z_bricks": selected_z,
+            "translation_delta_bricks": selected_z - old_z,
+            "upper_story_constructive_envelope_z_bricks": [story_band_bottom, story_band_top],
+            "admissible_z_bricks": [admissible_z_min, admissible_z_max],
+            "selection_rule": "MINIMAL_VERTICAL_TRANSLATION_WHOLE_OPENING_INSIDE_RECOVERED_UPPER_STORY_ENVELOPE",
+            "upper_story_membership": "PHOTO_RECOVERED",
+            "exact_target_z": "APPROXIMATED",
+            "same_exact_sill_claimed": False,
+            "same_exact_head_claimed": False,
+            "width_before_after": [BASE_OPENINGS_074["OPENING_007"]["width_studs"], seven["width_studs"]],
+            "height_before_after": [BASE_OPENINGS_074["OPENING_007"]["height_bricks"], seven["height_bricks"]],
+        },
+        "case_e": {
+            "engine_capable": False,
+            "implemented": False,
+            "representation": "ENGINE_LIMITATION_PREVENTS_HONEST_STEP_REPRESENTATION",
+            "reason": "Current BrickModel exposes physical part placements, not a non-solid topological transition primitive. A visible step part would require inventing footprint/support/underside geometry that 075 left NOT_OBSERVABLE.",
+            "topology": "PHOTO_PARTIALLY_RECOVERED",
+            "dimensions": "APPROXIMATED_IF_FUTURE_CAPABILITY_EXISTS",
+            "solidity": "NOT_OBSERVABLE",
+            "photo_recovered_solid_step": False,
+        },
+    }
+    return openings, correction
+
+
+def _opening_grids(face_label: str, openings: dict) -> list[WallOpeningGrid]:
     return [
         WallOpeningGrid(
             id=opening_id,
@@ -200,15 +296,15 @@ def _opening_grids(face_label: str) -> list[WallOpeningGrid]:
             width_studs=data["width_studs"],
             height_bricks=data["height_bricks"],
         )
-        for opening_id, data in OPENINGS.items()
+        for opening_id, data in openings.items()
         if data["face"] == face_label
     ]
 
 
-def _emit_wall(face_label: str, frame: dict) -> list[dict]:
+def _emit_wall(face_label: str, frame: dict, openings: dict) -> list[dict]:
     facade = FACE_MAPPING[face_label]
     width = 57 if facade == "front" else 69
-    layout = generate_wall_layout_with_openings(width, WALL_BRICK_COURSES, _opening_grids(face_label))
+    layout = generate_wall_layout_with_openings(width, WALL_BRICK_COURSES, _opening_grids(face_label, openings))
     out: list[dict] = []
 
     for index, placement in enumerate(layout.placements, start=1):
@@ -243,9 +339,9 @@ def _emit_wall(face_label: str, frame: dict) -> list[dict]:
     return out
 
 
-def _world_opening_cells(frame: dict) -> set[tuple[int, int, int]]:
+def _world_opening_cells(frame: dict, openings: dict) -> set[tuple[int, int, int]]:
     blocked: set[tuple[int, int, int]] = set()
-    for data in OPENINGS.values():
+    for data in openings.values():
         facade = FACE_MAPPING[data["face"]]
         z0 = data["z_bricks"] * 3
         z1 = (data["z_bricks"] + data["height_bricks"]) * 3
@@ -262,28 +358,25 @@ def _world_opening_cells(frame: dict) -> set[tuple[int, int, int]]:
     return blocked
 
 
-def _opening_metadata(frame: dict) -> list[dict]:
+def _opening_metadata(openings: dict) -> list[dict]:
     items = []
-    for opening_id, data in OPENINGS.items():
+    for opening_id, data in openings.items():
         facade = FACE_MAPPING[data["face"]]
         item = {
             "opening_id": opening_id,
             "face_label": data["face"],
             "host_facade": facade,
             "type": data["type"],
-            "photo_relative_constraint": RELATIVE_RANGES[opening_id],
             "wall_local_grid": {
                 "x_studs": data["x_studs"],
                 "z_bricks": data["z_bricks"],
                 "width_studs": data["width_studs"],
                 "height_bricks": data["height_bricks"],
-                "status": "CONSTRUCTIVE_APPROXIMATION_074",
+                "status": "CONSTRUCTIVE_APPROXIMATION_077" if "case_077" in data else "PRESERVED_FROM_074",
             },
             "provenance": {
                 "base_identity": "PHOTO_CONSTRAINED_070",
-                "base_relative_geometry": "PHOTO_CONSTRAINED_071",
-                "targeted_recovery": data.get("recovery_status"),
-                "exact_grid_selection": "CONSTRUCTIVE_APPROXIMATION_074",
+                "exact_grid_selection": "CONSTRUCTIVE_APPROXIMATION",
             },
         }
         for key in (
@@ -298,6 +391,7 @@ def _opening_metadata(frame: dict) -> list[dict]:
             "constructive_bottom_plates",
             "exact_door_geometry_observed",
             "unknown_photo_components",
+            "case_077",
         ):
             if key in data:
                 item[key] = data[key]
@@ -311,18 +405,19 @@ def main() -> None:
     source = json.loads(SOURCE.read_text(encoding="utf-8"))
     source_parts = source["brick_model"]["parts"]
     frame = _infer_host_frame(source_parts)
+    openings, correction_077 = _resolve_077(BASE_OPENINGS_074, source, frame)
 
     removed = [part for part in source_parts if _target_lower_wall(part)]
     kept = [dict(part) for part in source_parts if not _target_lower_wall(part)]
     rebuilt = (
-        _emit_wall("FACE_A", frame)
-        + _emit_wall("FACE_B", frame)
-        + _emit_wall("FACE_C", frame)
+        _emit_wall("FACE_A", frame, openings)
+        + _emit_wall("FACE_B", frame, openings)
+        + _emit_wall("FACE_C", frame, openings)
     )
 
     source_cells = _cells(removed, z_limit=WALL_BRICK_COURSES * 3)
     rebuilt_cells = _cells(rebuilt, z_limit=WALL_BRICK_COURSES * 3)
-    blocked = _world_opening_cells(frame)
+    blocked = _world_opening_cells(frame, openings)
     expected = source_cells - blocked
     if rebuilt_cells != expected:
         missing = len(expected - rebuilt_cells)
@@ -342,64 +437,47 @@ def main() -> None:
 
     module5 = {
         "module_id": "MODULE_005_OPENINGS",
-        "mission": "BOLDUNGO-074-MODULE005-TARGETED-HUMAN-FAIL-RECOVERY",
-        "recovery_source": "BOLDUNGO-073-MODULE005-HUMAN-FAIL-BLIND-RECOVERY",
+        "mission": "BOLDUNGO-077-MODULE005-PHOTO-RECOVERED-RELATIONAL-CORRECTIONS",
+        "recovery_chain": [
+            "BOLDUNGO-075-MODULE005-POST074D-BLIND-RELATIONAL-RECOVERY-AUDIT",
+            "BOLDUNGO-076-MODULE005-POST075-RECOVERY-TO-CORRECTION-ELIGIBILITY-AUDIT",
+        ],
         "structure_type": "NEGATIVE_SPACE_OPENINGS_CUT_IN_EXISTING_MODULE001_WALLS",
         "face_mapping": FACE_MAPPING,
-        "opening_count": len(OPENINGS),
-        "opening_candidate_b10": {
-            "status": "AMBIGUOUS_NOT_CONSTRUCTED",
-            "constructed": False,
-        },
+        "opening_count": len(openings),
+        "opening_candidate_b10": {"status": "AMBIGUOUS_NOT_CONSTRUCTED", "constructed": False},
         "rejected_openings": REJECTED_OPENINGS,
-        "opening_rasters": _opening_metadata(frame),
-        "constraint_translation": {
-            "policy": "TARGETED_073_RECOVERY_ONLY",
-            "face_a_centerlines": {
-                "left": ["OPENING_001", "OPENING_003", "OPENING_005"],
-                "right": ["OPENING_002", "OPENING_004", "OPENING_006"],
-            },
-            "face_b_certain_upper_openings": ["OPENING_007"],
-            "face_b_certain_low_openings": ["OPENING_009"],
-            "face_b_rejected": ["OPENING_008"],
-            "opening_009_terrain_rule": "TERRAIN_OCCLUSION_DOES_NOT_CERTIFY_SILL",
-            "opening_011_continuity": "PHOTO_SUPPORTED_PROBABLE_TO_MODULE003_CIRCULATION_LEVEL",
-            "ground_slope_is_not_opening_level": True,
-        },
+        "opening_rasters": _opening_metadata(openings),
+        "correction_077": correction_077,
+        "general_rules_canonized": GENERAL_RULES_077,
         "negative_space": {
             "implementation": "REAL_WALL_MATERIAL_REMOVAL_AND_RETILING",
             "decorative_overlay": False,
             "blocked_wall_cells": len(blocked),
         },
-        "opening_surrounds": {
-            "observed": True,
-            "different_appearance": True,
-            "relief_observed": "AMBIGUOUS",
-            "constructed_in_074": False,
-            "policy": "STRUCTURAL_VOID_FIRST",
-        },
-        "terrain": {
-            "constructed_in_074": False,
-        },
+        "opening_surrounds": {"constructed_in_077": False},
+        "terrain": {"constructed_in_077": False},
         "preservation": {
-            "module_001_outside_targeted_areas": "OCCUPIED_GEOMETRY_PRESERVED",
-            "untargeted_opening_rasters": ["OPENING_001", "OPENING_002", "OPENING_003", "OPENING_004", "OPENING_007", "OPENING_010", "OPENING_012"],
+            "case_b_changed": False,
+            "case_c_changed": False,
+            "untargeted_openings_preserved_from_074": [
+                "OPENING_001", "OPENING_002", "OPENING_003", "OPENING_004",
+                "OPENING_005", "OPENING_006", "OPENING_009", "OPENING_012"
+            ],
             "module_002": "BYTE_EQUIVALENT_PART_RECORDS",
             "module_003": "BYTE_EQUIVALENT_PART_RECORDS",
             "module_004": "BYTE_EQUIVALENT_PART_RECORDS",
         },
         "module_005_piece_count": 0,
-        "module_005_piece_count_note": "MODULE005 remains negative-space geometry and adds no decorative surround or terrain parts.",
+        "module_005_piece_count_note": "077 changes only MODULE001 negative-space wall retile for A/D. CASE_E is not physically represented because current engine lacks an honest topology-only transition primitive.",
         "module_001_piece_count_before": len(module1_before),
         "module_001_piece_count_after": len(module1_after),
-        "replaced_module_001_lower_wall_parts_before": len(removed),
-        "replaced_module_001_lower_wall_parts_after": len(rebuilt),
     }
 
     metadata = {
         **source.get("metadata", {}),
         "module_id": "MODULE_001_PLUS_MODULE_002_PLUS_MODULE_003_PLUS_MODULE_004_PLUS_MODULE_005",
-        "mission_module_005": "BOLDUNGO-074-MODULE005-TARGETED-HUMAN-FAIL-RECOVERY",
+        "mission_module_005": "BOLDUNGO-077-MODULE005-PHOTO-RECOVERED-RELATIONAL-CORRECTIONS",
         "source_bundle_module_001_002_003_004": SOURCE.name,
         "source_piece_count": len(source_parts),
         "combined_piece_count": len(combined_parts),
@@ -409,28 +487,16 @@ def main() -> None:
     issues = [
         *source.get("fidelity_issues", []),
         {
-            "code": "MODULE_005_TARGETED_RECOVERY_GRID_APPROXIMATION",
+            "code": "MODULE_005_077_RELATIONAL_TARGETS_APPROXIMATED",
             "severity": "info",
             "object_id": COMBINED_VOLUME_ID,
-            "message": "074 changes only the four sectors recovered by blind audit 073; exact grid choices remain constructive approximations.",
+            "message": "CASE_A exact X and CASE_D exact Z are constructive approximations selected from photo-recovered relational constraints, not observed coordinates.",
         },
         {
-            "code": "MODULE_005_OPENING_009_TERRAIN_OCCLUDED_SILL",
+            "code": "MODULE_003_004_STEP_ENGINE_LIMITATION",
             "severity": "info",
-            "object_id": "OPENING_009",
-            "message": "The rising terrain truncates the visible lower portion; exact architectural sill remains unobserved and terrain is not built in 074.",
-        },
-        {
-            "code": "MODULE_005_OPENING_011_EXACT_SILL_UNCERTAIN",
-            "severity": "info",
-            "object_id": "OPENING_011",
-            "message": "Photo fragments support continuity toward circulation level, but exact sill and exact door geometry remain unobserved.",
-        },
-        {
-            "code": "MODULE_005_OPENING_012_OCCLUDED_BOTTOM_UNKNOWN",
-            "severity": "info",
-            "object_id": "OPENING_012",
-            "message": "Terrace/railing occlusion does not certify the visible cutoff as the opening sill; 072 coarse placement is preserved.",
+            "object_id": "MODULE003_MODULE004_INTERFACE",
+            "message": "075 recovered local level-transition topology, but current BrickModel lacks a non-solid topology-only transition representation; no physical step is added because underside/support/solidity remain unobserved.",
         },
     ]
 
@@ -451,14 +517,13 @@ def main() -> None:
     COMBINED_OUT.write_text(json.dumps(output, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print(json.dumps({
+        "opening_count": len(openings),
+        "case_a_new_x": correction_077["case_a"]["new_x_studs"],
+        "case_a_delta": correction_077["case_a"]["translation_delta_studs"],
+        "case_d_new_z": correction_077["case_d"]["new_z_bricks"],
+        "case_d_delta": correction_077["case_d"]["translation_delta_bricks"],
+        "case_e_implemented": correction_077["case_e"]["implemented"],
         "combined_piece_count": len(combined_parts),
-        "module_005_piece_count": 0,
-        "opening_count": len(OPENINGS),
-        "module_001_piece_count_before": len(module1_before),
-        "module_001_piece_count_after": len(module1_after),
-        "removed_wall_parts": len(removed),
-        "rebuilt_wall_parts": len(rebuilt),
-        "face_mapping": FACE_MAPPING,
     }, sort_keys=True))
 
 
