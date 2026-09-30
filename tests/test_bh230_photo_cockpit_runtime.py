@@ -13,7 +13,8 @@ def test_normal_photo_cockpit_uses_capture_only_runtime() -> None:
     assert '<script type="module" src="./photo.js"></script>' not in html
     assert '<script type="module" src="./photo-simple.js' not in html
     assert 'id="photo-persistence-note"' in html
-    assert "seront perdues si vous rechargez la page" in html
+    assert "conservées localement dans ce navigateur sur cet appareil" in html
+    assert "effacez les données du navigateur ou changez d’appareil" in html
     assert 'value="https://brickhouse-api.onrender.com"' in html
 
 
@@ -24,6 +25,8 @@ def test_capture_runtime_does_not_own_analysis_or_package_actions() -> None:
     assert "fetch(" not in source
     assert "#guided-photo-grid" in source
     assert "DataTransfer" in source
+    assert "project-photo-store.js" in source
+    assert "indexedDB" not in source
 
 
 def test_current_pdf_and_benchmark_paths_remain_active() -> None:

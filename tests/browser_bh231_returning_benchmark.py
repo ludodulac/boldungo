@@ -5,7 +5,7 @@ from pathlib import Path
 import shutil
 import threading
 
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 SURVEY = ROOT / 'frontend' / 'benchmarks' / 'real-house-5' / 'accepted-survey-v0.1.json'
@@ -36,6 +36,64 @@ def browser_binary():
     raise AssertionError('BH-231 browser proof requires Chromium/Chrome')
 
 
+def collect_preview_diagnostic(page, runtime_errors, console_errors, failed_requests):
+    browser_state = page.evaluate(
+        """() => {
+          const visible = element => {
+            if (!element) return false;
+            const style = getComputedStyle(element);
+            const rect = element.getBoundingClientRect();
+            return style.display !== 'none'
+              && style.visibility !== 'hidden'
+              && Number(style.opacity || 1) !== 0
+              && rect.width > 0
+              && rect.height > 0;
+          };
+
+          const slotState = slotName => {
+            const slot = document.querySelector(`.guided-photo-slot[data-slot="${slotName}"]`);
+            const input = slot?.querySelector('.guided-photo-input') || null;
+            return {
+              slot_exists: Boolean(slot),
+              slot_visible: visible(slot),
+              input_exists: Boolean(input),
+              input_disabled: input ? input.disabled : null,
+              input_files_length: input?.files?.length ?? null,
+              selected_photo_preview_count: slot?.querySelectorAll('.selected-photo-preview').length ?? null,
+              persisted_photo_item_count: slot?.querySelectorAll('.persisted-photo-item').length ?? null,
+            };
+          };
+
+          const projectCreatePanel = document.querySelector('#project-create-panel');
+          const projectPicker = document.querySelector('#project-picker');
+
+          return {
+            DOCUMENT_READY_STATE: document.readyState,
+            PROJECT_PHOTO_INTAKE_READY: document.documentElement.dataset.projectPhotoIntakeReady ?? null,
+            BODY_BENCHMARK: document.body?.dataset?.benchmark ?? null,
+            BENCHMARK_FIXTURE_CONTEXT: document.body?.dataset?.benchmarkFixtureContext ?? null,
+            AI_PACKAGE_STATUS: document.querySelector('#ai-package-status')?.textContent?.trim() ?? null,
+            PROJECT_SAVE_STATUS: document.querySelector('#project-save-status')?.textContent?.trim() ?? null,
+            PROJECT_CREATE_PANEL: projectCreatePanel
+              ? (projectCreatePanel.hidden || !visible(projectCreatePanel) ? 'hidden' : 'visible')
+              : 'missing',
+            ACTIVE_USER_PROJECT_COUNT: projectPicker
+              ? projectPicker.querySelectorAll('option').length
+              : null,
+            FRONT_INPUT: slotState('front'),
+            RIGHT_INPUT: slotState('right'),
+            LEFT_INPUT: slotState('left'),
+            REAR_INPUT: slotState('rear'),
+            TOTAL_SELECTED_PREVIEW_COUNT: document.querySelectorAll('.selected-photo-preview').length,
+          };
+        }"""
+    )
+    browser_state['PAGE_ERRORS'] = list(runtime_errors)
+    browser_state['CONSOLE_ERRORS'] = list(console_errors)
+    browser_state['FAILED_REQUESTS'] = list(failed_requests)
+    return browser_state
+
+
 def main():
     accepted_survey = json.loads(SURVEY.read_text(encoding='utf-8'))
     stale_pending = {
@@ -53,7 +111,7 @@ def main():
               if (location.pathname.endsWith('/photo.html')) {{
                 localStorage.setItem('brickhouse.pendingArchitecturalSurvey', {json.dumps(json.dumps(stale_pending))});
                 localStorage.setItem('brickhouse.knownFrontWidthM', '12.34');
-                localStorage.setItem('brickhouse.lastRejectedArchitecturalScene', '{{\"stale\":true}}');
+                localStorage.setItem('brickhouse.lastRejectedArchitecturalScene', '{{"stale":true}}');
                 localStorage.setItem('brickhouse.lastSceneValidationError', 'stale');
               }}
             }})();
@@ -61,15 +119,26 @@ def main():
         )
         page = context.new_page()
         runtime_errors = []
+        console_errors = []
         failed_requests = []
         page.on('pageerror', lambda error: runtime_errors.append(f'pageerror: {error}'))
+        page.on('console', lambda message: console_errors.append(message.text) if message.type == 'error' else None)
         page.on('requestfailed', lambda request: failed_requests.append(f'{request.method} {request.url}: {request.failure}'))
 
         url = f'http://127.0.0.1:{port}/frontend/photo.html?benchmark=real-house-5&checkpoint=bh231-ci'
         response = page.goto(url, wait_until='domcontentloaded', timeout=30000)
         assert response and response.ok
         page.wait_for_selector('body.boldungo-shell-enabled', timeout=15000)
-        page.wait_for_function("() => document.querySelectorAll('.selected-photo-preview').length === 5", timeout=15000)
+        try:
+            page.wait_for_function(
+                "() => document.querySelectorAll('.selected-photo-preview').length === 5",
+                timeout=15000,
+            )
+        except PlaywrightTimeoutError:
+            diagnostic = collect_preview_diagnostic(page, runtime_errors, console_errors, failed_requests)
+            print('BH231_RUNTIME_DIAGNOSTIC')
+            print(json.dumps(diagnostic, indent=2, sort_keys=True))
+            raise
 
         cockpit = page.locator('.boldungo-cockpit')
         assert cockpit.get_attribute('data-shell-state') == 'photos'

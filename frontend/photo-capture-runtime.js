@@ -1,12 +1,69 @@
-// Lightweight capture-only runtime for the normal photo cockpit.
-// Historical one-turn prompt generation remains in photo-simple.js, but is no
-// longer loaded by photo.html. This module owns only file selection metadata.
+import {
+  MAX_PHOTOS_PER_GROUP,
+  addPhotosToProject,
+  canonicalFaceForSlot,
+  createProject,
+  deleteProjectPhoto,
+  getActiveProjectSnapshot,
+  listProjects,
+  setActiveProjectId,
+  updateGroupNote,
+  updateProject,
+} from './project-photo-store.js';
 
 const packageStatus = document.querySelector('#ai-package-status');
 const technicalPhotos = document.querySelector('#photos');
 const baseSlots = [...document.querySelectorAll('.guided-photo-slot')];
 const detailSlots = [...document.querySelectorAll('.detail-photo-slot')];
-const MAX_PHOTOS_PER_GROUP = 4;
+const saveStatus = document.querySelector('#project-save-status');
+const projectPicker = document.querySelector('#project-picker');
+const newProjectButton = document.querySelector('#new-project');
+const projectCreatePanel = document.querySelector('#project-create-panel');
+const projectCreateLabel = document.querySelector('#project-create-label');
+const newProjectName = document.querySelector('#new-project-name');
+const confirmNewProject = document.querySelector('#confirm-new-project');
+const cancelNewProject = document.querySelector('#cancel-new-project');
+const projectCreateError = document.querySelector('#project-create-error');
+const projectExistingControls = document.querySelector('#project-existing-controls');
+const projectName = document.querySelector('#project-name');
+const city = document.querySelector('#city');
+const knownWidth = document.querySelector('#known-width');
+const notes = document.querySelector('#notes');
+const studs = document.querySelector('#studs');
+
+const previewUrls = new Map();
+const debounceTimers = new Map();
+let activeProject = null;
+let activePhotos = [];
+let projectCreationMode = null;
+let saveQueue = Promise.resolve();
+window.boldungoProjectPhotoSavePromise = saveQueue;
+
+function setSaveStatus(message, kind = 'ok') {
+  if (!saveStatus) return;
+  saveStatus.textContent = message;
+  saveStatus.dataset.kind = kind;
+}
+
+function queueSave(task) {
+  setSaveStatus('Enregistrement…', 'pending');
+  const operation = saveQueue.then(task);
+  saveQueue = operation.catch(() => undefined);
+  window.boldungoProjectPhotoSavePromise = operation;
+  operation.then(
+    () => setSaveStatus('Enregistré sur cet appareil', 'ok'),
+    error => {
+      console.error(error);
+      setSaveStatus('Erreur de sauvegarde', 'error');
+    },
+  );
+  return operation;
+}
+
+function debounceSave(key, task, delay = 250) {
+  window.clearTimeout(debounceTimers.get(key));
+  debounceTimers.set(key, window.setTimeout(() => queueSave(task), delay));
+}
 
 function ensureOrientationControl() {
   let control = document.querySelector('#orientation-confirmation-field');
@@ -19,7 +76,7 @@ function ensureOrientationControl() {
   control.innerHTML = `
     <label class="orientation-confirmation-label">
       <input id="confirm-guided-orientations" type="checkbox" />
-      <span><strong>Je confirme les quatre orientations principales</strong><br><small>Cochez seulement si Avant / Droite / Gauche / Arrière ont été classés volontairement. Les groupes de détails n’acquièrent jamais d’orientation implicite.</small></span>
+      <span><strong>J’ai vérifié le classement principal de mes vues</strong><br><small>Une vue trois-quarts reste classée une seule fois selon sa face principale. Elle peut montrer d’autres faces sans être dupliquée.</small></span>
     </label>`;
   grid.insertAdjacentElement('afterend', control);
   return control;
@@ -44,31 +101,358 @@ function syncTechnicalPhotoInput() {
   technicalPhotos.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
-function updateSlot(slot, inputSelector, nameSelector) {
+function consumeTransientPhotoSelection(slot, input) {
+  if (!input) return;
+  input.value = '';
+  const transientPreviews = slot.querySelector(':scope > .selected-photo-previews');
+  if (transientPreviews) {
+    transientPreviews.replaceChildren();
+    transientPreviews.dataset.count = '0';
+  }
+  syncTechnicalPhotoInput();
+}
+
+function clearPreviewUrls(slotKey) {
+  for (const url of previewUrls.get(slotKey) || []) URL.revokeObjectURL(url);
+  previewUrls.set(slotKey, []);
+}
+
+function ensurePersistedList(slot, input) {
+  let list = slot.querySelector(':scope > .persisted-photo-list');
+  if (list) return list;
+  list = document.createElement('div');
+  list.className = 'persisted-photo-list';
+  list.setAttribute('aria-live', 'polite');
+  input.insertAdjacentElement('afterend', list);
+  return list;
+}
+
+function groupKeyForSlot(slot) {
+  return slot.dataset.slot;
+}
+
+function photosForSlot(slot) {
+  const key = groupKeyForSlot(slot);
+  const face = canonicalFaceForSlot(key);
+  return activePhotos
+    .filter(photo => face ? photo.primary_face === face : photo.detail_group_id === key)
+    .sort((a, b) => Number(a.capture_order) - Number(b.capture_order));
+}
+
+function renderPersistedSlot(slot, inputSelector, nameSelector) {
   const input = slot.querySelector(inputSelector);
   const name = slot.querySelector(nameSelector);
-  const count = input?.files?.length ?? 0;
-  const used = Math.min(count, MAX_PHOTOS_PER_GROUP);
-  slot.classList.toggle('has-photo', used > 0);
-  if (count > MAX_PHOTOS_PER_GROUP && packageStatus) {
-    packageStatus.textContent = `Maximum ${MAX_PHOTOS_PER_GROUP} photos par groupe. Les suivantes ne seront pas incluses.`;
+  if (!input) return;
+  const key = groupKeyForSlot(slot);
+  const records = photosForSlot(slot);
+  const list = ensurePersistedList(slot, input);
+  clearPreviewUrls(key);
+  list.replaceChildren();
+  list.dataset.count = String(records.length);
+  slot.classList.toggle('has-photo', records.length > 0);
+  slot.classList.toggle('has-persisted-photos', records.length > 0);
+
+  const urls = [];
+  for (const photo of records) {
+    const item = document.createElement('article');
+    item.className = 'persisted-photo-item';
+    item.dataset.photoId = photo.photo_id;
+
+    const image = document.createElement('img');
+    image.className = 'persisted-photo-preview';
+    image.alt = `${photo.photo_id} — ${photo.original_filename}`;
+    const url = URL.createObjectURL(photo.blob);
+    urls.push(url);
+    image.src = url;
+
+    const meta = document.createElement('div');
+    meta.className = 'persisted-photo-meta';
+    const identity = document.createElement('strong');
+    identity.textContent = photo.photo_id;
+    const filename = document.createElement('small');
+    filename.textContent = photo.original_filename;
+    meta.append(identity, filename);
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'persisted-photo-remove';
+    remove.dataset.deletePhotoId = photo.photo_id;
+    remove.textContent = 'Retirer';
+    remove.setAttribute('aria-label', `Retirer ${photo.photo_id}`);
+
+    item.append(image, meta, remove);
+    list.appendChild(item);
   }
-  if (!name) return;
-  if (!used) name.textContent = 'Aucune photo';
-  else if (used === 1) name.textContent = input.files[0].name;
-  else name.textContent = `${used} photos sélectionnées`;
+  previewUrls.set(key, urls);
+
+  if (name) {
+    if (!records.length) name.textContent = 'Aucune photo enregistrée';
+    else if (records.length === 1) name.textContent = `${records[0].photo_id} enregistrée`;
+    else name.textContent = `${records.length} photos enregistrées`;
+  }
 }
 
-function bindSlot(slot, inputSelector, nameSelector) {
+function populateFields(project) {
+  if (projectName) projectName.value = project.project_name || '';
+  if (city) city.value = project.city || '';
+  if (knownWidth) knownWidth.value = project.known_front_width ?? '';
+  if (notes) notes.value = project.general_notes || '';
+  if (studs) studs.value = String(project.model_size || '48');
+
+  const groupNotes = project.group_notes || {};
+  for (const slot of [...baseSlots, ...detailSlots]) {
+    const note = slot.querySelector('.guided-photo-note, .detail-photo-note');
+    if (note) note.value = groupNotes[groupKeyForSlot(slot)] || '';
+  }
+  const confirmed = document.querySelector('#confirm-guided-orientations');
+  if (confirmed) confirmed.checked = Boolean(project.orientation_confirmed);
+}
+
+async function refreshProjectPicker() {
+  if (!projectPicker) return [];
+  const projects = await listProjects();
+  projectPicker.replaceChildren();
+  for (const project of projects) {
+    const option = document.createElement('option');
+    option.value = project.project_id;
+    option.textContent = project.project_name || 'Projet sans nom';
+    projectPicker.appendChild(option);
+  }
+  if (activeProject) projectPicker.value = activeProject.project_id;
+  return projects;
+}
+
+function setPhotoInputsEnabled(enabled) {
+  for (const slot of [...baseSlots, ...detailSlots]) {
+    const input = slot.querySelector('.guided-photo-input, .detail-photo-input');
+    if (input) input.disabled = !enabled;
+  }
+}
+
+function showProjectCreation(mode) {
+  projectCreationMode = mode;
+  const requiresInitialName = mode === 'first' || mode === 'legacy';
+  if (projectCreatePanel) projectCreatePanel.hidden = false;
+  if (projectExistingControls) projectExistingControls.hidden = requiresInitialName;
+  if (projectCreateLabel) projectCreateLabel.textContent = requiresInitialName ? 'Nom du projet' : 'Nom du nouveau projet';
+  if (confirmNewProject) confirmNewProject.textContent = requiresInitialName ? 'Créer le projet' : 'Créer';
+  if (cancelNewProject) cancelNewProject.hidden = requiresInitialName;
+  if (projectCreateError) projectCreateError.textContent = '';
+  if (newProjectName) {
+    const legacyName = mode === 'legacy' ? String(activeProject?.project_name || '').trim() : '';
+    newProjectName.value = legacyName === 'Ma maison' ? '' : legacyName;
+    window.setTimeout(() => newProjectName.focus(), 0);
+  }
+  document.querySelector('.project-intake-card')?.setAttribute('data-project-mode', mode);
+  if (requiresInitialName) setPhotoInputsEnabled(false);
+}
+
+function hideProjectCreation() {
+  projectCreationMode = null;
+  if (projectCreatePanel) projectCreatePanel.hidden = true;
+  if (projectExistingControls) projectExistingControls.hidden = false;
+  if (projectCreateError) projectCreateError.textContent = '';
+  document.querySelector('.project-intake-card')?.setAttribute('data-project-mode', 'active');
+  setPhotoInputsEnabled(Boolean(activeProject));
+}
+
+function renderAllSlots() {
+  baseSlots.forEach(slot => renderPersistedSlot(slot, '.guided-photo-input', '.guided-photo-name'));
+  detailSlots.forEach(slot => renderPersistedSlot(slot, '.detail-photo-input', '.detail-photo-name'));
+}
+
+async function reloadActiveProject() {
+  const snapshot = await getActiveProjectSnapshot();
+  activeProject = snapshot.project;
+  activePhotos = snapshot.photos;
+  const projects = await refreshProjectPicker();
+
+  if (activeProject) {
+    populateFields(activeProject);
+    if (activeProject.name_confirmed === true) {
+      hideProjectCreation();
+      setSaveStatus('Enregistré sur cet appareil', 'ok');
+    } else {
+      showProjectCreation('legacy');
+      setSaveStatus('Nommez votre projet', 'pending');
+    }
+  } else {
+    if (projectName) projectName.value = '';
+    if (city) city.value = '';
+    showProjectCreation('first');
+    setSaveStatus('Créez votre projet', 'pending');
+  }
+
+  renderAllSlots();
+  document.documentElement.dataset.projectPhotoIntakeReady = 'true';
+  window.dispatchEvent(new CustomEvent('boldungo:project-photo-intake-ready', {
+    detail: { project_id: activeProject?.project_id || null, project_count: projects.length },
+  }));
+}
+
+async function addFilesFromSlot(slot, inputSelector) {
+  if (!activeProject) return;
+  const input = slot.querySelector(inputSelector);
+  const files = [...(input?.files || [])];
+  if (!files.length) return;
+  const key = groupKeyForSlot(slot);
+  const face = canonicalFaceForSlot(key);
+  const note = slot.querySelector('.guided-photo-note, .detail-photo-note')?.value || '';
+
+  const result = await addPhotosToProject(activeProject.project_id, {
+    primaryFace: face,
+    detailGroupId: face ? null : key,
+    files,
+    note,
+  });
+  if (result.rejected_count && packageStatus) {
+    packageStatus.textContent = `Maximum ${MAX_PHOTOS_PER_GROUP} photos par orientation/groupe. ${result.rejected_count} photo(s) non ajoutée(s).`;
+  }
+  consumeTransientPhotoSelection(slot, input);
+  await reloadActiveProject();
+}
+
+function bindPhotoSlot(slot, inputSelector) {
   const input = slot.querySelector(inputSelector);
   input?.addEventListener('change', () => {
-    updateSlot(slot, inputSelector, nameSelector);
     syncTechnicalPhotoInput();
+    queueSave(() => addFilesFromSlot(slot, inputSelector));
   });
-  updateSlot(slot, inputSelector, nameSelector);
+
+  const note = slot.querySelector('.guided-photo-note, .detail-photo-note');
+  note?.addEventListener('input', () => {
+    const key = groupKeyForSlot(slot);
+    const candidate = note.value;
+    debounceSave(`note:${key}`, async () => {
+      if (!activeProject) return;
+      await updateGroupNote(activeProject.project_id, key, candidate);
+      const snapshot = await getActiveProjectSnapshot();
+      activeProject = snapshot.project;
+      activePhotos = snapshot.photos;
+    });
+  });
 }
 
-ensureOrientationControl();
-baseSlots.forEach(slot => bindSlot(slot, '.guided-photo-input', '.guided-photo-name'));
-detailSlots.forEach(slot => bindSlot(slot, '.detail-photo-input', '.detail-photo-name'));
-syncTechnicalPhotoInput();
+function bindProjectField(element, field, normalize = value => value) {
+  element?.addEventListener('input', () => {
+    const candidate = element.value;
+    debounceSave(`project:${field}`, async () => {
+      if (!activeProject) return;
+      activeProject = await updateProject(activeProject.project_id, {
+        [field]: normalize(candidate),
+      });
+      if (field === 'project_name') await refreshProjectPicker();
+    });
+  });
+}
+
+function bindProjectControls() {
+  projectName?.addEventListener('input', () => {
+    const candidate = projectName.value;
+    debounceSave('project:project_name', async () => {
+      if (!activeProject) return;
+      const normalized = String(candidate || '').trim();
+      if (!normalized) {
+        setSaveStatus('Le nom du projet est requis', 'error');
+        return;
+      }
+      const editedProjectId = activeProject.project_id;
+      activeProject = await updateProject(editedProjectId, { project_name: normalized });
+      // Only the selector is refreshed: never repopulate the input being edited.
+      await refreshProjectPicker();
+    });
+  });
+
+  bindProjectField(city, 'city', value => String(value || '').trim());
+  bindProjectField(knownWidth, 'known_front_width', value => {
+    const number = Number(value);
+    return Number.isFinite(number) && number > 0 ? number : null;
+  });
+  bindProjectField(notes, 'general_notes', value => String(value || ''));
+  studs?.addEventListener('change', () => queueSave(async () => {
+    if (!activeProject) return;
+    activeProject = await updateProject(activeProject.project_id, { model_size: String(studs.value || '48') });
+  }));
+
+  const confirmed = document.querySelector('#confirm-guided-orientations');
+  confirmed?.addEventListener('change', () => queueSave(async () => {
+    if (!activeProject) return;
+    activeProject = await updateProject(activeProject.project_id, { orientation_confirmed: confirmed.checked });
+  }));
+
+  projectPicker?.addEventListener('change', () => queueSave(async () => {
+    await setActiveProjectId(projectPicker.value);
+    await reloadActiveProject();
+  }));
+
+  newProjectButton?.addEventListener('click', () => {
+    showProjectCreation('additional');
+  });
+
+  cancelNewProject?.addEventListener('click', () => {
+    if (projectCreationMode !== 'additional') return;
+    hideProjectCreation();
+  });
+
+  confirmNewProject?.addEventListener('click', () => {
+    const requestedName = String(newProjectName?.value || '').trim();
+    if (!requestedName) {
+      if (projectCreateError) projectCreateError.textContent = 'Saisissez un nom de projet.';
+      newProjectName?.focus();
+      return;
+    }
+    queueSave(async () => {
+      if (projectCreationMode === 'legacy' && activeProject) {
+        activeProject = await updateProject(activeProject.project_id, {
+          project_name: requestedName,
+          name_confirmed: true,
+        });
+      } else {
+        activeProject = await createProject(requestedName);
+        activePhotos = [];
+      }
+      await reloadActiveProject();
+      projectName?.focus();
+    });
+  });
+
+  newProjectName?.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      confirmNewProject?.click();
+    } else if (event.key === 'Escape' && projectCreationMode === 'additional') {
+      event.preventDefault();
+      cancelNewProject?.click();
+    }
+  });
+}
+
+document.addEventListener('click', event => {
+  const button = event.target?.closest?.('[data-delete-photo-id]');
+  if (!button || !activeProject) return;
+  const photoId = button.dataset.deletePhotoId;
+  queueSave(async () => {
+    await deleteProjectPhoto(activeProject.project_id, photoId);
+    await reloadActiveProject();
+  });
+});
+
+async function init() {
+  ensureOrientationControl();
+  baseSlots.forEach(slot => bindPhotoSlot(slot, '.guided-photo-input'));
+  detailSlots.forEach(slot => bindPhotoSlot(slot, '.detail-photo-input'));
+  bindProjectControls();
+  syncTechnicalPhotoInput();
+  try {
+    await reloadActiveProject();
+  } catch (error) {
+    console.error(error);
+    setSaveStatus('Erreur de sauvegarde', 'error');
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init, { once: true });
+} else {
+  init();
+}

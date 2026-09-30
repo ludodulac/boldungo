@@ -1,3 +1,4 @@
+import { getActiveProjectSnapshot, photoRecordToFile } from './project-photo-store.js';
 // Hybrid Photos -> Survey PDF generator.
 // Register before the historical v0.4 raster generator so this capture listener
 // owns the download while the established prompt/audit modules remain intact.
@@ -39,7 +40,7 @@ function orientationConfirmed() {
   return Boolean(document.querySelector('#confirm-guided-orientations')?.checked);
 }
 
-function photoRecords() {
+function nativePhotoRecords() {
   const records = [];
   for (const slotName of SLOT_ORDER) {
     const slot = document.querySelector(`.guided-photo-slot[data-slot="${slotName}"]`);
@@ -51,6 +52,9 @@ function photoRecords() {
       label: SLOT_LABELS[slotName] || slotName,
       note,
       slotViewIndex: index + 1,
+      photoId: null,
+      primaryFace: slotName.toUpperCase(),
+      detailGroupId: null,
       captureRole: 'facade_view',
       orientationAuthority: orientationConfirmed() ? 'user_confirmed' : 'capture_hint',
     }));
@@ -65,6 +69,9 @@ function photoRecords() {
       label: slot?.dataset.label || slotName,
       note,
       slotViewIndex: index + 1,
+      photoId: null,
+      primaryFace: null,
+      detailGroupId: slotName,
       captureRole: 'targeted_detail',
       orientationAuthority: 'none',
     }));
@@ -73,18 +80,58 @@ function photoRecords() {
   return records;
 }
 
+async function photoRecords() {
+  try {
+    await window.boldungoProjectPhotoSavePromise;
+  } catch {
+    // The existing handoff remains available if local persistence failed.
+  }
+
+  try {
+    const snapshot = await getActiveProjectSnapshot();
+    if (snapshot.photos.length) {
+      const records = snapshot.photos.map(photo => {
+        const slot = photo.primary_face ? photo.primary_face.toLowerCase() : photo.detail_group_id;
+        const detailNumber = photo.detail_group_id ? Number(String(photo.detail_group_id).split('_')[1]) : null;
+        return {
+          file: photoRecordToFile(photo),
+          photoId: photo.photo_id,
+          primaryFace: photo.primary_face,
+          detailGroupId: photo.detail_group_id,
+          slot,
+          label: photo.primary_face ? (SLOT_LABELS[slot] || slot) : `Détail ${detailNumber || ''}`.trim(),
+          note: photo.note || '',
+          slotViewIndex: photo.capture_order,
+          captureRole: photo.primary_face ? 'facade_view' : 'targeted_detail',
+          orientationAuthority: photo.primary_face
+            ? (snapshot.project.orientation_confirmed ? 'user_confirmed' : 'capture_hint')
+            : 'none',
+        };
+      });
+      if (records.length > MAX_PHOTOS) throw new Error(`Maximum ${MAX_PHOTOS} photos pour ce handoff.`);
+      return { records, project: snapshot.project, source: 'indexeddb_project' };
+    }
+    return { records: nativePhotoRecords(), project: snapshot.project, source: 'native_inputs_fallback' };
+  } catch {
+    return { records: nativePhotoRecords(), project: null, source: 'native_inputs_fallback' };
+  }
+}
+
 async function fetchText(path) {
   const response = await fetch(path, { cache: 'no-store' });
   if (!response.ok) throw new Error(`${path}: HTTP ${response.status}`);
   return response.text();
 }
 
-function commandText(records, topology, survey, outputContract) {
+function commandText(records, project, topology, survey, outputContract) {
   const width = Number(knownWidth?.value);
   const targetStuds = Number(studs?.value) || 48;
   const confirmed = orientationConfirmed();
   const photoLines = records.map((record, index) =>
     `${index + 1}. ${record.file.name} — ${record.label}` +
+    ` — photo_id=${record.photoId || 'UNPERSISTED'}` +
+    ` — PRIMARY_FACE=${record.primaryFace || 'NONE'}` +
+    `${record.detailGroupId ? ` — detail_group_id=${record.detailGroupId}` : ''}` +
     `${record.slotViewIndex > 1 ? ` (vue ${record.slotViewIndex})` : ''}` +
     `${record.note ? ` — note utilisateur: ${record.note}` : ''}` +
     ` — capture_role=${record.captureRole} — orientation_authority=${record.orientationAuthority}`
@@ -93,7 +140,7 @@ function commandText(records, topology, survey, outputContract) {
     ? 'Les orientations Avant / Droite / Gauche / Arrière ont été confirmées par l’utilisateur et sont des contraintes fortes. Les groupes targeted_detail n’ont aucune façade implicite.'
     : 'Les libellés des quatre cases de façade sont des indices de capture seulement. Vérifie-les par recoupement multi-vues. Les groupes targeted_detail n’ont aucune façade implicite.';
 
-  return `BRICKHOUSE — HANDOFF PHOTOS -> SURVEY\nHANDOFF_VERSION=${PDF_HANDOFF_VERSION}\n\nOBJECTIF UNIQUE\nAnalyse les pages photo de CE PDF, exécute la topologie comme raisonnement intermédiaire, puis produis UNIQUEMENT un ArchitecturalSurvey v0.1 complet. NE CONSTRUIS PAS DE SCENE dans ce tour. La Scene sera reconstruite seulement après validation du Survey par Boldungo.\n\nINTERDIT\n- ne demande aucune confirmation ni information supplémentaire ;\n- ne produis ni Scene, ni BuildingModel, ni LEGO ;\n- ne réponds pas par une synthèse ;\n- ne complète jamais une zone cachée par plausibilité ;\n- ne transforme jamais un groupe targeted_detail en façade pour satisfaire un schéma ;\n- ne transforme jamais la maison benchmark en règle générale.\n\n${orientationRule}\n\nPHOTOS, DANS L’ORDRE DU PDF\n${photoLines}\n\nFAITS UTILISATEUR\n- largeur réelle de façade avant: ${Number.isFinite(width) && width > 0 ? `${width} m` : 'inconnue'}\n- largeur cible future de maquette: ${targetStuds} tenons (information de contexte seulement, sans effet sur le Survey)\n- notes: ${notes?.value.trim() || 'aucune'}\n\nSORTIE OBLIGATOIRE\nCrée un fichier téléchargeable nommé exactement brickhouse-survey-result.json. Le fichier doit contenir DIRECTEMENT l’objet ArchitecturalSurvey v0.1 à la racine. La première clé doit être schema_version. INTERDIT: {\"ArchitecturalSurvey\":{...}}, {\"survey\":{...}}, physical_objects, Scene ou autre wrapper.\n\nAUDIT DE CONTRAT OBLIGATOIRE AVANT SORTIE\n- schema_version vaut exactement \"0.1\" ;\n- id et name sont présents et non vides ;\n- canonical_frame est présent ;\n- photos est non vide ;\n- pour une photo capture_role=facade_view : facade vaut front|rear|left|right et image_left_maps_to_facade_offset vaut low|high ;\n- pour une photo capture_role=targeted_detail : facade=null et image_left_maps_to_facade_offset=null ; conserve user_note lorsqu’il est fourni ;\n- ne fabrique jamais une façade pour une vue de dessous, dessus, terrasse, toiture ou autre détail local ;\n- observations et relations sont des tableaux ;\n- toute observation opening représente un seul objet physique et possède attributes.physical_object_count=1 ;\n- attributes.semantic_type, s’il est présent, vaut uniquement window, door, door_or_glazed_door, glazed_door_or_large_glazed_opening ou garage_door ; sinon OMETS semantic_type ; n’écris jamais semantic_type:\"opening\" ;\n- chaque relation contient id, kind, subject_id, object_id, certainty, statement et evidence ;\n- chaque relation référence deux IDs d’observations existantes ;\n- known_measurements transporte la largeur utilisateur seulement au format du contrat ;\n- JSON valide, sans commentaire ni texte avant/après.\n\nIMPORTANT — FORME AVANT CONTENU\nLe squelette JSON canonique ci-dessous est l’autorité structurelle la plus directe. Copie sa FORME, jamais ses faits d’exemple. Il interdit explicitement le wrapper ArchitecturalSurvey, physical_objects et les anciennes formes de photos/mesures observées lors du premier essai réel en conversation neutre.\n\n================ SQUELETTE JSON CANONIQUE — COPIER LA FORME, PAS LES FAITS ================\n${outputContract}\n\n================ TOPOLOGIE — RAISONNEMENT INTERMÉDIAIRE ================\n${topology}\n\n================ ARCHITECTURAL SURVEY — CONTRAT AUTORITATIF ================\n${survey}\n\nAUDIT FINAL IMMÉDIAT AVANT FICHIER\n- la racine commence par schema_version et ne contient aucun wrapper ;\n- aucune clé physical_objects n’existe nulle part ;\n- canonical_frame.x_direction = \"front_view_left_to_right\" ;\n- photos[] possède description + source ;\n- known_measurements[] utilise kind/value/units/source ;\n- chaque objet physique est une observation ;\n- notes est string ou null ;\n- JSON valide, aucun texte avant/après.\n\nLa réponse finale du chat doit seulement annoncer ou joindre brickhouse-survey-result.json.`;
+  return `BRICKHOUSE — HANDOFF PHOTOS -> SURVEY\nHANDOFF_VERSION=${PDF_HANDOFF_VERSION}\n\nOBJECTIF UNIQUE\nAnalyse les pages photo de CE PDF, exécute la topologie comme raisonnement intermédiaire, puis produis UNIQUEMENT un ArchitecturalSurvey v0.1 complet. NE CONSTRUIS PAS DE SCENE dans ce tour. La Scene sera reconstruite seulement après validation du Survey par Boldungo.\n\nINTERDIT\n- ne demande aucune confirmation ni information supplémentaire ;\n- ne produis ni Scene, ni BuildingModel, ni LEGO ;\n- ne réponds pas par une synthèse ;\n- ne complète jamais une zone cachée par plausibilité ;\n- ne transforme jamais un groupe targeted_detail en façade pour satisfaire un schéma ;\n- ne transforme jamais la maison benchmark en règle générale.\n\n${orientationRule}\n\nPHOTOS, DANS L’ORDRE DU PDF\n${photoLines}\n\nFAITS UTILISATEUR\n- project_id: ${project?.project_id || 'non_persisté'}\n- nom du projet: ${project?.project_name || 'Ma maison'}\n- ville (CITY = CONTEXTUAL_PRIOR, jamais preuve architecturale): ${project?.city || 'non renseignée'}\n- largeur réelle de façade avant: ${Number.isFinite(width) && width > 0 ? `${width} m` : 'inconnue'}\n- largeur cible future de maquette: ${targetStuds} tenons (information de contexte seulement, sans effet sur le Survey)\n- notes: ${project?.general_notes || notes?.value.trim() || 'aucune'}\n\nRÈGLE VILLE\nCITY != ARCHITECTURAL_EVIDENCE. La ville peut aider à poser de meilleures questions mais ne permet jamais de décréter un matériau, un toit ou une géométrie contrairement aux photos.\n\nSORTIE OBLIGATOIRE\nCrée un fichier téléchargeable nommé exactement brickhouse-survey-result.json. Le fichier doit contenir DIRECTEMENT l’objet ArchitecturalSurvey v0.1 à la racine. La première clé doit être schema_version. INTERDIT: {\"ArchitecturalSurvey\":{...}}, {\"survey\":{...}}, physical_objects, Scene ou autre wrapper.\n\nAUDIT DE CONTRAT OBLIGATOIRE AVANT SORTIE\n- schema_version vaut exactement \"0.1\" ;\n- id et name sont présents et non vides ;\n- canonical_frame est présent ;\n- photos est non vide ;\n- pour une photo capture_role=facade_view : facade vaut front|rear|left|right et image_left_maps_to_facade_offset vaut low|high ;\n- pour une photo capture_role=targeted_detail : facade=null et image_left_maps_to_facade_offset=null ; conserve user_note lorsqu’il est fourni ;\n- ne fabrique jamais une façade pour une vue de dessous, dessus, terrasse, toiture ou autre détail local ;\n- observations et relations sont des tableaux ;\n- toute observation opening représente un seul objet physique et possède attributes.physical_object_count=1 ;\n- attributes.semantic_type, s’il est présent, vaut uniquement window, door, door_or_glazed_door, glazed_door_or_large_glazed_opening ou garage_door ; sinon OMETS semantic_type ; n’écris jamais semantic_type:\"opening\" ;\n- chaque relation contient id, kind, subject_id, object_id, certainty, statement et evidence ;\n- chaque relation référence deux IDs d’observations existantes ;\n- known_measurements transporte la largeur utilisateur seulement au format du contrat ;\n- JSON valide, sans commentaire ni texte avant/après.\n\nIMPORTANT — FORME AVANT CONTENU\nLe squelette JSON canonique ci-dessous est l’autorité structurelle la plus directe. Copie sa FORME, jamais ses faits d’exemple. Il interdit explicitement le wrapper ArchitecturalSurvey, physical_objects et les anciennes formes de photos/mesures observées lors du premier essai réel en conversation neutre.\n\n================ SQUELETTE JSON CANONIQUE — COPIER LA FORME, PAS LES FAITS ================\n${outputContract}\n\n================ TOPOLOGIE — RAISONNEMENT INTERMÉDIAIRE ================\n${topology}\n\n================ ARCHITECTURAL SURVEY — CONTRAT AUTORITATIF ================\n${survey}\n\nAUDIT FINAL IMMÉDIAT AVANT FICHIER\n- la racine commence par schema_version et ne contient aucun wrapper ;\n- aucune clé physical_objects n’existe nulle part ;\n- canonical_frame.x_direction = \"front_view_left_to_right\" ;\n- photos[] possède description + source ;\n- known_measurements[] utilise kind/value/units/source ;\n- chaque objet physique est une observation ;\n- notes est string ou null ;\n- JSON valide, aucun texte avant/après.\n\nLa réponse finale du chat doit seulement annoncer ou joindre brickhouse-survey-result.json.`;
 }
 
 function ascii(text) {
@@ -219,10 +266,10 @@ async function makePhotoPage(record, index) {
   try {
     ctx.fillStyle = '#111';
     ctx.font = 'bold 23px sans-serif';
-    ctx.fillText(`PHOTO ${index + 1} — ${ascii(record.label)}`, MARGIN, 42);
+    ctx.fillText(`PHOTO ${index + 1} — ${ascii(record.photoId || 'UNPERSISTED')} — ${ascii(record.label)}`, MARGIN, 42);
     ctx.font = '16px sans-serif';
     ctx.fillText(ascii(record.file.name), MARGIN, 76);
-    ctx.fillText(`capture_role=${record.captureRole} · orientation_authority=${record.orientationAuthority}`, MARGIN, 102);
+    ctx.fillText(`PRIMARY_FACE=${record.primaryFace || 'NONE'} · capture_role=${record.captureRole} · orientation_authority=${record.orientationAuthority}`, MARGIN, 102);
     if (record.note) ctx.fillText(`note: ${ascii(record.note).slice(0, 100)}`, MARGIN, 128);
     const top = 164;
     const maxW = PAGE_W - MARGIN * 2;
@@ -336,7 +383,7 @@ function downloadBlob(blob, filename) {
 button?.addEventListener('click', async event => {
   event.preventDefault();
   event.stopImmediatePropagation();
-  const records = photoRecords();
+  const { records, project } = await photoRecords();
   if (!records.length) {
     if (status) status.textContent = `Handoff ${PDF_HANDOFF_VERSION} · Ajoutez au moins une photo.`;
     return;
@@ -352,7 +399,7 @@ button?.addEventListener('click', async event => {
       fetchText('./brickhouse-survey-prompt.txt'),
       fetchText('./brickhouse-survey-output-contract.txt'),
     ]);
-    const pages = makeTextPages(commandText(records, topology, survey, outputContract));
+    const pages = makeTextPages(commandText(records, project, topology, survey, outputContract));
     const textPageCount = pages.length;
     for (let index = 0; index < records.length; index += 1) {
       if (status) status.textContent = `Handoff ${PDF_HANDOFF_VERSION} · Encodage photo ${index + 1}/${records.length}…`;

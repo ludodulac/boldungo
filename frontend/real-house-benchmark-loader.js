@@ -76,6 +76,28 @@ async function loadAcceptedSurveyCheckpoint() {
   return true;
 }
 
+async function waitForProjectIntakeReady() {
+  if (document.documentElement.dataset.projectPhotoIntakeReady === 'true') return;
+  await new Promise((resolve, reject) => {
+    const timeout = setTimeout(
+      () => reject(new Error('project photo intake initialization timeout')),
+      10000,
+    );
+    window.addEventListener('boldungo:project-photo-intake-ready', () => {
+      clearTimeout(timeout);
+      resolve();
+    }, { once: true });
+  });
+}
+
+function enableBenchmarkFixtureInputs() {
+  document.body.dataset.benchmarkFixtureContext = BENCHMARK_ID;
+  for (const mapping of SLOT_MAPPING.values()) {
+    const input = inputFor(mapping.slot, mapping.detail);
+    if (input) input.disabled = false;
+  }
+}
+
 async function preloadBenchmark() {
   if (requestedBenchmark() !== BENCHMARK_ID) return;
 
@@ -84,6 +106,11 @@ async function preloadBenchmark() {
   if (status) status.textContent = `Chargement du benchmark ${BENCHMARK_ID}…`;
 
   try {
+    // 080C: benchmark fixture context is technical and deliberately bypasses
+    // USER_PROJECT_CREATION. It never creates or names a user project.
+    await waitForProjectIntakeReady();
+    enableBenchmarkFixtureInputs();
+
     const manifestResponse = await fetch(MANIFEST_URL, { cache: 'no-store' });
     if (!manifestResponse.ok) throw new Error(`manifest: HTTP ${manifestResponse.status}`);
     const manifest = await manifestResponse.json();
