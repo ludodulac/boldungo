@@ -125,9 +125,8 @@ def main():
         )
 
         lab = page.locator("#clarification-lab")
-        assert lab.is_visible()
+        assert lab.is_hidden()
         assert page.locator("#project-picker option").count() == 0
-        assert "Aucun projet actif" in page.locator("#clarification-project").text_content()
         assert lab.get_attribute("data-project-id") in (None, "")
 
         # Explicit user project creation: LAB must never fabricate one.
@@ -141,6 +140,7 @@ def main():
             timeout=10000,
         )
         wait_clarification_saved(page)
+        assert lab.is_visible()
         assert lab.get_attribute("data-fixture-id") == "real-house-5-081"
         assert lab.get_attribute("data-current-clarification-id") == "A01_TARGET_BOUNDARY"
         assert page.locator("#clarification-gate").get_attribute("data-gate") == "BLOCKED"
