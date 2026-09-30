@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+import json
 from pathlib import Path
 import shutil
 import threading
@@ -73,6 +74,101 @@ def set_hidden_value(page, selector, value):
     )
 
 
+def collect_first_photo_save_diagnostic(page, runtime_errors, console_errors):
+    diagnostic = page.evaluate(
+        """async () => {
+          const slotState = (slotName, inputSelector) => {
+            const slot = document.querySelector(`[data-slot="${slotName}"]`);
+            const input = slot?.querySelector(inputSelector) || null;
+            return {
+              input_files_length: input?.files?.length ?? null,
+              dom_persisted_ids: slot
+                ? [...slot.querySelectorAll('.persisted-photo-item')].map(node => node.dataset.photoId)
+                : [],
+              selected_preview_count: slot?.querySelectorAll('.selected-photo-preview').length ?? 0,
+            };
+          };
+
+          const idbSnapshot = async () => {
+            try {
+              const database = await new Promise((resolve, reject) => {
+                const request = indexedDB.open('boldungo-project-photo-intake');
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error || new Error('IndexedDB open failed'));
+              });
+
+              const readAll = storeName => new Promise((resolve, reject) => {
+                const transaction = database.transaction(storeName, 'readonly');
+                const request = transaction.objectStore(storeName).getAll();
+                request.onsuccess = () => resolve(request.result || []);
+                request.onerror = () => reject(request.error || new Error(`IndexedDB read failed: ${storeName}`));
+              });
+
+              const [projects, photos, settings] = await Promise.all([
+                readAll('projects'),
+                readAll('photos_v2'),
+                readAll('settings'),
+              ]);
+              database.close();
+
+              return {
+                PROJECT_RECORDS: projects.map(project => ({
+                  project_id: project.project_id,
+                  project_name: project.project_name,
+                  photo_id_counters: project.photo_id_counters,
+                })),
+                PHOTO_RECORDS: photos.map(photo => ({
+                  project_id: photo.project_id,
+                  photo_id: photo.photo_id,
+                  primary_face: photo.primary_face,
+                  detail_group_id: photo.detail_group_id,
+                  original_filename: photo.original_filename,
+                  capture_order: photo.capture_order,
+                })),
+                SETTINGS_RECORDS: settings,
+              };
+            } catch (error) {
+              return {
+                PROJECT_RECORDS: [],
+                PHOTO_RECORDS: [],
+                SETTINGS_RECORDS: [],
+                INDEXEDDB_DIAGNOSTIC_ERROR: String(error?.stack || error),
+              };
+            }
+          };
+
+          const front = slotState('front', '.guided-photo-input');
+          const left = slotState('left', '.guided-photo-input');
+          const detail1 = slotState('detail_1', '.detail-photo-input');
+          const indexedDb = await idbSnapshot();
+
+          return {
+            PROJECT_SAVE_STATUS: document.querySelector('#project-save-status')?.textContent?.trim() ?? null,
+            PROJECT_NAME_FIELD: document.querySelector('#project-name')?.value ?? null,
+            PROJECT_PICKER_VALUE: document.querySelector('#project-picker')?.value ?? null,
+            PROJECT_PICKER_OPTIONS: [...document.querySelectorAll('#project-picker option')].map(option => ({
+              value: option.value,
+              text: option.textContent,
+            })),
+            WINDOW_SAVE_PROMISE_PRESENT: Boolean(window.boldungoProjectPhotoSavePromise),
+            FRONT_INPUT_FILES_LENGTH: front.input_files_length,
+            LEFT_INPUT_FILES_LENGTH: left.input_files_length,
+            DETAIL_1_INPUT_FILES_LENGTH: detail1.input_files_length,
+            FRONT_DOM_PERSISTED_IDS: front.dom_persisted_ids,
+            LEFT_DOM_PERSISTED_IDS: left.dom_persisted_ids,
+            DETAIL_1_DOM_PERSISTED_IDS: detail1.dom_persisted_ids,
+            FRONT_SELECTED_PREVIEW_COUNT: front.selected_preview_count,
+            LEFT_SELECTED_PREVIEW_COUNT: left.selected_preview_count,
+            DETAIL_1_SELECTED_PREVIEW_COUNT: detail1.selected_preview_count,
+            ...indexedDb,
+          };
+        }"""
+    )
+    diagnostic["PAGE_ERRORS"] = list(runtime_errors)
+    diagnostic["CONSOLE_ERRORS"] = list(console_errors)
+    return diagnostic
+
+
 def main():
     for image in IMAGES:
         assert image.exists(), image
@@ -86,8 +182,15 @@ def main():
         context = browser.new_context(viewport={"width": 390, "height": 844}, accept_downloads=True)
         page = context.new_page()
         runtime_errors = []
+        console_errors = []
         failed_requests = []
         page.on("pageerror", lambda error: runtime_errors.append(f"pageerror: {error}"))
+        page.on(
+            "console",
+            lambda message: console_errors.append(message.text)
+            if message.type == "error"
+            else None,
+        )
         page.on(
             "requestfailed",
             lambda request: failed_requests.append(
@@ -177,6 +280,22 @@ def main():
         )
         page.locator('[data-slot="detail_1"] .detail-photo-input').set_input_files(str(IMAGES[3]))
         wait_saved(page)
+
+        first_photo_ids = {
+            "front": ids_for(page, "front"),
+            "left": ids_for(page, "left"),
+            "detail_1": ids_for(page, "detail_1"),
+        }
+        if first_photo_ids != {
+            "front": ["FRONT_001"],
+            "left": ["LEFT_001", "LEFT_002"],
+            "detail_1": ["DETAIL_001"],
+        }:
+            diagnostic = collect_first_photo_save_diagnostic(
+                page, runtime_errors, console_errors
+            )
+            print("BOLDUNGO_080G_RUNTIME_DIAGNOSTIC")
+            print(json.dumps(diagnostic, indent=2, sort_keys=True))
 
         assert ids_for(page, "front") == ["FRONT_001"]
         assert ids_for(page, "left") == ["LEFT_001", "LEFT_002"]
