@@ -1,0 +1,82 @@
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+FRONTEND = ROOT / "frontend"
+
+
+def read(name: str) -> str:
+    return (FRONTEND / name).read_text(encoding="utf-8")
+
+
+def test_project_schema_v1_uses_indexeddb_for_binary_photo_records() -> None:
+    store = read("project-photo-store.js")
+    assert "PROJECT_SCHEMA_VERSION = 1" in store
+    assert "indexedDB.open" in store
+    assert "const STORE_PROJECTS = 'projects'" in store
+    assert "const STORE_PHOTOS = 'photos'" in store
+    assert "const STORE_SETTINGS = 'settings'" in store
+    assert "blob: file" in store
+    assert "localStorage" not in store
+    assert "clarifications: []" in store
+    assert "human_facts: []" in store
+
+
+def test_canonical_photo_ids_are_monotonic_and_not_reassigned_on_delete() -> None:
+    store = read("project-photo-store.js")
+    assert "photo_id_counters" in store
+    assert "counters[counterKey] += 1" in store
+    assert "padStart(3, '0')" in store
+    assert "const prefix = normalizedFace ? FACE_PREFIX[normalizedFace] : 'DETAIL'" in store
+    delete_body = store.split("export async function deleteProjectPhoto", 1)[1].split(
+        "export async function updateGroupNote", 1
+    )[0]
+    assert "photoStore.delete(photoId)" in delete_body
+    assert "photo_id_counters" not in delete_body
+
+
+def test_photo_page_exposes_project_city_privacy_and_three_quarter_policy() -> None:
+    html = read("photo.html")
+    assert 'id="project-picker"' in html
+    assert 'id="new-project"' in html
+    assert 'id="project-name"' in html
+    assert 'id="city"' in html
+    assert "Ville de la maison — facultatif" in html
+    assert "La ville peut aider l’analyse à poser de meilleures questions" in html
+    assert "conservées localement dans ce navigateur sur cet appareil" in html
+    assert "ne sont pas envoyées à BOLDÜNGO simplement parce qu’elles sont enregistrées ici" in html
+    assert "vue de trois-quarts" in html
+    assert "PRIMARY_FACE" in html
+    assert 'id="project-save-status"' in html
+
+
+def test_capture_runtime_restores_persisted_photos_without_repopulating_file_inputs() -> None:
+    runtime = read("photo-capture-runtime.js")
+    assert "getActiveProjectSnapshot" in runtime
+    assert "renderPersistedSlot" in runtime
+    assert "persisted-photo-preview" in runtime
+    assert "deleteProjectPhoto" in runtime
+    assert "MAX_PHOTOS_PER_GROUP" in runtime
+    assert "Enregistré sur cet appareil" in runtime
+    assert "Erreur de sauvegarde" in runtime
+    assert ".files =" in runtime
+    assert "guided-photo-input" in runtime
+    assert "input.files =" not in runtime
+
+
+def test_pdf_handoff_prefers_indexeddb_project_and_emits_canonical_metadata() -> None:
+    pdf = read("brickhouse-survey-hybrid-pdf.js")
+    assert "getActiveProjectSnapshot" in pdf
+    assert "photoRecordToFile" in pdf
+    assert "indexeddb_project" in pdf
+    assert "photo_id=" in pdf
+    assert "PRIMARY_FACE=" in pdf
+    assert "CITY = CONTEXTUAL_PRIOR" in pdf
+    assert "CITY != ARCHITECTURAL_EVIDENCE" in pdf
+    assert "project?.general_notes" in pdf
+
+
+def test_080_browser_proof_is_wired_into_existing_ci_instead_of_parallel_infra() -> None:
+    workflow = (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    assert "python tests/browser_project_photo_intake_080.py" in workflow
+    assert "node --check frontend/project-photo-store.js" in workflow

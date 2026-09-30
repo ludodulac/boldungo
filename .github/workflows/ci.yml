@@ -31,6 +31,8 @@ jobs:
 
       - name: Prove returning benchmark browser stays responsive
         run: python tests/browser_bh231_returning_benchmark.py
+      - name: Prove project photo intake survives reload
+        run: python tests/browser_project_photo_intake_080.py
 
       - name: Run geometry engine tests
         run: pytest -q lego_geometry_engine/tests
@@ -45,6 +47,9 @@ jobs:
           node --check frontend/photo-simple.js
           node --check frontend/photo-shell-loader.js
           node --check frontend/photo-shell.js
+          node --check frontend/project-photo-store.js
+          node --check frontend/photo-capture-runtime.js
+          node --check frontend/brickhouse-survey-hybrid-pdf.js
           node --check frontend/brickhouse-single-package.js
           node --check frontend/brickhouse-survey-package.js
           node --check frontend/external-bundle-import.js

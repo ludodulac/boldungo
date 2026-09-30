@@ -17,13 +17,27 @@
       <section class="simple-card">
         <div class="simple-heading"><div><h2>1. Ajouter les vues générales</h2><p>Quatre orientations simples : avant, droite, gauche et arrière. Chaque orientation accepte jusqu’à 4 photos prises depuis des positions différentes.</p></div><span class="step-badge">4 orientations</span></div>
         <div id="guided-photo-grid" class="guided-photo-grid">
+          <section class="project-intake-card" aria-label="Projet maison">
+            <div class="project-intake-heading">
+              <div><strong>Projet maison</strong><small>Vos informations et photos sont enregistrées automatiquement sur cet appareil.</small></div>
+              <span id="project-save-status" class="project-save-status" role="status" aria-live="polite">Enregistrement…</span>
+            </div>
+            <div class="project-open-row">
+              <label for="project-picker">Ouvrir un projet</label>
+              <div class="project-open-controls"><select id="project-picker" aria-label="Projet actif"></select><button id="new-project" type="button">Nouveau projet</button></div>
+            </div>
+            <div class="project-fields">
+              <div class="field"><label for="project-name">Nom du projet</label><input id="project-name" type="text" maxlength="120" placeholder="Ex. Maison familiale" autocomplete="off" /></div>
+              <div class="field"><label for="city">Ville de la maison — facultatif</label><input id="city" type="text" maxlength="120" placeholder="Ex. Brest, Nantes, Lorient" autocomplete="address-level2" /><small>La ville peut aider l’analyse à poser de meilleures questions. Elle ne remplace jamais ce que montrent vos photos.</small></div>
+            </div>
+          </section>
           <label class="guided-photo-slot" data-slot="front" data-label="Façade avant"><strong>Façade avant</strong><span>1 à 4 vues de face ou presque</span><input class="guided-photo-input" type="file" accept="image/jpeg,image/png,image/webp" multiple /><small class="guided-photo-name">Aucune photo</small><textarea class="guided-photo-note" rows="2" placeholder="Précision facultative sur cette orientation…"></textarea></label>
           <label class="guided-photo-slot" data-slot="right" data-label="Côté droit"><strong>Côté droit</strong><span>1 à 4 vues du côté droit</span><input class="guided-photo-input" type="file" accept="image/jpeg,image/png,image/webp" multiple /><small class="guided-photo-name">Aucune photo</small><textarea class="guided-photo-note" rows="2" placeholder="Précision facultative sur cette orientation…"></textarea></label>
           <label class="guided-photo-slot" data-slot="left" data-label="Côté gauche"><strong>Côté gauche</strong><span>1 à 4 vues du côté gauche</span><input class="guided-photo-input" type="file" accept="image/jpeg,image/png,image/webp" multiple /><small class="guided-photo-name">Aucune photo</small><textarea class="guided-photo-note" rows="2" placeholder="Précision facultative sur cette orientation…"></textarea></label>
           <label class="guided-photo-slot" data-slot="rear" data-label="Arrière"><strong>Arrière</strong><span>1 à 4 vues arrière, même partielles</span><input class="guided-photo-input" type="file" accept="image/jpeg,image/png,image/webp" multiple /><small class="guided-photo-name">Aucune photo</small><textarea class="guided-photo-note" rows="2" placeholder="Précision facultative sur cette orientation…"></textarea></label>
         </div>
-        <p class="microcopy">Les intitulés des cases principales sont des repères de capture tant que vous ne confirmez pas leur orientation. Si une orientation manque, laissez-la vide : l’IA doit conserver ce manque comme incertitude et ne pas inventer la géométrie invisible.</p>
-        <p class="microcopy" id="photo-persistence-note"><strong>Confidentialité et sauvegarde :</strong> vos photos restent dans cette page du navigateur et sont intégrées au PDF lorsque vous le créez. Elles ne sont pas sauvegardées par Boldungo et seront perdues si vous rechargez la page. En mode benchmark, les 5 photos de test peuvent être rechargées automatiquement depuis les fixtures GitHub.</p>
+        <p class="microcopy">Le classement manuel définit uniquement la <strong>face principale (PRIMARY_FACE)</strong> de la photo. Une vue de trois-quarts peut montrer plusieurs faces : gardez-la une seule fois dans son orientation principale, sans la dupliquer. Si une orientation manque, laissez-la vide : l’analyse doit conserver ce manque comme incertitude.</p>
+        <p class="microcopy" id="photo-persistence-note"><strong>Confidentialité et sauvegarde :</strong> Les photos de ce projet sont conservées localement dans ce navigateur sur cet appareil. Elles ne sont pas envoyées à BOLDÜNGO simplement parce qu’elles sont enregistrées ici. Elles peuvent être perdues si vous effacez les données du navigateur ou changez d’appareil.</p>
       </section>
 
       <section class="simple-card">
