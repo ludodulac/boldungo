@@ -1,0 +1,48 @@
+name: Generate MODULE 005 relational corrections 077
+
+on:
+  push:
+    branches:
+      - feat/module-005-coarse-openings-072
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install project
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine[dev]"
+
+      - name: Generate MODULE 005 077 combined viewer bundle
+        run: python scripts/build_module_005_openings.py
+
+      - name: Run MODULE 005 077 targeted tests
+        run: pytest -q tests/test_module_005_openings_072.py
+
+      - name: Commit deterministic generated bundle
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add frontend/module-001-plus-module-002-plus-module-003-plus-module-004-plus-module-005-export.json
+          if git diff --cached --quiet; then
+            echo "Generated bundle already current."
+            exit 0
+          fi
+          git commit -m "077: regenerate MODULE005 relational corrections"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

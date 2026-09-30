@@ -1,0 +1,51 @@
+{
+  "schema": "boldungo.module005.coarse_openings.v1",
+  "mission": "BOLDUNGO-072-MODULE005-COARSE-LEGO-OPENINGS",
+  "source_analysis": {
+    "opening_map": "BOLDUNGO-070-MODULE005-OPENINGS-BLIND-MAP",
+    "relative_geometry": "BOLDUNGO-071-MODULE005-RELATIVE-OPENING-GEOMETRY",
+    "minimum_distinct_openings": 12,
+    "ambiguous_candidate_b10": "NOT_CONSTRUCTED"
+  },
+  "face_mapping": {
+    "FACE_A": "front",
+    "FACE_B": "right",
+    "FACE_C": "left"
+  },
+  "existing_capability": {
+    "mechanism": "brickhouse.bricks.placement.generate_wall_layout_with_openings",
+    "representation": "true negative-space wall retile",
+    "engine_change_required": false
+  },
+  "constraint_policy": [
+    "RELATIVE-GEOMETRY-BEFORE-BRICK-COORDINATES",
+    "RANGE-BEFORE-POINT-ESTIMATE",
+    "ARCHITECTURAL-LEVEL-BEFORE-GROUND-DISTANCE",
+    "OCCLUSION-DOES-NOT-SHRINK-OPENING",
+    "ALIGNMENT-MUST-BE-TESTED-NOT-ASSUMED",
+    "CENTERLINE-CAN-PERSIST-WHILE-WIDTH-FAMILY-CHANGES",
+    "VISIBLE-EDGE-IS-NOT-NECESSARILY-ARCHITECTURAL-EDGE",
+    "CONSTRAINT-NETWORK-BEFORE-INDEPENDENT-PLACEMENT"
+  ],
+  "face_a": {
+    "left_centerline": ["OPENING_001", "OPENING_003", "OPENING_005"],
+    "right_centerline": ["OPENING_002", "OPENING_004", "OPENING_006"],
+    "low_width_relation": "OPENING_005 narrower; OPENING_006 wider"
+  },
+  "face_b": {
+    "upper_level": ["OPENING_007", "OPENING_008"],
+    "low_opening": "OPENING_009",
+    "ground_slope_rule": "GROUND_SLOPE != OPENING_LEVEL"
+  },
+  "face_c": {
+    "OPENING_011": "BOTTOM_AND_ACTUAL_HEIGHT_NOT_OBSERVABLE_GRID_RECTANGLE_CONSTRUCTIVE_APPROXIMATION",
+    "OPENING_012": "VISIBLE_OCCLUDER_NOT_CERTIFIED_SILL_GRID_BOTTOM_CONSTRUCTIVE_APPROXIMATION"
+  },
+  "negative_space": "OPENINGS_MUST_REMOVE_WALL_MATERIAL_NOT_USE_DECORATIVE_DARK_OVERLAYS",
+  "preservation": {
+    "MODULE001_OUTSIDE_OPENINGS": "PRESERVE_OCCUPIED_GEOMETRY",
+    "MODULE002": "UNCHANGED",
+    "MODULE003": "UNCHANGED",
+    "MODULE004": "UNCHANGED"
+  }
+}
