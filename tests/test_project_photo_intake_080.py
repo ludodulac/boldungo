@@ -119,3 +119,14 @@ def test_legacy_auto_project_requires_naming_without_losing_existing_record() ->
     assert "showProjectCreation('legacy')" in runtime
     assert "projectCreationMode === 'legacy'" in runtime
     assert "name_confirmed: true" in runtime
+
+
+def test_benchmark_fixture_context_is_separate_from_user_project_creation() -> None:
+    loader = read("real-house-benchmark-loader.js")
+    runtime = read("photo-capture-runtime.js")
+    assert "waitForProjectIntakeReady" in loader
+    assert "enableBenchmarkFixtureInputs" in loader
+    assert "benchmarkFixtureContext" in loader
+    assert "USER_PROJECT_CREATION" in loader
+    assert "createProject(" not in loader
+    assert "createProject('Ma maison')" not in runtime
