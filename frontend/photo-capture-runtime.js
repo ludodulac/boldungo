@@ -73,11 +73,11 @@ function ensureOrientationControl() {
   control = document.createElement('div');
   control.id = 'orientation-confirmation-field';
   control.className = 'field orientation-confirmation-field';
-  control.innerHTML = \`
+  control.innerHTML = `
     <label class="orientation-confirmation-label">
       <input id="confirm-guided-orientations" type="checkbox" />
       <span><strong>J’ai vérifié le classement principal de mes vues</strong><br><small>Une vue trois-quarts reste classée une seule fois selon sa face principale. Elle peut montrer d’autres faces sans être dupliquée.</small></span>
-    </label>\`;
+    </label>`;
   grid.insertAdjacentElement('afterend', control);
   return control;
 }
@@ -149,7 +149,7 @@ function renderPersistedSlot(slot, inputSelector, nameSelector) {
 
     const image = document.createElement('img');
     image.className = 'persisted-photo-preview';
-    image.alt = \`\${photo.photo_id} — \${photo.original_filename}\`;
+    image.alt = `\${photo.photo_id} — \${photo.original_filename}`;
     const url = URL.createObjectURL(photo.blob);
     urls.push(url);
     image.src = url;
@@ -167,7 +167,7 @@ function renderPersistedSlot(slot, inputSelector, nameSelector) {
     remove.className = 'persisted-photo-remove';
     remove.dataset.deletePhotoId = photo.photo_id;
     remove.textContent = 'Retirer';
-    remove.setAttribute('aria-label', \`Retirer \${photo.photo_id}\`);
+    remove.setAttribute('aria-label', `Retirer \${photo.photo_id}`);
 
     item.append(image, meta, remove);
     list.appendChild(item);
@@ -176,8 +176,8 @@ function renderPersistedSlot(slot, inputSelector, nameSelector) {
 
   if (name) {
     if (!records.length) name.textContent = 'Aucune photo enregistrée';
-    else if (records.length === 1) name.textContent = \`\${records[0].photo_id} enregistrée\`;
-    else name.textContent = \`\${records.length} photos enregistrées\`;
+    else if (records.length === 1) name.textContent = `\${records[0].photo_id} enregistrée`;
+    else name.textContent = `\${records.length} photos enregistrées`;
   }
 }
 
@@ -295,7 +295,7 @@ async function addFilesFromSlot(slot, inputSelector) {
     note,
   });
   if (result.rejected_count && packageStatus) {
-    packageStatus.textContent = \`Maximum \${MAX_PHOTOS_PER_GROUP} photos par orientation/groupe. \${result.rejected_count} photo(s) non ajoutée(s).\`;
+    packageStatus.textContent = `Maximum \${MAX_PHOTOS_PER_GROUP} photos par orientation/groupe. \${result.rejected_count} photo(s) non ajoutée(s).`;
   }
   await reloadActiveProject();
 }
@@ -310,7 +310,7 @@ function bindPhotoSlot(slot, inputSelector) {
   const note = slot.querySelector('.guided-photo-note, .detail-photo-note');
   note?.addEventListener('input', () => {
     const key = groupKeyForSlot(slot);
-    debounceSave(\`note:\${key}\`, async () => {
+    debounceSave(`note:\${key}`, async () => {
       if (!activeProject) return;
       await updateGroupNote(activeProject.project_id, key, note.value);
       const snapshot = await getActiveProjectSnapshot();
@@ -322,7 +322,7 @@ function bindPhotoSlot(slot, inputSelector) {
 
 function bindProjectField(element, field, normalize = value => value) {
   element?.addEventListener('input', () => {
-    debounceSave(\`project:\${field}\`, async () => {
+    debounceSave(`project:\${field}`, async () => {
       if (!activeProject) return;
       activeProject = await updateProject(activeProject.project_id, {
         [field]: normalize(element.value),
