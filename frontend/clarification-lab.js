@@ -251,9 +251,9 @@ function renderGate() {
 
 function render() {
   if (!fixtureMode || !lab) return;
-  lab.hidden = false;
   setError('');
   if (!project) {
+    lab.hidden = true;
     projectEl.textContent = 'Aucun projet actif — créez ou ouvrez un projet. La fixture LAB ne crée jamais de faux projet utilisateur.';
     gateEl.textContent = 'CLARIFICATION : BLOQUÉ';
     gateEl.dataset.gate = 'BLOCKED';
@@ -269,6 +269,7 @@ function render() {
     return;
   }
 
+  lab.hidden = false;
   clarifications = recomputeDependencies(clarifications);
   projectEl.textContent = `Projet : ${project.project_name} · fixture locale real-house-5`;
   renderGate();
@@ -363,7 +364,6 @@ conflictKeepButton?.addEventListener('click', async () => {
 });
 
 if (fixtureMode && lab) {
-  lab.hidden = false;
   window.addEventListener('boldungo:project-photo-intake-ready', syncProject);
   if (document.documentElement.dataset.projectPhotoIntakeReady === 'true') {
     syncProject();
