@@ -101,6 +101,17 @@ function syncTechnicalPhotoInput() {
   technicalPhotos.dispatchEvent(new Event('change', { bubbles: true }));
 }
 
+function consumeTransientPhotoSelection(slot, input) {
+  if (!input) return;
+  input.value = '';
+  const transientPreviews = slot.querySelector(':scope > .selected-photo-previews');
+  if (transientPreviews) {
+    transientPreviews.replaceChildren();
+    transientPreviews.dataset.count = '0';
+  }
+  syncTechnicalPhotoInput();
+}
+
 function clearPreviewUrls(slotKey) {
   for (const url of previewUrls.get(slotKey) || []) URL.revokeObjectURL(url);
   previewUrls.set(slotKey, []);
@@ -297,6 +308,7 @@ async function addFilesFromSlot(slot, inputSelector) {
   if (result.rejected_count && packageStatus) {
     packageStatus.textContent = `Maximum ${MAX_PHOTOS_PER_GROUP} photos par orientation/groupe. ${result.rejected_count} photo(s) non ajoutée(s).`;
   }
+  consumeTransientPhotoSelection(slot, input);
   await reloadActiveProject();
 }
 

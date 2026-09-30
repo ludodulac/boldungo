@@ -301,6 +301,12 @@ def main():
         assert ids_for(page, "left") == ["LEFT_001", "LEFT_002"]
         assert ids_for(page, "detail_1") == ["DETAIL_001"]
         assert page.locator('[data-photo-id="FRONT_001"] small').text_content().strip() == IMAGES[0].name
+        assert page.locator('[data-slot="front"] .guided-photo-input').evaluate("el => el.files.length") == 0
+        assert page.locator('[data-slot="left"] .guided-photo-input').evaluate("el => el.files.length") == 0
+        assert page.locator('[data-slot="detail_1"] .detail-photo-input').evaluate("el => el.files.length") == 0
+        assert page.locator('[data-slot="front"] .selected-photo-preview').count() == 0
+        assert page.locator('[data-slot="left"] .selected-photo-preview').count() == 0
+        assert page.locator('[data-slot="detail_1"] .selected-photo-preview').count() == 0
 
         # Reload: project name, metadata, IDs and photos survive.
         page.reload(wait_until="domcontentloaded", timeout=30000)
@@ -378,9 +384,36 @@ def main():
         assert ids_for(page, "front") == ["FRONT_001"]
         assert page.locator('[data-photo-id="FRONT_001"] small').text_content().strip() == IMAGES[4].name
 
-        # Return to Brest and retain the existing delete/reload stable-ID proof.
+        # Return to Brest and prove persisted deletion fully consumes transient selection state.
         page.locator("#project-picker").select_option(brest_project_id)
         wait_saved(page)
+        assert ids_for(page, "front") == ["FRONT_001"]
+        page.locator('[data-delete-photo-id="FRONT_001"]').click()
+        wait_saved(page)
+        front_slot = page.locator('[data-slot="front"]')
+        assert ids_for(page, "front") == []
+        assert front_slot.locator(".persisted-photo-item").count() == 0
+        assert front_slot.locator(".selected-photo-preview").count() == 0
+        assert front_slot.locator(".guided-photo-name").text_content().strip() == "Aucune photo enregistrée"
+        assert front_slot.locator("img:visible").count() == 0
+        assert front_slot.locator(".guided-photo-input").evaluate("el => el.files.length") == 0
+
+        # Re-add after delete: canonical ID must advance, never reuse FRONT_001.
+        front_slot.locator(".guided-photo-input").set_input_files(str(IMAGES[0]))
+        wait_saved(page)
+        assert ids_for(page, "front") == ["FRONT_002"]
+        assert front_slot.locator(".selected-photo-preview").count() == 0
+        assert front_slot.locator(".guided-photo-input").evaluate("el => el.files.length") == 0
+        page.reload(wait_until="domcontentloaded", timeout=30000)
+        page.wait_for_function(
+            "() => document.documentElement.dataset.projectPhotoIntakeReady === 'true'",
+            timeout=15000,
+        )
+        assert page.locator("#project-name").input_value() == "Maison Brest"
+        assert ids_for(page, "front") == ["FRONT_002"]
+        assert page.locator('[data-photo-id="FRONT_002"] small').text_content().strip() == IMAGES[0].name
+
+        # Retain the existing LEFT delete/reload stable-ID proof.
         assert ids_for(page, "left") == ["LEFT_001", "LEFT_002"]
         page.locator('[data-delete-photo-id="LEFT_001"]').click()
         wait_saved(page)
@@ -423,7 +456,8 @@ def main():
         assert pdf_path
         pdf_bytes = Path(pdf_path).read_bytes()
         assert len(pdf_bytes) > 5000
-        assert b"FRONT_001" in pdf_bytes
+        assert b"FRONT_002" in pdf_bytes
+        assert b"FRONT_001" not in pdf_bytes
         assert b"PRIMARY_FACE=FRONT" in pdf_bytes
         assert b"Maison Brest" in pdf_bytes
         assert b"Brest" in pdf_bytes

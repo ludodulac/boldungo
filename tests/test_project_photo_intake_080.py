@@ -148,3 +148,25 @@ def test_debounced_metadata_and_group_notes_capture_values_before_ui_reload() ->
     assert "const candidate = note.value;" in photo_slot_block
     assert "updateGroupNote(activeProject.project_id, key, candidate)" in photo_slot_block
     assert "updateGroupNote(activeProject.project_id, key, note.value)" not in photo_slot_block
+
+
+def test_persisted_photo_consumes_transient_file_selection_and_preview_state() -> None:
+    runtime = read("photo-capture-runtime.js")
+
+    helper_start = runtime.index("function consumeTransientPhotoSelection")
+    helper_end = runtime.index("function clearPreviewUrls", helper_start)
+    helper_block = runtime[helper_start:helper_end]
+    assert "input.value = '';" in helper_block
+    assert "selected-photo-previews" in helper_block
+    assert "transientPreviews.replaceChildren()" in helper_block
+    assert "transientPreviews.dataset.count = '0'" in helper_block
+    assert "syncTechnicalPhotoInput();" in helper_block
+
+    add_start = runtime.index("async function addFilesFromSlot")
+    add_end = runtime.index("function bindPhotoSlot", add_start)
+    add_block = runtime[add_start:add_end]
+    assert "if (!activeProject) return;" in add_block
+    assert "await addPhotosToProject" in add_block
+    assert "consumeTransientPhotoSelection(slot, input);" in add_block
+    assert add_block.index("await addPhotosToProject") < add_block.index("consumeTransientPhotoSelection(slot, input);")
+    assert add_block.index("consumeTransientPhotoSelection(slot, input);") < add_block.index("await reloadActiveProject();")
