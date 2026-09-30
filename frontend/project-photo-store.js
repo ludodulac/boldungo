@@ -39,7 +39,7 @@ function nowIso() {
 
 function randomId() {
   if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
-  return `\${Date.now().toString(36)}-\${Math.random().toString(36).slice(2)}`;
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
 }
 
 function defaultGroupNotes() {
@@ -67,7 +67,7 @@ export function createProjectRecord(projectName) {
   const timestamp = nowIso();
   return {
     schema_version: PROJECT_SCHEMA_VERSION,
-    project_id: `project_\${randomId()}`,
+    project_id: `project_${randomId()}`,
     project_name: normalizedName,
     city: '',
     known_front_width: null,
@@ -79,7 +79,7 @@ export function createProjectRecord(projectName) {
     group_notes: defaultGroupNotes(),
     detail_groups: DETAIL_GROUP_IDS.map((detail_group_id, index) => ({
       detail_group_id,
-      label: `Détail \${index + 1}`,
+      label: `Détail ${index + 1}`,
     })),
     orientation_confirmed: false,
     name_confirmed: true,
@@ -272,7 +272,7 @@ export async function addPhotosToProject(projectId, {
     counters[counterKey] += 1;
     captureOrder += 1;
     const prefix = normalizedFace ? FACE_PREFIX[normalizedFace] : 'DETAIL';
-    const photoId = `\${prefix}_\${String(counters[counterKey]).padStart(3, '0')}`;
+    const photoId = `${prefix}_${String(counters[counterKey]).padStart(3, '0')}`;
     const record = {
       project_id: projectId,
       photo_id: photoId,
