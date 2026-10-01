@@ -17,7 +17,7 @@ def test_construction_fixture_exposes_real_multiple_steps() -> None:
 
 def test_construction_hud_renders_parts_and_real_plan_counter() -> None:
     source = VIEWER.read_text(encoding="utf-8")
-    assert "depth=9,color=semanticColorValue" in source
+    assert "function constructionPartPreview(part,quantity)" in source
     assert "list.replaceChildren" in source
     assert "constructionPartPreview(row.part,row.quantity)" in source
     assert "counter.textContent=`Étape ${step.sequence} / ${p.total_steps}`" in source
