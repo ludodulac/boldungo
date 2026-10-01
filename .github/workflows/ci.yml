@@ -33,6 +33,8 @@ jobs:
         run: python tests/browser_bh231_returning_benchmark.py
       - name: Prove project photo intake survives reload
         run: python tests/browser_project_photo_intake_080.py
+      - name: Prove clarification lab persistence and isolation
+        run: python tests/browser_clarification_lab_081c.py
 
       - name: Run geometry engine tests
         run: pytest -q lego_geometry_engine/tests
@@ -49,6 +51,8 @@ jobs:
           node --check frontend/photo-shell.js
           node --check frontend/project-photo-store.js
           node --check frontend/photo-capture-runtime.js
+          node --check frontend/clarification-engine.js
+          node --check frontend/clarification-lab.js
           node --check frontend/brickhouse-survey-hybrid-pdf.js
           node --check frontend/brickhouse-single-package.js
           node --check frontend/brickhouse-survey-package.js

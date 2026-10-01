@@ -2,3 +2,24 @@
 .project-intake-card{grid-column:1/-1;border:1px solid #bfdbfe;background:#f8fbff;border-radius:14px;padding:14px;display:grid;gap:12px}.project-intake-heading{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}.project-intake-heading>div{display:grid;gap:3px}.project-intake-heading strong{font-size:15px}.project-intake-heading small{font-size:11px;color:#667085;line-height:1.35}.project-save-status{font-size:11px;font-weight:800;border-radius:999px;padding:6px 9px;background:#ecfdf3;color:#027a48;white-space:nowrap}.project-save-status[data-kind="pending"]{background:#fffaeb;color:#b54708}.project-save-status[data-kind="error"]{background:#fef3f2;color:#b42318}.project-open-row{display:grid;gap:6px}.project-open-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.project-open-controls button{min-height:44px}.project-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.project-fields .field{margin:0}.persisted-photo-list{display:grid;gap:7px;margin-top:4px}.persisted-photo-list:empty{display:none}.persisted-photo-item{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid #d0d5dd;border-radius:10px;padding:6px;background:#fff}.persisted-photo-preview{width:64px;height:52px;object-fit:cover;border-radius:7px;background:#f2f4f7}.persisted-photo-meta{display:grid;gap:2px;min-width:0}.persisted-photo-meta strong{font-size:12px;color:#172033}.persisted-photo-meta small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#667085}.persisted-photo-remove{padding:8px 9px;font-size:11px}.has-persisted-photos>.selected-photo-previews{display:none!important}@media(max-width:620px){.project-intake-heading{display:grid}.project-save-status{justify-self:start}.project-fields{grid-template-columns:1fr}.project-open-controls{grid-template-columns:1fr}.persisted-photo-item{grid-template-columns:56px minmax(0,1fr) auto}.persisted-photo-preview{width:56px;height:48px}.persisted-photo-remove{min-height:42px}}
 
 .project-create-panel{display:grid;gap:10px;border:1px solid #d0d5dd;background:#fff;border-radius:12px;padding:12px}.project-create-panel[hidden]{display:none}.project-create-panel .field{margin:0}.project-create-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.project-create-actions button{min-height:44px}.project-create-error{min-height:1.2em;color:#b42318;font-weight:700}.project-create-error:empty{display:none}.project-intake-card[data-project-mode="first"] #project-save-status{background:#eef2f7;color:#475467}@media(max-width:620px){.project-create-actions{grid-template-columns:1fr}.project-create-actions button{width:100%}}
+
+.clarification-lab-card{border:1px solid #c7d7fe;background:#f8fbff;border-radius:14px;padding:14px;display:grid;gap:10px}
+.clarification-lab-card[hidden]{display:none}
+.clarification-lab-heading{display:grid;gap:8px}
+.clarification-lab-heading .eyebrow{margin:0}
+.clarification-gate{display:inline-flex;align-items:center;justify-content:center;justify-self:start;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:900;background:#fef3f2;color:#b42318}
+.clarification-gate[data-gate="READY"]{background:#ecfdf3;color:#027a48}
+.clarification-project,.clarification-progress{margin:0;color:#667085;font-size:12px;line-height:1.45}
+.clarification-question-card{display:grid;gap:10px;border:1px solid #d0d5dd;background:#fff;border-radius:12px;padding:12px}
+.clarification-question-card>strong{font-size:14px;line-height:1.4;color:#172033}
+.clarification-choices{display:grid;gap:8px}
+.clarification-choice{width:100%;text-align:left;min-height:44px}
+.clarification-text-answer{min-height:44px}
+.clarification-actions{display:grid;gap:8px}
+.clarification-actions button{min-height:44px}
+.clarification-photo-spec,.clarification-conflict,.clarification-unknown-state{margin:0;padding:9px;border-radius:9px;background:#f8fafc;color:#475467;font-size:12px;line-height:1.45}
+.clarification-error{min-height:1.2em;margin:0;color:#b42318;font-size:12px;font-weight:700}
+.clarification-summary-details{border-top:1px solid #e4e7ec;padding-top:8px}
+.clarification-summary{display:grid;gap:5px;margin-top:8px}
+.clarification-summary-row{font-size:11px;color:#475467}
+@media(max-width:620px){.clarification-lab-card{padding:12px}.clarification-actions{grid-template-columns:1fr}.clarification-choice{min-height:46px}}

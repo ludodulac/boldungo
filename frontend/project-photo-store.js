@@ -218,6 +218,21 @@ export async function updateProject(projectId, patch) {
   return updated;
 }
 
+export async function updateProjectClarificationState(projectId, {
+  clarifications = [],
+  humanFacts = [],
+  fixtureId = undefined,
+} = {}) {
+  if (!Array.isArray(clarifications)) throw new Error('clarifications doit être une liste');
+  if (!Array.isArray(humanFacts)) throw new Error('humanFacts doit être une liste');
+  const patch = {
+    clarifications: structuredClone(clarifications),
+    human_facts: structuredClone(humanFacts),
+  };
+  if (fixtureId !== undefined) patch.clarification_fixture_id = fixtureId;
+  return updateProject(projectId, patch);
+}
+
 export async function getProjectPhotos(projectId) {
   const database = await openProjectDb();
   const tx = database.transaction(STORE_PHOTOS, 'readonly');
