@@ -1,0 +1,125 @@
+{
+  "schema_version": "boldungo.exchange.v1",
+  "message_type": "ANALYSIS_RESULT",
+  "project_id": "PROJECT_A",
+  "agent_id": "SOPHIE",
+  "agent_display_name": "Sophie",
+  "round_id": "R001",
+  "package_id": "PKG_550e8400-e29b-41d4-a716-446655440000",
+  "created_at": "2026-10-01T12:00:00Z",
+  "payload": {
+    "analysis": {
+      "observations": [
+        {
+          "observation_id": "O001",
+          "photo_id": "LEFT_001",
+          "region_hint": "partie gauche, près de l'escalier",
+          "observation_text": "Un volume gris maçonné est visible près de l'escalier."
+        },
+        {
+          "observation_id": "O002",
+          "photo_id": "LEFT_001",
+          "region_hint": "partie centrale du volume gris",
+          "observation_text": "Une ouverture rectangulaire est visible dans la surface du volume gris."
+        }
+      ],
+      "human_facts": [],
+      "entities": [
+        {
+          "entity_id": "E001",
+          "entity_type": "VOLUME",
+          "description": "Volume gris maçonné visible près de l'escalier",
+          "observation_refs": ["O001"]
+        },
+        {
+          "entity_id": "E002",
+          "entity_type": "OPENING",
+          "description": "Ouverture rectangulaire visible dans le volume gris",
+          "observation_refs": ["O002"]
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "R001",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E002",
+          "object_entity_id": "E001",
+          "observation_refs": ["O001", "O002"]
+        }
+      ],
+      "uncertainties": [
+        {
+          "uncertainty_id": "U001",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "Les photos ne permettent pas d'établir si le volume gris fait partie de la maison.",
+          "observation_refs": ["O001"],
+          "entity_refs": ["E001"],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U002",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "La nature exacte du parement gris n'est pas suffisamment établie par la photo.",
+          "observation_refs": ["O001"],
+          "entity_refs": ["E001"],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U003",
+          "uncertainty_type": "NOT_OBSERVABLE",
+          "description": "La fonction historique de ce volume n'est pas observable sur les photos.",
+          "observation_refs": ["O001"],
+          "entity_refs": ["E001"],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        }
+      ]
+    },
+    "questions": [
+      {
+        "question_id": "Q001",
+        "scope": "PHOTO",
+        "photo_refs": ["LEFT_001"],
+        "subject_hint": "Volume gris maçonné visible près de l'escalier",
+        "question_text": "Ce volume fait-il partie de votre maison ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": ["U001"]
+      },
+      {
+        "question_id": "Q002",
+        "scope": "PHOTO",
+        "photo_refs": ["LEFT_001"],
+        "subject_hint": "Parement visible sur le volume gris près de l'escalier",
+        "question_text": "Quel type de parement connaissez-vous pour ce volume ?",
+        "answer_type": "SINGLE_CHOICE",
+        "choices": [
+          {"value": "MASONRY", "label": "Maçonnerie"},
+          {"value": "CLADDING", "label": "Bardage"}
+        ],
+        "allow_unknown": true,
+        "uncertainty_refs": ["U002"]
+      },
+      {
+        "question_id": "Q003",
+        "scope": "GLOBAL",
+        "photo_refs": [],
+        "subject_hint": null,
+        "question_text": "Si vous la connaissez, quelle était la fonction historique de ce volume ?",
+        "answer_type": "FREE_TEXT",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": ["U003"]
+      }
+    ]
+  }
+}
