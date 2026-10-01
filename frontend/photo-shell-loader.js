@@ -4,11 +4,11 @@ if (!document.getElementById(shellStylesheetId)) {
   const link = document.createElement('link');
   link.id = shellStylesheetId;
   link.rel = 'stylesheet';
-  link.href = new URL('./photo-shell.css?v=single-screen-0.6', import.meta.url).href;
+  link.href = new URL('./photo-shell.css?v=single-screen-0.7-project-controls', import.meta.url).href;
   document.head.appendChild(link);
 }
 
-import('./photo-shell.js?v=single-screen-0.7');
+import('./photo-shell.js?v=single-screen-0.8-project-controls');
 import('./photo-checkpoint-flow.js?v=checkpoint-flow-0.2-state-transition');
 import('./scene-correction-checkpoint.js?v=scene-correction-checkpoint-0.1');
 import('./survey-import-feedback-guard.js?v=survey-feedback-0.8');
