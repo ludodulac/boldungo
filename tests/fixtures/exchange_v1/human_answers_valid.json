@@ -1,0 +1,32 @@
+{
+  "schema_version": "boldungo.exchange.v1",
+  "message_type": "HUMAN_ANSWERS",
+  "project_id": "PROJECT_A",
+  "agent_id": "SOPHIE",
+  "agent_display_name": "Sophie",
+  "round_id": "R001",
+  "package_id": "PKG_550e8400-e29b-41d4-a716-446655440000",
+  "created_at": "2026-10-01T12:15:00Z",
+  "payload": {
+    "answers": [
+      {
+        "question_id": "Q001",
+        "answer_state": "ANSWERED",
+        "value": "YES",
+        "note": null
+      },
+      {
+        "question_id": "Q002",
+        "answer_state": "ANSWERED",
+        "value": "MASONRY",
+        "note": "Je connais cette partie de la maison."
+      },
+      {
+        "question_id": "Q003",
+        "answer_state": "ANSWERED",
+        "value": "Ancienne annexe de rangement.",
+        "note": null
+      }
+    ]
+  }
+}
