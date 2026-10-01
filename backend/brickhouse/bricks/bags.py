@@ -8,6 +8,9 @@ from pydantic import BaseModel, Field, model_validator
 from .assembly import AssemblyPlan
 
 
+MAX_PHYSICAL_BAG_PARTS = 200
+
+
 class BagGroup(BaseModel):
     bag_number: int = Field(gt=0)
     phases: list[str] = Field(min_length=1)
@@ -40,26 +43,48 @@ class BagPlan(BaseModel):
 
 
 def generate_bag_plan(assembly_plan: AssemblyPlan) -> BagPlan:
-    """Project existing deterministic bag assignments into a standalone contract.
+    """Split each logical AssemblyPlan bag into contiguous physical bags.
 
-    The first version intentionally preserves AssemblyPlan's current phase-based
-    grouping. It creates a migration seam so later packing optimization can split
-    or regroup bags without changing construction order or InstructionPlan.
+    Physical bags contain at most MAX_PHYSICAL_BAG_PARTS whenever whole-step
+    packing permits it. AssemblySteps are never split, so one oversized step is
+    preserved intact in its own physical bag. Logical bags are never mixed.
     """
     by_bag = defaultdict(list)
     for step in assembly_plan.steps:
         by_bag[step.bag].append(step)
 
     bags: list[BagGroup] = []
-    for bag_number in sorted(by_bag):
-        steps = sorted(by_bag[bag_number], key=lambda step: step.sequence)
+
+    def append_physical_bag(steps) -> None:
         phases = list(dict.fromkeys(step.phase for step in steps))
         bags.append(BagGroup(
-            bag_number=bag_number,
+            bag_number=len(bags) + 1,
             phases=phases,
             assembly_step_ids=[step.step_id for step in steps],
-            placement_ids=[placement_id for step in steps for placement_id in step.placement_ids],
+            placement_ids=[
+                placement_id
+                for step in steps
+                for placement_id in step.placement_ids
+            ],
         ))
+
+    for logical_bag_number in sorted(by_bag):
+        logical_steps = sorted(by_bag[logical_bag_number], key=lambda step: step.sequence)
+        current_steps = []
+        current_parts = 0
+
+        for step in logical_steps:
+            step_parts = len(step.placement_ids)
+            if current_steps and current_parts + step_parts > MAX_PHYSICAL_BAG_PARTS:
+                append_physical_bag(current_steps)
+                current_steps = []
+                current_parts = 0
+
+            current_steps.append(step)
+            current_parts += step_parts
+
+        if current_steps:
+            append_physical_bag(current_steps)
 
     return BagPlan(
         building_id=assembly_plan.building_id,
