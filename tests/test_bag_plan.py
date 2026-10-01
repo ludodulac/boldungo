@@ -2,6 +2,10 @@ from brickhouse.bricks.assembly import AssemblyPlan, AssemblyStep, generate_asse
 from brickhouse.bricks.bags import MAX_PHYSICAL_BAG_PARTS, generate_bag_plan
 from brickhouse.bricks.bom import generate_bom
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
+from pathlib import Path
+
+import json
+
 from brickhouse.bricks.export import create_export_bundle
 
 
@@ -202,3 +206,31 @@ def test_single_step_over_200_stays_intact_in_one_oversize_bag() -> None:
     assert _bag_sizes(bag_plan) == [201, 10]
     assert bag_plan.bags[0].assembly_step_ids == ["step-0001"]
     assert len(bag_plan.bags[0].placement_ids) == 201
+
+
+def test_real_baseline57_export_splits_into_expected_physical_bags() -> None:
+    export_path = (
+        Path(__file__).resolve().parents[1]
+        / "frontend"
+        / "module-001-baseline57-export.json"
+    )
+    payload = json.loads(export_path.read_text(encoding="utf-8"))
+    model = BrickModel.model_validate(payload["brick_model"])
+
+    assembly = generate_assembly_plan(model)
+    bag_plan = generate_bag_plan(assembly)
+
+    assert assembly.total_parts == 1922
+    assert assembly.total_steps == 236
+    assert bag_plan.total_parts == 1922
+    assert bag_plan.total_bags == 10
+    assert _bag_sizes(bag_plan) == [198, 198, 198, 198, 198, 198, 198, 198, 200, 138]
+
+    assert [step_id for bag in bag_plan.bags for step_id in bag.assembly_step_ids] == [
+        step.step_id for step in assembly.steps
+    ]
+    assert [placement_id for bag in bag_plan.bags for placement_id in bag.placement_ids] == [
+        placement_id
+        for step in assembly.steps
+        for placement_id in step.placement_ids
+    ]
