@@ -13,6 +13,16 @@ function initShell() {
   const layout=document.querySelector('.layout'), legacy=document.querySelector('.panel'), resultPanel=document.querySelector('.result-panel');
   const cards=[...legacy.querySelectorAll(':scope > .simple-card')], [viewsCard,detailsCard,factsCard,handoffCard,futureCard]=cards;
   const advanced=legacy.querySelector(':scope > .advanced-panel'), status=legacy.querySelector(':scope > #status'), build=document.querySelector('#build-bricks'), guidedGrid=document.querySelector('#guided-photo-grid'), projectIntake=document.querySelector('.project-intake-card'), clarificationLab=document.querySelector('#clarification-lab'), download=document.querySelector('#download-ai-package'), resultFile=document.querySelector('#external-analysis-file'), resultText=document.querySelector('#external-analysis'), importButton=document.querySelector('#import-analysis');
+  function syncProjectControlsVisibility() {
+    if (!projectIntake) return;
+    const createPanel=document.querySelector('#project-create-panel'), existingControls=document.querySelector('#project-existing-controls'), mode=projectIntake.dataset.projectMode;
+    if (!createPanel || !existingControls || !mode) return;
+    const creating=mode==='first'||mode==='legacy'||mode==='additional';
+    createPanel.hidden=!creating;
+    existingControls.hidden=mode==='first'||mode==='legacy';
+  }
+  window.addEventListener('boldungo:project-photo-intake-ready', syncProjectControlsVisibility);
+  syncProjectControlsVisibility();
   simplifyPhotoSlots(guidedGrid); document.body.classList.add('boldungo-shell-enabled');
   const cockpit=document.createElement('div'); cockpit.className='boldungo-cockpit';
   const header=document.createElement('header'); header.className='shell-progress'; header.innerHTML='<strong id="shell-state-title">1. Photos</strong><div class="shell-progress-meter" aria-label="Progression"><span class="shell-progress-fill" id="shell-progress-fill"></span></div><button type="button" class="shell-help-button" id="shell-help-button" aria-expanded="false" aria-controls="shell-tools-drawer" aria-label="Aide">?</button>';
