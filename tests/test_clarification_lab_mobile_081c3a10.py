@@ -106,6 +106,28 @@ def assert_reachable(page, selector, min_visible_height=40):
     assert geometry["visibleWidth"] > 40, (selector, geometry)
 
 
+def assert_pointer_reachable(page, selector):
+    locator = page.locator(selector)
+    locator.scroll_into_view_if_needed(timeout=5000)
+    page.wait_for_timeout(60)
+    hit = locator.evaluate(
+        """el => {
+          const box = el.getBoundingClientRect();
+          const x = box.left + box.width / 2;
+          const y = box.top + box.height / 2;
+          const target = document.elementFromPoint(x, y);
+          return {
+            hit: target === el || el.contains(target),
+            targetId: target?.id || null,
+            targetClass: target?.className || null,
+            x,
+            y,
+          };
+        }"""
+    )
+    assert hit["hit"], (selector, hit)
+
+
 def test_clarification_lab_mobile_project_creation_is_visually_reachable_and_loads_first_question():
     with serve_repo() as port, sync_playwright() as p:
         browser = p.chromium.launch(
@@ -137,6 +159,8 @@ def test_clarification_lab_mobile_project_creation_is_visually_reachable_and_loa
         assert_reachable(page, "#project-create-panel")
         assert_reachable(page, "#new-project-name")
         assert_reachable(page, "#confirm-new-project")
+        assert_pointer_reachable(page, "#new-project-name")
+        assert_pointer_reachable(page, "#confirm-new-project")
 
         subtitle_geometry = visual_geometry(page, ".project-intake-heading small")
         status_geometry = visual_geometry(page, "#project-save-status")
