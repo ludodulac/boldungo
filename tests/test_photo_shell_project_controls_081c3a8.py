@@ -29,11 +29,11 @@ def test_project_controls_hotfix_forces_fresh_shell_before_package_chain():
     html = (ROOT / "frontend" / "photo.html").read_text(encoding="utf-8")
     loader = (ROOT / "frontend" / "photo-shell-loader.js").read_text(encoding="utf-8")
 
-    fresh_loader = 'src="./photo-shell-loader.js?v=single-screen-1.4-project-controls"'
+    fresh_loader = 'src="./photo-shell-loader.js?v=single-screen-1.5-project-flow"'
     stable_package = 'src="./brickhouse-survey-package.js?v=photo-cockpit-1.0"'
 
     assert fresh_loader in html
     assert stable_package in html
     assert html.index(fresh_loader) < html.index(stable_package)
     assert "photo-shell.js?v=single-screen-0.8-project-controls" in loader
-    assert "photo-shell.css?v=single-screen-0.7-project-controls" in loader
+    assert "photo-shell.css?v=single-screen-0.8-project-flow" in loader

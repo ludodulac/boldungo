@@ -4,7 +4,7 @@ if (!document.getElementById(shellStylesheetId)) {
   const link = document.createElement('link');
   link.id = shellStylesheetId;
   link.rel = 'stylesheet';
-  link.href = new URL('./photo-shell.css?v=single-screen-0.7-project-controls', import.meta.url).href;
+  link.href = new URL('./photo-shell.css?v=single-screen-0.8-project-flow', import.meta.url).href;
   document.head.appendChild(link);
 }
 
