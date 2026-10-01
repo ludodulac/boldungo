@@ -82,3 +82,23 @@ body.notice-prototype-mode .viewer-wrap{position:relative;height:100vh}
   body.notice-prototype-mode .notice-parts{gap:26px;font-size:28px}
   body.notice-prototype-mode .notice-part-preview{width:118px;height:72px}
 }
+
+
+/* NOTICE-BUILDER-015: explicit construction mode, same Three.js renderer. */
+.construction-hud[hidden]{display:none}
+body.construction-mode{overflow:hidden;background:#f3f4f6}
+body.construction-mode .app-shell{display:block;height:100dvh;min-height:100dvh}
+body.construction-mode .panel,body.construction-mode .viewer-hint,body.construction-mode .site-nav-root{display:none!important}
+body.construction-mode .viewer-wrap{position:relative;top:auto;height:100dvh;min-height:100dvh;background:#f3f4f6}
+body.construction-mode .construction-hud{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;pointer-events:none;color:#172033}
+body.construction-mode .construction-parts{pointer-events:auto;flex:0 0 auto;min-height:96px;padding:8px 12px 6px;background:rgba(255,255,255,.94);border-bottom:1px solid #e2e8f0}
+.construction-parts-label{display:block;margin-bottom:2px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#64748b}
+#construction-parts-list{display:flex;align-items:center;gap:12px;overflow-x:auto}
+#construction-parts-list>span{display:flex;align-items:center;gap:4px;flex:0 0 auto}
+#construction-parts-list b{font-size:20px}
+.construction-part-preview{display:block;width:76px;height:48px}
+body.construction-mode .construction-navigation{pointer-events:auto;margin-top:auto;display:grid;grid-template-columns:72px 1fr 72px;align-items:center;gap:8px;padding:8px max(10px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:rgba(255,255,255,.96);border-top:1px solid #e2e8f0}
+body.construction-mode .construction-navigation button{min-height:54px;padding:0;border:0;border-radius:14px;background:#e9eef5;color:#172033;font-size:38px;line-height:1}
+body.construction-mode .construction-navigation strong{text-align:center;font-size:17px;font-variant-numeric:tabular-nums}
+body.construction-mode #viewer{position:absolute;inset:96px 0 70px;width:100%;height:calc(100% - 166px);touch-action:none}
+@media(max-width:760px){body.construction-mode .viewer-wrap{height:100dvh;min-height:100dvh}.construction-part-preview{width:68px;height:42px}body.construction-mode .construction-parts{min-height:88px}body.construction-mode #viewer{inset:88px 0 70px;height:calc(100% - 158px)}}
