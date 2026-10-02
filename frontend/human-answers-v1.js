@@ -205,7 +205,7 @@ function createChoiceButton(documentObject, label, value, onAnswer) {
 }
 
 
-function createControlsForQuestion(documentObject, question, onAnswer) {
+export function createControlsForQuestion(documentObject, question, onAnswer) {
   const controls = documentObject.createElement('div');
   controls.className = 'sophie-v1-answer-controls';
 
