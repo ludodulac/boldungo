@@ -1,8 +1,7 @@
-// Stable entry point loaded by photo.html. Register the hybrid PDF generator
-// first so its capture listener owns the download while the proven v0.4
-// implementation remains available as historical fallback code.
-import './brickhouse-survey-hybrid-pdf.js?v=pdf-handoff-0.10-hybrid-text';
-import './brickhouse-survey-package-v04.js?v=pdf-handoff-0.4';
+// Stable entry point loaded by photo.html. The normal analysis button is now
+// owned exclusively by the V1 Sophie ZIP flow. Historical PDF generators remain
+// versioned in the repository but are intentionally not loaded here.
+import './analysis-package-download-v1.js?v=exchange-v1-sophie-r001';
 import './brickhouse-survey-package-v05.js?v=pdf-handoff-0.5-terrain-audit';
 import './brickhouse-survey-package-v06.js?v=pdf-handoff-0.6-topology-audit';
 import './brickhouse-survey-package-v07.js?v=pdf-handoff-0.7-coverage-audit';
