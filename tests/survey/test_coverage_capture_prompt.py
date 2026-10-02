@@ -24,14 +24,17 @@ def test_coverage_addendum_rechecks_boundary_and_exact_root_contract():
     assert "aucune métrique, façade, relation, direction ou forme n'est inventée" in text
 
 
-def test_pdf_handoff_layers_coverage_after_topology_without_replacing_history():
+def test_zip_v1_handoff_preserves_coverage_after_topology_without_legacy_pdf_runtime():
     entry = PACKAGE_ENTRY.read_text(encoding="utf-8")
     wrapper = PACKAGE_WRAPPER.read_text(encoding="utf-8")
-    assert "brickhouse-survey-package-v04.js" in entry
+    assert "analysis-package-download-v1.js" in entry
+    assert "brickhouse-survey-package-v04.js" not in entry
+    assert "brickhouse-survey-hybrid-pdf.js" not in entry
     assert "brickhouse-survey-package-v05.js" in entry
     assert "brickhouse-survey-package-v06.js" in entry
     assert "brickhouse-survey-package-v07.js" in entry
     assert "pdf-handoff-0.7-coverage-audit" in entry
+    assert entry.index("brickhouse-survey-package-v05.js") < entry.index("brickhouse-survey-package-v06.js") < entry.index("brickhouse-survey-package-v07.js")
     assert "brickhouse-survey-package-v06.js" in wrapper
     assert "brickhouse-survey-coverage-audit-v31.txt" in wrapper
     assert "brickhouse-survey-prompt.txt" in wrapper
