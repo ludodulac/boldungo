@@ -29,9 +29,11 @@ def test_capture_runtime_does_not_own_analysis_or_package_actions() -> None:
     assert "indexedDB" not in source
 
 
-def test_current_pdf_and_benchmark_paths_remain_active() -> None:
+def test_current_zip_v1_and_benchmark_paths_remain_active() -> None:
     package = PACKAGE.read_text(encoding="utf-8")
-    assert "brickhouse-survey-hybrid-pdf.js?v=pdf-handoff-0.10-hybrid-text" in package
+    assert "analysis-package-download-v1.js?v=exchange-v1-sophie-r001" in package
+    assert "brickhouse-survey-hybrid-pdf.js" not in package
+    assert "brickhouse-survey-package-v04.js" not in package
     assert "real-house-benchmark-loader.js?v=real-house-5-preload-0.2-scene-checkpoint" in package
     assert "photo-slot-previews.js?v=photo-slot-previews-0.1" in package
 
@@ -40,4 +42,5 @@ def test_historical_runtimes_are_preserved_in_repository() -> None:
     assert (ROOT / "frontend" / "photo.js").exists()
     assert (ROOT / "frontend" / "photo-simple.js").exists()
     assert (ROOT / "frontend" / "brickhouse-survey-package-v04.js").exists()
+    assert (ROOT / "frontend" / "brickhouse-survey-hybrid-pdf.js").exists()
     assert (ROOT / "frontend" / "brickhouse-survey-package-v14.js").exists()
