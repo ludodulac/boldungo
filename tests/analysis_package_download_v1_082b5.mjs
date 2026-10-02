@@ -1,14 +1,17 @@
 import assert from 'node:assert/strict';
+import { webcrypto } from 'node:crypto';
 
-import {
+globalThis.crypto ??= webcrypto;
+
+const {
   SOPHIE_AGENT_DISPLAY_NAME,
   SOPHIE_AGENT_ID,
   SOPHIE_INITIAL_ROUND_ID,
   createPackageIdV1,
   downloadInitialSophiePackageV1,
   installSophieR001DownloadButton,
-} from '../frontend/analysis-package-download-v1.js';
-import { INITIAL_SOPHIE_PROMPT_V1 } from '../frontend/analysis-prompt-v1-initial.js';
+} = await import('../frontend/analysis-package-download-v1.js');
+const { INITIAL_SOPHIE_PROMPT_V1 } = await import('../frontend/analysis-prompt-v1-initial.js');
 
 
 const uuidPattern = /^PKG_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
