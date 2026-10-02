@@ -42,18 +42,32 @@
       "target": "platform-timber-1",
       "decision": "preserve_longitudinal_extent_with_local_unresolved_clearance",
       "statement": "The long timber terrace, distinct masonry landing and owner-confirmed L stair must coexist without manifest interpenetration. The timber proxy is decomposed into two low-confidence rectangles that preserve the wall-side extent to y=9.0 while leaving only the locally occluded stair corridor unfilled. This is a reversible Scene approximation and does not claim the hidden real contour or continuity."
+    },
+    {
+      "kind": "photo_and_human_opening_semantics_overlay",
+      "artifact": "right-facade-grade-opening-scene-overlay-v0.1.json",
+      "target": "right-opening-3",
+      "decision": "preserve_rectangle_and_record_glass_block_visual_semantics",
+      "statement": "P2-derived Survey evidence maps the farther low right-facade opening to right-opening-3; human-established truth resolves its visual infill as glass blocks. Type remains unknown and no opening metric is changed."
+    },
+    {
+      "kind": "human_local_grade_relation_overlay",
+      "artifact": "right-facade-grade-opening-scene-overlay-v0.1.json",
+      "target": "right-opening-2",
+      "decision": "record_zero_local_grade_clearance_without_moving_opening",
+      "statement": "P2-derived Survey evidence maps the small low opening near the front corner to right-opening-2; human-established truth states that it meets local sidewalk grade. WALL_DATUM remains distinct from the rising TERRAIN_DATUM, so the opening rectangle is unchanged and grade amplitude remains unresolved."
     }
   ],
   "unresolved_metric_axes": [
     {
       "target": "volume_main.depth",
-      "current_value_m": 9.0,
+      "current_value_m": 9,
       "status": "provisional",
       "reason": "No photo currently proves a complete target depth extent with enough independent absolute-scale cue families."
     },
     {
       "target": "volume_main.height",
-      "current_value_m": 8.0,
+      "current_value_m": 8,
       "status": "provisional",
       "reason": "Current opening-height prior families do not yet provide a sufficiently clean multi-family consensus."
     },
