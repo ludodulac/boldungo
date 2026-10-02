@@ -144,7 +144,7 @@ def main():
         assert cockpit.get_attribute('data-shell-state') == 'photos'
         assert page.locator('#shell-state-title').text_content().strip() == '1. Photos'
         assert page.locator('.selected-photo-preview').count() == 5
-        assert page.locator('#shell-primary-button').text_content().strip() == 'Créer le PDF'
+        assert page.locator('#shell-primary-button').text_content().strip() == 'Créer le ZIP'
         for key in (
             'brickhouse.pendingArchitecturalSurvey',
             'brickhouse.knownFrontWidthM',
@@ -159,15 +159,15 @@ def main():
         page.locator('[data-shell-state="photos"]').click(timeout=5000)
         assert cockpit.get_attribute('data-shell-state') == 'photos'
 
-        with page.expect_download(timeout=30000) as download_info:
-            page.locator('#shell-primary-button').click(timeout=5000)
-        download = download_info.value
-        assert download.suggested_filename == 'BRICKHOUSE-SURVEY-pdf-handoff-0.10.pdf'
-        assert download.failure() is None
+        # The benchmark fixture intentionally bypasses user-project creation.
+        # The authoritative ZIP V1 action must therefore fail clearly rather
+        # than falling back to the historical PDF handoff.
+        page.locator('#shell-primary-button').click(timeout=5000)
         page.wait_for_function(
-            "() => document.querySelector('#ai-package-status')?.textContent?.includes('brickhouse-survey-result.json')",
+            "() => document.querySelector('#ai-package-status')?.textContent?.includes('Impossible de créer le ZIP : Aucun projet actif')",
             timeout=15000,
         )
+        assert cockpit.get_attribute('data-shell-state') == 'survey'
         assert not runtime_errors, runtime_errors
         assert not failed_requests, failed_requests
         context.close()

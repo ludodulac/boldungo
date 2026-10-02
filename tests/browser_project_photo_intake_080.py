@@ -249,10 +249,10 @@ def main():
             page.wait_for_timeout(80)
             assert page.locator(".shell-photo-scroll").evaluate("el => el.scrollTop") > 0
 
-        pdf_box = page.locator("#shell-primary-button").bounding_box()
-        assert pdf_box
-        assert 0 <= pdf_box["y"] < 844
-        assert pdf_box["y"] + pdf_box["height"] <= 844
+        zip_box = page.locator("#shell-primary-button").bounding_box()
+        assert zip_box
+        assert 0 <= zip_box["y"] < 844
+        assert zip_box["y"] + zip_box["height"] <= 844
 
         # 080B: fresh browser state must not silently create "Ma maison".
         assert page.locator("#project-create-panel").is_visible()
@@ -447,21 +447,19 @@ def main():
         assert page.locator('[data-slot="front"] .guided-photo-input').evaluate("el => el.files.length") == 0
         assert page.locator('[data-slot="right"] .guided-photo-input').evaluate("el => el.files.length") == 0
 
-        with page.expect_download(timeout=30000) as download_info:
-            page.locator("#shell-primary-button").click(timeout=5000)
-        download = download_info.value
-        assert download.suggested_filename == "BRICKHOUSE-SURVEY-pdf-handoff-0.10.pdf"
-        assert download.failure() is None
-        pdf_path = download.path()
-        assert pdf_path
-        pdf_bytes = Path(pdf_path).read_bytes()
-        assert len(pdf_bytes) > 5000
-        assert b"FRONT_002" in pdf_bytes
-        assert b"FRONT_001" not in pdf_bytes
-        assert b"PRIMARY_FACE=FRONT" in pdf_bytes
-        assert b"Maison Brest" in pdf_bytes
-        assert b"Brest" in pdf_bytes
-        assert b"CITY = CONTEXTUAL_PRIOR" in pdf_bytes
+        # ZIP V1 must refuse the persisted DETAIL_001 rather than silently
+        # dropping it or inventing an orientation.
+        assert ids_for(page, "detail_1") == ["DETAIL_001"]
+        page.locator("#shell-primary-button").click(timeout=5000)
+        page.wait_for_function(
+            """() => {
+              const text = document.querySelector('#ai-package-status')?.textContent || '';
+              return text.includes('Impossible de créer le ZIP')
+                && text.includes('primary_face manquant ou invalide')
+                && text.includes('DETAIL_001');
+            }""",
+            timeout=15000,
+        )
 
         assert not runtime_errors, runtime_errors
         assert not failed_requests, failed_requests

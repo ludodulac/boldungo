@@ -20,3 +20,14 @@ html,body{height:100%;margin:0;overscroll-behavior:none}body.boldungo-shell-enab
 .sophie-v1-global-questions h3{margin:0;font-size:14px}
 .sophie-v1-no-questions{margin:0;padding:10px;border-radius:10px;background:#ecfdf3;color:#027a48;font-size:12px;font-weight:700}
 .sophie-v1-render-error{margin:0;padding:10px;border-radius:10px;background:#fef3f2;color:#b42318;font-size:12px;font-weight:800;line-height:1.4}
+
+
+/* 082B8 — controls and export for HUMAN_ANSWERS R001. */
+.sophie-v1-answer-controls{display:flex;flex-wrap:wrap;gap:7px;padding-top:4px}
+.sophie-v1-answer-choice,.sophie-v1-answer-unknown{min-height:38px;padding:7px 10px;border-radius:9px;font-size:12px}
+.sophie-v1-answer-choice[data-selected="true"],.sophie-v1-answer-unknown[data-selected="true"]{background:#172033;color:#fff;border-color:#172033}
+.sophie-v1-answer-text{width:100%;min-height:40px;box-sizing:border-box;border:1px solid #d0d5dd;border-radius:9px;padding:8px 10px;font-size:13px}
+.sophie-v1-answer-export{display:grid;gap:7px;padding:10px;border:1px solid #d0d5dd;border-radius:12px;background:#fff}
+.sophie-v1-answer-progress{font-size:11px;font-weight:800;color:#475467}
+.sophie-v1-answer-download{width:100%;min-height:44px}
+.sophie-v1-answer-status{min-height:1.2em;margin:0;font-size:11px;line-height:1.35;color:#475467}

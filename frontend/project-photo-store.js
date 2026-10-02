@@ -87,6 +87,7 @@ export function createProjectRecord(projectName) {
     human_facts: [],
     analysis_package_exports: [],
     analysis_result_imports: [],
+    analysis_answer_drafts: [],
   };
 }
 
@@ -429,6 +430,64 @@ export async function appendAnalysisResultImport(projectId, document, importedAt
   store.put(updated);
   await transactionDone(tx);
   return updated.analysis_result_imports;
+}
+
+
+export function upsertAnalysisAnswerDraftToProjectRecord(project, draft) {
+  if (!project || typeof project !== 'object') throw new Error('Projet introuvable');
+  const required = ['agent_id', 'round_id', 'package_id', 'question_id', 'answer_state'];
+  for (const field of required) {
+    if (typeof draft?.[field] !== 'string' || !draft[field].trim()) {
+      throw new Error(`Brouillon de réponse invalide: ${field}`);
+    }
+  }
+  if (draft.answer_state === 'UNKNOWN') {
+    if (draft.value !== null) throw new Error('UNKNOWN exige value=null');
+  } else if (draft.answer_state === 'ANSWERED') {
+    if (typeof draft.value !== 'string' || !draft.value.trim()) {
+      throw new Error('ANSWERED exige une valeur non vide');
+    }
+  } else {
+    throw new Error('answer_state invalide');
+  }
+
+  const history = Array.isArray(project.analysis_answer_drafts)
+    ? project.analysis_answer_drafts
+    : [];
+  const sameIdentity = item => (
+    item?.agent_id === draft.agent_id
+    && item?.round_id === draft.round_id
+    && item?.package_id === draft.package_id
+    && item?.question_id === draft.question_id
+  );
+  return {
+    ...project,
+    analysis_answer_drafts: [
+      ...history.filter(item => !sameIdentity(item)),
+      structuredClone(draft),
+    ],
+  };
+}
+
+
+export async function upsertAnalysisAnswerDraft(projectId, draft) {
+  if (!projectId) throw new Error('Projet introuvable');
+  const database = await openProjectDb();
+  const tx = database.transaction(STORE_PROJECTS, 'readwrite');
+  const store = tx.objectStore(STORE_PROJECTS);
+  const existing = await requestResult(store.get(projectId));
+  if (!existing) {
+    tx.abort();
+    throw new Error('Projet introuvable');
+  }
+
+  const updated = {
+    ...upsertAnalysisAnswerDraftToProjectRecord(existing, draft),
+    updated_at: nowIso(),
+  };
+  store.put(updated);
+  await transactionDone(tx);
+  return updated.analysis_answer_drafts;
 }
 
 

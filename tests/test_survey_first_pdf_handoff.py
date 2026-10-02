@@ -13,9 +13,11 @@ def test_external_import_loads_survey_first_pdf_override() -> None:
     assert "import './brickhouse-survey-package.js';" in importer
 
 
-def test_stable_entry_point_loads_versioned_mobile_safe_implementation() -> None:
+def test_stable_entry_point_loads_zip_v1_and_not_legacy_pdf_runtime() -> None:
     loader = (FRONTEND / "brickhouse-survey-package.js").read_text(encoding="utf-8")
-    assert "brickhouse-survey-package-v04.js?v=pdf-handoff-0.4" in loader
+    assert "analysis-package-download-v1.js?v=exchange-v1-sophie-r001" in loader
+    assert "brickhouse-survey-package-v04.js?v=pdf-handoff-0.4" not in loader
+    assert "brickhouse-survey-hybrid-pdf.js" not in loader
 
 
 def test_initial_pdf_requests_only_architectural_survey() -> None:

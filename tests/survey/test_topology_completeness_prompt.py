@@ -26,14 +26,17 @@ def test_topology_addendum_requires_proven_external_connections():
     assert "aucune métrique n'est inventée" in text
 
 
-def test_pdf_handoff_layers_topology_after_terrain_without_replacing_history():
+def test_zip_v1_handoff_preserves_topology_after_terrain_without_legacy_pdf_runtime():
     entry = PACKAGE_ENTRY.read_text(encoding="utf-8")
     wrapper = PACKAGE_WRAPPER.read_text(encoding="utf-8")
-    assert "brickhouse-survey-package-v04.js" in entry
+    assert "analysis-package-download-v1.js" in entry
+    assert "brickhouse-survey-package-v04.js" not in entry
+    assert "brickhouse-survey-hybrid-pdf.js" not in entry
     assert "brickhouse-survey-package-v05.js" in entry
     assert "pdf-handoff-0.5-terrain-audit" in entry
     assert "brickhouse-survey-package-v06.js" in entry
     assert "pdf-handoff-0.6-topology-audit" in entry
+    assert entry.index("brickhouse-survey-package-v05.js") < entry.index("brickhouse-survey-package-v06.js")
     assert "brickhouse-survey-package-v05.js" in wrapper
     assert "brickhouse-survey-topology-audit-v30.txt" in wrapper
     assert "brickhouse-survey-prompt.txt" in wrapper
