@@ -6,16 +6,15 @@ ENTRY = ROOT / "frontend" / "brickhouse-survey-package.js"
 HYBRID = ROOT / "frontend" / "brickhouse-survey-hybrid-pdf.js"
 
 
-def test_hybrid_pdf_generator_registers_before_raster_fallback():
+def test_hybrid_pdf_is_historical_and_not_registered_in_normal_zip_v1_runtime():
     entry = ENTRY.read_text(encoding="utf-8")
-    hybrid_import = "./brickhouse-survey-hybrid-pdf.js?v=pdf-handoff-0.10-hybrid-text"
-    raster_import = "./brickhouse-survey-package-v04.js?v=pdf-handoff-0.4"
-    assert hybrid_import in entry
-    assert raster_import in entry
-    assert entry.index(hybrid_import) < entry.index(raster_import)
+    assert "./analysis-package-download-v1.js?v=exchange-v1-sophie-r001" in entry
+    assert "./brickhouse-survey-hybrid-pdf.js?v=pdf-handoff-0.10-hybrid-text" not in entry
+    assert "./brickhouse-survey-package-v04.js?v=pdf-handoff-0.4" not in entry
+    assert HYBRID.exists()
 
 
-def test_hybrid_pdf_emits_native_text_and_jpeg_photo_pages():
+def test_historical_hybrid_pdf_emits_native_text_and_jpeg_photo_pages():
     source = HYBRID.read_text(encoding="utf-8")
     assert "pdf-handoff-0.10-hybrid-text" in source
     assert "BRICKHOUSE-SURVEY-pdf-handoff-0.10.pdf" in source
@@ -30,7 +29,7 @@ def test_hybrid_pdf_emits_native_text_and_jpeg_photo_pages():
     assert "/Filter /DCTDecode" in source
 
 
-def test_hybrid_pdf_keeps_current_prompt_and_capture_contract():
+def test_historical_hybrid_pdf_keeps_capture_contract_for_compatibility():
     source = HYBRID.read_text(encoding="utf-8")
     assert "fetchText('./brickhouse-topology-prompt.txt')" in source
     assert "fetchText('./brickhouse-survey-prompt.txt')" in source
