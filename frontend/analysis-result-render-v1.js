@@ -135,6 +135,7 @@ export function renderSophieR001ResultView(
   host.replaceChildren();
   host.hidden = false;
   host.dataset.state = 'ready';
+  host.closest?.('.shell-survey-card')?.classList.add('has-sophie-result');
 
   let model;
   try {
@@ -228,6 +229,7 @@ export async function refreshSophieR001ResultView({
     host.replaceChildren();
     host.hidden = true;
     delete host.dataset.state;
+    host.closest?.('.shell-survey-card')?.classList.remove('has-sophie-result');
     return false;
   }
 
