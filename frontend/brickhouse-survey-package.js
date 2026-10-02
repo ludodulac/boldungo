@@ -2,6 +2,7 @@
 // owned exclusively by the V1 Sophie ZIP flow. Historical PDF generators remain
 // versioned in the repository but are intentionally not loaded here.
 import './analysis-package-download-v1.js?v=exchange-v1-sophie-r001';
+import './analysis-result-import-v1.js?v=exchange-v1-sophie-r001-result';
 import './brickhouse-survey-package-v05.js?v=pdf-handoff-0.5-terrain-audit';
 import './brickhouse-survey-package-v06.js?v=pdf-handoff-0.6-topology-audit';
 import './brickhouse-survey-package-v07.js?v=pdf-handoff-0.7-coverage-audit';
