@@ -4,6 +4,7 @@
 import './analysis-package-download-v1.js?v=exchange-v1-sophie-r001';
 import './analysis-result-import-v1.js?v=exchange-v1-sophie-r001-result';
 import './analysis-result-render-v1.js?v=exchange-v1-sophie-r001-view';
+import './human-answers-v1.js?v=exchange-v1-sophie-r001-answers';
 import './brickhouse-survey-package-v05.js?v=pdf-handoff-0.5-terrain-audit';
 import './brickhouse-survey-package-v06.js?v=pdf-handoff-0.6-topology-audit';
 import './brickhouse-survey-package-v07.js?v=pdf-handoff-0.7-coverage-audit';
