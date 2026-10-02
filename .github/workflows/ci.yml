@@ -73,7 +73,7 @@ jobs:
 
           assert 'brickhouse-survey-package.js' in html
           assert 'photo-shell-loader.js' in package
-          assert 'single-screen-0.6' in loader
+          assert 'single-screen-0.7-project-controls' in loader
           assert 'photo-shell.css' in loader and 'photo-shell.js' in loader
           assert "const stateOrder = ['photos', 'survey', 'scene', 'model']" in shell
           assert "photoCard.className='shell-main-card shell-photo-card'" in shell
