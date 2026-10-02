@@ -102,6 +102,7 @@ function parseTextareaDocument(input) {
 export function installSophieR001ResultImport({
   documentObject = document,
   importResult = importSophieR001AnalysisResult,
+  eventTarget = globalThis.window,
 } = {}) {
   const button = documentObject.querySelector('#import-analysis');
   const input = documentObject.querySelector('#external-analysis');
@@ -121,6 +122,7 @@ export function installSophieR001ResultImport({
     try {
       await importResult(parsed);
       if (status) status.textContent = 'Résultat Sophie R001 validé.';
+      eventTarget?.dispatchEvent?.(new Event('boldungo:analysis-result-v1-imported'));
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       if (status) status.textContent = `Résultat Sophie R001 refusé : ${message}`;
