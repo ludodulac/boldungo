@@ -306,7 +306,7 @@ function occurrence() {
   if (outputPath) {
     const built = buildHumanAnswersV1(
       sourceResult,
-      [yesDraft, choiceDraft, textDraft],
+      [yesDraft, textDraft],
       { createdAt: '2026-10-02T14:50:00Z' },
     );
     await writeFile(outputPath, JSON.stringify(built.document, null, 2));
