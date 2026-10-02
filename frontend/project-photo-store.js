@@ -85,6 +85,7 @@ export function createProjectRecord(projectName) {
     name_confirmed: true,
     clarifications: [],
     human_facts: [],
+    analysis_package_exports: [],
   };
 }
 
@@ -355,6 +356,38 @@ export async function updateGroupNote(projectId, groupKey, note) {
   }
   await transactionDone(tx);
 }
+
+export async function appendAnalysisPackageExport(projectId, metadata) {
+  if (!projectId) throw new Error('Projet introuvable');
+  const required = ['agent_id', 'agent_display_name', 'round_id', 'package_id', 'filename', 'created_at'];
+  for (const field of required) {
+    if (typeof metadata?.[field] !== 'string' || !metadata[field].trim()) {
+      throw new Error(`Métadonnée export invalide: ${field}`);
+    }
+  }
+
+  const database = await openProjectDb();
+  const tx = database.transaction(STORE_PROJECTS, 'readwrite');
+  const store = tx.objectStore(STORE_PROJECTS);
+  const existing = await requestResult(store.get(projectId));
+  if (!existing) {
+    tx.abort();
+    throw new Error('Projet introuvable');
+  }
+
+  const history = Array.isArray(existing.analysis_package_exports)
+    ? existing.analysis_package_exports
+    : [];
+  const updated = {
+    ...existing,
+    analysis_package_exports: [...history, { ...metadata }],
+    updated_at: nowIso(),
+  };
+  store.put(updated);
+  await transactionDone(tx);
+  return updated.analysis_package_exports;
+}
+
 
 export async function getActiveProjectSnapshot() {
   const project = await getActiveProject();
