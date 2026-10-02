@@ -36,7 +36,9 @@ def test_active_manual_handoff_uses_two_stage_survey_then_scene_flow() -> None:
     assert "brickhouse-survey-package.js" in photo_html
     assert "scene-handoff-photo-evidence.js" in photo_html
     assert "brickhouse-single-package.js" not in photo_html
-    assert "brickhouse-survey-package-v04.js?v=pdf-handoff-0.4" in survey_entry
+    assert "analysis-package-download-v1.js?v=exchange-v1-sophie-r001" in survey_entry
+    assert "brickhouse-survey-package-v04.js?v=pdf-handoff-0.4" not in survey_entry
+    assert "brickhouse-survey-hybrid-pdf.js" not in survey_entry
     assert "const PDF_HANDOFF_VERSION = 'pdf-handoff-0.4'" in survey_generator
     assert "const PACKAGE_FILENAME = 'BRICKHOUSE-SURVEY-pdf-handoff-0.4.pdf'" in survey_generator
     assert "brickhouse-survey-output-contract.txt" in survey_generator
