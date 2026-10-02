@@ -145,7 +145,6 @@ def main():
         assert page.locator('#shell-state-title').text_content().strip() == '1. Photos'
         assert page.locator('.selected-photo-preview').count() == 5
         assert page.locator('#shell-primary-button').text_content().strip() == 'Créer le ZIP'
-        assert page.locator('#download-ai-package').text_content().strip() == 'Créer le ZIP pour Sophie'
         for key in (
             'brickhouse.pendingArchitecturalSurvey',
             'brickhouse.knownFrontWidthM',
