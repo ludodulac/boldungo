@@ -5,12 +5,12 @@ FRONTEND = ROOT / "frontend"
 ACTIVE_PACKAGE = FRONTEND / "brickhouse-survey-hybrid-pdf.js"
 
 
-def test_photo_page_uses_single_pdf_as_primary_handoff() -> None:
+def test_photo_page_uses_zip_v1_as_primary_handoff() -> None:
     html = (FRONTEND / "photo.html").read_text(encoding="utf-8")
     package_src = 'src="./brickhouse-survey-package.js?v=photo-cockpit-1.0"'
     capture_src = 'src="./photo-capture-runtime.js?v=photo-capture-1.0"'
-    assert "Créer le PDF à donner à l’IA" in html
-    assert "Le PDF contiendra les instructions utiles" in html
+    assert "Créer le ZIP pour Sophie" in html
+    assert "Le ZIP contiendra les instructions V1" in html
     assert package_src in html
     assert capture_src in html
     assert html.index(package_src) < html.index(capture_src)
