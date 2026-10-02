@@ -86,6 +86,13 @@ export function buildHumanAnswersV1(
   ) {
     throw new Error('ANALYSIS_RESULT actif invalide');
   }
+  if (
+    typeof createdAt !== 'string'
+    || !createdAt.endsWith('Z')
+    || Number.isNaN(Date.parse(createdAt))
+  ) {
+    throw new Error('created_at doit être une date ISO 8601 UTC');
+  }
 
   const activeDrafts = drafts.filter(draft => sameResultIdentity(draft, result));
   const byQuestion = new Map();
@@ -285,13 +292,22 @@ export async function refreshSophieR001AnswerUi({
       `.sophie-v1-question[data-question-id="${questionId}"]`,
     );
     const onAnswer = async (answerState, value) => {
-      const draft = makeAnswerDraft(result, question, answerState, value);
-      await persistDraft(result.project_id, draft);
-      const existingIndex = drafts.findIndex(item => item.question_id === questionId);
-      if (existingIndex >= 0) drafts[existingIndex] = draft;
-      else drafts.push(draft);
-      syncQuestionAnswerOccurrences(documentObject, questionId, draft);
-      updateProgress(documentObject, result, drafts);
+      try {
+        const draft = makeAnswerDraft(result, question, answerState, value);
+        await persistDraft(result.project_id, draft);
+        const existingIndex = drafts.findIndex(item => item.question_id === questionId);
+        if (existingIndex >= 0) drafts[existingIndex] = draft;
+        else drafts.push(draft);
+        syncQuestionAnswerOccurrences(documentObject, questionId, draft);
+        updateProgress(documentObject, result, drafts);
+        const status = documentObject.querySelector('.sophie-v1-answer-status');
+        if (status) status.textContent = '';
+      } catch (error) {
+        const status = documentObject.querySelector('.sophie-v1-answer-status');
+        if (status) {
+          status.textContent = `Réponse non enregistrée : ${error instanceof Error ? error.message : String(error)}`;
+        }
+      }
     };
     for (const occurrence of occurrences) {
       occurrence.appendChild(
