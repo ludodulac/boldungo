@@ -1,0 +1,46 @@
+{
+  "schema_version": "brickhouse-benchmark-scene-overlay-0.1",
+  "benchmark_id": "real-house-5",
+  "operation": "update_opening_semantics",
+  "mapping": {
+    "glass_block_opening_id": "right-opening-3",
+    "sidewalk_contact_opening_id": "right-opening-2",
+    "same_opening": false,
+    "basis": [
+      "P2-derived Survey evidence identifies right-opening-2 as the small low opening near the front corner.",
+      "P2-derived Survey evidence identifies right-opening-3 as the farther low opening described as glazed or translucent blocks.",
+      "Human-established truth identifies the farther low opening as glass blocks and the small low opening as meeting local sidewalk grade."
+    ]
+  },
+  "datum_policy": {
+    "WALL_DATUM": "Fixed architectural wall reference; the low wall paint band does not move with terrain.",
+    "TERRAIN_DATUM": "Local sidewalk/road grade rises along the right facade from front toward rear.",
+    "occlusion_rule": "Terrain may progressively occlude an opening but never changes its architectural offset_horizontal, offset_vertical, width, or height."
+  },
+  "opening_updates": [
+    {
+      "opening_id": "right-opening-3",
+      "opening_visual": {
+        "glazing": "glass_block",
+        "pane_layout": "square_grid",
+        "notes": "Human-established glass-block infill on P2. Square glass-block grid is represented visually without asserting a block count or changing the architectural opening rectangle."
+      },
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Human-established identification: the farther low right-facade opening is composed of glass blocks; its existing architectural rectangle is retained."
+        }
+      ]
+    },
+    {
+      "opening_id": "right-opening-2",
+      "local_grade_clearance": 0,
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Human-established relation: the small low opening near the front corner reaches the local sidewalk grade. WALL_DATUM remains fixed and distinct from the rising TERRAIN_DATUM; terrain occlusion does not redefine the opening rectangle."
+        }
+      ]
+    }
+  ]
+}

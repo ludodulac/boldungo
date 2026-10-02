@@ -7,6 +7,7 @@
     "turning-stair-scene-overlay-v0.1.json",
     "relative-level-scene-overlay-v0.1.json",
     "confirmed-opening-semantics-overlay-v0.1.json",
+    "right-facade-grade-opening-scene-overlay-v0.1.json",
     "observed-front-window-surrounds-overlay-v0.1.json",
     "observed-covered-void-wall-overlay-v0.1.json",
     "timber-deck-extent-scene-overlay-v0.1.json",
@@ -15,7 +16,7 @@
   ],
   "retained_metric_values": {
     "volume_main.width_m": 7.2,
-    "volume_main.depth_m": 9.0,
+    "volume_main.depth_m": 9,
     "volume_main.height_m": 6.5243
   },
   "metric_status": {
