@@ -86,6 +86,7 @@ export function createProjectRecord(projectName) {
     clarifications: [],
     human_facts: [],
     analysis_package_exports: [],
+    analysis_result_imports: [],
   };
 }
 
@@ -386,6 +387,48 @@ export async function appendAnalysisPackageExport(projectId, metadata) {
   store.put(updated);
   await transactionDone(tx);
   return updated.analysis_package_exports;
+}
+
+
+export function appendAnalysisResultImportToProjectRecord(project, document, importedAt) {
+  if (!project || typeof project !== 'object') throw new Error('Projet introuvable');
+  if (!document || typeof document !== 'object') throw new Error('ANALYSIS_RESULT requis');
+  if (typeof importedAt !== 'string' || !importedAt.trim()) throw new Error('imported_at requis');
+
+  const history = Array.isArray(project.analysis_result_imports)
+    ? project.analysis_result_imports
+    : [];
+  return {
+    ...project,
+    analysis_result_imports: [
+      ...history,
+      {
+        imported_at: importedAt,
+        document: structuredClone(document),
+      },
+    ],
+  };
+}
+
+
+export async function appendAnalysisResultImport(projectId, document, importedAt = nowIso()) {
+  if (!projectId) throw new Error('Projet introuvable');
+  const database = await openProjectDb();
+  const tx = database.transaction(STORE_PROJECTS, 'readwrite');
+  const store = tx.objectStore(STORE_PROJECTS);
+  const existing = await requestResult(store.get(projectId));
+  if (!existing) {
+    tx.abort();
+    throw new Error('Projet introuvable');
+  }
+
+  const updated = {
+    ...appendAnalysisResultImportToProjectRecord(existing, document, importedAt),
+    updated_at: nowIso(),
+  };
+  store.put(updated);
+  await transactionDone(tx);
+  return updated.analysis_result_imports;
 }
 
 
