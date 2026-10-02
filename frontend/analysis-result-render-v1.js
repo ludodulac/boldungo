@@ -126,6 +126,7 @@ export function renderSophieR001ResultView(
   {
     documentObject = document,
     urlApi = URL,
+    eventTarget = globalThis.window,
   } = {},
 ) {
   const host = documentObject.getElementById(RESULT_VIEW_ID);
@@ -210,6 +211,7 @@ export function renderSophieR001ResultView(
     host.appendChild(globalSection);
   }
 
+  eventTarget?.dispatchEvent?.(new Event('boldungo:analysis-result-v1-rendered'));
   return true;
 }
 
@@ -218,6 +220,7 @@ export async function refreshSophieR001ResultView({
   getSnapshot = getActiveProjectSnapshot,
   documentObject = document,
   urlApi = URL,
+  eventTarget = globalThis.window,
 } = {}) {
   const host = documentObject.getElementById(RESULT_VIEW_ID);
   if (!host) return false;
@@ -233,7 +236,11 @@ export async function refreshSophieR001ResultView({
     return false;
   }
 
-  return renderSophieR001ResultView(snapshot, result, { documentObject, urlApi });
+  return renderSophieR001ResultView(snapshot, result, {
+    documentObject,
+    urlApi,
+    eventTarget,
+  });
 }
 
 
