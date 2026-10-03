@@ -65,7 +65,7 @@ photo_id
 region_hint
 observation_text
 observation_id suit O001, O002, etc.
-photo_id doit être un photo_id fourni dans le manifest et suit FRONT_001, RIGHT_001, LEFT_001 ou REAR_001, etc.
+photo_id doit être un photo_id fourni dans le manifest et respecter le format (FRONT|RIGHT|LEFT|REAR)_ suivi d’au moins trois chiffres.
 region_hint est une chaîne non vide.
 observation_text est une chaîne non vide.
 
