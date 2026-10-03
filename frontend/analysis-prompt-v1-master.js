@@ -317,6 +317,31 @@ VOLUME FERMÉ
 Des parois latérales ou des supports ne prouvent pas la fermeture de l’espace.
 Ne crée une entity VOLUME que si la fermeture physique est positivement démontrée.
 
+PALIER / SURFACE DE CIRCULATION — DÉCOMPOSITION
+Une surface horizontale ou quasi horizontale située à l’arrivée ou au départ d’un escalier peut constituer un objet architectural distinct, même si sa structure porteuse est partiellement masquée.
+Ne fusionne pas automatiquement palier, muret ou parapet, support et volume dans une seule entity.
+Si les preuves distinguent une surface de circulation, représente-la séparément par une entity adaptée, sans exiger qu’un volume fermé existe dessous.
+Distingue, lorsque les preuves le permettent :
+1. la surface de circulation, plateforme ou palier ;
+2. la structure porteuse éventuelle ;
+3. l’espace vide ou ouvert sous-jacent ;
+4. un volume fermé seulement si sa fermeture physique est démontrée.
+La surface de circulation peut donc exister comme objet distinct même lorsque l’espace situé dessous reste ouvert.
+
+RELATIONS TOPOLOGIQUES DES PALIERS
+Quand les observations le soutiennent réellement, préserve explicitement les relations topologiques utiles entre les objets distincts.
+Un escalier CONNECTED_TO un palier doit être représenté si la connexion est visuellement soutenue.
+Un palier CONNECTED_TO le bâtiment doit être représenté si la jonction avec le bâtiment est visuellement soutenue.
+Un garde-corps ou parapet peut être PART_OF ou CONNECTED_TO l’assemblage approprié uniquement si les observations le soutiennent.
+Une plateforme ou un palier peut être ABOVE un sol ou un espace ouvert lorsque cette relation est visible.
+Ne déduis aucune de ces relations par simple proximité, fonction attendue ou commodité de reconstruction.
+Si une connexion exacte est masquée ou non observable, utilise une uncertainty plutôt que d’inventer une relation certaine.
+
+ANTI-RÉGRESSION — PALIERS ET VIDES OUVERTS
+La décomposition d’un palier ne prouve jamais un volume fermé sous celui-ci.
+Elle ne permet jamais de créer une OPENING sans host démontré.
+Elle ne permet jamais de fermer mentalement un vide visible, de compléter une géométrie cachée ou d’inventer une mesure métrique.
+
 RELATIONS
 Les relations relient exactement deux entities distinctes.
 Utilise des IDs R001, R002, etc.
