@@ -20,6 +20,10 @@ from brickhouse.bricks.export import (
 from brickhouse.bricks.instructions import generate_instruction_plan
 from brickhouse.bricks.scale_optimizer import recommend_front_width_studs
 from brickhouse.bricks.scene_chimneys import augment_brick_model_with_scene_chimneys
+from brickhouse.bricks.scene_grade_contact import (
+    augment_brick_model_with_scene_grade_contacts,
+    grade_contact_fidelity_issues,
+)
 from brickhouse.bricks.scene_materials import apply_scene_part_categories
 from brickhouse.bricks.scene_physical_support_gate import evaluate_scene_physical_support_gate
 from brickhouse.bricks.scene_platform_connectivity import augment_brick_model_with_scene_platform_connectivity
@@ -234,7 +238,7 @@ def _metric_uncertainty_issues(scene: ArchitecturalScene) -> list[BrickExportFid
 
 def _partial_fidelity_issues(scene: ArchitecturalScene) -> list[BrickExportFidelityIssue]:
     projection = project_scene_to_building(scene)
-    issues = [*_metric_uncertainty_issues(scene)]
+    issues = [*_metric_uncertainty_issues(scene), *grade_contact_fidelity_issues(scene)]
     exterior_scene, omitted_exterior = _partial_exterior_selection(scene)
     recovered_projection_losses = {
         "platform_not_supported": {item.id for item in exterior_scene.platforms},
@@ -289,6 +293,7 @@ def run_partial_scene_pipeline(scene: ArchitecturalScene, *, front_width_studs: 
     enriched = augment_brick_model_with_scene_chimneys(enriched, exterior_scene, front_width_studs=selected_width)
     enriched = apply_scene_part_categories(enriched, exterior_scene)
     enriched = augment_brick_model_with_scene_shutters(enriched, scene, front_width_studs=selected_width)
+    enriched = augment_brick_model_with_scene_grade_contacts(enriched, scene, front_width_studs=selected_width)
     if enriched.width_studs != selected_width:
         enriched = enriched.model_copy(update={"width_studs": selected_width})
     if enriched is not bundle.brick_model:
