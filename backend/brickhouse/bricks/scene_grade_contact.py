@@ -131,12 +131,12 @@ def resolve_local_grade_contact_raster(
     if not wall_parts:
         raise ValueError("BrickModel has no right-facade wall raster")
 
-    wall_x_values = {part.x_studs for part in wall_parts}
-    if len(wall_x_values) != 1:
-        raise ValueError("right-facade wall raster is not planar in BrickModel")
-    wall_x = next(iter(wall_x_values))
-    wall_y_origin = min(part.y_studs for part in wall_parts)
-    wall_base_z = min(part.z_plates for part in wall_parts)
+    # Wall-depth enrichment may add inward right-facade layers at smaller X.
+    # The exterior wall plane is therefore the maximum X, never an invented offset.
+    wall_x = max(part.x_studs for part in wall_parts)
+    exterior_wall_parts = [part for part in wall_parts if part.x_studs == wall_x]
+    wall_y_origin = min(part.y_studs for part in exterior_wall_parts)
+    wall_base_z = min(part.z_plates for part in exterior_wall_parts)
     opening_bottom = wall_base_z + raster.z_bricks * 3
     if opening_bottom < 1:
         raise ValueError(
