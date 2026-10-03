@@ -1,0 +1,16 @@
+{
+  "schema_version": "boldungo.blind-benchmark-challenge.v1",
+  "benchmark_id": "REAL-HOUSE-5-P2-BLIND",
+  "project_id": "REAL-HOUSE-5-P2-BLIND",
+  "agent_id": "SOPHIE",
+  "agent_display_name": "Sophie",
+  "round_id": "R001",
+  "photo": {
+    "source_path": "../02-original.jpg",
+    "photo_id": "RIGHT_001",
+    "primary_face": "RIGHT",
+    "original_filename": "02-original.jpg",
+    "note": null
+  },
+  "prompt_path": "prompt.txt"
+}
