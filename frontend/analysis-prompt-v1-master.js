@@ -75,7 +75,7 @@ source_round_id
 source_question_id
 source_package_id
 fact_text
-human_fact_id suit HF001, HF002, etc.
+human_fact_id commence par HF et se termine par au moins trois chiffres.
 source_round_id suit R001, R002, etc.
 source_question_id suit Q001, Q002, etc.
 source_package_id suit exactement PKG_<UUIDv4> canonique.
@@ -176,7 +176,7 @@ allow_unknown est un booléen obligatoire : true ou false, jamais une chaîne.
 
 FORMAT DES IDS — OBLIGATOIRE
 Observation : O001, O002, ...
-Human fact : HF001, HF002, ...
+Human fact : HF suivi d’au moins trois chiffres.
 Entity : E001, E002, ...
 Relation : R001, R002, ...
 Uncertainty : U001, U002, ...
