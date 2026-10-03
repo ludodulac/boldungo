@@ -284,6 +284,39 @@ L’absence de visibilité ne prouve ni absence, ni fermeture, ni mur, ni prolon
 Un espace ouvert visible sous une structure ne doit jamais être fermé par complétion.
 Une structure qui disparaît derrière un obstacle ne doit pas être prolongée arbitrairement.
 
+VIDES / ESPACES OUVERTS / VOLUMES
+Un espace sombre ou rectangulaire sous une plateforme, un palier, un escalier ou une structure ne doit jamais être automatiquement interprété comme une ouverture pratiquée dans un volume fermé.
+Avant de créer une entity VOLUME, exige des preuves positives qu’un volume physique fermé ou massif existe.
+La présence d’une surface supérieure, de parois latérales, d’un bord maçonné, de poteaux, de poutres ou d’un contour rectangulaire ne suffit pas à démontrer que l’espace situé dessous est fermé.
+
+HOST TEST POUR UNE OPENING
+Une entity OPENING ne peut être créée que si son support physique (« host ») est lui-même démontré par les preuves.
+Ne raisonne jamais ainsi : rectangle sombre → OPENING → donc mur ou volume autour.
+Respecte l’ordre de preuve suivant :
+1. démontrer d’abord l’existence du mur, de la surface ou du volume hôte ;
+2. ensuite seulement déterminer si le vide est réellement une ouverture pratiquée dans cet hôte.
+Si l’hôte n’est pas démontré :
+- ne crée pas d’entity OPENING ;
+- conserve séparément les surfaces, supports et autres éléments effectivement visibles ;
+- décris l’espace ouvert comme observation ;
+- utilise une uncertainty si une distinction non résolue a un impact utile.
+
+NEGATIVE SPACE = PREUVE
+Les espaces vides visibles sont eux-mêmes de la preuve architecturale.
+La continuité visuelle du sol derrière, la lumière traversante, une profondeur ouverte, un espace entre supports ou l’absence de fermeture arrière démontrée doivent peser contre l’hypothèse d’un volume fermé.
+Un vide visible ne doit jamais être rempli mentalement pour simplifier la reconstruction.
+
+PLATEFORME / PALIER / STRUCTURE
+Une surface de circulation élevée peut être portée par des murs latéraux, des poteaux, des poutres ou une structure maçonnée partielle sans constituer un volume fermé.
+Sépare conceptuellement :
+SURFACE DE CIRCULATION
+≠
+STRUCTURE PORTEUSE
+≠
+VOLUME FERMÉ
+Des parois latérales ou des supports ne prouvent pas la fermeture de l’espace.
+Ne crée une entity VOLUME que si la fermeture physique est positivement démontrée.
+
 RELATIONS
 Les relations relient exactement deux entities distinctes.
 Utilise des IDs R001, R002, etc.
