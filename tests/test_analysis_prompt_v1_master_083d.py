@@ -280,6 +280,7 @@ def test_master_variant_does_not_change_blind_evaluator_or_challenge_identity() 
 def test_master_blind_package_contains_no_evaluator_truth_payload() -> None:
     _, archive = _master_package()
     with archive:
+        manifest = json.loads(archive.read("manifest.json"))
         searchable = b"\n".join(
             name.encode("utf-8") + b"\n" + archive.read(name)
             for name in archive.namelist()
@@ -289,8 +290,7 @@ def test_master_blind_package_contains_no_evaluator_truth_payload() -> None:
         assert marker.casefold() not in searchable
 
     # The benchmark name is intentionally present only as technical manifest identity.
-    manifest = json.loads(searchable.split("prompt.txt", 1)[0].split("manifest.json", 1)[1])
-    assert manifest["project_id"].casefold() == "real-house-5-p2-blind"
+    assert manifest["project_id"] == "REAL-HOUSE-5-P2-BLIND"
 
     # human_facts is required as a V1 family name; the package must not contain
     # any actual prior human fact payload or provenance.
