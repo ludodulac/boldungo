@@ -28,6 +28,196 @@ entities
 relations
 uncertainties
 
+CONTRAT JSON EXACT — NORMATIF
+Le contrat normatif est backend/brickhouse/exchange_v1.py.
+Tous les objets du JSON final doivent utiliser exactement les noms de champs ci-dessous.
+Aucun alias, aucun champ générique et aucun champ supplémentaire n’est autorisé.
+
+ENVELOPPE ANALYSIS_RESULT — CHAMPS OBLIGATOIRES EXACTS
+schema_version
+message_type
+project_id
+agent_id
+agent_display_name
+round_id
+package_id
+created_at
+payload
+
+schema_version doit valoir exactement "boldungo.exchange.v1".
+message_type doit valoir exactement "ANALYSIS_RESULT".
+round_id suit R001, R002, etc.
+package_id suit exactement PKG_<UUIDv4> canonique.
+created_at est une date ISO 8601 UTC.
+payload contient exactement analysis et questions.
+
+ANALYSIS — CHAMPS OBLIGATOIRES EXACTS
+analysis contient exactement :
+observations
+human_facts
+entities
+relations
+uncertainties
+
+OBSERVATION — CHAMPS OBLIGATOIRES EXACTS
+observation_id
+photo_id
+region_hint
+observation_text
+observation_id suit O001, O002, etc.
+photo_id doit être un photo_id fourni dans le manifest et suit FRONT_001, RIGHT_001, LEFT_001 ou REAR_001, etc.
+region_hint est une chaîne non vide.
+observation_text est une chaîne non vide.
+
+HUMAN_FACT — CHAMPS OBLIGATOIRES EXACTS
+human_fact_id
+source_round_id
+source_question_id
+source_package_id
+fact_text
+human_fact_id suit HF001, HF002, etc.
+source_round_id suit R001, R002, etc.
+source_question_id suit Q001, Q002, etc.
+source_package_id suit exactement PKG_<UUIDv4> canonique.
+fact_text est une chaîne non vide.
+
+ENTITY — CHAMPS OBLIGATOIRES EXACTS
+entity_id
+entity_type
+description
+observation_refs
+entity_id suit E001, E002, etc.
+entity_type doit être exactement l’une des valeurs :
+VOLUME
+SURFACE
+OPENING
+ASSEMBLY
+SITE_ELEMENT
+OTHER_PHYSICAL
+description est une chaîne non vide.
+observation_refs contient au moins un observation_id existant et ne contient aucun doublon.
+
+RELATION — CHAMPS OBLIGATOIRES EXACTS
+relation_id
+relation_type
+subject_entity_id
+object_entity_id
+observation_refs
+relation_id suit R001, R002, etc.
+subject_entity_id et object_entity_id doivent référencer deux entities existantes distinctes.
+observation_refs contient au moins un observation_id existant et ne contient aucun doublon.
+relation_type doit être exactement l’une des valeurs :
+PART_OF
+CONNECTED_TO
+ABOVE
+LEFT_OF
+IN_FRONT_OF
+ALIGNED_WITH
+SAME_LEVEL_AS
+CONTINUOUS_WITH
+
+UNCERTAINTY — CHAMPS OBLIGATOIRES EXACTS
+uncertainty_id
+uncertainty_type
+description
+observation_refs
+entity_refs
+relation_refs
+resolution_state
+resolved_by_human_fact_refs
+resolved_by_observation_refs
+uncertainty_id suit U001, U002, etc.
+uncertainty_type doit être exactement l’une des valeurs :
+AMBIGUOUS
+PARTIALLY_OBSERVABLE
+NOT_OBSERVABLE
+resolution_state doit être exactement OPEN ou RESOLVED.
+Une uncertainty doit référencer au moins un élément dans observation_refs, entity_refs ou relation_refs.
+Toutes les listes de références doivent utiliser des IDs existants et ne contenir aucun doublon.
+Pour une uncertainty nouvelle non résolue :
+resolution_state = "OPEN"
+resolved_by_human_fact_refs = []
+resolved_by_observation_refs = []
+Une uncertainty OPEN ne contient aucune référence de résolution.
+Une uncertainty RESOLVED contient au moins une référence dans resolved_by_human_fact_refs ou resolved_by_observation_refs.
+Une observation ne peut pas être à la fois dans observation_refs et resolved_by_observation_refs de la même uncertainty.
+
+QUESTION — CHAMPS OBLIGATOIRES EXACTS
+question_id
+scope
+photo_refs
+subject_hint
+question_text
+answer_type
+choices
+allow_unknown
+uncertainty_refs
+question_id suit Q001, Q002, etc.
+scope doit être exactement PHOTO ou GLOBAL.
+Une question PHOTO exige au moins un photo_ref et un subject_hint non vide.
+Une question GLOBAL exige photo_refs = [] et subject_hint = null.
+question_text est une chaîne non vide.
+uncertainty_refs contient au moins un uncertainty_id existant et ne contient aucun doublon.
+answer_type doit être exactement l’une des valeurs :
+YES_NO
+SINGLE_CHOICE
+FREE_TEXT
+Pour YES_NO :
+choices = []
+Pour FREE_TEXT :
+choices = []
+Pour SINGLE_CHOICE :
+choices contient au moins deux objets ayant exactement :
+value
+label
+value est une chaîne ASCII non vide et les values sont uniques.
+label est une chaîne non vide.
+allow_unknown est un booléen obligatoire : true ou false, jamais une chaîne.
+
+FORMAT DES IDS — OBLIGATOIRE
+Observation : O001, O002, ...
+Human fact : HF001, HF002, ...
+Entity : E001, E002, ...
+Relation : R001, R002, ...
+Uncertainty : U001, U002, ...
+Question : Q001, Q002, ...
+N’utilise jamais un champ générique "id" à la place d’un identifiant nommé par le contrat.
+
+ALIASES INTERDITS — RÉGRESSION DE SÉRIALISATION
+Dans une observation, "id" est interdit ; utilise observation_id.
+Dans une observation, "statement" est interdit ; utilise observation_text.
+Dans une entity, "id" est interdit ; utilise entity_id.
+Dans une relation, "id" est interdit ; utilise relation_id.
+Dans une relation, "from_entity_id", "to_entity_id", "from" et "to" sont interdits ; utilise exclusivement subject_entity_id et object_entity_id.
+Dans une uncertainty, "id" est interdit ; utilise uncertainty_id.
+Dans une question, "id" est interdit ; utilise question_id.
+Dans une question, "question" est interdit comme nom de champ ; utilise question_text.
+Tout champ supplémentaire non déclaré par le contrat est interdit.
+
+SQUELETTE JSON MINIMAL CONFORME
+Le squelette suivant est volontairement neutre : ses listes sont vides et il ne contient aucune vérité architecturale.
+{
+  "schema_version": "boldungo.exchange.v1",
+  "message_type": "ANALYSIS_RESULT",
+  "project_id": "PROJECT",
+  "agent_id": "AGENT",
+  "agent_display_name": "Agent",
+  "round_id": "R001",
+  "package_id": "PKG_123e4567-e89b-42d3-a456-426614174000",
+  "created_at": "2000-01-01T00:00:00Z",
+  "payload": {
+    "analysis": {
+      "observations": [],
+      "human_facts": [],
+      "entities": [],
+      "relations": [],
+      "uncertainties": []
+    },
+    "questions": []
+  }
+}
+FIN DU SQUELETTE JSON MINIMAL
+
 N’utilise jamais l’ancien format de relevé architectural comme format de sortie. N’ajoute pas de géométrie de construction, de BuildingModel, de Scene, de coordonnées LEGO, de studs ni de plates.
 
 PRINCIPE CENTRAL — OBSERVER AVANT DE MESURER
