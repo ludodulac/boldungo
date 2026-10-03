@@ -1,0 +1,64 @@
+{
+  "schema_version": "boldungo.blind-benchmark-evaluator.v0.1",
+  "benchmark_id": "REAL-HOUSE-5-P2-BLIND",
+  "photo_id": "RIGHT_001",
+  "evaluator_only": true,
+  "visible_expected": [
+    {
+      "id": "p2-low-opening-near-front-corner",
+      "expectation": "Une petite ouverture basse est visible près de l'angle avant de la face droite.",
+      "classification": "PHOTO_OBSERVABLE"
+    },
+    {
+      "id": "p2-second-low-opening-farther-along-wall",
+      "expectation": "Une autre ouverture basse est visible plus loin sur le mur droit.",
+      "classification": "PHOTO_OBSERVABLE"
+    },
+    {
+      "id": "p2-farther-opening-translucent-block-composition",
+      "expectation": "L'ouverture basse plus éloignée présente une composition en blocs translucides / pavés de verre.",
+      "classification": "PHOTO_OBSERVABLE"
+    },
+    {
+      "id": "p2-site-grade-rises-along-right-face",
+      "expectation": "Le terrain / trottoir / rue présente une montée le long de la face droite.",
+      "classification": "PHOTO_OBSERVABLE"
+    }
+  ],
+  "photo_insufficient": [
+    {
+      "id": "p2-exact-low-opening-local-grade-relation",
+      "statement": "La relation exacte entre une ouverture basse et le niveau local du trottoir peut rester incertaine si le contact n'est pas visuellement déterminable avec suffisamment de certitude.",
+      "classification": "PHOTO_INSUFFICIENT",
+      "question_allowed_if_material_and_human_knowable": true
+    },
+    {
+      "id": "p2-grade-metric-endpoints",
+      "statement": "Les élévations métriques aux extrémités et l'étendue extérieure du profil ne sont pas déterminables depuis P2 seule.",
+      "classification": "PHOTO_INSUFFICIENT",
+      "question_allowed_if_material_and_human_knowable": true
+    }
+  ],
+  "forbidden_inference": [
+    {
+      "id": "p2-no-exact-grade-metric",
+      "statement": "Ne pas inventer une pente métrique exacte, une élévation de début, une élévation de fin ou une étendue extérieure.",
+      "classification": "NON_PHOTO_FACT"
+    },
+    {
+      "id": "p2-no-lego-measure",
+      "statement": "Ne pas inventer de valeur LEGO, de nombre de studs ni de nombre de plates.",
+      "classification": "NON_PHOTO_FACT"
+    },
+    {
+      "id": "p2-no-canonical-opening-identity",
+      "statement": "Ne pas inventer ou reprendre les identifiants d'ouverture canoniques du corrigé architectural.",
+      "classification": "NON_PHOTO_FACT"
+    }
+  ],
+  "evaluation_policy": {
+    "semantic_matching": "manual_followup",
+    "keyword_only_matching_forbidden": true,
+    "justified_uncertainty_or_question_is_not_vision_failure": true
+  }
+}

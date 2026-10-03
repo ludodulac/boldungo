@@ -1,0 +1,21 @@
+BOLDÜNGO — analyse visuelle aveugle V1
+
+Analyse uniquement le manifest et la photo originale fournis dans ce package.
+N'utilise aucune connaissance préalable du bâtiment, aucun autre fichier et aucune supposition provenant d'un benchmark externe.
+
+Produis un document ANALYSIS_RESULT conforme à schema_version = "boldungo.exchange.v1" pour les identités exactes du manifest.
+
+Travaille uniquement à partir de ce qui est réellement visible dans la photo :
+- crée des observations visuelles locales et rattache-les au photo_id du manifest ;
+- reconnais prudemment les entités physiques lorsque l'image les justifie ;
+- exprime uniquement les relations spatiales ou topologiques réellement soutenues par l'image ;
+- conserve explicitement les ambiguïtés, zones partiellement observables et éléments non observables comme uncertainties ;
+- pose une question seulement si l'information a un impact matériel, si la photo ne suffit pas et si un humain peut raisonnablement connaître la réponse.
+
+Une question PHOTO doit référencer le photo_id concerné. Une question GLOBAL ne doit être utilisée que si elle ne dépend pas d'une région visuelle particulière.
+
+N'invente jamais ce qui est caché ou non observable.
+Ne déduis pas de dimensions métriques sans preuve suffisante.
+Ne produis aucune géométrie de construction ni aucune représentation LEGO.
+
+Réponds uniquement avec le JSON ANALYSIS_RESULT V1.
