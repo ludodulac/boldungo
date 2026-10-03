@@ -23,6 +23,11 @@ _BENCHMARK_ROOT = (
 )
 _CHALLENGE_ROOT = _BENCHMARK_ROOT / "blind-p2"
 _CHALLENGE_CONFIG = _CHALLENGE_ROOT / "challenge-input.json"
+_MASTER_PROMPT_SOURCE = (
+    Path(__file__).resolve().parents[2]
+    / "frontend"
+    / "analysis-prompt-v1-master.js"
+)
 
 _ALLOWED_TOP_LEVEL = {
     "schema_version",
@@ -62,7 +67,23 @@ def _load_challenge() -> dict:
     return document
 
 
-def build_real_house_5_p2_blind_package(*, package_id: str) -> BuiltAnalysisPackage:
+def _load_master_prompt_v1() -> str:
+    source = _MASTER_PROMPT_SOURCE.read_text(encoding="utf-8")
+    prefix = "export const MASTER_SOPHIE_PROMPT_V1 = `"
+    suffix = "`;\n"
+    if not source.startswith(prefix) or not source.endswith(suffix):
+        raise ValueError("MASTER_SOPHIE_PROMPT_V1 must remain one static template literal export")
+    prompt = source[len(prefix) : -len(suffix)]
+    if "${" in prompt or "`" in prompt:
+        raise ValueError("MASTER_SOPHIE_PROMPT_V1 must not contain interpolation or nested template literals")
+    return prompt
+
+
+def build_real_house_5_p2_blind_package(
+    *,
+    package_id: str,
+    prompt_variant: str = "minimal",
+) -> BuiltAnalysisPackage:
     """Build the exact Sophie R001 blind package without reading evaluator-only data."""
     challenge = _load_challenge()
     photo_spec = challenge["photo"]
@@ -77,7 +98,12 @@ def build_real_house_5_p2_blind_package(*, package_id: str) -> BuiltAnalysisPack
         raise ValueError("blind challenge prompt path escaped challenge input")
 
     photo_bytes = source_path.read_bytes()
-    prompt_text = prompt_path.read_text(encoding="utf-8")
+    if prompt_variant == "minimal":
+        prompt_text = prompt_path.read_text(encoding="utf-8")
+    elif prompt_variant == "master":
+        prompt_text = _load_master_prompt_v1()
+    else:
+        raise ValueError("prompt_variant must be 'minimal' or 'master'")
 
     return build_analysis_package_v1(
         project_id=challenge["project_id"],
