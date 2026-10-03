@@ -5,6 +5,15 @@ from pathlib import Path
 from zipfile import ZipFile
 
 from brickhouse.blind_benchmark_v1 import build_real_house_5_p2_blind_package
+from brickhouse.exchange_v1 import (
+    Entity,
+    HumanFact,
+    Observation,
+    Question,
+    Relation,
+    Uncertainty,
+    validate_exchange_v1,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -297,3 +306,109 @@ def test_master_blind_package_contains_no_evaluator_truth_payload() -> None:
     assert "hf001" not in searchable
     assert '"human_fact_id":' not in searchable
     assert '"fact_text":' not in searchable
+
+
+def _assert_exact_required_fields(prompt: str, heading: str, model) -> None:
+    marker = f"{heading} — CHAMPS OBLIGATOIRES EXACTS\n"
+    start = prompt.index(marker) + len(marker)
+    lines = prompt[start:].splitlines()
+    declared = []
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            break
+        if stripped in model.model_fields:
+            declared.append(stripped)
+        else:
+            break
+    assert declared == list(model.model_fields)
+
+
+def test_083f_master_prompt_declares_exact_backend_object_fields() -> None:
+    prompt = _master_prompt_from_package()
+
+    _assert_exact_required_fields(prompt, "OBSERVATION", Observation)
+    _assert_exact_required_fields(prompt, "HUMAN_FACT", HumanFact)
+    _assert_exact_required_fields(prompt, "ENTITY", Entity)
+    _assert_exact_required_fields(prompt, "RELATION", Relation)
+    _assert_exact_required_fields(prompt, "UNCERTAINTY", Uncertainty)
+    _assert_exact_required_fields(prompt, "QUESTION", Question)
+
+
+def test_083f_master_prompt_forbids_first_blind_run_aliases() -> None:
+    prompt = _master_prompt_from_package()
+
+    required_bans = (
+        'N’utilise jamais un champ générique "id"',
+        'Dans une observation, "id" est interdit ; utilise observation_id.',
+        'Dans une observation, "statement" est interdit ; utilise observation_text.',
+        'Dans une entity, "id" est interdit ; utilise entity_id.',
+        'Dans une relation, "id" est interdit ; utilise relation_id.',
+        '"from_entity_id", "to_entity_id", "from" et "to" sont interdits',
+        'utilise exclusivement subject_entity_id et object_entity_id.',
+        'Dans une uncertainty, "id" est interdit ; utilise uncertainty_id.',
+        'Dans une question, "id" est interdit ; utilise question_id.',
+        'Dans une question, "question" est interdit comme nom de champ ; utilise question_text.',
+        "Tout champ supplémentaire non déclaré par le contrat est interdit.",
+    )
+    for marker in required_bans:
+        assert marker in prompt
+
+
+def test_083f_master_prompt_declares_exact_question_answer_contract() -> None:
+    prompt = _master_prompt_from_package()
+
+    for answer_type in ("YES_NO", "SINGLE_CHOICE", "FREE_TEXT"):
+        assert answer_type in prompt
+
+    assert 'Pour YES_NO :\nchoices = []' in prompt
+    assert 'Pour FREE_TEXT :\nchoices = []' in prompt
+    assert "Pour SINGLE_CHOICE :" in prompt
+    assert "choices contient au moins deux objets ayant exactement :" in prompt
+    assert "value est une chaîne ASCII non vide" in prompt
+    assert "allow_unknown est un booléen obligatoire : true ou false" in prompt
+
+
+def test_083f_master_prompt_declares_open_uncertainty_defaults() -> None:
+    prompt = _master_prompt_from_package()
+
+    expected = (
+        'Pour une uncertainty nouvelle non résolue :\n'
+        'resolution_state = "OPEN"\n'
+        'resolved_by_human_fact_refs = []\n'
+        'resolved_by_observation_refs = []'
+    )
+    assert expected in prompt
+
+
+def test_083f_neutral_json_skeleton_is_valid_exchange_v1_analysis_result() -> None:
+    prompt = _master_prompt_from_package()
+    heading = "SQUELETTE JSON MINIMAL CONFORME"
+    end_marker = "FIN DU SQUELETTE JSON MINIMAL"
+
+    section = prompt[prompt.index(heading):prompt.index(end_marker)]
+    json_start = section.index("{")
+    skeleton = json.loads(section[json_start:])
+
+    assert skeleton["payload"]["analysis"] == {
+        "observations": [],
+        "human_facts": [],
+        "entities": [],
+        "relations": [],
+        "uncertainties": [],
+    }
+    assert skeleton["payload"]["questions"] == []
+    assert validate_exchange_v1(skeleton) == {
+        "status": "VALID ANALYSIS_RESULT",
+        "reason": None,
+    }
+
+
+def test_083f_neutral_json_skeleton_contains_no_architectural_truth() -> None:
+    prompt = _master_prompt_from_package()
+    heading = "SQUELETTE JSON MINIMAL CONFORME"
+    end_marker = "FIN DU SQUELETTE JSON MINIMAL"
+    section = prompt[prompt.index(heading):prompt.index(end_marker)].casefold()
+
+    for marker in PROMPT_BENCHMARK_LEAK_MARKERS:
+        assert marker.casefold() not in section
