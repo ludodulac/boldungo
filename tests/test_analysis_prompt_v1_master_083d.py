@@ -30,7 +30,7 @@ HISTORICAL_SOURCES = (
     "brickhouse-survey-multiview-identity-audit-v39.txt",
 )
 
-BENCHMARK_LEAK_MARKERS = (
+PROMPT_BENCHMARK_LEAK_MARKERS = (
     "real-house-5",
     "right-opening-",
     "front_001",
@@ -45,6 +45,10 @@ BENCHMARK_LEAK_MARKERS = (
     "montee le long de la face droite",
     "terrain montant vers l'arrière",
     "terrain montant vers l’arrière",
+)
+
+PACKAGE_TRUTH_LEAK_MARKERS = tuple(
+    marker for marker in PROMPT_BENCHMARK_LEAK_MARKERS if marker != "real-house-5"
 )
 
 OLD_SURVEY_OUTPUT_MARKERS = (
@@ -193,7 +197,7 @@ def test_master_prompt_has_no_real_house_or_human_truth_leak() -> None:
     prompt = _master_prompt_from_package().casefold()
     source = MASTER_SOURCE.read_text(encoding="utf-8").casefold()
 
-    for marker in BENCHMARK_LEAK_MARKERS:
+    for marker in PROMPT_BENCHMARK_LEAK_MARKERS:
         assert marker.casefold() not in prompt
         assert marker.casefold() not in source
 
@@ -281,8 +285,12 @@ def test_master_blind_package_contains_no_evaluator_truth_payload() -> None:
             for name in archive.namelist()
         ).decode("utf-8", errors="ignore").casefold()
 
-    for marker in BENCHMARK_LEAK_MARKERS:
+    for marker in PACKAGE_TRUTH_LEAK_MARKERS:
         assert marker.casefold() not in searchable
+
+    # The benchmark name is intentionally present only as technical manifest identity.
+    manifest = json.loads(searchable.split("prompt.txt", 1)[0].split("manifest.json", 1)[1])
+    assert manifest["project_id"].casefold() == "real-house-5-p2-blind"
 
     # human_facts is required as a V1 family name; the package must not contain
     # any actual prior human fact payload or provenance.
