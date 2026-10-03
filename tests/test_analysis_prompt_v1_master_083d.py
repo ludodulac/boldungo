@@ -292,8 +292,8 @@ def test_master_blind_package_contains_no_evaluator_truth_payload() -> None:
     # The benchmark name is intentionally present only as technical manifest identity.
     assert manifest["project_id"] == "REAL-HOUSE-5-P2-BLIND"
 
-    # human_facts is required as a V1 family name; the package must not contain
-    # any actual prior human fact payload or provenance.
+    # human_facts and its provenance field names are required generic V1
+    # instructions; no concrete human-fact record or evaluator truth may leak.
     assert "hf001" not in searchable
-    assert "source_question_id" not in searchable
-    assert "source_package_id" in searchable  # generic contract instruction only
+    assert '"human_fact_id":' not in searchable
+    assert '"fact_text":' not in searchable
