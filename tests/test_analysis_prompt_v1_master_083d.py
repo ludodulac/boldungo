@@ -462,3 +462,66 @@ def test_083i_master_prompt_side_walls_or_supports_do_not_imply_closure() -> Non
     assert "ne suffit pas à démontrer que l’espace situé dessous est fermé" in prompt
     assert "Des parois latérales ou des supports ne prouvent pas la fermeture de l’espace." in prompt
 
+def test_083k_master_prompt_separates_landing_surface_from_support_structure() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "PALIER / SURFACE DE CIRCULATION — DÉCOMPOSITION" in prompt
+    assert "peut constituer un objet architectural distinct" in prompt
+    assert "Ne fusionne pas automatiquement palier, muret ou parapet, support et volume" in prompt
+    assert "représente-la séparément par une entity adaptée" in prompt
+    assert "la surface de circulation, plateforme ou palier" in prompt
+    assert "la structure porteuse éventuelle" in prompt
+    assert "l’espace vide ou ouvert sous-jacent" in prompt
+
+
+def test_083k_master_prompt_landing_may_exist_without_enclosed_volume_below() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "sans exiger qu’un volume fermé existe dessous" in prompt
+    assert "La surface de circulation peut donc exister comme objet distinct" in prompt
+    assert "même lorsque l’espace situé dessous reste ouvert" in prompt
+    assert "un volume fermé seulement si sa fermeture physique est démontrée" in prompt
+
+
+def test_083k_master_prompt_preserves_stair_to_landing_relation_when_evidenced() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "RELATIONS TOPOLOGIQUES DES PALIERS" in prompt
+    assert "Un escalier CONNECTED_TO un palier doit être représenté" in prompt
+    assert "si la connexion est visuellement soutenue" in prompt
+
+
+def test_083k_master_prompt_preserves_landing_to_building_relation_when_evidenced() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "Un palier CONNECTED_TO le bâtiment doit être représenté" in prompt
+    assert "si la jonction avec le bâtiment est visuellement soutenue" in prompt
+
+
+def test_083k_master_prompt_hidden_connection_becomes_uncertainty_not_invented_relation() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "Ne déduis aucune de ces relations par simple proximité" in prompt
+    assert "Si une connexion exacte est masquée ou non observable" in prompt
+    assert "utilise une uncertainty plutôt que d’inventer une relation certaine" in prompt
+
+
+def test_083k_master_prompt_keeps_all_083i_open_void_protections() -> None:
+    prompt = _master_prompt_from_package()
+
+    required_083i = (
+        "VIDES / ESPACES OUVERTS / VOLUMES",
+        "Avant de créer une entity VOLUME, exige des preuves positives",
+        "HOST TEST POUR UNE OPENING",
+        "Une entity OPENING ne peut être créée que si son support physique",
+        "NEGATIVE SPACE = PREUVE",
+        "Les espaces vides visibles sont eux-mêmes de la preuve architecturale.",
+        "PLATEFORME / PALIER / STRUCTURE",
+        "Des parois latérales ou des supports ne prouvent pas la fermeture de l’espace.",
+        "La décomposition d’un palier ne prouve jamais un volume fermé sous celui-ci.",
+        "Elle ne permet jamais de créer une OPENING sans host démontré.",
+        "Elle ne permet jamais de fermer mentalement un vide visible",
+    )
+    for marker in required_083i:
+        assert marker in prompt
+
