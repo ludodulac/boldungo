@@ -412,3 +412,53 @@ def test_083f_neutral_json_skeleton_contains_no_architectural_truth() -> None:
 
     for marker in PROMPT_BENCHMARK_LEAK_MARKERS:
         assert marker.casefold() not in section
+
+def test_083i_master_prompt_preserves_open_voids_instead_of_inventing_closed_volume() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "VIDES / ESPACES OUVERTS / VOLUMES" in prompt
+    assert "ne doit jamais être automatiquement interprété comme une ouverture pratiquée dans un volume fermé" in prompt
+    assert "Avant de créer une entity VOLUME, exige des preuves positives" in prompt
+    assert "Un vide visible ne doit jamais être rempli mentalement" in prompt
+
+
+def test_083i_master_prompt_requires_demonstrated_host_before_opening() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "HOST TEST POUR UNE OPENING" in prompt
+    assert "Une entity OPENING ne peut être créée que si son support physique" in prompt
+    assert "rectangle sombre → OPENING → donc mur ou volume autour" in prompt
+    assert "démontrer d’abord l’existence du mur, de la surface ou du volume hôte" in prompt
+    assert "Si l’hôte n’est pas démontré" in prompt
+    assert "ne crée pas d’entity OPENING" in prompt
+
+
+def test_083i_master_prompt_treats_negative_space_as_architectural_evidence() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "NEGATIVE SPACE = PREUVE" in prompt
+    assert "Les espaces vides visibles sont eux-mêmes de la preuve architecturale." in prompt
+    assert "La continuité visuelle du sol derrière" in prompt
+    assert "la lumière traversante" in prompt
+    assert "un espace entre supports" in prompt
+    assert "doivent peser contre l’hypothèse d’un volume fermé" in prompt
+
+
+def test_083i_master_prompt_platform_does_not_imply_enclosed_volume() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "PLATEFORME / PALIER / STRUCTURE" in prompt
+    assert "sans constituer un volume fermé" in prompt
+    assert "SURFACE DE CIRCULATION\n≠\nSTRUCTURE PORTEUSE\n≠\nVOLUME FERMÉ" in prompt
+    assert "Ne crée une entity VOLUME que si la fermeture physique est positivement démontrée." in prompt
+
+
+def test_083i_master_prompt_side_walls_or_supports_do_not_imply_closure() -> None:
+    prompt = _master_prompt_from_package()
+
+    assert "parois latérales" in prompt
+    assert "poteaux" in prompt
+    assert "poutres" in prompt
+    assert "ne suffit pas à démontrer que l’espace situé dessous est fermé" in prompt
+    assert "Des parois latérales ou des supports ne prouvent pas la fermeture de l’espace." in prompt
+
