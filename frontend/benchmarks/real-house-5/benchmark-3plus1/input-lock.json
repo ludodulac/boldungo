@@ -79,5 +79,21 @@
     "prior analysis results",
     "Scene, LEGO or downstream reconstruction artifacts",
     "run-specific A/B/C provenance"
-  ]
+  ],
+  "analyst_zip": {
+    "path": "frontend/benchmarks/real-house-5/benchmark-3plus1/analyst-input.zip",
+    "sha256": "d67aa1e3755de05faca509524393b09ef22305d4eaf6d34db8f3179563b63985",
+    "shared_by": [
+      "RUN_A",
+      "RUN_B",
+      "RUN_C"
+    ],
+    "reuse_policy": "RUN_A, RUN_B and RUN_C must reuse this exact committed ZIP artifact without per-run regeneration."
+  },
+  "result_slots": {
+    "RUN_A": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_A/analysis-result.json",
+    "RUN_B": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_B/analysis-result.json",
+    "RUN_C": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_C/analysis-result.json",
+    "ARBITER": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/ARBITER/arbitration-result.json"
+  }
 }

@@ -20,9 +20,12 @@ ANALYST_INPUT = CONTROL / "analyst-input"
 LOCK = CONTROL / "input-lock.json"
 MASTER = ROOT / "frontend" / "analysis-prompt-v1-master.js"
 CANONICAL_MANIFEST = BENCHMARK / "manifest.json"
+ANALYST_ZIP = CONTROL / "analyst-input.zip"
+EXCHANGE_V1 = ROOT / "backend" / "brickhouse" / "exchange_v1.py"
 
 SOURCE_MAIN = "35d9bd979232d525bfd800b362e2fe5aaefacea3"
 MASTER_BLOB = "dbc0a215a581a4bf96f7d07b12b063f5ba569fcf"
+EXCHANGE_V1_BLOB = "76792a63abf107b58cd0820a1635b669b35176f4"
 PACKAGE_ID = "PKG_085a085a-085a-4085-a085-a085a085a085"
 
 PHOTO_MAPPING = [
@@ -223,3 +226,92 @@ def test_085a_frozen_identity_accepts_a_valid_exchange_v1_analysis_result() -> N
         "status": "VALID ANALYSIS_RESULT",
         "reason": None,
     }
+
+
+def test_085a1_final_zip_is_hash_locked_and_byte_exact() -> None:
+    lock = json.loads(LOCK.read_text(encoding="utf-8"))
+    zip_meta = lock["analyst_zip"]
+
+    assert zip_meta["path"] == (
+        "frontend/benchmarks/real-house-5/benchmark-3plus1/analyst-input.zip"
+    )
+    assert zip_meta["shared_by"] == ["RUN_A", "RUN_B", "RUN_C"]
+    assert ANALYST_ZIP.is_file()
+    assert hashlib.sha256(ANALYST_ZIP.read_bytes()).hexdigest() == zip_meta["sha256"]
+
+    allowed = {
+        "manifest.json",
+        "prompt.txt",
+        "photos/FRONT_001.jpg",
+        "photos/RIGHT_001.jpg",
+        "photos/LEFT_001.jpg",
+        "photos/LEFT_002.jpg",
+        "photos/REAR_001.jpg",
+    }
+    with ZipFile(ANALYST_ZIP, "r") as archive:
+        assert len(archive.namelist()) == 7
+        assert set(archive.namelist()) == allowed
+        for name in allowed:
+            assert archive.read(name) == (ANALYST_INPUT / name).read_bytes()
+
+        package_names = "\n".join(archive.namelist()).casefold()
+        package_text = (
+            archive.read("manifest.json") + b"\n" + archive.read("prompt.txt")
+        ).decode("utf-8").casefold()
+        for marker in ("run_a", "run_b", "run_c", "arbiter"):
+            assert marker not in package_names
+            assert marker not in package_text
+
+
+def test_085a1_result_slots_are_explicit_distinct_and_outside_analyst_input() -> None:
+    lock = json.loads(LOCK.read_text(encoding="utf-8"))
+    slots = lock["result_slots"]
+
+    assert slots == {
+        "RUN_A": (
+            "frontend/benchmarks/real-house-5/benchmark-3plus1/"
+            "results/RUN_A/analysis-result.json"
+        ),
+        "RUN_B": (
+            "frontend/benchmarks/real-house-5/benchmark-3plus1/"
+            "results/RUN_B/analysis-result.json"
+        ),
+        "RUN_C": (
+            "frontend/benchmarks/real-house-5/benchmark-3plus1/"
+            "results/RUN_C/analysis-result.json"
+        ),
+        "ARBITER": (
+            "frontend/benchmarks/real-house-5/benchmark-3plus1/"
+            "results/ARBITER/arbitration-result.json"
+        ),
+    }
+    assert len(set(slots.values())) == 4
+    analyst_input_path = lock["analyst_input_path"].rstrip("/")
+    assert all(
+        not slot.startswith(analyst_input_path + "/")
+        for slot in slots.values()
+    )
+
+
+def test_085a1_master_photos_and_exchange_contract_remain_frozen() -> None:
+    lock = json.loads(LOCK.read_text(encoding="utf-8"))
+
+    assert _git_blob_sha(MASTER.read_bytes()) == MASTER_BLOB
+    assert _git_blob_sha(EXCHANGE_V1.read_bytes()) == EXCHANGE_V1_BLOB
+    assert lock["immutable_sources"]["master_prompt"]["git_blob_sha"] == MASTER_BLOB
+    assert (
+        lock["immutable_sources"]["exchange_contract"]["git_blob_sha"]
+        == EXCHANGE_V1_BLOB
+    )
+
+    photo_locks = lock["immutable_sources"]["photos"]
+    assert len(photo_locks) == 5
+    for source_name, photo_id, _ in PHOTO_MAPPING:
+        source = BENCHMARK / source_name
+        frozen = ANALYST_INPUT / "photos" / f"{photo_id}.jpg"
+        photo_lock = next(
+            item for item in photo_locks
+            if item["source_path"].endswith("/" + source_name)
+        )
+        assert source.read_bytes() == frozen.read_bytes()
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == photo_lock["sha256"]
