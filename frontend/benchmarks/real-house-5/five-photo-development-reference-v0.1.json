@@ -1,0 +1,334 @@
+{
+  "schema_version": "brickhouse-five-photo-development-reference-0.1",
+  "benchmark_id": "real-house-5",
+  "status": "FROZEN_DEVELOPMENT_REFERENCE",
+  "label": "RÉFÉRENCE DE DÉVELOPPEMENT / ANALYSE CINQ-PHOTOS — PAS UNE SORTIE AUTOMATIQUE DU PROVIDER",
+  "source_policy": {
+    "allowed": [
+      "01-original.jpg",
+      "02-original.jpg",
+      "03-original.jpg",
+      "04-original.jpg",
+      "05-original.jpg",
+      "frontend/brickhouse-independent-analysis.json"
+    ],
+    "forbidden": [
+      "photos 6-22",
+      "accepted-survey-v0.1.json enriched 22-view content",
+      "existing Scene",
+      "owner facts",
+      "BrickModel/LEGO history",
+      "private oracle during construction"
+    ]
+  },
+  "local_observations": [
+    {
+      "photo": 1,
+      "claims": [
+        "front rendered elevation visible",
+        "six principal front openings visible",
+        "front wall terminates in a triangular gable profile",
+        "roof edges descend from a central high point toward both sides",
+        "at least one chimney-like masonry stack is visible near roof zone"
+      ],
+      "limits": [
+        "chimney ownership/attachment requires cross-view check",
+        "numeric roof pitch unknown"
+      ]
+    },
+    {
+      "photo": 2,
+      "claims": [
+        "long side elevation visible",
+        "sloping roof/eave line visible",
+        "one high window and low openings visible",
+        "street/ground longitudinal slope visible",
+        "masonry stack rises beyond roof line"
+      ],
+      "limits": [
+        "perspective prevents metric roof pitch",
+        "hidden opposite roof plane not locally visible"
+      ]
+    },
+    {
+      "photo": 3,
+      "claims": [
+        "raised timber deck visible",
+        "timber guardrail visible",
+        "vertical timber support visible beneath deck",
+        "diagonal timber bracing visible beneath deck",
+        "exterior masonry stair visible at left",
+        "upper white elevation and openings visible"
+      ],
+      "limits": [
+        "support count non-exhaustive",
+        "support coordinates unknown",
+        "stair topology partly occluded"
+      ]
+    },
+    {
+      "photo": 4,
+      "claims": [
+        "exterior masonry stair and parapet visible",
+        "distinct upper masonry circulation surface/landing zone visible beside stair",
+        "timber deck continues at right",
+        "large dark opening beneath/adjacent to masonry circulation zone",
+        "chimney-like stack visible beyond target roof line"
+      ],
+      "limits": [
+        "dark opening semantic type unknown",
+        "closed volume beneath landing not established",
+        "exact landing dimensions unknown"
+      ]
+    },
+    {
+      "photo": 5,
+      "claims": [
+        "same exterior stair ensemble visible from shifted viewpoint",
+        "masonry parapets/walls visible",
+        "upper circulation/landing relation to building visible",
+        "target side elevation and sloping roof edge visible",
+        "chimney-like stack visible beyond target roof line"
+      ],
+      "limits": [
+        "exact stair run count and route unknown",
+        "metric connections unknown"
+      ]
+    }
+  ],
+  "multiview_correspondences": [
+    {
+      "id": "main-envelope",
+      "photos": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "state": "DEDUCED_MULTIVIEW",
+      "claim": "views depict the same principal rendered building envelope through connected facades"
+    },
+    {
+      "id": "gable-roof",
+      "photos": [
+        1,
+        2,
+        5
+      ],
+      "state": "DEDUCED_MULTIVIEW",
+      "claim": "principal roof is a two-slope/gable roof: photo 1 exposes the triangular gable end while side views expose a sloping eave/roof plane"
+    },
+    {
+      "id": "chimney-target-association",
+      "photos": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "state": "HYPOTHESIS",
+      "claim": "a masonry chimney is associated with the target roof/building",
+      "limits": "crowded adjoining roofs make exact attachment less certain than chimney existence"
+    },
+    {
+      "id": "timber-deck-identity",
+      "photos": [
+        3,
+        4
+      ],
+      "state": "DEDUCED_MULTIVIEW",
+      "claim": "same raised timber deck/guardrail assembly"
+    },
+    {
+      "id": "stair-identity",
+      "photos": [
+        3,
+        4,
+        5
+      ],
+      "state": "DEDUCED_MULTIVIEW",
+      "claim": "same exterior masonry stair system"
+    },
+    {
+      "id": "upper-masonry-circulation",
+      "photos": [
+        4,
+        5
+      ],
+      "state": "DEDUCED_MULTIVIEW",
+      "claim": "a masonry landing/circulation surface at the upper stair connection is distinct from the timber deck"
+    }
+  ],
+  "contradictions": [
+    {
+      "topic": "roof topology",
+      "state": "NONE_MATERIAL",
+      "note": "photo 1 directly exposes a gable end; side views are compatible with it, not evidence for a single-slope shed roof"
+    },
+    {
+      "topic": "lower masonry zone",
+      "state": "REPRESENTATION_AMBIGUITY",
+      "note": "photos show masonry walls/surfaces and a large dark opening, but do not establish a closed rectangular volume beneath the landing"
+    }
+  ],
+  "open_hypotheses": [
+    {
+      "topic": "chimney",
+      "photos": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "hypothesis": "visible masonry stack belongs to target building",
+      "confidence": "plausible-to-strong but not promoted to certain attachment"
+    },
+    {
+      "topic": "stair turn",
+      "photos": [
+        3,
+        4,
+        5
+      ],
+      "hypothesis": "stair circulation may change direction outside/behind the directly visible run",
+      "confidence": "plausible only"
+    },
+    {
+      "topic": "deck-to-landing connection",
+      "photos": [
+        3,
+        4,
+        5
+      ],
+      "hypothesis": "timber deck and masonry landing may connect in upper circulation zone",
+      "confidence": "plausible only"
+    },
+    {
+      "topic": "large dark opening photo 4",
+      "photos": [
+        4
+      ],
+      "hypothesis": "could be an access/door-like opening",
+      "confidence": "plausible only"
+    }
+  ],
+  "unknowns": [
+    "numeric roof pitch",
+    "exact chimney attachment/footprint",
+    "exact building dimensions",
+    "exact wall thickness",
+    "exact opening depths",
+    "exact landing dimensions",
+    "whether space below landing forms a closed volume",
+    "exact stair run count",
+    "exact stair route",
+    "exact step count",
+    "metric deck-to-landing connection",
+    "exhaustive deck support count",
+    "support coordinates",
+    "exhaustive diagonal bracing geometry",
+    "semantic type of every large/dark opening"
+  ],
+  "defensible_conclusions": [
+    {
+      "topic": "roof",
+      "state": "DEDUCED_MULTIVIEW",
+      "photos": [
+        1,
+        2,
+        5
+      ],
+      "claim": "principal roof is gable/two-slope",
+      "metric": "UNKNOWN"
+    },
+    {
+      "topic": "chimney",
+      "state": "OBSERVED_WITH_ASSOCIATION_HYPOTHESIS",
+      "photos": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "claim": "masonry chimney/stack is visible in roof context; exact target attachment retained as hypothesis"
+    },
+    {
+      "topic": "front_openings",
+      "state": "OBSERVED",
+      "photos": [
+        1
+      ],
+      "claim": "six principal front openings"
+    },
+    {
+      "topic": "timber_deck",
+      "state": "OBSERVED",
+      "photos": [
+        3,
+        4
+      ],
+      "claim": "raised timber deck distinct from masonry circulation"
+    },
+    {
+      "topic": "guardrail",
+      "state": "OBSERVED",
+      "photos": [
+        3,
+        4
+      ],
+      "claim": "timber guardrail/balustrade"
+    },
+    {
+      "topic": "vertical_supports",
+      "state": "OBSERVED",
+      "photos": [
+        3
+      ],
+      "claim": "at least one vertical timber support exists",
+      "metric_position": "UNKNOWN",
+      "exhaustive_count": "UNKNOWN"
+    },
+    {
+      "topic": "diagonal_bracing",
+      "state": "OBSERVED",
+      "photos": [
+        3
+      ],
+      "claim": "diagonal timber bracing exists",
+      "geometry": "UNKNOWN"
+    },
+    {
+      "topic": "exterior_stair",
+      "state": "OBSERVED",
+      "photos": [
+        3,
+        4,
+        5
+      ],
+      "claim": "exterior masonry stair system exists",
+      "topology": "PARTLY_UNKNOWN"
+    },
+    {
+      "topic": "masonry_landing",
+      "state": "DEDUCED_MULTIVIEW",
+      "photos": [
+        4,
+        5
+      ],
+      "claim": "upper masonry circulation/landing surface exists and is distinct from timber deck",
+      "dimensions": "UNKNOWN"
+    },
+    {
+      "topic": "stair_to_landing",
+      "state": "DEDUCED_MULTIVIEW",
+      "photos": [
+        4,
+        5
+      ],
+      "claim": "visible stair system reaches/serves upper masonry circulation zone",
+      "metric_connection": "UNKNOWN"
+    }
+  ],
+  "provenance_note": "Constructed from the five canonical JPEGs plus the repository's explicitly five-photo independent-analysis regression note. No Scene, LEGO, owner facts, 22-view Survey, control photos, or private oracle used during construction."
+}

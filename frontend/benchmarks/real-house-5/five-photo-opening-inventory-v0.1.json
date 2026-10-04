@@ -1,0 +1,188 @@
+{
+  "schema_version": "0.1",
+  "scene_candidate": "five-photo-scene-candidate-v0.3.json",
+  "purpose": "Five-photo opening inventory before geometry correction; relative positions are qualitative/normalized observations, not metric house dimensions.",
+  "openings": [
+    {
+      "id": "front-upper-left",
+      "photos": [
+        1
+      ],
+      "identity": "single_view",
+      "facade": "front",
+      "type_probable": "window",
+      "x_relative": "left",
+      "z_relative": "upper",
+      "width_relative": "medium",
+      "height_relative": "medium",
+      "alignments": [
+        "front-middle-left"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "front-upper-right",
+      "photos": [
+        1
+      ],
+      "identity": "single_view",
+      "facade": "front",
+      "type_probable": "window",
+      "x_relative": "right",
+      "z_relative": "upper",
+      "width_relative": "medium",
+      "height_relative": "medium",
+      "alignments": [
+        "front-middle-right"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "front-middle-left",
+      "photos": [
+        1
+      ],
+      "identity": "single_view",
+      "facade": "front",
+      "type_probable": "window",
+      "x_relative": "left",
+      "z_relative": "middle",
+      "width_relative": "medium",
+      "height_relative": "medium",
+      "alignments": [
+        "front-upper-left"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "front-middle-right",
+      "photos": [
+        1
+      ],
+      "identity": "single_view",
+      "facade": "front",
+      "type_probable": "window",
+      "x_relative": "right",
+      "z_relative": "middle",
+      "width_relative": "medium",
+      "height_relative": "medium",
+      "alignments": [
+        "front-upper-right"
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": "front-lower-left",
+      "photos": [
+        1
+      ],
+      "identity": "single_view",
+      "facade": "front",
+      "type_probable": "unknown",
+      "x_relative": "left",
+      "z_relative": "low",
+      "width_relative": "small",
+      "height_relative": "small",
+      "alignments": [
+        "front-upper-left",
+        "front-middle-left"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "front-lower-right",
+      "photos": [
+        1
+      ],
+      "identity": "single_view",
+      "facade": "front",
+      "type_probable": "access_or_large_opening",
+      "x_relative": "right",
+      "z_relative": "ground",
+      "width_relative": "large",
+      "height_relative": "tall",
+      "alignments": [
+        "front-upper-right",
+        "front-middle-right"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "right-upper",
+      "photos": [
+        2
+      ],
+      "identity": "single_view",
+      "facade": "right",
+      "type_probable": "window",
+      "x_relative": "mid_to_rear",
+      "z_relative": "upper",
+      "width_relative": "medium",
+      "height_relative": "medium",
+      "alignments": [],
+      "confidence": "high"
+    },
+    {
+      "id": "right-low-glazed",
+      "photos": [
+        2
+      ],
+      "identity": "single_view",
+      "facade": "right",
+      "type_probable": "glass_block_like",
+      "x_relative": "rearward",
+      "z_relative": "low_partly_affected_by_rising_ground",
+      "width_relative": "small",
+      "height_relative": "small",
+      "alignments": [],
+      "confidence": "medium"
+    },
+    {
+      "id": "left-upper",
+      "photos": [
+        3,
+        4
+      ],
+      "identity": "deduced_same_opening",
+      "facade": "left",
+      "type_probable": "window",
+      "x_relative": "upper_circulation_zone",
+      "z_relative": "upper",
+      "width_relative": "medium",
+      "height_relative": "medium",
+      "alignments": [],
+      "confidence": "high"
+    },
+    {
+      "id": "left-access",
+      "photos": [
+        3,
+        4
+      ],
+      "identity": "deduced_access_zone_opening",
+      "facade": "left",
+      "type_probable": "door_or_glazed_access_to_confirm",
+      "x_relative": "deck_landing_zone",
+      "z_relative": "deck_level",
+      "width_relative": "medium",
+      "height_relative": "tall",
+      "alignments": [
+        "platform-timber-1",
+        "platform-massive-1"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "scene_comparison": {
+    "missing_or_uncertain": [
+      "Exact semantic classification of left access-zone opening remains unresolved",
+      "Right rising ground must explain apparent low-opening occlusion rather than moving the opening",
+      "Five-photo evidence does not justify inventing additional hidden openings"
+    ],
+    "preserve": [
+      "Six front openings",
+      "Right high and low openings",
+      "Left upper and access-zone openings"
+    ]
+  }
+}

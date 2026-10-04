@@ -26,7 +26,7 @@ def test_prompt_contract_versions_match_backend_literals() -> None:
     survey_prompt = (ROOT / "frontend" / "brickhouse-survey-prompt.txt").read_text(encoding="utf-8")
     scene_prompt = (ROOT / "frontend" / "brickhouse-survey-to-scene-prompt.txt").read_text(encoding="utf-8")
 
-    assert 'schema_version: Literal["0.1"]' in survey_model
+    assert 'schema_version: Literal["0.1", "0.2"]' in survey_model
     assert 'schema_version: Literal["0.2"]' in scene_model
     assert 'exactement `"0.1"' in survey_prompt
     assert 'exactement `"0.2"' in scene_prompt

@@ -16,6 +16,19 @@ class Certainty(str, Enum):
     UNPROVEN = "unproven"
 
 
+class KnowledgeMode(str, Enum):
+    OBSERVED = "observed"
+    DEDUCED_MULTIVIEW = "deduced_multiview"
+    DEDUCED_ARCHITECTURALLY = "deduced_architecturally"
+    HYPOTHESIS = "hypothesis"
+
+
+class StructureRole(str, Enum):
+    VERTICAL_SUPPORT = "vertical_support"
+    DIAGONAL_BRACING = "diagonal_bracing"
+    GUARDRAIL = "guardrail"
+
+
 class ObservationKind(str, Enum):
     BUILDING_BOUNDARY = "building_boundary"
     TERRAIN = "terrain"
@@ -30,6 +43,7 @@ class ObservationKind(str, Enum):
     STAIR = "stair"
     OCCLUSION = "occlusion"
     CONTEXT = "context"
+    STRUCTURE = "structure"
 
 
 class RelationKind(str, Enum):
@@ -150,6 +164,9 @@ class SurveyObservation(BaseModel):
     kind: ObservationKind
     facade: Facade | None = None
     certainty: Certainty
+    knowledge_mode: KnowledgeMode | None = None
+    qualitative_position: str | None = None
+    structure_role: StructureRole | None = None
     statement: str = Field(min_length=1)
     evidence: list[PhotoEvidence] = Field(min_length=1)
     attributes: dict[str, Any] = Field(default_factory=dict)
@@ -158,6 +175,7 @@ class SurveyObservation(BaseModel):
     # certainly exist while door-vs-window remains uncertain. This append-only,
     # backwards-compatible map makes that distinction machine-readable.
     attribute_certainty: dict[str, Certainty] = Field(default_factory=dict)
+    attribute_knowledge_mode: dict[str, KnowledgeMode] = Field(default_factory=dict)
     appearance: SurfaceAppearance | None = None
     opening_visual: OpeningVisualDescription | None = None
 
@@ -169,6 +187,16 @@ class SurveyObservation(BaseModel):
             raise ValueError(
                 f"attribute_certainty references missing attributes: {names}"
             )
+        unknown_modes = set(self.attribute_knowledge_mode) - set(self.attributes)
+        if unknown_modes:
+            names = ", ".join(sorted(unknown_modes))
+            raise ValueError(
+                f"attribute_knowledge_mode references missing attributes: {names}"
+            )
+        if self.kind is ObservationKind.STRUCTURE and self.structure_role is None:
+            raise ValueError("structure observations require structure_role")
+        if self.kind is not ObservationKind.STRUCTURE and self.structure_role is not None:
+            raise ValueError("structure_role may only be set on structure observations")
         return self
 
     def certainty_for_attribute(self, name: str) -> Certainty:
@@ -182,6 +210,7 @@ class SurveyRelation(BaseModel):
     subject_id: str
     object_id: str
     certainty: Certainty
+    knowledge_mode: KnowledgeMode | None = None
     statement: str = Field(min_length=1)
     evidence: list[PhotoEvidence] = Field(min_length=1)
 
@@ -216,7 +245,7 @@ _CONSERVATIVE_OBSERVATION_KIND_ALIASES = {
 
 
 class ArchitecturalSurvey(BaseModel):
-    schema_version: Literal["0.1"] = "0.1"
+    schema_version: Literal["0.1", "0.2"] = "0.1"
     id: str
     name: str
     canonical_frame: CanonicalFrame = Field(default_factory=CanonicalFrame)

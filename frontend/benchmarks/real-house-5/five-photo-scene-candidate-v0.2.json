@@ -1,0 +1,593 @@
+{
+  "schema_version": "0.2",
+  "id": "real-house-5-five-photo-scene-candidate",
+  "name": "Real house 5 — five-photo Scene candidate",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "volume-main",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 10,
+        "source": {
+          "kind": "generated_default",
+          "confidence": 0
+        },
+        "evidence": []
+      },
+      "depth": {
+        "value": 8,
+        "source": {
+          "kind": "generated_default",
+          "confidence": 0
+        },
+        "evidence": []
+      },
+      "height": {
+        "value": 8,
+        "source": {
+          "kind": "generated_default",
+          "confidence": 0
+        },
+        "evidence": []
+      },
+      "floors": 3,
+      "source": {
+        "kind": "generated_default",
+        "confidence": 0
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Three visible opening bands guide only the visual materialization; complete floor plates are not asserted by Survey."
+        }
+      ]
+    }
+  ],
+  "openings": [
+    {
+      "id": "front-upper-left",
+      "type": "window",
+      "volume_id": "volume-main",
+      "facade": "front",
+      "offset_horizontal": 1.4,
+      "offset_vertical": 5.2,
+      "width": 1.7,
+      "height": 1.6,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "front-upper-right",
+      "type": "window",
+      "volume_id": "volume-main",
+      "facade": "front",
+      "offset_horizontal": 6.1,
+      "offset_vertical": 5.2,
+      "width": 1.7,
+      "height": 1.6,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "front-middle-left",
+      "type": "window",
+      "volume_id": "volume-main",
+      "facade": "front",
+      "offset_horizontal": 1.4,
+      "offset_vertical": 3,
+      "width": 1.7,
+      "height": 1.5,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "front-middle-right",
+      "type": "window",
+      "volume_id": "volume-main",
+      "facade": "front",
+      "offset_horizontal": 6,
+      "offset_vertical": 3,
+      "width": 1.8,
+      "height": 1.5,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "front-lower-left",
+      "type": "unknown",
+      "volume_id": "volume-main",
+      "facade": "front",
+      "offset_horizontal": 1.6,
+      "offset_vertical": 0.55,
+      "width": 1.25,
+      "height": 1.3,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "front-lower-right",
+      "type": "unknown",
+      "volume_id": "volume-main",
+      "facade": "front",
+      "offset_horizontal": 5.8,
+      "offset_vertical": 0,
+      "width": 2,
+      "height": 2.2,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "right-upper",
+      "type": "window",
+      "volume_id": "volume-main",
+      "facade": "right",
+      "offset_horizontal": 4.1,
+      "offset_vertical": 4.2,
+      "width": 1.2,
+      "height": 1.6,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "right-low-glazed",
+      "type": "unknown",
+      "volume_id": "volume-main",
+      "facade": "right",
+      "offset_horizontal": 6.3,
+      "offset_vertical": 0.5,
+      "width": 1,
+      "height": 0.9,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 2,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "left-upper",
+      "type": "window",
+      "volume_id": "volume-main",
+      "facade": "left",
+      "offset_horizontal": 5.2,
+      "offset_vertical": 4.4,
+      "width": 1.35,
+      "height": 1.6,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    },
+    {
+      "id": "left-access",
+      "type": "unknown",
+      "volume_id": "volume-main",
+      "facade": "left",
+      "offset_horizontal": 2,
+      "offset_vertical": 1.8,
+      "width": 1.6,
+      "height": 1.8,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.2
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Visual-materialization rectangle estimated from the canonical five-photo view; not a measured house dimension."
+        }
+      ]
+    }
+  ],
+  "roofs": [
+    {
+      "id": "roof-main",
+      "volume_id": "volume-main",
+      "type": "gable",
+      "overhang": 0.2,
+      "ridge_direction": "depth",
+      "down_slope_direction": null,
+      "pitch_degrees": null,
+      "pitch_range_degrees": null,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Triangular front gable establishes two-slope roof topology."
+        },
+        {
+          "photo_index": 2,
+          "observation": "Side roof line supports ridge continuity."
+        }
+      ]
+    }
+  ],
+  "terrain": null,
+  "chimneys": [
+    {
+      "id": "chimney-house-1",
+      "position": {
+        "x": 1,
+        "y": 1.4,
+        "z": 8
+      },
+      "width": 0.8,
+      "depth": 0.8,
+      "height": 1.8,
+      "source": {
+        "kind": "generated_default",
+        "confidence": 0
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Chimney belongs to target house; numeric placement/size here is only a visual materialization proxy."
+        },
+        {
+          "photo_index": 3,
+          "observation": "Cross-view chimney identity/ownership supported; exact coordinates remain unknown."
+        }
+      ]
+    }
+  ],
+  "platforms": [
+    {
+      "id": "platform-timber-1",
+      "host_volume_id": "volume-main",
+      "position": {
+        "x": -2.4,
+        "y": 2.8,
+        "z": 2.6
+      },
+      "width": 2.4,
+      "depth": 3.1,
+      "thickness": 0.18,
+      "supports": [
+        {
+          "id": "deck-post-proxy-1",
+          "position": {
+            "x": -2.1,
+            "y": 3.2,
+            "z": 0
+          },
+          "width": 0.18,
+          "depth": 0.18,
+          "height": 2.6,
+          "source": {
+            "kind": "generated_default",
+            "confidence": 0
+          }
+        },
+        {
+          "id": "deck-post-proxy-2",
+          "position": {
+            "x": -2.1,
+            "y": 5.4,
+            "z": 0
+          },
+          "width": 0.18,
+          "depth": 0.18,
+          "height": 2.6,
+          "source": {
+            "kind": "generated_default",
+            "confidence": 0
+          }
+        }
+      ],
+      "material": "timber",
+      "deck_board_direction": "unknown",
+      "edge_treatment": "open_railing",
+      "edges": null,
+      "source": {
+        "kind": "generated_default",
+        "confidence": 0
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Raised timber deck is certain; all numeric dimensions/support coordinates are visual materialization proxies."
+        }
+      ]
+    },
+    {
+      "id": "platform-massive-1",
+      "host_volume_id": "volume-main",
+      "position": {
+        "x": -2.2,
+        "y": 5.9,
+        "z": 2.6
+      },
+      "width": 2.2,
+      "depth": 1.5,
+      "thickness": 0.25,
+      "supports": [],
+      "material": "masonry",
+      "deck_board_direction": null,
+      "edge_treatment": "solid_parapet",
+      "edges": null,
+      "source": {
+        "kind": "generated_default",
+        "confidence": 0
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Upper masonry circulation/landing is certain; numeric envelope is a visual materialization proxy and does not assert a closed volume below."
+        }
+      ]
+    }
+  ],
+  "stairs": [
+    {
+      "id": "stair-materialization-run-1",
+      "start": {
+        "x": -1.65,
+        "y": 7.8,
+        "z": 0
+      },
+      "end": {
+        "x": -1.65,
+        "y": 6.8,
+        "z": 2.6
+      },
+      "width": 1.2,
+      "material": "masonry",
+      "left_edge": "solid_parapet",
+      "right_edge": "solid_parapet",
+      "source": {
+        "kind": "generated_default",
+        "confidence": 0
+      },
+      "evidence": [
+        {
+          "photo_index": 5,
+          "observation": "Exterior masonry stair and lower-to-upper circulation are certain; this single rendered run is a visual proxy, not a claim about exact run count or step count."
+        }
+      ]
+    }
+  ],
+  "equipment": [],
+  "visibility": [],
+  "relations": [
+    {
+      "id": "stair-to-landing",
+      "kind": "connects_to",
+      "subject_id": "stair-materialization-run-1",
+      "object_id": "platform-massive-1",
+      "certainty": "certain",
+      "geometry_status": "resolved",
+      "semantic_anchor_volume_id": null,
+      "statement": "Rendered proxy realizes the certain stair→upper-landing circulation relation.",
+      "evidence": [
+        {
+          "photo_index": 5,
+          "observation": "Stair reaches upper masonry circulation."
+        }
+      ]
+    },
+    {
+      "id": "deck-to-building",
+      "kind": "connects_to",
+      "subject_id": "platform-timber-1",
+      "object_id": "building-boundary-1",
+      "certainty": "certain",
+      "geometry_status": "resolved",
+      "semantic_anchor_volume_id": "volume-main",
+      "statement": "Deck connects to building; numeric seam is materialization-only.",
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Deck meets building facade."
+        }
+      ]
+    },
+    {
+      "id": "landing-to-building",
+      "kind": "connects_to",
+      "subject_id": "platform-massive-1",
+      "object_id": "building-boundary-1",
+      "certainty": "certain",
+      "geometry_status": "resolved",
+      "semantic_anchor_volume_id": "volume-main",
+      "statement": "Landing connects to building; numeric seam is materialization-only.",
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Landing meets building elevation."
+        }
+      ]
+    },
+    {
+      "id": "deck-to-landing-hypothesis",
+      "kind": "connects_to",
+      "subject_id": "platform-timber-1",
+      "object_id": "platform-massive-1",
+      "certainty": "plausible",
+      "geometry_status": "unresolved",
+      "semantic_anchor_volume_id": null,
+      "statement": "Strong architectural hypothesis only; no resolved metric junction asserted.",
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Adjacent circulation surfaces suggest continuity but hidden seam is not proven."
+        }
+      ]
+    }
+  ],
+  "survey_realizations": [
+    {
+      "survey_observation_id": "building-boundary-1",
+      "scene_object_ids": [
+        "volume-main"
+      ],
+      "evidence": []
+    },
+    {
+      "survey_observation_id": "roof-main-1",
+      "scene_object_ids": [
+        "roof-main"
+      ],
+      "evidence": []
+    },
+    {
+      "survey_observation_id": "chimney-house-1",
+      "scene_object_ids": [
+        "chimney-house-1"
+      ],
+      "evidence": []
+    },
+    {
+      "survey_observation_id": "platform-timber-1",
+      "scene_object_ids": [
+        "platform-timber-1"
+      ],
+      "evidence": []
+    },
+    {
+      "survey_observation_id": "platform-massive-1",
+      "scene_object_ids": [
+        "platform-massive-1"
+      ],
+      "evidence": []
+    },
+    {
+      "survey_observation_id": "stair-exterior-1",
+      "scene_object_ids": [
+        "stair-materialization-run-1"
+      ],
+      "evidence": []
+    }
+  ],
+  "platform_structure_observations": [
+    {
+      "id": "deck-visible-posts",
+      "platform_id": "platform-timber-1",
+      "kind": "vertical_post",
+      "statement": "Vertical timber support(s) visibly exist; count and coordinates unresolved.",
+      "count": null,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.95
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Vertical support visible beneath deck."
+        }
+      ]
+    },
+    {
+      "id": "deck-visible-bracing",
+      "platform_id": "platform-timber-1",
+      "kind": "diagonal_brace",
+      "statement": "Diagonal timber bracing visibly exists; exhaustive geometry unresolved.",
+      "count": null,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.95
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Diagonal brace visible beneath deck."
+        }
+      ]
+    },
+    {
+      "id": "deck-visible-guardrail",
+      "platform_id": "platform-timber-1",
+      "kind": "guardrail",
+      "statement": "Timber guardrail visibly exists; module count unresolved.",
+      "count": null,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.95
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Timber guardrail visible."
+        }
+      ]
+    }
+  ],
+  "partial_wall_segments": [],
+  "wall_profile_observations": [],
+  "stair_system_links": [],
+  "appearance": {},
+  "notes": "Architectural truth: gable roof, target-house chimney, principal openings, raised timber deck with guardrail/support/bracing, masonry stair, masonry upper landing and circulation relations. No lower_exterior_volume. Numeric volume/opening/platform/chimney/stair values tagged generated_default or low-confidence inferred are VISUAL MATERIALIZATION PROXIES only, not measurements of the real house. Roof pitch remains unknown here and is not set in Scene. Exact stair run count/steps, deck support inventory, opening depth and landing dimensions remain unknown."
+}
