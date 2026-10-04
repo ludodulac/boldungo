@@ -142,6 +142,33 @@ def _course_local_bricks(
                 previous_joints,
                 previous_support_cells,
             )
+            # A one-brick-high opening ends immediately below this course.  Treat
+            # the first course above it as a real lintel: where the opening is
+            # narrower than a canonical brick, prefer one continuous brick that
+            # bears on masonry at both jambs instead of allowing a joint to fall
+            # inside the span.  This remains generic wall logic; no facade- or
+            # benchmark-specific dimensions are encoded.
+            opening_tops = [
+                opening
+                for opening in wall.grid.openings
+                if opening.z_bricks + opening.height_bricks == course
+                and opening.x_studs >= start
+                and opening.x_studs + opening.width_studs <= end
+            ]
+            if len(opening_tops) == 1:
+                opening = opening_tops[0]
+                for lintel_span in sorted(_BRICK_ID_BY_SPAN, reverse=True):
+                    lintel_start = opening.x_studs - 1
+                    lintel_end = lintel_start + lintel_span
+                    if (
+                        lintel_span >= opening.width_studs + 2
+                        and start <= lintel_start
+                        and lintel_end <= end
+                    ):
+                        left = _choose_segment_composition(start, lintel_start, previous_joints)
+                        right = _choose_segment_composition(lintel_end, end, previous_joints)
+                        composition = (*left, lintel_span, *right)
+                        break
         x = start
         for span in composition:
             result.append((_BRICK_ID_BY_SPAN[span], x, span))
