@@ -1,0 +1,123 @@
+{
+  "scenario": {
+    "description": "Generic exterior circulation fragment with a long timber platform beside a masonry landing, a stair visibly joining the landing, a nearby high opening, and a partially occluded timber/masonry junction.",
+    "evidence_rules": {
+      "stair_to_landing": "contact_supported",
+      "timber_to_landing": "adjacency_supported_contact_occluded",
+      "opening_to_circulation": "proximity_only",
+      "hidden_geometry": "unresolved"
+    }
+  },
+  "expected_survey": {
+    "schema_version": "0.1",
+    "id": "relation-pass-generic",
+    "name": "Generic relation pass fixture",
+    "canonical_frame": {
+      "front_facade": "front",
+      "x_direction": "front_view_left_to_right",
+      "y_direction": "front_to_rear",
+      "z_direction": "bottom_to_top"
+    },
+    "photos": [
+      {
+        "photo_index": 1,
+        "capture_role": "facade_view",
+        "facade": "front",
+        "description": "Oblique facade view showing the exterior platform system.",
+        "source": {"kind": "observed", "confidence": 0.95},
+        "image_left_maps_to_facade_offset": "low"
+      },
+      {
+        "photo_index": 2,
+        "capture_role": "targeted_detail",
+        "facade": null,
+        "description": "Detail view of the stair, masonry landing and partially occluded timber junction.",
+        "source": {"kind": "observed", "confidence": 0.95},
+        "image_left_maps_to_facade_offset": null
+      }
+    ],
+    "known_measurements": [],
+    "observations": [
+      {
+        "id": "boundary-main",
+        "kind": "building_boundary",
+        "certainty": "certain",
+        "statement": "Main building envelope is visible behind the exterior circulation elements.",
+        "evidence": [{"photo_index": 1, "observation": "Visible facade plane behind the platform system."}],
+        "attributes": {}
+      },
+      {
+        "id": "platform-timber",
+        "kind": "platform",
+        "certainty": "certain",
+        "statement": "A raised timber walking platform extends visibly along the facade.",
+        "evidence": [
+          {"photo_index": 1, "observation": "Long raised timber walking surface visible along the facade."},
+          {"photo_index": 2, "observation": "Timber platform edge remains visible beside the masonry landing while the exact junction is occluded."}
+        ],
+        "attributes": {"exterior_material": "timber"}
+      },
+      {
+        "id": "landing-masonry",
+        "kind": "platform",
+        "certainty": "certain",
+        "statement": "A distinct masonry landing is visible next to the timber platform.",
+        "evidence": [{"photo_index": 2, "observation": "Masonry walking surface visible at the top of the stair beside the timber platform."}],
+        "attributes": {"exterior_material": "masonry"}
+      },
+      {
+        "id": "stair-exterior",
+        "kind": "stair",
+        "certainty": "certain",
+        "statement": "An exterior stair visibly terminates at the masonry landing.",
+        "evidence": [{"photo_index": 2, "observation": "Upper stair end visibly meets the masonry landing."}],
+        "attributes": {}
+      },
+      {
+        "id": "opening-high",
+        "kind": "opening",
+        "certainty": "certain",
+        "statement": "A high opening is visible near the exterior circulation elements.",
+        "evidence": [{"photo_index": 1, "observation": "Opening visible above and near the platform system, with no direct access connection proved."}],
+        "attributes": {"physical_object_count": 1, "semantic_type": "door"},
+        "attribute_certainty": {"semantic_type": "plausible"}
+      },
+      {
+        "id": "occlusion-junction",
+        "kind": "occlusion",
+        "certainty": "certain",
+        "statement": "The exact timber-to-masonry contact line is hidden from view.",
+        "evidence": [{"photo_index": 2, "observation": "Foreground/edge occlusion hides the exact local floor junction."}],
+        "attributes": {}
+      }
+    ],
+    "relations": [
+      {
+        "id": "rel-stair-landing",
+        "kind": "connects_to",
+        "subject_id": "stair-exterior",
+        "object_id": "landing-masonry",
+        "certainty": "certain",
+        "statement": "The visible stair termination physically connects to the masonry landing.",
+        "evidence": [{"photo_index": 2, "observation": "The upper stair end visibly meets the landing surface."}]
+      },
+      {
+        "id": "rel-timber-landing",
+        "kind": "adjacent_to",
+        "subject_id": "platform-timber",
+        "object_id": "landing-masonry",
+        "certainty": "certain",
+        "statement": "The timber platform and masonry landing are visibly architectural neighbors, while their exact contact/continuity is occluded.",
+        "evidence": [{"photo_index": 2, "observation": "Both walking surfaces are visible side by side; the exact junction line is hidden."}]
+      }
+    ],
+    "representation_policy": {
+      "preserve_nominal_materials": true,
+      "preserve_opening_composition": true,
+      "preserve_architectural_details": true,
+      "reproduce_weathering": false,
+      "reproduce_temporary_objects": false
+    },
+    "notes": "No metric geometry or hidden access path is asserted by this fixture."
+  }
+}
