@@ -1,0 +1,69 @@
+{
+  "schema_version": "boldungo.benchmark-3plus1-arbiter-manifest.v1",
+  "benchmark_id": "REAL-HOUSE-5-3PLUS1",
+  "role": "ARBITER",
+  "prompt_path": "prompt.txt",
+  "photos": [
+    {
+      "photo_id": "FRONT_001",
+      "file_path": "photos/FRONT_001.jpg",
+      "source_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/analyst-input/photos/FRONT_001.jpg",
+      "sha256": "81f064aa642f3e51c284473583e9c48016535177510b2cddde8f60676f87fa07"
+    },
+    {
+      "photo_id": "RIGHT_001",
+      "file_path": "photos/RIGHT_001.jpg",
+      "source_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/analyst-input/photos/RIGHT_001.jpg",
+      "sha256": "490a9058e9de9b689860256e4b9bb22f16111256106cc48fd90612c5ae3c6ec3"
+    },
+    {
+      "photo_id": "LEFT_001",
+      "file_path": "photos/LEFT_001.jpg",
+      "source_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/analyst-input/photos/LEFT_001.jpg",
+      "sha256": "4b53ec191f74a9c9b4c29a960eb15af60c3ad3337e8c8b19b2bab8ffe797e0dc"
+    },
+    {
+      "photo_id": "LEFT_002",
+      "file_path": "photos/LEFT_002.jpg",
+      "source_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/analyst-input/photos/LEFT_002.jpg",
+      "sha256": "ca8488a165ecbd687c4c2c6b42b989e57becca0c2684c01b2dd6b6bcc9c02733"
+    },
+    {
+      "photo_id": "REAR_001",
+      "file_path": "photos/REAR_001.jpg",
+      "source_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/analyst-input/photos/REAR_001.jpg",
+      "sha256": "690b83c1af13f7a68a31e5a30a1d14d9967c565c647661743ac8d46732874093"
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "RUN_A",
+      "file_path": "runs/RUN_A.json",
+      "source_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_A/analysis-result.json",
+      "sha256": "1c5669b97b5a5dd5e4b27171b4ce8920d6a83f5890a049317bf9ae07ced56932"
+    },
+    {
+      "run_id": "RUN_B",
+      "file_path": "runs/RUN_B.json",
+      "source_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_B/analysis-result.json",
+      "sha256": "bd08a70d08ea40eb8390a8d8996f3fa1e5b835df3f24f197cdfc9582c9c05a47"
+    },
+    {
+      "run_id": "RUN_C",
+      "file_path": "runs/RUN_C.json",
+      "source_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_C/analysis-result.json",
+      "sha256": "769c75bf03742dec996b4143b5697aefd9ea2c430eb1ac92c81eb4cc98a4842c"
+    }
+  ],
+  "provenance": {
+    "closed_world": true,
+    "allowed_input_classes": [
+      "photos",
+      "run_results",
+      "prompt"
+    ],
+    "human_truth_included": false,
+    "evaluator_oracle_included": false,
+    "external_dependencies": false
+  }
+}

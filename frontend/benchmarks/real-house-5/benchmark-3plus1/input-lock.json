@@ -95,5 +95,25 @@
     "RUN_B": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_B/analysis-result.json",
     "RUN_C": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_C/analysis-result.json",
     "ARBITER": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/ARBITER/arbitration-result.json"
+  },
+  "arbiter_input": {
+    "path": "frontend/benchmarks/real-house-5/benchmark-3plus1/arbiter-input/",
+    "zip_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/arbiter-input.zip",
+    "zip_sha256": "35b5333924d70191b8d0a897360b01bf388178c7d6e71b13ab7719067500665f",
+    "runs": {
+      "RUN_A": {
+        "path": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_A/analysis-result.json",
+        "sha256": "1c5669b97b5a5dd5e4b27171b4ce8920d6a83f5890a049317bf9ae07ced56932"
+      },
+      "RUN_B": {
+        "path": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_B/analysis-result.json",
+        "sha256": "bd08a70d08ea40eb8390a8d8996f3fa1e5b835df3f24f197cdfc9582c9c05a47"
+      },
+      "RUN_C": {
+        "path": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/RUN_C/analysis-result.json",
+        "sha256": "769c75bf03742dec996b4143b5697aefd9ea2c430eb1ac92c81eb4cc98a4842c"
+      }
+    },
+    "result_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/results/ARBITER/arbitration-result.json"
   }
 }
