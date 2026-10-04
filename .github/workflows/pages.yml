@@ -253,4 +253,127 @@ jobs:
           print(f'deployed interaction verification passed: {url}')
           PY
 
+
+  verify-deployed-visual-checkpoint:
+    name: Verify deployed real-house-5 visual checkpoint
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install browser driver
+        run: python -m pip install 'playwright>=1.50,<2'
+
+      - name: Verify checkpoint viewer on mobile
+        env:
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+          DEPLOY_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import os
+          import shutil
+          from urllib.parse import urljoin
+          from playwright.sync_api import sync_playwright
+
+          base = os.environ['PAGE_URL']
+          sha = os.environ['DEPLOY_SHA']
+          checkpoint = urljoin(
+              base if base.endswith('/') else base + '/',
+              f'viewer.html?bundle=./real-house-5-visual-checkpoint.json&runtime-check={sha}',
+          )
+          construction = checkpoint + '&mode=construction'
+
+          browser_path = next((shutil.which(name) for name in (
+              'google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser'
+          ) if shutil.which(name)), None)
+          if not browser_path:
+              raise AssertionError('No Chromium/Chrome binary is available on the Pages verification runner')
+
+          def digest(data: bytes) -> str:
+              return hashlib.sha256(data).hexdigest()
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(
+                  headless=True,
+                  executable_path=browser_path,
+                  args=['--no-sandbox'],
+              )
+
+              page = browser.new_page(viewport={'width': 390, 'height': 844})
+              runtime_errors = []
+              page.on('pageerror', lambda error: runtime_errors.append(f'pageerror: {error}'))
+              response = page.goto(checkpoint, wait_until='domcontentloaded', timeout=30000)
+              assert response and response.ok, f'viewer HTTP failure: {response.status if response else "no response"}'
+              page.wait_for_function(
+                  "() => window.__BRICKHOUSE_CURRENT_BUNDLE__?.brick_model?.parts?.length > 0",
+                  timeout=30000,
+              )
+              parts = page.evaluate("window.__BRICKHOUSE_CURRENT_BUNDLE__.brick_model.parts.length")
+              steps = page.evaluate("window.__BRICKHOUSE_CURRENT_BUNDLE__.assembly_plan.total_steps")
+              assert parts > 0
+              assert steps > 0
+              canvas = page.locator('#viewer')
+              canvas.wait_for(state='visible', timeout=10000)
+
+              shots = {}
+              for key, selector in (
+                  ('perspective', '#reset-view'),
+                  ('front', '#view-front'),
+                  ('right', '#view-right'),
+                  ('left', '#view-left'),
+                  ('rear', '#view-rear'),
+              ):
+                  page.locator(selector).click(timeout=5000)
+                  page.wait_for_timeout(250)
+                  image = canvas.screenshot()
+                  assert len(image) > 10000, f'{key} canvas is unexpectedly empty'
+                  shots[key] = digest(image)
+              assert len(set(shots.values())) >= 4, shots
+
+              orbit_before = digest(canvas.screenshot())
+              box = canvas.bounding_box()
+              assert box and box['width'] > 100 and box['height'] > 100
+              x = box['x'] + box['width'] * 0.55
+              y = box['y'] + box['height'] * 0.50
+              page.mouse.move(x, y)
+              page.mouse.down()
+              page.mouse.move(x + 70, y + 25, steps=8)
+              page.mouse.up()
+              page.wait_for_timeout(300)
+              orbit_after = digest(canvas.screenshot())
+              assert orbit_after != orbit_before, 'OrbitControls drag did not change the rendered view'
+              assert not runtime_errors, runtime_errors
+              page.close()
+
+              construction_page = browser.new_page(viewport={'width': 390, 'height': 844})
+              construction_errors = []
+              construction_page.on('pageerror', lambda error: construction_errors.append(f'pageerror: {error}'))
+              response = construction_page.goto(construction, wait_until='domcontentloaded', timeout=30000)
+              assert response and response.ok, f'construction HTTP failure: {response.status if response else "no response"}'
+              construction_page.wait_for_function(
+                  "() => window.__BRICKHOUSE_CURRENT_BUNDLE__?.assembly_plan?.steps?.length > 0",
+                  timeout=30000,
+              )
+              hud = construction_page.locator('#construction-hud')
+              hud.wait_for(state='visible', timeout=10000)
+              counter = construction_page.locator('#construction-counter')
+              first = counter.text_content().strip()
+              construction_page.locator('#construction-next').click(timeout=5000)
+              construction_page.wait_for_timeout(250)
+              second = counter.text_content().strip()
+              assert first != second, (first, second)
+              construction_page.locator('#construction-prev').click(timeout=5000)
+              construction_page.wait_for_timeout(250)
+              assert counter.text_content().strip() == first
+              assert not construction_errors, construction_errors
+              construction_page.close()
+              browser.close()
+
+          print(f'checkpoint mobile verification passed: parts={parts}, steps={steps}, url={checkpoint}')
+          PY
+
 # Pages source is GitHub Actions; post-deploy interaction verification guards the public runtime.
