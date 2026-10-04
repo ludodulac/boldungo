@@ -32,3 +32,19 @@ def test_084a_existing_viewer_supports_direct_bundle_and_construction_mode() -> 
     assert "assemblyNext.addEventListener" in viewer
     assert "construction-prev" in viewer
     assert "construction-next" in viewer
+
+
+def test_084a_pages_verifies_deployed_mobile_checkpoint() -> None:
+    workflow = PAGES.read_text(encoding="utf-8")
+
+    assert "verify-deployed-visual-checkpoint:" in workflow
+    assert "viewer.html?bundle=./real-house-5-visual-checkpoint.json" in workflow
+    assert "viewport={'width': 390, 'height': 844}" in workflow
+    assert "'#reset-view'" in workflow
+    assert "'#view-front'" in workflow
+    assert "'#view-right'" in workflow
+    assert "'#view-left'" in workflow
+    assert "'#view-rear'" in workflow
+    assert "OrbitControls drag did not change the rendered view" in workflow
+    assert "'#construction-next'" in workflow
+    assert "'#construction-prev'" in workflow
