@@ -1,0 +1,83 @@
+{
+  "schema_version": "boldungo.benchmark-3plus1-input-lock.v1",
+  "mission": "BOLDUNGO-085A",
+  "benchmark_id": "REAL-HOUSE-5-3PLUS1",
+  "source_main_sha": "35d9bd979232d525bfd800b362e2fe5aaefacea3",
+  "analyst_input_path": "frontend/benchmarks/real-house-5/benchmark-3plus1/analyst-input/",
+  "immutable_sources": {
+    "canonical_photo_manifest": {
+      "path": "frontend/benchmarks/real-house-5/manifest.json",
+      "git_blob_sha": "f7e80dc8f4aa93833c66d0434423323df04a3b03"
+    },
+    "master_prompt": {
+      "path": "frontend/analysis-prompt-v1-master.js",
+      "export_name": "MASTER_SOPHIE_PROMPT_V1",
+      "git_blob_sha": "dbc0a215a581a4bf96f7d07b12b063f5ba569fcf"
+    },
+    "exchange_contract": {
+      "schema_version": "boldungo.exchange.v1",
+      "path": "backend/brickhouse/exchange_v1.py",
+      "git_blob_sha": "76792a63abf107b58cd0820a1635b669b35176f4"
+    },
+    "package_builder": {
+      "path": "backend/brickhouse/analysis_package_v1.py",
+      "git_blob_sha": "e88f537729fc4d217c32d44749876a78ff09a2a8"
+    },
+    "photos": [
+      {
+        "source_path": "frontend/benchmarks/real-house-5/01-original.jpg",
+        "git_blob_sha": "cc920d25fcc8cd53722b37ebee1137660d131d7a",
+        "sha256": "81f064aa642f3e51c284473583e9c48016535177510b2cddde8f60676f87fa07",
+        "frozen_photo_id": "FRONT_001",
+        "frozen_primary_face": "FRONT"
+      },
+      {
+        "source_path": "frontend/benchmarks/real-house-5/02-original.jpg",
+        "git_blob_sha": "fcfaee14cfe35bb3a533090e3dc54134a5740f01",
+        "sha256": "490a9058e9de9b689860256e4b9bb22f16111256106cc48fd90612c5ae3c6ec3",
+        "frozen_photo_id": "RIGHT_001",
+        "frozen_primary_face": "RIGHT"
+      },
+      {
+        "source_path": "frontend/benchmarks/real-house-5/03-original.jpg",
+        "git_blob_sha": "b2c35332a0025c77ee040b389a3f6b059fba3886",
+        "sha256": "4b53ec191f74a9c9b4c29a960eb15af60c3ad3337e8c8b19b2bab8ffe797e0dc",
+        "frozen_photo_id": "LEFT_001",
+        "frozen_primary_face": "LEFT"
+      },
+      {
+        "source_path": "frontend/benchmarks/real-house-5/04-original.jpg",
+        "git_blob_sha": "46bf6251e38d0d6f0daae221e74bb3d50e4f6428",
+        "sha256": "ca8488a165ecbd687c4c2c6b42b989e57becca0c2684c01b2dd6b6bcc9c02733",
+        "frozen_photo_id": "LEFT_002",
+        "frozen_primary_face": "LEFT"
+      },
+      {
+        "source_path": "frontend/benchmarks/real-house-5/05-original.jpg",
+        "git_blob_sha": "62765f486abc444436c98a5dabf8dae50087c959",
+        "sha256": "690b83c1af13f7a68a31e5a30a1d14d9967c565c647661743ac8d46732874093",
+        "frozen_photo_id": "REAR_001",
+        "frozen_primary_face": "REAR"
+      }
+    ]
+  },
+  "execution_plan": {
+    "analyst_runs": [
+      "RUN_A",
+      "RUN_B",
+      "RUN_C"
+    ],
+    "arbiter": "ARBITER",
+    "analysts_launched": false,
+    "arbiter_launched": false,
+    "analyst_input_policy": "RUN_A, RUN_B and RUN_C receive the exact same frozen analyst-input directory.",
+    "result_provenance_policy": "RUN_A/RUN_B/RUN_C provenance is stored alongside results only; it never mutates photos, prompt or frozen manifest."
+  },
+  "analyst_input_excludes": [
+    "benchmark truth, oracle or evaluator data",
+    "human corrections, owner facts or answer history",
+    "prior analysis results",
+    "Scene, LEGO or downstream reconstruction artifacts",
+    "run-specific A/B/C provenance"
+  ]
+}

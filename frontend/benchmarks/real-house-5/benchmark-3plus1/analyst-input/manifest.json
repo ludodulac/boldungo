@@ -1,0 +1,47 @@
+{
+  "schema_version": "boldungo.analysis-package-manifest.v1",
+  "project_id": "REAL-HOUSE-5-3PLUS1",
+  "agent_id": "SOPHIE",
+  "agent_display_name": "Sophie",
+  "round_id": "R001",
+  "package_id": "PKG_085a085a-085a-4085-a085-a085a085a085",
+  "created_at": "2026-10-04T11:27:00Z",
+  "prompt_path": "prompt.txt",
+  "photos": [
+    {
+      "photo_id": "FRONT_001",
+      "file_path": "photos/FRONT_001.jpg",
+      "primary_face": "FRONT",
+      "original_filename": "01-original.jpg",
+      "note": null
+    },
+    {
+      "photo_id": "RIGHT_001",
+      "file_path": "photos/RIGHT_001.jpg",
+      "primary_face": "RIGHT",
+      "original_filename": "02-original.jpg",
+      "note": null
+    },
+    {
+      "photo_id": "LEFT_001",
+      "file_path": "photos/LEFT_001.jpg",
+      "primary_face": "LEFT",
+      "original_filename": "03-original.jpg",
+      "note": null
+    },
+    {
+      "photo_id": "LEFT_002",
+      "file_path": "photos/LEFT_002.jpg",
+      "primary_face": "LEFT",
+      "original_filename": "04-original.jpg",
+      "note": null
+    },
+    {
+      "photo_id": "REAR_001",
+      "file_path": "photos/REAR_001.jpg",
+      "primary_face": "REAR",
+      "original_filename": "05-original.jpg",
+      "note": null
+    }
+  ]
+}
