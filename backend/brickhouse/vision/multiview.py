@@ -136,6 +136,155 @@ class OpenHypothesis(BaseModel):
     supporting_photo_indexes: list[int] = Field(default_factory=list)
 
 
+class InquiryState(str, Enum):
+    OPEN = "open"
+    RESOLVED = "resolved"
+    IRREDUCIBLE_UNKNOWN = "irreducible_unknown"
+
+
+class ObservablePrediction(BaseModel):
+    """Observable consequence of an existing OpenHypothesis, not an observation."""
+
+    id: str = Field(min_length=1)
+    hypothesis_id: str = Field(min_length=1)
+    statement: str = Field(min_length=1)
+
+
+class DiscriminatingTest(BaseModel):
+    """One photo region where competing predictions are expected to differ."""
+
+    id: str = Field(min_length=1)
+    photo_index: int = Field(ge=1)
+    region: NormalizedImageRegion
+    prediction_ids: list[str] = Field(min_length=2)
+    evidence_sought: str = Field(min_length=1)
+
+
+class InquiryTestResult(BaseModel):
+    """Recorded inspection result; absence is evidence only under safe visibility."""
+
+    test_id: str = Field(min_length=1)
+    inspected: bool
+    region_in_frame: bool
+    visibility: VisibilityStatus
+    sufficient_visibility: bool
+    statement: str = Field(min_length=1)
+    compatible_prediction_ids: list[str] = Field(default_factory=list)
+    discriminating: bool = False
+
+    @model_validator(mode="after")
+    def validate_discriminating_absence(self) -> "InquiryTestResult":
+        if self.discriminating and (
+            not self.inspected or not self.region_in_frame or not self.sufficient_visibility
+        ):
+            raise ValueError(
+                "discriminating evidence requires an inspected, in-frame, sufficiently visible ROI"
+            )
+        if self.discriminating and self.visibility in {
+            VisibilityStatus.OCCLUDED,
+            VisibilityStatus.NON_VISIBLE,
+        }:
+            raise ValueError("occluded/non-visible ROI cannot provide discriminating evidence")
+        return self
+
+
+class VisualInquiry(BaseModel):
+    """Minimal executable inquiry attached to the existing pre-Survey workspace."""
+
+    id: str = Field(min_length=1)
+    question: str = Field(min_length=1)
+    hypothesis_ids: list[str] = Field(min_length=2)
+    predictions: list[ObservablePrediction] = Field(min_length=2)
+    tests: list[DiscriminatingTest] = Field(min_length=1)
+    test_results: list[InquiryTestResult] = Field(default_factory=list)
+    state: InquiryState = InquiryState.OPEN
+    viable_hypothesis_ids: list[str] = Field(default_factory=list)
+    resolved_hypothesis_id: str | None = None
+    resolution_test_id: str | None = None
+    information_missing: str | None = None
+    stop_reason: str | None = None
+
+    @model_validator(mode="after")
+    def validate_contract(self) -> "VisualInquiry":
+        hypothesis_ids = set(self.hypothesis_ids)
+        if len(hypothesis_ids) != len(self.hypothesis_ids):
+            raise ValueError("inquiry hypothesis IDs must be unique")
+        if not self.viable_hypothesis_ids:
+            self.viable_hypothesis_ids = list(self.hypothesis_ids)
+        if not set(self.viable_hypothesis_ids).issubset(hypothesis_ids):
+            raise ValueError("viable hypotheses must belong to the inquiry")
+        prediction_ids = {item.id for item in self.predictions}
+        if len(prediction_ids) != len(self.predictions):
+            raise ValueError("prediction IDs must be unique")
+        if any(item.hypothesis_id not in hypothesis_ids for item in self.predictions):
+            raise ValueError("prediction references hypothesis outside inquiry")
+        for test in self.tests:
+            if not set(test.prediction_ids).issubset(prediction_ids):
+                raise ValueError("test references prediction outside inquiry")
+        test_ids = {item.id for item in self.tests}
+        for result in self.test_results:
+            if result.test_id not in test_ids:
+                raise ValueError("test result references unknown inquiry test")
+            if not set(result.compatible_prediction_ids).issubset(prediction_ids):
+                raise ValueError("test result references unknown prediction")
+        if self.state is InquiryState.RESOLVED:
+            if self.resolved_hypothesis_id not in hypothesis_ids or not self.resolution_test_id:
+                raise ValueError("resolved inquiry requires a surviving hypothesis and resolution test")
+            resolution_results = [
+                item for item in self.test_results
+                if item.test_id == self.resolution_test_id and item.discriminating
+            ]
+            if not resolution_results:
+                raise ValueError("resolved inquiry requires a tested discriminating result")
+        if self.state is InquiryState.IRREDUCIBLE_UNKNOWN:
+            if len(self.viable_hypothesis_ids) < 2 or not self.information_missing or not self.stop_reason:
+                raise ValueError(
+                    "irreducible unknown must preserve alternatives, missing information and stop reason"
+                )
+        return self
+
+
+def apply_inquiry_test(
+    inquiry: VisualInquiry,
+    result: InquiryTestResult,
+    *,
+    no_more_candidate_evidence: bool = False,
+    information_missing: str | None = None,
+) -> VisualInquiry:
+    """Apply one inspected ROI result without promoting any hypothesis to a fact."""
+
+    updated = inquiry.model_copy(deep=True)
+    test = next((item for item in updated.tests if item.id == result.test_id), None)
+    if test is None:
+        raise ValueError("test result references unknown inquiry test")
+    allowed_predictions = set(test.prediction_ids)
+    if not set(result.compatible_prediction_ids).issubset(allowed_predictions):
+        raise ValueError("test result is not scoped to the tested predictions")
+    updated.test_results.append(result)
+
+    if result.discriminating:
+        surviving_hypotheses = {
+            prediction.hypothesis_id
+            for prediction in updated.predictions
+            if prediction.id in result.compatible_prediction_ids
+        }
+        updated.viable_hypothesis_ids = [
+            item for item in updated.viable_hypothesis_ids if item in surviving_hypotheses
+        ]
+        if len(updated.viable_hypothesis_ids) == 1:
+            updated.state = InquiryState.RESOLVED
+            updated.resolved_hypothesis_id = updated.viable_hypothesis_ids[0]
+            updated.resolution_test_id = result.test_id
+            updated.stop_reason = "A tested discriminating ROI eliminated all competing hypotheses."
+            return VisualInquiry.model_validate(updated.model_dump())
+
+    if no_more_candidate_evidence:
+        updated.state = InquiryState.IRREDUCIBLE_UNKNOWN
+        updated.information_missing = information_missing or "No accessible discriminating evidence remains."
+        updated.stop_reason = "Available candidate evidence cannot distinguish the remaining hypotheses."
+    return VisualInquiry.model_validate(updated.model_dump())
+
+
 class MultiViewPass(BaseModel):
     pass_number: Literal[1, 2]
     observations: list[LocalObservation] = Field(default_factory=list)
@@ -151,6 +300,7 @@ class MultiViewWorkspace(BaseModel):
     photo_count: int = Field(ge=1)
     pass_1: MultiViewPass
     pass_2: MultiViewPass
+    inquiries: list[VisualInquiry] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def validate_workspace(self) -> "MultiViewWorkspace":
@@ -170,4 +320,16 @@ class MultiViewWorkspace(BaseModel):
             for assessment in phase.view_assessments:
                 if assessment.photo_index > self.photo_count:
                     raise ValueError("view assessment references photo outside supplied input")
+        hypothesis_ids = {item.id for item in self.pass_1.hypotheses} | {
+            item.id for item in self.pass_2.hypotheses
+        }
+        for inquiry in self.inquiries:
+            unknown_hypotheses = set(inquiry.hypothesis_ids) - hypothesis_ids
+            if unknown_hypotheses:
+                raise ValueError(
+                    f"inquiry references unknown hypotheses: {sorted(unknown_hypotheses)}"
+                )
+            for test in inquiry.tests:
+                if test.photo_index > self.photo_count:
+                    raise ValueError("inquiry test references photo outside supplied input")
         return self
