@@ -99,6 +99,48 @@ jobs:
               assert selected_width == 48
           PY
 
+      - name: Generate canonical real-house-5 visual checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from brickhouse.partial_scene_pipeline import run_partial_scene_pipeline
+          from brickhouse.scene.benchmark_scene_recipe import materialize_scene_recipe
+
+          recipe = Path('frontend/benchmarks/real-house-5/scene-candidate-v0.2.json')
+          scene = materialize_scene_recipe(recipe)
+          bundle = run_partial_scene_pipeline(scene, front_width_studs=48)
+
+          output = Path('frontend/real-house-5-visual-checkpoint.json')
+          output.write_text(
+              json.dumps(bundle.model_dump(mode='json'), indent=2),
+              encoding='utf-8',
+          )
+
+          parts = bundle.brick_model.parts
+          ids = [part.placement_id for part in parts]
+          assert parts
+          assert bundle.bom.total_parts == len(parts)
+          assert bundle.assembly_plan is not None and bundle.assembly_plan.steps
+          assert any(value.startswith('scene-platform:platform-timber-1:') for value in ids)
+          assert any('stair-exterior-1-run-lower-v1' in value for value in ids)
+          assert any('stair-exterior-1-run-upper-v1' in value for value in ids)
+          PY
+
+      - name: Verify canonical real-house-5 visual checkpoint
+        run: |
+          test -s frontend/real-house-5-visual-checkpoint.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path('frontend/real-house-5-visual-checkpoint.json').read_text())
+          parts = data['brick_model']['parts']
+          assert data['bom']['total_parts'] == len(parts)
+          assert data['assembly_plan']['total_steps'] == len(data['assembly_plan']['steps'])
+          assert data['assembly_plan']['total_steps'] > 0
+          PY
+
       - name: Generate generic rich Scene viewer export
         run: >-
           brickhouse-scene-build
