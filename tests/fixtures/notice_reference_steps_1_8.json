@@ -1,0 +1,17 @@
+{
+  "building_id": "simple-house",
+  "volume_id": "main",
+  "total_steps": 8,
+  "total_parts": 22,
+  "total_bags": 1,
+  "steps": [
+    {"step_id":"step-0001","sequence":1,"component":"wall","z_plates":0,"title":"Murs — façade avant — niveau 0 plates","placement_ids":["wall-000001","wall-000002","wall-000003","wall-000004"],"phase":"Structure","bag":1,"instruction_kind":"placement","focus":"normal","view":"front"},
+    {"step_id":"step-0002","sequence":2,"component":"wall","z_plates":0,"title":"Murs — façade droite — niveau 0 plates","placement_ids":["wall-000009","wall-000010"],"phase":"Structure","bag":1,"instruction_kind":"placement","focus":"normal","view":"right"},
+    {"step_id":"step-0003","sequence":3,"component":"wall","z_plates":0,"title":"Murs — façade arrière — niveau 0 plates","placement_ids":["wall-000005","wall-000006"],"phase":"Structure","bag":1,"instruction_kind":"placement","focus":"normal","view":"rear"},
+    {"step_id":"step-0004","sequence":4,"component":"wall","z_plates":0,"title":"Murs — façade gauche — niveau 0 plates","placement_ids":["wall-000007","wall-000008"],"phase":"Structure","bag":1,"instruction_kind":"placement","focus":"normal","view":"left"},
+    {"step_id":"step-0005","sequence":5,"component":"wall","z_plates":3,"title":"Murs — façade avant — niveau 3 plates","placement_ids":["wall-000011","wall-000012","wall-000013","wall-000014"],"phase":"Structure","bag":1,"instruction_kind":"placement","focus":"normal","view":"front"},
+    {"step_id":"step-0006","sequence":6,"component":"wall","z_plates":3,"title":"Murs — façade droite — niveau 3 plates","placement_ids":["wall-000020","wall-000021","wall-000022"],"phase":"Structure","bag":1,"instruction_kind":"placement","focus":"normal","view":"right"},
+    {"step_id":"step-0007","sequence":7,"component":"wall","z_plates":3,"title":"Murs — façade arrière — niveau 3 plates","placement_ids":["wall-000015","wall-000016"],"phase":"Structure","bag":1,"instruction_kind":"placement","focus":"normal","view":"rear"},
+    {"step_id":"step-0008","sequence":8,"component":"wall","z_plates":3,"title":"Murs — façade gauche — niveau 3 plates","placement_ids":["wall-000017","wall-000018","wall-000019"],"phase":"Structure","bag":1,"instruction_kind":"placement","focus":"normal","view":"left"}
+  ]
+}
