@@ -41,6 +41,7 @@ jobs:
         run: |
           node --check frontend/app.js
           node --check frontend/viewer.js
+          node --check frontend/viewer-precision.js
           node --check frontend/instructions.js
           node --check frontend/configurator.js
           node --check frontend/photo.js
