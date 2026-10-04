@@ -1,0 +1,1022 @@
+{
+  "schema_version": "boldungo.exchange.v1",
+  "message_type": "ANALYSIS_RESULT",
+  "project_id": "REAL-HOUSE-5-3PLUS1",
+  "agent_id": "SOPHIE",
+  "agent_display_name": "Sophie",
+  "round_id": "R001",
+  "package_id": "PKG_085a085a-085a-4085-a085-a085a085a085",
+  "created_at": "2026-10-04T17:57:40Z",
+  "payload": {
+    "analysis": {
+      "observations": [
+        {
+          "observation_id": "O001",
+          "photo_id": "FRONT_001",
+          "region_hint": "façade principale, zone centrale",
+          "observation_text": "Une grande surface de façade claire, globalement plane, occupe la majeure partie de l’image."
+        },
+        {
+          "observation_id": "O002",
+          "photo_id": "FRONT_001",
+          "region_hint": "bord supérieur de la façade",
+          "observation_text": "Le bord de toiture forme une ligne inclinée vers un sommet peu marqué avant de redescendre."
+        },
+        {
+          "observation_id": "O003",
+          "photo_id": "FRONT_001",
+          "region_hint": "quart supérieur gauche",
+          "observation_text": "Une ouverture rectangulaire verticale encadrée est visible dans la façade."
+        },
+        {
+          "observation_id": "O004",
+          "photo_id": "FRONT_001",
+          "region_hint": "quart supérieur droit",
+          "observation_text": "Une seconde ouverture rectangulaire verticale encadrée est visible dans la façade."
+        },
+        {
+          "observation_id": "O005",
+          "photo_id": "FRONT_001",
+          "region_hint": "zone médiane gauche",
+          "observation_text": "Une ouverture rectangulaire encadrée est visible sous l’ouverture supérieure gauche."
+        },
+        {
+          "observation_id": "O006",
+          "photo_id": "FRONT_001",
+          "region_hint": "zone médiane droite",
+          "observation_text": "Une ouverture rectangulaire encadrée est visible sous l’ouverture supérieure droite."
+        },
+        {
+          "observation_id": "O007",
+          "photo_id": "FRONT_001",
+          "region_hint": "bas gauche de la façade",
+          "observation_text": "Une petite ouverture rectangulaire verticale est visible près du pied de la façade."
+        },
+        {
+          "observation_id": "O008",
+          "photo_id": "FRONT_001",
+          "region_hint": "bas droit de la façade",
+          "observation_text": "Une grande ouverture vitrée rectangulaire descend près du niveau du sol."
+        },
+        {
+          "observation_id": "O009",
+          "photo_id": "FRONT_001",
+          "region_hint": "au-dessus de la toiture, côté droit du centre",
+          "observation_text": "Un élément rectangulaire haut dépasse derrière ou au-dessus de la ligne de toiture."
+        },
+        {
+          "observation_id": "O010",
+          "photo_id": "FRONT_001",
+          "region_hint": "arête droite du bâtiment",
+          "observation_text": "À droite, la façade principale se termine sur une arête où une surface latérale recule hors du plan frontal."
+        },
+        {
+          "observation_id": "O011",
+          "photo_id": "RIGHT_001",
+          "region_hint": "surface murale principale",
+          "observation_text": "Une grande surface latérale claire est visible sous un bord de toiture incliné."
+        },
+        {
+          "observation_id": "O012",
+          "photo_id": "RIGHT_001",
+          "region_hint": "partie haute, près du centre",
+          "observation_text": "Une ouverture verticale encadrée est visible dans la partie haute du mur latéral."
+        },
+        {
+          "observation_id": "O013",
+          "photo_id": "RIGHT_001",
+          "region_hint": "partie haute, vers le bord droit",
+          "observation_text": "Une seconde ouverture verticale encadrée est visible plus loin vers la droite."
+        },
+        {
+          "observation_id": "O014",
+          "photo_id": "RIGHT_001",
+          "region_hint": "partie basse du mur, vers la droite",
+          "observation_text": "Une ouverture basse contient une grille régulière de petits éléments translucides ou vitrés."
+        },
+        {
+          "observation_id": "O015",
+          "photo_id": "RIGHT_001",
+          "region_hint": "pied du mur et voie adjacente",
+          "observation_text": "La bordure et la surface pavée adjacentes au mur montent qualitativement de la gauche vers la droite de l’image, avec un contact au pied du mur qui suit cette montée."
+        },
+        {
+          "observation_id": "O016",
+          "photo_id": "RIGHT_001",
+          "region_hint": "au-dessus de la toiture, partie supérieure centrale",
+          "observation_text": "Un élément rectangulaire haut dépasse au-dessus ou derrière la ligne de toiture."
+        },
+        {
+          "observation_id": "O017",
+          "photo_id": "RIGHT_001",
+          "region_hint": "bord supérieur du mur",
+          "observation_text": "Le bord de toiture visible sur ce côté descend nettement vers la droite de l’image."
+        },
+        {
+          "observation_id": "O018",
+          "photo_id": "LEFT_001",
+          "region_hint": "moitié droite, façade claire",
+          "observation_text": "Une surface de façade claire est visible derrière les aménagements extérieurs."
+        },
+        {
+          "observation_id": "O019",
+          "photo_id": "LEFT_001",
+          "region_hint": "partie haute de la façade claire",
+          "observation_text": "Une ouverture verticale étroite est visible dans la partie haute de la façade claire."
+        },
+        {
+          "observation_id": "O020",
+          "photo_id": "LEFT_001",
+          "region_hint": "centre droit",
+          "observation_text": "Une plateforme extérieure en bois est visible en hauteur devant la façade."
+        },
+        {
+          "observation_id": "O021",
+          "photo_id": "LEFT_001",
+          "region_hint": "périmètre de la plateforme",
+          "observation_text": "Un garde-corps en bois borde la plateforme sur ses côtés visibles."
+        },
+        {
+          "observation_id": "O022",
+          "photo_id": "LEFT_001",
+          "region_hint": "sous la plateforme",
+          "observation_text": "Des éléments verticaux et diagonaux en bois sont visibles sous la plateforme."
+        },
+        {
+          "observation_id": "O023",
+          "photo_id": "LEFT_001",
+          "region_hint": "centre gauche",
+          "observation_text": "L’escalier extérieur blanc présente au moins deux segments inclinés de muret ou de parapet de directions différentes autour d’une zone intermédiaire surélevée."
+        },
+        {
+          "observation_id": "O024",
+          "photo_id": "LEFT_001",
+          "region_hint": "sous la plateforme",
+          "observation_text": "Un espace ouvert reste visible sous la plateforme en bois jusqu’au sol."
+        },
+        {
+          "observation_id": "O025",
+          "photo_id": "LEFT_001",
+          "region_hint": "partie gauche de l’image",
+          "observation_text": "Une façade plus sombre et différente de la façade claire apparaît à gauche, avec plusieurs ouvertures."
+        },
+        {
+          "observation_id": "O026",
+          "photo_id": "LEFT_002",
+          "region_hint": "partie haute gauche de la façade claire",
+          "observation_text": "Une ouverture verticale étroite est visible sous le bord de toiture."
+        },
+        {
+          "observation_id": "O027",
+          "photo_id": "LEFT_002",
+          "region_hint": "centre de l’image",
+          "observation_text": "Une structure extérieure blanche de forme globalement rectiligne présente un grand vide rectangulaire sombre dans sa partie basse."
+        },
+        {
+          "observation_id": "O028",
+          "photo_id": "LEFT_002",
+          "region_hint": "gauche et centre",
+          "observation_text": "Un segment d’escalier blanc au premier plan et un autre segment incliné derrière lui montrent un cheminement non réduit à une seule ligne droite."
+        },
+        {
+          "observation_id": "O029",
+          "photo_id": "LEFT_002",
+          "region_hint": "bord droit",
+          "observation_text": "Le bord de la plateforme en bois et au moins un de ses supports sont visibles à droite de la structure blanche."
+        },
+        {
+          "observation_id": "O030",
+          "photo_id": "REAR_001",
+          "region_hint": "partie haute de la façade claire",
+          "observation_text": "Une ouverture verticale étroite est visible dans la façade claire sous le bord de toiture."
+        },
+        {
+          "observation_id": "O031",
+          "photo_id": "REAR_001",
+          "region_hint": "centre et bas droit",
+          "observation_text": "L’escalier extérieur blanc montre deux lignes inclinées de parapet ou de rive qui se rejoignent autour d’une zone intermédiaire surélevée."
+        },
+        {
+          "observation_id": "O032",
+          "photo_id": "REAR_001",
+          "region_hint": "centre droit",
+          "observation_text": "La structure extérieure blanche avec grand vide rectangulaire sombre est visible à droite de l’escalier."
+        },
+        {
+          "observation_id": "O033",
+          "photo_id": "REAR_001",
+          "region_hint": "gauche de la façade claire",
+          "observation_text": "Une surface ou masse de maçonnerie brute et dégradée est visible directement à gauche de la façade claire."
+        },
+        {
+          "observation_id": "O034",
+          "photo_id": "REAR_001",
+          "region_hint": "premier plan bas",
+          "observation_text": "Une surface extérieure en gravier occupe une grande partie du premier plan."
+        }
+      ],
+      "human_facts": [],
+      "entities": [
+        {
+          "entity_id": "E001",
+          "entity_type": "SURFACE",
+          "description": "Surface de façade principale visible dans FRONT_001.",
+          "observation_refs": [
+            "O001",
+            "O010"
+          ]
+        },
+        {
+          "entity_id": "E002",
+          "entity_type": "ASSEMBLY",
+          "description": "Ensemble de rive ou bord de toiture visible au-dessus de la façade principale dans FRONT_001.",
+          "observation_refs": [
+            "O002"
+          ]
+        },
+        {
+          "entity_id": "E003",
+          "entity_type": "OPENING",
+          "description": "Ouverture supérieure gauche de la façade principale.",
+          "observation_refs": [
+            "O003"
+          ]
+        },
+        {
+          "entity_id": "E004",
+          "entity_type": "OPENING",
+          "description": "Ouverture supérieure droite de la façade principale.",
+          "observation_refs": [
+            "O004"
+          ]
+        },
+        {
+          "entity_id": "E005",
+          "entity_type": "OPENING",
+          "description": "Ouverture médiane gauche de la façade principale.",
+          "observation_refs": [
+            "O005"
+          ]
+        },
+        {
+          "entity_id": "E006",
+          "entity_type": "OPENING",
+          "description": "Ouverture médiane droite de la façade principale.",
+          "observation_refs": [
+            "O006"
+          ]
+        },
+        {
+          "entity_id": "E007",
+          "entity_type": "OPENING",
+          "description": "Petite ouverture basse gauche de la façade principale.",
+          "observation_refs": [
+            "O007"
+          ]
+        },
+        {
+          "entity_id": "E008",
+          "entity_type": "OPENING",
+          "description": "Grande ouverture vitrée basse droite de la façade principale.",
+          "observation_refs": [
+            "O008"
+          ]
+        },
+        {
+          "entity_id": "E009",
+          "entity_type": "OTHER_PHYSICAL",
+          "description": "Élément rectangulaire haut visible au-dessus de la toiture dans FRONT_001.",
+          "observation_refs": [
+            "O009"
+          ]
+        },
+        {
+          "entity_id": "E010",
+          "entity_type": "OTHER_PHYSICAL",
+          "description": "Élément rectangulaire haut visible au-dessus de la toiture dans RIGHT_001.",
+          "observation_refs": [
+            "O016"
+          ]
+        },
+        {
+          "entity_id": "E011",
+          "entity_type": "SURFACE",
+          "description": "Surface de façade latérale visible dans RIGHT_001.",
+          "observation_refs": [
+            "O011"
+          ]
+        },
+        {
+          "entity_id": "E012",
+          "entity_type": "OPENING",
+          "description": "Ouverture haute la plus centrale visible sur la façade latérale droite.",
+          "observation_refs": [
+            "O012"
+          ]
+        },
+        {
+          "entity_id": "E013",
+          "entity_type": "OPENING",
+          "description": "Ouverture haute située plus loin vers la droite sur la façade latérale.",
+          "observation_refs": [
+            "O013"
+          ]
+        },
+        {
+          "entity_id": "E014",
+          "entity_type": "OPENING",
+          "description": "Ouverture basse à petits éléments translucides ou vitrés sur la façade latérale.",
+          "observation_refs": [
+            "O014"
+          ]
+        },
+        {
+          "entity_id": "E015",
+          "entity_type": "SITE_ELEMENT",
+          "description": "Surface pavée et bordure longeant le pied de la façade latérale droite.",
+          "observation_refs": [
+            "O015"
+          ]
+        },
+        {
+          "entity_id": "E016",
+          "entity_type": "SURFACE",
+          "description": "Même façade claire latérale ou arrière reconnue dans LEFT_001, LEFT_002 et REAR_001 par l’ouverture haute étroite et la configuration stable avec les aménagements extérieurs.",
+          "observation_refs": [
+            "O018",
+            "O019",
+            "O026",
+            "O030"
+          ]
+        },
+        {
+          "entity_id": "E017",
+          "entity_type": "OPENING",
+          "description": "Ouverture verticale étroite de la façade claire reconnue dans plusieurs vues.",
+          "observation_refs": [
+            "O019",
+            "O026",
+            "O030"
+          ]
+        },
+        {
+          "entity_id": "E018",
+          "entity_type": "ASSEMBLY",
+          "description": "Système d’escalier extérieur blanc visible dans les vues LEFT_001, LEFT_002 et REAR_001.",
+          "observation_refs": [
+            "O023",
+            "O028",
+            "O031"
+          ]
+        },
+        {
+          "entity_id": "E019",
+          "entity_type": "ASSEMBLY",
+          "description": "Première portion ou volée distincte du système d’escalier extérieur.",
+          "observation_refs": [
+            "O023",
+            "O028",
+            "O031"
+          ]
+        },
+        {
+          "entity_id": "E020",
+          "entity_type": "ASSEMBLY",
+          "description": "Seconde portion ou volée distincte du système d’escalier extérieur, orientée différemment de la première.",
+          "observation_refs": [
+            "O023",
+            "O028",
+            "O031"
+          ]
+        },
+        {
+          "entity_id": "E021",
+          "entity_type": "SURFACE",
+          "description": "Zone intermédiaire surélevée ou palier visible entre les deux portions de l’escalier.",
+          "observation_refs": [
+            "O023",
+            "O031"
+          ]
+        },
+        {
+          "entity_id": "E022",
+          "entity_type": "VOLUME",
+          "description": "Structure extérieure blanche rectiligne visible près de l’escalier et de la plateforme en bois.",
+          "observation_refs": [
+            "O027",
+            "O032"
+          ]
+        },
+        {
+          "entity_id": "E023",
+          "entity_type": "OPENING",
+          "description": "Grand vide rectangulaire sombre visible dans la partie basse de la structure extérieure blanche.",
+          "observation_refs": [
+            "O027",
+            "O032"
+          ]
+        },
+        {
+          "entity_id": "E024",
+          "entity_type": "ASSEMBLY",
+          "description": "Plateforme extérieure en bois surélevée.",
+          "observation_refs": [
+            "O020",
+            "O029"
+          ]
+        },
+        {
+          "entity_id": "E025",
+          "entity_type": "ASSEMBLY",
+          "description": "Garde-corps en bois bordant la plateforme.",
+          "observation_refs": [
+            "O021"
+          ]
+        },
+        {
+          "entity_id": "E026",
+          "entity_type": "ASSEMBLY",
+          "description": "Ensemble des supports en bois visibles sous la plateforme.",
+          "observation_refs": [
+            "O022",
+            "O029"
+          ]
+        },
+        {
+          "entity_id": "E027",
+          "entity_type": "SITE_ELEMENT",
+          "description": "Sol extérieur ou cour visible sous et autour des aménagements arrière, comprenant la zone gravillonnée.",
+          "observation_refs": [
+            "O024",
+            "O034"
+          ]
+        },
+        {
+          "entity_id": "E028",
+          "entity_type": "OTHER_PHYSICAL",
+          "description": "Masse ou surface de maçonnerie brute et dégradée adjacente à gauche de la façade claire dans REAR_001.",
+          "observation_refs": [
+            "O033"
+          ]
+        },
+        {
+          "entity_id": "E029",
+          "entity_type": "SURFACE",
+          "description": "Façade plus sombre visible à gauche dans LEFT_001, distincte visuellement de la façade claire.",
+          "observation_refs": [
+            "O025"
+          ]
+        },
+        {
+          "entity_id": "E030",
+          "entity_type": "ASSEMBLY",
+          "description": "Ensemble de rive ou bord de toiture visible au-dessus de la façade latérale dans RIGHT_001.",
+          "observation_refs": [
+            "O017"
+          ]
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "R001",
+          "relation_type": "ABOVE",
+          "subject_entity_id": "E002",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O002"
+          ]
+        },
+        {
+          "relation_id": "R002",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E003",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O003"
+          ]
+        },
+        {
+          "relation_id": "R003",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E004",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O004"
+          ]
+        },
+        {
+          "relation_id": "R004",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E005",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O005"
+          ]
+        },
+        {
+          "relation_id": "R005",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E006",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O006"
+          ]
+        },
+        {
+          "relation_id": "R006",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E007",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O007"
+          ]
+        },
+        {
+          "relation_id": "R007",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E008",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O008"
+          ]
+        },
+        {
+          "relation_id": "R008",
+          "relation_type": "CONNECTED_TO",
+          "subject_entity_id": "E001",
+          "object_entity_id": "E011",
+          "observation_refs": [
+            "O010"
+          ]
+        },
+        {
+          "relation_id": "R009",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E012",
+          "object_entity_id": "E011",
+          "observation_refs": [
+            "O012"
+          ]
+        },
+        {
+          "relation_id": "R010",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E013",
+          "object_entity_id": "E011",
+          "observation_refs": [
+            "O013"
+          ]
+        },
+        {
+          "relation_id": "R011",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E014",
+          "object_entity_id": "E011",
+          "observation_refs": [
+            "O014"
+          ]
+        },
+        {
+          "relation_id": "R012",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E017",
+          "object_entity_id": "E016",
+          "observation_refs": [
+            "O019",
+            "O026",
+            "O030"
+          ]
+        },
+        {
+          "relation_id": "R013",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E019",
+          "object_entity_id": "E018",
+          "observation_refs": [
+            "O023",
+            "O028",
+            "O031"
+          ]
+        },
+        {
+          "relation_id": "R014",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E020",
+          "object_entity_id": "E018",
+          "observation_refs": [
+            "O023",
+            "O028",
+            "O031"
+          ]
+        },
+        {
+          "relation_id": "R015",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E021",
+          "object_entity_id": "E018",
+          "observation_refs": [
+            "O023",
+            "O031"
+          ]
+        },
+        {
+          "relation_id": "R016",
+          "relation_type": "CONNECTED_TO",
+          "subject_entity_id": "E019",
+          "object_entity_id": "E021",
+          "observation_refs": [
+            "O023",
+            "O031"
+          ]
+        },
+        {
+          "relation_id": "R017",
+          "relation_type": "CONNECTED_TO",
+          "subject_entity_id": "E020",
+          "object_entity_id": "E021",
+          "observation_refs": [
+            "O023",
+            "O031"
+          ]
+        },
+        {
+          "relation_id": "R018",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E023",
+          "object_entity_id": "E022",
+          "observation_refs": [
+            "O027",
+            "O032"
+          ]
+        },
+        {
+          "relation_id": "R019",
+          "relation_type": "CONNECTED_TO",
+          "subject_entity_id": "E025",
+          "object_entity_id": "E024",
+          "observation_refs": [
+            "O021"
+          ]
+        },
+        {
+          "relation_id": "R020",
+          "relation_type": "CONNECTED_TO",
+          "subject_entity_id": "E026",
+          "object_entity_id": "E024",
+          "observation_refs": [
+            "O022",
+            "O029"
+          ]
+        },
+        {
+          "relation_id": "R021",
+          "relation_type": "ABOVE",
+          "subject_entity_id": "E024",
+          "object_entity_id": "E027",
+          "observation_refs": [
+            "O020",
+            "O024"
+          ]
+        },
+        {
+          "relation_id": "R022",
+          "relation_type": "IN_FRONT_OF",
+          "subject_entity_id": "E022",
+          "object_entity_id": "E016",
+          "observation_refs": [
+            "O027",
+            "O026"
+          ]
+        },
+        {
+          "relation_id": "R023",
+          "relation_type": "ABOVE",
+          "subject_entity_id": "E030",
+          "object_entity_id": "E011",
+          "observation_refs": [
+            "O017"
+          ]
+        }
+      ],
+      "uncertainties": [
+        {
+          "uncertainty_id": "U001",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "Il n’est pas établi avec assez de certitude que les éléments rectangulaires hauts E009 et E010 visibles dans FRONT_001 et RIGHT_001 soient une seule et même occurrence physique.",
+          "observation_refs": [
+            "O009",
+            "O016"
+          ],
+          "entity_refs": [
+            "E009",
+            "E010"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U002",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "L’appartenance des éléments rectangulaires hauts E009 et E010 au bâtiment cible, ainsi que leur nature architecturale précise, ne sont pas établies par les photos seules.",
+          "observation_refs": [
+            "O009",
+            "O016"
+          ],
+          "entity_refs": [
+            "E009",
+            "E010"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U003",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "Le matériau de couverture et la composition complète de la toiture ne sont pas déterminables avec certitude à partir des rives visibles sur FRONT_001 et RIGHT_001.",
+          "observation_refs": [
+            "O002",
+            "O017"
+          ],
+          "entity_refs": [
+            "E002",
+            "E030"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U004",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "La montée qualitative de la voie le long de la façade droite est visible, mais son profil complet et toute magnitude métrique restent non établis.",
+          "observation_refs": [
+            "O015"
+          ],
+          "entity_refs": [
+            "E015"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U005",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "La manière exacte dont la plateforme en bois E024 est fixée ou non à la façade claire E016 est masquée ou insuffisamment visible.",
+          "observation_refs": [
+            "O020",
+            "O029"
+          ],
+          "entity_refs": [
+            "E024",
+            "E016"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U006",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "L’existence d’une liaison physique directe entre la plateforme en bois E024 et le système d’escalier E018 n’est pas entièrement visible; la structure blanche E022 masque une partie de cette zone de jonction.",
+          "observation_refs": [
+            "O020",
+            "O027",
+            "O028",
+            "O029",
+            "O031",
+            "O032"
+          ],
+          "entity_refs": [
+            "E024",
+            "E018",
+            "E022"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U007",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "L’appartenance de la maçonnerie brute E028 au bâtiment cible plutôt qu’à un élément voisin ou contextuel n’est pas établie.",
+          "observation_refs": [
+            "O033"
+          ],
+          "entity_refs": [
+            "E028"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U008",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "La fonction précise de la grande ouverture vitrée basse droite E008 de la façade principale, notamment porte extérieure ou autre type d’ouverture, n’est pas certaine sur la photo.",
+          "observation_refs": [
+            "O008"
+          ],
+          "entity_refs": [
+            "E008"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U009",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "La topologie générale à au moins deux portions de l’escalier est visible, mais les limites exactes de chaque volée et la géométrie cachée autour du palier restent partiellement occultées.",
+          "observation_refs": [
+            "O023",
+            "O028",
+            "O031"
+          ],
+          "entity_refs": [
+            "E018",
+            "E019",
+            "E020",
+            "E021"
+          ],
+          "relation_refs": [
+            "R013",
+            "R014",
+            "R015",
+            "R016",
+            "R017"
+          ],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U010",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "La forme complète et l’étendue arrière ou latérale de la structure blanche E022 sont cachées par le cadrage et les autres éléments.",
+          "observation_refs": [
+            "O027",
+            "O032"
+          ],
+          "entity_refs": [
+            "E022"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U011",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "La relation physique entre la façade sombre E029 visible dans LEFT_001 et le bâtiment cible n’est pas suffisamment établie par cette vue seule.",
+          "observation_refs": [
+            "O025"
+          ],
+          "entity_refs": [
+            "E029"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        }
+      ]
+    },
+    "questions": [
+      {
+        "question_id": "Q001",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "FRONT_001",
+          "RIGHT_001"
+        ],
+        "subject_hint": "grand élément rectangulaire dépassant au-dessus de la ligne de toiture",
+        "question_text": "Les deux éléments rectangulaires hauts visibles au-dessus de la toiture sur ces deux photos sont-ils le même élément physique ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U001"
+        ]
+      },
+      {
+        "question_id": "Q002",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "FRONT_001",
+          "RIGHT_001"
+        ],
+        "subject_hint": "grand élément rectangulaire dépassant au-dessus de la ligne de toiture",
+        "question_text": "Cet élément haut appartient-il au bâtiment cible plutôt qu’à un bâtiment ou élément voisin ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U002"
+        ]
+      },
+      {
+        "question_id": "Q003",
+        "scope": "GLOBAL",
+        "photo_refs": [],
+        "subject_hint": null,
+        "question_text": "Quel est le matériau de couverture de la toiture du bâtiment cible ?",
+        "answer_type": "FREE_TEXT",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U003"
+        ]
+      },
+      {
+        "question_id": "Q004",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "FRONT_001"
+        ],
+        "subject_hint": "grande ouverture vitrée située en bas à droite de la façade principale",
+        "question_text": "Cette grande ouverture vitrée basse est-elle une porte extérieure ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U008"
+        ]
+      },
+      {
+        "question_id": "Q005",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "LEFT_001",
+          "LEFT_002"
+        ],
+        "subject_hint": "plateforme en bois surélevée devant la façade claire",
+        "question_text": "La plateforme en bois est-elle physiquement fixée à la façade claire du bâtiment cible ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U005"
+        ]
+      },
+      {
+        "question_id": "Q006",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "LEFT_001",
+          "LEFT_002",
+          "REAR_001"
+        ],
+        "subject_hint": "jonction entre la plateforme en bois, la structure blanche et l’escalier extérieur",
+        "question_text": "Existe-t-il une liaison physique directe entre la plateforme en bois et le système d’escalier blanc ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U006"
+        ]
+      },
+      {
+        "question_id": "Q007",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "REAR_001"
+        ],
+        "subject_hint": "maçonnerie brute et dégradée située immédiatement à gauche de la façade claire",
+        "question_text": "Cette maçonnerie brute fait-elle partie du bâtiment cible ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U007"
+        ]
+      },
+      {
+        "question_id": "Q008",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "LEFT_001"
+        ],
+        "subject_hint": "façade plus sombre visible à gauche de la façade claire",
+        "question_text": "La façade sombre visible à gauche appartient-elle au même bâtiment cible ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U011"
+        ]
+      }
+    ]
+  }
+}
