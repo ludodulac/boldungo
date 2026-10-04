@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { gableRoofTriangles } from './scene-viewer-gable-roof.js';
+import { platformSupportBox } from './scene-viewer-platform-support.js';
 
 const canvas = document.querySelector('#viewer');
 const messageEl = document.querySelector('#message');
@@ -106,6 +107,16 @@ function renderPlatforms() {
     mesh.position.set(Number(p.x) + width / 2, Number(p.z) + thickness / 2, Number(p.y) + depth / 2);
     mesh.userData.architecturalObjectId = platform.id;
     group.add(mesh);
+    for (const support of platform.supports ?? []) {
+      const box = platformSupportBox(support);
+      if (!box) continue;
+      const supportGeometry = new THREE.BoxGeometry(box.width, box.height, box.depth);
+      const supportMesh = new THREE.Mesh(supportGeometry, exteriorMaterial(platform.material));
+      addEdges(supportMesh);
+      supportMesh.position.set(box.center.x, box.center.y, box.center.z);
+      supportMesh.userData.architecturalObjectId = support.id;
+      group.add(supportMesh);
+    }
     // edge_treatment may say that a railing exists, but without explicit edge geometry
     // the preview intentionally does not guess which sides receive posts or rails.
   }
