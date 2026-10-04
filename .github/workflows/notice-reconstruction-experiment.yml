@@ -1,0 +1,93 @@
+name: NOTICE reconstruction experiment
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/notice-reconstruction-experiment.yml'
+
+jobs:
+  reconstruct:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact experiment commit
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install project exactly like CI
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine[dev]"
+
+      - name: Reconstruct isolated 16-stud run
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$RUNNER_TEMP/notice-reconstruction"
+          mkdir -p "$OUT"
+          cp docs/examples/building-model-simple-house.json "$OUT/building-model-simple-house.json"
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          from brickhouse.building.validation import load_building_model
+          from brickhouse.geometry import generate_building_geometry
+          from brickhouse.pipeline import run_m0_pipeline
+
+          out = Path(os.environ["RUNNER_TEMP"]) / "notice-reconstruction"
+          source = Path("docs/examples/building-model-simple-house.json")
+          building = load_building_model(source)
+          geometry = generate_building_geometry(building)
+          bundle = run_m0_pipeline(source, front_width_studs=16)
+
+          def write(name, obj):
+              path = out / name
+              if hasattr(obj, "model_dump"):
+                  data = obj.model_dump(mode="json", exclude_none=True)
+              else:
+                  data = obj
+              path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+              return path
+
+          write("architectural-geometry.json", geometry)
+          brick = write("brick-model.json", bundle.brick_model)
+          assembly = write("assembly-plan.json", bundle.assembly_plan)
+          write("bom.json", bundle.bom)
+          write("bag-plan.json", bundle.bag_plan)
+          write("instruction-plan-current.json", bundle.instruction_plan)
+          write("viewer-bundle.json", bundle)
+
+          sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          manifest = {
+              "source": str(source),
+              "front_width_studs": 16,
+              "github_sha": os.environ["GITHUB_SHA"],
+              "brick_model_placements": len(bundle.brick_model.parts),
+              "assembly_steps": bundle.assembly_plan.total_steps,
+              "bags": bundle.bag_plan.total_bags,
+              "brick_model_sha256": sha(brick),
+              "assembly_plan_sha256": sha(assembly),
+          }
+          write("RUN-MANIFEST.json", manifest)
+          (out / "MACHINE-REPORT.txt").write_text(
+              f"BrickModel placements: {manifest['brick_model_placements']}\n"
+              f"AssemblySteps: {manifest['assembly_steps']}\n"
+              f"bags: {manifest['bags']}\n"
+              f"SHA-256 BrickModel: {manifest['brick_model_sha256']}\n"
+              f"SHA-256 AssemblyPlan: {manifest['assembly_plan_sha256']}\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(manifest, indent=2))
+          PY
+
+      - name: Upload isolated reconstruction
+        uses: actions/upload-artifact@v4
+        with:
+          name: notice-reconstruction-run-16
+          path: ${{ runner.temp }}/notice-reconstruction/
+          if-no-files-found: error
+          retention-days: 14
