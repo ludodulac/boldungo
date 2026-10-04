@@ -253,4 +253,170 @@ jobs:
           print(f'deployed interaction verification passed: {url}')
           PY
 
+  verify-deployed-visual-checkpoint:
+    name: Verify deployed visual checkpoint on mobile
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install browser verification dependencies
+        run: python -m pip install 'playwright>=1.50,<2' 'pillow>=11,<12'
+
+      - name: Verify mobile viewer and construction checkpoint
+        env:
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+          DEPLOY_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import io
+          import json
+          import os
+          import shutil
+          from urllib.parse import urljoin
+          from urllib.request import urlopen
+
+          from PIL import Image, ImageStat
+          from playwright.sync_api import sync_playwright
+
+          base = os.environ['PAGE_URL']
+          sha = os.environ['DEPLOY_SHA']
+          root = base if base.endswith('/') else base + '/'
+          bundle_name = 'real-house-5-visual-checkpoint.json'
+          bundle_url = urljoin(root, bundle_name)
+          viewer_url = urljoin(root, f'viewer.html?bundle={bundle_name}&runtime-check={sha}')
+          construction_url = urljoin(
+              root,
+              f'viewer.html?bundle={bundle_name}&mode=construction&runtime-check={sha}',
+          )
+
+          with urlopen(bundle_url, timeout=30) as response:
+              assert response.status == 200, response.status
+              bundle = json.load(response)
+          total_parts = bundle['bom']['total_parts']
+          total_steps = bundle['assembly_plan']['total_steps']
+          assert total_parts == len(bundle['brick_model']['parts'])
+          assert total_steps == len(bundle['assembly_plan']['steps'])
+          assert total_parts > 0
+          assert total_steps > 0
+
+          browser_path = next((shutil.which(name) for name in (
+              'google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser'
+          ) if shutil.which(name)), None)
+          if not browser_path:
+              raise AssertionError('No Chromium/Chrome binary is available on the Pages verification runner')
+
+          def wait_loaded(page):
+              page.locator('#message').wait_for(state='attached', timeout=10000)
+              page.wait_for_function(
+                  "() => document.querySelector('#message')?.textContent?.includes('Export BOLDÜNGO chargé.')",
+                  timeout=30000,
+              )
+              page.locator('#viewer').wait_for(state='visible', timeout=10000)
+              page.wait_for_timeout(700)
+
+          def canvas_bytes(page):
+              page.wait_for_timeout(350)
+              return page.locator('#viewer').screenshot()
+
+          def canvas_hash(page):
+              return hashlib.sha256(canvas_bytes(page)).hexdigest()
+
+          def assert_model_visible(png):
+              image = Image.open(io.BytesIO(png)).convert('RGB')
+              width, height = image.size
+              crop = image.crop((
+                  int(width * 0.20),
+                  int(height * 0.15),
+                  int(width * 0.80),
+                  int(height * 0.85),
+              ))
+              variance = ImageStat.Stat(crop).var
+              assert max(variance) > 45, f'central canvas has too little visual content: {variance}'
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(
+                  headless=True,
+                  executable_path=browser_path,
+                  args=['--no-sandbox'],
+              )
+              page = browser.new_page(viewport={'width': 390, 'height': 844})
+              runtime_errors = []
+              page.on('pageerror', lambda error: runtime_errors.append(f'pageerror: {error}'))
+
+              response = page.goto(viewer_url, wait_until='domcontentloaded', timeout=30000)
+              assert response and response.ok, (
+                  f'viewer HTTP failure: {response.status if response else "no response"}'
+              )
+              wait_loaded(page)
+
+              summary = page.locator('#model-summary dd').all_text_contents()
+              assert len(summary) >= 2
+              assert summary[1].strip() == str(total_parts), (summary, total_parts)
+
+              view_hashes = {}
+              for name, selector in (
+                  ('PERSPECTIVE', '#reset-view'),
+                  ('FRONT', '#view-front'),
+                  ('RIGHT', '#view-right'),
+                  ('LEFT', '#view-left'),
+                  ('REAR', '#view-rear'),
+              ):
+                  page.locator(selector).click(timeout=5000)
+                  shot = canvas_bytes(page)
+                  assert_model_visible(shot)
+                  view_hashes[name] = hashlib.sha256(shot).hexdigest()
+              assert len(set(view_hashes.values())) == 5, view_hashes
+
+              page.locator('#reset-view').click(timeout=5000)
+              before_orbit = canvas_hash(page)
+              canvas = page.locator('#viewer')
+              box = canvas.bounding_box()
+              assert box and box['width'] > 100 and box['height'] > 100, box
+              start_x = box['x'] + box['width'] * 0.56
+              start_y = box['y'] + box['height'] * 0.48
+              page.mouse.move(start_x, start_y)
+              page.mouse.down()
+              page.mouse.move(start_x + 72, start_y + 28, steps=12)
+              page.mouse.up()
+              after_orbit = canvas_hash(page)
+              assert after_orbit != before_orbit, 'OrbitControls drag did not change the rendered view'
+
+              response = page.goto(construction_url, wait_until='domcontentloaded', timeout=30000)
+              assert response and response.ok, (
+                  f'construction viewer HTTP failure: {response.status if response else "no response"}'
+              )
+              wait_loaded(page)
+              hud = page.locator('#construction-hud')
+              hud.wait_for(state='visible', timeout=10000)
+              counter = page.locator('#construction-counter')
+              assert counter.text_content().strip() == f'Étape 1 / {total_steps}'
+
+              step1 = canvas_hash(page)
+              page.locator('#construction-next').click(timeout=5000)
+              page.wait_for_timeout(450)
+              assert counter.text_content().strip() == f'Étape 2 / {total_steps}'
+              step2 = canvas_hash(page)
+              assert step2 != step1, 'Construction step 2 did not change visible parts'
+
+              page.locator('#construction-prev').click(timeout=5000)
+              page.wait_for_timeout(450)
+              assert counter.text_content().strip() == f'Étape 1 / {total_steps}'
+              assert not runtime_errors, runtime_errors
+              browser.close()
+
+          print(json.dumps({
+              'viewer_url': viewer_url,
+              'construction_url': construction_url,
+              'total_parts': total_parts,
+              'assembly_steps': total_steps,
+              'views': view_hashes,
+              'mobile_visual_check': 'PASS',
+          }, ensure_ascii=False))
+          PY
+
 # Pages source is GitHub Actions; post-deploy interaction verification guards the public runtime.
