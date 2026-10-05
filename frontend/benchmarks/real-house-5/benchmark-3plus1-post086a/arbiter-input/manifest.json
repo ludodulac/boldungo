@@ -1,0 +1,61 @@
+{
+  "schema_version": "boldungo.benchmark-3plus1-arbiter-manifest.v1",
+  "benchmark_id": "REAL-HOUSE-5-3PLUS1",
+  "role": "ARBITER",
+  "prompt_path": "prompt.txt",
+  "photos": [
+    {
+      "photo_id": "FRONT_001",
+      "file_path": "photos/FRONT_001.jpg",
+      "sha256": "81f064aa642f3e51c284473583e9c48016535177510b2cddde8f60676f87fa07"
+    },
+    {
+      "photo_id": "RIGHT_001",
+      "file_path": "photos/RIGHT_001.jpg",
+      "sha256": "490a9058e9de9b689860256e4b9bb22f16111256106cc48fd90612c5ae3c6ec3"
+    },
+    {
+      "photo_id": "LEFT_001",
+      "file_path": "photos/LEFT_001.jpg",
+      "sha256": "4b53ec191f74a9c9b4c29a960eb15af60c3ad3337e8c8b19b2bab8ffe797e0dc"
+    },
+    {
+      "photo_id": "LEFT_002",
+      "file_path": "photos/LEFT_002.jpg",
+      "sha256": "ca8488a165ecbd687c4c2c6b42b989e57becca0c2684c01b2dd6b6bcc9c02733"
+    },
+    {
+      "photo_id": "REAR_001",
+      "file_path": "photos/REAR_001.jpg",
+      "sha256": "690b83c1af13f7a68a31e5a30a1d14d9967c565c647661743ac8d46732874093"
+    }
+  ],
+  "runs": [
+    {
+      "run_id": "RUN_A2",
+      "file_path": "runs/RUN_A2.json",
+      "sha256": "73ca340b0f391cd82ebea9a45570845952bc219e0251990046f4d96e731a1e95"
+    },
+    {
+      "run_id": "RUN_B2",
+      "file_path": "runs/RUN_B2.json",
+      "sha256": "a6457f6d46bd3699786245de2e068351f12e98f1187e84ec676edf3095fc7f84"
+    },
+    {
+      "run_id": "RUN_C2",
+      "file_path": "runs/RUN_C2.json",
+      "sha256": "06562a480a0ba7792b888e7b0e7806f43db476dfe0d001c8f674f5aeb9915beb"
+    }
+  ],
+  "provenance": {
+    "closed_world": true,
+    "allowed_input_classes": [
+      "photos",
+      "run_results",
+      "prompt"
+    ],
+    "human_truth_included": false,
+    "evaluator_oracle_included": false,
+    "external_dependencies": false
+  }
+}
