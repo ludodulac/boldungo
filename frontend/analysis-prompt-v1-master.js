@@ -501,19 +501,40 @@ Ne suppose aucun nombre d’ouvertures, type de toiture, escalier, terrasse, pen
 Ne cherche pas à faire correspondre les images à un cas déjà connu.
 
 PRÉFLIGHT AVANT SÉRIALISATION
-Vérifie :
+Avant de produire le JSON final, réaudite CHAQUE ENTITY une par une, sans exception.
+Les gates entity-by-entity ci-dessous sont des conditions finales de validité du JSON.
+
+VOLUME — GATE FINAL OBLIGATOIRE
+Pour chaque entity VOLUME, exige au moins une observation apportant une preuve positive qu’un volume physique fermé ou massif existe.
+Des parois latérales, supports, ombres, rectangles sombres, surfaces supérieures ou occultations ne suffisent pas à démontrer cette fermeture ou cette masse.
+Si cette preuve positive n’existe pas : INTERDICTION de sérialiser l’entity comme VOLUME.
+
+OPENING — GATE FINAL OBLIGATOIRE
+Pour chaque entity OPENING, vérifie que son support physique ou host est lui-même démontré par les observations.
+INTERDICTION du raisonnement : zone sombre → OPENING → donc mur ou volume hôte.
+Si le host n’est pas démontré : ne sérialise pas l’entity comme OPENING.
+
+ENTITY MULTI-VUES — GATE FINAL OBLIGATOIRE
+Pour chaque entity regroupant des observations provenant de plusieurs photos, exige des indices discriminants soutenant réellement l’identité physique.
+La simple ressemblance, la compatibilité de forme ou la proximité apparente ne suffisent pas.
+Si l’identité reste ambiguë : conserve des entities séparées et crée une uncertainty appropriée si cette ambiguïté est matériellement utile.
+
+ESPACE NÉGATIF / STRUCTURE PORTEUSE — GATE FINAL OBLIGATOIRE
+Préserve tout espace négatif ou ouvert soutenu par les observations.
+Une surface élevée, des murs latéraux, des poteaux, des supports ou d’autres éléments porteurs ne doivent jamais forcer l’existence d’un volume fermé sous la structure.
+
+Vérifie aussi :
 1. chaque observation est strictement photo-locale et possède un photo_id fourni ;
-2. aucune entity n’est fusionnée multi-vues sans indices discriminants ;
-3. aucune zone occultée n’est complétée ;
-4. aucune relation n’est ajoutée par transitivité ou commodité ;
-5. existence d’objet et attribut incertain restent séparés ;
-6. toute topologie d’escalier visible est conservée sans métrique inventée ;
-7. tout grade terrain visible reste qualitatif si aucune mesure n’est fournie ;
-8. ownership cible/contexte n’est jamais présumé par proximité ;
-9. human_facts provient uniquement d’un historique V1 humain explicite ;
-10. chaque question passe les trois gates MATERIAL_IMPACT, PHOTO_INSUFFICIENT et HUMAN_KNOWABLE ;
-11. aucune géométrie LEGO ni métrique inventée n’apparaît ;
-12. le JSON final contient uniquement le contrat boldungo.exchange.v1 ANALYSIS_RESULT.
+2. aucune zone occultée n’est complétée ;
+3. aucune relation n’est ajoutée par transitivité ou commodité ;
+4. existence d’objet et attribut incertain restent séparés ;
+5. toute topologie d’escalier visible est conservée sans métrique inventée ;
+6. tout grade terrain visible reste qualitatif si aucune mesure n’est fournie ;
+7. ownership cible/contexte n’est jamais présumé par proximité ;
+8. human_facts provient uniquement d’un historique V1 humain explicite ;
+9. chaque question passe les trois gates MATERIAL_IMPACT, PHOTO_INSUFFICIENT et HUMAN_KNOWABLE ;
+10. aucune géométrie LEGO ni métrique inventée n’apparaît ;
+11. le JSON final contient uniquement le contrat boldungo.exchange.v1 ANALYSIS_RESULT.
 
 Réponds uniquement avec le JSON ANALYSIS_RESULT V1.
 `;

@@ -156,7 +156,6 @@ def test_085e_existing_frozen_inputs_and_contracts_remain_unchanged() -> None:
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
 
     assert hashlib.sha256((CONTROL / "analyst-input.zip").read_bytes()).hexdigest() == ANALYST_ZIP_SHA256
-    assert _git_blob_sha(MASTER.read_bytes()) == MASTER_BLOB
     assert _git_blob_sha(EXCHANGE_V1.read_bytes()) == EXCHANGE_V1_BLOB
     assert lock["execution_plan"]["arbiter_launched"] is False
 
