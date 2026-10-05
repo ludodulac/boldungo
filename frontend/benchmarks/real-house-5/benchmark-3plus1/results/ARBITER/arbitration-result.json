@@ -1,0 +1,296 @@
+{
+  "schema_version": "boldungo.benchmark-3plus1-arbitration.v1",
+  "benchmark_id": "REAL-HOUSE-5-3PLUS1",
+  "findings": [
+    {
+      "finding_id": "F001",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "façade principale — six ouvertures visibles",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses décrivent la même trame générale sur la façade principale : deux ouvertures vitrées en partie haute, deux au niveau intermédiaire, une ouverture étroite en partie basse gauche et une grande ouverture vitrée en partie basse droite. La photo confirme cette organisation sans permettre de déduire des dimensions métriques précises.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F002",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "toiture — profil visible incliné au-dessus de la façade principale",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses constatent que la ligne de toiture visible au-dessus de la façade principale n'est pas horizontale. FRONT_001 montre un profil incliné avec un point haut visible, mais ce constat local ne suffit pas à définir la toiture complète.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F003",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "façade droite — ouverture haute et ouverture basse translucide",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["RIGHT_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses identifient sur la façade droite au moins une ouverture vitrée en partie haute et une petite ouverture basse constituée d'une trame régulière d'éléments translucides. Ces deux éléments sont directement visibles sur RIGHT_001.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F004",
+      "category": "CONSENSUS_2_OF_3",
+      "topic": "façade droite — seconde ouverture haute vers l'arrière",
+      "run_refs": ["RUN_A", "RUN_B"],
+      "photo_refs": ["RIGHT_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "RUN_A et RUN_B distinguent une seconde ouverture haute plus éloignée vers la droite de l'image. RIGHT_001 en montre effectivement une portion près du bord droit. RUN_C ne la relève pas, ce qui constitue une omission et non une contradiction.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F005",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "terrain — montée du sol le long de la façade droite",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["RIGHT_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses concordent sur une montée qualitative de la chaussée ou du passage le long du mur droit, de la gauche vers la droite de l'image. La photo confirme la pente apparente et le contact du sol avec le pied du mur, sans fournir de pente métrique fiable.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F006",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "terrasse — plateforme en bois surélevée avec garde-corps à lattes",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "LEFT_002", "REAR_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses reconnaissent une terrasse ou plateforme en bois surélevée bordée d'un garde-corps à lattes verticales. Sa continuité entre les vues LEFT_001, LEFT_002 et REAR_001 est photographiquement cohérente.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F007",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "terrasse — supports visibles et espace ouvert dessous",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "LEFT_002"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses décrivent des supports en bois visibles sous la terrasse, comprenant au moins un poteau vertical et des éléments diagonaux, avec un espace visuellement ouvert entre ces supports et le sol. Les photos confirment uniquement les supports effectivement visibles.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F008",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "escalier extérieur — plusieurs segments inclinés et changement de direction",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "LEFT_002", "REAR_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses convergent sur un système d'escalier maçonné extérieur comportant au moins deux portions inclinées d'orientations différentes autour d'une zone de changement de direction. Les photos soutiennent cette topologie générale, sans révéler toute la géométrie cachée du raccord.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F009",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "ouvrage maçonné blanc surélevé — grand vide rectangulaire",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "LEFT_002", "REAR_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses reconnaissent un ouvrage maçonné clair surélevé, adjacent à l'escalier et à la terrasse, présentant un grand vide rectangulaire sombre en partie basse. Cette géométrie visible est directement confirmée par LEFT_002 et REAR_001.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F010",
+      "category": "CONSENSUS_3_OF_3",
+      "topic": "construction grise ou maçonnerie brute adjacente",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "REAR_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "Les trois analyses relèvent une construction ou masse bâtie plus sombre et dégradée à gauche du bâtiment clair. Les photos confirment son existence et son voisinage immédiat, sans établir son appartenance au bâtiment cible.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F011",
+      "category": "CONSENSUS_2_OF_3",
+      "topic": "sol extérieur — zone gravillonnée",
+      "run_refs": ["RUN_A", "RUN_B"],
+      "photo_refs": ["LEFT_002", "REAR_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "RUN_A et RUN_B identifient une zone de sol largement couverte de gravier autour des aménagements arrière. Les photos le confirment. RUN_C ne formule pas cette observation, sans contradiction.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F012",
+      "category": "CONSENSUS_2_OF_3",
+      "topic": "élément rectangulaire vertical dépassant de la toiture",
+      "run_refs": ["RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001", "RIGHT_001"],
+      "photo_evidence": "SUPPORTED",
+      "assessment": "RUN_B et RUN_C relèvent un élément rectangulaire vertical dépassant au-dessus ou derrière la ligne de toiture dans FRONT_001 et RIGHT_001. Sa présence visuelle est confirmée; RUN_A ne le relève pas explicitement.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F013",
+      "category": "CONTRADICTION",
+      "topic": "élément dépassant de la toiture — identité entre FRONT_001 et RIGHT_001",
+      "run_refs": ["RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001", "RIGHT_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "RUN_C regroupe les formes visibles dans FRONT_001 et RIGHT_001 comme un même élément, tandis que RUN_B indique explicitement que cette identité physique n'est pas établie. Les deux vues montrent des formes compatibles, mais le package ne permet pas de prouver qu'il s'agit d'une seule occurrence plutôt que de deux éléments distincts.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F014",
+      "category": "HUMAN_QUESTION_REQUIRED",
+      "topic": "toiture principale — forme complète et nombre de pans",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001", "RIGHT_001", "LEFT_002", "REAR_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "Les photos montrent plusieurs rives et profils inclinés, mais pas une vue permettant de reconstruire sans ambiguïté la forme complète de la toiture principale et toutes ses jonctions. Les analyses ne fournissent pas une solution commune suffisamment établie. Cette géométrie modifie directement le volume supérieur du modèle.",
+      "human_question_id": "HQ001"
+    },
+    {
+      "finding_id": "F015",
+      "category": "HUMAN_QUESTION_REQUIRED",
+      "topic": "toiture principale — matériau de couverture",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001", "RIGHT_001", "LEFT_002", "REAR_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "Les trois analyses signalent que le matériau de couverture n'est pas identifiable de façon fiable depuis les vues fournies. Une réponse humaine est nécessaire si le modèle doit représenter le matériau de toiture plutôt qu'une simple géométrie neutre.",
+      "human_question_id": "HQ002"
+    },
+    {
+      "finding_id": "F016",
+      "category": "HUMAN_QUESTION_REQUIRED",
+      "topic": "ouvrage maçonné blanc — fermeture ou ouverture en profondeur sous le palier",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_002", "REAR_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "Le grand vide est ouvert sur sa face visible, mais les photos ne montrent pas de manière fiable si l'espace reste ouvert jusqu'à l'arrière ou s'il est fermé plus en profondeur. Cette différence change le caractère volumique de l'ouvrage et doit être tranchée pour un modèle architectural fidèle.",
+      "human_question_id": "HQ003"
+    },
+    {
+      "finding_id": "F017",
+      "category": "HUMAN_QUESTION_REQUIRED",
+      "topic": "construction grise adjacente — appartenance au bâtiment cible",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "REAR_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "Les trois analyses considèrent l'appartenance de la construction grise ou maçonnerie brute au bâtiment cible comme non établie. Les photos montrent une continuité ou juxtaposition visuelle mais ne permettent pas de décider si cet ensemble doit faire partie de la reconstruction cible. Cette décision change directement le périmètre du modèle.",
+      "human_question_id": "HQ004"
+    },
+    {
+      "finding_id": "F018",
+      "category": "HUMAN_QUESTION_REQUIRED",
+      "topic": "escalier extérieur — géométrie cachée de la zone de changement de direction",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "LEFT_002", "REAR_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "La présence de plusieurs segments de l'escalier est soutenue, mais la forme exacte du palier ou du raccord entre ces segments est masquée par les murs, la végétation et le cadrage. Cette géométrie influe directement sur la reconstruction de l'escalier et ne peut pas être fixée avec le package seul.",
+      "human_question_id": "HQ005"
+    },
+    {
+      "finding_id": "F019",
+      "category": "CONTRADICTION",
+      "topic": "terrasse — connexion physique exacte à la façade claire",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "LEFT_002", "REAR_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "RUN_A encode la plateforme comme connectée à la façade claire, tandis que RUN_B et RUN_C indiquent que la fixation ou connexion physique exacte est masquée ou insuffisamment visible. Les photos établissent la proximité immédiate de la terrasse et de la façade, mais pas le détail de leur liaison structurelle.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F020",
+      "category": "CONSENSUS_2_OF_3",
+      "topic": "terrasse — nombre total et disposition complète des supports",
+      "run_refs": ["RUN_A", "RUN_C"],
+      "photo_refs": ["LEFT_001", "LEFT_002"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "RUN_A et RUN_C précisent que seuls certains supports de la terrasse sont visibles et que leur nombre total ou leur disposition complète ne peut pas être déduit. Les photos confirment cette limitation; RUN_B décrit les supports visibles sans prétendre à un inventaire total.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F021",
+      "category": "UNRESOLVED",
+      "topic": "façade principale — fonction de l'ouverture basse étroite à gauche",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "L'ouverture basse étroite est clairement visible et relevée par les trois analyses, mais sa fonction précise n'est pas déterminable depuis FRONT_001. RUN_A rend cette ambiguïté explicite. La géométrie extérieure de l'ouverture peut toutefois être conservée sans lui attribuer une fonction.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F022",
+      "category": "UNRESOLVED",
+      "topic": "façade principale — fonction de la grande ouverture vitrée basse droite",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001"],
+      "photo_evidence": "PARTIALLY_SUPPORTED",
+      "assessment": "La grande ouverture vitrée basse droite est photographiquement établie et descend près du sol. RUN_B soulève l'ambiguïté porte extérieure versus autre type d'ouverture, tandis que RUN_A et RUN_C restent au niveau descriptif. Le package ne permet pas d'assigner avec certitude une fonction, mais la forme visible peut être modélisée.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F023",
+      "category": "UNRESOLVED",
+      "topic": "façade droite — type fonctionnel de l'ouverture basse à blocs translucides",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["RIGHT_001"],
+      "photo_evidence": "PARTIALLY_SUPPORTED",
+      "assessment": "La trame de blocs translucides est directement visible et reconnue par les trois analyses. RUN_C souligne que le type fonctionnel exact de cette petite ouverture n'est pas déterminable. Le package soutient son apparence, mais pas une classification fonctionnelle plus précise.",
+      "human_question_id": null
+    },
+    {
+      "finding_id": "F024",
+      "category": "UNRESOLVED",
+      "topic": "élément dépassant de la toiture — nature architecturale et fonction",
+      "run_refs": ["RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001", "RIGHT_001"],
+      "photo_evidence": "INSUFFICIENT",
+      "assessment": "RUN_B et RUN_C s'accordent sur le fait qu'une forme verticale dépasse la toiture mais ne permettent pas d'en établir la nature architecturale précise. La silhouette est visible, tandis que sa fonction et son rattachement exact restent indéterminés dans le package.",
+      "human_question_id": null
+    }
+  ],
+  "human_questions": [
+    {
+      "human_question_id": "HQ001",
+      "topic": "toiture principale — géométrie complète",
+      "question_text": "Quelle est la forme complète de la toiture principale du bâtiment clair, notamment le nombre de pans et leurs jonctions ?",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001", "RIGHT_001", "LEFT_002", "REAR_001"],
+      "material_reason": "La réponse détermine la géométrie du volume supérieur du bâtiment et ne peut pas être déduite sans ambiguïté des vues disponibles."
+    },
+    {
+      "human_question_id": "HQ002",
+      "topic": "toiture principale — matériau de couverture",
+      "question_text": "Quel est le matériau de couverture de la toiture principale ?",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["FRONT_001", "RIGHT_001", "LEFT_002", "REAR_001"],
+      "material_reason": "Le matériau n'est pas identifiable de façon fiable dans les photos et sa représentation modifie l'apparence architecturale du modèle si celui-ci doit inclure les matériaux."
+    },
+    {
+      "human_question_id": "HQ003",
+      "topic": "ouvrage maçonné blanc — espace sous le palier",
+      "question_text": "L'espace visible sous l'ouvrage maçonné blanc reste-t-il ouvert jusqu'à l'arrière, ou est-il fermé par une paroi plus en profondeur ?",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_002", "REAR_001"],
+      "material_reason": "La réponse change l'ouvrage d'un espace traversant ou ouvert à un volume fermé et modifie donc sa géométrie architecturale."
+    },
+    {
+      "human_question_id": "HQ004",
+      "topic": "construction grise adjacente — périmètre du bâtiment cible",
+      "question_text": "La construction grise ou maçonnerie brute visible à gauche fait-elle partie du bâtiment cible à reconstruire ?",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "REAR_001"],
+      "material_reason": "La réponse détermine si un volume bâti important doit être inclus ou exclu du modèle architectural cible."
+    },
+    {
+      "human_question_id": "HQ005",
+      "topic": "escalier extérieur — zone de changement de direction",
+      "question_text": "Quelle est la géométrie exacte de la zone de changement de direction entre les segments visibles de l'escalier extérieur, notamment la forme du palier ou du raccord caché ?",
+      "run_refs": ["RUN_A", "RUN_B", "RUN_C"],
+      "photo_refs": ["LEFT_001", "LEFT_002", "REAR_001"],
+      "material_reason": "Les segments visibles sont établis, mais leur raccord caché conditionne la géométrie finale de l'escalier dans le modèle."
+    }
+  ],
+  "summary": {
+    "CONSENSUS_3_OF_3": 9,
+    "CONSENSUS_2_OF_3": 4,
+    "SINGLE_DETECTION": 0,
+    "CONTRADICTION": 2,
+    "UNRESOLVED": 4,
+    "HUMAN_QUESTION_REQUIRED": 5
+  }
+}
