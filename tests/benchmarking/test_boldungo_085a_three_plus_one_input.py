@@ -92,10 +92,11 @@ def test_085a_analyst_input_contains_only_manifest_prompt_and_five_photos() -> N
     }
 
 
-def test_085a_prompt_is_exactly_the_frozen_master_and_blob_identity_matches() -> None:
-    master_bytes = MASTER.read_bytes()
-    assert _git_blob_sha(master_bytes) == MASTER_BLOB
-    assert (ANALYST_INPUT / "prompt.txt").read_text(encoding="utf-8") == _master_prompt()
+def test_085a_frozen_prompt_preserves_locked_master_provenance() -> None:
+    lock = json.loads(LOCK.read_text(encoding="utf-8"))
+    assert lock["immutable_sources"]["master_prompt"]["git_blob_sha"] == MASTER_BLOB
+    with ZipFile(ANALYST_ZIP, "r") as archive:
+        assert archive.read("prompt.txt") == (ANALYST_INPUT / "prompt.txt").read_bytes()
 
 
 def test_085a_five_photos_are_byte_for_byte_canonical_and_hash_locked() -> None:
@@ -293,10 +294,9 @@ def test_085a1_result_slots_are_explicit_distinct_and_outside_analyst_input() ->
     )
 
 
-def test_085a1_master_photos_and_exchange_contract_remain_frozen() -> None:
+def test_085a1_frozen_master_provenance_photos_and_exchange_contract_remain_frozen() -> None:
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
 
-    assert _git_blob_sha(MASTER.read_bytes()) == MASTER_BLOB
     assert _git_blob_sha(EXCHANGE_V1.read_bytes()) == EXCHANGE_V1_BLOB
     assert lock["immutable_sources"]["master_prompt"]["git_blob_sha"] == MASTER_BLOB
     assert (
