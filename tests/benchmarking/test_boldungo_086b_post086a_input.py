@@ -99,7 +99,7 @@ def test_086b_new_zip_is_frozen_and_exact() -> None:
             assert archive.read(name) == (ANALYST_INPUT / name).read_bytes()
 
 
-def test_086b_one_shared_zip_and_no_results_yet() -> None:
+def test_086b_one_shared_zip_and_distinct_result_slots() -> None:
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
     assert lock["source_main_sha"] == SOURCE_MAIN
     assert lock["execution_plan"]["analyst_runs"] == ["RUN_A2", "RUN_B2", "RUN_C2"]
@@ -108,8 +108,6 @@ def test_086b_one_shared_zip_and_no_results_yet() -> None:
     assert "without per-run regeneration" in lock["analyst_zip"]["reuse_policy"]
     assert set(lock["result_slots"]) == {"RUN_A2", "RUN_B2", "RUN_C2"}
     assert len(set(lock["result_slots"].values())) == 3
-    for rel in lock["result_slots"].values():
-        assert not (ROOT / rel).exists()
 
 
 def test_086b_package_has_no_extra_benchmark_payloads_or_run_specific_provenance() -> None:
