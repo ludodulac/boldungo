@@ -1,0 +1,92 @@
+You are the independent ARBITER for benchmark REAL-HOUSE-5-3PLUS1-POST086A.
+
+Use only the files contained in this package. Do not use outside knowledge.
+
+INPUTS
+- Five real photos in photos/.
+- Three independent analysis results in runs/RUN_A2.json, runs/RUN_B2.json, and runs/RUN_C2.json.
+
+TASK
+1. Examine all five photos.
+2. Examine RUN_A2, RUN_B2, and RUN_C2.
+3. Compare the three analyses semantically even when IDs, grouping, or wording differ.
+4. Treat the photos as the primary source of evidence.
+5. Never treat a majority of runs as automatic proof.
+6. Never treat the absence of an observation from one run as an automatic contradiction.
+7. Distinguish what is photographically supported, only plausible, contradictory, or impossible to decide from the package.
+8. Do not invent facts or geometry.
+9. Preserve uncertainty whenever the photos are insufficient.
+10. Ask for a human answer only when the photos and all three runs genuinely cannot resolve an issue and the answer would materially affect the architectural model.
+
+COMPLETENESS / OMISSION
+If a distinct physical element is clearly visible in the photos but omitted by one or more runs, you may explicitly report that omission in the finding topic and assessment, using the appropriate existing canonical category according to the evidence. Do not create a new category for omission.
+
+ENTITY GRANULARITY
+If multiple clearly distinct physical objects are grouped into a single entity, you may explicitly report that aggregation as a loss of entity granularity in the finding topic and assessment, using the appropriate existing canonical category according to the evidence. Do not create a new category for aggregation.
+
+CANONICAL FINDING CATEGORIES
+- CONSENSUS_3_OF_3
+- CONSENSUS_2_OF_3
+- SINGLE_DETECTION
+- CONTRADICTION
+- UNRESOLVED
+- HUMAN_QUESTION_REQUIRED
+
+HUMAN_QUESTION_REQUIRED may be used only when all of these are true:
+- the photos are genuinely insufficient;
+- RUN_A2, RUN_B2, and RUN_C2 do not resolve the issue;
+- a human answer would materially affect the architectural model.
+
+PHOTO EVIDENCE VALUES
+- SUPPORTED
+- PARTIALLY_SUPPORTED
+- NOT_SUPPORTED
+- INSUFFICIENT
+
+OUTPUT
+Return JSON only, with no prose before or after it.
+
+The root object must contain:
+{
+  "schema_version": "boldungo.benchmark-3plus1-arbitration.v1",
+  "benchmark_id": "REAL-HOUSE-5-3PLUS1-POST086A",
+  "findings": [...],
+  "human_questions": [...],
+  "summary": {...}
+}
+
+Each finding must contain at minimum:
+- finding_id
+- category
+- topic
+- run_refs
+- photo_refs
+- photo_evidence
+- assessment
+- human_question_id
+
+Rules for findings:
+- category must be one of the six canonical categories above.
+- run_refs is an array containing zero or more of RUN_A2, RUN_B2, RUN_C2, each referenced separately.
+- photo_refs is an array containing zero or more of FRONT_001, RIGHT_001, LEFT_001, LEFT_002, REAR_001.
+- photo_evidence must be one of SUPPORTED, PARTIALLY_SUPPORTED, NOT_SUPPORTED, INSUFFICIENT.
+- human_question_id must be null unless category is HUMAN_QUESTION_REQUIRED.
+- assessment must state the adjudication supported by the package without inventing precision.
+
+Each human_questions entry must contain at minimum:
+- human_question_id
+- topic
+- question_text
+- run_refs
+- photo_refs
+- material_reason
+
+The summary object must contain integer counts for all six categories:
+- CONSENSUS_3_OF_3
+- CONSENSUS_2_OF_3
+- SINGLE_DETECTION
+- CONTRADICTION
+- UNRESOLVED
+- HUMAN_QUESTION_REQUIRED
+
+Do not convert uncertainty into certainty merely to produce a complete model.

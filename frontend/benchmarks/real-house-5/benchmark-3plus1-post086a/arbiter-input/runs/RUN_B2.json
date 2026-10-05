@@ -1,0 +1,559 @@
+{
+  "schema_version": "boldungo.exchange.v1",
+  "message_type": "ANALYSIS_RESULT",
+  "project_id": "REAL-HOUSE-5-3PLUS1",
+  "agent_id": "SOPHIE",
+  "agent_display_name": "Sophie",
+  "round_id": "R001",
+  "package_id": "PKG_085a085a-085a-4085-a085-a085a085a085",
+  "created_at": "2026-10-05T07:03:00Z",
+  "payload": {
+    "analysis": {
+      "observations": [
+        {
+          "observation_id": "O001",
+          "photo_id": "FRONT_001",
+          "region_hint": "façade principale, partie haute",
+          "observation_text": "Une surface murale claire est visible sous un bord de toiture incliné formant un sommet central."
+        },
+        {
+          "observation_id": "O002",
+          "photo_id": "FRONT_001",
+          "region_hint": "façade principale, deux rangées supérieures",
+          "observation_text": "Quatre ouvertures rectangulaires vitrées sont visibles, disposées en deux colonnes et deux rangées."
+        },
+        {
+          "observation_id": "O003",
+          "photo_id": "FRONT_001",
+          "region_hint": "façade principale, partie basse gauche",
+          "observation_text": "Une petite ouverture rectangulaire verticale est visible près du pied de la surface murale."
+        },
+        {
+          "observation_id": "O004",
+          "photo_id": "FRONT_001",
+          "region_hint": "façade principale, partie basse droite",
+          "observation_text": "Une grande ouverture rectangulaire équipée d'un ensemble vitré et opaque est visible au niveau bas."
+        },
+        {
+          "observation_id": "O005",
+          "photo_id": "FRONT_001",
+          "region_hint": "premier plan au pied de la façade",
+          "observation_text": "Une surface de circulation extérieure longe le pied de la façade et rejoint une bordure visible à droite."
+        },
+        {
+          "observation_id": "O006",
+          "photo_id": "RIGHT_001",
+          "region_hint": "surface latérale droite, partie haute",
+          "observation_text": "Une longue surface murale claire est visible sous un bord de toiture incliné."
+        },
+        {
+          "observation_id": "O007",
+          "photo_id": "RIGHT_001",
+          "region_hint": "surface latérale droite, moitié supérieure",
+          "observation_text": "Deux ouvertures rectangulaires verticales sont visibles à des positions distinctes le long de la surface murale."
+        },
+        {
+          "observation_id": "O008",
+          "photo_id": "RIGHT_001",
+          "region_hint": "surface latérale droite, partie basse",
+          "observation_text": "Une ouverture rectangulaire basse contenant une trame de blocs translucides ou vitrés est visible."
+        },
+        {
+          "observation_id": "O009",
+          "photo_id": "RIGHT_001",
+          "region_hint": "pied de la surface latérale droite",
+          "observation_text": "La bordure et la surface de circulation adjacentes montent visiblement le long du bâtiment de l'avant-plan vers l'arrière-plan de l'image."
+        },
+        {
+          "observation_id": "O010",
+          "photo_id": "LEFT_001",
+          "region_hint": "partie droite de la façade visible",
+          "observation_text": "Une surface murale claire comporte une ouverture vitrée verticale en partie haute et une ouverture vitrée plus large à un niveau inférieur."
+        },
+        {
+          "observation_id": "O011",
+          "photo_id": "LEFT_001",
+          "region_hint": "devant la partie basse de la surface murale claire",
+          "observation_text": "Une plateforme extérieure surélevée avec plancher et garde-corps à éléments verticaux est visible."
+        },
+        {
+          "observation_id": "O012",
+          "photo_id": "LEFT_001",
+          "region_hint": "sous la plateforme surélevée",
+          "observation_text": "Un espace ouvert est visible sous la plateforme."
+        },
+        {
+          "observation_id": "O013",
+          "photo_id": "LEFT_001",
+          "region_hint": "sous le bord extérieur de la plateforme",
+          "observation_text": "Au moins un poteau vertical et des éléments diagonaux sont visibles sous la plateforme."
+        },
+        {
+          "observation_id": "O014",
+          "photo_id": "LEFT_001",
+          "region_hint": "partie gauche, devant les surfaces murales",
+          "observation_text": "Un escalier extérieur bordé de parois pleines monte depuis la zone basse vers une zone plus élevée."
+        },
+        {
+          "observation_id": "O015",
+          "photo_id": "LEFT_002",
+          "region_hint": "centre et partie droite",
+          "observation_text": "Une structure extérieure à parois claires présente une surface supérieure horizontale et une grande baie ouverte sur sa face visible."
+        },
+        {
+          "observation_id": "O016",
+          "photo_id": "LEFT_002",
+          "region_hint": "arrière-plan droit",
+          "observation_text": "Une plateforme surélevée avec garde-corps à éléments verticaux est visible, avec un espace ouvert sous son bord."
+        },
+        {
+          "observation_id": "O017",
+          "photo_id": "LEFT_002",
+          "region_hint": "partie gauche",
+          "observation_text": "Une portion d'escalier extérieur bordée par une paroi pleine est visible."
+        },
+        {
+          "observation_id": "O018",
+          "photo_id": "LEFT_002",
+          "region_hint": "surface murale haute",
+          "observation_text": "Une ouverture vitrée verticale est visible dans la surface murale claire sous le bord incliné de toiture."
+        },
+        {
+          "observation_id": "O019",
+          "photo_id": "REAR_001",
+          "region_hint": "centre",
+          "observation_text": "Un escalier extérieur bordé de parois pleines présente deux portions visibles dont les directions diffèrent."
+        },
+        {
+          "observation_id": "O020",
+          "photo_id": "REAR_001",
+          "region_hint": "centre droit",
+          "observation_text": "Une structure extérieure à parois claires avec surface supérieure horizontale et grande baie ouverte est visible à côté de l'escalier."
+        },
+        {
+          "observation_id": "O021",
+          "photo_id": "REAR_001",
+          "region_hint": "surface murale claire en arrière-plan",
+          "observation_text": "Une ouverture vitrée verticale est visible dans la partie haute de la surface murale."
+        },
+        {
+          "observation_id": "O022",
+          "photo_id": "REAR_001",
+          "region_hint": "extrême droite",
+          "observation_text": "Une partie d'une plateforme surélevée munie d'un garde-corps à éléments verticaux est visible."
+        },
+        {
+          "observation_id": "O023",
+          "photo_id": "REAR_001",
+          "region_hint": "partie gauche",
+          "observation_text": "Des surfaces bâties dégradées ou non finies sont visibles immédiatement à côté de l'escalier."
+        }
+      ],
+      "human_facts": [],
+      "entities": [
+        {
+          "entity_id": "E001",
+          "entity_type": "SURFACE",
+          "description": "Surface murale correspondant à la façade principale visible.",
+          "observation_refs": [
+            "O001",
+            "O002",
+            "O003",
+            "O004"
+          ]
+        },
+        {
+          "entity_id": "E002",
+          "entity_type": "OPENING",
+          "description": "Ensemble des quatre ouvertures vitrées distinctes visibles dans les deux rangées supérieures de la façade principale.",
+          "observation_refs": [
+            "O002"
+          ]
+        },
+        {
+          "entity_id": "E003",
+          "entity_type": "OPENING",
+          "description": "Petite ouverture verticale basse de la façade principale.",
+          "observation_refs": [
+            "O003"
+          ]
+        },
+        {
+          "entity_id": "E004",
+          "entity_type": "OPENING",
+          "description": "Grande ouverture basse droite de la façade principale.",
+          "observation_refs": [
+            "O004"
+          ]
+        },
+        {
+          "entity_id": "E005",
+          "entity_type": "SITE_ELEMENT",
+          "description": "Surface de circulation et bordure visibles devant la façade principale.",
+          "observation_refs": [
+            "O005"
+          ]
+        },
+        {
+          "entity_id": "E006",
+          "entity_type": "SURFACE",
+          "description": "Surface murale latérale visible dans RIGHT_001.",
+          "observation_refs": [
+            "O006",
+            "O007",
+            "O008"
+          ]
+        },
+        {
+          "entity_id": "E007",
+          "entity_type": "OPENING",
+          "description": "Deux ouvertures verticales hautes distinctes visibles dans la surface latérale de RIGHT_001.",
+          "observation_refs": [
+            "O007"
+          ]
+        },
+        {
+          "entity_id": "E008",
+          "entity_type": "OPENING",
+          "description": "Ouverture basse contenant une trame de blocs translucides ou vitrés.",
+          "observation_refs": [
+            "O008"
+          ]
+        },
+        {
+          "entity_id": "E009",
+          "entity_type": "SITE_ELEMENT",
+          "description": "Surface de circulation extérieure en pente qualitative visible au pied du côté montré dans RIGHT_001.",
+          "observation_refs": [
+            "O009"
+          ]
+        },
+        {
+          "entity_id": "E010",
+          "entity_type": "SURFACE",
+          "description": "Surface murale claire visible derrière les structures extérieures dans les vues LEFT et REAR.",
+          "observation_refs": [
+            "O010",
+            "O018",
+            "O021"
+          ]
+        },
+        {
+          "entity_id": "E011",
+          "entity_type": "ASSEMBLY",
+          "description": "Plateforme extérieure surélevée avec garde-corps et structure porteuse visible.",
+          "observation_refs": [
+            "O011",
+            "O012",
+            "O013",
+            "O016",
+            "O022"
+          ]
+        },
+        {
+          "entity_id": "E012",
+          "entity_type": "OTHER_PHYSICAL",
+          "description": "Poteau et éléments diagonaux visibles sous la plateforme surélevée.",
+          "observation_refs": [
+            "O013"
+          ]
+        },
+        {
+          "entity_id": "E013",
+          "entity_type": "ASSEMBLY",
+          "description": "Système d'escalier extérieur dont plusieurs portions et changements de direction sont visibles.",
+          "observation_refs": [
+            "O014",
+            "O017",
+            "O019"
+          ]
+        },
+        {
+          "entity_id": "E014",
+          "entity_type": "ASSEMBLY",
+          "description": "Structure extérieure à parois pleines, surface supérieure horizontale et grande baie ouverte.",
+          "observation_refs": [
+            "O015",
+            "O020"
+          ]
+        },
+        {
+          "entity_id": "E015",
+          "entity_type": "OPENING",
+          "description": "Grande baie ouverte physiquement portée par la structure extérieure E014.",
+          "observation_refs": [
+            "O015",
+            "O020"
+          ]
+        },
+        {
+          "entity_id": "E016",
+          "entity_type": "SURFACE",
+          "description": "Surfaces bâties dégradées ou non finies visibles à gauche de l'escalier dans REAR_001.",
+          "observation_refs": [
+            "O023"
+          ]
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "R001",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E002",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O002"
+          ]
+        },
+        {
+          "relation_id": "R002",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E003",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O003"
+          ]
+        },
+        {
+          "relation_id": "R003",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E004",
+          "object_entity_id": "E001",
+          "observation_refs": [
+            "O004"
+          ]
+        },
+        {
+          "relation_id": "R004",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E007",
+          "object_entity_id": "E006",
+          "observation_refs": [
+            "O007"
+          ]
+        },
+        {
+          "relation_id": "R005",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E008",
+          "object_entity_id": "E006",
+          "observation_refs": [
+            "O008"
+          ]
+        },
+        {
+          "relation_id": "R006",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E012",
+          "object_entity_id": "E011",
+          "observation_refs": [
+            "O013"
+          ]
+        },
+        {
+          "relation_id": "R007",
+          "relation_type": "PART_OF",
+          "subject_entity_id": "E015",
+          "object_entity_id": "E014",
+          "observation_refs": [
+            "O015",
+            "O020"
+          ]
+        },
+        {
+          "relation_id": "R008",
+          "relation_type": "IN_FRONT_OF",
+          "subject_entity_id": "E011",
+          "object_entity_id": "E010",
+          "observation_refs": [
+            "O010",
+            "O011"
+          ]
+        }
+      ],
+      "uncertainties": [
+        {
+          "uncertainty_id": "U001",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "La forme complète de la toiture et la nature de son revêtement ne sont pas établies par les vues fournies.",
+          "observation_refs": [
+            "O001",
+            "O006",
+            "O018"
+          ],
+          "entity_refs": [],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U002",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "Le système d'escalier est visible avec plusieurs portions et un changement de direction, mais son parcours complet et ses connexions terminales ne sont pas entièrement observables.",
+          "observation_refs": [
+            "O014",
+            "O017",
+            "O019"
+          ],
+          "entity_refs": [
+            "E013"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U003",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "La plateforme surélevée est clairement visible et son espace inférieur reste ouvert dans les zones observables, mais l'étendue complète de sa structure porteuse est cachée.",
+          "observation_refs": [
+            "O011",
+            "O012",
+            "O013",
+            "O016",
+            "O022"
+          ],
+          "entity_refs": [
+            "E011",
+            "E012"
+          ],
+          "relation_refs": [
+            "R006"
+          ],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U004",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "L'appartenance de la structure extérieure à parois pleines E014 au bâtiment cible, plutôt qu'à un aménagement ou volume distinct, n'est pas suffisamment établie par les seules photos.",
+          "observation_refs": [
+            "O015",
+            "O020"
+          ],
+          "entity_refs": [
+            "E014"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U005",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "L'appartenance des surfaces bâties dégradées E016 au bâtiment cible ou à une construction voisine n'est pas établie.",
+          "observation_refs": [
+            "O023"
+          ],
+          "entity_refs": [
+            "E016"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U006",
+          "uncertainty_type": "PARTIALLY_OBSERVABLE",
+          "description": "Une montée qualitative du sol adjacent est visible dans RIGHT_001, mais son profil complet et son amplitude ne sont pas observables.",
+          "observation_refs": [
+            "O009"
+          ],
+          "entity_refs": [
+            "E009"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        },
+        {
+          "uncertainty_id": "U007",
+          "uncertainty_type": "AMBIGUOUS",
+          "description": "La connexion architecturale exacte entre la plateforme surélevée E011 et le bâtiment cible n'est pas entièrement visible malgré leur juxtaposition.",
+          "observation_refs": [
+            "O011",
+            "O016",
+            "O022"
+          ],
+          "entity_refs": [
+            "E011",
+            "E010"
+          ],
+          "relation_refs": [],
+          "resolution_state": "OPEN",
+          "resolved_by_human_fact_refs": [],
+          "resolved_by_observation_refs": []
+        }
+      ]
+    },
+    "questions": [
+      {
+        "question_id": "Q001",
+        "scope": "GLOBAL",
+        "photo_refs": [],
+        "subject_hint": null,
+        "question_text": "Quel est le matériau de couverture de la toiture du bâtiment cible ?",
+        "answer_type": "FREE_TEXT",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U001"
+        ]
+      },
+      {
+        "question_id": "Q002",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "LEFT_002",
+          "REAR_001"
+        ],
+        "subject_hint": "structure blanche à surface supérieure horizontale et grande baie ouverte, située à côté de l'escalier",
+        "question_text": "Cette structure blanche fait-elle partie du bâtiment cible ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U004"
+        ]
+      },
+      {
+        "question_id": "Q003",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "REAR_001"
+        ],
+        "subject_hint": "surfaces bâties dégradées visibles à gauche de l'escalier",
+        "question_text": "Ces surfaces bâties dégradées font-elles partie du bâtiment cible ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U005"
+        ]
+      },
+      {
+        "question_id": "Q004",
+        "scope": "PHOTO",
+        "photo_refs": [
+          "LEFT_001",
+          "LEFT_002",
+          "REAR_001"
+        ],
+        "subject_hint": "plateforme surélevée avec garde-corps et supports visibles",
+        "question_text": "La plateforme surélevée fait-elle partie du bâtiment cible ?",
+        "answer_type": "YES_NO",
+        "choices": [],
+        "allow_unknown": true,
+        "uncertainty_refs": [
+          "U007"
+        ]
+      }
+    ]
+  }
+}
