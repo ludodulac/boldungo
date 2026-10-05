@@ -1,4 +1,4 @@
-You are the independent ARBITER for benchmark REAL-HOUSE-5-3PLUS1-POST086A.
+You are the independent ARBITER for benchmark REAL-HOUSE-5-3PLUS1.
 
 Use only the files contained in this package. Do not use outside knowledge.
 
@@ -49,7 +49,7 @@ Return JSON only, with no prose before or after it.
 The root object must contain:
 {
   "schema_version": "boldungo.benchmark-3plus1-arbitration.v1",
-  "benchmark_id": "REAL-HOUSE-5-3PLUS1-POST086A",
+  "benchmark_id": "REAL-HOUSE-5-3PLUS1",
   "findings": [...],
   "human_questions": [...],
   "summary": {...}

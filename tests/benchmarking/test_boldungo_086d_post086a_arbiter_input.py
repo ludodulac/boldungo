@@ -51,7 +51,7 @@ def test_086d_photos_and_runs_are_exact_source_bytes() -> None:
 
 def test_086d_manifest_is_closed_world() -> None:
     manifest = json.loads((ARBITER / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["benchmark_id"] == "REAL-HOUSE-5-3PLUS1-POST086A"
+    assert manifest["benchmark_id"] == "REAL-HOUSE-5-3PLUS1"
     assert manifest["role"] == "ARBITER"
     assert [r["run_id"] for r in manifest["runs"]] == ["RUN_A2", "RUN_B2", "RUN_C2"]
     p = manifest["provenance"]
@@ -60,19 +60,35 @@ def test_086d_manifest_is_closed_world() -> None:
     assert p["evaluator_oracle_included"] is False
     assert p["external_dependencies"] is False
 
-def test_086d_prompt_is_neutral_and_categories_are_canonical() -> None:
+def test_086d_prompt_and_manifest_are_neutral_and_categories_are_canonical() -> None:
     prompt = (ARBITER / "prompt.txt").read_text(encoding="utf-8")
+    manifest = (ARBITER / "manifest.json").read_text(encoding="utf-8")
+    visible = (prompt + "\n" + manifest).casefold()
+
     for category in CATEGORIES:
         assert category in prompt
+
     assert "photos as the primary source of evidence" in prompt
     assert "Never treat a majority of runs as automatic proof" in prompt
     assert "Never treat the absence of an observation from one run as an automatic contradiction" in prompt
     assert "Compare the three analyses semantically even when IDs, grouping, or wording differ" in prompt
     assert "Do not invent facts or geometry" in prompt
     assert "Preserve uncertainty whenever the photos are insufficient" in prompt
-    lower = prompt.casefold()
-    for marker in ("post-086a", "retest", "ancienne erreur", "volume sous palier", "élément de toiture problématique", "arbiter historique", "vérité humaine", "résultat attendu"):
-        assert marker not in lower
+
+    for marker in (
+        "post086a",
+        "post-086a",
+        "post_086a",
+        "retest",
+        "086a",
+        "previous benchmark",
+        "historical result",
+        "ancienne erreur",
+        "résultat attendu",
+    ):
+        assert marker not in visible
+
+    assert '"source_path"' not in manifest
     assert re.search(r"\bRUN_A\b", prompt) is None
     assert re.search(r"\bRUN_B\b", prompt) is None
     assert re.search(r"\bRUN_C\b", prompt) is None
