@@ -1,0 +1,17 @@
+{
+  "project_id": "real-house-5",
+  "package_id": "real-house-5-scene-v2-test-001",
+  "reference_dimensions": [
+    {
+      "what": "front_facade_width",
+      "value_m": 10.0
+    }
+  ],
+  "photos": [
+    { "photo_id": "FRONT_001", "file": "photos/FRONT_001.jpg", "orientation": "FRONT" },
+    { "photo_id": "RIGHT_001", "file": "photos/RIGHT_001.jpg", "orientation": "RIGHT" },
+    { "photo_id": "LEFT_001", "file": "photos/LEFT_001.jpg", "orientation": "LEFT" },
+    { "photo_id": "LEFT_002", "file": "photos/LEFT_002.jpg", "orientation": "LEFT" },
+    { "photo_id": "REAR_001", "file": "photos/REAR_001.jpg", "orientation": "REAR" }
+  ]
+}
