@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import os
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -11,6 +11,11 @@ from brickhouse.building.models import BuildingModel
 from brickhouse.bricks.export import BrickExportBundle
 from brickhouse.bricks.scene_architecture import _validate_exterior_primitives
 from brickhouse.partial_scene_pipeline import run_partial_scene_pipeline
+from brickhouse.procurement.availability import PartColorAvailabilityRegistry
+from brickhouse.procurement.catalog import load_part_crosswalk
+from brickhouse.procurement.order_flow import get_order_options, prepare_order_zip
+from brickhouse.procurement.supplier_package import ExportableRoute
+from brickhouse.procurement.user_order import UserOrderOptions
 from brickhouse.pipeline import (
     DEFAULT_FRONT_WIDTH_STUDS,
     run_m0_pipeline_model,
@@ -68,6 +73,10 @@ class SceneBuildRequest(BaseModel):
     scene: ArchitecturalScene
     front_width_studs: int = Field(default=DEFAULT_FRONT_WIDTH_STUDS, gt=0, le=256)
     allow_partial: bool = False
+
+
+class OrderBundleRequest(BaseModel):
+    bundle: BrickExportBundle
 
 
 class SurveyValidationIssueModel(BaseModel):
@@ -230,6 +239,7 @@ app.add_middleware(
     allow_credentials=False,
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
+    expose_headers=["Content-Disposition"],
 )
 
 
@@ -257,6 +267,60 @@ def capabilities() -> Capabilities:
         photo_analysis_reason=vision.reason,
         supported_photo_types=sorted(SUPPORTED_PHOTO_TYPES),
         engine_revision=_engine_revision(),
+    )
+
+
+def _procurement_availability_for_bundle(
+    bundle: BrickExportBundle,
+) -> PartColorAvailabilityRegistry:
+    """Return only server-held procurement evidence; never infer supplier support."""
+
+    return PartColorAvailabilityRegistry(evidence=[])
+
+
+def _procurement_http_detail(exc: ValueError) -> str:
+    message = str(exc)
+    if "no BagPlan" in message:
+        return "Les sacs de construction ne sont pas encore disponibles pour cette notice."
+    if "not document-ready" in message or "document readiness" in message:
+        return "Cette commande doit encore être finalisée avant de pouvoir préparer son dossier."
+    return "La commande ne peut pas encore être préparée avec les données disponibles."
+
+
+@app.post("/api/v1/order-options", response_model=UserOrderOptions)
+def order_options(request: OrderBundleRequest) -> UserOrderOptions:
+    try:
+        return get_order_options(
+            request.bundle,
+            load_part_crosswalk(),
+            availability=_procurement_availability_for_bundle(request.bundle),
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=_procurement_http_detail(exc)) from exc
+
+
+@app.post("/api/v1/prepare-order/{route}")
+def prepare_order_download(
+    route: ExportableRoute,
+    request: OrderBundleRequest,
+) -> Response:
+    try:
+        content = prepare_order_zip(
+            request.bundle,
+            route,
+            load_part_crosswalk(),
+            availability=_procurement_availability_for_bundle(request.bundle),
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=_procurement_http_detail(exc)) from exc
+
+    label = "bricklink" if route == "bricklink" else "compatible"
+    return Response(
+        content=content,
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f'attachment; filename="boldungo-maison-{label}.zip"'
+        },
     )
 
 
