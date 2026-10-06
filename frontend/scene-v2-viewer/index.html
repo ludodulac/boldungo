@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOLDÜNGO Scene V2 — raw viewer</title>
+<style>
+html,body{margin:0;height:100%;background:#15171a;color:#eee;font:14px system-ui}#app{height:100%;display:grid;grid-template-rows:auto 1fr}.bar{display:flex;gap:8px;align-items:center;padding:10px;background:#20242a;flex-wrap:wrap}.bar strong{margin-right:12px}.bar button{border:1px solid #59616d;background:#303640;color:#fff;border-radius:6px;padding:7px 11px}.bar button:hover{background:#414956}.note{opacity:.7;font-size:12px;margin-left:auto}#view{min-height:0;position:relative}canvas{display:block;width:100%;height:100%}.legend{position:absolute;left:10px;bottom:10px;background:#111b;padding:8px 10px;border-radius:6px;pointer-events:none}.label{position:absolute;color:#fff;background:#111d;border:1px solid #fff6;border-radius:4px;padding:2px 5px;font-size:11px;pointer-events:none;white-space:nowrap}
+</style>
+</head>
+<body><div id="app"><div class="bar"><strong>Scene V2 brut</strong><button data-view="ORBIT">ORBIT</button><button data-view="FRONT">FRONT</button><button data-view="RIGHT">RIGHT</button><button data-view="LEFT">LEFT</button><button data-view="BACK">BACK</button><span class="note">Vues techniques — aucune correction géométrique</span></div><div id="view"><div class="legend">IDs affichés : OP / PL / ST / FL</div></div></div><script type="module" src="./viewer.js"></script></body></html>
