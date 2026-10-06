@@ -1,0 +1,7 @@
+import assert from 'node:assert/strict';
+import { buildGuidedHousePackageV1 } from '../frontend/guided-house-package-v1.js';
+const bytes=new Uint8Array([9,8,7,6,5]);
+const snapshot={project:{project_id:'HOUSE_UI',known_front_width:10,general_notes:'Notes maison',photo_guidance:{FRONT_001:{orientation:'RIGHT',description:'Escalier extérieur et terrasse',must_reproduce:['escalier','terrasse'],do_not_confuse:['bâtiment voisin'],known_dimensions:['porte = 90 cm'],connections_to_other_photos:['même terrasse que photo 4'],provenance:'USER_CONFIRMED'}}},photos:[{photo_id:'FRONT_001',primary_face:'FRONT',original_filename:'original.jpg',blob:new Blob([bytes]),note:'ancienne note'}]};
+const built=await buildGuidedHousePackageV1(snapshot,{package_id:'GUIDED_UI_TEST'});const p=built.guided.photos[0];
+assert.equal(p.orientation,'RIGHT');assert.equal(p.description,'Escalier extérieur et terrasse');assert.deepEqual(p.must_reproduce,['escalier','terrasse']);assert.deepEqual(p.do_not_confuse,['bâtiment voisin']);assert.deepEqual(p.known_dimensions,['porte = 90 cm']);assert.deepEqual(p.connections_to_other_photos,['même terrasse que photo 4']);assert.equal(p.provenance,'USER_CONFIRMED');assert.equal(built.guided.known_front_width,10);assert.equal(built.guided.general_notes,'Notes maison');
+const zip=new Uint8Array(await built.blob.arrayBuffer());let found=false;for(let i=0;i<=zip.length-bytes.length;i++){if(bytes.every((b,j)=>zip[i+j]===b)){found=true;break;}}assert.equal(found,true,'original photo bytes preserved');console.log('guided_photo_ui_v1_002 PASS');
