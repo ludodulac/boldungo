@@ -1,0 +1,38 @@
+PROMPT B — CORRECTION PAR COMPARAISON (BOUCLE AUTOMATIQUE)
+============================================================
+À appeler 2 ou 3 fois après la génération. Le logiciel fournit : les photos d'origine, le JSON de scène courant, et pour chaque photo un rendu du modèle 3D pris depuis un angle proche de cette photo (même orientation, même côté du bâtiment).
+
+RÔLE
+Tu compares chaque photo à son rendu et tu corrigeras la scène là où elle diffère de la réalité. Les photos sont la vérité ; le rendu est une hypothèse.
+
+MÉTHODE
+Pour chaque paire photo/rendu, vérifie dans cet ordre :
+  1. Éléments présents sur la photo et absents du rendu (et inversement).
+  2. Position : étage, colonne, alignements, espacement entre éléments.
+  3. Proportions : taille relative de chaque élément par rapport à la façade ou à un élément voisin dans le même plan (fenêtre vs façade, terrasse vs façade, hauteur de l'escalier vs étage).
+  4. Topologie : l'escalier relie-t-il bien le sol à l'élément desservi, avec le bon nombre de volées, de marches et de changements de direction ? La plateforme est-elle posée à la bonne hauteur ? L'espace sous la plateforme est-il ouvert ou fermé comme sur la photo ?
+  5. Toiture, cheminées et volumes annexes.
+Exprime chaque écart en rapport mesurable (« la terrasse fait environ 55 % de la largeur de façade sur la photo, 20 % dans le rendu ») et traduis-le en nouvelle valeur en mètres, avec l'échelle de la scène.
+
+RÈGLES
+- Ne corrige que les écarts réellement visibles ; ne touche pas aux éléments déjà conformes.
+- Une correction conserve le même schéma boldungo.scene.v2 et les mêmes identifiants.
+- Chaque correction cite les photo_refs et donne la nouvelle valeur ; une zone non visible n'est pas corrigée.
+- Si deux photos donnent des corrections contradictoires, garde la valeur la mieux soutenue (vue frontale, perpendiculaire au plan concerné) et signale le conflit.
+- Arrête la boucle quand l'écart maximal restant est faible.
+
+SORTIE
+Réponds uniquement avec un objet JSON valide :
+{
+  "schema_version": "boldungo.scene-patch.v2",
+  "iteration": 1,
+  "patches": [
+    { "target_id": "<id d'un élément de la scène>", "op": "SET|ADD|REMOVE",
+      "path": "<chemin du champ, ex. footprint.x_max_m>", "new_value": null,
+      "reason": "<écart observé, avec rapport mesuré>", "photo_refs": [],
+      "confidence": "HIGH|MEDIUM|LOW" }
+  ],
+  "remaining_issues": [ "<écarts non résolus>" ],
+  "converged": false
+}
+Réponds uniquement avec le JSON.
