@@ -1,0 +1,1702 @@
+{
+  "schema_version": "0.2",
+  "id": "boldungo2-guided-005f-m2-turn-corrected",
+  "name": "BOLDÜNGO2 — GUIDED-005F — retournement M2 corrigé",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "house-main-reference",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 9.3,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "depth": {
+        "value": 8.2,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "height": {
+        "value": 7.2,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": [
+          {
+            "photo_index": 4,
+            "observation": "M1 height reused only as simplified spatial reference."
+          }
+        ]
+      },
+      "floors": 3,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": []
+    }
+  ],
+  "openings": [
+    {
+      "id": "south-lower-door-reference",
+      "type": "door",
+      "volume_id": "house-main-reference",
+      "facade": "left",
+      "offset_horizontal": 3.2,
+      "offset_vertical": 0.15,
+      "width": 0.95,
+      "height": 2,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 37,
+          "observation": "Lower south door retained only as spatial landmark for the covered void under the enlarged concrete terrace."
+        }
+      ]
+    }
+  ],
+  "roofs": [],
+  "terrain": {
+    "kind": "facade_grade_profiles",
+    "profiles": []
+  },
+  "chimneys": [],
+  "platforms": [
+    {
+      "id": "m2-run7-step-01",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.16428571428571428,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-step-02",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.045714285714286,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.32857142857142857,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-step-03",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.8914285714285715,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.4928571428571428,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-step-04",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.7371428571428573,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.6571428571428571,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-step-05",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.582857142857143,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.8214285714285714,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-step-06",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.4285714285714286,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.9857142857142857,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-step-07",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.2742857142857145,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 1.15,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-intermediate-square-landing",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 5.03,
+        "z": 0.9899999999999999
+      },
+      "width": 1.12,
+      "depth": 1.12,
+      "thickness": 0.16,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.75
+      },
+      "evidence": [
+        {
+          "photo_index": 41,
+          "observation": "Existing 005D landing topology retained; 005E uses its bounds as sole geometric source for both stair junctions."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-01",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 6.15,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 0.16333333333333336,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-step-02",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 6.364444444444445,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 0.3266666666666667,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-step-03",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 6.578888888888889,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 0.49,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-step-04",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 6.793333333333334,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 0.6533333333333334,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-step-05",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 7.007777777777778,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 0.8166666666666669,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-step-06",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 7.222222222222222,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 0.98,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-step-07",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 7.4366666666666665,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 1.1433333333333335,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-step-08",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 7.651111111111112,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 1.3066666666666669,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-step-09",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 7.865555555555556,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.2144444444444444,
+      "thickness": 1.4700000000000002,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-high-concrete-terrace",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 8.08,
+        "z": 2.38
+      },
+      "width": 2.2,
+      "depth": 3.05,
+      "thickness": 0.24,
+      "supports": [
+        {
+          "id": "m2-terrace-support-front-outer",
+          "position": {
+            "x": -2.08,
+            "y": 8.23,
+            "z": 0
+          },
+          "width": 0.3,
+          "depth": 0.3,
+          "height": 2.38,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.55
+          }
+        },
+        {
+          "id": "m2-terrace-support-rear-outer",
+          "position": {
+            "x": -2.08,
+            "y": 10.68,
+            "z": 0
+          },
+          "width": 0.3,
+          "depth": 0.3,
+          "height": 2.38,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.55
+          }
+        }
+      ],
+      "material": "masonry",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.75
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "005F preserves the 005E terrace dimensions/thin slab/open-void principle; its longitudinal placement is derived from the corrected +Y upper-run endpoint so the high arrival contacts the terrace edge."
+        }
+      ]
+    }
+  ],
+  "stairs": [],
+  "partial_wall_segments": [
+    {
+      "id": "m2-run7-parapet-front-01",
+      "start": {
+        "x": -2.2,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -2.045714285714286,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 0.9842857142857142,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-rear-01",
+      "start": {
+        "x": -2.2,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -2.045714285714286,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 0.9842857142857142,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-front-02",
+      "start": {
+        "x": -2.045714285714286,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.8914285714285715,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.1485714285714286,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-rear-02",
+      "start": {
+        "x": -2.045714285714286,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.8914285714285715,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.1485714285714286,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-front-03",
+      "start": {
+        "x": -1.8914285714285715,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.7371428571428573,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.3128571428571427,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-rear-03",
+      "start": {
+        "x": -1.8914285714285715,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.7371428571428573,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.3128571428571427,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-front-04",
+      "start": {
+        "x": -1.7371428571428573,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.582857142857143,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.477142857142857,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-rear-04",
+      "start": {
+        "x": -1.7371428571428573,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.582857142857143,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.477142857142857,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-front-05",
+      "start": {
+        "x": -1.582857142857143,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.4285714285714286,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.6414285714285715,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-rear-05",
+      "start": {
+        "x": -1.582857142857143,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.4285714285714286,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.6414285714285715,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-front-06",
+      "start": {
+        "x": -1.4285714285714286,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.2742857142857145,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.8057142857142856,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-rear-06",
+      "start": {
+        "x": -1.4285714285714286,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.2742857142857145,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.8057142857142856,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-front-07",
+      "start": {
+        "x": -1.2742857142857145,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.12,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.9699999999999998,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run7-parapet-rear-07",
+      "start": {
+        "x": -1.2742857142857145,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.12,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.9699999999999998,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-01",
+      "start": {
+        "x": 0,
+        "y": 6.15,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 6.364444444444445,
+        "z": 1.15
+      },
+      "height": {
+        "value": 0.9833333333333333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-01",
+      "start": {
+        "x": -1.12,
+        "y": 6.15,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 6.364444444444445,
+        "z": 1.15
+      },
+      "height": {
+        "value": 0.9833333333333333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-02",
+      "start": {
+        "x": 0,
+        "y": 6.364444444444445,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 6.578888888888889,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.1466666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-02",
+      "start": {
+        "x": -1.12,
+        "y": 6.364444444444445,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 6.578888888888889,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.1466666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-03",
+      "start": {
+        "x": 0,
+        "y": 6.578888888888889,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 6.793333333333334,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.31,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-03",
+      "start": {
+        "x": -1.12,
+        "y": 6.578888888888889,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 6.793333333333334,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.31,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-04",
+      "start": {
+        "x": 0,
+        "y": 6.793333333333334,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 7.007777777777778,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.4733333333333334,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-04",
+      "start": {
+        "x": -1.12,
+        "y": 6.793333333333334,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 7.007777777777778,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.4733333333333334,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-05",
+      "start": {
+        "x": 0,
+        "y": 7.007777777777778,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 7.222222222222222,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.6366666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-05",
+      "start": {
+        "x": -1.12,
+        "y": 7.007777777777778,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 7.222222222222222,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.6366666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-06",
+      "start": {
+        "x": 0,
+        "y": 7.222222222222222,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 7.4366666666666665,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.7999999999999998,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-06",
+      "start": {
+        "x": -1.12,
+        "y": 7.222222222222222,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 7.4366666666666665,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.7999999999999998,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-07",
+      "start": {
+        "x": 0,
+        "y": 7.4366666666666665,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 7.651111111111112,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.9633333333333334,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-07",
+      "start": {
+        "x": -1.12,
+        "y": 7.4366666666666665,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 7.651111111111112,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.9633333333333334,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-08",
+      "start": {
+        "x": 0,
+        "y": 7.651111111111112,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 7.865555555555556,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.126666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-08",
+      "start": {
+        "x": -1.12,
+        "y": 7.651111111111112,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 7.865555555555556,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.126666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-house-09",
+      "start": {
+        "x": 0,
+        "y": 7.865555555555556,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 8.08,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.29,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-run9-parapet-outer-09",
+      "start": {
+        "x": -1.12,
+        "y": 7.865555555555556,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 8.08,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.29,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2-landing-outer-parapet",
+      "start": {
+        "x": -1.12,
+        "y": 5.03,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 6.15,
+        "z": 1.15
+      },
+      "height": {
+        "value": 0.9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.6
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      },
+      "evidence": [
+        {
+          "photo_index": 41,
+          "observation": "Masonry parapet continues around turning landing."
+        }
+      ]
+    },
+    {
+      "id": "m2-terrace-outer-parapet",
+      "start": {
+        "x": -2.2,
+        "y": 8.08,
+        "z": 2.62
+      },
+      "end": {
+        "x": -2.2,
+        "y": 11.129999999999999,
+        "z": 2.62
+      },
+      "height": {
+        "value": 0.9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "Horizontal masonry edge/parapet on high concrete terrace."
+        }
+      ]
+    }
+  ],
+  "equipment": [],
+  "visibility": [],
+  "relations": [],
+  "wall_profile_observations": [],
+  "stair_system_links": [],
+  "appearance": {
+    "walls": {
+      "color": "off-white / beige"
+    },
+    "roof": {
+      "color": "zinc grey"
+    },
+    "frames": {
+      "color": "white"
+    }
+  },
+  "notes": "GUIDED-005F final M2 turn correction. Established topology: lower run approaches house (+X) and enters landing on Xmin; after the turn, upper run leaves from Ymax and travels toward rear/WEST (+Y) along the south facade. TURN_CORNER is Xmin/Ymax. 005E's Ymin/-Y upper departure is forbidden. No new photo analysis. M3 absent."
+}
