@@ -1,0 +1,297 @@
+{
+  "schema_version": "0.2",
+  "id": "boldungo2-guided-005-m2-south-concrete",
+  "name": "BOLDÜNGO2 — GUIDED-005 — M1 repère + M2 béton Sud",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "house-main-reference",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 9.3,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "depth": {
+        "value": 8.2,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "height": {
+        "value": 7.2,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": [
+          {
+            "photo_index": 4,
+            "observation": "M1 height reused only as simplified spatial reference from GUIDED-004; not re-estimated in 005."
+          }
+        ]
+      },
+      "floors": 3,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": []
+    }
+  ],
+  "openings": [
+    {
+      "id": "south-lower-door-reference",
+      "type": "door",
+      "volume_id": "house-main-reference",
+      "facade": "left",
+      "offset_horizontal": 3.2,
+      "offset_vertical": 0.15,
+      "width": 0.95,
+      "height": 2,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 37,
+          "observation": "Ground-level south door retained unchanged as M2 spatial control; user confirms it is left of the entrance/opening of the covered concrete-terrace space in the described views."
+        }
+      ]
+    }
+  ],
+  "roofs": [],
+  "terrain": {
+    "kind": "facade_grade_profiles",
+    "profiles": []
+  },
+  "chimneys": [],
+  "platforms": [
+    {
+      "id": "m2-intermediate-square-landing",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 1.1,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 1.12,
+      "thickness": 0.16,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 41,
+          "observation": "Multi-view reading: a small approximately square landing connects the 7-step lower flight to the turned 9-step upper flight."
+        },
+        {
+          "photo_index": 31,
+          "observation": "The lower flight approaches the house; the upper flight then develops longitudinally along the south side."
+        }
+      ]
+    },
+    {
+      "id": "m2-high-concrete-platform",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 3.86,
+        "z": 2.62
+      },
+      "width": 2.2,
+      "depth": 1.45,
+      "thickness": 0.24,
+      "supports": [
+        {
+          "id": "m2-platform-outer-support-east",
+          "position": {
+            "x": -2.05,
+            "y": 4,
+            "z": 0
+          },
+          "width": 0.3,
+          "depth": 0.3,
+          "height": 2.62,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.75
+          }
+        },
+        {
+          "id": "m2-platform-outer-support-west",
+          "position": {
+            "x": -2.05,
+            "y": 5,
+            "z": 0
+          },
+          "width": 0.3,
+          "depth": 0.3,
+          "height": 2.62,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.55
+          }
+        }
+      ],
+      "material": "masonry",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "Raised masonry platform/terrace with a large covered open void and lower circulation below; explicitly not a solid block. Exact longitudinal extent remains inferred from photos."
+        }
+      ]
+    }
+  ],
+  "stairs": [
+    {
+      "id": "m2-stair-run-7",
+      "start": {
+        "x": -2.2,
+        "y": 1.66,
+        "z": 0
+      },
+      "end": {
+        "x": -0.56,
+        "y": 1.66,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "material": "concrete",
+      "left_edge": "solid_parapet",
+      "right_edge": "solid_parapet",
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 25,
+          "observation": "FIRST_RUN_7: user confirms 7 steps and 1.12 m width."
+        },
+        {
+          "photo_index": 41,
+          "observation": "Multi-view topology: lower flight runs from the outer south side toward the house to the square landing; its exact run length is inferred."
+        },
+        {
+          "photo_index": 25,
+          "observation": "PHOTO: masonry side parapets exist along the lower 7-step flight and follow its rise. ArchitecturalScene v0.2 has no canonical inclined-parapet primitive, so they are preserved as evidence rather than false partial_wall_segments."
+        }
+      ]
+    },
+    {
+      "id": "m2-stair-run-9",
+      "start": {
+        "x": -0.56,
+        "y": 1.66,
+        "z": 1.15
+      },
+      "end": {
+        "x": -0.56,
+        "y": 3.86,
+        "z": 2.62
+      },
+      "width": 1.12,
+      "material": "concrete",
+      "left_edge": "solid_parapet",
+      "right_edge": "solid_parapet",
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 41,
+          "observation": "SECOND_RUN_9: user confirms 9 steps after the intermediate landing."
+        },
+        {
+          "photo_index": 31,
+          "observation": "Absolute orientation correction: this upper flight progresses with increasing scene y, i.e. toward REAR/WEST, along the south facade."
+        },
+        {
+          "photo_index": 31,
+          "observation": "PHOTO: masonry side parapet exists along the upper 9-step flight toward REAR/WEST and follows its rise. ArchitecturalScene v0.2 has no canonical inclined-parapet primitive, so it is preserved as evidence rather than a false partial_wall_segment."
+        }
+      ]
+    }
+  ],
+  "partial_wall_segments": [
+    {
+      "id": "m2-platform-outer-parapet",
+      "start": {
+        "x": -2.2,
+        "y": 3.86,
+        "z": 2.62
+      },
+      "end": {
+        "x": -2.2,
+        "y": 5.31,
+        "z": 2.62
+      },
+      "height": {
+        "value": 0.9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": null,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "Masonry edge/parapet bounds the high concrete platform while the space beneath remains open."
+        }
+      ]
+    }
+  ],
+  "equipment": [],
+  "visibility": [],
+  "relations": [],
+  "wall_profile_observations": [],
+  "stair_system_links": [],
+  "appearance": {
+    "walls": {
+      "color": "off-white / beige"
+    },
+    "roof": {
+      "color": "zinc grey"
+    },
+    "frames": {
+      "color": "white"
+    }
+  },
+  "notes": "GUIDED-005 validation scene: M1 is only a simplified spatial reference; M2 concrete south system only. Absolute axes: front=EAST at scene y=0; rear=WEST at increasing scene y; south facade=left at scene x=0 with exterior at negative x. Viewer maps scene (x,y,z) to Three (x,z,y) then applies group.scale.z=-1, so WEST/increasing scene y renders toward negative Three Z. GUIDED-004 mixed these spaces: run 7 increased scene y while run 9 changed x toward the house. Multi-view correction restores the photographed L topology: lower 7-step flight approaches the house, square landing, then upper 9-step flight develops toward WEST/rear with increasing scene y. Stair width 1.12 m and south projection about 2.20 m are USER_CONFIRMED. Unmeasured run lengths, landing placement, platform longitudinal extent and parapet heights are INFERRED from photos and remain provisional. The high concrete platform is a thin elevated slab with open covered void below, never a solid block. M3 timber terrace is deliberately absent; the west edge of the M2 high platform at y=5.31 is reserved only as a future topological connection toward M3. Inclined masonry parapets along both stair flights are photo-confirmed but intentionally not encoded as partial_wall_segments because ArchitecturalScene v0.2 requires those segment baselines to be horizontal; their existence and relationship to each flight are retained in stair evidence. The horizontal high-platform parapet remains canonical geometry."
+}
