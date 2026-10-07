@@ -87,4 +87,5 @@ def test_005c_no_ramp_geometry_and_only_horizontal_parapet():
     assert len(raw["partial_wall_segments"]) == 1
     wall = raw["partial_wall_segments"][0]
     assert wall["start"]["z"] == wall["end"]["z"]
-    assert "inclined stair parapets remain evidence-only" in raw["notes"]
+    assert not any("run7" in wall["id"] or "run9" in wall["id"] for wall in raw["partial_wall_segments"])
+    assert "inclined-parapet primitive" in raw["notes"]
