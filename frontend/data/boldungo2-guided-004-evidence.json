@@ -1,0 +1,25 @@
+{
+  "mission": "BOLDUNGO2-GUIDED-004",
+  "source": {
+    "zip": "BOLDUNGO-LEGO2-57-photos-facades.zip",
+    "photo_count": 57,
+    "guided_document": "00 — Vérité guidée des façades — BOLDÜNGO LEGO2"
+  },
+  "current_user_confirmed_overrides": {
+    "east_front_width_m": 9.3,
+    "south_facade_width_approx_m": 8.2,
+    "obsolete_front_width_m": 10.0,
+    "orientation": {"east":"front","north":"right_from_front","south":"left_from_front","west":"rear"}
+  },
+  "visual_interpretation": {
+    "east_front": "Front gable elevation with six principal openings over three occupied levels; pale wall and contrasting surrounds.",
+    "north": "Sparse side elevation, one high window, low 6x5 glass-block opening, visibly rising street grade.",
+    "south": "Two-flight masonry stair, raised masonry landing/platform with open lower circulation, deep terrace French-door reveal, raised timber deck.",
+    "west": "Partially occluded rear; large zinc/metal-clad chimney volume confirmed as part of target house.",
+    "timber_deck": "Open underside with posts and visible bracing; western end narrows/returns instead of remaining a uniform rectangle.",
+    "roof": "Low gable, zinc finish.",
+    "excluded": "Neighbour buildings and perspective chimneys, street pole, temporary furniture/plants/site objects."
+  },
+  "provenance_rule": ["USER_CONFIRMED","PHOTO","INFERRED","UNKNOWN"],
+  "known_canonical_limit": "ArchitecturalScene v0.2 has support posts but no dedicated diagonal brace primitive. Y-bracing is therefore retained as observed evidence/notes rather than mislabeled geometry."
+}
