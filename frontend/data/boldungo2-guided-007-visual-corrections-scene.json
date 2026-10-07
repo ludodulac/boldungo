@@ -982,13 +982,13 @@
       "id": "render-west-metal-chimney-volume",
       "host_volume_id": "house-main",
       "position": {
-        "x": 1,
+        "x": -0.1,
         "y": 7.65,
         "z": 7.08
       },
-      "width": 1.5,
-      "depth": 0.55,
-      "thickness": 0.12,
+      "width": 0.1,
+      "depth": 0.1,
+      "thickness": 0.01,
       "supports": [
         {
           "id": "render-west-metal-chimney-body",
@@ -1020,6 +1020,10 @@
         {
           "photo_index": 56,
           "observation": "Thin host cap is anchored within the inferred main-volume top connectivity tolerance so ArchitecturalScene connectivity remains valid; the visible vertical body is the SupportPost geometry and retains its audited dimensions."
+        },
+        {
+          "photo_index": 56,
+          "observation": "Technical host anchor touches the existing house facade boundary as required by ArchitecturalScene v0.2 connectivity; visible chimney body remains independently at its audited x/y/z SupportPost geometry."
         }
       ]
     },
@@ -1027,13 +1031,13 @@
       "id": "render-house-chimney",
       "host_volume_id": "house-main",
       "position": {
-        "x": 5.9,
+        "x": 9.2,
         "y": 5.9,
         "z": 7.08
       },
-      "width": 0.65,
-      "depth": 0.65,
-      "thickness": 0.12,
+      "width": 0.1,
+      "depth": 0.1,
+      "thickness": 0.01,
       "supports": [
         {
           "id": "render-house-chimney-body",
@@ -1065,6 +1069,10 @@
         {
           "photo_index": 29,
           "observation": "Thin host cap is anchored within the inferred main-volume top connectivity tolerance so ArchitecturalScene connectivity remains valid; the visible vertical body is the SupportPost geometry and retains its audited dimensions."
+        },
+        {
+          "photo_index": 29,
+          "observation": "Technical host anchor touches the existing house facade boundary as required by ArchitecturalScene v0.2 connectivity; visible chimney body remains independently at its audited x/y/z SupportPost geometry."
         }
       ]
     },
