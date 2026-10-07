@@ -1,0 +1,1942 @@
+{
+  "schema_version": "0.2",
+  "id": "boldungo2-guided-005d-m2-south-concrete",
+  "name": "BOLDÜNGO2 — GUIDED-005D — M2 béton Sud finalisation visuelle",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "house-main-reference",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 9.3,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "depth": {
+        "value": 8.2,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "height": {
+        "value": 7.2,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": [
+          {
+            "photo_index": 4,
+            "observation": "M1 height reused only as simplified spatial reference."
+          }
+        ]
+      },
+      "floors": 3,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": []
+    }
+  ],
+  "openings": [
+    {
+      "id": "south-lower-door-reference",
+      "type": "door",
+      "volume_id": "house-main-reference",
+      "facade": "left",
+      "offset_horizontal": 3.2,
+      "offset_vertical": 0.15,
+      "width": 0.95,
+      "height": 2,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 37,
+          "observation": "Lower south door retained only as spatial landmark for the covered void under the enlarged concrete terrace."
+        }
+      ]
+    }
+  ],
+  "roofs": [],
+  "terrain": {
+    "kind": "facade_grade_profiles",
+    "profiles": []
+  },
+  "chimneys": [],
+  "platforms": [
+    {
+      "id": "m2-run7-step-01",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.15429,
+      "depth": 1.12,
+      "thickness": 0.16429,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "Discrete lower-flight tread 1/7; total count and 1.12 m corridor width USER_CONFIRMED; tread/rise inferred from multi-view."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-02",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.04571,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.15429,
+      "depth": 1.12,
+      "thickness": 0.32857,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "Discrete lower-flight tread 2/7; total count and 1.12 m corridor width USER_CONFIRMED; tread/rise inferred from multi-view."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-03",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.89143,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.15429,
+      "depth": 1.12,
+      "thickness": 0.49286,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "Discrete lower-flight tread 3/7; total count and 1.12 m corridor width USER_CONFIRMED; tread/rise inferred from multi-view."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-04",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.73714,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.15429,
+      "depth": 1.12,
+      "thickness": 0.65714,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "Discrete lower-flight tread 4/7; total count and 1.12 m corridor width USER_CONFIRMED; tread/rise inferred from multi-view."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-05",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.58286,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.15429,
+      "depth": 1.12,
+      "thickness": 0.82143,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "Discrete lower-flight tread 5/7; total count and 1.12 m corridor width USER_CONFIRMED; tread/rise inferred from multi-view."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-06",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.42857,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.15429,
+      "depth": 1.12,
+      "thickness": 0.98571,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "Discrete lower-flight tread 6/7; total count and 1.12 m corridor width USER_CONFIRMED; tread/rise inferred from multi-view."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-07",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.27429,
+        "y": 5.03,
+        "z": 0
+      },
+      "width": 0.15429,
+      "depth": 1.12,
+      "thickness": 1.15,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "Discrete lower-flight tread 7/7; total count and 1.12 m corridor width USER_CONFIRMED; tread/rise inferred from multi-view."
+        }
+      ]
+    },
+    {
+      "id": "m2-intermediate-square-landing",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 5.03,
+        "z": 0.9899999999999999
+      },
+      "width": 1.12,
+      "depth": 1.12,
+      "thickness": 0.16,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.75
+      },
+      "evidence": [
+        {
+          "photo_index": 41,
+          "observation": "Multi-view: approximately square turning landing. Upper flight starts directly from its house-side aligned corridor, with no lateral offset."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-01",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 4.81556,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 0.16333,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 1/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-02",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 4.60111,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 0.32667,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 2/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-03",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 4.38667,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 0.49,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 3/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-04",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 4.17222,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 0.65333,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 4/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-05",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 3.95778,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 0.81667,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 5/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-06",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 3.74333,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 0.98,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 6/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-07",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 3.52889,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 1.14333,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 7/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-08",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 3.31444,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 1.30667,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 8/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-09",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.12,
+        "y": 3.1,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.21444,
+      "thickness": 1.47,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete upper-flight tread 9/9; upper corridor is aligned with the landing and runs against the house. Count and 1.12 m width USER_CONFIRMED; metric tread/rise inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-high-concrete-terrace",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 2.75,
+        "z": 2.62
+      },
+      "width": 2.2,
+      "depth": 3.05,
+      "thickness": 0.24,
+      "supports": [
+        {
+          "id": "m2-terrace-support-front-outer",
+          "position": {
+            "x": -2.08,
+            "y": 2.9,
+            "z": 0
+          },
+          "width": 0.3,
+          "depth": 0.3,
+          "height": 2.62,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.7
+          }
+        },
+        {
+          "id": "m2-terrace-support-rear-outer",
+          "position": {
+            "x": -2.08,
+            "y": 5.45,
+            "z": 0
+          },
+          "width": 0.3,
+          "depth": 0.3,
+          "height": 2.62,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.55
+          }
+        }
+      ],
+      "material": "masonry",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.75
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "PHOTO/INFERRED enlarged raised concrete terrace footprint. Photos prove a substantial elevated slab and large covered open void; exact 2.20 x 3.05 m footprint remains inferred, not user-confirmed."
+        }
+      ]
+    }
+  ],
+  "stairs": [],
+  "partial_wall_segments": [
+    {
+      "id": "m2-run7-parapet-front-01",
+      "start": {
+        "x": -2.2,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -2.04571,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 0.98429,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-rear-01",
+      "start": {
+        "x": -2.2,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -2.04571,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 0.98429,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-front-02",
+      "start": {
+        "x": -2.04571,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.89143,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.14857,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-rear-02",
+      "start": {
+        "x": -2.04571,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.89143,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.14857,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-front-03",
+      "start": {
+        "x": -1.89143,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.73714,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.31286,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-rear-03",
+      "start": {
+        "x": -1.89143,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.73714,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.31286,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-front-04",
+      "start": {
+        "x": -1.73714,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.58286,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.47714,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-rear-04",
+      "start": {
+        "x": -1.73714,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.58286,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.47714,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-front-05",
+      "start": {
+        "x": -1.58286,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.42857,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.64143,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-rear-05",
+      "start": {
+        "x": -1.58286,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.42857,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.64143,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-front-06",
+      "start": {
+        "x": -1.42857,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.27429,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.80571,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-rear-06",
+      "start": {
+        "x": -1.42857,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.27429,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.80571,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-front-07",
+      "start": {
+        "x": -1.27429,
+        "y": 5.03,
+        "z": 0
+      },
+      "end": {
+        "x": -1.12,
+        "y": 5.03,
+        "z": 0
+      },
+      "height": {
+        "value": 1.97,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-parapet-rear-07",
+      "start": {
+        "x": -1.27429,
+        "y": 6.15,
+        "z": 0
+      },
+      "end": {
+        "x": -1.12,
+        "y": 6.15,
+        "z": 0
+      },
+      "height": {
+        "value": 1.97,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 15,
+          "observation": "White masonry side parapet observed on lower flight; stepped horizontal approximation preserves canonical baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-01",
+      "start": {
+        "x": 0,
+        "y": 5.03,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 4.81556,
+        "z": 1.15
+      },
+      "height": {
+        "value": 0.98333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-01",
+      "start": {
+        "x": -1.12,
+        "y": 5.03,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 4.81556,
+        "z": 1.15
+      },
+      "height": {
+        "value": 0.98333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-02",
+      "start": {
+        "x": 0,
+        "y": 4.81556,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 4.60111,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.14667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-02",
+      "start": {
+        "x": -1.12,
+        "y": 4.81556,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 4.60111,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.14667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-03",
+      "start": {
+        "x": 0,
+        "y": 4.60111,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 4.38667,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.31,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-03",
+      "start": {
+        "x": -1.12,
+        "y": 4.60111,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 4.38667,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.31,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-04",
+      "start": {
+        "x": 0,
+        "y": 4.38667,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 4.17222,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.47333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-04",
+      "start": {
+        "x": -1.12,
+        "y": 4.38667,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 4.17222,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.47333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-05",
+      "start": {
+        "x": 0,
+        "y": 4.17222,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.95778,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.63667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-05",
+      "start": {
+        "x": -1.12,
+        "y": 4.17222,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.95778,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.63667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-06",
+      "start": {
+        "x": 0,
+        "y": 3.95778,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.74333,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.8,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-06",
+      "start": {
+        "x": -1.12,
+        "y": 3.95778,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.74333,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.8,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-07",
+      "start": {
+        "x": 0,
+        "y": 3.74333,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.52889,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.96333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-07",
+      "start": {
+        "x": -1.12,
+        "y": 3.74333,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.52889,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.96333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-08",
+      "start": {
+        "x": 0,
+        "y": 3.52889,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.31444,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.12667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-08",
+      "start": {
+        "x": -1.12,
+        "y": 3.52889,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.31444,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.12667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-house-09",
+      "start": {
+        "x": 0,
+        "y": 3.31444,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.1,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.29,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-parapet-outer-09",
+      "start": {
+        "x": -1.12,
+        "y": 3.31444,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.1,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.29,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Upper-flight masonry wall/parapet observed beside the stair corridor; stepped horizontal approximation avoids invalid inclined baseline."
+        }
+      ]
+    },
+    {
+      "id": "m2-landing-outer-parapet",
+      "start": {
+        "x": -1.12,
+        "y": 5.03,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 6.15,
+        "z": 1.15
+      },
+      "height": {
+        "value": 0.9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.6
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      },
+      "evidence": [
+        {
+          "photo_index": 41,
+          "observation": "Masonry parapet continues around turning landing."
+        }
+      ]
+    },
+    {
+      "id": "m2-terrace-outer-parapet",
+      "start": {
+        "x": -2.2,
+        "y": 2.75,
+        "z": 2.62
+      },
+      "end": {
+        "x": -2.2,
+        "y": 5.8,
+        "z": 2.62
+      },
+      "height": {
+        "value": 0.9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "Horizontal masonry edge/parapet on high concrete terrace."
+        }
+      ]
+    }
+  ],
+  "equipment": [],
+  "visibility": [],
+  "relations": [],
+  "wall_profile_observations": [],
+  "stair_system_links": [],
+  "appearance": {
+    "walls": {
+      "color": "off-white / beige"
+    },
+    "roof": {
+      "color": "zinc grey"
+    },
+    "frames": {
+      "color": "white"
+    }
+  },
+  "notes": "GUIDED-005D M2 only. M1 is reference only; M3 and other south openings are deliberately deferred. Human visual audit of 005C requires the complete M2 composition to occupy the opposite along-facade side in the audited viewer view. The 005C arrangement is therefore mirrored along the south-facade longitudinal axis as source geometry, not by camera/viewer. New multi-view photos show a lower masonry stair corridor, a square-ish turning landing, then an upper stair corridor aligned directly from the landing and running against the house to the high concrete terrace. StairRun remains unused because the unchanged viewer renders it as an inclined slab. 7 and 9 steps are canonical horizontal Platform primitives. Stair width 1.12 m, counts 7+9, approximate 2.20 m south projection, concrete/masonry construction, raised terrace and open covered void are USER_CONFIRMED. Individual tread/rise, parapet thickness/height profile and terrace dimensions are PHOTO/INFERRED. Inclined parapet silhouette is approximated canonically as horizontal-baseline stepped PartialWallSegments; no inclined baseline is used."
+}
