@@ -427,7 +427,7 @@
       "host_volume_id": "house-main-reference",
       "position": {
         "x": -2.2,
-        "y": 8.08,
+        "y": 5.03,
         "z": 2.38
       },
       "width": 2.2,
@@ -438,7 +438,7 @@
           "id": "m2-terrace-support-front-outer",
           "position": {
             "x": -2.08,
-            "y": 8.23,
+            "y": 5.18,
             "z": 0
           },
           "width": 0.3,
@@ -453,7 +453,7 @@
           "id": "m2-terrace-support-rear-outer",
           "position": {
             "x": -2.08,
-            "y": 10.68,
+            "y": 7.63,
             "z": 0
           },
           "width": 0.3,
@@ -474,7 +474,7 @@
       "evidence": [
         {
           "photo_index": 39,
-          "observation": "005F preserves the 005E terrace dimensions/thin slab/open-void principle; its longitudinal placement is derived from the corrected +Y upper-run endpoint so the high arrival contacts the terrace edge."
+          "observation": "005F preserves the 005E terrace dimensions/thin slab/open-void principle. Its longitudinal bounds are y=[5.03,8.08], so the corrected +Y upper run ends exactly on its rear/high edge at y=8.08 while the slab remains alongside the house."
         }
       ]
     }
@@ -1645,12 +1645,12 @@
       "id": "m2-terrace-outer-parapet",
       "start": {
         "x": -2.2,
-        "y": 8.08,
+        "y": 5.03,
         "z": 2.62
       },
       "end": {
         "x": -2.2,
-        "y": 11.129999999999999,
+        "y": 8.08,
         "z": 2.62
       },
       "height": {
