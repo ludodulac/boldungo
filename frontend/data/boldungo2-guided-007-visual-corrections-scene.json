@@ -984,7 +984,7 @@
       "position": {
         "x": 1,
         "y": 7.65,
-        "z": 8.2
+        "z": 7.08
       },
       "width": 1.5,
       "depth": 0.55,
@@ -1016,6 +1016,10 @@
         {
           "photo_index": 56,
           "observation": "Viewer-visible proxy using existing Platform/SupportPost primitives for the retained significant rear zinc/metal house structure; semantic chimney remains west-metal-chimney-volume."
+        },
+        {
+          "photo_index": 56,
+          "observation": "Thin host cap is anchored within the inferred main-volume top connectivity tolerance so ArchitecturalScene connectivity remains valid; the visible vertical body is the SupportPost geometry and retains its audited dimensions."
         }
       ]
     },
@@ -1025,7 +1029,7 @@
       "position": {
         "x": 5.9,
         "y": 5.9,
-        "z": 8.6
+        "z": 7.08
       },
       "width": 0.65,
       "depth": 0.65,
@@ -1057,6 +1061,10 @@
         {
           "photo_index": 29,
           "observation": "Viewer-visible proxy using existing Platform/SupportPost primitives for the retained house chimney. Antenna association remains semantic/evidence; no new antenna primitive."
+        },
+        {
+          "photo_index": 29,
+          "observation": "Thin host cap is anchored within the inferred main-volume top connectivity tolerance so ArchitecturalScene connectivity remains valid; the visible vertical body is the SupportPost geometry and retains its audited dimensions."
         }
       ]
     },
