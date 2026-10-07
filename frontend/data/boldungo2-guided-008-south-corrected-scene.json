@@ -272,7 +272,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "GUIDED-008 USER_CONFIRMED south opening order/alignment; exact longitudinal offset inferred."
         }
       ],
@@ -295,7 +295,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "GUIDED-008 USER_CONFIRMED south opening order/alignment; exact longitudinal offset inferred."
         }
       ],
@@ -319,7 +319,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "GUIDED-008 USER_CONFIRMED south opening order/alignment; exact longitudinal offset inferred."
         }
       ],
@@ -340,7 +340,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "GUIDED-008 USER_CONFIRMED south opening order/alignment; exact longitudinal offset inferred."
         }
       ]
@@ -360,7 +360,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "GUIDED-008 USER_CONFIRMED south opening order/alignment; exact longitudinal offset inferred."
         }
       ],
@@ -936,7 +936,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "USER_CONFIRMED topology: western landing connects lower flight to upper flight returning EAST; metric placement inferred."
         }
       ]
@@ -1172,7 +1172,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "USER_CONFIRMED order: timber then concrete then western stair; slab remains open below; metric footprint inferred."
         }
       ]
@@ -1229,7 +1229,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "USER_CONFIRMED global order places timber terrace EAST of concrete; exact metric footprint inferred."
         }
       ]
@@ -1271,7 +1271,7 @@
       },
       "evidence": [
         {
-          "photo_index": 0,
+          "photo_index": 1,
           "observation": "Non-rectangular timber return preserved canonically; now remains EAST of concrete per USER_CONFIRMED order."
         }
       ]
