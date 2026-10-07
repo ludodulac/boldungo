@@ -1,0 +1,2245 @@
+{
+  "schema_version": "0.2",
+  "id": "boldungo2-guided-006-consolidated",
+  "name": "BOLDÜNGO2 — GUIDED-006 — scène architecturale consolidée",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "house-main",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 9.3,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "depth": {
+        "value": 8.2,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "height": {
+        "value": 7.2,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": [
+          {
+            "photo_index": 4,
+            "observation": "Three main levels plus tight front gable; total height unmeasured."
+          }
+        ]
+      },
+      "floors": 3,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": []
+    }
+  ],
+  "openings": [
+    {
+      "id": "east-rdc-window-left",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 1.35,
+      "offset_vertical": 0.75,
+      "width": 1.05,
+      "height": 1.35,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Small lower-left front window."
+        }
+      ],
+      "has_decorative_surround": true,
+      "opening_visual": {
+        "surround_color": "rose-beige / grey-pink",
+        "notes": "Deep wall reveal visible in close views."
+      }
+    },
+    {
+      "id": "east-rdc-french-door-right",
+      "type": "door",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 6.55,
+      "offset_vertical": 0.15,
+      "width": 1.45,
+      "height": 2.15,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Lower-right glazed French door."
+        }
+      ],
+      "opening_visual": {
+        "frame_color": "white",
+        "glazing": "glazed"
+      }
+    },
+    {
+      "id": "east-mid-window-left",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 1.35,
+      "offset_vertical": 2.95,
+      "width": 1.35,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Front intermediate left window."
+        }
+      ],
+      "has_decorative_surround": true
+    },
+    {
+      "id": "east-mid-window-right",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 6.25,
+      "offset_vertical": 2.95,
+      "width": 1.35,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Front intermediate right window."
+        }
+      ],
+      "has_decorative_surround": true
+    },
+    {
+      "id": "east-upper-window-left",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 1.65,
+      "offset_vertical": 5.15,
+      "width": 1.15,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Upper left window below gable."
+        }
+      ],
+      "has_decorative_surround": true
+    },
+    {
+      "id": "east-upper-window-right",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 6.05,
+      "offset_vertical": 5.15,
+      "width": 1.15,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Upper right window below gable."
+        }
+      ],
+      "has_decorative_surround": true
+    },
+    {
+      "id": "north-upper-window",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "right",
+      "offset_horizontal": 3,
+      "offset_vertical": 5,
+      "width": 1.15,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.88
+      },
+      "evidence": [
+        {
+          "photo_index": 13,
+          "observation": "Single high window on sparse north facade."
+        }
+      ],
+      "has_decorative_surround": false
+    },
+    {
+      "id": "north-glass-block",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "right",
+      "offset_horizontal": 6.1,
+      "offset_vertical": 0.45,
+      "width": 1.25,
+      "height": 1.05,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 12,
+          "observation": "Low glass-block opening; user confirms 6 by 5 blocks."
+        }
+      ],
+      "has_decorative_surround": false,
+      "opening_visual": {
+        "pane_count": 30,
+        "pane_layout": "6 x 5 glass blocks",
+        "glazing": "glass block"
+      }
+    },
+    {
+      "id": "south-high-entry",
+      "type": "door",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 3.35,
+      "offset_vertical": 2.65,
+      "width": 1,
+      "height": 2.05,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.7
+      },
+      "evidence": [
+        {
+          "photo_index": 38,
+          "observation": "High entrance existence and shallow/near-exterior reveal are confirmed; consolidated longitudinal metric is inferred."
+        }
+      ],
+      "opening_visual": {
+        "notes": "SHALLOW_REVEAL — close to exterior wall plane; distinct from deeply recessed French door. v0.2 has no metric reveal-depth field."
+      }
+    },
+    {
+      "id": "south-deep-french-door",
+      "type": "door",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 5.45,
+      "offset_vertical": 2.8,
+      "width": 1.65,
+      "height": 2.15,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.7
+      },
+      "evidence": [
+        {
+          "photo_index": 45,
+          "observation": "Double French door is deeply recessed in thick wall; consolidated longitudinal metric is inferred."
+        }
+      ],
+      "opening_visual": {
+        "glazing": "glazed",
+        "notes": "DEEP_REVEAL — visibly deeper than high entry. v0.2 has no metric reveal-depth field."
+      }
+    },
+    {
+      "id": "south-upper-window",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 1.35,
+      "offset_vertical": 5.15,
+      "width": 1.1,
+      "height": 1.25,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.75
+      },
+      "evidence": [
+        {
+          "photo_index": 22,
+          "observation": "Upper south window; exact consolidated position inferred."
+        }
+      ],
+      "has_decorative_surround": false
+    },
+    {
+      "id": "south-lower-door",
+      "type": "door",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 3.2,
+      "offset_vertical": 0.15,
+      "width": 0.95,
+      "height": 2,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 37,
+          "observation": "Ground-level door spatial landmark under covered concrete platform zone."
+        }
+      ]
+    },
+    {
+      "id": "south-round-stained-glass",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 4.25,
+      "offset_vertical": 1,
+      "width": 0.45,
+      "height": 0.45,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.8
+      },
+      "evidence": [
+        {
+          "photo_index": 40,
+          "observation": "Small round stained-glass opening retained as south architectural detail."
+        }
+      ],
+      "has_decorative_surround": false
+    }
+  ],
+  "roofs": [
+    {
+      "id": "zinc-gable-roof",
+      "volume_id": "house-main",
+      "type": "gable",
+      "overhang": 0.25,
+      "ridge_direction": "depth",
+      "pitch_degrees": 22,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Two-slope zinc roof; about 22 degrees remains inferred."
+        }
+      ]
+    }
+  ],
+  "terrain": {
+    "kind": "facade_grade_profiles",
+    "profiles": [
+      {
+        "facade": "right",
+        "start_elevation": 0.1,
+        "end_elevation": 1.05,
+        "outward_extent": 1,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": [
+          {
+            "photo_index": 15,
+            "observation": "North sidewalk/grade visibly rises along facade; numeric endpoints are inferred only."
+          }
+        ]
+      }
+    ]
+  },
+  "chimneys": [
+    {
+      "id": "west-metal-chimney-volume",
+      "position": {
+        "x": 1,
+        "y": 7.65,
+        "z": 2.4
+      },
+      "width": 1.5,
+      "depth": 0.55,
+      "height": 5.8,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 56,
+          "observation": "Large rear grey zinc/metal vertical structure belongs to house."
+        }
+      ]
+    },
+    {
+      "id": "house-chimney-antenna",
+      "position": {
+        "x": 5.9,
+        "y": 5.9,
+        "z": 7
+      },
+      "width": 0.65,
+      "depth": 0.65,
+      "height": 1.6,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 29,
+          "observation": "House chimney associated with antenna."
+        }
+      ]
+    }
+  ],
+  "platforms": [
+    {
+      "id": "south-run7-step-01",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 1.07,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.16428571428571428,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-step-02",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.045714285714286,
+        "y": 1.07,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.32857142857142857,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-step-03",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.8914285714285715,
+        "y": 1.07,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.4928571428571428,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-step-04",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.7371428571428573,
+        "y": 1.07,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.6571428571428571,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-step-05",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.582857142857143,
+        "y": 1.07,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.8214285714285714,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-step-06",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.4285714285714286,
+        "y": 1.07,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 0.9857142857142857,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-step-07",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.2742857142857145,
+        "y": 1.07,
+        "z": 0
+      },
+      "width": 0.1542857142857143,
+      "depth": 1.12,
+      "thickness": 1.15,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-intermediate-landing",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 1.07,
+        "z": 0.9899999999999999
+      },
+      "width": 1.12,
+      "depth": 1.12,
+      "thickness": 0.16,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.7
+      },
+      "evidence": [
+        {
+          "photo_index": 41,
+          "observation": "Approximately square landing; position inferred, 1.12 m useful width inherited from confirmed stair width."
+        }
+      ]
+    },
+    {
+      "id": "south-run9-step-01",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 2.19,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 0.16333333333333336,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-step-02",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 2.4466666666666668,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 0.3266666666666667,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-step-03",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 2.703333333333333,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 0.49,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-step-04",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 2.96,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 0.6533333333333334,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-step-05",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 3.216666666666667,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 0.8166666666666669,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-step-06",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 3.473333333333333,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 0.98,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-step-07",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 3.73,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 1.1433333333333335,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-step-08",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 3.9866666666666664,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 1.3066666666666669,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-step-09",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.12,
+        "y": 4.243333333333333,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.25666666666666665,
+      "thickness": 1.4700000000000002,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-concrete-platform",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 3,
+        "z": 2.38
+      },
+      "width": 2.2,
+      "depth": 1.5,
+      "thickness": 0.24,
+      "supports": [
+        {
+          "id": "concrete-support-east",
+          "position": {
+            "x": -2.05,
+            "y": 3.12,
+            "z": 0
+          },
+          "width": 0.3,
+          "depth": 0.3,
+          "height": 2.38,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.55
+          }
+        },
+        {
+          "id": "concrete-support-west",
+          "position": {
+            "x": -2.05,
+            "y": 4.08,
+            "z": 0
+          },
+          "width": 0.3,
+          "depth": 0.3,
+          "height": 2.38,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.55
+          }
+        }
+      ],
+      "material": "masonry",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.72
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "Raised thin concrete platform with large open covered void; exact 2.20 x 1.50 m consolidated footprint inferred. High stair arrival meets y=4.50 edge."
+        }
+      ]
+    },
+    {
+      "id": "south-timber-deck-main",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.15,
+        "y": 4.5,
+        "z": 2.82
+      },
+      "width": 2.15,
+      "depth": 2.5,
+      "thickness": 0.18,
+      "supports": [
+        {
+          "id": "timber-post-east",
+          "position": {
+            "x": -1.95,
+            "y": 4.75,
+            "z": 0
+          },
+          "width": 0.18,
+          "depth": 0.18,
+          "height": 2.82,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.9
+          }
+        },
+        {
+          "id": "timber-post-west",
+          "position": {
+            "x": -1.95,
+            "y": 6.65,
+            "z": 0
+          },
+          "width": 0.18,
+          "depth": 0.18,
+          "height": 2.82,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.9
+          }
+        }
+      ],
+      "material": "timber",
+      "deck_board_direction": "y",
+      "edge_treatment": "open_railing",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.78
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Elevated timber deck, open below, posts and timber railing. Consolidated metric footprint inferred."
+        }
+      ]
+    },
+    {
+      "id": "south-timber-deck-west-return",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -1.45,
+        "y": 7,
+        "z": 2.82
+      },
+      "width": 1.45,
+      "depth": 1.2,
+      "thickness": 0.18,
+      "supports": [
+        {
+          "id": "timber-post-return",
+          "position": {
+            "x": -1.25,
+            "y": 7.75,
+            "z": 0
+          },
+          "width": 0.18,
+          "depth": 0.18,
+          "height": 2.82,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.82
+          }
+        }
+      ],
+      "material": "timber",
+      "deck_board_direction": "y",
+      "edge_treatment": "open_railing",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.78
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Western end narrows/returns diagonally toward house; represented canonically as narrower terminal deck segment ending at y=8.20. True diagonal deck polygon is unsupported by Platform primitive."
+        }
+      ]
+    },
+    {
+      "id": "south-lavoir-planter-landmark",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -3.9,
+        "y": 1.8,
+        "z": 0
+      },
+      "width": 1.78,
+      "depth": 1.2,
+      "thickness": 0.32,
+      "supports": [],
+      "material": "stone",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 34,
+          "observation": "Old lavoir/planter landmark 1.78 x 1.20 m USER_CONFIRMED; simplified low stone volume."
+        }
+      ]
+    }
+  ],
+  "stairs": [],
+  "partial_wall_segments": [
+    {
+      "id": "south-run7-parapet-east-1",
+      "start": {
+        "x": -2.2,
+        "y": 1.07,
+        "z": 0
+      },
+      "end": {
+        "x": -2.045714285714286,
+        "y": 1.07,
+        "z": 0
+      },
+      "height": {
+        "value": 0.9842857142857142,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-west-1",
+      "start": {
+        "x": -2.2,
+        "y": 2.19,
+        "z": 0
+      },
+      "end": {
+        "x": -2.045714285714286,
+        "y": 2.19,
+        "z": 0
+      },
+      "height": {
+        "value": 0.9842857142857142,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-east-2",
+      "start": {
+        "x": -2.045714285714286,
+        "y": 1.07,
+        "z": 0
+      },
+      "end": {
+        "x": -1.8914285714285715,
+        "y": 1.07,
+        "z": 0
+      },
+      "height": {
+        "value": 1.1485714285714286,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-west-2",
+      "start": {
+        "x": -2.045714285714286,
+        "y": 2.19,
+        "z": 0
+      },
+      "end": {
+        "x": -1.8914285714285715,
+        "y": 2.19,
+        "z": 0
+      },
+      "height": {
+        "value": 1.1485714285714286,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-east-3",
+      "start": {
+        "x": -1.8914285714285715,
+        "y": 1.07,
+        "z": 0
+      },
+      "end": {
+        "x": -1.7371428571428573,
+        "y": 1.07,
+        "z": 0
+      },
+      "height": {
+        "value": 1.3128571428571427,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-west-3",
+      "start": {
+        "x": -1.8914285714285715,
+        "y": 2.19,
+        "z": 0
+      },
+      "end": {
+        "x": -1.7371428571428573,
+        "y": 2.19,
+        "z": 0
+      },
+      "height": {
+        "value": 1.3128571428571427,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-east-4",
+      "start": {
+        "x": -1.7371428571428573,
+        "y": 1.07,
+        "z": 0
+      },
+      "end": {
+        "x": -1.582857142857143,
+        "y": 1.07,
+        "z": 0
+      },
+      "height": {
+        "value": 1.477142857142857,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-west-4",
+      "start": {
+        "x": -1.7371428571428573,
+        "y": 2.19,
+        "z": 0
+      },
+      "end": {
+        "x": -1.582857142857143,
+        "y": 2.19,
+        "z": 0
+      },
+      "height": {
+        "value": 1.477142857142857,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-east-5",
+      "start": {
+        "x": -1.582857142857143,
+        "y": 1.07,
+        "z": 0
+      },
+      "end": {
+        "x": -1.4285714285714286,
+        "y": 1.07,
+        "z": 0
+      },
+      "height": {
+        "value": 1.6414285714285715,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-west-5",
+      "start": {
+        "x": -1.582857142857143,
+        "y": 2.19,
+        "z": 0
+      },
+      "end": {
+        "x": -1.4285714285714286,
+        "y": 2.19,
+        "z": 0
+      },
+      "height": {
+        "value": 1.6414285714285715,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-east-6",
+      "start": {
+        "x": -1.4285714285714286,
+        "y": 1.07,
+        "z": 0
+      },
+      "end": {
+        "x": -1.2742857142857145,
+        "y": 1.07,
+        "z": 0
+      },
+      "height": {
+        "value": 1.8057142857142856,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-west-6",
+      "start": {
+        "x": -1.4285714285714286,
+        "y": 2.19,
+        "z": 0
+      },
+      "end": {
+        "x": -1.2742857142857145,
+        "y": 2.19,
+        "z": 0
+      },
+      "height": {
+        "value": 1.8057142857142856,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-east-7",
+      "start": {
+        "x": -1.2742857142857145,
+        "y": 1.07,
+        "z": 0
+      },
+      "end": {
+        "x": -1.12,
+        "y": 1.07,
+        "z": 0
+      },
+      "height": {
+        "value": 1.9699999999999998,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run7-parapet-west-7",
+      "start": {
+        "x": -1.2742857142857145,
+        "y": 2.19,
+        "z": 0
+      },
+      "end": {
+        "x": -1.12,
+        "y": 2.19,
+        "z": 0
+      },
+      "height": {
+        "value": 1.9699999999999998,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-1",
+      "start": {
+        "x": 0,
+        "y": 2.19,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 2.4466666666666668,
+        "z": 1.15
+      },
+      "height": {
+        "value": 0.9833333333333333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-1",
+      "start": {
+        "x": -1.12,
+        "y": 2.19,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 2.4466666666666668,
+        "z": 1.15
+      },
+      "height": {
+        "value": 0.9833333333333333,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-2",
+      "start": {
+        "x": 0,
+        "y": 2.4466666666666668,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 2.703333333333333,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.1466666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-2",
+      "start": {
+        "x": -1.12,
+        "y": 2.4466666666666668,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 2.703333333333333,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.1466666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-3",
+      "start": {
+        "x": 0,
+        "y": 2.703333333333333,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 2.96,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.31,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-3",
+      "start": {
+        "x": -1.12,
+        "y": 2.703333333333333,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 2.96,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.31,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-4",
+      "start": {
+        "x": 0,
+        "y": 2.96,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.216666666666667,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.4733333333333334,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-4",
+      "start": {
+        "x": -1.12,
+        "y": 2.96,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.216666666666667,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.4733333333333334,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-5",
+      "start": {
+        "x": 0,
+        "y": 3.216666666666667,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.473333333333333,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.6366666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-5",
+      "start": {
+        "x": -1.12,
+        "y": 3.216666666666667,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.473333333333333,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.6366666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-6",
+      "start": {
+        "x": 0,
+        "y": 3.473333333333333,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.73,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.7999999999999998,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-6",
+      "start": {
+        "x": -1.12,
+        "y": 3.473333333333333,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.73,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.7999999999999998,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-7",
+      "start": {
+        "x": 0,
+        "y": 3.73,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 3.9866666666666664,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.9633333333333334,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-7",
+      "start": {
+        "x": -1.12,
+        "y": 3.73,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 3.9866666666666664,
+        "z": 1.15
+      },
+      "height": {
+        "value": 1.9633333333333334,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-8",
+      "start": {
+        "x": 0,
+        "y": 3.9866666666666664,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 4.243333333333333,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.126666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-8",
+      "start": {
+        "x": -1.12,
+        "y": 3.9866666666666664,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 4.243333333333333,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.126666666666667,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-house-9",
+      "start": {
+        "x": 0,
+        "y": 4.243333333333333,
+        "z": 1.15
+      },
+      "end": {
+        "x": 0,
+        "y": 4.5,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.29,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "south-run9-parapet-outer-9",
+      "start": {
+        "x": -1.12,
+        "y": 4.243333333333333,
+        "z": 1.15
+      },
+      "end": {
+        "x": -1.12,
+        "y": 4.5,
+        "z": 1.15
+      },
+      "height": {
+        "value": 2.29,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.65
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": 0.14,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "timber-railing-main",
+      "start": {
+        "x": -2.15,
+        "y": 4.5,
+        "z": 2.82
+      },
+      "end": {
+        "x": -2.15,
+        "y": 7,
+        "z": 2.82
+      },
+      "height": {
+        "value": 1,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.6
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": null,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0
+        },
+        "evidence": []
+      },
+      "material": "timber",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": []
+    },
+    {
+      "id": "timber-railing-west-diagonal",
+      "start": {
+        "x": -2.15,
+        "y": 7,
+        "z": 2.82
+      },
+      "end": {
+        "x": -1.45,
+        "y": 8.2,
+        "z": 2.82
+      },
+      "height": {
+        "value": 1,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.6
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": null,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0
+        },
+        "evidence": []
+      },
+      "material": "timber",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Diagonal western return toward house represented as horizontal-baseline diagonal railing; deck itself uses narrowed canonical terminal platform."
+        }
+      ]
+    }
+  ],
+  "equipment": [
+    {
+      "id": "east-low-vent",
+      "type": "vent",
+      "facade": "front",
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 5,
+          "observation": "Warm-air outlet low left on east/front facade."
+        }
+      ]
+    },
+    {
+      "id": "east-mailbox",
+      "type": "utility_box",
+      "facade": "front",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 5,
+          "observation": "Front mailbox retained as architectural utility landmark."
+        }
+      ]
+    },
+    {
+      "id": "north-gas-meter-hatch",
+      "type": "utility_box",
+      "facade": "right",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 12,
+          "observation": "Small gas meter hatch on north facade."
+        }
+      ]
+    },
+    {
+      "id": "south-downspout",
+      "type": "downspout",
+      "facade": "left",
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 22,
+          "observation": "Upper dark south downspout retained."
+        }
+      ]
+    },
+    {
+      "id": "house-antenna",
+      "type": "antenna",
+      "facade": null,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 29,
+          "observation": "Antenna associated with house chimney."
+        }
+      ]
+    }
+  ],
+  "visibility": [],
+  "relations": [],
+  "wall_profile_observations": [],
+  "stair_system_links": [],
+  "appearance": {
+    "walls": {
+      "color": "off-white / beige"
+    },
+    "roof": {
+      "color": "zinc grey"
+    },
+    "frames": {
+      "color": "white"
+    }
+  },
+  "notes": "GUIDED-006 consolidated from frozen guided truth; no new photo reconstruction. USER_CONFIRMED geometry is not compensated: east/front width 9.30 m, south depth about 8.20 m, stair width 1.12 m, 7+landing+9, upper run toward WEST/rear (+Y). Longitudinal positions and unmeasured heights/depths remain INFERRED. South opening reveal-depth distinction is USER_CONFIRMED but ArchitecturalScene v0.2 has no reveal-depth field; preserved in opening_visual/evidence limitation rather than inventing geometry. Timber Y-brace is USER_CONFIRMED/observed but v0.2 has no valid inclined vertical brace primitive; posts/open void are geometric and Y-brace is preserved as evidence limitation. East mailbox and tight-gable small under-roof pieces are retained as utility/evidence where canonical primitives allow."
+}
