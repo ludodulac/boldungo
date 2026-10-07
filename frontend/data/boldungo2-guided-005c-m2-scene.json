@@ -1,0 +1,622 @@
+{
+  "schema_version": "0.2",
+  "id": "boldungo2-guided-005c-m2-south-concrete",
+  "name": "BOLDÜNGO2 — GUIDED-005C — M1 repère + M2 béton Sud corrigé",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "house-main-reference",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 9.3,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "depth": {
+        "value": 8.2,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": []
+      },
+      "height": {
+        "value": 7.2,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": [
+          {
+            "photo_index": 4,
+            "observation": "M1 height reused only as simplified reference from GUIDED-004."
+          }
+        ]
+      },
+      "floors": 3,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": []
+    }
+  ],
+  "openings": [
+    {
+      "id": "south-lower-door-reference",
+      "type": "door",
+      "volume_id": "house-main-reference",
+      "facade": "left",
+      "offset_horizontal": 3.2,
+      "offset_vertical": 0.15,
+      "width": 0.95,
+      "height": 2,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 37,
+          "observation": "USER_CONFIRMED after visual audit: lower south door is a spatial control for the covered open space under the raised concrete platform; it must not read as trapped beneath a stair flight."
+        }
+      ]
+    }
+  ],
+  "roofs": [],
+  "terrain": {
+    "kind": "facade_grade_profiles",
+    "profiles": []
+  },
+  "chimneys": [],
+  "platforms": [
+    {
+      "id": "m2-run7-step-01",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 2.05,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.16428571428571428,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 25,
+          "observation": "Discrete visible step 1/7 of lower flight; 7-step count and 1.12 m stair width are USER_CONFIRMED, individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-02",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.04,
+        "y": 2.05,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.32857142857142857,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 25,
+          "observation": "Discrete visible step 2/7 of lower flight; 7-step count and 1.12 m stair width are USER_CONFIRMED, individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-03",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.8800000000000001,
+        "y": 2.05,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.4928571428571429,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 25,
+          "observation": "Discrete visible step 3/7 of lower flight; 7-step count and 1.12 m stair width are USER_CONFIRMED, individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-04",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.7200000000000002,
+        "y": 2.05,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.6571428571428571,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 25,
+          "observation": "Discrete visible step 4/7 of lower flight; 7-step count and 1.12 m stair width are USER_CONFIRMED, individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-05",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.56,
+        "y": 2.05,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.8214285714285714,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 25,
+          "observation": "Discrete visible step 5/7 of lower flight; 7-step count and 1.12 m stair width are USER_CONFIRMED, individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-06",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.4000000000000001,
+        "y": 2.05,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.9857142857142858,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 25,
+          "observation": "Discrete visible step 6/7 of lower flight; 7-step count and 1.12 m stair width are USER_CONFIRMED, individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run7-step-07",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.2400000000000002,
+        "y": 2.05,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 1.15,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 25,
+          "observation": "Discrete visible step 7/7 of lower flight; 7-step count and 1.12 m stair width are USER_CONFIRMED, individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-intermediate-square-landing",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.08,
+        "y": 2.05,
+        "z": 0.9899999999999999
+      },
+      "width": 1.12,
+      "depth": 1.12,
+      "thickness": 0.16,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 41,
+          "observation": "Approximately square intermediate landing between the USER_CONFIRMED 7-step and 9-step flights."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-01",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 3.17,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 0.16333333333333333,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 1/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-02",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 3.3677777777777775,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 0.32666666666666666,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 2/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-03",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 3.5655555555555556,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 0.4900000000000002,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 3/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-04",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 3.763333333333333,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 0.6533333333333333,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 4/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-05",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 3.9611111111111112,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 0.8166666666666669,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 5/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-06",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 4.158888888888889,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 0.98,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 6/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-07",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 4.3566666666666665,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 1.1433333333333335,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 7/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-08",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 4.554444444444444,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 1.306666666666667,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 8/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-run9-step-09",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -2.2,
+        "y": 4.752222222222223,
+        "z": 1.15
+      },
+      "width": 1.12,
+      "depth": 0.1977777777777778,
+      "thickness": 1.4700000000000002,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.6
+      },
+      "evidence": [
+        {
+          "photo_index": 31,
+          "observation": "Discrete visible step 9/9 of upper flight; progresses toward WEST/rear (increasing scene y). 9-step count and 1.12 m width are USER_CONFIRMED; individual tread/rise metric is inferred."
+        }
+      ]
+    },
+    {
+      "id": "m2-high-concrete-platform",
+      "host_volume_id": "house-main-reference",
+      "position": {
+        "x": -1.08,
+        "y": 3.45,
+        "z": 2.62
+      },
+      "width": 1.08,
+      "depth": 2.25,
+      "thickness": 0.24,
+      "supports": [
+        {
+          "id": "m2-platform-outer-support-east",
+          "position": {
+            "x": -1.03,
+            "y": 3.55,
+            "z": 0
+          },
+          "width": 0.28,
+          "depth": 0.28,
+          "height": 2.62,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.75
+          }
+        },
+        {
+          "id": "m2-platform-outer-support-west",
+          "position": {
+            "x": -1.03,
+            "y": 5.3,
+            "z": 0
+          },
+          "width": 0.28,
+          "depth": 0.28,
+          "height": 2.62,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.55
+          }
+        }
+      ],
+      "material": "masonry",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "USER_CONFIRMED raised concrete platform creates a large covered open void and lower circulation against the south facade; represented as elevated slab plus separate supports, never a solid volume."
+        }
+      ]
+    }
+  ],
+  "stairs": [],
+  "partial_wall_segments": [
+    {
+      "id": "m2-platform-horizontal-parapet",
+      "start": {
+        "x": -1.08,
+        "y": 3.45,
+        "z": 2.86
+      },
+      "end": {
+        "x": -1.08,
+        "y": 5.7,
+        "z": 2.86
+      },
+      "height": {
+        "value": 0.9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.55
+        },
+        "evidence": []
+      },
+      "thickness": {
+        "value": null,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0
+        },
+        "evidence": []
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      },
+      "evidence": [
+        {
+          "photo_index": 39,
+          "observation": "Horizontal masonry parapet on raised platform; inclined stair parapets intentionally remain evidence-only."
+        }
+      ]
+    }
+  ],
+  "equipment": [],
+  "visibility": [],
+  "relations": [],
+  "wall_profile_observations": [],
+  "stair_system_links": [],
+  "appearance": {
+    "walls": {
+      "color": "off-white / beige"
+    },
+    "roof": {
+      "color": "zinc grey"
+    },
+    "frames": {
+      "color": "white"
+    }
+  },
+  "notes": "GUIDED-005C human-visual correction. M1 is reference only; M2 only; M3 absent. SOUTH remains facade left (exterior x<0), EAST/front y=0, WEST/rear increasing y. Human visual audit overrides the 005 arrangement: the stair mass is moved to the outer/screen-left side of the south system rather than hugging the facade; the covered open space and lower door remain readable against the house. StairRun is intentionally unused because the existing viewer renders it as an inclined box/ramp. Each of the 7 + 9 visible masonry steps is encoded as a canonical horizontal Platform with cumulative top elevation. Exact tread/run dimensions are INFERRED from photographs; USER_CONFIRMED facts are width 1.12 m, 7 steps, approximately square landing, 9 steps, two flights, raised concrete platform and open covered void. Inclined parapets remain evidence-only because v0.2 has no canonical inclined-parapet primitive."
+}
