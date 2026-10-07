@@ -508,7 +508,7 @@
       "position": {
         "x": -2.2,
         "y": 2.75,
-        "z": 2.62
+        "z": 2.38
       },
       "width": 2.2,
       "depth": 3.05,
@@ -523,7 +523,7 @@
           },
           "width": 0.3,
           "depth": 0.3,
-          "height": 2.62,
+          "height": 2.38,
           "source": {
             "kind": "observed",
             "confidence": 0.7
@@ -538,7 +538,7 @@
           },
           "width": 0.3,
           "depth": 0.3,
-          "height": 2.62,
+          "height": 2.38,
           "source": {
             "kind": "inferred",
             "confidence": 0.55
@@ -554,7 +554,7 @@
       "evidence": [
         {
           "photo_index": 39,
-          "observation": "PHOTO/INFERRED enlarged raised concrete terrace footprint. Photos prove a substantial elevated slab and large covered open void; exact 2.20 x 3.05 m footprint remains inferred, not user-confirmed."
+          "observation": "PHOTO/INFERRED enlarged raised concrete terrace footprint. Photos prove a substantial elevated slab and large covered open void; exact 2.20 x 3.05 m footprint remains inferred, not user-confirmed. Slab top is 2.62 m, aligned with the upper-flight arrival; slab underside/support height is 2.38 m."
         }
       ]
     }
