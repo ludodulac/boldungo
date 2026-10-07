@@ -47,7 +47,8 @@ def test_absolute_axis_contract_and_westward_upper_flight():
     # Upper flight is the longitudinal flight: increasing scene y is REAR/WEST.
     assert run9["end"]["y"] > run9["start"]["y"]
     assert run9["end"]["x"] == run9["start"]["x"]
-    assert "WEST/rear" in run9["evidence"][1]["observation"]
+    orientation = run9["evidence"][1]["observation"].upper()
+    assert "WEST" in orientation and "REAR" in orientation
 
 
 def test_user_confirmed_stair_facts_and_intermediate_landing_are_preserved():
@@ -69,8 +70,11 @@ def test_high_platform_is_elevated_thin_and_keeps_open_void():
     assert platform["position"]["z"] > 2
     assert platform["thickness"] < 0.5
     assert len(platform["supports"]) >= 1
-    assert "open void" in raw["notes"].lower()
-    assert "never a solid block" in raw["notes"].lower()
+    support_ids = {item["id"] for item in platform["supports"]}
+    assert len(support_ids) == len(platform["supports"])
+    # No house/exterior volume occupies the footprint below the elevated slab.
+    assert all(item["id"] == "house-main-reference" for item in raw["volumes"])
+    assert platform["id"] not in {item["id"] for item in raw["volumes"]}
 
 
 def test_lower_door_is_reference_only_and_m3_connection_is_reserved_without_m3_geometry():
@@ -85,9 +89,19 @@ def test_lower_door_is_reference_only_and_m3_connection_is_reserved_without_m3_g
 def test_parapets_follow_both_flights_and_existing_viewer_contract_is_reused():
     raw = _raw()
     ids = {item["id"] for item in raw["partial_wall_segments"]}
-    assert "m2-run7-parapet-east" in ids
-    assert "m2-run7-parapet-west" in ids
-    assert "m2-run9-parapet-outer" in ids
+    # Canonical v0.2 partial-wall baselines must be horizontal: only the
+    # horizontal high-platform parapet is geometry; inclined stair parapets
+    # remain documented on their stair evidence.
+    assert ids == {"m2-platform-outer-parapet"}
+    wall = raw["partial_wall_segments"][0]
+    assert wall["start"]["z"] == wall["end"]["z"]
+    stair_evidence = " ".join(
+        evidence["observation"]
+        for stair in raw["stairs"]
+        for evidence in stair["evidence"]
+    ).lower()
+    assert "parapet" in stair_evidence
+    assert "inclined-parapet primitive" in stair_evidence
 
     viewer = VIEWER_PATH.read_text(encoding="utf-8")
     assert "group.scale.z = -1" in viewer
