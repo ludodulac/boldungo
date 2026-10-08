@@ -1,0 +1,412 @@
+{
+  "schema_version": "0.2",
+  "id": "boldungo-neutral-002-v3",
+  "name": "Maison réelle — V3 neutral preview (hypothèses géométriques)",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "house",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 9.3,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        }
+      },
+      "depth": {
+        "value": 8.2,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        }
+      },
+      "height": {
+        "value": 8.1,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.35
+        }
+      },
+      "floors": 3,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      }
+    }
+  ],
+  "openings": [
+    {
+      "id": "E01",
+      "facade": "front",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 1.3,
+      "offset_vertical": 0.8,
+      "width": 1,
+      "height": 1.1,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "has_decorative_surround": true
+    },
+    {
+      "id": "E02",
+      "facade": "front",
+      "type": "door",
+      "volume_id": "house",
+      "offset_horizontal": 6.5,
+      "offset_vertical": 0.2,
+      "width": 1.5,
+      "height": 2,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "opening_visual": {
+        "notes": "Distinct decorative treatment; REPRESENTATION_CHOICE positions"
+      }
+    },
+    {
+      "id": "E03",
+      "facade": "front",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 1.3,
+      "offset_vertical": 3,
+      "width": 1.25,
+      "height": 1.35,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "has_decorative_surround": true
+    },
+    {
+      "id": "E04",
+      "facade": "front",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 6.4,
+      "offset_vertical": 3,
+      "width": 1.25,
+      "height": 1.35,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "has_decorative_surround": true
+    },
+    {
+      "id": "E05",
+      "facade": "front",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 1.3,
+      "offset_vertical": 5.5,
+      "width": 1.25,
+      "height": 1.25,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "has_decorative_surround": true
+    },
+    {
+      "id": "E06",
+      "facade": "front",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 6.4,
+      "offset_vertical": 5.5,
+      "width": 1.25,
+      "height": 1.25,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "has_decorative_surround": true
+    },
+    {
+      "id": "N01",
+      "facade": "right",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 2,
+      "offset_vertical": 5.5,
+      "width": 1.15,
+      "height": 1.2,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "has_decorative_surround": false
+    },
+    {
+      "id": "N02",
+      "facade": "right",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 5.7,
+      "offset_vertical": 0.6,
+      "width": 1.3,
+      "height": 1.1,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "opening_visual": {
+        "pane_count": 30,
+        "pane_layout": "6 x 5"
+      }
+    },
+    {
+      "id": "S01",
+      "facade": "left",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 0.65,
+      "offset_vertical": 0.8,
+      "width": 0.45,
+      "height": 0.45,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "opening_visual": {
+        "notes": "Round stained glass; rectangular proxy REPRESENTATION_CHOICE"
+      }
+    },
+    {
+      "id": "S02",
+      "facade": "left",
+      "type": "door",
+      "volume_id": "house",
+      "offset_horizontal": 2,
+      "offset_vertical": 3,
+      "width": 1.5,
+      "height": 2.1,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      },
+      "opening_visual": {
+        "notes": "Deep recess; serves timber terrace"
+      }
+    },
+    {
+      "id": "S03",
+      "facade": "left",
+      "type": "door",
+      "volume_id": "house",
+      "offset_horizontal": 5.7,
+      "offset_vertical": 0.1,
+      "width": 0.9,
+      "height": 2,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      }
+    },
+    {
+      "id": "S04",
+      "facade": "left",
+      "type": "door",
+      "volume_id": "house",
+      "offset_horizontal": 5.7,
+      "offset_vertical": 3.05,
+      "width": 0.9,
+      "height": 2,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      }
+    },
+    {
+      "id": "S05",
+      "facade": "left",
+      "type": "window",
+      "volume_id": "house",
+      "offset_horizontal": 5.7,
+      "offset_vertical": 5.65,
+      "width": 0.9,
+      "height": 1.2,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      }
+    }
+  ],
+  "roofs": [
+    {
+      "id": "zinc-roof",
+      "volume_id": "house",
+      "type": "gable",
+      "overhang": 0.25,
+      "ridge_direction": "depth",
+      "pitch_degrees": 19,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      }
+    }
+  ],
+  "terrain": {
+    "profiles": [
+      {
+        "facade": "right",
+        "start_elevation": 0,
+        "end_elevation": 1.1,
+        "outward_extent": 2,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.35
+        }
+      }
+    ]
+  },
+  "platforms": [
+    {
+      "id": "timber-terrace",
+      "host_volume_id": "house",
+      "position": {
+        "x": 0.5,
+        "y": -2.05,
+        "z": 2.9
+      },
+      "width": 3.3,
+      "depth": 2.05,
+      "thickness": 0.15,
+      "material": "timber",
+      "edge_treatment": "open_railing",
+      "supports": [
+        {
+          "id": "timber-post-a",
+          "position": {
+            "x": 0.65,
+            "y": -1.9,
+            "z": 0
+          },
+          "width": 0.15,
+          "depth": 0.15,
+          "height": 2.9,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.35
+          }
+        },
+        {
+          "id": "timber-post-y-proxy",
+          "position": {
+            "x": 3.45,
+            "y": -1.9,
+            "z": 0
+          },
+          "width": 0.15,
+          "depth": 0.15,
+          "height": 2.9,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.85
+          }
+        }
+      ],
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      }
+    },
+    {
+      "id": "concrete-platform",
+      "host_volume_id": "house",
+      "position": {
+        "x": 4.1,
+        "y": -2.05,
+        "z": 2.9
+      },
+      "width": 2.5,
+      "depth": 2.05,
+      "thickness": 0.2,
+      "material": "concrete",
+      "edge_treatment": "solid_parapet",
+      "supports": [
+        {
+          "id": "concrete-post",
+          "position": {
+            "x": 4.25,
+            "y": -1.9,
+            "z": 0
+          },
+          "width": 0.22,
+          "depth": 0.22,
+          "height": 2.9,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.35
+          }
+        }
+      ],
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      }
+    }
+  ],
+  "stairs": [
+    {
+      "id": "lower-7-steps-proxy",
+      "start": {
+        "x": 9.1,
+        "y": -3.15,
+        "z": 0
+      },
+      "end": {
+        "x": 8.2,
+        "y": -3.15,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "material": "concrete",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      }
+    },
+    {
+      "id": "upper-9-steps-proxy",
+      "start": {
+        "x": 8.2,
+        "y": -3.15,
+        "z": 1.25
+      },
+      "end": {
+        "x": 6.55,
+        "y": -2,
+        "z": 2.9
+      },
+      "width": 1.12,
+      "material": "concrete",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.35
+      }
+    }
+  ],
+  "appearance": {
+    "walls": {
+      "color": "warm ivory"
+    },
+    "roof": {
+      "color": "zinc grey"
+    },
+    "frames": {
+      "color": "rose beige"
+    }
+  },
+  "notes": "V3 FINAL canonical topology. All unmeasured heights, opening coordinates, roof pitch, terrace/stair footprints and low-flight orientation are REPRESENTATION_CHOICE, not real measurements. S02→timber; S04→concrete; S03→covered lower circulation. 7+landing+9 stairs: numeric step counts retained in provenance, current StairRun primitive has no step_count or landing shape. Upper flight ascends east; lower flight orientation UNKNOWN, chosen for preview. Stair exceeds western rear (x>8.2); south projection 2.20 m confirmed but preview is approximate. SUPPORT EN Y — PHOTO_CONFIRMED; vertical proxy only, diagonals not renderable. RETOUR DIAGONAL — PHOTO_CONFIRMED; rectangular approximation only, angle UNKNOWN. Inclined masonry parapets are not modeled; no false horizontal wall. Rear facade UNKNOWN; no symmetry inferred. 12-opening convention UNKNOWN; S01 retained. Height 8.1 and roof pitch 19 degrees are purely display assumptions."
+}
