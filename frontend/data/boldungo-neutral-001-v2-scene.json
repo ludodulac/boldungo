@@ -105,6 +105,10 @@
         {
           "photo_index": 1,
           "observation": "PHOTO/CERTAIN DESCRIPTION — East opening exists and belongs to one of two vertical axes. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Size/offset are unmeasured."
+        },
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — HOUSE_PHYSICAL_TOPOLOGY — NEUTRAL ANALYSIS V2: E2 is one of the six East/front main openings and has the same beige / rose decorative surround treatment as the other East/front main openings."
         }
       ]
     },
