@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// BOLDUNGO-STAIR-PROTOTYPE-001B — isolated visual proof, NOT a house scene.
+// BOLDUNGO-STAIR-PROTOTYPE-001C — isolated visual proof, NOT a house scene.
 // Width and counts and upper-east direction: USER_CONFIRMED.
-// All other numeric dimensions and lower-north direction: PROTOTYPE_REPRESENTATION_CHOICE.
+// Lower ascent NORTH (+Z), upper ascent EAST (+X), right turn: HUMAN_CONFIRMED V2.\n// All non-confirmed numeric dimensions: PROTOTYPE_REPRESENTATION_CHOICE.
 const WIDTH = 1.12, RISE = 0.17, GOING = 0.29, LOWER = 7, UPPER = 9;
-const LANDING_Z = LOWER * RISE, TOP_Z = (LOWER + UPPER) * RISE;
+const LANDING_Z = LOWER * RISE, TOP_Z = (LOWER + UPPER) * RISE;\nconst EPS=1e-7;\nfunction assertGeometry(ok,message){if(!ok)throw new Error('001C GEOMETRY: '+message);}
 const canvas = document.querySelector('#viewer');
 const status = document.querySelector('#prototype-status');
 const scene = new THREE.Scene();
@@ -45,7 +45,7 @@ function slopingParapet(name, from, to, thickness=.13, wallHeight=.68) {
 }
 for(let i=0;i<LOWER;i++){
   const top=(i+1)*RISE, z=i*GOING;
-  box('lower-tread-'+(i+1),0,top-.115,z,WIDTH,.115,GOING-.012,concrete);
+  box('lower-tread-'+(i+1),0,top-.115,z,WIDTH,.115,GOING,concrete);
 }
 const lowerStartY=RISE+.38, lowerEndY=LANDING_Z+.38;
 slopingParapet('lower-parapet-left',[-.075,lowerStartY,GOING/2],[-.075,lowerEndY,LOWER*GOING-GOING/2]);
@@ -62,7 +62,7 @@ box('landing-parapet-south-return',WIDTH+.01,LANDING_Z,landingStartZ,.34,.70,.13
 const upperStartX=1.46, upperStartZ=landingStartZ+.23;
 for(let i=0;i<UPPER;i++){
   const top=LANDING_Z+(i+1)*RISE, x=upperStartX+i*GOING;
-  box('upper-tread-'+(i+1),x,top-.115,upperStartZ,GOING-.012,.115,WIDTH,concrete);
+  box('upper-tread-'+(i+1),x,top-.115,upperStartZ,GOING,.115,WIDTH,concrete);
 }
 const upperStartY=LANDING_Z+RISE+.38, upperEndY=TOP_Z+.38;
 slopingParapet('upper-parapet-near',[upperStartX+GOING/2,upperStartY,upperStartZ-.075],[upperStartX+UPPER*GOING-GOING/2,upperEndY,upperStartZ-.075]);
@@ -78,7 +78,30 @@ const upperCount=scene.children.filter(x=>x.name?.startsWith('upper-tread-')).le
 const landing=!!scene.getObjectByName('TURNING-LANDING');
 const arrival=!!scene.getObjectByName('ARRIVAL-PLATFORM');
 const parapets=scene.children.filter(x=>x.name?.includes('parapet-')).length;
-status.textContent=`STAIR PROTOTYPE 001B · Prototype chargé : ${lowerCount} marches basses, palier ${landing?'oui':'non'}, ${upperCount} marches hautes, plateforme ${arrival?'oui':'non'}, ${parapets} éléments de parapet. Montée haute vers l’Est (+X).`;
+function bounds(name){const mesh=scene.getObjectByName(name);assertGeometry(!!mesh,'missing '+name);return new THREE.Box3().setFromObject(mesh);}
+function close(a,b){return Math.abs(a-b)<EPS;}
+const lowerBoxes=Array.from({length:LOWER},(_,i)=>bounds('lower-tread-'+(i+1)));
+const upperBoxes=Array.from({length:UPPER},(_,i)=>bounds('upper-tread-'+(i+1)));
+const landingBox=bounds('TURNING-LANDING'),arrivalBox=bounds('ARRIVAL-PLATFORM');
+assertGeometry(lowerBoxes.every((b,i)=>close(b.max.x-b.min.x,WIDTH)&&(!i||(b.min.z>lowerBoxes[i-1].min.z&&b.max.y>lowerBoxes[i-1].max.y))),'lower steps must ascend NORTH');
+assertGeometry(upperBoxes.every((b,i)=>close(b.max.z-b.min.z,WIDTH)&&(!i||(b.min.x>upperBoxes[i-1].min.x&&b.max.y>upperBoxes[i-1].max.y))),'upper steps must ascend EAST');
+assertGeometry(close(lowerBoxes[LOWER-1].max.z,landingBox.min.z),'lower flight must meet SOUTH landing edge');
+assertGeometry(close(lowerBoxes[LOWER-1].max.y,landingBox.max.y),'lower flight must meet landing elevation');
+assertGeometry(close(upperBoxes[0].min.x,landingBox.max.x),'upper flight must leave EAST landing edge');
+assertGeometry(upperBoxes[0].min.z>=landingBox.min.z&&upperBoxes[0].max.z<=landingBox.max.z,'upper flight must fit landing exit');
+assertGeometry(close(upperBoxes[UPPER-1].max.x,arrivalBox.min.x),'upper flight must meet arrival platform');
+assertGeometry(close(upperBoxes[UPPER-1].max.y,arrivalBox.max.y),'upper flight must meet arrival elevation');
+assertGeometry(landingBox.max.y<arrivalBox.max.y,'arrival must be above landing');
+const north=new THREE.Vector3(0,0,1),east=new THREE.Vector3(1,0,0);
+assertGeometry(close(north.clone().cross(east).y,1),'NORTH to EAST must turn RIGHT');
+const entry=new THREE.Box3(new THREE.Vector3(0,LANDING_Z-.02,landingStartZ-.001),new THREE.Vector3(WIDTH,LANDING_Z+.22,landingStartZ+.18));
+const exit=new THREE.Box3(new THREE.Vector3(upperStartX-.02,LANDING_Z,upperStartZ),new THREE.Vector3(upperStartX+.03,LANDING_Z+.22,upperStartZ+WIDTH));
+for(const mesh of scene.children.filter(x=>x.name?.startsWith('landing-parapet-'))){
+ const b=new THREE.Box3().setFromObject(mesh);
+ assertGeometry(!b.intersectsBox(entry)&&!b.intersectsBox(exit),'landing masonry obstructs passage: '+mesh.name);
+}
+
+status.textContent=`STAIR PROTOTYPE 001C · Prototype chargé : ${lowerCount} marches basses, palier ${landing?'oui':'non'}, ${upperCount} marches hautes, plateforme ${arrival?'oui':'non'}, ${parapets} éléments de parapet. Montée haute vers l’Est (+X).`;
 if(lowerCount!==7||upperCount!==9||!landing||!arrival||parapets!==7) throw new Error('Prototype invariant failed');
 function view(x,y,z){camera.position.set(x,y,z);camera.lookAt(controls.target);controls.update();}
 document.querySelector('#reset-view').addEventListener('click',()=>view(1.7,6.4,12));
