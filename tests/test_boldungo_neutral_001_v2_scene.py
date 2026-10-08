@@ -38,7 +38,14 @@ def test_east_exactly_six_main_openings_and_two_axes():
     assert max(left)-min(left) <= EPS
     assert max(right)-min(right) <= EPS
     assert left[0] < right[0]
-    assert all(q.get("has_decorative_surround") for q in east)
+    direct_surround_ids = ("E1","E3","E4","E5","E6")
+    for ident in direct_surround_ids:
+        q = o[ident]
+        assert q.get("has_decorative_surround") is True
+        assert q.get("opening_visual", {}).get("surround_color") == "beige / rose"
+    e2_evidence = " ".join(e["observation"] for e in o["E2"]["evidence"])
+    assert "PHOTO — HOUSE_PHYSICAL_TOPOLOGY — NEUTRAL ANALYSIS V2" in e2_evidence
+    assert "same beige / rose decorative surround treatment as the other East/front main openings" in e2_evidence
 
 def test_north_grade_is_explicitly_rising_and_visibly_materialized():
     x=load(); p=next(p for p in x["terrain"]["profiles"] if p["facade"]=="right")
@@ -92,7 +99,9 @@ def test_south_opening_order_and_aligned_group():
     assert stained["offset_horizontal"] < french["offset_horizontal"] < min(q["offset_horizontal"] for q in group)
     centers=[center(q) for q in group]
     assert max(centers)-min(centers) <= EPS
-    assert "DEEP_REVEAL" in french["opening_visual"]["notes"]
+    french_evidence = " ".join(e["observation"] for e in french["evidence"])
+    assert "Deep reveal relative to S-high-door is preserved semantically" in french_evidence
+    assert "v0.2 has no reveal-depth metric" in french_evidence
 
 def test_lavoir_truth_preserved_without_false_geometric_connection():
     x=load()
