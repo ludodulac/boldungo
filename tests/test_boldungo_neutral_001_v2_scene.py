@@ -52,7 +52,10 @@ def test_south_exterior_order_east_to_west_and_distinctness():
     stair=[q for q in x["platforms"] if q["id"].startswith("stair-")]
     assert wood["id"] != concrete["id"]
     assert wood["position"]["y"] + wood["depth"] < concrete["position"]["y"]
-    assert concrete["position"]["y"] + concrete["depth"] <= min(q["position"]["y"] for q in stair if q["id"].startswith("stair-upper-step-"))
+    concrete_west_edge = concrete["position"]["y"] + concrete["depth"]
+    upper = [q for q in stair if q["id"].startswith("stair-upper-step-")]
+    assert concrete_west_edge == pytest.approx(min(q["position"]["y"] for q in upper), abs=EPS)
+    assert max(q["position"]["y"] for q in upper) < min(q["position"]["y"] for q in stair if q["id"].startswith("stair-lower-step-"))
     assert all(q["id"] not in {wood["id"],concrete["id"]} for q in stair)
 
 def test_wood_and_concrete_are_thin_elevated_surfaces_over_voids():
