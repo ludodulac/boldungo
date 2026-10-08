@@ -106,11 +106,7 @@
           "photo_index": 1,
           "observation": "PHOTO/CERTAIN DESCRIPTION — East opening exists and belongs to one of two vertical axes. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Size/offset are unmeasured."
         }
-      ],
-      "has_decorative_surround": true,
-      "opening_visual": {
-        "surround_color": "beige / rose"
-      }
+      ]
     },
     {
       "id": "E3",
@@ -294,12 +290,7 @@
           "photo_index": 1,
           "observation": "PHOTO/CERTAIN DESCRIPTION — south opening and longitudinal order. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric size/offset are unmeasured. Deep reveal relative to S-high-door is preserved semantically; v0.2 has no reveal-depth metric."
         }
-      ],
-      "has_decorative_surround": false,
-      "opening_visual": {
-        "glazing": "glazed",
-        "notes": "DEEP_REVEAL — deeper than S-high-door; no invented reveal-depth metric."
-      }
+      ]
     },
     {
       "id": "S-ground-door",
@@ -319,8 +310,7 @@
           "photo_index": 1,
           "observation": "PHOTO/CERTAIN DESCRIPTION — south opening and longitudinal order. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric size/offset are unmeasured."
         }
-      ],
-      "has_decorative_surround": false
+      ]
     },
     {
       "id": "S-high-door",
@@ -340,8 +330,7 @@
           "photo_index": 1,
           "observation": "PHOTO/CERTAIN DESCRIPTION — south opening and longitudinal order. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric size/offset are unmeasured."
         }
-      ],
-      "has_decorative_surround": false
+      ]
     },
     {
       "id": "S-high-window",
@@ -1240,106 +1229,6 @@
           "observation": "PHOTO — masonry edge/parapet."
         }
       ]
-    },
-    {
-      "id": "lower-flight-parapet",
-      "start": {
-        "x": -3.32,
-        "y": 6.35,
-        "z": 0
-      },
-      "end": {
-        "x": -2.2,
-        "y": 6.35,
-        "z": 1.25
-      },
-      "height": {
-        "value": 0.8,
-        "source": {
-          "kind": "inferred",
-          "confidence": 0.5
-        },
-        "evidence": [
-          {
-            "photo_index": 1,
-            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension."
-          }
-        ]
-      },
-      "thickness": {
-        "value": 0.12,
-        "source": {
-          "kind": "inferred",
-          "confidence": 0.5
-        },
-        "evidence": [
-          {
-            "photo_index": 1,
-            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension."
-          }
-        ]
-      },
-      "material": "masonry",
-      "source": {
-        "kind": "observed",
-        "confidence": 0.9
-      },
-      "evidence": [
-        {
-          "photo_index": 1,
-          "observation": "PHOTO — masonry parapet follows lower flight."
-        }
-      ]
-    },
-    {
-      "id": "upper-flight-parapet",
-      "start": {
-        "x": -2.2,
-        "y": 6.35,
-        "z": 1.25
-      },
-      "end": {
-        "x": -2.2,
-        "y": 4.45,
-        "z": 2.65
-      },
-      "height": {
-        "value": 0.8,
-        "source": {
-          "kind": "inferred",
-          "confidence": 0.5
-        },
-        "evidence": [
-          {
-            "photo_index": 1,
-            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension."
-          }
-        ]
-      },
-      "thickness": {
-        "value": 0.12,
-        "source": {
-          "kind": "inferred",
-          "confidence": 0.5
-        },
-        "evidence": [
-          {
-            "photo_index": 1,
-            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension."
-          }
-        ]
-      },
-      "material": "masonry",
-      "source": {
-        "kind": "observed",
-        "confidence": 0.9
-      },
-      "evidence": [
-        {
-          "photo_index": 1,
-          "observation": "PHOTO — masonry parapet follows upper flight toward EAST."
-        }
-      ]
     }
   ],
   "equipment": [
@@ -1374,5 +1263,5 @@
       "color": "white"
     }
   },
-  "notes": "SOURCE_POLICY: HOUSE_PHYSICAL_TOPOLOGY — NEUTRAL ANALYSIS V2. Canonical physical mapping: software FRONT=EAST/AVANT, REAR=WEST/ARRIERE, RIGHT=NORTH, LEFT=SOUTH. No geometry from historical scenes 004/005/006/007/008 was reused. USER_CONFIRMED and REPRESENTATION_CHOICE are intentionally separated in evidence. Total height, floor heights, roof angle, unmeasured opening sizes/positions, terrain amplitude, chimney placement, platform extents and stair rise/run are UNKNOWN in real-house truth; any numeric values for them are REPRESENTATION_CHOICE only. LAVOIR_REPRESENTATION_LIMITATION: lavoir is USER_CONFIRMED autonomous 1.78 x 1.20 m, distinct from house/stair/concrete platform/wood terrace; ArchitecturalScene v0.2 platform primitive requires host_volume_id, so it is intentionally omitted geometrically rather than falsely connected."
+  "notes": "SOURCE_POLICY: HOUSE_PHYSICAL_TOPOLOGY — NEUTRAL ANALYSIS V2. Canonical physical mapping: software FRONT=EAST/AVANT, REAR=WEST/ARRIERE, RIGHT=NORTH, LEFT=SOUTH. No geometry from historical scenes 004/005/006/007/008 was reused. USER_CONFIRMED and REPRESENTATION_CHOICE are intentionally separated in evidence. Total height, floor heights, roof angle, unmeasured opening sizes/positions, terrain amplitude, chimney placement, platform extents and stair rise/run are UNKNOWN in real-house truth; any numeric values for them are REPRESENTATION_CHOICE only. LAVOIR_REPRESENTATION_LIMITATION: lavoir is USER_CONFIRMED autonomous 1.78 x 1.20 m, distinct from house/stair/concrete platform/wood terrace; ArchitecturalScene v0.2 platform primitive requires host_volume_id, so it is intentionally omitted geometrically rather than falsely connected. PARAPET_REPRESENTATION_LIMITATION — masonry parapets along both stair flights are PHOTO-supported, but ArchitecturalScene v0.2 partial_wall_segments require horizontal baselines; NEUTRAL-001 therefore does not encode false sloped partial-wall geometry."
 }
