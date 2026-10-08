@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// BOLDUNGO-STAIR-PROTOTYPE-001 — isolated visual proof, NOT a house scene.
+// BOLDUNGO-STAIR-PROTOTYPE-001B — isolated visual proof, NOT a house scene.
 // Width and counts and upper-east direction: USER_CONFIRMED.
 // All other numeric dimensions and lower-north direction: PROTOTYPE_REPRESENTATION_CHOICE.
 const WIDTH = 1.12, RISE = 0.17, GOING = 0.29, LOWER = 7, UPPER = 9;
@@ -29,26 +29,44 @@ function box(name, x,y,z, w,h,d, mat) {
   mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),outline));
   scene.add(mesh); return mesh;
 }
-// Lower flight ascends north (+Z). Independent treads, no inclined beam.
+// East is +X. Reference camera is south (+Z), looking north (-Z):
+// +X therefore appears on SCREEN RIGHT. Prototype lower flight climbs north (+Z).
+// Smooth parapets are individual sloped masonry solids, not stair-step blocks.
+function slopingParapet(name, from, to, thickness=.13, wallHeight=.68) {
+  const a=new THREE.Vector3(...from), b=new THREE.Vector3(...to);
+  const delta=b.clone().sub(a), length=delta.length();
+  const mesh=new THREE.Mesh(new THREE.BoxGeometry(thickness,wallHeight,length),masonry);
+  mesh.name=name;
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),delta.clone().normalize());
+  mesh.position.copy(a).add(b).multiplyScalar(.5);
+  mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry),outline));
+  scene.add(mesh);
+  return mesh;
+}
 for(let i=0;i<LOWER;i++){
   const top=(i+1)*RISE, z=i*GOING;
   box('lower-tread-'+(i+1),0,top-.115,z,WIDTH,.115,GOING-.012,concrete);
-  // Stepped masonry parapet: each piece rises with its corresponding tread,
-  // remains locally elevated, and never extends down to the ground.
-  box('lower-parapet-left-'+(i+1),-.14,top-.12,z,.13,.78,GOING-.012,masonry);
-  box('lower-parapet-right-'+(i+1),WIDTH+.01,top-.12,z,.13,.78,GOING-.012,masonry);
 }
-// Distinct horizontal turning landing, wider than a tread.
+const lowerStartY=RISE+.38, lowerEndY=LANDING_Z+.38;
+slopingParapet('lower-parapet-left',[-.075,lowerStartY,GOING/2],[-.075,lowerEndY,LOWER*GOING-GOING/2]);
+slopingParapet('lower-parapet-right',[WIDTH+.075,lowerStartY,GOING/2],[WIDTH+.075,lowerEndY,LOWER*GOING-GOING/2]);
+// Turning landing: a horizontal slab distinct from both flights.
 const landingStartZ=LOWER*GOING;
 box('TURNING-LANDING',-.14,LANDING_Z-.15,landingStartZ,1.60,.15,1.60,concrete);
-// Upper flight ascends EAST (+X), at the northern edge of the landing.
+// Low flight enters at the SOUTH edge of the landing; upper flight exits EAST.
+// Masonry protects the WEST and NORTH edges; the entrance and exit remain open.
+box('landing-parapet-west',-.27,LANDING_Z,landingStartZ+.06,.13,.70,1.48,masonry);
+box('landing-parapet-north',-.14,LANDING_Z,landingStartZ+1.47,1.60,.70,.13,masonry);
+// Short SOUTH return only outside the incoming lower-flight passage.
+box('landing-parapet-south-return',WIDTH+.01,LANDING_Z,landingStartZ,.34,.70,.13,masonry);
 const upperStartX=1.46, upperStartZ=landingStartZ+.23;
 for(let i=0;i<UPPER;i++){
   const top=LANDING_Z+(i+1)*RISE, x=upperStartX+i*GOING;
   box('upper-tread-'+(i+1),x,top-.115,upperStartZ,GOING-.012,.115,WIDTH,concrete);
-  box('upper-parapet-near-'+(i+1),x,top-.12,upperStartZ-.14,GOING-.012,.78,.13,masonry);
-  box('upper-parapet-far-'+(i+1),x,top-.12,upperStartZ+WIDTH+.01,GOING-.012,.78,.13,masonry);
 }
+const upperStartY=LANDING_Z+RISE+.38, upperEndY=TOP_Z+.38;
+slopingParapet('upper-parapet-near',[upperStartX+GOING/2,upperStartY,upperStartZ-.075],[upperStartX+UPPER*GOING-GOING/2,upperEndY,upperStartZ-.075]);
+slopingParapet('upper-parapet-far',[upperStartX+GOING/2,upperStartY,upperStartZ+WIDTH+.075],[upperStartX+UPPER*GOING-GOING/2,upperEndY,upperStartZ+WIDTH+.075]);
 const arrivalX=upperStartX+UPPER*GOING;
 box('ARRIVAL-PLATFORM',arrivalX,TOP_Z-.18,upperStartZ-.3,2.0,.18,1.72,concrete);
 // Mark east visually with an arrow, not as a claim about the actual low flight.
@@ -60,13 +78,13 @@ const upperCount=scene.children.filter(x=>x.name?.startsWith('upper-tread-')).le
 const landing=!!scene.getObjectByName('TURNING-LANDING');
 const arrival=!!scene.getObjectByName('ARRIVAL-PLATFORM');
 const parapets=scene.children.filter(x=>x.name?.includes('parapet-')).length;
-status.textContent=`Prototype chargé : ${lowerCount} marches basses, palier ${landing?'oui':'non'}, ${upperCount} marches hautes, plateforme ${arrival?'oui':'non'}, ${parapets} éléments de parapet. Montée haute vers l’Est (+X).`;
-if(lowerCount!==7||upperCount!==9||!landing||!arrival||parapets!==32) throw new Error('Prototype invariant failed');
-function view(x,y,z){camera.position.set(x,y,z);controls.update();}
-document.querySelector('#reset-view').addEventListener('click',()=>view(8,7,10));
+status.textContent=`STAIR PROTOTYPE 001B · Prototype chargé : ${lowerCount} marches basses, palier ${landing?'oui':'non'}, ${upperCount} marches hautes, plateforme ${arrival?'oui':'non'}, ${parapets} éléments de parapet. Montée haute vers l’Est (+X).`;
+if(lowerCount!==7||upperCount!==9||!landing||!arrival||parapets!==7) throw new Error('Prototype invariant failed');
+function view(x,y,z){camera.position.set(x,y,z);camera.lookAt(controls.target);controls.update();}
+document.querySelector('#reset-view').addEventListener('click',()=>view(1.7,6.4,12));
 document.querySelector('#top-view').addEventListener('click',()=>view(2,13,2));
 document.querySelector('#east-view').addEventListener('click',()=>view(10,4,2));
-view(8,7,10);
+view(1.7,6.4,12);
 function animate(){
   const w=canvas.clientWidth,h=canvas.clientHeight;
   if(w&&h&&(canvas.width!==Math.round(w*renderer.getPixelRatio())||canvas.height!==Math.round(h*renderer.getPixelRatio()))){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
