@@ -1,0 +1,1271 @@
+{
+  "schema_version": "0.2",
+  "id": "boldungo-neutral-001-v2",
+  "name": "BOLDÜNGO — NEUTRAL-001 — HOUSE_PHYSICAL_TOPOLOGY V2",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "house-main",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 9.3,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "USER_CONFIRMED — East/front facade width exactly 9.30 m."
+          }
+        ]
+      },
+      "depth": {
+        "value": 8.2,
+        "source": {
+          "kind": "user_provided",
+          "confidence": 1
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "USER_CONFIRMED — South facade length approximately 8.20 m."
+          }
+        ]
+      },
+      "height": {
+        "value": 8.1,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Total height is UNKNOWN."
+          }
+        ]
+      },
+      "floors": 3,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "CERTAIN REAL-HOUSE DESCRIPTION / PHOTO — three principal levels."
+        }
+      ]
+    }
+  ],
+  "openings": [
+    {
+      "id": "E1",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 1.9749999999999999,
+      "offset_vertical": 0.7,
+      "width": 0.85,
+      "height": 1.1,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — East opening exists and belongs to one of two vertical axes. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Size/offset are unmeasured."
+        }
+      ],
+      "has_decorative_surround": true,
+      "opening_visual": {
+        "surround_color": "beige / rose"
+      }
+    },
+    {
+      "id": "E2",
+      "type": "door",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 6.2250000000000005,
+      "offset_vertical": 0.15,
+      "width": 1.35,
+      "height": 2.15,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — East opening exists and belongs to one of two vertical axes. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Size/offset are unmeasured."
+        },
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — HOUSE_PHYSICAL_TOPOLOGY — NEUTRAL ANALYSIS V2: E2 is one of the six East/front main openings and has the same beige / rose decorative surround treatment as the other East/front main openings."
+        }
+      ]
+    },
+    {
+      "id": "E3",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 1.75,
+      "offset_vertical": 3.15,
+      "width": 1.3,
+      "height": 1.35,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — East opening exists and belongs to one of two vertical axes. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Size/offset are unmeasured."
+        }
+      ],
+      "has_decorative_surround": true,
+      "opening_visual": {
+        "surround_color": "beige / rose"
+      }
+    },
+    {
+      "id": "E4",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 6.25,
+      "offset_vertical": 3.15,
+      "width": 1.3,
+      "height": 1.35,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — East opening exists and belongs to one of two vertical axes. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Size/offset are unmeasured."
+        }
+      ],
+      "has_decorative_surround": true,
+      "opening_visual": {
+        "surround_color": "beige / rose"
+      }
+    },
+    {
+      "id": "E5",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 1.7999999999999998,
+      "offset_vertical": 5.75,
+      "width": 1.2,
+      "height": 1.35,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — East opening exists and belongs to one of two vertical axes. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Size/offset are unmeasured."
+        }
+      ],
+      "has_decorative_surround": true,
+      "opening_visual": {
+        "surround_color": "beige / rose"
+      }
+    },
+    {
+      "id": "E6",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "front",
+      "offset_horizontal": 6.300000000000001,
+      "offset_vertical": 5.75,
+      "width": 1.2,
+      "height": 1.35,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — East opening exists and belongs to one of two vertical axes. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Size/offset are unmeasured."
+        }
+      ],
+      "has_decorative_surround": true,
+      "opening_visual": {
+        "surround_color": "beige / rose"
+      }
+    },
+    {
+      "id": "N-high-window",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "right",
+      "offset_horizontal": 1.55,
+      "offset_vertical": 5.7,
+      "width": 1.05,
+      "height": 1.35,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — high north window. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric placement is unmeasured."
+        }
+      ],
+      "has_decorative_surround": false
+    },
+    {
+      "id": "N-glass-block-6x5",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "right",
+      "offset_horizontal": 6.2,
+      "offset_vertical": 0.45,
+      "width": 1.2,
+      "height": 1,
+      "source": {
+        "kind": "user_provided",
+        "confidence": 1
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — glass-block opening is 6 x 5 blocks; metric opening size/placement remain REPRESENTATION_CHOICE."
+        }
+      ],
+      "has_decorative_surround": false,
+      "opening_visual": {
+        "pane_count": 30,
+        "pane_layout": "6 x 5 glass blocks",
+        "glazing": "glass block"
+      }
+    },
+    {
+      "id": "S-stained-glass",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 0.75,
+      "offset_vertical": 1.15,
+      "width": 0.45,
+      "height": 0.45,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — south opening and longitudinal order. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric size/offset are unmeasured."
+        }
+      ],
+      "has_decorative_surround": false
+    },
+    {
+      "id": "S-double-french-door",
+      "type": "door",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 2.15,
+      "offset_vertical": 2.8,
+      "width": 1.65,
+      "height": 2.2,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — south opening and longitudinal order. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric size/offset are unmeasured. Deep reveal relative to S-high-door is preserved semantically; v0.2 has no reveal-depth metric."
+        }
+      ]
+    },
+    {
+      "id": "S-ground-door",
+      "type": "door",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 5.45,
+      "offset_vertical": 0.15,
+      "width": 0.9,
+      "height": 2.05,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — south opening and longitudinal order. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric size/offset are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "S-high-door",
+      "type": "door",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 5.4,
+      "offset_vertical": 3,
+      "width": 1,
+      "height": 2.1,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — south opening and longitudinal order. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric size/offset are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "S-high-window",
+      "type": "window",
+      "volume_id": "house-main",
+      "facade": "left",
+      "offset_horizontal": 5.35,
+      "offset_vertical": 5.75,
+      "width": 1.1,
+      "height": 1.35,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — south opening and longitudinal order. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Metric size/offset are unmeasured."
+        }
+      ],
+      "has_decorative_surround": false
+    }
+  ],
+  "roofs": [
+    {
+      "id": "neutral-zinc-gable",
+      "volume_id": "house-main",
+      "type": "gable",
+      "overhang": 0.18,
+      "ridge_direction": "depth",
+      "pitch_degrees": 11,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Roof angle is UNKNOWN; 11 degrees is deliberately non-certified and used only for a low/shallow front-gable preview."
+        }
+      ]
+    }
+  ],
+  "terrain": {
+    "kind": "facade_grade_profiles",
+    "profiles": [
+      {
+        "facade": "right",
+        "start_elevation": 0.05,
+        "end_elevation": 0.95,
+        "outward_extent": 0.9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "PHOTO — north grade rises. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Elevation amplitude is not measured."
+          }
+        ]
+      }
+    ]
+  },
+  "chimneys": [
+    {
+      "id": "rear-metal-zinc-structure",
+      "position": {
+        "x": 1.2,
+        "y": 7.25,
+        "z": 5.7
+      },
+      "width": 1.15,
+      "depth": 0.5,
+      "height": 2.8,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "CERTAIN REAL-HOUSE DESCRIPTION — large rear metal/zinc vertical structure belongs to house. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Placement and dimensions are UNKNOWN."
+        }
+      ]
+    },
+    {
+      "id": "house-chimney-with-antenna",
+      "position": {
+        "x": 6.7,
+        "y": 5.8,
+        "z": 7.4
+      },
+      "width": 0.55,
+      "depth": 0.55,
+      "height": 1.25,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "CERTAIN REAL-HOUSE DESCRIPTION — house chimney associated with antenna. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Placement and dimensions are UNKNOWN."
+        }
+      ]
+    }
+  ],
+  "platforms": [
+    {
+      "id": "south-wood-terrace",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.55,
+        "y": 0.35,
+        "z": 2.75
+      },
+      "width": 2.55,
+      "depth": 1.9,
+      "thickness": 0.18,
+      "supports": [
+        {
+          "id": "wt-p1",
+          "position": {
+            "x": -2.35,
+            "y": 0.55,
+            "z": 0
+          },
+          "width": 0.16,
+          "depth": 0.16,
+          "height": 2.75,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.5
+          }
+        },
+        {
+          "id": "wt-p2",
+          "position": {
+            "x": -0.35,
+            "y": 1.9,
+            "z": 0
+          },
+          "width": 0.16,
+          "depth": 0.16,
+          "height": 2.75,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.5
+          }
+        }
+      ],
+      "material": "timber",
+      "edge_treatment": "open_railing",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — raised timber terrace ABOVE OPEN_VOID. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Extents/elevation are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "south-concrete-platform",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.1,
+        "y": 2.65,
+        "z": 2.65
+      },
+      "width": 2.1,
+      "depth": 1.8,
+      "thickness": 0.2,
+      "supports": [
+        {
+          "id": "cp-p1",
+          "position": {
+            "x": -1.9,
+            "y": 2.85,
+            "z": 0
+          },
+          "width": 0.18,
+          "depth": 0.18,
+          "height": 2.65,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.5
+          }
+        },
+        {
+          "id": "cp-p2",
+          "position": {
+            "x": -0.4,
+            "y": 4.05,
+            "z": 0
+          },
+          "width": 0.18,
+          "depth": 0.18,
+          "height": 2.65,
+          "source": {
+            "kind": "inferred",
+            "confidence": 0.5
+          }
+        }
+      ],
+      "material": "concrete",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/CERTAIN DESCRIPTION — elevated concrete platform ABOVE OPEN/COVERED SPACE and distinct from timber terrace/stair. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Extents/elevation are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-lower-step-01",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -3.32,
+        "y": 6.35,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.17857142857142858,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — lower flight has 7 steps and width 1.12 m. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-lower-step-02",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -3.1599999999999997,
+        "y": 6.35,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.35714285714285715,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — lower flight has 7 steps and width 1.12 m. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-lower-step-03",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -3,
+        "y": 6.35,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.5357142857142857,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — lower flight has 7 steps and width 1.12 m. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-lower-step-04",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.84,
+        "y": 6.35,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.7142857142857143,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — lower flight has 7 steps and width 1.12 m. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-lower-step-05",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.6799999999999997,
+        "y": 6.35,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 0.8928571428571429,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — lower flight has 7 steps and width 1.12 m. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-lower-step-06",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.5199999999999996,
+        "y": 6.35,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 1.0714285714285714,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — lower flight has 7 steps and width 1.12 m. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-lower-step-07",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.36,
+        "y": 6.35,
+        "z": 0
+      },
+      "width": 0.16,
+      "depth": 1.12,
+      "thickness": 1.25,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — lower flight has 7 steps and width 1.12 m. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-intermediate-landing",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 6.35,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 1.12,
+      "thickness": 0.18,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO/USER_CONFIRMED — distinct approximately square intermediate landing. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Landing metric size/elevation are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-01",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 6.138888888888888,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 0.15555555555555556,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-02",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 5.927777777777777,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 0.3111111111111111,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-03",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 5.716666666666667,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 0.4666666666666667,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-04",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 5.5055555555555555,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 0.6222222222222222,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-05",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 5.294444444444444,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 0.7777777777777778,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-06",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 5.083333333333333,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 0.9333333333333333,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-07",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 4.872222222222222,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 1.088888888888889,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-08",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 4.6611111111111105,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 1.2444444444444445,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "stair-upper-step-09",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": -2.2,
+        "y": 4.449999999999999,
+        "z": 1.25
+      },
+      "width": 1.12,
+      "depth": 0.2111111111111111,
+      "thickness": 1.4,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "USER_CONFIRMED — upper flight has 9 steps, width 1.12 m, and ascends toward EAST/front. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Individual tread/rise dimensions are unmeasured."
+        }
+      ]
+    },
+    {
+      "id": "north-grade-visual-01",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": 9.3,
+        "y": 0,
+        "z": 0
+      },
+      "width": 0.85,
+      "depth": 1.3666666666666665,
+      "thickness": 0.12,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — north grade rises. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Stepped preview amplitude is not a surveyed terrain measurement."
+        }
+      ]
+    },
+    {
+      "id": "north-grade-visual-02",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": 9.3,
+        "y": 1.3666666666666665,
+        "z": 0
+      },
+      "width": 0.85,
+      "depth": 1.3666666666666665,
+      "thickness": 0.26,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — north grade rises. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Stepped preview amplitude is not a surveyed terrain measurement."
+        }
+      ]
+    },
+    {
+      "id": "north-grade-visual-03",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": 9.3,
+        "y": 2.733333333333333,
+        "z": 0
+      },
+      "width": 0.85,
+      "depth": 1.3666666666666665,
+      "thickness": 0.4,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — north grade rises. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Stepped preview amplitude is not a surveyed terrain measurement."
+        }
+      ]
+    },
+    {
+      "id": "north-grade-visual-04",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": 9.3,
+        "y": 4.1,
+        "z": 0
+      },
+      "width": 0.85,
+      "depth": 1.3666666666666665,
+      "thickness": 0.54,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — north grade rises. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Stepped preview amplitude is not a surveyed terrain measurement."
+        }
+      ]
+    },
+    {
+      "id": "north-grade-visual-05",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": 9.3,
+        "y": 5.466666666666666,
+        "z": 0
+      },
+      "width": 0.85,
+      "depth": 1.3666666666666665,
+      "thickness": 0.68,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — north grade rises. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Stepped preview amplitude is not a surveyed terrain measurement."
+        }
+      ]
+    },
+    {
+      "id": "north-grade-visual-06",
+      "host_volume_id": "house-main",
+      "position": {
+        "x": 9.3,
+        "y": 6.833333333333332,
+        "z": 0
+      },
+      "width": 0.85,
+      "depth": 1.3666666666666665,
+      "thickness": 0.8200000000000001,
+      "supports": [],
+      "material": "concrete",
+      "edge_treatment": "none",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.5
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — north grade rises. REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension. Stepped preview amplitude is not a surveyed terrain measurement."
+        }
+      ]
+    }
+  ],
+  "stairs": [],
+  "partial_wall_segments": [
+    {
+      "id": "wood-railing-outside",
+      "start": {
+        "x": -2.55,
+        "y": 0.35,
+        "z": 2.75
+      },
+      "end": {
+        "x": -2.55,
+        "y": 2.25,
+        "z": 2.75
+      },
+      "height": {
+        "value": 1,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension."
+          }
+        ]
+      },
+      "thickness": {
+        "value": 0.12,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension."
+          }
+        ]
+      },
+      "material": "timber",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — timber guard rail."
+        }
+      ]
+    },
+    {
+      "id": "concrete-platform-parapet",
+      "start": {
+        "x": -2.1,
+        "y": 2.65,
+        "z": 2.65
+      },
+      "end": {
+        "x": -2.1,
+        "y": 4.45,
+        "z": 2.65
+      },
+      "height": {
+        "value": 0.9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension."
+          }
+        ]
+      },
+      "thickness": {
+        "value": 0.12,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.5
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "REPRESENTATION_CHOICE — numeric value exists only to make NEUTRAL-001 inspectable; not a measured house dimension."
+          }
+        ]
+      },
+      "material": "masonry",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — masonry edge/parapet."
+        }
+      ]
+    }
+  ],
+  "equipment": [
+    {
+      "id": "N-technical-hatch",
+      "type": "utility_box",
+      "facade": "right",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "PHOTO — small technical hatch on north facade."
+        }
+      ]
+    }
+  ],
+  "visibility": [],
+  "relations": [],
+  "wall_profile_observations": [],
+  "stair_system_links": [],
+  "appearance": {
+    "walls": {
+      "color": "off-white / beige"
+    },
+    "roof": {
+      "color": "zinc grey"
+    },
+    "frames": {
+      "color": "white"
+    }
+  },
+  "notes": "SOURCE_POLICY: HOUSE_PHYSICAL_TOPOLOGY — NEUTRAL ANALYSIS V2. Canonical physical mapping: software FRONT=EAST/AVANT, REAR=WEST/ARRIERE, RIGHT=NORTH, LEFT=SOUTH. No geometry from historical scenes 004/005/006/007/008 was reused. USER_CONFIRMED and REPRESENTATION_CHOICE are intentionally separated in evidence. Total height, floor heights, roof angle, unmeasured opening sizes/positions, terrain amplitude, chimney placement, platform extents and stair rise/run are UNKNOWN in real-house truth; any numeric values for them are REPRESENTATION_CHOICE only. LAVOIR_REPRESENTATION_LIMITATION: lavoir is USER_CONFIRMED autonomous 1.78 x 1.20 m, distinct from house/stair/concrete platform/wood terrace; ArchitecturalScene v0.2 platform primitive requires host_volume_id, so it is intentionally omitted geometrically rather than falsely connected. PARAPET_REPRESENTATION_LIMITATION — masonry parapets along both stair flights are PHOTO-supported, but ArchitecturalScene v0.2 partial_wall_segments require horizontal baselines; NEUTRAL-001 therefore does not encode false sloped partial-wall geometry."
+}
