@@ -3,9 +3,12 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // BOLDUNGO-STAIR-PROTOTYPE-001C — isolated visual proof, NOT a house scene.
 // Width and counts and upper-east direction: USER_CONFIRMED.
-// Lower ascent NORTH (+Z), upper ascent EAST (+X), right turn: HUMAN_CONFIRMED V2.\n// All non-confirmed numeric dimensions: PROTOTYPE_REPRESENTATION_CHOICE.
+// Lower ascent NORTH (+Z), upper ascent EAST (+X), right turn: HUMAN_CONFIRMED V2.
+// All non-confirmed numeric dimensions: PROTOTYPE_REPRESENTATION_CHOICE.
 const WIDTH = 1.12, RISE = 0.17, GOING = 0.29, LOWER = 7, UPPER = 9;
-const LANDING_Z = LOWER * RISE, TOP_Z = (LOWER + UPPER) * RISE;\nconst EPS=1e-7;\nfunction assertGeometry(ok,message){if(!ok)throw new Error('001C GEOMETRY: '+message);}
+const LANDING_Z = LOWER * RISE, TOP_Z = (LOWER + UPPER) * RISE;
+const EPS=1e-7;
+function assertGeometry(ok,message){if(!ok)throw new Error('001C GEOMETRY: '+message);}
 const canvas = document.querySelector('#viewer');
 const status = document.querySelector('#prototype-status');
 const scene = new THREE.Scene();
