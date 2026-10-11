@@ -1,0 +1,700 @@
+{
+  "schema_version": "0.2",
+  "id": "boldungo2-guided-scene-001",
+  "name": "BOLDÜNGO2 — scène neutre ZIP 26 photos",
+  "units": "m",
+  "volumes": [
+    {
+      "id": "HOUSE_MAIN",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "width": {
+        "value": 9,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.45
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "Photographie P001 et annotation du ZIP"
+          }
+        ]
+      },
+      "depth": {
+        "value": 8,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.45
+        },
+        "evidence": [
+          {
+            "photo_index": 4,
+            "observation": "Photographie P004 et annotation du ZIP"
+          },
+          {
+            "photo_index": 14,
+            "observation": "Photographie P014 et annotation du ZIP"
+          }
+        ]
+      },
+      "height": {
+        "value": 7.2,
+        "source": {
+          "kind": "inferred",
+          "confidence": 0.45
+        },
+        "evidence": [
+          {
+            "photo_index": 1,
+            "observation": "Photographie P001 et annotation du ZIP"
+          },
+          {
+            "photo_index": 14,
+            "observation": "Photographie P014 et annotation du ZIP"
+          }
+        ]
+      },
+      "floors": 3,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Photographie P001 et annotation du ZIP"
+        },
+        {
+          "photo_index": 14,
+          "observation": "Photographie P014 et annotation du ZIP"
+        }
+      ]
+    }
+  ],
+  "openings": [
+    {
+      "id": "FRONT_middle_left",
+      "type": "window",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "front",
+      "offset_horizontal": 1.5,
+      "offset_vertical": 2.8,
+      "width": 1.3,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Photographie P001 et annotation du ZIP"
+        },
+        {
+          "photo_index": 19,
+          "observation": "Photographie P019 et annotation du ZIP"
+        }
+      ],
+      "has_decorative_surround": true
+    },
+    {
+      "id": "FRONT_middle_right",
+      "type": "window",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "front",
+      "offset_horizontal": 5.8,
+      "offset_vertical": 2.8,
+      "width": 1.3,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Photographie P001 et annotation du ZIP"
+        },
+        {
+          "photo_index": 19,
+          "observation": "Photographie P019 et annotation du ZIP"
+        }
+      ],
+      "has_decorative_surround": true
+    },
+    {
+      "id": "FRONT_upper_left",
+      "type": "window",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "front",
+      "offset_horizontal": 1.5,
+      "offset_vertical": 5.0,
+      "width": 1.3,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Photographie P001 et annotation du ZIP"
+        },
+        {
+          "photo_index": 19,
+          "observation": "Photographie P019 et annotation du ZIP"
+        }
+      ],
+      "has_decorative_surround": true
+    },
+    {
+      "id": "FRONT_upper_right",
+      "type": "window",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "front",
+      "offset_horizontal": 5.8,
+      "offset_vertical": 5.0,
+      "width": 1.3,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Photographie P001 et annotation du ZIP"
+        },
+        {
+          "photo_index": 19,
+          "observation": "Photographie P019 et annotation du ZIP"
+        }
+      ],
+      "has_decorative_surround": true
+    },
+    {
+      "id": "FRONT_low_small",
+      "type": "window",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "front",
+      "offset_horizontal": 1.5,
+      "offset_vertical": 0.8,
+      "width": 1.0,
+      "height": 1.1,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Photographie P001 et annotation du ZIP"
+        },
+        {
+          "photo_index": 21,
+          "observation": "Photographie P021 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "FRONT_low_glazed",
+      "type": "door",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "front",
+      "offset_horizontal": 5.8,
+      "offset_vertical": 0.15,
+      "width": 1.55,
+      "height": 2.1,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Photographie P001 et annotation du ZIP"
+        },
+        {
+          "photo_index": 20,
+          "observation": "Photographie P020 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "RIGHT_high",
+      "type": "window",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "right",
+      "offset_horizontal": 5.4,
+      "offset_vertical": 5.1,
+      "width": 1.1,
+      "height": 1.3,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 5,
+          "observation": "Photographie P005 et annotation du ZIP"
+        },
+        {
+          "photo_index": 24,
+          "observation": "Photographie P024 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "RIGHT_glass_blocks",
+      "type": "window",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "right",
+      "offset_horizontal": 5.4,
+      "offset_vertical": 0.6,
+      "width": 1.2,
+      "height": 1.0,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 5,
+          "observation": "Photographie P005 et annotation du ZIP"
+        },
+        {
+          "photo_index": 18,
+          "observation": "Photographie P018 et annotation du ZIP"
+        }
+      ],
+      "opening_visual": {
+        "glazing": "glass blocks"
+      }
+    },
+    {
+      "id": "LEFT_upper",
+      "type": "window",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "left",
+      "offset_horizontal": 5.1,
+      "offset_vertical": 5.1,
+      "width": 1.2,
+      "height": 1.25,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Photographie P004 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "LEFT_entry_high",
+      "type": "door",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "left",
+      "offset_horizontal": 5.4,
+      "offset_vertical": 2.7,
+      "width": 1,
+      "height": 2,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Photographie P004 et annotation du ZIP"
+        },
+        {
+          "photo_index": 11,
+          "observation": "Photographie P011 et annotation du ZIP"
+        },
+        {
+          "photo_index": 23,
+          "observation": "Photographie P023 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "LEFT_terrace_glazed",
+      "type": "door",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "left",
+      "offset_horizontal": 1.7,
+      "offset_vertical": 2.7,
+      "width": 1.65,
+      "height": 2.1,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Photographie P004 et annotation du ZIP"
+        },
+        {
+          "photo_index": 8,
+          "observation": "Photographie P008 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "LEFT_entry_low",
+      "type": "door",
+      "volume_id": "HOUSE_MAIN",
+      "facade": "left",
+      "offset_horizontal": 5.4,
+      "offset_vertical": 0.15,
+      "width": 1,
+      "height": 2,
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 13,
+          "observation": "Photographie P013 et annotation du ZIP"
+        },
+        {
+          "photo_index": 22,
+          "observation": "Photographie P022 et annotation du ZIP"
+        }
+      ]
+    }
+  ],
+  "roofs": [
+    {
+      "id": "ROOF_MAIN",
+      "volume_id": "HOUSE_MAIN",
+      "type": "gable",
+      "overhang": 0.2,
+      "ridge_direction": "depth",
+      "pitch_degrees": 25,
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.45
+      },
+      "evidence": [
+        {
+          "photo_index": 1,
+          "observation": "Photographie P001 et annotation du ZIP"
+        },
+        {
+          "photo_index": 14,
+          "observation": "Photographie P014 et annotation du ZIP"
+        }
+      ]
+    }
+  ],
+  "platforms": [
+    {
+      "id": "LEFT_WOOD_TERRACE",
+      "host_volume_id": "HOUSE_MAIN",
+      "position": {
+        "x": -2.2,
+        "y": 0.4,
+        "z": 2.7
+      },
+      "width": 2.2,
+      "depth": 3.7,
+      "thickness": 0.2,
+      "supports": [
+        {
+          "id": "WOOD_SUPPORT_FRONT",
+          "position": {
+            "x": -2.1,
+            "y": 0.6,
+            "z": 0
+          },
+          "width": 0.2,
+          "depth": 0.2,
+          "height": 2.7,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.8
+          }
+        },
+        {
+          "id": "WOOD_SUPPORT_BACK",
+          "position": {
+            "x": -2.1,
+            "y": 3.6,
+            "z": 0
+          },
+          "width": 0.2,
+          "depth": 0.2,
+          "height": 2.7,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.8
+          }
+        }
+      ],
+      "material": "timber",
+      "edge_treatment": "open_railing",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      },
+      "evidence": [
+        {
+          "photo_index": 4,
+          "observation": "Photographie P004 et annotation du ZIP"
+        },
+        {
+          "photo_index": 12,
+          "observation": "Photographie P012 et annotation du ZIP"
+        },
+        {
+          "photo_index": 13,
+          "observation": "Photographie P013 et annotation du ZIP"
+        },
+        {
+          "photo_index": 17,
+          "observation": "Photographie P017 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "LEFT_CONCRETE_PLATFORM",
+      "host_volume_id": "HOUSE_MAIN",
+      "position": {
+        "x": -2.2,
+        "y": 4.4,
+        "z": 2.55
+      },
+      "width": 2.2,
+      "depth": 2.8,
+      "thickness": 0.2,
+      "supports": [
+        {
+          "id": "CONCRETE_SUPPORT",
+          "position": {
+            "x": -2.1,
+            "y": 6.7,
+            "z": 0
+          },
+          "width": 0.2,
+          "depth": 0.2,
+          "height": 2.55,
+          "source": {
+            "kind": "observed",
+            "confidence": 0.8
+          }
+        }
+      ],
+      "material": "masonry",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.85
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Photographie P003 et annotation du ZIP"
+        },
+        {
+          "photo_index": 6,
+          "observation": "Photographie P006 et annotation du ZIP"
+        },
+        {
+          "photo_index": 10,
+          "observation": "Photographie P010 et annotation du ZIP"
+        },
+        {
+          "photo_index": 11,
+          "observation": "Photographie P011 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "STAIR_SQUARE_LANDING",
+      "host_volume_id": "HOUSE_MAIN",
+      "position": {
+        "x": -3.95,
+        "y": 5.85,
+        "z": 1.25
+      },
+      "width": 1.1,
+      "depth": 1.1,
+      "thickness": 0.18,
+      "supports": [],
+      "material": "masonry",
+      "edge_treatment": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 6,
+          "observation": "Photographie P006 et annotation du ZIP"
+        },
+        {
+          "photo_index": 9,
+          "observation": "Photographie P009 et annotation du ZIP"
+        }
+      ]
+    }
+  ],
+  "stairs": [
+    {
+      "id": "STAIR_LOWER_FLIGHT",
+      "start": {
+        "x": -3.4,
+        "y": 8.1,
+        "z": 0
+      },
+      "end": {
+        "x": -3.4,
+        "y": 6.4,
+        "z": 1.25
+      },
+      "width": 1.1,
+      "material": "concrete",
+      "left_edge": "solid_parapet",
+      "right_edge": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 6,
+          "observation": "Photographie P006 et annotation du ZIP"
+        },
+        {
+          "photo_index": 9,
+          "observation": "Photographie P009 et annotation du ZIP"
+        },
+        {
+          "photo_index": 25,
+          "observation": "Photographie P025 et annotation du ZIP"
+        },
+        {
+          "photo_index": 26,
+          "observation": "Photographie P026 et annotation du ZIP"
+        }
+      ]
+    },
+    {
+      "id": "STAIR_UPPER_FLIGHT",
+      "start": {
+        "x": -3.4,
+        "y": 6.4,
+        "z": 1.25
+      },
+      "end": {
+        "x": -2.1,
+        "y": 6.4,
+        "z": 2.55
+      },
+      "width": 1.1,
+      "material": "concrete",
+      "left_edge": "solid_parapet",
+      "right_edge": "solid_parapet",
+      "source": {
+        "kind": "inferred",
+        "confidence": 0.65
+      },
+      "evidence": [
+        {
+          "photo_index": 6,
+          "observation": "Photographie P006 et annotation du ZIP"
+        },
+        {
+          "photo_index": 9,
+          "observation": "Photographie P009 et annotation du ZIP"
+        },
+        {
+          "photo_index": 25,
+          "observation": "Photographie P025 et annotation du ZIP"
+        },
+        {
+          "photo_index": 26,
+          "observation": "Photographie P026 et annotation du ZIP"
+        }
+      ]
+    }
+  ],
+  "partial_wall_segments": [],
+  "terrain": {
+    "kind": "facade_grade_profiles",
+    "profiles": [
+      {
+        "facade": "right",
+        "start_elevation": null,
+        "end_elevation": null,
+        "outward_extent": null,
+        "source": {
+          "kind": "observed",
+          "confidence": 0.95
+        },
+        "evidence": [
+          {
+            "photo_index": 5,
+            "observation": "Photographie P005 et annotation du ZIP"
+          },
+          {
+            "photo_index": 18,
+            "observation": "Photographie P018 et annotation du ZIP"
+          }
+        ]
+      }
+    ]
+  },
+  "chimneys": [],
+  "equipment": [
+    {
+      "id": "LAVOIR_DISTINCT",
+      "type": "lavoir",
+      "facade": "left",
+      "source": {
+        "kind": "observed",
+        "confidence": 0.9
+      },
+      "evidence": [
+        {
+          "photo_index": 3,
+          "observation": "Photographie P003 et annotation du ZIP"
+        },
+        {
+          "photo_index": 9,
+          "observation": "Photographie P009 et annotation du ZIP"
+        },
+        {
+          "photo_index": 16,
+          "observation": "Photographie P016 et annotation du ZIP"
+        }
+      ],
+      "notes": "Rectangular masonry soil-filled basin near stair; dimensions and exact position unknown. Not merged with stair."
+    }
+  ],
+  "visibility": [],
+  "relations": [],
+  "wall_profile_observations": [],
+  "stair_system_links": [],
+  "appearance": {
+    "walls": {
+      "color": "off-white"
+    },
+    "roof": {
+      "color": "grey"
+    },
+    "frames": {
+      "color": "white"
+    }
+  },
+  "notes": "SOURCE EXCLUSIVE ZIP 2026-10-11, 26 photos. Géométrie de présentation APPROX/INFERRED; 9 m mentionnés approximativement dans P001, pas mesure certifiée. FRONT y=0, LEFT x négatif. Bois plus vers FRONT (petits y), béton/escalier vers REAR (grands y)."
+}
