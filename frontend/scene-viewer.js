@@ -11,6 +11,7 @@ const frontButton = document.querySelector('#view-front');
 const rearButton = document.querySelector('#view-rear');
 const leftButton = document.querySelector('#view-left');
 const rightButton = document.querySelector('#view-right');
+const localSceneInput = document.querySelector('#scene-json-local');
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x101827);
@@ -374,6 +375,25 @@ frontButton.addEventListener('click', () => frame('front'));
 rearButton.addEventListener('click', () => frame('rear'));
 leftButton.addEventListener('click', () => frame('left'));
 rightButton.addEventListener('click', () => frame('right'));
+
+localSceneInput?.addEventListener('change', async () => {
+  const file = localSceneInput.files?.[0];
+  if (!file) return;
+  try {
+    const value = JSON.parse(await file.text());
+    const candidate = value?.scene ?? value;
+    if (!isArchitecturalScene(candidate)) {
+      throw new Error('Ce fichier n’est pas une ArchitecturalScene v0.2 valide.');
+    }
+    localStorage.setItem('brickhouse.previewArchitecturalScene', JSON.stringify(candidate));
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete('scene');
+    window.location.replace(cleanUrl.toString());
+  } catch (error) {
+    messageEl.textContent = `Import local impossible : ${error instanceof Error ? error.message : String(error)}`;
+    localSceneInput.value = '';
+  }
+});
 
 function resize() {
   const width = canvas.clientWidth, height = canvas.clientHeight;
