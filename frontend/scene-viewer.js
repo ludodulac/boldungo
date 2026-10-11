@@ -332,7 +332,19 @@ function isArchitecturalScene(candidate) {
 }
 
 async function loadScene() {
-  const explicitSceneUrl = new URLSearchParams(window.location.search).get('scene');
+  const params = new URLSearchParams(window.location.search);
+  const localOnly = params.get('mode') === 'local';
+  if (localOnly) {
+    try {
+      const raw = localStorage.getItem('brickhouse.localArchitecturalScene');
+      if (raw) {
+        const candidate = JSON.parse(raw);
+        if (isArchitecturalScene(candidate)) return candidate;
+      }
+    } catch { /* show empty local viewer below */ }
+    return null;
+  }
+  const explicitSceneUrl = params.get('scene');
   if (explicitSceneUrl) {
     const response = await fetch(explicitSceneUrl);
     if (!response.ok) throw new Error(`Impossible de charger la Scene explicite (${response.status}).`);
@@ -360,7 +372,12 @@ try {
   messageEl.textContent = error instanceof Error ? error.message : 'Impossible de charger la Scene explicite.';
 }
 if (!currentScene) {
-  if (!messageEl.textContent) messageEl.textContent = 'Aucune ArchitecturalScene disponible. Revenez au parcours Photos et validez d’abord la reconstruction.';
+  if (!messageEl.textContent) {
+    const localOnly = new URLSearchParams(window.location.search).get('mode') === 'local';
+    messageEl.textContent = localOnly
+      ? 'Mode local : choisissez « Ouvrir un JSON local » pour afficher votre scène. Aucune ancienne référence n’est chargée.'
+      : 'Aucune ArchitecturalScene disponible. Revenez au parcours Photos et validez d’abord la reconstruction.';
+  }
 } else {
   renderVolumes(); renderOpenings(); renderPlatforms(); renderPartialWallSegments(); renderStairs(); renderTerrain(); renderRoofs(); updateSummary(); frame();
   const exteriorCount = (currentScene.platforms?.length ?? 0) + (currentScene.partial_wall_segments?.length ?? 0) + (currentScene.stairs?.length ?? 0);
@@ -385,9 +402,10 @@ localSceneInput?.addEventListener('change', async () => {
     if (!isArchitecturalScene(candidate)) {
       throw new Error('Ce fichier n’est pas une ArchitecturalScene v0.2 valide.');
     }
-    localStorage.setItem('brickhouse.previewArchitecturalScene', JSON.stringify(candidate));
+    localStorage.setItem('brickhouse.localArchitecturalScene', JSON.stringify(candidate));
     const cleanUrl = new URL(window.location.href);
     cleanUrl.searchParams.delete('scene');
+    cleanUrl.searchParams.set('mode', 'local');
     window.location.replace(cleanUrl.toString());
   } catch (error) {
     messageEl.textContent = `Import local impossible : ${error instanceof Error ? error.message : String(error)}`;
