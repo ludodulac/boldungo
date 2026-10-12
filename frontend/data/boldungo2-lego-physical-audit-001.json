@@ -1,0 +1,78 @@
+{
+  "mission": "BOLDUNGO2-LEGO-PHYSICAL-AUDIT-001",
+  "source": "frontend/data/boldungo2-lego-house-015.json",
+  "status": "FAIL_NOT_BUILDABLE_CERTIFIED",
+  "checks": {
+    "parts": 1355,
+    "missing_dimensions": [
+      {
+        "id": "b2-005-1150",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1151",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1152",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1153",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1154",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1155",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1156",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1157",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1158",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1159",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1160",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      },
+      {
+        "id": "b2-005-1161",
+        "part_id": "BRICK_SLOPED_4X36",
+        "component": "roof"
+      }
+    ],
+    "off_half_stud_grid_count": 226,
+    "axis_aligned_positive_volume_overlap_pairs": 685,
+    "roof_wall_collision_check": "BLOCKED: roof elements lack width_studs/length_studs, so bounding boxes cannot establish intersection",
+    "stud_connection_check": "NOT_IMPLEMENTED: model has no certified per-part connector geometry",
+    "structural_support_check": "NOT_CERTIFIED",
+    "non_standard_geometry": "Many BRICK_1X1 IDs encode large custom cuboids; BOM is not physically valid"
+  },
+  "decision": "STOP physical build instructions and procurement until geometry is converted to genuine catalog parts and collision/connection/stability audits pass",
+  "notes": "Overlap count includes decorative intended intersections and base contacts; classify each pair before remediation. 685 calculated by positive-volume AABB across parts with complete dimensions; roof missing dimensions means roof is excluded. LEGO stud-tube connection and BrickLink Designer Program guidelines require connected, stable assemblies."
+}
