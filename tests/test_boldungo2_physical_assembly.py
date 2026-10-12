@@ -59,7 +59,17 @@ def test_disconnected_ground_islands_rejected_before_notice(monkeypatch):
 
 def test_notice_missing_piece_is_rejected(monkeypatch):
     monkeypatch.setattr(pa, "generate_assembly_plan", lambda m: plan(["base"]))
-    with pytest.raises(ValueError, match="INCOMPLETE_PHYSICAL_NOTICE"):
+    with pytest.raises(ValueError, match="PHYSICAL_NOTICE_COVERAGE_MISMATCH"):
         pa.generate_physically_screened_assembly_plan(
             model(part("base", 0, 0), part("upper", 0, 3))
         )
+
+def test_notice_unknown_piece_is_rejected_before_replay(monkeypatch):
+    monkeypatch.setattr(pa, "generate_assembly_plan", lambda m: plan(["base", "ghost"]))
+    with pytest.raises(ValueError, match="PHYSICAL_NOTICE_COVERAGE_MISMATCH"):
+        pa.generate_physically_screened_assembly_plan(model(part("base", 0, 0)))
+
+def test_notice_duplicate_piece_is_rejected_before_replay(monkeypatch):
+    monkeypatch.setattr(pa, "generate_assembly_plan", lambda m: plan(["base"], ["base"]))
+    with pytest.raises(ValueError, match="DUPLICATE_PHYSICAL_NOTICE_PART"):
+        pa.generate_physically_screened_assembly_plan(model(part("base", 0, 0)))
