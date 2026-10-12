@@ -3,7 +3,7 @@
 Only canonical rectangular bricks/plates on a ground plane are supported.
 This deliberately refuses legacy visual models rather than silently passing.
 """
-from .physical_placement_gate import Placement, PhysicalPlacementGate
+from .physical_placement_gate import Placement, PhysicalPlacementGate, verify_connected
 from .assembly import generate_assembly_plan
 
 def generate_physically_screened_assembly_plan(model):
@@ -24,6 +24,10 @@ def generate_physically_screened_assembly_plan(model):
                                part.z_plates, part.rotation_quarter_turns))
         except (ValueError, TypeError) as exc:
             raise ValueError(f"PHYSICAL_GATE_FAIL:{part.placement_id}:{exc}") from exc
+    try:
+        verify_connected(gate.accepted)
+    except ValueError as exc:
+        raise ValueError(f"PHYSICAL_GATE_FAIL:{exc}") from exc
     plan = generate_assembly_plan(model)
     # Replay the actual notice order, not just a sorted spatial model.
     ordered = PhysicalPlacementGate()
@@ -39,6 +43,7 @@ def generate_physically_screened_assembly_plan(model):
                 raise ValueError(
                     f"UNBUILDABLE_NOTICE_STEP:{step.step_id}:{placement_id}:{exc}"
                 ) from exc
+    verify_connected(ordered.accepted)
     return plan
 
 def gate_dimension(part):
