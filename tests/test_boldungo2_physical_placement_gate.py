@@ -63,3 +63,21 @@ def test_wall_segment_rejects_overlapping_second_course():
             Placement("BRICK_2X4", 1, 0, 3),
             Placement("BRICK_2X4", 1, 0, 3),
         ])
+
+
+def test_vertical_insertion_rejects_overhead_obstruction():
+    gate = PhysicalPlacementGate()
+    gate.add(Placement("BRICK_2X4", 0, 0, 0))
+    gate.add(Placement("BRICK_2X4", 0, 0, 3))
+    gate.add(Placement("BRICK_2X4", 0, 0, 6))
+    # A lower piece placed later under the already-built upper course
+    # is a collision in this geometry and must remain rejected.
+    with pytest.raises(ValueError, match="SOLID_COLLISION"):
+        gate.add(Placement("BRICK_1X2", 0, 0, 3), require_vertical_insertion=True)
+
+
+def test_vertical_insertion_allows_open_straight_down_path():
+    gate = PhysicalPlacementGate()
+    gate.add(Placement("BRICK_2X4", 0, 0, 0))
+    gate.add(Placement("BRICK_1X2", 0, 0, 3), require_vertical_insertion=True)
+    assert len(gate.accepted) == 2
