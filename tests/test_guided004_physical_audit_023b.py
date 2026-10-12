@@ -85,3 +85,17 @@ def test_parallel_deck_boards_pair_without_changing_occupied_volume():
     assert fixed.parts[0].part_id == "BRICK_2X8"
     assert set().union(*(_cells(p) for p in original.parts)) == set().union(*(_cells(p) for p in fixed.parts))
     assert audit_physical_model(fixed)["collision_voxel_overlaps"] == 0
+
+
+def test_extend_existing_brick_with_single_preserves_voxels():
+    base = _part("long", 0, 3).model_copy(update={
+        "part_id": "BRICK_1X2", "width_studs": 1, "length_studs": 2,
+    })
+    single = _part("single", 0, 3, y=2)
+    original = _model([base, single])
+    fixed, metrics = bridge_compatible_bricks(original)
+    assert metrics["extended_with_existing_single_bricks"] == 1
+    assert len(fixed.parts) == 1
+    assert fixed.parts[0].part_id == "BRICK_1X3"
+    assert set().union(*(_cells(p) for p in original.parts)) == set().union(*(_cells(p) for p in fixed.parts))
+    assert audit_physical_model(fixed)["collision_voxel_overlaps"] == 0
