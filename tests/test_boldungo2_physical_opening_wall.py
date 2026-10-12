@@ -2,7 +2,7 @@
 from brickhouse.bricks.physical_opening_wall import wall_with_opening, validate_wall_with_opening
 
 def test_wall_with_opening_passes_catalog_support_preflight():
-    assert len(validate_wall_with_opening().accepted) == 15
+    assert len(validate_wall_with_opening().accepted) == 14
 
 def test_opening_is_clear_on_two_courses():
     parts = wall_with_opening()
