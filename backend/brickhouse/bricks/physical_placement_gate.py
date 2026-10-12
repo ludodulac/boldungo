@@ -5,10 +5,10 @@ and stud/tube support on an already accepted part. The base is an explicit
 first part at z=0. This module does not certify clutch strength or slope pieces.
 """
 from dataclasses import dataclass
+from .catalog import standard_orthogonal_definitions
 
 # Subset of the existing catalog.py, deliberately strict (no made-up pieces).
-BRICKS = {(1, n) for n in (1, 2, 3, 4, 6, 8)} | {(2, n) for n in (2, 3, 4, 6, 8, 10)}
-PLATES = {(1, n) for n in (1, 2, 3, 4, 6, 8)}
+CATALOG = standard_orthogonal_definitions()
 
 @dataclass(frozen=True)
 class Placement:
@@ -19,16 +19,13 @@ class Placement:
     rotation: int = 0
 
     def dimensions(self):
-        prefix, raw = self.part_id.split("_", 1)
-        w, l = (int(v) for v in raw.split("X"))
-        allowed = BRICKS if prefix == "BRICK" else PLATES if prefix == "PLATE" else set()
-        if (w, l) not in allowed:
+        definition = CATALOG.get(self.part_id)
+        if definition is None:
             raise ValueError("PART_NOT_IN_CANONICAL_CATALOG")
         if self.rotation not in (0, 1, 2, 3):
             raise ValueError("INVALID_ROTATION")
-        if self.rotation % 2:
-            w, l = l, w
-        return w, l, 3 if prefix == "BRICK" else 1
+        w, l = definition.footprint(self.rotation)
+        return w, l, definition.height_plates
 
 class PhysicalPlacementGate:
     def __init__(self):
@@ -48,7 +45,7 @@ class PhysicalPlacementGate:
                 part.y < prev.y + pl and prev.y < part.y + l and
                 part.z < prev.z + ph and prev.z < part.z + h):
                 raise ValueError("SOLID_COLLISION")
-        if self.accepted:
+        if part.z > 0:
             # Rectangular orthogonal parts: top studs must meet underside tubes
             # on an integer grid. Side contact is NOT an accepted connection.
             if not any(
@@ -58,8 +55,6 @@ class PhysicalPlacementGate:
                 for prev in self.accepted
             ):
                 raise ValueError("NO_STUD_SUPPORT")
-        elif part.z != 0:
-            raise ValueError("FIRST_PART_NOT_ON_GROUND")
         self.accepted.append(part)
         return part
 
