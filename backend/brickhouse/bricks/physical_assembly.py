@@ -46,7 +46,8 @@ def generate_physically_screened_assembly_plan(model):
             part = parts_by_id[placement_id]
             try:
                 ordered.add(Placement(part.part_id, part.x_studs, part.y_studs,
-                                      part.z_plates, part.rotation_quarter_turns))
+                                      part.z_plates, part.rotation_quarter_turns),
+                                  require_vertical_insertion=True)
             except (ValueError, TypeError) as exc:
                 raise ValueError(
                     f"UNBUILDABLE_NOTICE_STEP:{step.step_id}:{placement_id}:{exc}"
