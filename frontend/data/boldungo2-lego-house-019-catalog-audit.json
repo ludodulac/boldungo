@@ -1,0 +1,27 @@
+{
+  "schema_version": "boldungo2.physical_catalog_audit.v1",
+  "source": "frontend/data/boldungo2-lego-house-019.json",
+  "total_parts": 2852,
+  "part_id_not_in_canonical_catalog": 2262,
+  "canonical_id_but_wrong_dimensions": 582,
+  "canonical_geometry_parts": 8,
+  "conclusion": "FAIL_NOT_BUILDABLE",
+  "scope": "Catalog ID, footprint and height only. No collision/support/insertion/stability PASS claimed.",
+  "examples": {
+    "unlisted_id": "BRICK_6X1",
+    "wrong_geometry": {
+      "part_id": "BRICK_1X1",
+      "dimensions": [
+        1,
+        2.5,
+        3
+      ],
+      "expected": [
+        1,
+        1,
+        3
+      ]
+    }
+  },
+  "note": "Audited all 2852 brick_model.parts using the exact IDs and dimensions in backend/brickhouse/bricks/catalog.py. The 8 canonical-geometry parts have NOT been certified as connected or buildable."
+}
