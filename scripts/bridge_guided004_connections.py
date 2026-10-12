@@ -79,6 +79,9 @@ def bridge_compatible_bricks(model):
             paired.append(part)
             continue
         provenance = tuple(part.placement_id.split(":")[:2])
+        # Keep each staircase tread as a distinct real subassembly.
+        if part.placement_id.startswith("scene-stair:") and ":tread:" in part.placement_id:
+            provenance = tuple(part.placement_id.split(":")[:3])
         key = (provenance, part.category, part.component, part.facade,
                part.semantic_color, part.z_plates, part.part_id,
                part.rotation_quarter_turns % 2, part.x_studs, part.y_studs)
