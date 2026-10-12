@@ -15,6 +15,7 @@ from brickhouse.bricks.instructions import generate_instruction_plan
 from brickhouse.bricks.bags import generate_bag_plan
 from repair_guided004_overlaps import repair_orthogonal_overlaps
 from audit_guided004_physical import audit_physical_model
+from bridge_guided004_connections import bridge_compatible_bricks
 from brickhouse.partial_scene_pipeline import run_partial_scene_pipeline
 from brickhouse.scene import ArchitecturalScene
 
@@ -28,13 +29,19 @@ def generate():
     bundle = run_partial_scene_pipeline(scene, front_width_studs=48)
     original_model = bundle.brick_model
     model, repair = repair_orthogonal_overlaps(original_model)
+    pre_bridge_audit = audit_physical_model(model)
+    model, bridging = bridge_compatible_bricks(model)
+    physical_audit = audit_physical_model(model)
+    if physical_audit['collision_voxel_overlaps'] != 0:
+        raise AssertionError('STRUCTURAL_BRIDGING_INTRODUCED_COLLISIONS')
+    if physical_audit['connected_components_orthogonal_stud_contact'] > pre_bridge_audit['connected_components_orthogonal_stud_contact']:
+        raise AssertionError('STRUCTURAL_BRIDGING_WORSENED_CONNECTIVITY')
     plan = generate_assembly_plan(model)
     bundle = bundle.model_copy(update={
         'brick_model': model, 'bom': generate_bom(model), 'assembly_plan': plan,
         'instruction_plan': generate_instruction_plan(plan),
         'bag_plan': generate_bag_plan(plan),
     })
-    physical_audit = audit_physical_model(model)
     parts = model.parts
     if not parts:
         raise AssertionError("EMPTY_BRICKMODEL")
@@ -72,6 +79,8 @@ def generate():
         "source_scene": str(SOURCE),
         "orthogonal_repair": repair,
         "physical_audit": physical_audit,
+        "pre_bridge_physical_audit": {k: v for k, v in pre_bridge_audit.items() if k not in ("unsupported_placement_ids", "roof_unverified_ids")},
+        "structural_bridging": bridging,
         "building_id": model.building_id,
         "total_bricks": len(parts),
         "unique_part_references": len(references),
