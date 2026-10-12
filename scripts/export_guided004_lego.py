@@ -13,7 +13,7 @@ from brickhouse.bricks.bom import generate_bom
 from brickhouse.bricks.assembly import generate_assembly_plan
 from brickhouse.bricks.instructions import generate_instruction_plan
 from brickhouse.bricks.bags import generate_bag_plan
-from scripts.repair_guided004_overlaps import repair_orthogonal_overlaps
+from repair_guided004_overlaps import repair_orthogonal_overlaps
 from brickhouse.partial_scene_pipeline import run_partial_scene_pipeline
 from brickhouse.scene import ArchitecturalScene
 
