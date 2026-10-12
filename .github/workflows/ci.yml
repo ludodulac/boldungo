@@ -23,6 +23,18 @@ jobs:
           python -m pip install -e ".[dev]"
           python -m pip install -e "./lego_geometry_engine[dev]"
 
+      - name: Generate real GUIDED-004 BrickModel and inventory
+        run: python scripts/export_guided004_lego.py
+
+      - name: Upload GUIDED-004 actual LEGO export
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lego2-guided004-real-house-export
+          path: artifacts/lego2-guided-004/
+          if-no-files-found: warn
+          retention-days: 30
+
       - name: Run application tests
         run: pytest -q
 
