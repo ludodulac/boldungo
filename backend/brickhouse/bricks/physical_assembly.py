@@ -43,6 +43,8 @@ def generate_physically_screened_assembly_plan(model):
                 raise ValueError(
                     f"UNBUILDABLE_NOTICE_STEP:{step.step_id}:{placement_id}:{exc}"
                 ) from exc
+    if len(ordered.accepted) != len(model.parts):
+        raise ValueError("INCOMPLETE_PHYSICAL_NOTICE")
     verify_connected(ordered.accepted)
     return plan
 
