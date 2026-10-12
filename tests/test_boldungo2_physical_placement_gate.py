@@ -40,3 +40,21 @@ def test_catalog_includes_real_plate():
 def test_catalog_excludes_unlisted_plate():
     with pytest.raises(ValueError, match="PART_NOT_IN_CANONICAL_CATALOG"):
         build([Placement("PLATE_2X4", 0, 0, 0)])
+
+def test_staggered_wall_segment_is_supported():
+    gate = build([
+        Placement("BRICK_2X4", 0, 0, 0),
+        Placement("BRICK_2X4", 2, 0, 0),
+        Placement("BRICK_2X4", 1, 0, 3),
+        Placement("BRICK_2X4", 1, 0, 6),
+    ])
+    assert len(gate.accepted) == 4
+
+def test_wall_segment_rejects_overlapping_second_course():
+    with pytest.raises(ValueError, match="SOLID_COLLISION"):
+        build([
+            Placement("BRICK_2X4", 0, 0, 0),
+            Placement("BRICK_2X4", 2, 0, 0),
+            Placement("BRICK_2X4", 1, 0, 3),
+            Placement("BRICK_2X4", 1, 0, 3),
+        ])
