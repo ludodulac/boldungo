@@ -41,6 +41,18 @@ jobs:
       - name: Install BH-231 browser driver
         run: python -m pip install 'playwright>=1.50,<2'
 
+      - name: Render regenerated GUIDED-004 export in real Chromium
+        run: python tests/browser_guided004_real_export_023b.py
+
+      - name: Upload actual GUIDED-004 browser screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lego2-guided004-browser-proof
+          path: artifacts/lego2-guided-004/viewer-browser.png
+          if-no-files-found: warn
+          retention-days: 30
+
       - name: Prove returning benchmark browser stays responsive
         run: python tests/browser_bh231_returning_benchmark.py
       - name: Prove project photo intake survives reload
