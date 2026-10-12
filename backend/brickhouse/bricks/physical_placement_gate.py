@@ -58,8 +58,41 @@ class PhysicalPlacementGate:
         self.accepted.append(part)
         return part
 
+def verify_connected(placements):
+    """Require one stud/tube-connected component, not disconnected ground islands.
+
+    Only vertical stud contacts count; mere edge-to-edge adjacency does not.
+    This is a connectivity preflight, not a strength or insertion proof.
+    """
+    if not placements:
+        raise ValueError("EMPTY_ASSEMBLY")
+    parent = list(range(len(placements)))
+
+    def root(i):
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    def join(i, j):
+        parent[root(i)] = root(j)
+
+    for i, a in enumerate(placements):
+        aw, al, ah = a.dimensions()
+        for j in range(i):
+            b = placements[j]
+            bw, bl, bh = b.dimensions()
+            if ((a.z == b.z + bh or b.z == a.z + ah)
+                    and a.x < b.x + bw and b.x < a.x + aw
+                    and a.y < b.y + bl and b.y < a.y + al):
+                join(i, j)
+    if len({root(i) for i in range(len(placements))}) != 1:
+        raise ValueError("DISCONNECTED_ASSEMBLY")
+    return True
+
 def build(parts):
     gate = PhysicalPlacementGate()
     for part in parts:
         gate.add(part)
+    verify_connected(gate.accepted)
     return gate
