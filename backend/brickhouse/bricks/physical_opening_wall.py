@@ -1,7 +1,7 @@
 """Orthogonal wall with a real opening, made of canonical rectangular bricks.
 
 This is a validated-placement fixture, not a reconstruction of the house.
-The opening is 4 studs wide and 2 brick courses high.
+The opening is 4 studs wide and 2 brick courses high.\nA 2x10 lintel spans both piers; this does not certify bending strength.
 """
 from .physical_placement_gate import Placement, build
 
