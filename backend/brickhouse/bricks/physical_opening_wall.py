@@ -9,7 +9,15 @@ def wall_with_opening():
     parts = []
     for course in range(5):
         z = course * 3
-        if course in (1, 2):
+        if course == 0:
+            # Offset base: each brick is tied into a pier on the next course.
+            parts.extend([
+                Placement("BRICK_2X2", 0, 0, z),
+                Placement("BRICK_2X4", 2, 0, z, 1),
+                Placement("BRICK_2X4", 6, 0, z, 1),
+                Placement("BRICK_2X2", 10, 0, z),
+            ])
+        elif course in (1, 2):
             # Opening x=4..7, left and right piers.
             parts.extend([
                 Placement("BRICK_2X4", 0, 0, z, 1),
