@@ -18542,172 +18542,255 @@
       }
     ]
   },
-  "bom": [
-    {
-      "part_id": "PLATE_70X42",
-      "quantity": 1
-    },
-    {
-      "part_id": "BRICK_6X1",
-      "quantity": 457
-    },
-    {
-      "part_id": "BRICK_4X1",
-      "quantity": 37
-    },
-    {
-      "part_id": "BRICK_1X1",
-      "quantity": 94
-    },
-    {
-      "part_id": "BRICK_3X1",
-      "quantity": 97
-    },
-    {
-      "part_id": "BRICK_1X6",
-      "quantity": 233
-    },
-    {
-      "part_id": "BRICK_1X4",
-      "quantity": 54
-    },
-    {
-      "part_id": "BRICK_1X3",
-      "quantity": 60
-    },
-    {
-      "part_id": "BRICK_1X2",
-      "quantity": 34
-    },
-    {
-      "part_id": "BRICK_1X1X8",
-      "quantity": 27
-    },
-    {
-      "part_id": "PANE_4X1X8",
-      "quantity": 1
-    },
-    {
-      "part_id": "PLATE_8X1",
-      "quantity": 2
-    },
-    {
-      "part_id": "PLATE_1X1",
-      "quantity": 12
-    },
-    {
-      "part_id": "BRICK_10X1",
-      "quantity": 6
-    },
-    {
-      "part_id": "PANE_8X1X8",
-      "quantity": 3
-    },
-    {
-      "part_id": "PLATE_12X1",
-      "quantity": 6
-    },
-    {
-      "part_id": "BRICK_9X1",
-      "quantity": 4
-    },
-    {
-      "part_id": "PANE_7X1X8",
-      "quantity": 2
-    },
-    {
-      "part_id": "PLATE_11X1",
-      "quantity": 4
-    },
-    {
-      "part_id": "BRICK_1X9",
-      "quantity": 3
-    },
-    {
-      "part_id": "PANE_1X7X8",
-      "quantity": 1
-    },
-    {
-      "part_id": "PANE_1X4X8",
-      "quantity": 3
-    },
-    {
-      "part_id": "BRICK_1X7",
-      "quantity": 2
-    },
-    {
-      "part_id": "PANE_1X5X8",
-      "quantity": 1
-    },
-    {
-      "part_id": "PANE_1X1X1",
-      "quantity": 30
-    },
-    {
-      "part_id": "BRICK_2X1",
-      "quantity": 11
-    },
-    {
-      "part_id": "BRICK_SLOPED_4X36",
-      "quantity": 12
-    },
-    {
-      "part_id": "RIDGE_TILE_2X36",
-      "quantity": 1
-    },
-    {
-      "part_id": "BRICK_1X36",
-      "quantity": 2
-    },
-    {
-      "part_id": "BRICK_1X1X30",
-      "quantity": 2
-    },
-    {
-      "part_id": "BRICK_1X1X10",
-      "quantity": 3
-    },
-    {
-      "part_id": "BRICK_1X1X4",
-      "quantity": 9
-    },
-    {
-      "part_id": "BRICK_1X14",
-      "quantity": 2
-    },
-    {
-      "part_id": "BRICK_12X1",
-      "quantity": 2
-    },
-    {
-      "part_id": "PLATE_6X2",
-      "quantity": 17
-    },
-    {
-      "part_id": "PLATE_10X9",
-      "quantity": 1
-    },
-    {
-      "part_id": "PLATE_6X6",
-      "quantity": 1
-    },
-    {
-      "part_id": "BRICK_SLOPED_8X1",
-      "quantity": 2
-    },
-    {
-      "part_id": "BRICK_SLOPED_9X1",
-      "quantity": 2
-    },
-    {
-      "part_id": "PLATE_12X10",
-      "quantity": 1
-    },
-    {
-      "part_id": "PLATE_10X4",
-      "quantity": 1
-    }
-  ],
+  "bom": {
+    "schema_version": "0.1",
+    "building_id": "boldungo2-guided-lego-house-008",
+    "volume_id": "guided-house",
+    "total_parts": 1243,
+    "unique_part_types": 41,
+    "lines": [
+      {
+        "part_id": "PLATE_70X42",
+        "category": "terrain",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_6X1",
+        "category": "brick",
+        "quantity": 445
+      },
+      {
+        "part_id": "BRICK_4X1",
+        "category": "brick",
+        "quantity": 36
+      },
+      {
+        "part_id": "BRICK_1X1",
+        "category": "brick",
+        "quantity": 94
+      },
+      {
+        "part_id": "BRICK_3X1",
+        "category": "brick",
+        "quantity": 97
+      },
+      {
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "quantity": 220
+      },
+      {
+        "part_id": "BRICK_1X4",
+        "category": "brick",
+        "quantity": 54
+      },
+      {
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "quantity": 60
+      },
+      {
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "quantity": 34
+      },
+      {
+        "part_id": "BRICK_6X1",
+        "category": "window_frame",
+        "quantity": 2
+      },
+      {
+        "part_id": "BRICK_1X1X8",
+        "category": "window_frame",
+        "quantity": 27
+      },
+      {
+        "part_id": "PANE_4X1X8",
+        "category": "window_pane",
+        "quantity": 1
+      },
+      {
+        "part_id": "PLATE_8X1",
+        "category": "facade_detail",
+        "quantity": 2
+      },
+      {
+        "part_id": "PLATE_1X1",
+        "category": "facade_detail",
+        "quantity": 12
+      },
+      {
+        "part_id": "BRICK_10X1",
+        "category": "window_frame",
+        "quantity": 6
+      },
+      {
+        "part_id": "PANE_8X1X8",
+        "category": "window_pane",
+        "quantity": 3
+      },
+      {
+        "part_id": "PLATE_12X1",
+        "category": "facade_detail",
+        "quantity": 6
+      },
+      {
+        "part_id": "BRICK_9X1",
+        "category": "window_frame",
+        "quantity": 4
+      },
+      {
+        "part_id": "PANE_7X1X8",
+        "category": "window_pane",
+        "quantity": 2
+      },
+      {
+        "part_id": "PLATE_11X1",
+        "category": "facade_detail",
+        "quantity": 4
+      },
+      {
+        "part_id": "BRICK_1X9",
+        "category": "window_frame",
+        "quantity": 2
+      },
+      {
+        "part_id": "PANE_1X7X8",
+        "category": "window_pane",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_1X6",
+        "category": "window_frame",
+        "quantity": 6
+      },
+      {
+        "part_id": "PANE_1X4X8",
+        "category": "window_pane",
+        "quantity": 3
+      },
+      {
+        "part_id": "BRICK_1X7",
+        "category": "window_frame",
+        "quantity": 2
+      },
+      {
+        "part_id": "PANE_1X5X8",
+        "category": "window_pane",
+        "quantity": 1
+      },
+      {
+        "part_id": "PANE_1X1X1",
+        "category": "window_pane",
+        "quantity": 30
+      },
+      {
+        "part_id": "BRICK_2X1",
+        "category": "brick",
+        "quantity": 11
+      },
+      {
+        "part_id": "BRICK_SLOPED_4X36",
+        "category": "roof_tile",
+        "quantity": 12
+      },
+      {
+        "part_id": "RIDGE_TILE_2X36",
+        "category": "ridge_tile",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_1X36",
+        "category": "metal",
+        "quantity": 2
+      },
+      {
+        "part_id": "BRICK_1X1X30",
+        "category": "metal",
+        "quantity": 2
+      },
+      {
+        "part_id": "BRICK_1X1X10",
+        "category": "timber",
+        "quantity": 3
+      },
+      {
+        "part_id": "BRICK_1X1X4",
+        "category": "timber",
+        "quantity": 9
+      },
+      {
+        "part_id": "BRICK_1X14",
+        "category": "timber",
+        "quantity": 2
+      },
+      {
+        "part_id": "BRICK_12X1",
+        "category": "timber",
+        "quantity": 2
+      },
+      {
+        "part_id": "PLATE_6X2",
+        "category": "terrain",
+        "quantity": 17
+      },
+      {
+        "part_id": "PLATE_10X9",
+        "category": "concrete",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_1X9",
+        "category": "masonry",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_4X1",
+        "category": "masonry",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_1X6",
+        "category": "concrete",
+        "quantity": 7
+      },
+      {
+        "part_id": "PLATE_6X6",
+        "category": "concrete",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_6X1",
+        "category": "concrete",
+        "quantity": 9
+      },
+      {
+        "part_id": "BRICK_SLOPED_8X1",
+        "category": "masonry",
+        "quantity": 2
+      },
+      {
+        "part_id": "BRICK_SLOPED_9X1",
+        "category": "masonry",
+        "quantity": 2
+      },
+      {
+        "part_id": "BRICK_6X1",
+        "category": "masonry",
+        "quantity": 1
+      },
+      {
+        "part_id": "PLATE_12X10",
+        "category": "timber",
+        "quantity": 1
+      },
+      {
+        "part_id": "PLATE_10X4",
+        "category": "timber",
+        "quantity": 1
+      }
+    ]
+  },
   "fidelity_issues": [
     {
       "severity": "warning",
