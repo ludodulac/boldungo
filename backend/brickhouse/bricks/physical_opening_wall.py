@@ -19,7 +19,7 @@ def wall_with_opening():
             # A single real 2x10 beam spans both piers. Its studs overlap
             # the left and right pier, joining them into one component.
             # The 1-stud end recesses are deliberate, not filled by fake parts.
-            parts.append(Placement("BRICK_2X10", 1, 0, z))
+            parts.append(Placement("BRICK_2X10", 1, 0, z, 1))
         else:
             parts.extend([
                 Placement("BRICK_2X4", 0, 0, z, 1),
