@@ -66,14 +66,23 @@ def test_wall_segment_rejects_overlapping_second_course():
 
 
 def test_vertical_insertion_rejects_overhead_obstruction():
+    # A roof brick spans above a supported, empty landing position.
+    # The final placement has no solid overlap but its downward sweep does.
     gate = PhysicalPlacementGate()
     gate.add(Placement("BRICK_2X4", 0, 0, 0))
+    gate.add(Placement("BRICK_2X4", 2, 0, 0))
     gate.add(Placement("BRICK_2X4", 0, 0, 3))
-    gate.add(Placement("BRICK_2X4", 0, 0, 6))
-    # A lower piece placed later under the already-built upper course
-    # is a collision in this geometry and must remain rejected.
-    with pytest.raises(ValueError, match="SOLID_COLLISION"):
-        gate.add(Placement("BRICK_1X2", 0, 0, 3), require_vertical_insertion=True)
+    gate.add(Placement("BRICK_2X4", 1, 0, 6))
+    target = Placement("BRICK_2X4", 2, 0, 3)
+    # The ordinary geometry/support gate accepts this final position.
+    final_only = PhysicalPlacementGate()
+    for placed in gate.accepted:
+        final_only.add(placed)
+    final_only.add(target)
+    assert len(final_only.accepted) == 5
+    with pytest.raises(ValueError, match="VERTICAL_INSERTION_BLOCKED"):
+        gate.add(target, require_vertical_insertion=True)
+    assert len(gate.accepted) == 4
 
 
 def test_vertical_insertion_allows_open_straight_down_path():
