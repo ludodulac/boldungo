@@ -80,9 +80,25 @@ def audit_physical_model(model):
         for j in supports:
             join(i, j)
 
-    groups = defaultdict(int)
+    groups = defaultdict(list)
     for i, *_ in indexed:
-        groups[root(i)] += 1
+        groups[root(i)].append(i)
+    component_map = []
+    box_by_index = {box[0]: box for box in indexed}
+    unsupported_set = set(unsupported)
+    for members in groups.values():
+        boxes = [box_by_index[i] for i in members]
+        component_map.append({
+            "id": min(parts[i].placement_id for i in members),
+            "pieces": len(members),
+            "bounds": [min(b[1] for b in boxes), min(b[2] for b in boxes),
+                       min(b[3] for b in boxes), max(b[4] for b in boxes),
+                       max(b[5] for b in boxes), max(b[6] for b in boxes)],
+            "structures": dict(Counter(parts[i].placement_id.split(":")[0] for i in members)),
+            "unsupported": [parts[i].placement_id for i in members
+                            if parts[i].placement_id in unsupported_set],
+        })
+    component_map.sort(key=lambda c: (-c["pieces"], c["id"]))
     return {
         "total_bricks": len(parts),
         "orthogonal_parts_checked": len(indexed),
@@ -91,7 +107,8 @@ def audit_physical_model(model):
         "unsupported_by_group": dict(sorted(unsupported_by_group.items())),
         "unsupported_placement_ids": unsupported,
         "connected_components_orthogonal_stud_contact": len(groups),
-        "component_sizes_descending": sorted(groups.values(), reverse=True),
+        "component_sizes_descending": sorted((len(g) for g in groups.values()), reverse=True),
+        "component_map": component_map,
         "roof_parts_catalog_recognized": roof_checked_catalog,
         "roof_parts_unverified": len(unverified),
         "roof_unverified_ids": unverified,
