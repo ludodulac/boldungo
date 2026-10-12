@@ -3,6 +3,9 @@
 This is an engineering proof fixture, NOT a reconstruction of the user's
 house or a structural-strength certificate.
 """
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'backend'))
 from brickhouse.bricks.physical_placement_gate import Placement, build
 
 def wall_segment():
