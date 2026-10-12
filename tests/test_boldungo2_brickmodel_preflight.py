@@ -1,6 +1,11 @@
 """Real BrickModel JSON preflight: positive fixture and negative failure cases."""
 import json
+from pathlib import Path
+import sys
 import pytest
+
+# CI runs pytest as an installed console script; keep repository scripts importable.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from brickhouse.bricks.physical_wall_fixture import opening_wall_brick_model
 from scripts.preflight_boldungo2_brickmodel import check_model_data

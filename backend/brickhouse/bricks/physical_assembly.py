@@ -14,7 +14,10 @@ def generate_physically_screened_assembly_plan(model):
         if part.width_studs is not None or part.length_studs is not None or part.height_plates is not None:
             # Explicit dimensions may be legitimate, but cannot override the
             # canonical catalog's dimensions without verification.
-            definition = gate_dimension(part)
+            try:
+                definition = gate_dimension(part)
+            except (ValueError, TypeError) as exc:
+                raise ValueError(f"PHYSICAL_GATE_FAIL:{part.placement_id}:{exc}") from exc
             if (part.width_studs not in (None, definition[0]) or
                 part.length_studs not in (None, definition[1]) or
                 part.height_plates not in (None, definition[2])):
@@ -43,7 +46,8 @@ def generate_physically_screened_assembly_plan(model):
             part = parts_by_id[placement_id]
             try:
                 ordered.add(Placement(part.part_id, part.x_studs, part.y_studs,
-                                      part.z_plates, part.rotation_quarter_turns))
+                                      part.z_plates, part.rotation_quarter_turns),
+                                  require_vertical_insertion=True)
             except (ValueError, TypeError) as exc:
                 raise ValueError(
                     f"UNBUILDABLE_NOTICE_STEP:{step.step_id}:{placement_id}:{exc}"

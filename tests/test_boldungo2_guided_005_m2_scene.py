@@ -105,5 +105,7 @@ def test_parapets_follow_both_flights_and_existing_viewer_contract_is_reused():
 
     viewer = VIEWER_PATH.read_text(encoding="utf-8")
     assert "group.scale.z = -1" in viewer
-    assert "new URLSearchParams(window.location.search).get('scene')" in viewer
+    assert "const params = new URLSearchParams(window.location.search)" in viewer
+    assert "const explicitSceneUrl = params.get('scene')" in viewer
+    assert viewer.index("const explicitSceneUrl = params.get('scene')") < viewer.index("for (const key of keys)")
     assert "renderVolumes(); renderOpenings(); renderPlatforms();" in viewer

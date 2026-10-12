@@ -73,3 +73,27 @@ def test_notice_duplicate_piece_is_rejected_before_replay(monkeypatch):
     monkeypatch.setattr(pa, "generate_assembly_plan", lambda m: plan(["base"], ["base"]))
     with pytest.raises(ValueError, match="DUPLICATE_PHYSICAL_NOTICE_PART"):
         pa.generate_physically_screened_assembly_plan(model(part("base", 0, 0)))
+
+
+def test_notice_replay_rejects_free_landing_with_blocked_vertical_path(monkeypatch):
+    # Final geometry is connected and collision-free; only the notice order
+    # makes a straight-down insertion impossible under the installed roof.
+    base_left = part("base-left", 0, 0)
+    base_right = part("base-right", 2, 0)
+    lower_left = part("lower-left", 0, 3)
+    roof = part("roof", 1, 6)
+    target = part("target", 2, 3)
+    items = model(base_left, base_right, lower_left, roof, target)
+    bad = plan(["base-left", "base-right"], ["lower-left"], ["roof"], ["target"])
+    monkeypatch.setattr(pa, "generate_assembly_plan", lambda m: bad)
+    with pytest.raises(ValueError, match="UNBUILDABLE_NOTICE_STEP:.*VERTICAL_INSERTION_BLOCKED"):
+        pa.generate_physically_screened_assembly_plan(items)
+
+
+def test_notice_replay_accepts_vertical_path_before_roof(monkeypatch):
+    items = model(part("base-left", 0, 0), part("base-right", 2, 0),
+                  part("lower-left", 0, 3), part("roof", 1, 6),
+                  part("target", 2, 3))
+    good = plan(["base-left", "base-right"], ["lower-left", "target"], ["roof"])
+    monkeypatch.setattr(pa, "generate_assembly_plan", lambda m: good)
+    assert pa.generate_physically_screened_assembly_plan(items) is good

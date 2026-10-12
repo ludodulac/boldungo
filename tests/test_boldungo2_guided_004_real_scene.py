@@ -45,5 +45,7 @@ def test_real_guided_004_scene_keeps_correct_chimneys_and_deep_door_evidence():
 
 def test_existing_scene_viewer_can_load_persisted_scene_by_query_parameter():
     viewer = Path("frontend/scene-viewer.js").read_text(encoding="utf-8")
-    assert "new URLSearchParams(window.location.search).get('scene')" in viewer
+    assert "const params = new URLSearchParams(window.location.search)" in viewer
+    assert "const explicitSceneUrl = params.get('scene')" in viewer
+    assert viewer.index("const explicitSceneUrl = params.get('scene')") < viewer.index("for (const key of keys)")
     assert "renderVolumes(); renderOpenings(); renderPlatforms();" in viewer

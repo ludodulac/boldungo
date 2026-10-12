@@ -30,9 +30,14 @@ def test_first_piece_cannot_float():
     with pytest.raises(ValueError, match="NO_STUD_SUPPORT"):
         build([Placement("BRICK_2X4", 0, 0, 3)])
 
-def test_two_grounded_base_parts_allowed():
-    gate = build([Placement("BRICK_2X4", 0, 0, 0), Placement("BRICK_2X4", 2, 0, 0)])
-    assert len(gate.accepted) == 2
+def test_two_grounded_base_parts_require_stud_bridge():
+    with pytest.raises(ValueError, match="DISCONNECTED_ASSEMBLY"):
+        build([Placement("BRICK_2X4", 0, 0, 0), Placement("BRICK_2X4", 2, 0, 0)])
+
+    gate = build([Placement("BRICK_2X4", 0, 0, 0),
+                  Placement("BRICK_2X4", 2, 0, 0),
+                  Placement("BRICK_2X4", 1, 0, 3)])
+    assert len(gate.accepted) == 3
 
 def test_catalog_includes_real_plate():
     assert build([Placement("PLATE_1X2", 0, 0, 0)]).accepted
@@ -58,3 +63,30 @@ def test_wall_segment_rejects_overlapping_second_course():
             Placement("BRICK_2X4", 1, 0, 3),
             Placement("BRICK_2X4", 1, 0, 3),
         ])
+
+
+def test_vertical_insertion_rejects_overhead_obstruction():
+    # A roof brick spans above a supported, empty landing position.
+    # The final placement has no solid overlap but its downward sweep does.
+    gate = PhysicalPlacementGate()
+    gate.add(Placement("BRICK_2X4", 0, 0, 0))
+    gate.add(Placement("BRICK_2X4", 2, 0, 0))
+    gate.add(Placement("BRICK_2X4", 0, 0, 3))
+    gate.add(Placement("BRICK_2X4", 1, 0, 6))
+    target = Placement("BRICK_2X4", 2, 0, 3)
+    # The ordinary geometry/support gate accepts this final position.
+    final_only = PhysicalPlacementGate()
+    for placed in gate.accepted:
+        final_only.add(placed)
+    final_only.add(target)
+    assert len(final_only.accepted) == 5
+    with pytest.raises(ValueError, match="VERTICAL_INSERTION_BLOCKED"):
+        gate.add(target, require_vertical_insertion=True)
+    assert len(gate.accepted) == 4
+
+
+def test_vertical_insertion_allows_open_straight_down_path():
+    gate = PhysicalPlacementGate()
+    gate.add(Placement("BRICK_2X4", 0, 0, 0))
+    gate.add(Placement("BRICK_1X2", 0, 0, 3), require_vertical_insertion=True)
+    assert len(gate.accepted) == 2
