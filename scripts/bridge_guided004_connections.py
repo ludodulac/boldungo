@@ -108,9 +108,51 @@ def bridge_compatible_bricks(model):
         }))
         paired_count += 1
     retained = paired
+
+    # Extend existing one-wide bricks using contiguous 1x1 end pieces.
+    # This is an exact re-partition of the same studs, not a new support.
+    singles = {}
+    for item in retained:
+        if item.part_id == "BRICK_1X1" and item.category in ELIGIBLE and item.opening_id is None:
+            k = (item.category, item.component, item.facade, item.semantic_color,
+                 item.z_plates, item.x_studs, item.y_studs)
+            singles[k] = item
+    extended = []
+    extended_count = 0
+    for item in retained:
+        if item.part_id == "BRICK_1X1" and item in singles.values():
+            continue
+        definition = CATALOG.get(item.part_id)
+        if (definition is None or item.category not in ELIGIBLE or
+                item.opening_id is not None or not item.part_id.startswith("BRICK_1X")):
+            extended.append(item)
+            continue
+        length = definition.length_studs
+        if f"BRICK_1X{length + 1}" not in CATALOG:
+            extended.append(item)
+            continue
+        rotation = item.rotation_quarter_turns % 2
+        x = item.x_studs + (length if rotation else 0)
+        y = item.y_studs + (0 if rotation else length)
+        key = (item.category, item.component, item.facade, item.semantic_color,
+               item.z_plates, x, y)
+        single = singles.pop(key, None)
+        if single is None:
+            extended.append(item)
+            continue
+        replacement = CATALOG[f"BRICK_1X{length + 1}"]
+        w, l = replacement.footprint(rotation)
+        extended.append(item.model_copy(update={
+            "part_id": replacement.id, "width_studs": w, "length_studs": l,
+            "height_plates": replacement.height_plates,
+        }))
+        extended_count += 1
+    extended.extend(singles.values())
+    retained = extended
     fixed = type(model).model_validate(model.model_copy(update={"parts": retained}).model_dump(mode="json"))
     return fixed, {"before_parts": before, "after_parts": len(fixed.parts),
                    "one_by_one_bricks_removed_by_merging": removed,
                    "new_multistud_bricks": merged_groups,
                    "paired_parallel_bricks": paired_count,
+                   "extended_with_existing_single_bricks": extended_count,
                    "occupied_volume_preserved_by_partition": True}
