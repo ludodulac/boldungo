@@ -56,3 +56,10 @@ def test_disconnected_ground_islands_rejected_before_notice(monkeypatch):
         pa.generate_physically_screened_assembly_plan(
             model(part("island-a", 0, 0), part("island-b", 8, 0))
         )
+
+def test_notice_missing_piece_is_rejected(monkeypatch):
+    monkeypatch.setattr(pa, "generate_assembly_plan", lambda m: plan(["base"]))
+    with pytest.raises(ValueError, match="INCOMPLETE_PHYSICAL_NOTICE"):
+        pa.generate_physically_screened_assembly_plan(
+            model(part("base", 0, 0), part("upper", 0, 3))
+        )
