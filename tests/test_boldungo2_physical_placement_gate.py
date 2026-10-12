@@ -30,9 +30,14 @@ def test_first_piece_cannot_float():
     with pytest.raises(ValueError, match="NO_STUD_SUPPORT"):
         build([Placement("BRICK_2X4", 0, 0, 3)])
 
-def test_two_grounded_base_parts_allowed():
-    gate = build([Placement("BRICK_2X4", 0, 0, 0), Placement("BRICK_2X4", 2, 0, 0)])
-    assert len(gate.accepted) == 2
+def test_two_grounded_base_parts_require_stud_bridge():
+    with pytest.raises(ValueError, match="DISCONNECTED_ASSEMBLY"):
+        build([Placement("BRICK_2X4", 0, 0, 0), Placement("BRICK_2X4", 2, 0, 0)])
+
+    gate = build([Placement("BRICK_2X4", 0, 0, 0),
+                  Placement("BRICK_2X4", 2, 0, 0),
+                  Placement("BRICK_2X4", 1, 0, 3)])
+    assert len(gate.accepted) == 3
 
 def test_catalog_includes_real_plate():
     assert build([Placement("PLATE_1X2", 0, 0, 0)]).accepted
