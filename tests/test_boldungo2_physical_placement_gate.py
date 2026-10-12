@@ -10,7 +10,6 @@ def test_connected_stack():
     (Placement("BRICK_1X2", 1, 0, 0), "SOLID_COLLISION"),
     (Placement("BRICK_1X2", 4, 0, 3), "NO_STUD_SUPPORT"),
     (Placement("BRICK_1X2", 0, 0, 4), "NO_STUD_SUPPORT"),
-    (Placement("BRICK_1X2", 4, 0, 0), "NO_STUD_SUPPORT"),
     (Placement("BRICK_1X2", 0, 0, 2), "SOLID_COLLISION"),
     (Placement("BRICK_SLOPED_4X36", 0, 0, 3), "PART_NOT_IN_CANONICAL_CATALOG"),
     (Placement("BRICK_3X3", 0, 0, 3), "PART_NOT_IN_CANONICAL_CATALOG"),
@@ -28,5 +27,16 @@ def test_rotated_plate_supported():
     assert len(gate.accepted) == 2
 
 def test_first_piece_cannot_float():
-    with pytest.raises(ValueError, match="FIRST_PART_NOT_ON_GROUND"):
+    with pytest.raises(ValueError, match="NO_STUD_SUPPORT"):
         build([Placement("BRICK_2X4", 0, 0, 3)])
+
+def test_two_grounded_base_parts_allowed():
+    gate = build([Placement("BRICK_2X4", 0, 0, 0), Placement("BRICK_2X4", 2, 0, 0)])
+    assert len(gate.accepted) == 2
+
+def test_catalog_includes_real_plate():
+    assert build([Placement("PLATE_1X2", 0, 0, 0)]).accepted
+
+def test_catalog_excludes_unlisted_plate():
+    with pytest.raises(ValueError, match="PART_NOT_IN_CANONICAL_CATALOG"):
+        build([Placement("PLATE_2X4", 0, 0, 0)])
