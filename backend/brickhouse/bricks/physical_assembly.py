@@ -29,7 +29,8 @@ def generate_physically_screened_assembly_plan(model):
     ordered = PhysicalPlacementGate()
     parts_by_id = {part.placement_id: part for part in model.parts}
     for step in plan.steps:
-        for placement_id in step.placement_ids:
+        # Within one instruction step, place lower supporting bricks first.
+        for placement_id in sorted(step.placement_ids, key=lambda pid: (parts_by_id[pid].z_plates, pid)):
             part = parts_by_id[placement_id]
             try:
                 ordered.add(Placement(part.part_id, part.x_studs, part.y_studs,
