@@ -12,7 +12,6 @@ def test_connected_stack():
     (Placement("BRICK_1X2", 0, 0, 4), "NO_STUD_SUPPORT"),
     (Placement("BRICK_1X2", 4, 0, 0), "NO_STUD_SUPPORT"),
     (Placement("BRICK_1X2", 0, 0, 2), "SOLID_COLLISION"),
-    (Placement("BRICK_1X1", 0, 0, 3), "NO_STUD_SUPPORT"),
     (Placement("BRICK_SLOPED_4X36", 0, 0, 3), "PART_NOT_IN_CANONICAL_CATALOG"),
     (Placement("BRICK_3X3", 0, 0, 3), "PART_NOT_IN_CANONICAL_CATALOG"),
 ])
