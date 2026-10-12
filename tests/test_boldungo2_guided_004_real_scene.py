@@ -47,3 +47,17 @@ def test_existing_scene_viewer_can_load_persisted_scene_by_query_parameter():
     viewer = Path("frontend/scene-viewer.js").read_text(encoding="utf-8")
     assert "new URLSearchParams(window.location.search).get('scene')" in viewer
     assert "renderVolumes(); renderOpenings(); renderPlatforms();" in viewer
+
+
+def test_existing_house_le_go_action_uses_real_guided_scene_and_existing_engine():
+    page = Path("frontend/scene-viewer.html").read_text(encoding="utf-8")
+    script = Path("frontend/scene-partial-build.js").read_text(encoding="utf-8")
+    viewer = Path("frontend/viewer.html").read_text(encoding="utf-8")
+    assert 'id="build-existing-house-lego"' in page
+    assert "boldungo2-guided-004-real-scene.json" in script
+    assert "await fetch(EXISTING_HOUSE_SCENE" in script
+    assert "allow_partial: true" in script
+    assert "/api/v1/build-scene" in script
+    assert "brickhouse.pendingExport" in script
+    assert "window.location.href = './viewer.html'" in script
+    assert "scene-viewer.html?scene=" in viewer
