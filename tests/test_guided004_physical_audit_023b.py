@@ -116,3 +116,17 @@ def test_stair_tread_pairing_uses_numeric_not_lexicographic_stud_order():
     assert len(after.parts) == 1
     assert after.parts[0].part_id == "BRICK_2X6"
     assert set().union(*(_cells(p) for p in before.parts)) == set().union(*(_cells(p) for p in after.parts))
+
+
+def test_roof_nominal_dimensions_do_not_certify_sloped_mechanics():
+    roof = _part("roof-slope", 0, 9).model_copy(update={
+        "part_id": "BRICK_SLOPED_18_4X2", "category": "roof_tile",
+        "component": "roof", "width_studs": 4, "length_studs": 2,
+    })
+    measured = audit_physical_model(_model([roof]))
+    assert measured["roof_nominal_footprints_checked"] == 1
+    assert measured["roof_parts_verified_mechanically"] == 0
+    assert measured["roof_parts_unverified"] == 1
+    bad = roof.model_copy(update={"width_studs": 9})
+    rejected = audit_physical_model(_model([bad]))
+    assert rejected["roof_nominal_footprints_invalid"] == ["roof-slope"]
