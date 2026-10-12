@@ -3,9 +3,11 @@
 This is not the user's house and does not certify strength or insertability.
 """
 from collections import Counter
+import sys
 import json
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 from brickhouse.bricks.physical_wall_fixture import opening_wall_screened_notice
 
 def create_package():
