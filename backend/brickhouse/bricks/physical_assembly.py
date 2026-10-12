@@ -32,6 +32,11 @@ def generate_physically_screened_assembly_plan(model):
     # Replay the actual notice order, not just a sorted spatial model.
     ordered = PhysicalPlacementGate()
     parts_by_id = {part.placement_id: part for part in model.parts}
+    scheduled_ids = [pid for step in plan.steps for pid in step.placement_ids]
+    if len(scheduled_ids) != len(set(scheduled_ids)):
+        raise ValueError("DUPLICATE_PHYSICAL_NOTICE_PART")
+    if set(scheduled_ids) != set(parts_by_id):
+        raise ValueError("PHYSICAL_NOTICE_COVERAGE_MISMATCH")
     for step in plan.steps:
         # Within one instruction step, place lower supporting bricks first.
         for placement_id in sorted(step.placement_ids, key=lambda pid: (parts_by_id[pid].z_plates, pid)):
