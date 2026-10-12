@@ -90,7 +90,7 @@ def bridge_compatible_bricks(model):
         remaining[key] = part
     paired_count = 0
     while remaining:
-        key = min(remaining, key=repr)
+        key = min(remaining, key=lambda item: (repr(item[:-2]), item[-2], item[-1]))
         part = remaining.pop(key)
         rotation = part.rotation_quarter_turns % 2
         adjacent = (part.x_studs + (1 if rotation == 0 else 0),
