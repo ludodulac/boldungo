@@ -27,11 +27,27 @@ class Placement:
         w, l = definition.footprint(self.rotation)
         return w, l, definition.height_plates
 
+def verify_vertical_insertion(part, previously_placed):
+    """Conservative straight-down sweep for canonical rectangular solid envelopes.
+
+    Checks every existing solid above the target landing height whose XY
+    footprint overlaps the descending part. Does not certify clutch mechanics.
+    """
+    w, l, _ = part.dimensions()
+    for prev in previously_placed:
+        pw, pl, ph = prev.dimensions()
+        if (part.x < prev.x + pw and prev.x < part.x + w and
+            part.y < prev.y + pl and prev.y < part.y + l and
+            prev.z + ph > part.z):
+            raise ValueError("VERTICAL_INSERTION_BLOCKED")
+    return True
+
+
 class PhysicalPlacementGate:
     def __init__(self):
         self.accepted = []
 
-    def add(self, part):
+    def add(self, part, *, require_vertical_insertion=False):
         if not isinstance(part, Placement):
             raise TypeError("PLACEMENT_REQUIRED")
         if not all(isinstance(v, int) and not isinstance(v, bool) for v in (part.x, part.y, part.z)):
@@ -55,6 +71,8 @@ class PhysicalPlacementGate:
                 for prev in self.accepted
             ):
                 raise ValueError("NO_STUD_SUPPORT")
+        if require_vertical_insertion:
+            verify_vertical_insertion(part, self.accepted)
         self.accepted.append(part)
         return part
 
