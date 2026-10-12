@@ -99,3 +99,20 @@ def test_extend_existing_brick_with_single_preserves_voxels():
     assert fixed.parts[0].part_id == "BRICK_1X3"
     assert set().union(*(_cells(p) for p in original.parts)) == set().union(*(_cells(p) for p in fixed.parts))
     assert audit_physical_model(fixed)["collision_voxel_overlaps"] == 0
+
+
+def test_stair_tread_pairing_uses_numeric_not_lexicographic_stud_order():
+    left = _part("scene-stair:run:tread:00013", 9, 27, y=6).model_copy(update={
+        "part_id": "BRICK_1X6", "category": "concrete",
+        "component": "facade_detail", "facade": "left",
+        "width_studs": 1, "length_studs": 6,
+    })
+    right = left.model_copy(update={
+        "placement_id": "scene-stair:run:tread:00014", "x_studs": 10,
+    })
+    before = _model([right, left])
+    after, metrics = bridge_compatible_bricks(before)
+    assert metrics["paired_parallel_bricks"] == 1
+    assert len(after.parts) == 1
+    assert after.parts[0].part_id == "BRICK_2X6"
+    assert set().union(*(_cells(p) for p in before.parts)) == set().union(*(_cells(p) for p in after.parts))
