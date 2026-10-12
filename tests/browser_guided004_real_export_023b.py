@@ -33,6 +33,8 @@ def server():
 
 def main():
     assert EXPORT.is_file(), "Regenerated real viewer export is missing"
+    import json
+    expected_count = len(json.loads(EXPORT.read_text(encoding="utf-8"))["brick_model"]["parts"])
     browser_path = next((shutil.which(n) for n in
                          ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser")
                          if shutil.which(n)), None)
@@ -60,7 +62,7 @@ def main():
             sourceIds: bundle.brick_model.parts.map(p => p.placement_id),
           };
         }""")
-        assert actual["total"] >= 2490, actual
+        assert actual["total"] == expected_count, actual
         assert actual["canvasWidth"] > 0 and actual["canvasHeight"] > 0, actual
         assert not errors, errors
         assert "roof_tile" in actual["categories"], actual
