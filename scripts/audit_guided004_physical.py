@@ -22,6 +22,8 @@ def audit_physical_model(model):
     invalid = []
     unverified = []
     roof_checked_catalog = 0
+    roof_nominal_checked = 0
+    roof_nominal_invalid = []
     for i, part in enumerate(parts):
         definition = ORTHOGONAL.get(part.part_id)
         if definition is None:
@@ -34,6 +36,15 @@ def audit_physical_model(model):
                 invalid.append(part.placement_id)
                 continue
             roof_checked_catalog += 1
+            rotation = part.rotation_quarter_turns % 2
+            expected = (roof.length_studs, roof.width_studs) if rotation else (roof.width_studs, roof.length_studs)
+            if (part.width_studs not in (None, expected[0]) or
+                    part.length_studs not in (None, expected[1]) or
+                    part.height_plates not in (None, roof.height_plates)):
+                roof_nominal_invalid.append(part.placement_id)
+                invalid.append(part.placement_id)
+            else:
+                roof_nominal_checked += 1
             # Roof catalog provides nominal dimensions and course overlap,
             # but not actual sloped solid mesh or underside connector positions.
             unverified.append(part.placement_id)
@@ -111,6 +122,9 @@ def audit_physical_model(model):
         "component_map": component_map,
         "roof_parts_catalog_recognized": roof_checked_catalog,
         "roof_parts_unverified": len(unverified),
+        "roof_nominal_footprints_checked": roof_nominal_checked,
+        "roof_nominal_footprints_invalid": roof_nominal_invalid,
+        "roof_parts_verified_mechanically": 0,
         "roof_unverified_ids": unverified,
         "invalid_catalog_or_metadata_parts": invalid,
         "physical_certification": "NOT_CERTIFIED" if (
