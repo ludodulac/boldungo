@@ -63,8 +63,51 @@ def bridge_compatible_bricks(model):
                 merged_groups += 1
             else:
                 retained.append(by_xy.pop((x, y)))
+
+    # Pair parallel one-wide boards into actual 2-wide catalog pieces.
+    # No material is added beneath the deck or in architectural voids.
+    paired = []
+    remaining = {}
+    for part in retained:
+        definition = CATALOG.get(part.part_id)
+        if (definition is None or part.category not in ELIGIBLE or
+                part.opening_id is not None or not part.part_id.startswith("BRICK_1X")):
+            paired.append(part)
+            continue
+        length = definition.length_studs
+        if f"BRICK_2X{length}" not in CATALOG:
+            paired.append(part)
+            continue
+        provenance = tuple(part.placement_id.split(":")[:2])
+        key = (provenance, part.category, part.component, part.facade,
+               part.semantic_color, part.z_plates, part.part_id,
+               part.rotation_quarter_turns % 2, part.x_studs, part.y_studs)
+        if key in remaining:
+            raise AssertionError("DUPLICATE_BOARD_COORDINATE")
+        remaining[key] = part
+    paired_count = 0
+    while remaining:
+        key = min(remaining, key=repr)
+        part = remaining.pop(key)
+        rotation = part.rotation_quarter_turns % 2
+        adjacent = (part.x_studs + (1 if rotation == 0 else 0),
+                    part.y_studs + (0 if rotation == 0 else 1))
+        partner = remaining.pop((*key[:-2], *adjacent), None)
+        if partner is None:
+            paired.append(part)
+            continue
+        length = CATALOG[part.part_id].length_studs
+        definition = CATALOG[f"BRICK_2X{length}"]
+        w, l = definition.footprint(rotation)
+        paired.append(part.model_copy(update={
+            "part_id": definition.id, "width_studs": w, "length_studs": l,
+            "height_plates": definition.height_plates,
+        }))
+        paired_count += 1
+    retained = paired
     fixed = type(model).model_validate(model.model_copy(update={"parts": retained}).model_dump(mode="json"))
     return fixed, {"before_parts": before, "after_parts": len(fixed.parts),
                    "one_by_one_bricks_removed_by_merging": removed,
                    "new_multistud_bricks": merged_groups,
+                   "paired_parallel_bricks": paired_count,
                    "occupied_volume_preserved_by_partition": True}
