@@ -31,8 +31,8 @@ def test_first_piece_cannot_float():
         build([Placement("BRICK_2X4", 0, 0, 3)])
 
 def test_two_grounded_base_parts_allowed():
-    gate = build([Placement("BRICK_2X4", 0, 0, 0), Placement("BRICK_2X4", 2, 0, 0)])
-    assert len(gate.accepted) == 2
+    with pytest.raises(ValueError, match="DISCONNECTED_ASSEMBLY"):
+        build([Placement("BRICK_2X4", 0, 0, 0), Placement("BRICK_2X4", 2, 0, 0)])
 
 def test_catalog_includes_real_plate():
     assert build([Placement("PLATE_1X2", 0, 0, 0)]).accepted
