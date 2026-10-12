@@ -48,3 +48,11 @@ def test_mismatched_dimensions_rejected_before_notice(monkeypatch):
     invalid.length_studs = 2.5
     with pytest.raises(ValueError, match="NONCANONICAL_DIMENSIONS"):
         pa.generate_physically_screened_assembly_plan(model(invalid))
+
+def test_disconnected_ground_islands_rejected_before_notice(monkeypatch):
+    monkeypatch.setattr(pa, "generate_assembly_plan",
+                        lambda m: pytest.fail("notice generated for disconnected model"))
+    with pytest.raises(ValueError, match="DISCONNECTED_ASSEMBLY"):
+        pa.generate_physically_screened_assembly_plan(
+            model(part("island-a", 0, 0), part("island-b", 8, 0))
+        )
