@@ -24,7 +24,21 @@ def generate_physically_screened_assembly_plan(model):
                                part.z_plates, part.rotation_quarter_turns))
         except (ValueError, TypeError) as exc:
             raise ValueError(f"PHYSICAL_GATE_FAIL:{part.placement_id}:{exc}") from exc
-    return generate_assembly_plan(model)
+    plan = generate_assembly_plan(model)
+    # Replay the actual notice order, not just a sorted spatial model.
+    ordered = PhysicalPlacementGate()
+    parts_by_id = {part.placement_id: part for part in model.parts}
+    for step in plan.steps:
+        for placement_id in step.placement_ids:
+            part = parts_by_id[placement_id]
+            try:
+                ordered.add(Placement(part.part_id, part.x_studs, part.y_studs,
+                                      part.z_plates, part.rotation_quarter_turns))
+            except (ValueError, TypeError) as exc:
+                raise ValueError(
+                    f"UNBUILDABLE_NOTICE_STEP:{step.step_id}:{placement_id}:{exc}"
+                ) from exc
+    return plan
 
 def gate_dimension(part):
     return Placement(part.part_id, 0, 0, 0, part.rotation_quarter_turns).dimensions()
