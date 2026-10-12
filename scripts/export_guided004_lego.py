@@ -9,6 +9,11 @@ from collections import Counter
 from pathlib import Path
 
 from brickhouse.bricks.catalog import standard_orthogonal_definitions
+from brickhouse.bricks.bom import generate_bom
+from brickhouse.bricks.assembly import generate_assembly_plan
+from brickhouse.bricks.instructions import generate_instruction_plan
+from brickhouse.bricks.bags import generate_bag_plan
+from scripts.repair_guided004_overlaps import repair_orthogonal_overlaps
 from brickhouse.partial_scene_pipeline import run_partial_scene_pipeline
 from brickhouse.scene import ArchitecturalScene
 
@@ -20,7 +25,14 @@ ORTHOGONAL = standard_orthogonal_definitions()
 def generate():
     scene = ArchitecturalScene.model_validate_json(SOURCE.read_text(encoding="utf-8"))
     bundle = run_partial_scene_pipeline(scene, front_width_studs=48)
-    model = bundle.brick_model
+    original_model = bundle.brick_model
+    model, repair = repair_orthogonal_overlaps(original_model)
+    plan = generate_assembly_plan(model)
+    bundle = bundle.model_copy(update={
+        'brick_model': model, 'bom': generate_bom(model), 'assembly_plan': plan,
+        'instruction_plan': generate_instruction_plan(plan),
+        'bag_plan': generate_bag_plan(plan),
+    })
     parts = model.parts
     if not parts:
         raise AssertionError("EMPTY_BRICKMODEL")
@@ -56,6 +68,7 @@ def generate():
                  or "omitt" in issue.get("message", "").lower()]
     inventory = {
         "source_scene": str(SOURCE),
+        "orthogonal_repair": repair,
         "building_id": model.building_id,
         "total_bricks": len(parts),
         "unique_part_references": len(references),
@@ -81,7 +94,7 @@ def generate():
     (OUTPUT / "brick-model.json").write_text(model.model_dump_json(indent=2, exclude_none=True), encoding="utf-8")
     (OUTPUT / "inventory.json").write_text(json.dumps(inventory, indent=2, ensure_ascii=False), encoding="utf-8")
     (OUTPUT / "validation.json").write_text(json.dumps({
-        "schema_validated": True, "bom_count_matches": True,
+        "schema_validated": True, "orthogonal_repair": repair, "bom_count_matches": True,
         "placement_ids_unique": True, "notice_coverage_checked": bool(bundle.assembly_plan),
         "catalog_dimensions_checked_where_available": True,
         "collisions": "NOT_CERTIFIED", "supports": "NOT_CERTIFIED",
