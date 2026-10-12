@@ -117,10 +117,11 @@ def bridge_compatible_bricks(model):
             k = (item.category, item.component, item.facade, item.semantic_color,
                  item.z_plates, item.x_studs, item.y_studs)
             singles[k] = item
+    original_single_ids = {id(item) for item in singles.values()}
     extended = []
     extended_count = 0
     for item in retained:
-        if item.part_id == "BRICK_1X1" and item in singles.values():
+        if id(item) in original_single_ids:
             continue
         definition = CATALOG.get(item.part_id)
         if (definition is None or item.category not in ELIGIBLE or
