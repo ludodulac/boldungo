@@ -19,9 +19,10 @@ def wall_with_opening():
             # Lintel is bridged by continuous bricks across the aperture;
             # each one has at least one stud supported by a pier.
             parts.extend([
-                Placement("BRICK_2X4", 0, 0, z, 1),
-                Placement("BRICK_2X4", 4, 0, z, 1),
-                Placement("BRICK_2X4", 8, 0, z, 1),
+                Placement("BRICK_2X2", 0, 0, z),
+                Placement("BRICK_2X4", 2, 0, z, 1),
+                Placement("BRICK_2X4", 6, 0, z, 1),
+                Placement("BRICK_2X2", 10, 0, z),
             ])
         else:
             parts.extend([
