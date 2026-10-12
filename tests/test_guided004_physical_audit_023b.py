@@ -65,3 +65,23 @@ def test_structural_retiling_reduces_components_without_changing_occupied_volume
     assert after["collision_voxel_overlaps"] == 0
     assert after["connected_components_orthogonal_stud_contact"] < before["connected_components_orthogonal_stud_contact"]
     assert after["unsupported_parts"] <= before["unsupported_parts"]
+
+
+def test_parallel_deck_boards_pair_without_changing_occupied_volume():
+    first = _part("scene-platform:deck:board:1", 0, 36)
+    second = _part("scene-platform:deck:board:2", 1, 36)
+    first = first.model_copy(update={
+        "part_id": "BRICK_1X8", "category": "timber",
+        "component": "facade_detail", "width_studs": 1, "length_studs": 8,
+    })
+    second = second.model_copy(update={
+        "part_id": "BRICK_1X8", "category": "timber",
+        "component": "facade_detail", "width_studs": 1, "length_studs": 8,
+    })
+    original = _model([first, second])
+    fixed, metrics = bridge_compatible_bricks(original)
+    assert metrics["paired_parallel_bricks"] == 1
+    assert len(fixed.parts) == 1
+    assert fixed.parts[0].part_id == "BRICK_2X8"
+    assert set().union(*(_cells(p) for p in original.parts)) == set().union(*(_cells(p) for p in fixed.parts))
+    assert audit_physical_model(fixed)["collision_voxel_overlaps"] == 0
