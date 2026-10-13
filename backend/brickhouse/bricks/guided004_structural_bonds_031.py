@@ -61,24 +61,19 @@ def repair_guided004_concrete_timber(model: BrickModel) -> BrickModel:
 
 
 
-# 031 second strategy: the concrete deck already occupies x12..14,y16,z33..36.
-# Crossing at z35 would collide. Instead split the concrete parapet x13,y16
-# at z36 into three plate layers, with the lowest plate spanning to the wall.
-# The wall x16,y16,z33..36 remains untouched and supports the bridge below.
-# At the timber interface, a concealed z35 bridge replaces the upper wall
-# course and engages the deck at z36.
+
+# House/concrete direct bridge is BLOCKED at y=16,z=36 by actual window
+# parts and at z=35 by the concrete deck. No opening is removed or shifted.
+# The three major assemblies instead connect through the timber deck.
 def repair_guided004_house_interfaces(model: BrickModel) -> BrickModel:
     catalog = standard_orthogonal_definitions()
     by_id = {p.placement_id: p for p in model.parts}
-    concrete_id = PREFIX + "02"
-    wall_id = "wall-000272"
-    if concrete_id not in by_id or wall_id not in by_id:
-        raise ValueError("031_HOUSE_INTERFACE_ANCHORS_MISSING")
-    concrete, wall = by_id[concrete_id], by_id[wall_id]
-    if (concrete.part_id,concrete.x_studs,concrete.y_studs,concrete.z_plates) != ("BRICK_1X1",13,16,36):
-        raise ValueError("031_CONCRETE_INTERFACE_GEOMETRY_CHANGED")
-    if (wall.part_id,wall.x_studs,wall.y_studs,wall.z_plates) != ("BRICK_1X8",16,20,33):
-        raise ValueError("031_TIMBER_INTERFACE_GEOMETRY_CHANGED")
+    old_id = "wall-000272"
+    if old_id not in by_id:
+        raise ValueError("031_HOUSE_TIMBER_WALL_MISSING")
+    old = by_id[old_id]
+    if (old.part_id,old.x_studs,old.y_studs,old.z_plates) != ("BRICK_1X8",16,20,33):
+        raise ValueError("031_HOUSE_TIMBER_GEOMETRY_CHANGED")
     def cells(p):
         d=catalog[p.part_id]
         w,l=d.footprint(p.rotation_quarter_turns)
@@ -86,44 +81,33 @@ def repair_guided004_house_interfaces(model: BrickModel) -> BrickModel:
                 for y in range(p.y_studs,p.y_studs+l)
                 for z in range(p.z_plates,p.z_plates+d.height_plates)}
     specs=(
-        ("house-concrete",concrete,(
-            ("PLATE_1X4",13,16,36,1),
-            ("PLATE_1X1",13,16,37,0),
-            ("PLATE_1X1",13,16,38,0),
-        )),
-        ("house-timber",wall,(
-            ("PLATE_1X8",16,20,33,0),
-            ("PLATE_1X8",16,20,34,0),
-            ("PLATE_1X4",13,20,35,1),
-            ("PLATE_1X3",16,21,35,0),
-            ("PLATE_1X4",16,24,35,0),
-        )),
+        ("PLATE_1X8",16,20,33,0),
+        ("PLATE_1X8",16,20,34,0),
+        ("PLATE_1X4",13,20,35,1),
+        ("PLATE_1X3",16,21,35,0),
+        ("PLATE_1X4",16,24,35,0),
     )
-    added=[]
-    for label,source,placements in specs:
-        group=[]
-        for i,(ref,x,y,z,rot) in enumerate(placements,1):
-            d=catalog[ref]
-            w,l=d.footprint(rot)
-            group.append(BrickModelPart(
-                placement_id=f"guided004-031:{label}:wall-retile:{i:02d}",
-                part_id=ref,category="plate",component=source.component,
-                facade=source.facade,x_studs=x,y_studs=y,z_plates=z,
-                rotation_quarter_turns=rot,width_studs=w,length_studs=l,height_plates=1))
-        volumes=[cells(p) for p in group]
-        if len(set().union(*volumes)) != sum(map(len,volumes)):
-            raise ValueError("031_NEW_BRIDGE_SELF_COLLISION:"+label)
-        if not cells(source) <= set().union(*volumes):
-            raise ValueError("031_ORIGINAL_SURFACE_LOST:"+label)
-        added.extend(group)
-    removed={concrete_id,wall_id}
+    new=[]
+    for i,(ref,x,y,z,rot) in enumerate(specs,1):
+        d=catalog[ref]
+        w,l=d.footprint(rot)
+        new.append(BrickModelPart(
+            placement_id=f"guided004-031:house-timber:wall-retile:{i:02d}",
+            part_id=ref,category="plate",component=old.component,
+            facade=old.facade,x_studs=x,y_studs=y,z_plates=z,
+            rotation_quarter_turns=rot,width_studs=w,length_studs=l,height_plates=1))
+    volumes=[cells(p) for p in new]
+    if len(set().union(*volumes)) != sum(map(len,volumes)):
+        raise ValueError("031_HOUSE_TIMBER_SELF_COLLISION")
+    if not cells(old) <= set().union(*volumes):
+        raise ValueError("031_HOUSE_WALL_VOLUME_LOST")
     occupied=set()
     for p in model.parts:
-        if p.placement_id not in removed and p.part_id in catalog:
+        if p.placement_id != old_id and p.part_id in catalog:
             occupied.update(cells(p))
-    for p in added:
+    for p in new:
         if cells(p) & occupied:
-            raise ValueError("031_BRIDGE_COLLISION:"+p.placement_id)
+            raise ValueError("031_HOUSE_TIMBER_COLLISION:"+p.placement_id)
     return model.model_copy(update={
-        "parts":[p for p in model.parts if p.placement_id not in removed]+added
+        "parts":[p for p in model.parts if p.placement_id != old_id]+new
     })
