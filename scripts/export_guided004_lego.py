@@ -17,7 +17,7 @@ from repair_guided004_overlaps import repair_orthogonal_overlaps
 from audit_guided004_physical import audit_physical_model
 from bridge_guided004_connections import bridge_compatible_bricks
 from brickhouse.partial_scene_pipeline import run_partial_scene_pipeline
-from brickhouse.bricks.scene_platform_connectivity import augment_guided004_south_deck_cross_plate
+from brickhouse.bricks.scene_platform_connectivity import (augment_guided004_south_deck_cross_plate, augment_guided004_deck_bonds)
 from brickhouse.scene import ArchitecturalScene
 
 SOURCE = Path("frontend/data/boldungo2-guided-004-real-scene.json")
@@ -33,6 +33,7 @@ def generate():
     pre_bridge_audit = audit_physical_model(model)
     model, bridging = bridge_compatible_bricks(model)
     model = augment_guided004_south_deck_cross_plate(model)
+    model = augment_guided004_deck_bonds(model)
     physical_audit = audit_physical_model(model)
     if physical_audit['collision_voxel_overlaps'] != 0:
         raise AssertionError('STRUCTURAL_BRIDGING_INTRODUCED_COLLISIONS')
