@@ -51,7 +51,7 @@ def line(p):
     rot=p["rotation_quarter_turns"]%4
     mats=((1,0,0,0,1,0,0,0,1),(0,0,-1,0,1,0,1,0,0),(-1,0,0,0,1,0,0,0,-1),(0,0,1,0,1,0,-1,0,0))
     mx=" ".join(map(str,mats[rot]))
-    return f"1 7 {(x+w/2)*20:g} {-z*8:g} {(y+l/2)*20:g} {mx} {CODES[p['part_id']]}"
+    return f"1 7 {(x+w/2)*20:g} {-(z+h)*8:g} {(y+l/2)*20:g} {mx} {CODES[p['part_id']]}"
 
 def main(path, output):
     parts=json.loads(Path(path).read_text())["parts"]
