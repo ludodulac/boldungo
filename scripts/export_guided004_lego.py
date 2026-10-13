@@ -21,6 +21,7 @@ from brickhouse.bricks.scene_platform_connectivity import (augment_guided004_sou
 from brickhouse.bricks.guided004_structural_retile_030b import retile_guided004_structural_interfaces
 from brickhouse.bricks.guided004_structural_bonds_031 import repair_guided004_concrete_timber, repair_guided004_house_interfaces
 from brickhouse.bricks.guided004_support_classification_032 import classify_guided004_supports
+from brickhouse.bricks.lego30363_mechanics_034 import Placement, top_studs, contact_standard_top_to_30363_bottom
 from brickhouse.scene import ArchitecturalScene
 
 SOURCE = Path("frontend/data/boldungo2-guided-004-real-scene.json")
@@ -40,6 +41,11 @@ def generate():
     model = retile_guided004_structural_interfaces(model)
     model = repair_guided004_concrete_timber(model)
     model = repair_guided004_house_interfaces(model)
+    roof_034 = sorted((p for p in model.parts if p.part_id == 'BRICK_SLOPED_18_4X2'), key=lambda p: (p.z_plates, p.x_studs, p.y_studs))
+    section_034 = []
+    for p in roof_034[:4]:
+        placement = Placement(p.x_studs, p.y_studs, p.z_plates, p.rotation_quarter_turns)
+        section_034.append({'placement_id': p.placement_id, 'top_studs_evidenced': sorted(top_studs(placement)), 'bottom_mating': contact_standard_top_to_30363_bottom({(p.x_studs,p.y_studs,p.z_plates)}, placement)})
     physical_audit = audit_physical_model(model)
     if physical_audit['collision_voxel_overlaps'] != 0:
         raise AssertionError('STRUCTURAL_BRIDGING_INTRODUCED_COLLISIONS')
@@ -90,6 +96,7 @@ def generate():
         "orthogonal_repair": repair,
         "physical_audit": physical_audit,
         "support_classification_032": support_classification,
+        "roof_section_034": {"source": "LDraw 30363.dat and s/30363s01.dat", "placements": section_034, "connector_status": "TOP_STUDS_VERIFIED_UNDERSIDE_UNVERIFIED", "physical_certification": "NOT_CERTIFIED"},
         "pre_bridge_physical_audit": {k: v for k, v in pre_bridge_audit.items() if k not in ("unsupported_placement_ids", "roof_unverified_ids")},
         "structural_bridging": bridging,
         "building_id": model.building_id,
