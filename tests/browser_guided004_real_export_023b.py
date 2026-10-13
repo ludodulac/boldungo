@@ -67,6 +67,8 @@ def main():
         assert not errors, errors
         assert "roof_tile" in actual["categories"], actual
         assert any(x.startswith("scene-platform:") for x in actual["sourceIds"]), "No terrace"
+        assert "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013" in actual["sourceIds"], "Integrated plate missing in rendered viewer bundle"
+        assert all("scene-platform:south-timber-deck-main:board:" + n in actual["sourceIds"] for n in ("00001", "00007", "00013")), "Connected terrace boards missing"
         assert any(x.startswith("scene-stair:") for x in actual["sourceIds"]), "No stairs"
         assert any(x.startswith("wall-") for x in actual["sourceIds"]), "No walls"
         page.screenshot(path=str(ROOT / "artifacts/lego2-guided-004/viewer-browser.png"))
