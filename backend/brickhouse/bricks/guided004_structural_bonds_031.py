@@ -46,7 +46,15 @@ def repair_guided004_concrete_timber(model: BrickModel) -> BrickModel:
             category=source.category,component=source.component,facade=source.facade,
             x_studs=x,y_studs=y,z_plates=z,rotation_quarter_turns=rot,
             width_studs=w,length_studs=l,height_plates=d.height_plates))
-    # Hidden 1x2 plates below the deck bridge all three split board strips\n    # to the original x=11 board and the cross-seam at y=17.\n    for index, y in enumerate((17,18,21),7):\n        new.append(BrickModelPart(\n            placement_id=PREFIX+f"{index:02d}",part_id="PLATE_1X2",\n            category="plate",component=old[1].component,facade=old[1].facade,\n            x_studs=11,y_studs=y,z_plates=35,rotation_quarter_turns=1,\n            width_studs=2,length_studs=1,height_plates=1))\n    volumes = [cells(p) for p in new]
+    # Hidden 1x2 plates below the deck bridge all three split board strips
+    # to the original x=11 board and the cross-seam at y=17.
+    for index, y in enumerate((17,18,21),7):
+        new.append(BrickModelPart(
+            placement_id=PREFIX+f"{index:02d}",part_id="PLATE_1X2",
+            category="plate",component=old[1].component,facade=old[1].facade,
+            x_studs=11,y_studs=y,z_plates=35,rotation_quarter_turns=1,
+            width_studs=2,length_studs=1,height_plates=1))
+    volumes = [cells(p) for p in new]
     if len(set().union(*volumes)) != sum(len(v) for v in volumes):
         raise ValueError("031_NEW_PARTS_OVERLAP")
     if {v for v in set().union(*volumes) if v[2] >= 36} != expected:
@@ -55,7 +63,16 @@ def repair_guided004_concrete_timber(model: BrickModel) -> BrickModel:
     seam = cells(new[2])
     if not ({(12,16,36),(12,17,36)} <= seam):
         raise ValueError("031_NO_PHYSICAL_CROSS_SEAM")
-    occupied = set()\n    for part in model.parts:\n        if part.placement_id not in (CONCRETE,TIMBER) and part.part_id in catalog:\n            occupied.update(cells(part))\n    for part in new:\n        if cells(part) & occupied:\n            raise ValueError("031_CROSS_JOINT_COLLISION:"+part.placement_id)\n    return model.model_copy(update={\n        "parts":[p for p in model.parts if p.placement_id not in (CONCRETE,TIMBER)]+new\n    })
+    occupied = set()
+    for part in model.parts:
+        if part.placement_id not in (CONCRETE,TIMBER) and part.part_id in catalog:
+            occupied.update(cells(part))
+    for part in new:
+        if cells(part) & occupied:
+            raise ValueError("031_CROSS_JOINT_COLLISION:"+part.placement_id)
+    return model.model_copy(update={
+        "parts":[p for p in model.parts if p.placement_id not in (CONCRETE,TIMBER)]+new
+    })
 
 
 
