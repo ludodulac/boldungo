@@ -20,10 +20,15 @@ PLATE = {"placement_id": "prototype-027:concealed:cross-plate",
 
 
 def box(p):
+    definition = standard_orthogonal_definitions()[p["part_id"]]
+    rotation = p["rotation_quarter_turns"] % 2
+    width = p.get("width_studs") or (definition.length_studs if rotation else definition.width_studs)
+    length = p.get("length_studs") or (definition.width_studs if rotation else definition.length_studs)
+    height = p.get("height_plates") or definition.height_plates
     return (p["x_studs"], p["y_studs"], p["z_plates"],
-            p["x_studs"] + p["width_studs"],
-            p["y_studs"] + p["length_studs"],
-            p["z_plates"] + p["height_plates"])
+            p["x_studs"] + width,
+            p["y_studs"] + length,
+            p["z_plates"] + height)
 
 
 def overlaps(a, b):
