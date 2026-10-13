@@ -13,8 +13,8 @@ def test_real_house_contains_eight_catalogue_bonds_with_no_new_collisions():
     parts = {p["placement_id"]: p for p in model["parts"]}
     bonds = {pid: part for pid, part in parts.items() if pid.startswith(PREFIX)}
     assert len(bonds) == 8
-    assert len(parts) == 1887
-    assert inventory["total_bricks"] == 1887
+    assert len(parts) == 1890
+    assert inventory["total_bricks"] == 1890
     audit = inventory["physical_audit"]
     assert audit["collision_voxel_overlaps"] == 0
     assert audit["connected_components_orthogonal_stud_contact"] <= 12
@@ -34,7 +34,7 @@ def test_real_house_contains_eight_catalogue_bonds_with_no_new_collisions():
     assert max(seq[pid] for pid in bonds) < min(board_steps)
     assert set(inventory["source_openings"]) >= set(inventory["openings_with_parts"])
     assert inventory["mechanical_certification"] == "NOT_CERTIFIED"
-    print("GUIDED004_029_INTEGRATION=PASS bonds=8 parts=1887")
+    print("GUIDED004_029_INTEGRATION=PASS bonds=8 parts=1890")
 
 
 def test_each_concealed_bond_has_stud_contact_path_to_existing_post():
