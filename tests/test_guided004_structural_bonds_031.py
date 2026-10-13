@@ -16,7 +16,8 @@ def test_real_house_cross_seam_volume_and_inventory():
     assert len(parts) == inventory["total_bricks"] == viewer["bom"]["total_parts"]
     assert inventory["physical_audit"]["collision_voxel_overlaps"] == 0
     assert inventory["physical_audit"]["connected_components_orthogonal_stud_contact"] <= 4
-    assert len(parts) == 1883
+    assert len(parts) == 1891
+    assert len([p for p in parts if p["placement_id"].startswith("guided004-031:house-")]) == 10
     ids = {p["placement_id"] for p in parts}
     assert "scene-platform:south-concrete-platform:y_max:parapet:00427" not in ids
     assert "scene-platform:south-timber-deck-main:board:00025" not in ids
