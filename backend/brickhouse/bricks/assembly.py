@@ -199,7 +199,7 @@ def generate_assembly_plan(model: BrickModel) -> AssemblyPlan:
             if plate:
                 _append_grouped_steps(
                     pending, plate, phase="Structures extérieures",
-                    title="Terrasse sud — placer les plaques de liaison cachées sous les planches (maintien provisoire avant emboîtement)",
+                    title="Terrasse sud — maintenir provisoirement les plaques de liaison cachées sous les planches avant emboîtement",
                 )
             if boards:
                 _append_grouped_steps(
