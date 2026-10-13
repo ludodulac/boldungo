@@ -100,7 +100,7 @@ def repair_guided004_house_interfaces(model: BrickModel) -> BrickModel:
                       ("PLATE_1X4",16,y_start+4,35,0)]
         else:
             specs += [("PLATE_1X4",16,y_start,35,0),
-                      ("PLATE_1X3",16,y_start+4,35,0)]
+                      ("PLATE_1X3",16,y_start+5,35,0)]
         group=[]
         for i,(ref,x,y,z,rot) in enumerate(specs,1):
             d=catalog[ref]
