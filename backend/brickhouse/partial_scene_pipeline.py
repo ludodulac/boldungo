@@ -26,10 +26,7 @@ from brickhouse.bricks.scene_grade_contact import (
 )
 from brickhouse.bricks.scene_materials import apply_scene_part_categories
 from brickhouse.bricks.scene_physical_support_gate import evaluate_scene_physical_support_gate
-from brickhouse.bricks.scene_platform_connectivity import (
-    augment_brick_model_with_scene_platform_connectivity,
-    augment_guided004_south_deck_cross_plate,
-)
+from brickhouse.bricks.scene_platform_connectivity import augment_brick_model_with_scene_platform_connectivity
 from brickhouse.bricks.scene_shutters import augment_brick_model_with_scene_shutters
 from brickhouse.bricks.wall_depth import MIN_GEOMETRY_CONFIDENCE, augment_brick_model_with_wall_depth
 from brickhouse.pipeline import DEFAULT_FRONT_WIDTH_STUDS, run_m0_pipeline_model
@@ -297,7 +294,6 @@ def run_partial_scene_pipeline(scene: ArchitecturalScene, *, front_width_studs: 
     enriched = apply_scene_part_categories(enriched, exterior_scene)
     enriched = augment_brick_model_with_scene_shutters(enriched, scene, front_width_studs=selected_width)
     enriched = augment_brick_model_with_scene_grade_contacts(enriched, scene, front_width_studs=selected_width)
-    enriched = augment_guided004_south_deck_cross_plate(enriched)
     if enriched.width_studs != selected_width:
         enriched = enriched.model_copy(update={"width_studs": selected_width})
     if enriched is not bundle.brick_model:
