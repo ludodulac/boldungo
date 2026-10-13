@@ -74,7 +74,7 @@ class BrickModelPart(BaseModel):
             from .catalog import create_standard_plate_catalog
             definition = create_standard_plate_catalog().get(self.part_id)
             geometry = (self.width_studs, self.length_studs, self.height_plates)
-            expected = (definition.width_studs, definition.length_studs, definition.height_plates)
+            expected = (*definition.footprint(self.rotation_quarter_turns), definition.height_plates)
             if geometry != expected:
                 raise ValueError(
                     f"plate geometry must match canonical definition {expected}, got {geometry}"
