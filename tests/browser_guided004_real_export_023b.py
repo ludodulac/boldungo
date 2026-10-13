@@ -69,6 +69,7 @@ def main():
         assert any(x.startswith("scene-platform:") for x in actual["sourceIds"]), "No terrace"
         assert "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013" in actual["sourceIds"], "Integrated plate missing in rendered viewer bundle"
         assert all("scene-platform:south-timber-deck-main:board:" + n in actual["sourceIds"] for n in ("00001", "00007", "00013")), "Connected terrace boards missing"
+        assert len([pid for pid in actual["sourceIds"] if ":hidden-cross-bond-029:" in pid]) == 8, "Eight integrated 029 bonds missing from Chromium viewer"
         assert any(x.startswith("scene-stair:") for x in actual["sourceIds"]), "No stairs"
         assert any(x.startswith("wall-") for x in actual["sourceIds"]), "No walls"
         page.screenshot(path=str(ROOT / "artifacts/lego2-guided-004/viewer-browser.png"))
