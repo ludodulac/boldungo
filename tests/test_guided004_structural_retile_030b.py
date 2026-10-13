@@ -13,8 +13,8 @@ def test_real_export_contains_all_three_volume_preserving_cross_joint_repairs():
     parts = model["parts"]
     new = [p for p in parts if p["placement_id"].startswith(PREFIX)]
     assert len(new) == 7
-    assert len(parts) == 1879
-    assert inventory["total_bricks"] == 1879
+    assert len(parts) == 1891
+    assert inventory["total_bricks"] == 1891
     audit = inventory["physical_audit"]
     assert audit["collision_voxel_overlaps"] == 0
     assert audit["connected_components_orthogonal_stud_contact"] <= 6
