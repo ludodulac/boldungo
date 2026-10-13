@@ -71,7 +71,7 @@ def main():
         assert all("scene-platform:south-timber-deck-main:board:" + n in actual["sourceIds"] for n in ("00001", "00007", "00013")), "Connected terrace boards missing"
         assert len([pid for pid in actual["sourceIds"] if ":hidden-cross-bond-029:" in pid]) == 8, "Eight integrated 029 bonds missing from Chromium viewer"
         assert len([pid for pid in actual["sourceIds"] if pid.startswith("guided004-030b:")]) == 7, "030B real-house cross-joint repairs missing from Chromium viewer"
-        assert len([pid for pid in actual["sourceIds"] if pid.startswith("guided004-031:concrete-timber-cross-joint:")]) == 6, "031 concrete/timber physical cross-joint missing in Chromium viewer"
+        assert len([pid for pid in actual["sourceIds"] if pid.startswith("guided004-031:concrete-timber-cross-joint:")]) == 9, "031 concrete/timber physical cross-joint missing in Chromium viewer"
         assert len([pid for pid in actual["sourceIds"] if pid.startswith("guided004-031:house-")]) == 5, "031 house/timber transition interfaces missing from Chromium viewer"
         assert any(x.startswith("scene-stair:") for x in actual["sourceIds"]), "No stairs"
         assert any(x.startswith("wall-") for x in actual["sourceIds"]), "No walls"
