@@ -75,9 +75,10 @@ class BrickModelPart(BaseModel):
             definition = create_standard_plate_catalog().get(self.part_id)
             geometry = (self.width_studs, self.length_studs, self.height_plates)
             expected = (*definition.footprint(self.rotation_quarter_turns), definition.height_plates)
-            if geometry != expected:
+            nominal = (definition.width_studs, definition.length_studs, definition.height_plates)
+            if geometry not in (nominal, expected):
                 raise ValueError(
-                    f"plate geometry must match canonical definition {expected}, got {geometry}"
+                    f"plate geometry must match canonical definition {expected} or nominal {nominal}, got {geometry}"
                 )
 
         if self.component != "facade_detail" and (self.opening_id is not None or self.trim_role is not None):
