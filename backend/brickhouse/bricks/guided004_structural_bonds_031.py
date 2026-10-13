@@ -58,3 +58,74 @@ def repair_guided004_concrete_timber(model: BrickModel) -> BrickModel:
     return model.model_copy(update={
         "parts":[p for p in model.parts if p.placement_id not in (CONCRETE,TIMBER)]+new
     })
+
+
+# House interface strategy 2: replace the top course of two wall bricks
+# with standard 1-plate layers, and span the 2-stud gap using a real 1x4
+# plate. Each plate bridges to a genuine adjacent platform/deck stud at z36.
+# The existing wall remains solid in its x=16 column at every z.
+_WALL_INTERFACES = (
+    ("wall-000273", 12, 16, "house-concrete"),
+    ("wall-000272", 20, 20, "house-timber"),
+)
+
+
+def repair_guided004_house_interfaces(model: BrickModel) -> BrickModel:
+    catalog = standard_orthogonal_definitions()
+    by_id = {p.placement_id: p for p in model.parts}
+    if not all(pid in by_id for pid, _, _, _ in _WALL_INTERFACES):
+        raise ValueError("031_HOUSE_WALL_ANCHORS_MISSING")
+    def voxels(p):
+        d = catalog[p.part_id]
+        w, l = d.footprint(p.rotation_quarter_turns)
+        return {(x,y,z) for x in range(p.x_studs,p.x_studs+w)
+                for y in range(p.y_studs,p.y_studs+l)
+                for z in range(p.z_plates,p.z_plates+d.height_plates)}
+    removed = set()
+    added = []
+    for old_id, y_start, bridge_y, label in _WALL_INTERFACES:
+        old = by_id[old_id]
+        if (old.part_id, old.x_studs, old.y_studs, old.z_plates,
+            old.rotation_quarter_turns) != ("BRICK_1X8", 16, y_start, 33, 0):
+            raise ValueError("031_WALL_GEOMETRY_CHANGED:"+label)
+        specs = [
+            ("PLATE_1X8",16,y_start,33,0),
+            ("PLATE_1X8",16,y_start,34,0),
+            ("PLATE_1X4",13,bridge_y,35,1),
+        ]
+        # The bridge takes exactly one wall stud at y=bridge_y; preserve
+        # the remaining 7 wall studs in the upper course with 1x3 + 1x4.
+        if bridge_y == y_start:
+            specs += [("PLATE_1X3",16,y_start+1,35,0),
+                      ("PLATE_1X4",16,y_start+4,35,0)]
+        else:
+            specs += [("PLATE_1X4",16,y_start,35,0),
+                      ("PLATE_1X3",16,y_start+4,35,0)]
+        group=[]
+        for i,(ref,x,y,z,rot) in enumerate(specs,1):
+            d=catalog[ref]
+            w,l=d.footprint(rot)
+            group.append(BrickModelPart(
+                placement_id=f"guided004-031:{label}:wall-retile:{i:02d}",
+                part_id=ref,category="plate",component=old.component,facade=old.facade,
+                x_studs=x,y_studs=y,z_plates=z,rotation_quarter_turns=rot,
+                width_studs=w,length_studs=l,height_plates=1))
+        old_volume=voxels(old)
+        new_volumes=[voxels(p) for p in group]
+        if len(set().union(*new_volumes)) != sum(map(len,new_volumes)):
+            raise ValueError("031_HOUSE_BRIDGE_SELF_COLLISION:"+label)
+        retained = set().union(*new_volumes) & old_volume
+        if retained != old_volume:
+            raise ValueError("031_WALL_EXTERIOR_REMOVED:"+label)
+        added.extend(group)
+        removed.add(old_id)
+    occupied=set()
+    for p in model.parts:
+        if p.placement_id not in removed and p.part_id in catalog:
+            occupied.update(voxels(p))
+    for p in added:
+        if voxels(p) & occupied:
+            raise ValueError("031_HOUSE_BRIDGE_COLLISION:"+p.placement_id)
+    return model.model_copy(update={
+        "parts":[p for p in model.parts if p.placement_id not in removed]+added
+    })
