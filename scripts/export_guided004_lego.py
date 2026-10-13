@@ -20,6 +20,7 @@ from brickhouse.partial_scene_pipeline import run_partial_scene_pipeline
 from brickhouse.bricks.scene_platform_connectivity import (augment_guided004_south_deck_cross_plate, augment_guided004_deck_bonds)
 from brickhouse.bricks.guided004_structural_retile_030b import retile_guided004_structural_interfaces
 from brickhouse.bricks.guided004_structural_bonds_031 import repair_guided004_concrete_timber, repair_guided004_house_interfaces
+from brickhouse.bricks.guided004_support_classification_032 import classify_guided004_supports
 from brickhouse.scene import ArchitecturalScene
 
 SOURCE = Path("frontend/data/boldungo2-guided-004-real-scene.json")
@@ -44,6 +45,7 @@ def generate():
         raise AssertionError('STRUCTURAL_BRIDGING_INTRODUCED_COLLISIONS')
     if physical_audit['connected_components_orthogonal_stud_contact'] > pre_bridge_audit['connected_components_orthogonal_stud_contact']:
         raise AssertionError('STRUCTURAL_BRIDGING_WORSENED_CONNECTIVITY')
+    support_classification = classify_guided004_supports(model, physical_audit)
     plan = generate_assembly_plan(model)
     bundle = bundle.model_copy(update={
         'brick_model': model, 'bom': generate_bom(model), 'assembly_plan': plan,
@@ -87,6 +89,7 @@ def generate():
         "source_scene": str(SOURCE),
         "orthogonal_repair": repair,
         "physical_audit": physical_audit,
+        "support_classification_032": support_classification,
         "pre_bridge_physical_audit": {k: v for k, v in pre_bridge_audit.items() if k not in ("unsupported_placement_ids", "roof_unverified_ids")},
         "structural_bridging": bridging,
         "building_id": model.building_id,
