@@ -483,3 +483,60 @@ def augment_brick_model_with_scene_platform_connectivity(
             "parts": updated_parts,
         }
     )
+
+
+# GUIDED-004 south terrace: narrowly scoped, real-catalog internal cross-plate.
+# Do not generalize to other platforms until independently validated.
+SOUTH_DECK_CROSS_PLATE_ID = "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013"
+_SOUTH_DECK_BOARD_PREFIX = "scene-platform:south-timber-deck-main:board:"
+_SOUTH_DECK_ANCHOR = "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0033:00022"
+
+
+def augment_guided004_south_deck_cross_plate(model: BrickModel) -> BrickModel:
+    """Add concealed 1x6 plate only to the exact verified GUIDED-004 deck.
+
+    Requires three boards, their real post, and an empty 6x1x1 region.
+    This is an actual model part; downstream BOM, instructions and viewer
+    must all be regenerated from the enriched BrickModel.
+    """
+    from .brick_model import BrickModelPart
+    from .catalog import create_standard_plate_catalog, standard_orthogonal_definitions
+
+    ids = [_SOUTH_DECK_BOARD_PREFIX + n for n in ("00001", "00007", "00013")]
+    by_id = {p.placement_id: p for p in model.parts}
+    if SOUTH_DECK_CROSS_PLATE_ID in by_id:
+        return model
+    if not all(pid in by_id for pid in (*ids, _SOUTH_DECK_ANCHOR)):
+        return model
+    boards = [by_id[pid] for pid in ids]
+    post = by_id[_SOUTH_DECK_ANCHOR]
+    if not (
+        all(p.part_id == "BRICK_2X8" and p.x_studs == x and p.y_studs == 17
+            and p.z_plates == 36 and p.rotation_quarter_turns == 0
+            for p, x in zip(boards, (3, 5, 7)))
+        and post.part_id == "BRICK_1X1" and post.x_studs == 4
+        and post.y_studs == 18 and post.z_plates == 33
+    ):
+        raise ValueError("GUIDED004_SOUTH_DECK_ANCHORS_CHANGED")
+
+    plate = create_standard_plate_catalog().get("PLATE_1X6")
+    assert (plate.width_studs, plate.length_studs, plate.height_plates) == (1, 6, 1)
+    candidate = (3, 20, 35, 9, 21, 36)
+    for p in model.parts:
+        definition = standard_orthogonal_definitions().get(p.part_id)
+        if definition is None:
+            continue  # roof solids are unverified; not in this deck region
+        width, length = definition.footprint(p.rotation_quarter_turns)
+        box = (p.x_studs, p.y_studs, p.z_plates,
+               p.x_studs + width, p.y_studs + length,
+               p.z_plates + definition.height_plates)
+        if all(candidate[i] < box[i + 3] and box[i] < candidate[i + 3]
+               for i in range(3)):
+            raise ValueError("GUIDED004_SOUTH_DECK_PLATE_COLLISION:" + p.placement_id)
+    part = BrickModelPart(
+        placement_id=SOUTH_DECK_CROSS_PLATE_ID,
+        part_id="PLATE_1X6", category="plate", component="facade_detail",
+        facade=boards[0].facade, x_studs=3, y_studs=20, z_plates=35,
+        rotation_quarter_turns=1, width_studs=6, length_studs=1, height_plates=1,
+    )
+    return model.model_copy(update={"parts": [*model.parts, part]})
