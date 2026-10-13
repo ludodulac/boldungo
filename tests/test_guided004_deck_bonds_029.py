@@ -35,3 +35,40 @@ def test_real_house_contains_eight_catalogue_bonds_with_no_new_collisions():
     assert set(inventory["source_openings"]) >= set(inventory["openings_with_parts"])
     assert inventory["mechanical_certification"] == "NOT_CERTIFIED"
     print("GUIDED004_029_INTEGRATION=PASS bonds=8 parts=1879")
+
+
+def test_each_concealed_bond_has_stud_contact_path_to_existing_post():
+    from brickhouse.bricks.catalog import standard_orthogonal_definitions
+
+    model = json.loads((ROOT / "brick-model.json").read_text())
+    definitions = standard_orthogonal_definitions()
+    deck = [p for p in model["parts"]
+            if p["placement_id"].startswith("scene-platform:south-timber-deck")
+            and p["part_id"] in definitions]
+    def box(p):
+        d = definitions[p["part_id"]]
+        w, l = d.footprint(p["rotation_quarter_turns"])
+        x, y, z = p["x_studs"], p["y_studs"], p["z_plates"]
+        return (x, y, z, x + w, y + l, z + d.height_plates)
+    boxes = [box(p) for p in deck]
+    parent = list(range(len(deck)))
+    def find(i):
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+    for i, a in enumerate(boxes):
+        for j in range(i + 1, len(deck)):
+            b = boxes[j]
+            vertical = a[5] == b[2] or b[5] == a[2]
+            horizontal = a[0] < b[3] and b[0] < a[3] and a[1] < b[4] and b[1] < a[4]
+            if vertical and horizontal:
+                parent[find(j)] = find(i)
+    post_id = "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0033:00022"
+    by_id = {p["placement_id"]: i for i, p in enumerate(deck)}
+    root = find(by_id[post_id])
+    bonds = [pid for pid in by_id if pid.startswith(PREFIX)]
+    assert len(bonds) == 8
+    assert all(find(by_id[pid]) == root for pid in bonds)
+    assert all(find(by_id[pid]) == root for pid in by_id if ":board:" in pid)
+    # This proves a stud-contact graph path, NOT mechanical load resistance.
