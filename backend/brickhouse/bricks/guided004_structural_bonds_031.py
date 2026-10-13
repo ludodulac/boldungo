@@ -49,7 +49,8 @@ def repair_guided004_concrete_timber(model: BrickModel) -> BrickModel:
     # Hidden 1x2 plates below the deck bridge all three split board strips\n    # to the original x=11 board and the cross-seam at y=17.\n    for index, y in enumerate((17,18,21),7):\n        new.append(BrickModelPart(\n            placement_id=PREFIX+f"{index:02d}",part_id="PLATE_1X2",\n            category="plate",component=old[1].component,facade=old[1].facade,\n            x_studs=11,y_studs=y,z_plates=35,rotation_quarter_turns=1,\n            width_studs=2,length_studs=1,height_plates=1))\n    volumes = [cells(p) for p in new]
     if len(set().union(*volumes)) != sum(len(v) for v in volumes):
         raise ValueError("031_NEW_PARTS_OVERLAP")
-    if {v for v in set().union(*volumes) if v[2] >= 36} != expected:\n        raise ValueError("031_EXTERIOR_VOLUME_CHANGED")
+    if {v for v in set().union(*volumes) if v[2] >= 36} != expected:
+        raise ValueError("031_EXTERIOR_VOLUME_CHANGED")
     # Genuine cross-seam part occupies a stud on each side of the seam.
     seam = cells(new[2])
     if not ({(12,16,36),(12,17,36)} <= seam):
