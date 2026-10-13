@@ -193,13 +193,13 @@ def generate_assembly_plan(model: BrickModel) -> AssemblyPlan:
     if any(p.placement_id == cross_plate_id for p in exterior):
         for z in sorted({p.z_plates for p in exterior}):
             level = [p for p in exterior if p.z_plates == z]
-            plate = [p for p in level if p.placement_id == cross_plate_id]
+            plate = [p for p in level if p.placement_id == cross_plate_id or ":hidden-cross-bond-029:" in p.placement_id]
             boards = [p for p in level if p.placement_id in target_boards]
             others = [p for p in level if p not in plate and p not in boards]
             if plate:
                 _append_grouped_steps(
                     pending, plate, phase="Structures extérieures",
-                    title="Terrasse sud — maintenir provisoirement la plaque PLATE_1X6 sous les planches",
+                    title="Terrasse sud — placer les plaques de liaison cachées sous les planches (maintien provisoire avant emboîtement)",
                 )
             if boards:
                 _append_grouped_steps(
