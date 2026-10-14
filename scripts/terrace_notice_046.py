@@ -66,6 +66,18 @@ def main(path, output):
     assert POSTS <= set(after)
     assert TOPS <= set(before_posts)
     assert before_all==[], before_all
+    installed = set(ids)
+    outside = set(by) - installed - POSTS - TOPS
+    rail_sequence = sorted(POSTS) + sorted(TOPS)
+    rail_blockers = {}
+    for rail_id in rail_sequence:
+        b = bounds(by[rail_id])
+        swept = (b[0], b[1], b[2], b[3], b[4], max(200, b[5]))
+        obstacles = sorted(pid for pid in outside | installed
+                           if bounds(by[pid]) is not None and intersect(swept, bounds(by[pid])))
+        rail_blockers[rail_id] = obstacles
+        assert not obstacles, ("047_RAIL_INSERTION_BLOCKED", rail_id, obstacles)
+        installed.add(rail_id)
     lines=["0 GUIDED004 terrace module 045 / 046","0 !LICENSE CC0-1.0",
            "0 !NOTE Pre-install the BRICK_1X1 support at original location.",
            "0 !NOTE Assemble plate + three boards separately, then lower vertically.",
@@ -74,12 +86,12 @@ def main(path, output):
            "0 STEP", "0 !NOTE Existing support post: "+ids[4],line(by[ids[4]])]
     for n,p in enumerate(module):
         lines+=["0 STEP",f"0 !NOTE Step {n+1}: {p['placement_id']}",line(p)]
-    lines+=["0 STEP","0 !NOTE Next: install rail posts "+", ".join(sorted(POSTS)),
-            "0 !NOTE Then install rail top beams "+", ".join(sorted(TOPS))]
+    for rail_id in rail_sequence:
+        lines += ["0 STEP", "0 !NOTE Install rail after terrace: " + rail_id, line(by[rail_id])]
     Path(output).write_text("\n".join(lines)+"\n")
     print(json.dumps({"parts":5,"module_steps":4,"after_rail_blockers":after,
         "before_four_posts_blockers":before_posts,"before_posts_and_top_beams_blockers":before_all,
-        "static_internal_collisions":0,"physical_certification":"NOT_CERTIFIED"},indent=2))
+        "static_internal_collisions":0,"rail_insertion_blockers":rail_blockers,"physical_certification":"NOT_CERTIFIED"},indent=2))
 
 if __name__=="__main__":
     main(sys.argv[1],sys.argv[2])
