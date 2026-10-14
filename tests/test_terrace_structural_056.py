@@ -98,7 +98,9 @@ def test_real_56_structural_diagnostic():
     assert len(result["articulations"])==7
     assert len(result["bridges"])==10
     assert len(result["single_contact_edges"])==29
-    assert len(result["without_path_to_identified_support"])==43
+    assert len(result["identified_supports"])==2
+    assert len(result["without_path_to_identified_support"])==42
+    assert result["pieces"]-len(result["without_path_to_identified_support"])==14
     assert any(x.endswith("hidden-cross-bond-029:03") for x in result["isolated"])
 
 def test_material_timber_does_not_hide_catalog_connector():
