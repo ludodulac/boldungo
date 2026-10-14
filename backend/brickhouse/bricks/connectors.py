@@ -20,7 +20,7 @@ def _box(p: BrickModelPart):
     definition = standard_orthogonal_definitions().get(p.part_id)
     if definition is None or p.category not in ("brick", "plate", "timber"):
         return None
-    # GUIDED-004 deck boards and railings are actual catalog BRICK parts\n    # tagged timber for appearance; their semantic material is not a connector.\n    w, d = definition.footprint(p.rotation_quarter_turns)
+    # GUIDED-004 timber is a semantic material; catalog geometry is unchanged.\n    w, d = definition.footprint(p.rotation_quarter_turns)
     h = definition.height_plates
     if p.width_studs is not None and p.length_studs is not None:
         dims = (p.width_studs, p.length_studs)
