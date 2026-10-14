@@ -47,7 +47,9 @@ def audit(model, old_notice, output):
     ordered=sorted(chosen,key=lambda p:(0 if p["z_plates"]==33 else 1 if p["z_plates"]==35 else 2 if p["z_plates"]==36 else 3 if p["z_plates"]==39 else 4,p["placement_id"]))
     lines=["0 GUIDED004 terrace 048 - geometry only; NOT PHYSICALLY CERTIFIED"]
     for p in ordered:lines.extend(["0 STEP","0 !NOTE "+p["placement_id"],line(p)])
-    Path(output).write_text("\n".join(lines)+"\n")
+    Path(output).write_text("
+".join(lines)+"
+")
     blockers=[]
     for p in chosen:
         if p["z_plates"] not in (35,36):continue
@@ -84,7 +86,13 @@ def connector_graph_diagnostic(placements):
                               "contacts":r.interface_count,"reason":r.reason,
                               "orientation":"vertical"})
             elif r.status=="UNKNOWN":
-                # Report UNKNOWN only where there is an actual geometric contact.\n                # Unrelated distant pairs must not inflate the unknown-edge count.\n                contact_count = (stud(a.model_dump(), b.model_dump())\n                                 + stud(b.model_dump(), a.model_dump()))\n                if contact_count:\n                    unknown.append({"a":a.placement_id,"b":b.placement_id,\n                                    "reason":r.reason,"contacts":contact_count})
+                # Report UNKNOWN only where there is an actual geometric contact.
+                # Unrelated distant pairs must not inflate the unknown-edge count.
+                contact_count = (stud(a.model_dump(), b.model_dump())
+                                 + stud(b.model_dump(), a.model_dump()))
+                if contact_count:
+                    unknown.append({"a":a.placement_id,"b":b.placement_id,
+                                    "reason":r.reason,"contacts":contact_count})
     visited=set()
     components=[]
     for root in sorted(graph):
