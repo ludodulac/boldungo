@@ -10,22 +10,22 @@ def part(pid,part_id,x=0,y=0,z=0,rot=0):
 
 def test_stacked_bricks():
     r=validate_connection(part("a","BRICK_2X8"),part("b","BRICK_1X1",z=3))
-    assert (r.status,r.interface_count)==("UNKNOWN",1)
+    assert (r.status,r.interface_count)==("VALID",1)
 
 def test_disjoint():
     assert validate_connection(part("a","BRICK_2X8"),part("b","BRICK_1X1",x=10,z=3)).status=="INVALID"
 
 def test_plate_under_brick():
     r=validate_connection(part("a","PLATE_1X6"),part("b","BRICK_2X8",z=1))
-    assert (r.status,r.interface_count)==("UNKNOWN",1)
+    assert (r.status,r.interface_count)==("VALID",1)
 
 def test_plate_over_brick():
     r=validate_connection(part("a","BRICK_2X8"),part("b","PLATE_1X6",z=3))
-    assert (r.status,r.interface_count)==("UNKNOWN",1)
+    assert (r.status,r.interface_count)==("VALID",1)
 
 def test_rotations():
     r=validate_connection(part("a","BRICK_2X8",rot=1),part("b","BRICK_1X8",z=3,rot=1))
-    assert (r.status,r.interface_count)==("UNKNOWN",8)
+    assert (r.status,r.interface_count)==("VALID",8)
 
 def test_wrong_height():
     assert validate_connection(part("a","BRICK_1X1"),part("b","BRICK_1X1",z=4)).status=="INVALID"
@@ -53,6 +53,6 @@ def test_guided004_terrace_real_placements():
     assert [r.interface_count for r in contacts]==[2,2,2]
     assert support.interface_count==1
     assert sum(r.interface_count for r in [*contacts,support])==7
-    assert all(r.status=="UNKNOWN" for r in [*contacts,support])
-    assert all(r.reason=="stud-grid-aligned-but-underside-connector-geometry-unverified"
+    assert all(r.status=="VALID" for r in [*contacts,support])
+    assert all(r.reason.startswith("ldraw-documented-")
                for r in [*contacts,support])
