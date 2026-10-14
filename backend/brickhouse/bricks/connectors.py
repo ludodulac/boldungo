@@ -1,6 +1,6 @@
 """Conservative connector alignment for canonical rectangular LEGO bricks/plates.
 
-Uses existing catalog dimensions. Rectangular stud-column overlap alone does NOT\nprove underside connector geometry: those contacts return UNKNOWN.
+Uses existing catalog dimensions. Only the four LDraw-reviewed rectangular families can return VALID.\nVALID denotes modeled clutch-interface compatibility, not strength.
 Unsupported families and nonstandard placements return UNKNOWN.
 """
 from dataclasses import dataclass
