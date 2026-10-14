@@ -47,4 +47,14 @@ def validate_connection(a: BrickModelPart,b: BrickModelPart) -> ConnectionResult
         return ConnectionResult("INVALID",0,"no-vertical-connector-plane")
     # A rectangular grid of top studs and the standard underside engagement
     # of ordinary LEGO bricks/plates; internal tube coordinates not certified.
-    return ConnectionResult("UNKNOWN",dx*dy,"stud-grid-aligned-but-underside-connector-geometry-unverified")
+    # Official LDraw geometries: 3005.dat underside cavity; 3008s01.dat
+    # and 3666.dat underside stud3; 3007s01.dat central tube geometry.
+    # Partial overlaps can engage via underside sidewalls/cavities.
+    documented = {"BRICK_1X1", "BRICK_1X8", "BRICK_2X8", "PLATE_1X6"}
+    if a.part_id not in documented or b.part_id not in documented:
+        return ConnectionResult("UNKNOWN",dx*dy,"underside-interface-not-documented-for-part")
+    upper = b if A[5] == B[2] else a
+    family = ("two-wide-tubes-and-sidewalls" if upper.part_id == "BRICK_2X8"
+              else "one-wide-cavity" if upper.part_id == "BRICK_1X1"
+              else "one-wide-stud3-and-sidewalls")
+    return ConnectionResult("VALID",dx*dy,"ldraw-documented-"+family)
