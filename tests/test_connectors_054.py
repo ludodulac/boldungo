@@ -20,11 +20,11 @@ def test_disjoint():
 
 def test_plate_under_brick():
     r=validate_connection(part("a","PLATE_1X6"),part("b","BRICK_2X8",z=1))
-    assert (r.status,r.interface_count)==("VALID",1)
+    assert (r.status,r.interface_count)==("VALID",6)
 
 def test_plate_over_brick():
     r=validate_connection(part("a","BRICK_2X8"),part("b","PLATE_1X6",z=3))
-    assert (r.status,r.interface_count)==("VALID",1)
+    assert (r.status,r.interface_count)==("VALID",6)
 
 def test_rotations():
     r=validate_connection(part("a","BRICK_2X8",rot=1),part("b","BRICK_1X8",z=3,rot=1))
