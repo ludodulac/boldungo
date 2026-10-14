@@ -12,15 +12,14 @@ def test_fixed_candidates_are_distinct_and_do_not_collide():
 
 
 def test_both_connect_to_four_real_deck_boards():
+    # Frozen GUIDED-004 real boards (not fabricated x=5,7,9,11 geometry).
+    from tests.test_terrace_structural_056 import terrace_parts
+    by={p.placement_id.split("south-timber-deck-main:")[1]:p for p in terrace_parts()}
+    expected={"board:00007":1,"board:00013":2,
+              "board:00019":2,"board:00031":1}
     for candidate in (T1,T2):
-        y=candidate["y_studs"]
-        upper=[
-            BrickModelPart(placement_id=f"board:{i}",part_id="BRICK_2X8",
-                category="timber",component="facade_detail",facade="left",
-                x_studs=x,y_studs=17 if y==19 else 17,z_plates=36,
-                rotation_quarter_turns=0)
-            for i,x in enumerate((5,7,9,11))
-        ]
         c=BrickModelPart.model_validate(candidate)
-        assert sum(validate_connection(c,b).status=="VALID" for b in upper)==4
-        assert all(validate_connection(c,b).interface_count==1 for b in upper)
+        found={name:validate_connection(c,by[name]).interface_count for name in expected}
+        assert found==expected
+        assert all(validate_connection(c,by[name]).status=="VALID" for name in expected)
+        assert sum(found.values())==6
