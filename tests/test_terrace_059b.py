@@ -19,7 +19,7 @@ def test_both_connect_to_four_real_deck_boards():
                 category="timber",component="facade_detail",facade="left",
                 x_studs=x,y_studs=17 if y==19 else 17,z_plates=36,
                 rotation_quarter_turns=0)
-            for i,x in enumerate((3,5,7,9))
+            for i,x in enumerate((5,7,9,11))
         ]
         c=BrickModelPart.model_validate(candidate)
         assert sum(validate_connection(c,b).status=="VALID" for b in upper)==4
