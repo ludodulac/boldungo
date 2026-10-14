@@ -40,11 +40,15 @@ jobs:
         run: python scripts/experiment_terrace_057.py artifacts/lego2-guided-004/brick-model.json
       - name: Audit LEGO2-058B real support paths before and after connector evidence
         run: python scripts/audit_support_058b.py artifacts/lego2-guided-004/brick-model.json
+      - name: Search LEGO2-059 physical terrace reinforcement on authentic GUIDED-004
+        run: python scripts/prototype_terrace_059.py artifacts/lego2-guided-004/brick-model.json
       - name: Upload actual conversion artifacts even on failure
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lego2-guided004-real-house-export
-          path: artifacts/lego2-guided-004/
+          path: |
+            artifacts/lego2-guided-004/
+            artifacts/lego2-059/
           if-no-files-found: warn
           retention-days: 30
