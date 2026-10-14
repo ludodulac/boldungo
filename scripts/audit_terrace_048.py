@@ -84,8 +84,7 @@ def connector_graph_diagnostic(placements):
                               "contacts":r.interface_count,"reason":r.reason,
                               "orientation":"vertical"})
             elif r.status=="UNKNOWN":
-                unknown.append({"a":a.placement_id,"b":b.placement_id,
-                                "reason":r.reason,"contacts":r.interface_count})
+                # Report UNKNOWN only where there is an actual geometric contact.\n                # Unrelated distant pairs must not inflate the unknown-edge count.\n                contact_count = (stud(a.model_dump(), b.model_dump())\n                                 + stud(b.model_dump(), a.model_dump()))\n                if contact_count:\n                    unknown.append({"a":a.placement_id,"b":b.placement_id,\n                                    "reason":r.reason,"contacts":contact_count})
     visited=set()
     components=[]
     for root in sorted(graph):
