@@ -13,7 +13,7 @@ def test_fixed_candidates_are_distinct_and_do_not_collide():
 
 def test_both_connect_to_four_real_deck_boards():
     # Frozen GUIDED-004 real boards (not fabricated x=5,7,9,11 geometry).
-    from tests.test_terrace_structural_056 import terrace_parts
+    from test_terrace_structural_056 import terrace_parts
     by={p.placement_id.split("south-timber-deck-main:")[1]:p for p in terrace_parts()}
     expected={"board:00007":1,"board:00013":2,
               "board:00019":2,"board:00031":1}
