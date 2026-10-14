@@ -7,7 +7,10 @@ import json
 import sys
 from pathlib import Path
 
-from audit_terrace_048 import connector_graph_diagnostic, box, overlap
+try:
+    from scripts.audit_terrace_048 import connector_graph_diagnostic, box, overlap
+except ModuleNotFoundError:
+    from audit_terrace_048 import connector_graph_diagnostic, box, overlap
 from brickhouse.bricks.brick_model import BrickModelPart
 
 PREFIX = "scene-platform:south-timber-deck-"
