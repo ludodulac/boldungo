@@ -1,7 +1,6 @@
 """Conservative connector alignment for canonical rectangular LEGO bricks/plates.
 
-Uses existing catalog dimensions. VALID means a standard orthogonal stud-grid
-engagement candidate, NOT proof of internal tube geometry or clutch strength.
+Uses existing catalog dimensions. Rectangular stud-column overlap alone does NOT\nprove underside connector geometry: those contacts return UNKNOWN.
 Unsupported families and nonstandard placements return UNKNOWN.
 """
 from dataclasses import dataclass
@@ -48,4 +47,4 @@ def validate_connection(a: BrickModelPart,b: BrickModelPart) -> ConnectionResult
         return ConnectionResult("INVALID",0,"no-vertical-connector-plane")
     # A rectangular grid of top studs and the standard underside engagement
     # of ordinary LEGO bricks/plates; internal tube coordinates not certified.
-    return ConnectionResult("VALID",dx*dy,"standard-rectangular-stud-grid-alignment")
+    return ConnectionResult("UNKNOWN",dx*dy,"stud-grid-aligned-but-underside-connector-geometry-unverified")
