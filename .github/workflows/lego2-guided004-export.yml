@@ -36,6 +36,8 @@ jobs:
           print('GUIDED004_TOTAL_BRICKS=',len(model['parts']))
           print('GUIDED004_PART_REFERENCES=',inventory['references'])
           PY
+      - name: Verify LEGO2-057 A/B/C against actual GUIDED-004 export
+        run: python scripts/experiment_terrace_057.py artifacts/lego2-guided-004/brick-model.json
       - name: Upload actual conversion artifacts even on failure
         if: always()
         uses: actions/upload-artifact@v4
