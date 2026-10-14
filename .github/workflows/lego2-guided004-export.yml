@@ -48,6 +48,8 @@ jobs:
         run: python scripts/assembly_terrace_059b.py artifacts/lego2-guided-004/brick-model.json
       - name: Check LEGO2-059B progressive assembly sequence
         run: python scripts/assembly_sequence_059b.py artifacts/lego2-guided-004/brick-model.json
+      - name: Audit LEGO2-059D anchored terrace module on authentic export
+        run: python scripts/assembly_terrace_059d.py artifacts/lego2-guided-004/brick-model.json
       - name: Upload actual conversion artifacts even on failure
         if: always()
         uses: actions/upload-artifact@v4
