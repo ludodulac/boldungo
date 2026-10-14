@@ -47,9 +47,7 @@ def audit(model, old_notice, output):
     ordered=sorted(chosen,key=lambda p:(0 if p["z_plates"]==33 else 1 if p["z_plates"]==35 else 2 if p["z_plates"]==36 else 3 if p["z_plates"]==39 else 4,p["placement_id"]))
     lines=["0 GUIDED004 terrace 048 - geometry only; NOT PHYSICALLY CERTIFIED"]
     for p in ordered:lines.extend(["0 STEP","0 !NOTE "+p["placement_id"],line(p)])
-    Path(output).write_text("
-".join(lines)+"
-")
+    Path(output).write_text("\n".join(lines)+"\n")
     blockers=[]
     for p in chosen:
         if p["z_plates"] not in (35,36):continue
