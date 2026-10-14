@@ -1,9 +1,12 @@
 """Regression tests for catalog-backed connector validation."""
 from brickhouse.bricks.brick_model import BrickModelPart
 from brickhouse.bricks.connectors import validate_connection
+from brickhouse.bricks.catalog import standard_orthogonal_definitions
 
 def part(pid,part_id,x=0,y=0,z=0,rot=0):
-    return BrickModelPart(placement_id=pid,part_id=part_id,
+    definition=standard_orthogonal_definitions().get(part_id)
+    dimensions=({"width_studs":definition.width_studs,"length_studs":definition.length_studs,"height_plates":definition.height_plates} if definition and part_id.startswith("PLATE_") else {})
+    return BrickModelPart(placement_id=pid,part_id=part_id,**dimensions,
         category="plate" if part_id.startswith("PLATE_") else "brick",
         component="roof_support",x_studs=x,y_studs=y,z_plates=z,
         rotation_quarter_turns=rot)
@@ -77,8 +80,7 @@ def test_one_stud_offset_outside_footprint():
 def test_nonstandard_height_is_unknown():
     a=part("a","BRICK_1X1")
     b=part("b","PLATE_1X6",z=3)
-    b.height_plates=3
-    assert validate_connection(a,b).status=="UNKNOWN"
+    assert validate_connection(a,b.model_copy(update={"height_plates":3})).status=="UNKNOWN"
 
 def test_plate_stacking_one_plate_height():
     a=part("a","PLATE_1X6")
