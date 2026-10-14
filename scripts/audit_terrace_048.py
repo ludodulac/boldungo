@@ -57,3 +57,71 @@ def audit(model, old_notice, output):
     return {"pieces":len(chosen),"steps":len(ordered),"geometric_links":len(links),"component_sizes":sorted(map(len,components),reverse=True),"isolated": [c[0] for c in components if len(c)==1],"module_drop_blockers":blockers,"ldraw_047_verified_lines":len(old),"visual_validation":"NOT_DONE","physical_certification":"NOT_CERTIFIED"}
 if __name__=="__main__":
     print(json.dumps(audit(sys.argv[1],sys.argv[2],sys.argv[3]),indent=2))
+
+
+def connector_graph_diagnostic(placements):
+    """Topology only: reuses validate_connection; no mechanical strength claim.
+
+    UNKNOWN edges are reported separately and never connect VALID components.
+    """
+    from collections import defaultdict
+    from brickhouse.bricks.brick_model import BrickModelPart
+    from brickhouse.bricks.connectors import validate_connection
+    parts=[p if isinstance(p,BrickModelPart) else BrickModelPart.model_validate(p) for p in placements]
+    ids=[p.placement_id for p in parts]
+    if len(ids)!=len(set(ids)):
+        raise ValueError("duplicate placement IDs")
+    graph={pid:set() for pid in ids}
+    edges=[]
+    unknown=[]
+    for i,a in enumerate(parts):
+        for b in parts[i+1:]:
+            r=validate_connection(a,b)
+            if r.status=="VALID":
+                graph[a.placement_id].add(b.placement_id)
+                graph[b.placement_id].add(a.placement_id)
+                edges.append({"a":a.placement_id,"b":b.placement_id,
+                              "contacts":r.interface_count,"reason":r.reason,
+                              "orientation":"vertical"})
+            elif r.status=="UNKNOWN":
+                unknown.append({"a":a.placement_id,"b":b.placement_id,
+                                "reason":r.reason,"contacts":r.interface_count})
+    visited=set()
+    components=[]
+    for root in sorted(graph):
+        if root in visited: continue
+        stack=[root]; visited.add(root); component=[]
+        while stack:
+            u=stack.pop();component.append(u)
+            for v in sorted(graph[u]):
+                if v not in visited:
+                    visited.add(v);stack.append(v)
+        components.append(sorted(component))
+    # Tarjan articulation points and bridges on VALID-only undirected graph.
+    discovery={}; low={}; articulation=set(); bridges=[]; tick=[0]
+    def dfs(u,parent=None):
+        discovery[u]=low[u]=tick[0];tick[0]+=1; children=0
+        for v in sorted(graph[u]):
+            if v==parent: continue
+            if v not in discovery:
+                children+=1;dfs(v,u);low[u]=min(low[u],low[v])
+                if parent is not None and low[v]>=discovery[u]:
+                    articulation.add(u)
+                if low[v]>discovery[u]:
+                    bridges.append(sorted((u,v)))
+            else:
+                low[u]=min(low[u],discovery[v])
+        if parent is None and children>1:articulation.add(u)
+    for pid in sorted(graph):
+        if pid not in discovery:dfs(pid)
+    supports=sorted(p.placement_id for p in parts if
+                    "timber-post" in p.placement_id or "support" in p.placement_id)
+    reachable=set()
+    for component in components:
+        if set(component).intersection(supports):reachable.update(component)
+    return {"pieces":len(parts),"valid_edges":edges,"unknown_edges":unknown,
+            "components":components,"articulations":sorted(articulation),
+            "bridges":sorted(bridges),"isolated":sorted(pid for pid in ids if not graph[pid]),
+            "identified_supports":supports,
+            "without_path_to_identified_support":sorted(set(ids)-reachable),
+            "single_contact_edges":[e for e in edges if e["contacts"]==1]}
