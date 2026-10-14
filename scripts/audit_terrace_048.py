@@ -55,7 +55,7 @@ def audit(model, old_notice, output):
         for q in external:
             if overlap(swept,box(q)):blockers.append([p["placement_id"],q["placement_id"]])
     return {"pieces":len(chosen),"steps":len(ordered),"geometric_links":len(links),"component_sizes":sorted(map(len,components),reverse=True),"isolated": [c[0] for c in components if len(c)==1],"module_drop_blockers":blockers,"ldraw_047_verified_lines":len(old),"visual_validation":"NOT_DONE","physical_certification":"NOT_CERTIFIED"}
-if __name__=="__main__":
+if __name__=="__main__" and len(sys.argv)==4:
     print(json.dumps(audit(sys.argv[1],sys.argv[2],sys.argv[3]),indent=2))
 
 
@@ -124,3 +124,21 @@ def connector_graph_diagnostic(placements):
             "identified_supports":supports,
             "without_path_to_identified_support":sorted(set(ids)-reachable),
             "single_contact_edges":[e for e in edges if e["contacts"]==1]}
+
+def audit_structural_056(model_path):
+    """Run existing connector graph on EXACT 048 selection from real GUIDED-004 export."""
+    model=json.loads(Path(model_path).read_text())
+    prefix="scene-platform:south-timber-deck-main:"
+    chosen=[p for p in model["parts"] if p["placement_id"].startswith(prefix)
+            and p["z_plates"]>=33]
+    if len(chosen)!=56:
+        raise ValueError(f"expected 56 original terrace placements, got {len(chosen)}")
+    result=connector_graph_diagnostic(chosen)
+    result["geometric_contact_pairs"]=sum(
+        bool(stud(a,b) or stud(b,a)) for i,a in enumerate(chosen) for b in chosen[i+1:])
+    result["geometric_contacts"]=sum(
+        stud(a,b)+stud(b,a) for i,a in enumerate(chosen) for b in chosen[i+1:])
+    return result
+
+if __name__=="__main__" and len(sys.argv)==3 and sys.argv[1]=="--structural-056":
+    print(json.dumps(audit_structural_056(sys.argv[2]),indent=2))
