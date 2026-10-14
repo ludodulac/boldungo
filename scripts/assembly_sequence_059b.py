@@ -124,6 +124,29 @@ def sequence(model,variant):
     # is deferred, and its insertion is checked in the later_elements loop.
     rigid=[*traverses,*boards]
     rigid_result=rigid_module_install(rigid,[*supports,*plates])
+    # Docking is not established by an unobstructed trajectory alone.
+    # Inspect all actual fixed support/hidden-plate interfaces at final pose.
+    # The east support attaches to board:00001, not the moving four boards.
+    fixed_docking=[*supports,*plates]
+    anchors=[]
+    unknown_interfaces=[]
+    for moving in rigid:
+        for fixed_part in fixed_docking:
+            connection=validate_connection(
+                BrickModelPart.model_validate(moving),
+                BrickModelPart.model_validate(fixed_part))
+            if connection.status=="VALID":
+                anchors.append({"mobile":moving["placement_id"],
+                                "fixed":fixed_part["placement_id"],
+                                "stud_contacts":connection.interface_count})
+            elif connection.status=="UNKNOWN":
+                unknown_interfaces.append({"mobile":moving["placement_id"],
+                                           "fixed":fixed_part["placement_id"],
+                                           "stud_contacts":connection.interface_count})
+    rigid_result["documented_docking_anchors"]=anchors
+    rigid_result["unknown_docking_interfaces"]=unknown_interfaces
+    rigid_result["anchor_to_post_path"]="NOT_PROVEN" if not anchors else "REQUIRES_GRAPH_VERIFICATION"
+    rigid_result["docking_verdict"]="NON_DEMONTRE"
     first=next((x for x in steps if x["verdict"]!="GEOMETRY_PASS"),None)
     first_blocked=next((x for x in steps if x["verdict"]=="BLOCKED"),None)
     first_unknown=next((x for x in steps if x["verdict"]=="UNKNOWN"),None)
@@ -142,6 +165,8 @@ def sequence(model,variant):
     return {"variant":variant,"steps":steps,"later_elements":late,
             "first_unverified_step":first,
             "rigid_module_install":rigid_result,
+            "docking_anchors":anchors,
+            "docking_unknown_interfaces":unknown_interfaces,
             "first_blocked_operation":first_blocked,
             "first_unknown_operation":first_unknown,
             "first_unresolved_dependency":unresolved,
