@@ -6,6 +6,7 @@ Coordinates and rotations are unmodified. Compact codes B/P map to existing cata
 from brickhouse.bricks.brick_model import BrickModelPart
 from brickhouse.bricks.catalog import standard_orthogonal_definitions
 from scripts.audit_terrace_048 import connector_graph_diagnostic
+from scripts.experiment_terrace_057 import legacy_057_diagnostic
 
 ROWS = """
 board:00001|B2X8|3,17,36,0
@@ -89,7 +90,7 @@ def terrace_parts():
 def test_real_56_structural_diagnostic():
     parts=terrace_parts()
     assert len(parts)==56
-    result=connector_graph_diagnostic(parts)
+    result=legacy_057_diagnostic(parts)
     assert len(result["valid_edges"])==32
     assert sum(e["contacts"] for e in result["valid_edges"])==35
     assert len(result["unknown_edges"])==36
