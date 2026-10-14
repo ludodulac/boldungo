@@ -42,6 +42,8 @@ jobs:
         run: python scripts/audit_support_058b.py artifacts/lego2-guided-004/brick-model.json
       - name: Search LEGO2-059 physical terrace reinforcement on authentic GUIDED-004
         run: python scripts/prototype_terrace_059.py artifacts/lego2-guided-004/brick-model.json
+      - name: Verify LEGO2-059B fixed T1 and T1+T2 variants
+        run: python scripts/prototype_terrace_059b.py artifacts/lego2-guided-004/brick-model.json
       - name: Upload actual conversion artifacts even on failure
         if: always()
         uses: actions/upload-artifact@v4
@@ -50,5 +52,6 @@ jobs:
           path: |
             artifacts/lego2-guided-004/
             artifacts/lego2-059/
+            artifacts/lego2-059b/
           if-no-files-found: warn
           retention-days: 30
