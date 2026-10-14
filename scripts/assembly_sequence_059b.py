@@ -140,7 +140,11 @@ def sequence(model,variant):
     unresolved=first_blocked or first_unknown
 
     return {"variant":variant,"steps":steps,"later_elements":late,
-            "first_unverified_step":first,\n            "rigid_module_install":rigid_result,\n            "first_blocked_operation":first_blocked,\n            "first_unknown_operation":first_unknown,\n            "first_unresolved_dependency":unresolved,
+            "first_unverified_step":first,
+            "rigid_module_install":rigid_result,
+            "first_blocked_operation":first_blocked,
+            "first_unknown_operation":first_unknown,
+            "first_unresolved_dependency":unresolved,
             "all_steps_proven":rigid_result["verdict"]=="GEOMETRY_PASS" and all(x["verdict"]=="GEOMETRY_PASS" for x in steps)
                  and all(x["verdict"]=="GEOMETRY_PASS" for x in late),
             "mechanical_strength":"NOT_CERTIFIED",
