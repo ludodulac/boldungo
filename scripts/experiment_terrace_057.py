@@ -34,6 +34,36 @@ def select_scope(model):
             or (p["placement_id"].startswith(PREFIX)
                 and "support-solution:timber-post" in p["placement_id"])]
 
+def legacy_057_diagnostic(placements):
+    """Freeze the 057 evidence baseline, independently of later reviewed families.
+
+    The historical validator returned UNKNOWN for BRICK_2X3/BRICK_2X6
+    underside interfaces. This wrapper preserves that historical comparison;
+    the production validator itself is never modified.
+    """
+    import brickhouse.bricks.connectors as connectors
+    from brickhouse.bricks.connectors import ConnectionResult
+    old = connectors.validate_connection
+
+    def baseline(a, b):
+        r = old(a, b)
+        if r.status == "VALID":
+            from brickhouse.bricks.connectors import _box
+            A, B = _box(a), _box(b)
+            if A is not None and B is not None:
+                upper = b if A[5] == B[2] else a
+                if upper.part_id in {"BRICK_2X3", "BRICK_2X6"}:
+                    return ConnectionResult("UNKNOWN", r.interface_count,
+                                            "057-baseline-underside-not-documented")
+        return r
+
+    connectors.validate_connection = baseline
+    try:
+        return connector_graph_diagnostic(placements)
+    finally:
+        connectors.validate_connection = old
+
+
 def experiment(model):
     selected=select_scope(model)
     if len(selected)!=105:
@@ -43,7 +73,7 @@ def experiment(model):
     result={}
     for name,extra in (("A",()),("B",ADDITIONS[:1]),("C",ADDITIONS)):
         placements=[*selected,*extra]
-        diagnostic=connector_graph_diagnostic(placements)
+        diagnostic=legacy_057_diagnostic(placements)
         collisions=[(a["placement_id"],b["placement_id"])
             for i,a in enumerate(placements) for b in placements[i+1:]
             if overlap(box(a),box(b))]
