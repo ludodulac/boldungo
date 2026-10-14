@@ -35,6 +35,44 @@ def check(p,installed):
             "blockers":blockers,"unknown":unknown,
             "sweep":"vertical -Z, rectangular conservative envelope +30 plates"}
 
+def rigid_module_install(module, fixed, rise=30):
+    """Conservative swept AABB union of the rigid module, lowered vertically.
+
+    Initial position: every module part translated +rise plates.
+    Final position: canonical placement.  Sweep includes both endpoints.
+    """
+    checks=[]
+    for moving in module:
+        swept=sweep(moving)
+        if swept is None:
+            checks.append({"mobile":moving["placement_id"],"verdict":"UNKNOWN",
+                           "reason":"unsupported-mobile-geometry"})
+            continue
+        blockers=[]
+        unknown=[]
+        for q in fixed:
+            qb=box(q)
+            if qb is not None and overlap(swept,qb):
+                # First descending contact at the fixed object's upper face.
+                blockers.append({"fixed":q["placement_id"],
+                                 "first_collision_z_plates":qb[5],
+                                 "mobile":moving["placement_id"]})
+            elif qb is None and abs(q.get("x_studs",999)-moving["x_studs"])<=10 and abs(q.get("y_studs",999)-moving["y_studs"])<=12 and abs(q.get("z_plates",999)-moving["z_plates"])<=35:
+                unknown.append(q["placement_id"])
+        checks.append({"mobile":moving["placement_id"],
+                       "initial_z":moving["z_plates"]+rise,
+                       "final_z":moving["z_plates"],
+                       "direction":"-Z","blockers":blockers,"unknown":unknown,
+                       "verdict":"BLOCKED" if blockers else "UNKNOWN" if unknown else "GEOMETRY_PASS"})
+    first_blocked=next((x for x in checks if x["verdict"]=="BLOCKED"),None)
+    first_unknown=next((x for x in checks if x["verdict"]=="UNKNOWN"),None)
+    return {"mobile_parts":[p["placement_id"] for p in module],
+            "fixed_parts":[p["placement_id"] for p in fixed],
+            "checks":checks,"first_blocked":first_blocked,
+            "first_unknown":first_unknown,
+            "verdict":"BLOCKED" if first_blocked else "UNKNOWN" if first_unknown else "GEOMETRY_PASS",
+            "limitations":"Conservative rectangular swept envelopes; noncatalog local geometry UNKNOWN"}
+
 def sequence(model,variant):
     full=model["parts"]
     if len(full)!=1890:raise ValueError("not authentic GUIDED-004")
@@ -81,10 +119,29 @@ def sequence(model,variant):
         late.append({"piece":p["placement_id"],"verdict":result["verdict"],
                      "blockers":result["blockers"],"unknown":result["unknown"]})
         installed.append(p)
+    # The three existing posts are fixed; hidden plates are assumed already
+    # installed for the proposed rigid-module lowering. The remaining terrace
+    # is deferred, and its insertion is checked in the later_elements loop.
+    rigid=[*traverses,*boards]
+    rigid_result=rigid_module_install(rigid,[*supports,*plates])
     first=next((x for x in steps if x["verdict"]!="GEOMETRY_PASS"),None)
+    first_blocked=next((x for x in steps if x["verdict"]=="BLOCKED"),None)
+    first_unknown=next((x for x in steps if x["verdict"]=="UNKNOWN"),None)
+    later_blocked=next((x for x in late if x["verdict"]=="BLOCKED"),None)
+    later_unknown=next((x for x in late if x["verdict"]=="UNKNOWN"),None)
+    if rigid_result["first_blocked"] and first_blocked is None:
+        first_blocked={"stage":"RIGID_MODULE_INSTALL",**rigid_result["first_blocked"]}
+    if rigid_result["first_unknown"] and first_unknown is None:
+        first_unknown={"stage":"RIGID_MODULE_INSTALL",**rigid_result["first_unknown"]}
+    if later_blocked and first_blocked is None:
+        first_blocked={"stage":"LATER_TERRACE",**later_blocked}
+    if later_unknown and first_unknown is None:
+        first_unknown={"stage":"LATER_TERRACE",**later_unknown}
+    unresolved=first_blocked or first_unknown
+
     return {"variant":variant,"steps":steps,"later_elements":late,
-            "first_unverified_step":first,
-            "all_steps_proven":all(x["verdict"]=="GEOMETRY_PASS" for x in steps)
+            "first_unverified_step":first,\n            "rigid_module_install":rigid_result,\n            "first_blocked_operation":first_blocked,\n            "first_unknown_operation":first_unknown,\n            "first_unresolved_dependency":unresolved,
+            "all_steps_proven":rigid_result["verdict"]=="GEOMETRY_PASS" and all(x["verdict"]=="GEOMETRY_PASS" for x in steps)
                  and all(x["verdict"]=="GEOMETRY_PASS" for x in late),
             "mechanical_strength":"NOT_CERTIFIED",
             "notes":["Vertical sweep is a conservative geometric test, not a real grasp/motion planner.",
