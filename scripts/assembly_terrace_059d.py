@@ -50,6 +50,45 @@ def reachable(parts, edges, starts):
     return visited
 
 
+def ordered_finishes(scope, fixed, mobile):
+    """Retest every remaining official terrace placement, posts before top rails.
+
+    Hidden cross bonds are scheduled before deck boards when they are not
+    already part of the fixed support or hand-held module.
+    """
+    existing={p["placement_id"] for p in [*fixed,*mobile]}
+    remaining=[p for p in scope if p["placement_id"] not in existing]
+    def priority(p):
+        pid=p["placement_id"]
+        if "hidden-cross-bond" in pid or "hidden-cross-plate" in pid:
+            return (0,pid)
+        if ":board:" in pid:
+            return (1,pid)
+        if "rail-post:" in pid:
+            return (2,pid)
+        if "rail-top" in pid:
+            return (4,pid)
+        return (3,pid)
+    remaining.sort(key=priority)
+    installed=[*fixed,*mobile]
+    steps=[]
+    for i,p in enumerate(remaining,1):
+        result=check(p,installed)
+        valid=[]
+        for q in installed:
+            c=connection(p,q)
+            if c["status"]=="VALID":
+                valid.append(c)
+        steps.append({"number":i,"piece":p["placement_id"],
+                      "position":[p["x_studs"],p["y_studs"],p["z_plates"]],
+                      "direction":"vertical -Z",
+                      "installed":[q["placement_id"] for q in installed],
+                      "valid_connections":valid,
+                      "collision":result,"verdict":result["verdict"]})
+        installed.append(p)
+    return steps
+
+
 def study(model, variant):
     full = model["parts"]
     assert len(full) == 1890
@@ -79,17 +118,13 @@ def study(model, variant):
     dock = rigid_module_install(mobile, fixed)
     plate_contacts = [connection(by[P + CROSS], by[P + n]) for n in BOARDS]
     post_contacts = [connection(by[P + "board:00001"], p) for p in posts]
-    # All remaining terrace parts are deferred, not silently omitted.
-    installed = [*fixed, *mobile]
-    later = []
-    for p in scope:
-        if p["placement_id"] in {q["placement_id"] for q in installed}:
-            continue
-        result = check(p, installed)
-        later.append({"piece": p["placement_id"], **result})
-        installed.append(p)
+    # Retest the same remaining scope with hidden plates and guardrail posts
+    # scheduled before the elements that would cover them.
+    later = ordered_finishes(scope, fixed, mobile)
     blocked = next((x for x in later if x["verdict"] == "BLOCKED"), None)
     unknown = next((x for x in later if x["verdict"] == "UNKNOWN"), None)
+    counts = {status:sum(x["verdict"]==status for x in later)
+              for status in ("GEOMETRY_PASS","BLOCKED","UNKNOWN","NOT_TESTED")}
     all_connected = len(connected) == len(mobile)
     docking_verified = (all_connected and bool(anchored) and
                         dock["verdict"] == "GEOMETRY_PASS")
@@ -106,6 +141,8 @@ def study(model, variant):
         "fixed_valid_links": fixed_links,
         "rigid_module_install": dock,
         "later_terrace": later,
+        "later_counts": counts,
+        "later_order_rule": "hidden plates, remaining boards, rail posts, other finishes, rail tops",
         "first_blocked_operation": blocked,
         "first_unknown_operation": unknown,
         "docking_geometrically_demonstrated": docking_verified,
@@ -132,6 +169,7 @@ def main(source):
                           "rigid_verdict": report["rigid_module_install"]["verdict"],
                           "first_blocked": report["first_blocked_operation"],
                           "first_unknown": report["first_unknown_operation"],
+                          "later_counts": report["later_counts"],
                           "buildable": report["complete_assembly_demonstrated"]}, indent=2))
     assert path.read_bytes() == before
 
