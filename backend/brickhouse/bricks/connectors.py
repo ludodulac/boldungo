@@ -52,6 +52,16 @@ def validate_connection(a: BrickModelPart,b: BrickModelPart) -> ConnectionResult
     # and 3666.dat underside stud3; 3007s01.dat central tube geometry.
     # Partial overlaps can engage via underside sidewalls/cavities.
     documented = {"BRICK_1X1", "BRICK_1X8", "BRICK_2X8", "PLATE_1X6"}
+    # LDraw 3002s01.dat (2x3) and 2456.dat (2x6) show underside
+    # stud4 tubes and surrounding sidewalls. Only certify the specifically
+    # evidenced one-stud 1x1-post -> 2-wide-brick interface here; do NOT
+    # promote arbitrary overlaps with these families.
+    upper = b if A[5] == B[2] else a
+    lower = a if upper is b else b
+    if upper.part_id in {"BRICK_2X3", "BRICK_2X6"}:
+        if lower.part_id == "BRICK_1X1" and dx == 1 and dy == 1:
+            return ConnectionResult("VALID", 1, "ldraw-3002s01-or-2456-one-stud-sidewall-and-tube")
+        return ConnectionResult("UNKNOWN", dx*dy, "upper-two-wide-interface-not-reviewed-for-this-lower-part")
     if a.part_id not in documented or b.part_id not in documented:
         return ConnectionResult("UNKNOWN",dx*dy,"underside-interface-not-documented-for-part")
     upper = b if A[5] == B[2] else a
