@@ -69,3 +69,10 @@ def test_undocumented_upper_family_remains_unknown():
     post = piece("post", "BRICK_1X1", 4, 34, 33)
     upper = piece("upper", "BRICK_1X3", 4, 34, 36)
     assert validate_connection(post, upper).status == "UNKNOWN"
+
+def test_rotation_changes_actual_stud_footprint():
+    post = piece("post", "BRICK_1X1", 4, 35, 33)
+    unrotated = piece("upper-a", "BRICK_2X3", 3, 33, 36, rotation=0)
+    rotated = piece("upper-b", "BRICK_2X3", 3, 33, 36, rotation=1)
+    assert validate_connection(post, unrotated).status == "VALID"
+    assert validate_connection(post, rotated).status == "INVALID"
