@@ -85,7 +85,18 @@ def ordered_finishes(scope, fixed, mobile):
                       "installed":[q["placement_id"] for q in installed],
                       "valid_connections":valid,
                       "collision":result,"verdict":result["verdict"]})
-        installed.append(p)
+        if result["verdict"] == "GEOMETRY_PASS":
+            installed.append(p)
+        else:
+            # A failed operation cannot become a fictitious installed obstacle.
+            # Stop here; downstream operations depend on an uninstalled piece.
+            for j,q in enumerate(remaining[i:],i+1):
+                steps.append({"number":j,"piece":q["placement_id"],
+                              "position":[q["x_studs"],q["y_studs"],q["z_plates"]],
+                              "direction":"NOT_TESTED","installed":[x["placement_id"] for x in installed],
+                              "valid_connections":[],"collision":None,"verdict":"NOT_TESTED",
+                              "reason":"earlier insertion BLOCKED or UNKNOWN"})
+            break
     return steps
 
 
