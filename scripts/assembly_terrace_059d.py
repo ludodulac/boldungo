@@ -179,13 +179,32 @@ def study(model, variant):
     later = ordered_finishes(scope, docking_fixed, mobile) if plate06_preinstalled else []
     blocked = next((x for x in later if x["verdict"] == "BLOCKED"), None)
     unknown = next((x for x in later if x["verdict"] == "UNKNOWN"), None)
-    # Keep the original 60-operation perimeter: plate06 once, plus 59 deferred.\n    remaining_count=len([p for p in scope if p["placement_id"] not in {q["placement_id"] for q in [*fixed,*mobile]}])\n    if not plate06_preinstalled:\n        later=[{"number":i+2,"piece":p["placement_id"],"verdict":"NOT_TESTED",\n                "reason":"preinstallation of 029:06 not proven"} for i,p in enumerate(\n                p for p in scope if p["placement_id"] not in {q["placement_id"] for q in [*fixed,*mobile,plate06]})]\n    preinstall_step={"number":1,"piece":plate06["placement_id"],\n        "position":[plate06["x_studs"],plate06["y_studs"],plate06["z_plates"]],\n        "direction":"vertical -Z",\n        "installed":[p["placement_id"] for p in fixed],\n        "valid_connections":plate06_valid,"unknown_connections":plate06_unknown,\n        "collision":plate06_check,\n        "verdict":plate06_check["verdict"] if plate06_supported else "UNKNOWN",\n        "holding":"VALID fixed support" if plate06_supported else "NO VALID SUPPORT; hand-held assistance NOT PROVEN"}\n    for i,step in enumerate(later,2):\n        step["number"]=i\n    operations=[preinstall_step,*later]\n    assert len(operations)==remaining_count,(len(operations),remaining_count)\n    counts = {status:sum(x["verdict"]==status for x in operations)
+    # Keep the original 60-operation perimeter: plate06 once, plus 59 deferred.
+    remaining_count=len([p for p in scope if p["placement_id"] not in {q["placement_id"] for q in [*fixed,*mobile]}])
+    if not plate06_preinstalled:
+        later=[{"number":i+2,"piece":p["placement_id"],"verdict":"NOT_TESTED",
+                "reason":"preinstallation of 029:06 not proven"} for i,p in enumerate(
+                p for p in scope if p["placement_id"] not in {q["placement_id"] for q in [*fixed,*mobile,plate06]})]
+    preinstall_step={"number":1,"piece":plate06["placement_id"],
+        "position":[plate06["x_studs"],plate06["y_studs"],plate06["z_plates"]],
+        "direction":"vertical -Z",
+        "installed":[p["placement_id"] for p in fixed],
+        "valid_connections":plate06_valid,"unknown_connections":plate06_unknown,
+        "collision":plate06_check,
+        "verdict":plate06_check["verdict"] if plate06_supported else "UNKNOWN",
+        "holding":"VALID fixed support" if plate06_supported else "NO VALID SUPPORT; hand-held assistance NOT PROVEN"}
+    for i,step in enumerate(later,2):
+        step["number"]=i
+    operations=[preinstall_step,*later]
+    assert len(operations)==remaining_count,(len(operations),remaining_count)
+    counts = {status:sum(x["verdict"]==status for x in operations)
               for status in ("GEOMETRY_PASS","BLOCKED","UNKNOWN","NOT_TESTED")}
     all_connected = len(connected) == len(mobile)
     docking_verified = (plate06_preinstalled and all_connected and bool(anchored) and
                         dock["verdict"] == "GEOMETRY_PASS")
     # Full buildability requires all later steps and hidden-plate dependencies.
-    buildable = (plate06_preinstalled and docking_verified and\n                 all(x["verdict"] == "GEOMETRY_PASS" for x in operations))
+    buildable = (plate06_preinstalled and docking_verified and
+                 all(x["verdict"] == "GEOMETRY_PASS" for x in operations))
     return {
         "variant": variant, "mobile": mobile, "fixed_ids": [p["placement_id"] for p in fixed],
         "internal_connections": internal, "internal_valid_connected": all_connected,
@@ -195,7 +214,11 @@ def study(model, variant):
         "docking_interfaces": cross, "valid_anchors": valid_anchors,
         "anchors_reaching_existing_posts": anchored,
         "fixed_valid_links": fixed_links,
-        "rigid_module_install": dock,\n        "plate06_preinstallation":preinstall_step,\n        "plate06_preinstalled":plate06_preinstalled,\n        "operations":operations,\n        "operations_total":len(operations),
+        "rigid_module_install": dock,
+        "plate06_preinstallation":preinstall_step,
+        "plate06_preinstalled":plate06_preinstalled,
+        "operations":operations,
+        "operations_total":len(operations),
         "plate_06_options":plate_options,
         "later_terrace": later,
         "later_counts": counts,
@@ -226,7 +249,9 @@ def main(source):
                           "rigid_verdict": report["rigid_module_install"]["verdict"],
                           "first_blocked": report["first_blocked_operation"],
                           "first_unknown": report["first_unknown_operation"],
-                          "later_counts": report["later_counts"],\n                          "plate06_preinstalled":report["plate06_preinstalled"],\n                          "operations_total":report["operations_total"],
+                          "later_counts": report["later_counts"],
+                          "plate06_preinstalled":report["plate06_preinstalled"],
+                          "operations_total":report["operations_total"],
                           "plate_06_options":{k:{"precheck":v["plate_preinstallation"],
                               "connected":v["module_valid_connected"],
                               "rigid":v["rigid_install"]["verdict"],
