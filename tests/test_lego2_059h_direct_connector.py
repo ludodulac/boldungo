@@ -39,9 +39,9 @@ def test_059h_real_connector_and_negative_controls():
     for board, expected in ((board1, 2), (board2, 1)):
         result = validate_connection(plate, board)
         print(f"059H PAIR={plate.placement_id} -> {board.placement_id} STATUS={result.status} INTERFACE_COUNT={result.interface_count} REASON={result.reason}", flush=True)
-        # UNKNOWN is the current unmodified implementation, NOT a positive LEGO connection proof.
+        # This narrow, nominally documented connection does NOT certify mechanical strength.
         assert (result.status, result.interface_count, result.reason) == (
-            "UNKNOWN", expected, "underside-interface-not-documented-for-part"
+            "VALID", expected, "ldraw-3623-3007-reviewed-edge-stud-sidewall"
         )
 
     def mutated(part, **kwargs):

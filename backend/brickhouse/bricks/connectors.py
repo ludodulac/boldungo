@@ -1,8 +1,9 @@
 """Conservative connector alignment for canonical rectangular LEGO bricks/plates.
 
-Uses existing catalog dimensions. Only the four LDraw-reviewed rectangular families can return VALID.\nVALID denotes modeled clutch-interface compatibility, not strength.
+Uses existing catalog dimensions. The documented LDraw-reviewed interfaces can return VALID.\nVALID denotes modeled clutch-interface compatibility, not strength.
 Unsupported families and nonstandard placements return UNKNOWN.
 """
+import math
 from dataclasses import dataclass
 from typing import Literal
 from .brick_model import BrickModelPart
@@ -30,6 +31,49 @@ def _box(p: BrickModelPart):
     if p.height_plates is not None and p.height_plates != h:
         return None
     return (p.x_studs,p.y_studs,p.z_plates,p.x_studs+w,p.y_studs+d,p.z_plates+h)
+
+
+def _reviewed_plate_1x3_brick_2x8_edge(lower: BrickModelPart, upper: BrickModelPart) -> bool:
+    """Narrow, nominal LDraw-compatible edge-stud/sidewall interfaces.
+
+    Official 3623s01.dat/3007s01.dat: plate upper studs radius 6 LDU;
+    brick internal sidewall at transverse +/-16 LDU, endwall +/-76,
+    seven interior tubes (radius 8) at longitudinal -60..60 every 20.
+    One plate row x one of the two brick rows: stud center transverse
+    +/-10, touching the inside sidewall. Near the two brick ends, the
+    nearest tube is sqrt(10**2+10**2)-14 > 0 LDU clear. The 4-LDU-tall
+    plate studs fit within the brick underside cavity (y=20..24 LDU);
+    3007s01 transverse reinforcement ribs stop at y=18.5 LDU.
+    This establishes *modeled geometry* only, never mechanical strength.
+
+    Deliberately do NOT generalize to every PLATE_1X3 joint, rotation,
+    or interior placement: those remain UNKNOWN pending further review.
+    """
+    if (lower.part_id != "PLATE_1X3" or lower.category != "plate"
+            or upper.part_id != "BRICK_2X8"
+            or upper.rotation_quarter_turns != 0
+            or lower.rotation_quarter_turns != 0
+            or lower.x_studs not in (upper.x_studs, upper.x_studs + 1)):
+        return False
+    first = max(lower.y_studs, upper.y_studs)
+    last = min(lower.y_studs + 3, upper.y_studs + 8)
+    indices = [y - upper.y_studs for y in range(first, last)]
+    if not indices or len(indices) > 2:
+        return False
+    if not (set(indices) <= {0, 1} or set(indices) <= {6, 7}):
+        return False
+    transverse = -10 if lower.x_studs == upper.x_studs else 10
+    for i in indices:
+        longitudinal = -70 + 20 * i
+        side_clearance = 16 - (abs(transverse) + 6)
+        end_clearance = 76 - (abs(longitudinal) + 6)
+        tube_clearance = min(
+            math.hypot(transverse, longitudinal - tube) - 14
+            for tube in range(-60, 61, 20)
+        )
+        if side_clearance != 0 or end_clearance < 0 or tube_clearance <= 0:
+            return False
+    return True
 
 def validate_connection(a: BrickModelPart,b: BrickModelPart) -> ConnectionResult:
     if a.placement_id == b.placement_id:
@@ -62,6 +106,8 @@ def validate_connection(a: BrickModelPart,b: BrickModelPart) -> ConnectionResult
         if lower.part_id == "BRICK_1X1" and dx == 1 and dy == 1:
             return ConnectionResult("VALID", 1, "ldraw-3002s01-or-2456-one-stud-sidewall-and-tube")
         return ConnectionResult("UNKNOWN", dx*dy, "upper-two-wide-interface-not-reviewed-for-this-lower-part")
+    if _reviewed_plate_1x3_brick_2x8_edge(lower, upper):
+        return ConnectionResult("VALID", dx * dy, "ldraw-3623-3007-reviewed-edge-stud-sidewall")
     if a.part_id not in documented or b.part_id not in documented:
         return ConnectionResult("UNKNOWN",dx*dy,"underside-interface-not-documented-for-part")
     upper = b if A[5] == B[2] else a

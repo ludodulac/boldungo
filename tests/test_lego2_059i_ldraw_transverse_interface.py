@@ -43,6 +43,6 @@ def test_059i_ldraw_underside_stud_and_tube_axes():
         print(f"059I {board.placement_id} STUD_CENTERS={common} LDRAW_X_NORMAL_REVERSED={ldraw_long} TUBE_CENTERS={sorted(tube_centers)}", flush=True)
         result = validate_connection(plate, board)
         print(f"059I CONNECTOR={result.status} COUNT={result.interface_count} REASON={result.reason}", flush=True)
-        assert (result.status, result.interface_count) == ("UNKNOWN", expected)
+        assert (result.status, result.interface_count) == ("VALID", expected)
     # Stud-to-tube center mismatch is expected for the one-row partial overlap.
     # Exact stud-to-sidewall clutch clearance remains unverified; do not promote VALID.

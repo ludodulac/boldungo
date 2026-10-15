@@ -35,6 +35,6 @@ def test_059i_transformed_longitudinal_stud_centers():
         result = validate_connection(plate, board)
         print(f"059I VALIDATOR={result.status} COUNT={result.interface_count} REASON={result.reason}", flush=True)
         assert result.interface_count == expected
-        assert result.status == "UNKNOWN"
+        assert result.status == "VALID"
     # This test does not inspect the LDraw underside tube/sidewall primitives.
-    # Therefore UNKNOWN is the only defensible expected connector status.
+    # The conservative connector now recognizes only reviewed end-row patterns.

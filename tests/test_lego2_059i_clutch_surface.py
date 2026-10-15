@@ -5,7 +5,7 @@ stud.dat radius=6; stud4.dat outer tube radius=8;
 3007s01.dat inner sidewalls at +/-16 LDU and endwalls +/-76 LDU;
 stud rows at +/-10, longitudinal centers -70..70, tubes at -60..60.
 These assertions prove nominal clearance, NOT physical grip or continuous
-mesh intersection-free insertion. The original connector remains UNKNOWN.
+physical grip. Reviewed end-row placements are modeled VALID; strength remains untested.
 """
 import json
 import math
@@ -57,7 +57,7 @@ def test_059i_actual_three_studs_nominal_surfaces():
                 print(f"059I SURFACE board={board.placement_id} house_y={house_y} local_x={long_ldu} local_z={transverse_ldu} side_gap={side} end_gap={end} nearest_tube_x={nearest_tube_y} tube_gap={tube:.6f}", flush=True)
         result = validate_connection(plate, board)
         print(f"059I VALIDATOR board={board.placement_id} STATUS={result.status} INTERFACE_COUNT={result.interface_count} REASON={result.reason}", flush=True)
-        assert (result.status, result.interface_count) == ("UNKNOWN", expected)
+        assert (result.status, result.interface_count) == ("VALID", expected)
 
 
 @pytest.mark.parametrize("transverse,longitudinal,expected", [
