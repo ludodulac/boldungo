@@ -100,6 +100,37 @@ def ordered_finishes(scope, fixed, mobile):
     return steps
 
 
+def plate_06_options(scope, by, base_mobile, base_fixed):
+    """Compare 029:06 in the hand-held module vs preinstalled fixed support."""
+    plate=by[P+"hidden-cross-bond-029:06"]
+    reports={}
+    for option in ("A","B"):
+        moving=[*base_mobile,plate] if option=="A" else list(base_mobile)
+        fixed=[*base_fixed,plate] if option=="B" else list(base_fixed)
+        precheck=check(plate,base_fixed) if option=="B" else None
+        internal=links(moving)
+        connected=reachable(moving,internal,{moving[0]["placement_id"]})
+        dock=rigid_module_install(moving,fixed)
+        anchors=[e for e in links([*moving,*fixed])
+                 if e["status"]=="VALID" and
+                 ((e["a"] in {p["placement_id"] for p in moving}) !=
+                  (e["b"] in {p["placement_id"] for p in moving}))]
+        reports[option]={
+            "plate_06":plate["placement_id"],
+            "plate_preinstallation":precheck,
+            "module_valid_connected":len(connected)==len(moving),
+            "plate_internal_valid_links":[e for e in internal
+                                          if plate["placement_id"] in (e["a"],e["b"])
+                                          and e["status"]=="VALID"],
+            "rigid_install":dock,
+            "valid_docking_interfaces":anchors,
+            "candidate_proven":(len(connected)==len(moving)
+                and dock["verdict"]=="GEOMETRY_PASS"
+                and (option=="A" or precheck["verdict"]=="GEOMETRY_PASS"))
+        }
+    return reports
+
+
 def study(model, variant):
     full = model["parts"]
     assert len(full) == 1890
@@ -127,6 +158,7 @@ def study(model, variant):
     anchored = [e for e in valid_anchors if
                 (e["a"] if e["a"] not in ids else e["b"]) in fixed_reachable]
     dock = rigid_module_install(mobile, fixed)
+    plate_options = plate_06_options(scope, by, mobile, fixed)
     plate_contacts = [connection(by[P + CROSS], by[P + n]) for n in BOARDS]
     post_contacts = [connection(by[P + "board:00001"], p) for p in posts]
     # Retest the same remaining scope with hidden plates and guardrail posts
@@ -151,6 +183,7 @@ def study(model, variant):
         "anchors_reaching_existing_posts": anchored,
         "fixed_valid_links": fixed_links,
         "rigid_module_install": dock,
+        "plate_06_options":plate_options,
         "later_terrace": later,
         "later_counts": counts,
         "later_order_rule": "hidden plates, remaining boards, rail posts, other finishes, rail tops",
@@ -181,6 +214,11 @@ def main(source):
                           "first_blocked": report["first_blocked_operation"],
                           "first_unknown": report["first_unknown_operation"],
                           "later_counts": report["later_counts"],
+                          "plate_06_options":{k:{"precheck":v["plate_preinstallation"],
+                              "connected":v["module_valid_connected"],
+                              "rigid":v["rigid_install"]["verdict"],
+                              "candidate_proven":v["candidate_proven"]}
+                              for k,v in report["plate_06_options"].items()},
                           "buildable": report["complete_assembly_demonstrated"]}, indent=2))
     assert path.read_bytes() == before
 
