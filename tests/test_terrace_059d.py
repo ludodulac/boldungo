@@ -31,3 +31,14 @@ def test_blocked_piece_is_not_installed(monkeypatch):
     assert [x["verdict"] for x in steps]==["BLOCKED","NOT_TESTED"]
     assert len(calls)==1
     assert "hidden-cross-bond:01" not in steps[1]["installed"]
+
+
+def test_preinstallation_requires_valid_support(monkeypatch):
+    from scripts import assembly_terrace_059d as assembly
+    # A free path alone cannot establish an installed plate.
+    plate={"placement_id":"plate06","x_studs":3,"y_studs":23,"z_plates":35}
+    fixed={"placement_id":"post"}
+    monkeypatch.setattr(assembly,"check",lambda p,installed:{"verdict":"GEOMETRY_PASS"})
+    monkeypatch.setattr(assembly,"connection",lambda a,b:{"status":"UNKNOWN"})
+    contacts=[assembly.connection(plate,fixed)]
+    assert not any(c["status"]=="VALID" for c in contacts)
