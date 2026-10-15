@@ -157,22 +157,35 @@ def study(model, variant):
     fixed_reachable = reachable(fixed, fixed_links, post_ids)
     anchored = [e for e in valid_anchors if
                 (e["a"] if e["a"] not in ids else e["b"]) in fixed_reachable]
-    dock = rigid_module_install(mobile, fixed)
+    # 059E solution B: preinstall plate 029:06, then lower the unchanged module.
+    plate06=by[P+"hidden-cross-bond-029:06"]
+    plate06_check=check(plate06,fixed)
+    plate06_connections=[connection(plate06,q) for q in fixed]
+    plate06_valid=[c for c in plate06_connections if c["status"]=="VALID"]
+    plate06_unknown=[c for c in plate06_connections if c["status"]=="UNKNOWN"]
+    plate06_supported=bool(plate06_valid)
+    # If no VALID support exists, an operator-held plate is only a hypothesis:
+    # a free insertion path is not sufficient to mark it installed.
+    plate06_preinstalled=(plate06_check["verdict"]=="GEOMETRY_PASS"
+                           and plate06_supported)
+    docking_fixed=[*fixed,plate06] if plate06_preinstalled else list(fixed)
+    dock=rigid_module_install(mobile,docking_fixed) if plate06_preinstalled else {
+        "verdict":"NOT_TESTED","reason":"plate 029:06 not demonstrably supported before docking"}
     plate_options = plate_06_options(scope, by, mobile, fixed)
     plate_contacts = [connection(by[P + CROSS], by[P + n]) for n in BOARDS]
     post_contacts = [connection(by[P + "board:00001"], p) for p in posts]
     # Retest the same remaining scope with hidden plates and guardrail posts
     # scheduled before the elements that would cover them.
-    later = ordered_finishes(scope, fixed, mobile)
+    later = ordered_finishes(scope, docking_fixed, mobile) if plate06_preinstalled else []
     blocked = next((x for x in later if x["verdict"] == "BLOCKED"), None)
     unknown = next((x for x in later if x["verdict"] == "UNKNOWN"), None)
-    counts = {status:sum(x["verdict"]==status for x in later)
+    # Keep the original 60-operation perimeter: plate06 once, plus 59 deferred.\n    remaining_count=len([p for p in scope if p["placement_id"] not in {q["placement_id"] for q in [*fixed,*mobile]}])\n    if not plate06_preinstalled:\n        later=[{"number":i+2,"piece":p["placement_id"],"verdict":"NOT_TESTED",\n                "reason":"preinstallation of 029:06 not proven"} for i,p in enumerate(\n                p for p in scope if p["placement_id"] not in {q["placement_id"] for q in [*fixed,*mobile,plate06]})]\n    preinstall_step={"number":1,"piece":plate06["placement_id"],\n        "position":[plate06["x_studs"],plate06["y_studs"],plate06["z_plates"]],\n        "direction":"vertical -Z",\n        "installed":[p["placement_id"] for p in fixed],\n        "valid_connections":plate06_valid,"unknown_connections":plate06_unknown,\n        "collision":plate06_check,\n        "verdict":plate06_check["verdict"] if plate06_supported else "UNKNOWN",\n        "holding":"VALID fixed support" if plate06_supported else "NO VALID SUPPORT; hand-held assistance NOT PROVEN"}\n    for i,step in enumerate(later,2):\n        step["number"]=i\n    operations=[preinstall_step,*later]\n    assert len(operations)==remaining_count,(len(operations),remaining_count)\n    counts = {status:sum(x["verdict"]==status for x in operations)
               for status in ("GEOMETRY_PASS","BLOCKED","UNKNOWN","NOT_TESTED")}
     all_connected = len(connected) == len(mobile)
-    docking_verified = (all_connected and bool(anchored) and
+    docking_verified = (plate06_preinstalled and all_connected and bool(anchored) and
                         dock["verdict"] == "GEOMETRY_PASS")
     # Full buildability requires all later steps and hidden-plate dependencies.
-    buildable = docking_verified and all(x["verdict"] == "GEOMETRY_PASS" for x in later)
+    buildable = (plate06_preinstalled and docking_verified and\n                 all(x["verdict"] == "GEOMETRY_PASS" for x in operations))
     return {
         "variant": variant, "mobile": mobile, "fixed_ids": [p["placement_id"] for p in fixed],
         "internal_connections": internal, "internal_valid_connected": all_connected,
@@ -182,7 +195,7 @@ def study(model, variant):
         "docking_interfaces": cross, "valid_anchors": valid_anchors,
         "anchors_reaching_existing_posts": anchored,
         "fixed_valid_links": fixed_links,
-        "rigid_module_install": dock,
+        "rigid_module_install": dock,\n        "plate06_preinstallation":preinstall_step,\n        "plate06_preinstalled":plate06_preinstalled,\n        "operations":operations,\n        "operations_total":len(operations),
         "plate_06_options":plate_options,
         "later_terrace": later,
         "later_counts": counts,
@@ -213,7 +226,7 @@ def main(source):
                           "rigid_verdict": report["rigid_module_install"]["verdict"],
                           "first_blocked": report["first_blocked_operation"],
                           "first_unknown": report["first_unknown_operation"],
-                          "later_counts": report["later_counts"],
+                          "later_counts": report["later_counts"],\n                          "plate06_preinstalled":report["plate06_preinstalled"],\n                          "operations_total":report["operations_total"],
                           "plate_06_options":{k:{"precheck":v["plate_preinstallation"],
                               "connected":v["module_valid_connected"],
                               "rigid":v["rigid_install"]["verdict"],
