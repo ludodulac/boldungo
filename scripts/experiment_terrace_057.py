@@ -51,6 +51,12 @@ def legacy_057_diagnostic(placements):
     def baseline(a, b):
         r = old(a, b)
         if r.status == "VALID":
+            # Freeze pre-059J evidence: this interface had UNKNOWN status
+            # in the 057 benchmark, even if the current connector recognizes
+            # its nominal LDraw edge clutch. Do not rewrite history.
+            if {a.part_id, b.part_id} == {"PLATE_1X3", "BRICK_2X8"}:
+                return ConnectionResult("UNKNOWN", r.interface_count,
+                                        "057-baseline-plate1x3-not-yet-reviewed")
             from brickhouse.bricks.connectors import _box
             A, B = _box(a), _box(b)
             if A is not None and B is not None:
