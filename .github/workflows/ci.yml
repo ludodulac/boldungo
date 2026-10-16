@@ -23,11 +23,35 @@ jobs:
           python -m pip install -e ".[dev]"
           python -m pip install -e "./lego_geometry_engine[dev]"
 
+      - name: Generate real GUIDED-004 BrickModel and inventory
+        run: python scripts/export_guided004_lego.py
+
+      - name: Upload GUIDED-004 actual LEGO export
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lego2-guided004-real-house-export
+          path: artifacts/lego2-guided-004/
+          if-no-files-found: warn
+          retention-days: 30
+
       - name: Run application tests
         run: pytest -q
 
       - name: Install BH-231 browser driver
         run: python -m pip install 'playwright>=1.50,<2'
+
+      - name: Render regenerated GUIDED-004 export in real Chromium
+        run: python tests/browser_guided004_real_export_023b.py
+
+      - name: Upload actual GUIDED-004 browser screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lego2-guided004-browser-proof
+          path: artifacts/lego2-guided-004/viewer-browser.png
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Prove returning benchmark browser stays responsive
         run: python tests/browser_bh231_returning_benchmark.py

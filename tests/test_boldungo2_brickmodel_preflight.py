@@ -18,7 +18,7 @@ def test_actual_brickmodel_fixture_passes_limited_preflight():
 def test_preflight_rejects_non_catalog_part():
     data = opening_wall_brick_model().model_dump(mode="json")
     data["parts"][0]["part_id"] = "FICTIONAL_BRICK"
-    with pytest.raises(ValueError, match="PHYSICAL_GATE_FAIL"):
+    with pytest.raises(ValueError, match="PART_NOT_IN_CANONICAL_CATALOG"):
         check_model_data(data)
 
 

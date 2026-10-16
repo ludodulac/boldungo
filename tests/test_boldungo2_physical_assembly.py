@@ -38,7 +38,7 @@ def test_fake_part_rejected_before_notice(monkeypatch):
                         lambda m: pytest.fail("notice generated before validation"))
     fake = part("fake", 0, 0)
     fake.part_id = "BRICK_SLOPED_4X36"
-    with pytest.raises(ValueError, match="PHYSICAL_GATE_FAIL"):
+    with pytest.raises(ValueError, match="PART_NOT_IN_CANONICAL_CATALOG"):
         pa.generate_physically_screened_assembly_plan(model(fake))
 
 def test_mismatched_dimensions_rejected_before_notice(monkeypatch):
