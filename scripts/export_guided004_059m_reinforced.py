@@ -19,8 +19,12 @@ from brickhouse.bricks.bom import generate_bom
 from brickhouse.bricks.assembly import generate_assembly_plan
 from brickhouse.bricks.instructions import generate_instruction_plan
 from brickhouse.bricks.bags import generate_bag_plan
-from audit_guided004_physical import audit_physical_model
-from audit_terrace_059l_full_house_install import blocked, components
+try:
+    from scripts.audit_guided004_physical import audit_physical_model
+    from scripts.audit_terrace_059l_full_house_install import blocked, components
+except ModuleNotFoundError:  # direct CLI: python scripts/export_guided004_059m_reinforced.py
+    from audit_guided004_physical import audit_physical_model
+    from audit_terrace_059l_full_house_install import blocked, components
 
 SOURCE = Path("artifacts/lego2-guided-004")
 DEST = Path("artifacts/lego2-059m")
