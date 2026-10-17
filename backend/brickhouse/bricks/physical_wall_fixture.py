@@ -1,10 +1,10 @@
-"""Small canonical BrickModel fixture for the physical opening-wall experiment.
+"""Small canonical BrickModel fixture for a geometry-only opening-wall experiment.
 
 This does NOT alter or certify the house's architectural measurements.
 """
 from .brick_model import BrickModel
 from .physical_wall_export import opening_wall_part_records
-from .physical_assembly import generate_physically_screened_assembly_plan
+from .physical_assembly import generate_geometrically_screened_assembly_plan
 
 def opening_wall_brick_model():
     return BrickModel(
@@ -16,7 +16,13 @@ def opening_wall_brick_model():
         parts=opening_wall_part_records(),
     )
 
-def opening_wall_screened_notice():
+def opening_wall_geometrically_screened_notice():
+    """Produce an ordering/geometry-only plan; connectors are NOT checked."""
     model = opening_wall_brick_model()
-    plan = generate_physically_screened_assembly_plan(model)
+    plan = generate_geometrically_screened_assembly_plan(model)
     return model, plan
+
+
+def opening_wall_screened_notice():
+    """Legacy fixture alias for GEOMETRY_ONLY, never strict physical validation."""
+    return opening_wall_geometrically_screened_notice()
