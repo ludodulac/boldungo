@@ -17,6 +17,7 @@ def test_same_unknown_pair_passes_only_explicit_geometric_path():
              Placement("BRICK_1X3", 0, 0, 1)]
     geometry = build_geometrically(parts)
     assert isinstance(geometry, GeometricPlacementGate)
+    assert not isinstance(geometry, PhysicalPlacementGate)
     assert geometry.validation_level == "GEOMETRY_ONLY"
     assert geometry.connector_validation == "NOT_CHECKED"
     assert geometry.physical_certification is False
