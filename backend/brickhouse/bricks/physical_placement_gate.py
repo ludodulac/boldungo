@@ -45,12 +45,8 @@ def _connector_view(part: Placement, index: int) -> BrickModelPart:
         z_plates=part.z, rotation_quarter_turns=part.rotation,
     )
 
-class PhysicalPlacementGate:
-    """Strict 060B connector-evidence placement gate (not a strength certificate)."""
-
-    validation_level = "CONNECTOR_EVIDENCE_STRICT"
-    connector_validation = "REQUIRED_VALID"
-    physical_certification = False
+class _OrthogonalPlacementGate:
+    """Shared catalog, grid, collision and geometric-support tests only."""
 
     def __init__(self):
         self.accepted = []
@@ -82,6 +78,14 @@ class PhysicalPlacementGate:
         self.accepted.append(part)
         return part
 
+
+class PhysicalPlacementGate(_OrthogonalPlacementGate):
+    """Strict 060B: only documented VALID supports; not strength certification."""
+
+    validation_level = "CONNECTOR_EVIDENCE_STRICT"
+    connector_validation = "REQUIRED_VALID"
+    physical_certification = False
+
     def _require_support(self, part, contact_indices):
         """Strict 060B rule: ONLY documented VALID connector evidence supports."""
         if not contact_indices:
@@ -99,7 +103,7 @@ class PhysicalPlacementGate:
         raise ValueError(f"INVALID_CONNECTOR_SUPPORT:{contacts[0].reason}")
 
 
-class GeometricPlacementGate(PhysicalPlacementGate):
+class GeometricPlacementGate(_OrthogonalPlacementGate):
     """Non-certifying geometry-only gate; connector evidence is NOT evaluated.
 
     Shares grid/catalog/rotation/collision checks with the strict gate.
