@@ -11,6 +11,9 @@ def test_actual_brickmodel_fixture_passes_limited_preflight():
     assert result["status"] == "ORTHOGONAL_PREFLIGHT_PASS"
     assert result["model_parts"] == result["notice_parts"] == 12
     assert result["physical_certification"] is False
+    assert result["validation_level"] == "GEOMETRY_ONLY"
+    assert result["connector_validation"] == "NOT_CHECKED"
+    assert result["physical_evidence"] == "NOT_CERTIFIED"
     assert result["insertion"] == "NOT_TESTED"
     assert result["stability"] == "NOT_TESTED"
 

@@ -2,7 +2,7 @@
 
 Engineering fixture only. NOT a validated model of the user's house.
 """
-from brickhouse.bricks.physical_placement_gate import Placement, build
+from brickhouse.bricks.physical_placement_gate import Placement, build_geometrically
 
 def panel_courses(height=5):
     if not isinstance(height, int) or height < 1:
@@ -22,9 +22,15 @@ def panel_courses(height=5):
             result.append(Placement("BRICK_2X2", 10, 0, z))
     return result
 
+def validate_panel_geometry(height=5):
+    """Geometric-only; no LEGO connector compatibility certification."""
+    return build_geometrically(panel_courses(height))
+
+
 def validate_panel(height=5):
-    return build(panel_courses(height))
+    """Historical fixture API: GEOMETRY_ONLY, never physical certification."""
+    return validate_panel_geometry(height)
 
 if __name__ == "__main__":
-    validated = validate_panel()
+    validated = validate_panel_geometry()
     print(f"PANEL_PREFLIGHT_ACCEPTED:{len(validated.accepted)}")
