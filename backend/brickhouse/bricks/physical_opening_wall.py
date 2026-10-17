@@ -4,7 +4,7 @@ This is a validated-placement fixture, not a reconstruction of the house.
 The opening is 4 studs wide and 2 brick courses high.
 A 2x10 lintel spans both piers; this does not certify bending strength.
 """
-from .physical_placement_gate import Placement, build
+from .physical_placement_gate import Placement, build_geometrically
 
 def wall_with_opening():
     parts = []
@@ -37,5 +37,11 @@ def wall_with_opening():
             ])
     return parts
 
+def validate_wall_geometry_with_opening():
+    """Geometric-only, no connector evidence, clutch or stability certification."""
+    return build_geometrically(wall_with_opening())
+
+
 def validate_wall_with_opening():
-    return build(wall_with_opening())
+    """Historical fixture API: explicitly GEOMETRY_ONLY (not physical)."""
+    return validate_wall_geometry_with_opening()
