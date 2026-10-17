@@ -1,7 +1,8 @@
-"""Strict assembly entry point: do not issue a notice for unchecked geometry.
+"""Two explicit assembly preflights sharing catalog, geometry and notice-order checks.
 
-Only canonical rectangular bricks/plates on a ground plane are supported.
-This deliberately refuses legacy visual models rather than silently passing.
+Physical remains strict 060B: documented VALID connectors only.
+Geometric is non-certifying: connector evidence NOT checked.
+Neither mode proves clutch strength, stability or actual insertability.
 """
 from .physical_placement_gate import (
     Placement, PhysicalPlacementGate, GeometricPlacementGate,
