@@ -128,6 +128,7 @@ def check_vertical_insertion(
 
 def audit_notice_vertical_insertion(
     model, notice, target_ids: Sequence[str], *, rise_plates: int = 30,
+    from_above: bool = False, clearance_plates: int = 1,
 ) -> dict[str, dict]:
     """Replay actual completed notice *steps* without guessing intra-step order.
 
@@ -157,13 +158,129 @@ def audit_notice_vertical_insertion(
         group = [by_id[pid] for pid in step.placement_ids]
         for part in group:
             if part.placement_id in target_ids:
-                result = check_vertical_insertion(
-                    part, installed, rise_plates=rise_plates,
-                    unordered_peers=[p for p in group if p.placement_id != part.placement_id],
-                )
+                peers = [p for p in group if p.placement_id != part.placement_id]
+                if from_above:
+                    result = check_vertical_access_from_above(
+                        part, installed, unordered_peers=peers,
+                        clearance_plates=clearance_plates,
+                    )
+                else:
+                    result = check_vertical_insertion(
+                        part, installed, rise_plates=rise_plates,
+                        unordered_peers=peers,
+                    )
                 results[part.placement_id] = result | {
                     "step_id": step.step_id,
                     "step_sequence": step.sequence,
                 }
         installed.extend(group)
     return {pid: results[pid] for pid in target_ids}
+
+
+def check_vertical_access_from_above(
+    moving: BrickModelPart,
+    installed: Sequence[BrickModelPart],
+    *,
+    clearance_plates: int = 1,
+    unordered_peers: Sequence[BrickModelPart] = (),
+) -> dict:
+    """060L: top-down sweep starting *above* the partial model's known solids.
+
+    Unlike 060J's arbitrary +30 plates, the start is determined by the upper
+    face of every known installed orthogonal solid, and also by any same-step
+    peer which *could* have been installed, plus a positive plate margin.
+    Unmodelled solids are NEVER assigned fictional heights. A potentially
+    interfering unknown part above the derived start makes access UNKNOWN.
+    Calls the original 060J collision/ordering check; no second geometry engine.
+    """
+    if type(clearance_plates) is not int or clearance_plates <= 0:
+        raise ValueError("CLEARANCE_PLATES_MUST_BE_POSITIVE_INTEGER")
+    final_bounds = orthogonal_bounds(moving)
+    if final_bounds is None:
+        result = check_vertical_insertion(
+            moving, installed, rise_plates=clearance_plates,
+            unordered_peers=unordered_peers,
+        )
+        return result | {
+            "origin_definition": "NOT_ESTABLISHED_UNSUPPORTED_MOVING_GEOMETRY",
+            "known_installed_max_top_z": None,
+            "known_same_step_max_top_z": None,
+            "positive_margin_plates": clearance_plates,
+            "access_from_outside": "UNKNOWN",
+        }
+
+    known_installed = [b for p in installed
+                       if (b := orthogonal_bounds(p)) is not None]
+    known_peers = [b for p in unordered_peers
+                   if (b := orthogonal_bounds(p)) is not None]
+    installed_ceiling = max((b.z1 for b in known_installed), default=None)
+    peers_ceiling = max((b.z1 for b in known_peers), default=None)
+    highest_known = max(
+        [final_bounds.z0, *(b.z1 for b in [*known_installed, *known_peers])]
+    )
+    initial_bottom_z = highest_known + clearance_plates
+    result = check_vertical_insertion(
+        moving, installed, rise_plates=initial_bottom_z - final_bounds.z0,
+        unordered_peers=unordered_peers,
+    )
+    result.update({
+        "origin_definition": "ABOVE_PARTIAL_MODEL_KNOWN_ORTHOGONAL_ENVELOPE",
+        "known_installed_max_top_z": installed_ceiling,
+        "known_same_step_max_top_z": peers_ceiling,
+        "known_installed_count": len(known_installed),
+        "known_same_step_count": len(known_peers),
+        "positive_margin_plates": clearance_plates,
+        "origin_above_known_solids": True,
+        "scope": "MODEL_UPPER_SPACE_VERTICAL_AABB_SWEEP_ONLY",
+    })
+
+    # In the exterior-from-above mode, an unmodelled obstacle whose *bottom*
+    # starts above the calculated initial z still makes the upper corridor
+    # unresolved. It is not safe to call such a source externally accessible.
+    # Extend the *screening probe*, not the claimed origin, past the obstacle's
+    # known bottom; do not invent its missing top height.
+    swept_probe = replace(
+        final_bounds,
+        z1=final_bounds.z1 + result["rise_plates"],
+    )
+    unknown_above = []
+    for group, key in (
+        (installed, "unknown_geometry"),
+        (unordered_peers, "ambiguous_same_step"),
+    ):
+        for part in group:
+            if orthogonal_bounds(part) is not None:
+                continue
+            probe = replace(swept_probe, z1=max(swept_probe.z1, part.z_plates + 1))
+            if _unverified_could_interfere(part, probe):
+                if part.placement_id not in result[key]:
+                    result[key].append(part.placement_id)
+                unknown_above.append(part.placement_id)
+        result[key].sort()
+
+    result["unverified_upper_corridor_ids"] = sorted(set(unknown_above))
+    if result["blockers"]:
+        result["verdict"] = "BLOCKED"
+        result["reason"] = "INSTALLED_SOLID_INTERSECTS_COMPLETE_TOP_SWEEP"
+    elif result["unknown_geometry"] or result["ambiguous_same_step"]:
+        result["verdict"] = "UNKNOWN"
+        result["reason"] = "UNKNOWN_GEOMETRY_OR_UNORDERED_PEER_IN_UPPER_CORRIDOR"
+    else:
+        result["verdict"] = "GEOMETRY_CLEAR_ONLY"
+        result["reason"] = "COMPLETE_MODEL_TOP_VERTICAL_SWEEP_GEOMETRY_ONLY"
+    result["access_from_outside"] = (
+        "MODEL_TOP_APPROACH_GEOMETRY_ONLY"
+        if result["verdict"] == "GEOMETRY_CLEAR_ONLY"
+        else "NOT_PROVEN"
+    )
+    return result
+
+
+def audit_notice_vertical_access_from_above(
+    model, notice, target_ids: Sequence[str], *, clearance_plates: int = 1,
+) -> dict[str, dict]:
+    """060L: same real notice and same prior-step snapshots as 060J."""
+    return audit_notice_vertical_insertion(
+        model, notice, target_ids,
+        from_above=True, clearance_plates=clearance_plates,
+    )
