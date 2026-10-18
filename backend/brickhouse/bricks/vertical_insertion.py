@@ -216,7 +216,7 @@ def check_vertical_access_from_above(
     installed_ceiling = max((b.z1 for b in known_installed), default=None)
     peers_ceiling = max((b.z1 for b in known_peers), default=None)
     highest_known = max(
-        final_bounds.z0, *(b.z1 for b in [*known_installed, *known_peers])
+        [final_bounds.z0, *(b.z1 for b in [*known_installed, *known_peers])]
     )
     initial_bottom_z = highest_known + clearance_plates
     result = check_vertical_insertion(
