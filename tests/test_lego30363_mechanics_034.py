@@ -1,4 +1,5 @@
 """034+060S: LDraw 30363 top-stud geometry; underside stays unverified."""
+import hashlib
 import json
 from pathlib import Path
 
@@ -123,3 +124,41 @@ def test_guided004_real_section_from_export():
         assert contact_standard_top_to_30363_bottom(
             {(p["x_studs"], p["y_studs"], p["z_plates"])}, placement
         ) == "UNKNOWN_UNDERSIDE"
+
+
+def test_060s_all_1890_canonical_placement_coordinates_match_060m_export():
+    """Baseline: GitHub Actions #39141025551 on immutable LEGO2 060M HEAD.
+
+    Hash ONLY canonical placement facts, not diagnostic 034 evidence whose
+    two historical top-stud cells are intentionally being corrected.
+    """
+    raw = json.loads(Path("artifacts/lego2-guided-004/brick-model.json").read_text())
+    keys = (
+        "placement_id", "part_id", "category", "component",
+        "x_studs", "y_studs", "z_plates", "rotation_quarter_turns",
+        "roof_side", "facade", "width_studs", "length_studs", "height_plates",
+    )
+    placements = sorted(
+        ({key: part.get(key) for key in keys} for part in raw["parts"]),
+        key=lambda part: part["placement_id"],
+    )
+    checksum = hashlib.sha256(
+        json.dumps(placements, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+    assert len(placements) == 1890
+    assert checksum == "c45cc07b416b5d4000daf153a974d28079ba6bbc76b4bfbb335a7f32f660607b"
+
+
+def test_060s_inventory_updates_only_diagnostic_and_keeps_underside_unknown():
+    inventory = json.loads(
+        Path("artifacts/lego2-guided-004/inventory.json").read_text()
+    )
+    section = inventory["roof_section_034"]
+    by_id = {part["placement_id"]: part for part in section["placements"]}
+    assert by_id["roof-000002"]["top_studs_evidenced"] == [
+        [17, 2, 96], [17, 3, 96]
+    ]
+    assert by_id["roof-000002"]["bottom_mating"] == "UNKNOWN_UNDERSIDE"
+    assert section["connector_status"] == "TOP_STUDS_VERIFIED_UNDERSIDE_UNVERIFIED"
+    assert section["physical_certification"] == "NOT_CERTIFIED"
+    assert inventory["mechanical_certification"] == "NOT_CERTIFIED"
