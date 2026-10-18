@@ -4,10 +4,11 @@ import pytest
 from brickhouse.bricks import physical_assembly as pa
 
 def part(pid, x, z):
+    # Already documented VALID by connectors.py; isolate order/coverage failures.
     return SimpleNamespace(
-        placement_id=pid, part_id="BRICK_2X4", x_studs=x,
+        placement_id=pid, part_id="BRICK_2X8", x_studs=x,
         y_studs=0, z_plates=z, rotation_quarter_turns=0,
-        width_studs=2, length_studs=4, height_plates=3,
+        width_studs=2, length_studs=8, height_plates=3,
     )
 
 def model(*parts):

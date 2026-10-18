@@ -1,13 +1,13 @@
-"""Convert a physically screened wall panel to the canonical BrickModel part schema.
+"""Convert a geometry-screened wall fixture to the canonical BrickModel schema.
 
 This is a fixture adapter only: it does not change the user's house geometry.
 """
 from .physical_opening_wall import wall_with_opening
-from .physical_placement_gate import build
+from .physical_placement_gate import build_geometrically
 
 def opening_wall_part_records():
     parts = wall_with_opening()
-    build(parts)  # fail before exporting invalid geometry
+    build_geometrically(parts)  # geometry ONLY; no connector evidence verified
     result = []
     for i, part in enumerate(parts, 1):
         w, l, h = part.dimensions()
