@@ -75,6 +75,46 @@ def _reviewed_plate_1x3_brick_2x8_edge(lower: BrickModelPart, upper: BrickModelP
             return False
     return True
 
+def _reviewed_brick_1x6_1x8_parallel(lower: BrickModelPart, upper: BrickModelPart,
+                                    dx: int, dy: int) -> bool:
+    """Evidence-specific 1-wide 3009.dat / 3008.dat stacked interfaces.
+
+    Official LDraw geometry (NOT a strength/clutch or insertion certificate):
+      3009.dat -> s/3009s01.dat: six top studs at +/-10,30,50 LDU,
+      five underside stud3 centres at -40,-20,0,20,40 LDU;
+      3008.dat -> s/3008s01.dat -> stug3-1x7.dat / stug-1x8.dat:
+      eight top studs at +/-10,30,50,70 and seven underside stud3
+      centres at -60,-40,-20,0,20,40,60 LDU.
+    stud.dat radius 6, stud3.dat radius 4. The 1-wide internal cavity
+    has sidewalls at transverse +/-6 LDU and endwalls at +/- (10*n-4);
+    stud centres are longitudinal +/- (10*n-10), giving >=6 LDU end
+    clearance and 10 LDU stud-to-stud3 separation. There is nominal
+    tangency, without a modeled volumetric interference, for each aligned
+    stud of an orthogonal same-axis overlap. All 162 GUIDED-004 interfaces
+    use equal rotations 0/0 or 1/1, overlaps of 1 to 6 stud columns.
+
+    Sources: https://library.ldraw.org/library/official/parts/3009.dat
+             https://library.ldraw.org/library/official/parts/s/3009s01.dat
+             https://library.ldraw.org/library/official/parts/3008.dat
+             https://library.ldraw.org/library/official/parts/s/3008s01.dat
+             https://library.ldraw.org/library/official/p/stud.dat
+             https://library.ldraw.org/library/official/p/stud3.dat
+
+    Rotations 2/3, perpendicular axes and all other part families stay
+    outside THIS reviewed configuration, even when geometry overlaps.
+    """
+    if ({lower.part_id, upper.part_id} != {"BRICK_1X6", "BRICK_1X8"}
+            or lower.category != "brick" or upper.category != "brick"
+            or lower.rotation_quarter_turns != upper.rotation_quarter_turns
+            or upper.rotation_quarter_turns not in (0, 1)):
+        return False
+    if upper.rotation_quarter_turns == 0:
+        # Unrotated 1xn extends along Y, with the same X stud row.
+        return lower.x_studs == upper.x_studs and dx == 1 and 1 <= dy <= 6
+    # Quarter-turn 1 extends along X, with the same Y stud row.
+    return lower.y_studs == upper.y_studs and dy == 1 and 1 <= dx <= 6
+
+
 def validate_connection(a: BrickModelPart,b: BrickModelPart) -> ConnectionResult:
     if a.placement_id == b.placement_id:
         return ConnectionResult("INVALID",0,"same-placement")
@@ -108,6 +148,10 @@ def validate_connection(a: BrickModelPart,b: BrickModelPart) -> ConnectionResult
         return ConnectionResult("UNKNOWN", dx*dy, "upper-two-wide-interface-not-reviewed-for-this-lower-part")
     if _reviewed_plate_1x3_brick_2x8_edge(lower, upper):
         return ConnectionResult("VALID", dx * dy, "ldraw-3623-3007-reviewed-edge-stud-sidewall")
+    if _reviewed_brick_1x6_1x8_parallel(lower, upper, dx, dy):
+        return ConnectionResult(
+            "VALID", dx * dy, "ldraw-3009-3008-reviewed-parallel-stud3-cavity"
+        )
     if a.part_id not in documented or b.part_id not in documented:
         return ConnectionResult("UNKNOWN",dx*dy,"underside-interface-not-documented-for-part")
     upper = b if A[5] == B[2] else a
