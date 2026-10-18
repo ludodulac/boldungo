@@ -44,7 +44,7 @@ def generate():
     roof_034 = sorted((p for p in model.parts if p.part_id == 'BRICK_SLOPED_18_4X2'), key=lambda p: (p.z_plates, p.x_studs, p.y_studs))
     section_034 = []
     for p in roof_034[:4]:
-        placement = Placement(p.x_studs, p.y_studs, p.z_plates, p.rotation_quarter_turns)
+        placement = Placement(p.x_studs, p.y_studs, p.z_plates, p.rotation_quarter_turns, roof_side=p.roof_side)
         section_034.append({'placement_id': p.placement_id, 'top_studs_evidenced': sorted(top_studs(placement)), 'bottom_mating': contact_standard_top_to_30363_bottom({(p.x_studs,p.y_studs,p.z_plates)}, placement)})
     physical_audit = audit_physical_model(model)
     if physical_audit['collision_voxel_overlaps'] != 0:
