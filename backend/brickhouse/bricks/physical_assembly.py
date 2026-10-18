@@ -1,13 +1,30 @@
-"""Strict assembly entry point: do not issue a notice for unchecked geometry.
+"""Two explicit assembly preflights sharing catalog, geometry and notice-order checks.
 
-Only canonical rectangular bricks/plates on a ground plane are supported.
-This deliberately refuses legacy visual models rather than silently passing.
+Physical remains strict 060B: documented VALID connectors only.
+Geometric is non-certifying: connector evidence NOT checked.
+Neither mode proves clutch strength, stability or actual insertability.
 """
-from .physical_placement_gate import Placement, PhysicalPlacementGate, verify_connected
+from .physical_placement_gate import (
+    Placement, PhysicalPlacementGate, GeometricPlacementGate,
+    verify_connected, verify_geometrically_connected,
+)
 from .assembly import generate_assembly_plan
 
+
 def generate_physically_screened_assembly_plan(model):
-    gate = PhysicalPlacementGate()
+    """Strict 060B path: refuse UNKNOWN connector support before producing a notice."""
+    return _screen_assembly(model, PhysicalPlacementGate, verify_connected, "PHYSICAL")
+
+
+def generate_geometrically_screened_assembly_plan(model):
+    """Non-certifying orthogonal geometry/notice-order check; connectors NOT checked."""
+    return _screen_assembly(
+        model, GeometricPlacementGate, verify_geometrically_connected, "GEOMETRIC"
+    )
+
+
+def _screen_assembly(model, gate_type, connected_check, label):
+    gate = gate_type()
     # Support ordering: ground first, then ascending z; a supported piece
     # can only depend on parts already placed below it.
     for part in sorted(model.parts, key=lambda p: (p.z_plates, p.placement_id)):
@@ -23,20 +40,20 @@ def generate_physically_screened_assembly_plan(model):
             gate.add(Placement(part.part_id, part.x_studs, part.y_studs,
                                part.z_plates, part.rotation_quarter_turns))
         except (ValueError, TypeError) as exc:
-            raise ValueError(f"PHYSICAL_GATE_FAIL:{part.placement_id}:{exc}") from exc
+            raise ValueError(f"{label}_GATE_FAIL:{part.placement_id}:{exc}") from exc
     try:
-        verify_connected(gate.accepted)
+        connected_check(gate.accepted)
     except ValueError as exc:
-        raise ValueError(f"PHYSICAL_GATE_FAIL:{exc}") from exc
+        raise ValueError(f"{label}_GATE_FAIL:{exc}") from exc
     plan = generate_assembly_plan(model)
     # Replay the actual notice order, not just a sorted spatial model.
-    ordered = PhysicalPlacementGate()
+    ordered = gate_type()
     parts_by_id = {part.placement_id: part for part in model.parts}
     scheduled_ids = [pid for step in plan.steps for pid in step.placement_ids]
     if len(scheduled_ids) != len(set(scheduled_ids)):
-        raise ValueError("DUPLICATE_PHYSICAL_NOTICE_PART")
+        raise ValueError(f"DUPLICATE_{label}_NOTICE_PART")
     if set(scheduled_ids) != set(parts_by_id):
-        raise ValueError("PHYSICAL_NOTICE_COVERAGE_MISMATCH")
+        raise ValueError(f"{label}_NOTICE_COVERAGE_MISMATCH")
     for step in plan.steps:
         # Within one instruction step, place lower supporting bricks first.
         for placement_id in sorted(step.placement_ids, key=lambda pid: (parts_by_id[pid].z_plates, pid)):
@@ -49,8 +66,8 @@ def generate_physically_screened_assembly_plan(model):
                     f"UNBUILDABLE_NOTICE_STEP:{step.step_id}:{placement_id}:{exc}"
                 ) from exc
     if len(ordered.accepted) != len(model.parts):
-        raise ValueError("INCOMPLETE_PHYSICAL_NOTICE")
-    verify_connected(ordered.accepted)
+        raise ValueError(f"INCOMPLETE_{label}_NOTICE")
+    connected_check(ordered.accepted)
     return plan
 
 def gate_dimension(part):

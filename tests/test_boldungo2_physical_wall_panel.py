@@ -1,10 +1,11 @@
 """Regression tests for catalog-only staggered wall panel."""
 import pytest
-from brickhouse.bricks.physical_wall_panel import panel_courses, validate_panel
+from brickhouse.bricks.physical_wall_panel import panel_courses, validate_panel_geometry
 from brickhouse.bricks.physical_placement_gate import PhysicalPlacementGate, Placement
 
 def test_five_course_panel_has_17_catalog_bricks():
-    gate = validate_panel(5)
+    gate = validate_panel_geometry(5)
+    assert gate.connector_validation == "NOT_CHECKED"
     assert len(gate.accepted) == 17
     assert all(part.dimensions()[1] == 2 for part in gate.accepted)
     assert sorted({part.z for part in gate.accepted}) == [0, 3, 6, 9, 12]
