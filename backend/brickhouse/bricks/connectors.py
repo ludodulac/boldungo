@@ -115,9 +115,131 @@ def _reviewed_brick_1x6_1x8_parallel(lower: BrickModelPart, upper: BrickModelPar
     return lower.y_studs == upper.y_studs and dy == 1 and 1 <= dx <= 6
 
 
+def _reviewed_guided004_30363_3008_eave(a: BrickModelPart, b: BrickModelPart):
+    """060U: EXACT two GUIDED-004 30363/3008 interfaces, nominal geometry only.
+
+    Official LDraw 30363.dat -> s/30363s01.dat:
+      - roof underside cavity has sidewalls at local X=+/-16 LDU,
+        front inside endwall Z=+6, far endwall Z=-66;
+      - underside hollow tube axes at local (X=0,Z=-10,-30,-50), with
+        8-LDU outside radii (stud4a.dat / stud4s.dat);
+      - a roof inner ceiling is at local Y=4 around Z=0, increasing
+        toward the lower, sloped end (well above the inserted studs).
+      - an internal web around Z=[-42,-34] is outside these interfaces.
+    Official LDraw 3008.dat -> s/3008s01.dat -> stug-1x8.dat:
+      eight top studs, radius 6 LDU, extending 4 LDU above the top.
+
+    For these exact THREE stud centres, the roof-local underside positions
+    are A: (X=10,Z=-20),(X=10,Z=0), B: (X=-10,Z=-20).
+    All three are tangent to the cavity sidewall (0 nominal clearance).
+    The (10,0) stud is also tangent to the front inside endwall.
+    Closest tube's horizontal outside clearance is sqrt(200)-14 > 0 LDU.
+    The stud height lies in the open cavity at roof-local Y=20..24;
+    no web lies within their radius-6 footprints.
+
+    No finite clearance allowance, insertion path, clutch force, or real
+    stability is claimed. All other roof joints remain UNKNOWN.
+    """
+    from .geometry_adapter import CANONICAL_LDRAW_PARTS, _slope_transform
+    from .lego30363_mechanics_034 import _30363_BBOX_ONLY
+
+    roof, wall = (a, b) if a.part_id == "BRICK_SLOPED_18_4X2" else (b, a)
+    if (roof.placement_id != "roof-000002"
+            or roof.part_id != "BRICK_SLOPED_18_4X2"
+            or roof.category != "roof_tile" or roof.component != "roof"
+            or roof.roof_side != "negative"
+            or (roof.x_studs, roof.y_studs, roof.z_plates,
+                roof.rotation_quarter_turns) != (14, 2, 93, 0)):
+        return None
+    walls = {
+        "wall-000699": ((16, 2, 90, 1), {(16, 2), (17, 2)}, {(10, -20), (10, 0)}),
+        "wall-000715": ((16, 3, 90, 0), {(16, 3)}, {(-10, -20)}),
+    }
+    if wall.placement_id not in walls or wall.part_id != "BRICK_1X8":
+        return None
+    if wall.category != "brick" or wall.component != "wall":
+        return None
+    pose, expected_cells, expected_local = walls[wall.placement_id]
+    if (wall.x_studs, wall.y_studs, wall.z_plates,
+            wall.rotation_quarter_turns) != pose:
+        return None
+    # Reject inconsistent metadata, never silently reuse a known placement ID.
+    for part, expected in ((roof, (4, 2, 3)), (wall, (1, 8, 3))):
+        # The BrickModel metadata may be absent or nominal/unrotated.
+        metadata = (part.width_studs, part.length_studs, part.height_plates)
+        if any(value is not None and value != nominal
+               for value, nominal in zip(metadata, expected)):
+            return None
+
+    definition = standard_orthogonal_definitions()["BRICK_1X8"]
+    width, depth = definition.footprint(wall.rotation_quarter_turns)
+    roof_cells = {(x, y) for x in range(14, 18) for y in range(2, 4)}
+    wall_cells = {(x, y)
+                  for x in range(wall.x_studs, wall.x_studs + width)
+                  for y in range(wall.y_studs, wall.y_studs + depth)}
+    engaged_cells = wall_cells & roof_cells
+    if engaged_cells != expected_cells or wall.z_plates + 3 != roof.z_plates:
+        return None
+
+    transform = _slope_transform(
+        roof, CANONICAL_LDRAW_PARTS[roof.part_id], _30363_BBOX_ONLY
+    )
+    rotation = transform.matrix
+    # True 30363 canonical orientation, not the old 034 2x4 grid.
+    if (tuple(rotation[0]), tuple(rotation[1]), tuple(rotation[2])) != (
+        (0.0, 0.0, 1.0, 350.0),
+        (0.0, 1.0, 0.0, -768.0),
+        (-1.0, 0.0, 0.0, 60.0),
+    ):
+        return None
+
+    locals_found = set()
+    for x, y in engaged_cells:
+        # World LDraw coordinates: X=canonical X*20, Z=canonical Y*20,
+        # world Y negative upward. Use inverse of the existing R matrix.
+        world = ((x + 0.5) * 20.0,
+                 -roof.z_plates * 8.0,
+                 (y + 0.5) * 20.0)
+        delta = tuple(world[i] - rotation[i][3] for i in range(3))
+        lx, ly, lz = (
+            sum(rotation[i][j] * delta[i] for i in range(3))
+            for j in range(3)
+        )
+        # The wall stud has a 4-LDU vertical span, Y=20..24
+        # relative to this roof. Only this insertion-free final pose
+        # is assessed, never the vertical approach trajectory.
+        stud_tip_y = ly - 4.0
+        if abs(ly - 24.0) > 1e-6 or abs(stud_tip_y - 20.0) > 1e-6:
+            return None
+        if min(
+            16.0 - abs(lx) - 6.0,  # internal left/right sidewalls
+            6.0 - lz - 6.0,       # high-end cavity wall at Z=+6
+            lz - 6.0 + 66.0,      # low-end cavity wall at Z=-66
+        ) < -1e-6:
+            return None
+        if min(math.hypot(lx, lz - tube_z) - 14.0
+               for tube_z in (-10.0, -30.0, -50.0)) <= 0.0:
+            return None
+        # For Z=-20 or Z=0 the roof's underside is well above the
+        # inserted stud tip; internal web Z=-42..-34 cannot intersect.
+        if not any(abs(lx - xx) < 1e-6 and abs(lz - zz) < 1e-6
+                   for xx, zz in expected_local):
+            return None
+        locals_found.add((round(lx), round(lz)))
+    if locals_found != expected_local:
+        return None
+    return ConnectionResult(
+        "VALID", len(engaged_cells),
+        "ldraw-30363-3008-guided004-eave-reviewed-sidewall-tube",
+    )
+
+
 def validate_connection(a: BrickModelPart,b: BrickModelPart) -> ConnectionResult:
     if a.placement_id == b.placement_id:
         return ConnectionResult("INVALID",0,"same-placement")
+    reviewed_eave = _reviewed_guided004_30363_3008_eave(a, b)
+    if reviewed_eave is not None:
+        return reviewed_eave
     A,B=_box(a),_box(b)
     if A is None or B is None:
         return ConnectionResult("UNKNOWN",0,"unsupported-or-inconsistent-catalog-geometry")
