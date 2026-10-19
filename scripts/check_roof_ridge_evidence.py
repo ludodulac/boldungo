@@ -14,12 +14,16 @@ from pathlib import Path
 
 from brickhouse.bricks.brick_model import BrickModel
 from brickhouse.bricks.roof_ridge_diagnostics import analyze_roof_ridge_evidence
+from brickhouse.bricks.roof_mesh_preflight import preflight_roof_mesh
+from lego_geometry_engine import LDrawLibrary
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Advisory LEGO roof ridge preflight for any BrickModel")
     parser.add_argument("export_json", type=Path, help="BrickModel JSON or viewer bundle JSON")
     parser.add_argument("--full", action="store_true", help="Include per-ridge details and sample pairs")
+    parser.add_argument("--ldraw-root", type=Path, help="Optional local LDraw library for a bounded real-mesh preflight")
+    parser.add_argument("--max-mesh-pairs", type=int, default=3, help="Max candidate pairs to mesh-check (default: 3)")
     args = parser.parse_args()
     data = json.loads(args.export_json.read_text(encoding="utf-8"))
     brick_model = BrickModel.model_validate(data.get("brick_model", data))
@@ -35,6 +39,12 @@ def main() -> None:
             report["opposing_slope_same_level_projection"]["candidate_pairs"],
             "mesh_intersection_verdict": "NOT_EVALUATED",
         }
+    if args.ldraw_root is not None:
+        if not args.ldraw_root.is_dir():
+            parser.error("--ldraw-root must identify an existing LDraw library directory")
+        report["mesh_preflight"] = preflight_roof_mesh(
+            brick_model, LDrawLibrary(args.ldraw_root), max_pairs=args.max_mesh_pairs,
+        )
     print(json.dumps(report, indent=2, ensure_ascii=False))
 
 
