@@ -81,3 +81,10 @@ def test_guided004_production_export_is_input_not_a_special_case():
     assert r["ridge_alignment_counts"] == {"ONE_SIDE_STUD_PROJECTION_ONLY": 12}
     assert r["opposing_slope_same_level_projection"]["candidate_pairs"] == 23
     assert r["physical_certification"] == "NOT_CERTIFIED"
+
+def test_single_gable_side_does_not_require_a_ridge():
+    m = model("incomplete-roof", part("slope", "BRICK_SLOPED_18_4X2", "negative", 0, 0, 9))
+    r = analyze_roof_ridge_evidence(m)
+    assert r["roof_pattern"] == "OTHER_OR_MIXED_ROOF"
+    assert not r["ridge_missing_in_gable_candidate"]
+    assert r["physical_certification"] == "NOT_CERTIFIED"
