@@ -59,7 +59,7 @@ def analyze_roof_ridge_evidence(model, *, stud_provider: Callable | None = None)
         pattern = "NO_ROOF"
     elif mono and not slopes and not ridge:
         pattern = "MONO_PITCH_NO_RIDGE_EXPECTED"
-    elif slopes and not mono:
+    elif {p.roof_side for p in slopes} == {"negative", "positive"} and not mono:
         pattern = "GABLE_CANDIDATE"
     else:
         pattern = "OTHER_OR_MIXED_ROOF"
