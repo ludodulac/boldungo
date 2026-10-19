@@ -15,8 +15,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install existing BrickHouse engine
-        run: python -m pip install -e ".[dev]"
+      - name: Install existing BrickHouse and LDraw geometry engines
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
       - name: Execute actual GUIDED-004 conversion and inventory
         run: python scripts/export_guided004_lego.py
       - name: Validate generated viewer bundle and exact counts
