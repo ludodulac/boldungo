@@ -16,6 +16,7 @@ from .catalog import standard_orthogonal_definitions
 from .connectors import validate_connection
 from .ridge_proposal_3d_066 import _pair
 from .ridge_tile_upper_interface_073 import inspect_3002_26603_upper_interface
+from .ridge_clutch_verifier_074 import validate_3002_26603_clutch
 from .ridge_structural_posts_070 import assess_structural_ridge_posts
 from .roof import create_m0_roof_catalog
 from .roof_ridge_diagnostics import _footprint
@@ -90,6 +91,7 @@ def assess_ridge_cap_adapters(model, library=None, *, max_sites=8, max_mesh_pair
             "replaces_experimental_post_top": False,
             "lower_post_to_headpiece": "UNKNOWN",
             "headpiece_to_ridge_tile": "UNKNOWN_UNREVIEWED_TILE_UNDERSIDE",
+            "upper_clutch_review": {"status": "UNKNOWN", "reason": "NOT_EVALUATED"},
             "upper_interface_geometry": {"status": "UNKNOWN_NOT_EVALUATED"},
             "roof_slope_connections": "UNKNOWN_UNREVIEWED",
             "insertion_path": "UNKNOWN_NOT_PROVEN",
@@ -159,6 +161,8 @@ def assess_ridge_cap_adapters(model, library=None, *, max_sites=8, max_mesh_pair
         row["replaces_experimental_post_top"] = True
         # Existing walls/roof bricks aren't removed to make the cap fit.
         nearby, unreviewed = _nearby_existing(model, cap, cap_footprint=head_fp)
+        row["upper_clutch_review"] = validate_3002_26603_clutch(
+            cap, ridge, library, surrounding=nearby, max_pair_checks=12)
         row["existing_mesh_neighbors"] = sorted(p.placement_id for p in nearby)
         row["unreviewed_existing_parts"] = sorted(unreviewed)[:20]
         pairs = [(cap, ridge)] + [(cap, part) for part in nearby]
@@ -192,7 +196,8 @@ def assess_ridge_cap_adapters(model, library=None, *, max_sites=8, max_mesh_pair
         "physical_certification": "NOT_CERTIFIED",
         "limitations": (
             "Reviewed 1x1->2x3 joint only proves nominal geometry, never load. "
-            "26603 nominal tube layout checked by 073, but physical clutch "
+            "26603 tube layout checked by 073 and bounded 074 LDraw "
+            "insertion samples, but physical clutch "
             "still UNKNOWN. Connection to two roof slopes and preexisting "
             "seam collision, post stability, foundations, full nearby facade "
             "clearance and insertion path remain UNKNOWN. Cap is an experimental "
