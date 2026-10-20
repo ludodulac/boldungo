@@ -32,7 +32,7 @@ def locations(name: str):
     raise ValueError("Unsafe/unexpected LDraw reference: " + name)
 
 
-def download_ldraw_subset(root: Path, *, initial=("30363.dat", "26603.dat"),
+def download_ldraw_subset(root: Path, *, initial=("30363.dat", "26603.dat", "3068b.dat"),
                           max_files=180):
     root.mkdir(parents=True, exist_ok=True)
     pending = deque(initial)
