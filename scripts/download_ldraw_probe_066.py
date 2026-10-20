@@ -78,8 +78,14 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("output", type=Path)
     parser.add_argument("--max-files", type=int, default=180)
+    parser.add_argument("--parts", nargs="+", metavar="LDRAW_ID",
+                        help="optional exact starting parts; keeps the existing default otherwise")
     args = parser.parse_args()
-    paths = download_ldraw_subset(args.output, max_files=args.max_files)
+    parts = tuple(name if name.lower().endswith(".dat") else name + ".dat"
+                  for name in args.parts) if args.parts else (
+                  "30363.dat", "26603.dat", "3068b.dat")
+    paths = download_ldraw_subset(
+        args.output, initial=parts, max_files=args.max_files)
     print("LDRAW_PINNED_REVISION=" + LDraw_MIRROR_SHA)
     print("LDRAW_SUBSET_FILES=" + str(len(paths)))
     print("LDRAW_PARTS=" + ",".join(sorted(
