@@ -35,8 +35,14 @@ def gable(*other):
                  roof("pos", "positive", 39, 0, 117), *other)
 
 
+def anchored_wall(x, y, top):
+    # True nominal path to global model z=0; not a foundation certificate.
+    return [wall(f"support-{x}-{y}-{z}", x, y, z)
+            for z in range(0, top, 3)]
+
+
 def test_real_wall_top_uses_existing_1x1_parts_not_moving_roof():
-    model = gable(wall("host", 40, 0, 111))
+    model = gable(*anchored_wall(40, 0, 111), wall("host", 40, 0, 111))
     before = model.model_dump_json()
     r = assess_structural_ridge_posts(model)
     assert r["candidate_cover_count"] == 1
@@ -50,7 +56,10 @@ def test_real_wall_top_uses_existing_1x1_parts_not_moving_roof():
     assert site["lid_to_slopes"].startswith("UNKNOWN")
     assert site["post_to_lid"].startswith("UNKNOWN")
     assert site["insertion"].startswith("UNKNOWN")
-    assert r["original_part_count"] == 3
+    assert r["original_part_count"] == len(model.parts)
+    assert site["host_support_path"]["status"] == "DOCUMENTED_NOMINAL_WALL_STUD_PATH_TO_Z0"
+    assert site["host_support_path"]["route_base_to_anchor"][0] == "support-40-0-0"
+    assert site["host_support_path"]["ground_foundation"].startswith("UNKNOWN")
     assert r["physical_certification"] == "NOT_CERTIFIED"
     assert r["model_mutated"] is False
     assert model.model_dump_json() == before
@@ -59,7 +68,7 @@ def test_real_wall_top_uses_existing_1x1_parts_not_moving_roof():
 def test_perpendicular_roof_axis_uses_real_interior_row_and_wall():
     m = house(roof("neg", "negative", 14, 2, 93, 1),
               roof("pos", "positive", 14, 2, 93, 1),
-              wall("host", 14, 3, 87))
+              *anchored_wall(14, 3, 87), wall("host", 14, 3, 87))
     r = assess_structural_ridge_posts(m)
     assert r["candidate_cover_count"] == 1
     site = r["sites"][0]
@@ -90,7 +99,7 @@ def test_non_brick_height_fails_closed_without_fabricated_plate_joint():
 
 
 def test_foreign_masonry_blocks_column_without_removing_existing_part():
-    m = gable(wall("host", 40, 0, 111),
+    m = gable(*anchored_wall(40, 0, 111), wall("host", 40, 0, 111),
               wall("interfering", 40, 0, 119))
     before = m.model_dump_json()
     r = assess_structural_ridge_posts(m)
@@ -100,7 +109,7 @@ def test_foreign_masonry_blocks_column_without_removing_existing_part():
 
 
 def test_ldraw_is_required_and_missing_roof_mesh_stays_unknown():
-    m = gable(wall("host", 40, 0, 111))
+    m = gable(*anchored_wall(40, 0, 111), wall("host", 40, 0, 111))
     lib = LDrawLibrary(Path("lego_geometry_engine/tests/fixtures/ldraw"))
     r = assess_structural_ridge_posts(m, lib)
     site = r["sites"][0]
@@ -123,7 +132,7 @@ def test_mono_roof_not_falsely_required_to_have_two_sided_ridge():
 
 
 def test_limited_budget_and_non_mutation():
-    m = gable(wall("host", 40, 0, 111))
+    m = gable(*anchored_wall(40, 0, 111), wall("host", 40, 0, 111))
     r = assess_structural_ridge_posts(
         m, LDrawLibrary(Path("lego_geometry_engine/tests/fixtures/ldraw")),
         max_mesh_pairs=1)
