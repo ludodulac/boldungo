@@ -175,7 +175,18 @@ def assess_structural_ridge_posts(model, library=None, *,
             and part.z_plates <= tile["z_plates"]
             and part.z_plates + roof_catalog.get(part.part_id).height_plates >= bottom
         ]
-        mesh_targets = [
+        # The NEW transverse cover is part of the proposal, not the
+        # existing roof. Its mesh contact with the top post must be checked
+        # separately; a connector proof still cannot be inferred from it.
+        proposed_cover = BrickModelPart(
+            placement_id=f"EXPERIMENT-070-COVER-{index:03d}",
+            part_id=tile["part_id"], category="ridge_tile",
+            component="roof", roof_side="ridge",
+            x_studs=tile["x_studs"], y_studs=tile["y_studs"],
+            z_plates=tile["z_plates"],
+            rotation_quarter_turns=tile["rotation_quarter_turns"],
+        )
+        mesh_targets = [(posts[-1], proposed_cover)] + [
             (post, roof_part)
             for post in posts for roof_part in nearby_roof
             if roof_part.z_plates <= post.z_plates + 3
