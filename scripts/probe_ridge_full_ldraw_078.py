@@ -25,7 +25,9 @@ REAL_MESH_RELATIONS = {"SEPARATED", "CONTACT", "COLLISION"}
 def _part(pid, part_id, category, component, x, y, z, rotation=0, side=None):
     return BrickModelPart(
         placement_id=pid, part_id=part_id, category=category,
-        component=component, roof_side=side, x_studs=x, y_studs=y,
+        component=component, roof_side=side,
+        facade="front" if component == "wall" else None,
+        x_studs=x, y_studs=y,
         z_plates=z, rotation_quarter_turns=rotation,
     )
 
