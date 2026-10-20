@@ -28,7 +28,7 @@ jobs:
             --max-files 240 --parts 3005 26603 30363 87079
       - name: Localize three surface crossings with REAL LDraw triangles
         run: |
-          python scripts/diagnose_ridge_collision_surfaces_079.py \
+          python -m scripts.diagnose_ridge_collision_surfaces_079 \
             --ldraw-root /tmp/lego2-079-ldraw \
             --output artifacts/lego2-079/ridge-three-collision-zones.json
       - name: Assert six localized collision records and conservative verdicts
