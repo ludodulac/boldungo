@@ -17,7 +17,7 @@ from lego_geometry_engine import LDrawLibrary
 from .ridge_bridge_planner_065 import propose_ridge_bridges
 from .ridge_seam_offsets_067 import probe_ridge_seam_offsets, _shifted
 from .ridge_proposal_3d_066 import _pair
-from .roof import create_m0_roof_catalog
+from .roof import create_m0_roof_catalog, SUPPORTED_SLOPE_FAMILIES
 
 
 def audit_full_ridge(model, library: LDrawLibrary, *,
@@ -43,6 +43,8 @@ def audit_full_ridge(model, library: LDrawLibrary, *,
     geometry_counts = Counter()
     shifted_tiles = []
     exact_geometry_cache = {}
+    roof_course_status = Counter()
+    catalog = create_m0_roof_catalog()
     for idx in range(min(len(planned), max_sites)):
         experiment = probe_ridge_seam_offsets(
             model, library, proposal_index=idx, max_offset=shift_studs,
@@ -69,8 +71,45 @@ def audit_full_ridge(model, library: LDrawLibrary, *,
         ]
         geometry_counts["baseline:" + seam0] += 1
         geometry_counts["shifted:" + seam1] += 1
+        positive_part = all_parts.get(experiment["base_pair"][1])
+        previous_ids = experiment["previous_course_ids"]
+        course = {"status": "UNKNOWN_PREVIOUS_COURSE_OR_FAMILY"}
+        if positive_part is not None and len(previous_ids) == 1:
+            previous_part = all_parts.get(previous_ids[0])
+            try:
+                part_family = catalog.get(positive_part.part_id).slope_family
+            except KeyError:
+                part_family = None
+            family = next((f for f in SUPPORTED_SLOPE_FAMILIES
+                           if f.id == part_family), None)
+            if previous_part is not None and family is not None:
+                axis_field = ("x_studs" if experiment["shift_axis"] == "x"
+                              else "y_studs")
+                previous_axis = getattr(previous_part, axis_field)
+                original_axis = getattr(positive_part, axis_field)
+                original_step = abs(previous_axis - original_axis)
+                shifted_step = abs(previous_axis - (
+                    original_axis + shifted["positive_roof_shift_studs"]))
+                proper_rise = (positive_part.z_plates - previous_part.z_plates
+                               == family.rise_plates)
+                consistent = (shifted_step == family.course_advance_studs
+                              and proper_rise)
+                course = {
+                    "status": ("PRESERVED_NOMINAL_COURSE_ADVANCE" if consistent
+                               else "BROKEN_NOMINAL_COURSE_ADVANCE"),
+                    "family": family.id,
+                    "required_advance_studs": family.course_advance_studs,
+                    "original_advance_studs": original_step,
+                    "shifted_advance_studs": shifted_step,
+                    "required_rise_plates": family.rise_plates,
+                    "rise_plates_preserved": proper_rise,
+                }
+        roof_course_status[course["status"]] += 1
         status = (
-            "UNKNOWN" if seam1 == "UNKNOWN" or
+            "BROKEN_ROOF_COURSE_GEOMETRY"
+            if course["status"] == "BROKEN_NOMINAL_COURSE_ADVANCE"
+            else "UNKNOWN" if course["status"] != "PRESERVED_NOMINAL_COURSE_ADVANCE"
+            or seam1 == "UNKNOWN" or
             any(value == "UNKNOWN" for value in tile_relations + previous_relations)
             else "INTERSECTION_REVIEW_REQUIRED"
             if seam1 == "COLLISION" or "COLLISION" in tile_relations + previous_relations
@@ -89,6 +128,7 @@ def audit_full_ridge(model, library: LDrawLibrary, *,
             "shifted_bridge_to_slopes": tile_relations,
             "shifted_to_previous_course": previous_relations,
             "previous_course_ids": experiment["previous_course_ids"],
+            "course_advance_validation": course,
             "status": status,
         })
         # Neighbor checks must model the *entire row shifted together*, not
@@ -140,6 +180,7 @@ def audit_full_ridge(model, library: LDrawLibrary, *,
         "unique_mesh_relations_computed": len(exact_geometry_cache),
         "mesh_reuse_method": "EXACT_RELATIVE_LDRAW_TRANSFORM_EQUIVALENCE",
         "geometry_counts": dict(sorted(geometry_counts.items())),
+        "nominal_course_geometry_counts": dict(sorted(roof_course_status.items())),
         "sites_with_unknown_geometry": missing,
         "sites_with_review_required_intersection": intersections,
         "sites": rows,
