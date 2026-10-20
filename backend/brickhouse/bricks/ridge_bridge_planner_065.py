@@ -86,10 +86,13 @@ def propose_ridge_bridges(model, *, stud_provider=None, max_tiles=2000) -> dict:
             continue
         neg_cross, pos_cross = next(iter(negative)), next(iter(positive))
         width = abs(neg_cross - pos_cross) + 1
-        if width < 2 or width > 4:
+        if width > 4:
+            # Normal lower roof courses have opposite slopes separated by
+            # many studs; they are not competing ridge-bridge candidates.
+            continue
+        if width < 2:
             unresolved.append({"z": z, "axis": axis, "along": along,
-                               "reason": "NO_SUPPORTED_BRIDGE_WIDTH",
-                               "cross_distance_studs": abs(neg_cross - pos_cross)})
+                               "reason": "OPPOSING_STUDS_AT_SAME_CELL"})
             continue
         low = min(neg_cross, pos_cross)
         groups[(z, axis, low, width)].append(along)
