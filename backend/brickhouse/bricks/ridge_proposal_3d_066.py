@@ -22,7 +22,7 @@ from .roof_ridge_diagnostics import _footprint, _studs_documented
 from .roof import create_m0_roof_catalog
 
 
-def _pair(a, b, library: LDrawLibrary, cache: dict) -> dict:
+def _pair(a, b, library: LDrawLibrary, cache: dict, relation_cache: dict | None = None) -> dict:
     ids = sorted((a.placement_id, b.placement_id))
     result = {"part_a": ids[0], "part_b": ids[1]}
     try:
@@ -30,10 +30,30 @@ def _pair(a, b, library: LDrawLibrary, cache: dict) -> dict:
             if part.placement_id not in cache:
                 cache[part.placement_id] = brick_model_part_to_instance(part, library)
         first, second = cache[a.placement_id], cache[b.placement_id]
-        if first.bbox.relation(second.bbox) is Relation.SEPARATED:
-            relation = Relation.SEPARATED
+        # Identical LDraw meshes with identical world rotations and exactly
+        # the same relative translation have identical intersection status
+        # under a common rigid translation. This is a strict equivalence,
+        # not a guess based on architectural symmetry.
+        def rotation(instance):
+            return tuple(tuple(round(v, 7) for v in row[:3])
+                         for row in instance.transform.matrix[:3])
+
+        delta = tuple(round(second.transform.matrix[i][3] -
+                            first.transform.matrix[i][3], 7)
+                      for i in range(3))
+        equivalence_key = (first.definition.part_id, second.definition.part_id,
+                           rotation(first), rotation(second), delta)
+        if relation_cache is not None and equivalence_key in relation_cache:
+            relation = relation_cache[equivalence_key]
+            result["mesh_evidence_method"] = "EXACT_TRANSLATION_EQUIVALENCE"
         else:
-            relation = check_collision(first, second)
+            if first.bbox.relation(second.bbox) is Relation.SEPARATED:
+                relation = Relation.SEPARATED
+            else:
+                relation = check_collision(first, second)
+            if relation_cache is not None:
+                relation_cache[equivalence_key] = relation
+            result["mesh_evidence_method"] = "DIRECT_LDRAW_MESH"
         result["mesh_relation"] = relation.value
         result["status"] = {
             Relation.SEPARATED: "MESH_SEPARATED",
