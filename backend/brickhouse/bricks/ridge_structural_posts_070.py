@@ -14,6 +14,8 @@ from __future__ import annotations
 from collections import Counter
 
 from .brick_model import BrickModelPart
+from .ridge_anchor_path_071 import trace_documented_wall_anchor
+from .support_chain import analyze_standard_brick_support_chain
 from .catalog import standard_orthogonal_definitions
 from .connectors import validate_connection
 from .ridge_bridge_planner_065 import propose_ridge_bridges
@@ -85,6 +87,7 @@ def assess_structural_ridge_posts(model, library=None, *,
         else:
             hosts.append((part, definition, frozenset(_host_cells(part, definition))))
     results = []
+    support_report = None  # calculated only if a candidate passes post connector checks
     mesh_checks = 0
     cache, relations = {}, {}
     for index, tile in enumerate(proposals["proposed_tiles"]):
@@ -101,6 +104,7 @@ def assess_structural_ridge_posts(model, library=None, *,
             "insertion": "UNKNOWN_NOT_PROVEN",
             "structural_strength": "UNKNOWN_NOT_MEASURED",
             "mesh_checks": [],
+            "host_support_path": {"status": "UNKNOWN_NOT_EVALUATED"},
         }
         if not interior:
             site["status"] = "NO_INTERIOR_CELL_FOR_POST"
@@ -141,6 +145,21 @@ def assess_structural_ridge_posts(model, library=None, *,
         site["post_connector_statuses"] = statuses
         if any(s != "VALID" for s in statuses):
             site["status"] = "UNKNOWN_OR_INVALID_POST_CONNECTORS"
+            results.append(site)
+            continue
+
+        # 071: a stud column on a floating wall is not a real structural
+        # anchor. The existing support-chain graph only finds nominal
+        # overlap, so recheck each edge with the documented connector gate.
+        if support_report is None:
+            support_report = analyze_standard_brick_support_chain(model)
+        anchor_path = trace_documented_wall_anchor(
+            model, host, support_report=support_report)
+        site["host_support_path"] = anchor_path
+        if anchor_path["status"] != "DOCUMENTED_NOMINAL_WALL_STUD_PATH_TO_Z0":
+            site["status"] = "UNKNOWN_UNANCHORED_RIDGE_POST"
+            # These were hypothetical placements, not an acceptable plan.
+            site["post_parts"] = []
             results.append(site)
             continue
 
@@ -225,9 +244,11 @@ def assess_structural_ridge_posts(model, library=None, *,
         "original_part_count": len(model.parts),
         "physical_certification": "NOT_CERTIFIED",
         "limitations": (
-            "No slope was moved. Post-to-cover underside clutch, two-sided "
-            "cover-to-slope clutch, baseline slope collision, strength/load "
-            "capacity, full roof clearance and insertion sequence remain "
-            "unverified. A ridge post does not by itself make a solid roof."
+            "No slope was moved. Ridge-post wall anchors must have a documented "
+            "nominal path to model z=0; z=0 is NOT a validated foundation. "
+            "Post-to-cover underside clutch, two-sided cover-to-slope clutch, "
+            "baseline slope collision, strength/load capacity, full roof "
+            "clearance and insertion sequence remain unverified. A ridge post "
+            "does not by itself make a solid roof."
         ),
     }
