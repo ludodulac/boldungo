@@ -15,6 +15,7 @@ from .brick_model import BrickModelPart
 from .catalog import standard_orthogonal_definitions
 from .connectors import validate_connection
 from .ridge_proposal_3d_066 import _pair
+from .ridge_tile_upper_interface_073 import inspect_3002_26603_upper_interface
 from .ridge_structural_posts_070 import assess_structural_ridge_posts
 from .roof import create_m0_roof_catalog
 from .roof_ridge_diagnostics import _footprint
@@ -89,6 +90,7 @@ def assess_ridge_cap_adapters(model, library=None, *, max_sites=8, max_mesh_pair
             "replaces_experimental_post_top": False,
             "lower_post_to_headpiece": "UNKNOWN",
             "headpiece_to_ridge_tile": "UNKNOWN_UNREVIEWED_TILE_UNDERSIDE",
+            "upper_interface_geometry": {"status": "UNKNOWN_NOT_EVALUATED"},
             "roof_slope_connections": "UNKNOWN_UNREVIEWED",
             "insertion_path": "UNKNOWN_NOT_PROVEN",
             "torsional_stability": "UNKNOWN_NOT_MEASURED",
@@ -143,6 +145,11 @@ def assess_ridge_cap_adapters(model, library=None, *, max_sites=8, max_mesh_pair
             row["status"] = "UNKNOWN_OR_INVALID_HEADPIECE_CONNECTOR"
             rows.append(row)
             continue
+        upper = inspect_3002_26603_upper_interface(cap, ridge)
+        row["upper_interface_geometry"] = upper
+        row["headpiece_to_ridge_tile"] = upper["upper_clutch"]
+        # Nominal top-stud geometry must never override collision checks,
+        # nor assert a physically tested clutch or tile-to-slope assembly.
         row["headpiece"] = {
             "part_id": cap.part_id, "ldraw_id": "3002",
             "component": "roof_support", "x_studs": cap.x_studs,
@@ -185,7 +192,8 @@ def assess_ridge_cap_adapters(model, library=None, *, max_sites=8, max_mesh_pair
         "physical_certification": "NOT_CERTIFIED",
         "limitations": (
             "Reviewed 1x1->2x3 joint only proves nominal geometry, never load. "
-            "26603 underside clutch, connection to two roof slopes, preexisting "
+            "26603 nominal tube layout checked by 073, but physical clutch "
+            "still UNKNOWN. Connection to two roof slopes and preexisting "
             "seam collision, post stability, foundations, full nearby facade "
             "clearance and insertion path remain UNKNOWN. Cap is an experimental "
             "replacement of the post top, not an addition to the canonical house."
