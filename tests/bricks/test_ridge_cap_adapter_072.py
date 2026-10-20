@@ -77,10 +77,13 @@ def test_second_roof_orientation_places_real_cap_without_shifting_roof():
     r = assess_ridge_cap_adapters(m)
     assert r["sites_checked"] == 1
     site = r["sites"][0]
-    assert site["lower_post_to_headpiece"] == "VALID"
-    assert (site["headpiece"]["x_studs"], site["headpiece"]["y_studs"],
-            site["headpiece"]["z_plates"],
-            site["headpiece"]["rotation_quarter_turns"]) == (14, 2, 93, 0)
+    # Rotation=1 exposes a 2x4 transverse span (see planner 065).
+    # 072 is deliberately scoped to 2x3 covers: do not invent a 2x4
+    # underside interface or claim a 2x3 part supports it.
+    assert site["status"] == "UNKNOWN_UNREVIEWED_CAP_DIMENSIONS"
+    assert site["headpiece"] is None
+    assert site["lower_post_to_headpiece"] == "UNKNOWN"
+    assert site["host_support_path"] == "DOCUMENTED_NOMINAL_WALL_STUD_PATH_TO_Z0"
     assert m.model_dump_json() == before
 
 
