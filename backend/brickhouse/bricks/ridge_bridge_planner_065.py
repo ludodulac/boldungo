@@ -99,6 +99,7 @@ def propose_ridge_bridges(model, *, stud_provider=None, max_tiles=2000) -> dict:
 
     proposed = []
     replaced = set()
+    already_aligned = set()
     ridge_by_z = defaultdict(list)
     for r in ridges:
         ridge_by_z[r.z_plates].append(r)
@@ -134,6 +135,22 @@ def propose_ridge_bridges(model, *, stud_provider=None, max_tiles=2000) -> dict:
                 footprint = {(x + dx, y + dy)
                              for dx in range(footprint_x)
                              for dy in range(footprint_y)}
+                required_stud_cells = {
+                    (x + dx, y + dy)
+                    for dx in (0, footprint_x - 1)
+                    for dy in range(footprint_y)
+                } if axis == "x" else {
+                    (x + dx, y + dy)
+                    for dx in range(footprint_x)
+                    for dy in (0, footprint_y - 1)
+                }
+                # A correct existing transverse ridge requires no replacement.
+                already = [r for r in ridge_by_z[z]
+                           if (existing := _footprint(r, catalog)) is not None
+                           and required_stud_cells <= existing]
+                if already:
+                    already_aligned.update(r.placement_id for r in already)
+                    continue
                 for r in ridge_by_z[z]:
                     existing_fp = _footprint(r, catalog)
                     if existing_fp is not None and existing_fp & footprint:
@@ -151,7 +168,8 @@ def propose_ridge_bridges(model, *, stud_provider=None, max_tiles=2000) -> dict:
                                    "reason": "UNBRIDGED_ODD_LENGTH_TAIL"})
 
     result_status = (
-        "NO_TWO_SIDED_BRIDGE_FOUND" if not proposed
+        "EXISTING_TWO_SIDED_STUD_ALIGNMENT_ONLY" if not proposed and already_aligned
+        else "NO_TWO_SIDED_BRIDGE_FOUND" if not proposed
         else "PARTIAL_GEOMETRIC_PROPOSAL" if unresolved or unknown_slopes
         else "GEOMETRIC_PROPOSAL_REQUIRES_PHYSICAL_REVIEW"
     )
@@ -162,6 +180,7 @@ def propose_ridge_bridges(model, *, stud_provider=None, max_tiles=2000) -> dict:
         "proposed_tiles": proposed,
         "proposed_count": len(proposed),
         "replace_ridge_ids": sorted(replaced),
+        "already_two_sided_aligned_ridge_ids": sorted(already_aligned),
         "net_part_change_if_approved": len(proposed) - len(replaced),
         "unknown_slope_ids": sorted(unknown_slopes)[:25],
         "unknown_slope_count": len(unknown_slopes),
