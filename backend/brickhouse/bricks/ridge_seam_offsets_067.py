@@ -96,10 +96,14 @@ def probe_ridge_seam_offsets(model, library: LDrawLibrary, *,
     ridge_at = tile["z_plates"]
 
     # Only the exact documented top stud rows under the proposed tile.
+    definition = catalog.get(tile["part_id"])
+    tw, td = definition.width_studs, definition.length_studs
+    if tile["rotation_quarter_turns"] % 2:
+        tw, td = td, tw
     required = {
         (x, y, ridge_at)
-        for x in range(tile["x_studs"], tile["x_studs"] + (3 if axis == "x" else 2))
-        for y in range(tile["y_studs"], tile["y_studs"] + (2 if axis == "x" else 3))
+        for x in range(tile["x_studs"], tile["x_studs"] + tw)
+        for y in range(tile["y_studs"], tile["y_studs"] + td)
     }
     slope_candidates = {"negative": [], "positive": []}
     for part in model.parts:
