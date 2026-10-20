@@ -1,10 +1,40 @@
 """071: a ridge post is not anchored merely because it touches a wall top."""
-from brickhouse.bricks.brick_model import BrickModelPart
+from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 from brickhouse.bricks.ridge_anchor_path_071 import trace_documented_wall_anchor
 from brickhouse.bricks.ridge_structural_posts_070 import assess_structural_ridge_posts
-from tests.bricks.test_ridge_structural_posts_070 import (
-    anchored_wall, gable, house, roof, wall,
-)
+
+
+def roof(pid, side, x, y, z, rotation=0):
+    return BrickModelPart(
+        placement_id=pid, part_id="BRICK_SLOPED_18_4X2",
+        category="roof_tile", component="roof", roof_side=side,
+        x_studs=x, y_studs=y, z_plates=z,
+        rotation_quarter_turns=rotation,
+    )
+
+
+def wall(pid, x, y, z, part_id="BRICK_1X1"):
+    return BrickModelPart(
+        placement_id=pid, part_id=part_id,
+        category="brick", component="wall", facade="front",
+        x_studs=x, y_studs=y, z_plates=z, rotation_quarter_turns=0,
+    )
+
+
+def house(*parts):
+    return BrickModel(building_id="support-test", volume_id="v",
+                      width_studs=80, depth_studs=80,
+                      height_plates=150, parts=list(parts))
+
+
+def gable(*other):
+    return house(roof("negative", "negative", 38, 0, 117),
+                 roof("positive", "positive", 39, 0, 117), *other)
+
+
+def anchored_wall(x, y, top):
+    return [wall(f"support-{x}-{y}-{z}", x, y, z)
+            for z in range(0, top, 3)]
 
 
 def support(pid, x, y, z):
