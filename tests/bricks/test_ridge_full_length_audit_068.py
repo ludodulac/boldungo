@@ -98,3 +98,25 @@ def test_real_guided004_all_23_candidates_covered_without_mutation():
     assert r["physical_certification"] == "NOT_CERTIFIED"
     assert r["model_mutated"] is False
     assert before == model.model_dump_json()
+
+
+def test_shift_of_only_highest_course_breaks_required_roof_pitch():
+    model = house(
+        slope("neg", "negative", 38, 0, 117),
+        slope("pos", "positive", 39, 0, 117),
+        slope("previous", "positive", 42, 0, 114),
+    )
+    original = model.model_dump_json()
+    r = audit_full_ridge(model, LDrawLibrary(FIXTURE), max_sites=1)
+    site = r["sites"][0]
+    profile = site["course_advance_validation"]
+    assert profile["family"] == "18"
+    assert profile["required_advance_studs"] == 3
+    assert profile["original_advance_studs"] == 3
+    assert profile["shifted_advance_studs"] == 0
+    assert site["status"] == "BROKEN_ROOF_COURSE_GEOMETRY"
+    assert r["nominal_course_geometry_counts"] == {
+        "BROKEN_NOMINAL_COURSE_ADVANCE": 1
+    }
+    assert r["physical_certification"] == "NOT_CERTIFIED"
+    assert model.model_dump_json() == original
