@@ -28,6 +28,45 @@ Pour chacune des trois paires, le script :
 - distingue une zone proche du tenon supérieur du potelet
   d'une zone impliquant son corps, avec une incertitude explicite.
 
+## Résultats réels — six collisions localisées
+
+Le workflow spécialisé GitHub #39491345200 est **SUCCESS**. Les trois
+collisions déjà constatées en 078 ont été reproduites pour les deux
+orientations avec les **vraies surfaces LDraw** du même miroir épinglé.
+
+Chaque zone ci-dessous correspond à l'**enveloppe des 24 premiers
+témoins de croisement strict de triangles** (non à l'intégralité du
+volume d'intersection). Les coordonnées sont celles de la maquette :
+XY en tenons, H en plaques.
+
+| Orientation | Paire de pièces | Zone XY (tenons) ; H (plaques) | Nature démontrée | Verdict |
+|---|---|---|---|---|
+| 0 · faîtage 26603 | 1×1 ↔ versant gauche | X 40–41 ; Y 0–1 ; H **117–120** | Croisement des surfaces du corps supérieur du potelet / proximité du plan de tenon et du versant | **UNKNOWN** |
+| 0 · faîtage 26603 | 1×1 ↔ versant droit | X 40–41 ; Y 0,2–1 ; H **117–120** | Même type de croisement, autre pente | **UNKNOWN** |
+| 0 · faîtage 26603 | versant gauche ↔ droit | X 41–41,3 ; Y 0,7–1,212 ; H **117,5–119,167** | Croisement des surfaces des deux versants vers leur bord supérieur de faîtage | **UNKNOWN** |
+| 1 · faîtage 87079 | 1×1 ↔ versant gauche | X 14–15 ; Y 3–4 ; H **93–96** | Corps supérieur potelet / surface du versant | **UNKNOWN** |
+| 1 · faîtage 87079 | 1×1 ↔ versant droit | X 14–15 ; Y 3–4 ; H **93–96** | Corps supérieur potelet / surface du versant | **UNKNOWN** |
+| 1 · faîtage 87079 | versant gauche ↔ droit | X 14,788–15,3 ; Y 5–5,3 ; H **93,5–95,167** | Croisement des surfaces des deux versants près de l'arête de faîtage | **UNKNOWN** |
+
+**Preuve commune** : 24 croisements stricts de triangles enregistrés par
+paire, sur les triangles géométriques LDraw réels. Le moteur ne renvoie
+**aucun connecteur documenté (`find_connections=0`)** sur ces trois
+paires, dans chacune des deux orientations. Les positions connues des
+tenons supérieurs ne sont pas identiques entre potelet et versants.
+Aucun indice ne permet donc de requalifier une de ces collisions en
+« emboîtement LEGO normal » **VALID**.
+
+Mais ces informations ne prouvent pas non plus **INVALID** au sens de
+« montage physiquement impossible » : les faces triangulées ne disent
+pas à quel sous-composant elles appartiennent (tenon, tube, paroi,
+volume incliné) et les interférences d'assemblage voulues ne sont pas
+modélisées par une loi de déformation. Une enveloppe de triangles croisés
+n'est PAS une preuve d'intersection rigide non détachable.
+
+Le rapport source contient, pour chacun des six couples, les témoins
+LDU, leurs coordonnées, les limites d'échantillonnage, le test des
+connecteurs, le verdict et le caractère `NOT_CERTIFIED`.
+
 ### Limite de classification
 
 Les triangles LDraw aplatis ne conservent pas systématiquement la
