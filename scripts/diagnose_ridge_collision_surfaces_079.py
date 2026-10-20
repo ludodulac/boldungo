@@ -291,9 +291,11 @@ def main():
                   "VERDICT", pair["verdict"],
                   "WITNESSES",
                   witnesses["crossing_witnesses_recorded"] if witnesses else None,
-                  "HEIGHT_PLATES",
-                  witnesses["sample_envelope"]["approx_model_xyz_studs_plates"]["height_plates"]
-                  if witnesses and witnesses["sample_envelope"] else None)
+                  "XYZ_REGION",
+                  witnesses["sample_envelope"]["approx_model_xyz_studs_plates"]
+                  if witnesses and witnesses["sample_envelope"] else None,
+                  "CONNECTOR_METADATA_COUNT", pair["documented_connector_count"],
+                  "SHARED_TOP_STUD_CELLS", pair["documented_stud_cell_overlap"])
     print("COLLISION_LOCALIZATION_COMPLETE=", result["complete_collision_localization"])
     print("BLOCKING_REASONS=", result["blocking_reasons"])
     print("PHYSICAL_CERTIFICATION=", result["physical_certification"])
