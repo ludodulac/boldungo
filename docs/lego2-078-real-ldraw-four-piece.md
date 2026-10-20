@@ -41,6 +41,44 @@ Les preuves reproductibles sont archivées par la CI sous le nom
 peut pas être obtenue, la CI échoue et le blocage est documenté :
 cela **ne valide pas** une absence de collision.
 
+## Résultat réel vérifié sur la CI #39488668480
+
+La CI sur `cdeb837d0d4559ed68bf81f7f2b5d6329052026f` a réellement
+téléchargé **27 fichiers** LDraw, transitive incluses, depuis le miroir
+épinglé. Les quatre pièces se sont chargées avec surfaces triangulées :
+
+| Pièce | Triangles |
+|---|---:|
+| 3005 (potelet 1×1) | 76 |
+| 26603 (tuile 2×3) | 236 |
+| 30363 (versant) | 700 |
+| 87079 (tuile 2×4) | 332 |
+
+Sur **chacune des deux orientations**, les six paires simultanées ont
+été évaluées avec de vraies surfaces LDraw (aucune géométrie manquante).
+Le résultat précis a été **identique pour les deux orientations** :
+
+| Couple de pièces | Relation LDraw |
+|---|---|
+| 1×1 / couvre-faîtage | CONTACT |
+| 1×1 / versant négatif | **COLLISION** |
+| 1×1 / versant positif | **COLLISION** |
+| couvre-faîtage / versant négatif | CONTACT |
+| couvre-faîtage / versant positif | CONTACT |
+| versant négatif / versant positif | **COLLISION** |
+
+Les quatre positions de l'insertion discrète du couvre-faîtage ont
+également été calculées pour les trois pièces immobiles : *complétude
+des maillages vérifiée* ; cela ne démontre PAS un chemin d'assemblage
+continu. **Les collisions impliquant le potelet et les deux versants,
+ainsi que la collision entre les versants, sont le blocage réel qui
+doit être examiné avec les volumes de tenons/tubes.**
+
+La méthode de maillage ne reconnaît pas automatiquement l'interférence
+légale d'un tenon dans une cavité LEGO. Pour cette raison, le résultat
+est **REVIEW_REQUIRED**, et non une conclusion mécanique INVALID ni VALID.
+Aucun correctif non démontré n'est ajouté et aucun versant n'est déplacé.
+
 ## Distinction des verdicts
 
 - **VALID sur une vérification précise** : les six paires disposent
