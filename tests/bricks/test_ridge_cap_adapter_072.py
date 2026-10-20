@@ -117,7 +117,9 @@ def test_existing_ldraw_mesh_gate_uses_actual_parts_and_never_proves_clutch():
         "UNKNOWN_UNREVIEWED_OR_MISSING_LDRAW_GEOMETRY",
         "HEADPIECE_MESH_SCREEN_ONLY_CLUTCH_UNKNOWN",
     )
-    assert site["headpiece_to_ridge_tile"] == "UNKNOWN_UNREVIEWED_TILE_UNDERSIDE"
+    # 073 documents nominal LDraw geometry without certifying physical clutch.
+    assert site["headpiece_to_ridge_tile"].startswith("UNKNOWN")
+    assert site["upper_interface_geometry"]["status"] == "NOMINAL_LDRAW_STUD_AND_TUBE_LAYOUT_ONLY"
     assert r["physical_certification"] == "NOT_CERTIFIED"
     assert m.model_dump_json() == before
 
