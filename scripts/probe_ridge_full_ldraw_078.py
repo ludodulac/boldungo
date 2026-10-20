@@ -132,6 +132,19 @@ def run_probe(ldraw_root: Path) -> dict:
                         for pair in pairs)
                 and not site["missing_pair_checks"]
             )
+            # This is a separate GEOMETRY-only verdict. Full computation
+            # is not the same as non-intersecting geometry or LEGO clutch.
+            item["collision_pairs"] = [
+                {"part_a": pair["part_a"], "part_b": pair["part_b"]}
+                for pair in pairs if pair.get("mesh_relation") == "COLLISION"
+            ]
+            item["mesh_geometry_verdict"] = (
+                "UNKNOWN_INCOMPLETE_MESH"
+                if not item["six_mesh_pairs_complete"]
+                else "REVIEW_REQUIRED_MESH_INTERSECTIONS"
+                if item["collision_pairs"]
+                else "MESH_SCREEN_NO_INTERSECTIONS_ONLY"
+            )
             insertion = site["cover_insertion_samples"]
             item["insertion_mesh_pairs_complete"] = (
                 len(insertion) == 4
@@ -174,7 +187,8 @@ def main():
     for row in output["orientations"]:
         print("ROOF_ORIENTATION", row["roof_orientation_quarter_turns"],
               "FULL_MESH_PAIRS", row["six_mesh_pairs_complete"],
-              "INSERTION_SAMPLE_COMPLETE", row["insertion_mesh_pairs_complete"])
+              "INSERTION_SAMPLE_COMPLETE", row["insertion_mesh_pairs_complete"],
+              "GEOMETRY_VERDICT", row.get("mesh_geometry_verdict", "UNKNOWN"))
         for pair in row["mesh_pair_relations"]:
             print("PAIR", pair["part_a"], pair["part_b"],
                   pair["relation"], pair["status"])
