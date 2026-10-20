@@ -46,7 +46,10 @@ jobs:
           assert r["model_mutated"] is False and r["physical_certification"] == "NOT_CERTIFIED"
           assert all(x["baseline_opposing_slopes"] in ("CONTACT", "COLLISION", "SEPARATED") for x in r["sites"])
           assert all(x["shifted_opposing_slopes"] in ("CONTACT", "COLLISION", "SEPARATED") for x in r["sites"])
-          assert all(x["status"] != "UNKNOWN" for x in r["sites"]), r["sites"]
+          assert all(x["status"] == "BROKEN_ROOF_COURSE_GEOMETRY" for x in r["sites"]), r["sites"]
+          assert r["nominal_course_geometry_counts"] == {"BROKEN_NOMINAL_COURSE_ADVANCE": 23}
+          assert all(x["course_advance_validation"]["original_advance_studs"] == 3 for x in r["sites"])
+          assert all(x["course_advance_validation"]["shifted_advance_studs"] == 0 for x in r["sites"])
           assert all(x["mesh_relation"] in ("CONTACT", "COLLISION", "SEPARATED") for x in r["adjacent_shifted_tile_checks"])
           print("RIDGE_068_ALL_23_REAL_MESH=PASS")
           print("RIDGE_068_COUNTS=", r["geometry_counts"])
