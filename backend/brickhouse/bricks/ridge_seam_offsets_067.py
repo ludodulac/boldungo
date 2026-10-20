@@ -75,7 +75,8 @@ def _bridge_for_rows(negative, positive, reference_tile, catalog):
 
 def probe_ridge_seam_offsets(model, library: LDrawLibrary, *,
                              proposal_index: int = 0,
-                             max_offset: int = 4) -> dict:
+                             max_offset: int = 4,
+                             relation_cache: dict | None = None) -> dict:
     """Check at most 5 shifts, with a genuine LDraw mesh per local interface."""
     if not 0 <= max_offset <= 4:
         raise ValueError("max_offset must be between 0 and 4")
@@ -147,7 +148,7 @@ def probe_ridge_seam_offsets(model, library: LDrawLibrary, *,
     for amount in range(max_offset + 1):
         moving = _shifted(positive, axis, sign * amount)
         cache = {}
-        slope_pair = _pair(negative, moving, library, cache)
+        slope_pair = _pair(negative, moving, library, cache, relation_cache)
         ridge, reason = _bridge_for_rows(negative, moving, tile, catalog)
         current = {
             "positive_roof_shift_studs": sign * amount,
@@ -156,7 +157,7 @@ def probe_ridge_seam_offsets(model, library: LDrawLibrary, *,
             "slopes_mesh": slope_pair,
             "bridge_candidate": None,
             "tile_to_slopes": [],
-            "previous_positive_course": [_pair(moving, p, library, cache) for p in previous],
+            "previous_positive_course": [_pair(moving, p, library, cache, relation_cache) for p in previous],
             "physical_certification": "NOT_CERTIFIED",
         }
         if ridge is not None:
@@ -169,8 +170,8 @@ def probe_ridge_seam_offsets(model, library: LDrawLibrary, *,
                 "status": "TWO_SIDE_STUD_PROJECTION_ONLY",
             }
             current["tile_to_slopes"] = [
-                _pair(ridge, negative, library, cache),
-                _pair(ridge, moving, library, cache),
+                _pair(ridge, negative, library, cache, relation_cache),
+                _pair(ridge, moving, library, cache, relation_cache),
             ]
         else:
             current["bridge_unavailable_reason"] = reason
