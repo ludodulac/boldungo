@@ -124,3 +124,16 @@ def test_1890_piece_guided004_proposes_23_not_unverified_canonical_change():
     assert result["physical_certification"] == "NOT_CERTIFIED"
     assert before == [(p.placement_id, p.part_id, p.x_studs, p.y_studs)
                       for p in model.parts]
+
+
+def test_existing_correct_ridge_not_unnecessarily_replaced():
+    m = house("already-cross-braced",
+              part("neg", "BRICK_SLOPED_18_4X2", "negative", 38, 4, 117),
+              part("pos", "BRICK_SLOPED_18_4X2", "positive", 39, 4, 117),
+              part("good", "TILE_2X3", "ridge", 39, 4, 120, 1))
+    result = propose_ridge_bridges(m)
+    assert result["proposed_count"] == 0
+    assert result["already_two_sided_aligned_ridge_ids"] == ["good"]
+    assert result["replace_ridge_ids"] == []
+    assert result["status"] == "EXISTING_TWO_SIDED_STUD_ALIGNMENT_ONLY"
+    assert result["physical_certification"] == "NOT_CERTIFIED"
