@@ -42,9 +42,11 @@ def audit_full_ridge(model, library: LDrawLibrary, *,
     rows = []
     geometry_counts = Counter()
     shifted_tiles = []
+    exact_geometry_cache = {}
     for idx in range(min(len(planned), max_sites)):
         experiment = probe_ridge_seam_offsets(
-            model, library, proposal_index=idx, max_offset=shift_studs)
+            model, library, proposal_index=idx, max_offset=shift_studs,
+            relation_cache=exact_geometry_cache)
         by_offset = {abs(v["positive_roof_shift_studs"]): v
                      for v in experiment["offsets"]}
         baseline, shifted = by_offset.get(0), by_offset.get(shift_studs)
@@ -117,7 +119,7 @@ def audit_full_ridge(model, library: LDrawLibrary, *,
                 following, "x_studs" if axis == "x" else "y_studs"
             ):
                 continue
-            relation = _pair(first, following, library, cache)
+            relation = _pair(first, following, library, cache, exact_geometry_cache)
             adjacent.append({
                 "first_original_id": original.placement_id,
                 "second_original_id": original_following.placement_id,
@@ -135,6 +137,8 @@ def audit_full_ridge(model, library: LDrawLibrary, *,
         "evaluated_sites": len(rows),
         "not_evaluated_sites": len(planned) - len(rows),
         "shift_studs_hypothesis": shift_studs,
+        "unique_mesh_relations_computed": len(exact_geometry_cache),
+        "mesh_reuse_method": "EXACT_RELATIVE_LDRAW_TRANSFORM_EQUIVALENCE",
         "geometry_counts": dict(sorted(geometry_counts.items())),
         "sites_with_unknown_geometry": missing,
         "sites_with_review_required_intersection": intersections,
