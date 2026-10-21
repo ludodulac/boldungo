@@ -13,7 +13,7 @@ from .ridge_technique_candidates_083 import _orthogonal_transverse_spine
 from .vertical_insertion import check_vertical_access_from_above
 
 
-def review_ridge_trial_assembly_084(*, frame_order=None, disable_connector_check=False):
+def review_ridge_trial_assembly_084(*, frame_order=None):
     """Replay each orthogonal frame brick from above with prior connectors.
 
     frame_order is an experimental *ordering* parameter for rejecting invalid
