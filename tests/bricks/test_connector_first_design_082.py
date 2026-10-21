@@ -96,6 +96,18 @@ def test_non_documented_slope_cannot_be_selected_as_a_receiver():
     assert report["blocked_connections"][0]["design_gate"] == "REJECTED_UNDOCUMENTED_INTERFACE"
 
 
+def test_part_without_documented_connection_rejects_entire_proposed_structure():
+    post = brick("post", "BRICK_1X1")
+    head = brick("head", "BRICK_2X3", z=3)
+    orphan = brick("orphan", "BRICK_1X1", x=40, y=40, z=0)
+    r = screen_connector_first_candidate(
+        [post, head, orphan], [("post", "head")])
+    assert r["documented_nominal_connections"] == 1
+    assert r["decision"] == "REJECTED_ISOLATED_PARTS"
+    assert r["parts_without_documented_nominal_connections"] == ["orphan"]
+    assert r["physical_certification"] == "NOT_CERTIFIED"
+
+
 def test_missing_id_and_empty_required_connections_fail_closed():
     post = brick("p", "BRICK_1X1")
     assert screen_connector_first_candidate([post], [])["decision"] == "REJECTED_NO_REQUIRED_CONNECTIONS"
