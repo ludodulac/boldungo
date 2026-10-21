@@ -1,0 +1,65 @@
+name: LEGO2-081 verify 3005 and 30363 source LDraw importer integrity
+
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'lego_geometry_engine/src/lego_geometry_engine/core.py'
+      - 'scripts/check_ldraw_source_integrity_081.py'
+      - 'tests/bricks/test_ldraw_import_bfc_081.py'
+      - '.github/workflows/lego2-081-ldraw-import-integrity.yml'
+  workflow_dispatch:
+
+jobs:
+  focused-ldraw-import:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing backend and LDraw library code
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Download only 3005 and 30363 and their pinned official LDraw dependencies
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-081-ldraw \
+            --max-files 200 --parts 3005 30363
+      - name: Regression test for source CW BFC, mirroring and INVERTNEXT
+        run: |
+          python -m pytest tests/bricks/test_ldraw_import_bfc_081.py -q
+      - name: Check no source faces are lost and re-run three original collision pairs
+        run: |
+          python -m scripts.check_ldraw_source_integrity_081 \
+            --ldraw-root /tmp/lego2-081-ldraw \
+            --output artifacts/lego2-081/3005-30363-source-integrity.json
+      - name: Require transparent geometric verdict and no invented LEGO strength
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/lego2-081/3005-30363-source-integrity.json')
+          data = json.loads(p.read_text(encoding='utf-8'))
+          assert data['source_faces_all_accounted_for'], data['blockers']
+          assert set(data['items']) == {'3005', '30363'}
+          assert data['model_mutated'] is False
+          assert data['material_certified'] is False
+          assert data['physical_certification'] == 'NOT_CERTIFIED'
+          assert len(data['three_collision_rerun_after_bfc_fix']) == 2
+          for row in data['three_collision_rerun_after_bfc_fix']:
+              assert len(row['three_pairs']) == 3
+              assert all(p['mesh_relation'] in {'COLLISION','CONTACT','SEPARATED'}
+                         and p['verdict'] == 'UNKNOWN'
+                         for p in row['three_pairs'])
+          print('LDRAW_SOURCE_FACE_ACCOUNTING_081=PASS')
+          PY
+      - name: Upload small evidence report, no LDraw library
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lego2-081-3005-30363-source-integrity
+          path: artifacts/lego2-081/3005-30363-source-integrity.json
+          if-no-files-found: warn
+          retention-days: 21
