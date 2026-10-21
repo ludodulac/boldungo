@@ -40,6 +40,41 @@ ne sont pas codées dans les maillages triangulés du moteur utilisé.
 L'absence de connecteurs officiels reconnus en 079 n'est pas la preuve
 qu'aucun montage LEGO n'est physiquement possible.
 
+## Résultat des vrais maillages LDraw — CI spécialisée #39574318401
+
+Le contrôle de volume a été **exécuté avec succès**, sans refaire les
+24 localisations de la mission 079. Les fichiers LDraw officiels épinglés
+présentent les anomalies de fermeture suivantes, dans **les deux orientations** :
+
+| Pièce | Nombre d'arêtes de maillage à une seule face | Conclusion sur la coque |
+|---|---:|---|
+| Potelet **3005** | **16** | Pas de coque orientée fermée démontrée |
+| Chacun des deux versants **30363** | **192** | Pas de coque orientée fermée démontrée |
+
+Ces comptes concernent des arêtes de **triangles LDraw**, et **ne
+signifient pas nécessairement des trous physiques dans les briques**.
+Les écarts peuvent venir d'ouvertures réelles, de coutures de primitives,
+de raccords en T ou d'une représentation de surface non-manifold à
+examiner. La fermeture requise pour prouver l'appartenance intérieure
+d'un point n'a **pas** été démontrée.
+
+| Collision | État de preuve d'occupation commune de matière | Verdict |
+|---|---|---|
+| Potelet 3005 ↔ versant gauche 30363 | **UNKNOWN** : 16 et 192 arêtes ouvertes dans les maillages | **UNKNOWN** |
+| Potelet 3005 ↔ versant droit 30363 | **UNKNOWN** : 16 et 192 arêtes ouvertes dans les maillages | **UNKNOWN** |
+| Versant gauche ↔ versant droit | **UNKNOWN** : 192 arêtes ouvertes sur chacun | **UNKNOWN** |
+
+Cela constitue une **limite de preuve identifiée et vérifiée**, pas une
+nouvelle répétition de la détection des collisions. Un croisement de
+surfaces triangulées est toujours établi par 079, mais l'occupation
+simultanée de volumes fermés de matière LEGO **n'est pas prouvable avec
+ces maillages bruts**. Il manque aussi l'origine des faces (tenon,
+tube, paroi) et les règles précises d'interférence/serrage physique.
+
+Le test logiciel reste prudent : aucun verdict `INVALID` n'est
+inventé faute de preuve volumique robuste, aucun `VALID` n'est
+attribué faute de preuve de connexion mécanique.
+
 ### Règle de verdict
 
 - **VALID**, réservé à une connexion matériellement documentée,
