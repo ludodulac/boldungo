@@ -30,6 +30,8 @@ def _std(name: str, part: str, x: int, y: int, z: int, turn=0) -> BrickModelPart
         placement_id=name, part_id=part, category="plate" if part.startswith("PLATE_") else "brick",
         component="roof_support", x_studs=x, y_studs=y, z_plates=z,
         rotation_quarter_turns=turn,
+        **({"width_studs": 1, "length_studs": 6, "height_plates": 1}
+           if part == "PLATE_1X6" else {}),
     )
 
 
