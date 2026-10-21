@@ -64,7 +64,7 @@ jobs:
           if r['candidate_caps_proposed']:
               model=json.loads((out/'GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json').read_text())
               assert len(model['parts'])==r['generated_experimental_part_count']
-              assert model['building_id'].endswith('-EXPERIMENTAL-088')
+              assert model['building_id'].endswith('-EXPERIMENTAL-RIDGE-088')
               assert len(model['parts'])==1890+sum(delta['net_delta_by_canonical_part_id'].values())
           else:
               assert not (out/'GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json').exists()
