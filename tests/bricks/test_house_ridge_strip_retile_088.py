@@ -76,8 +76,7 @@ def test_parametric_real_house_sized_ridge_retiles_23_sections_and_12_old_covers
     assert result["replaced_old_ridge_tile_count"]==12
     assert result["delta_total"]==11
     assert copy is not None and len(copy.parts)==69
-    assert all(p.part_id=="BRICK_2X3" for p in copy.parts[-23:]
-               if p.part_id in ("BRICK_2X2","BRICK_2X3")) is False or True
+    assert sum(p.part_id=="BRICK_2X2" for p in copy.parts)==23
     assert result["physical_certification"]=="NOT_CERTIFIED"
 
 
