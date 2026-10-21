@@ -5,8 +5,10 @@ on:
     branches: [feat/lego2-existing-house-021]
     paths:
       - 'backend/brickhouse/bricks/house_roof_rule_builder_088.py'
+      - 'backend/brickhouse/bricks/house_ridge_strip_retile_088.py'
       - 'scripts/construct_guided004_roof_088.py'
       - 'tests/bricks/test_house_roof_rule_builder_088.py'
+      - 'tests/bricks/test_house_ridge_strip_retile_088.py'
       - '.github/workflows/lego2-088-full-house-roof.yml'
   workflow_dispatch:
 
