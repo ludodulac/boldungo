@@ -156,7 +156,7 @@ function draw(){
   ctx.beginPath();ctx.moveTo(...screen[0]);for(let k=1;k<screen.length;k++)ctx.lineTo(...screen[k]);ctx.closePath();
   ctx.fill();ctx.stroke();
  }
- if(roofCheckbox.checked){
+ if(roofCheckbox.checked && w>600){
    ctx.save();ctx.fillStyle='#fff0bf';ctx.font='bold 13px system-ui';ctx.textAlign='center';
    ctx.fillText('6 PENTES : POSITIONS NON VALIDÉES',w/2,27);ctx.restore();
  }
