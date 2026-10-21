@@ -1,0 +1,70 @@
+name: LEGO2-085 physical trial Studio/LDraw preview
+
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/ridge_trial_ldraw_export_085.py'
+      - 'scripts/export_ridge_ldr_085.py'
+      - 'tests/bricks/test_ridge_trial_ldraw_export_085.py'
+      - '.github/workflows/lego2-085-trial-ldraw.yml'
+  workflow_dispatch:
+
+jobs:
+  make-physical-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install project and geometry adapter
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Download bounded pinned LDraw subset (only three parts and their dependencies)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from scripts.download_ldraw_probe_066 import download_ldraw_subset, LDraw_MIRROR_SHA
+          root = Path("artifacts/lego2-085/ldraw-library")
+          subset = download_ldraw_subset(
+              root, initial=("3005.dat", "3008.dat", "30363.dat"), max_files=180)
+          print("PINNED_LDRAW_REVISION=", LDraw_MIRROR_SHA)
+          print("LDRAW_LOADED_REFERENCE_COUNT=", len(subset))
+          assert len(subset) <= 180
+          PY
+      - name: Test 083/084 and LDraw round-trip 085
+        env:
+          LDRAW_TEST_ROOT_085: artifacts/lego2-085/ldraw-library
+        run: |
+          python -m pytest -q tests/bricks/test_ridge_technique_candidates_083.py tests/bricks/test_ridge_trial_assembly_084.py tests/bricks/test_ridge_trial_ldraw_export_085.py
+      - name: Produce stepwise 3D frame and clearly flagged roof positioning study
+        run: |
+          python scripts/export_ridge_ldr_085.py \
+            --ldraw-root artifacts/lego2-085/ldraw-library \
+            --output-dir artifacts/lego2-085/export
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("artifacts/lego2-085/export")
+          m=json.loads((root/"manifest.json").read_text())
+          assert m["physical_certification"]=="NOT_CERTIFIED"
+          assert m["frame_part_count"]==24
+          assert m["unapproved_roof_part_count"]==6
+          assert m["bill_of_materials"]=={"3005":18,"3008":6,"30363":6}
+          a=(root/m["frame_file"]).read_text()
+          b=(root/m["preview_file"]).read_text()
+          assert sum(line.startswith("1 ") for line in a.splitlines())==24
+          assert sum(line.startswith("1 ") for line in b.splitlines())==30
+          assert "UNVERIFIED_ROOF_POSES_BEGIN" in b
+          print("LEGO2_085_VIEWABLE_PHYSICAL_TRIAL_PASS")
+          PY
+      - name: Upload only references/exports (NOT downloaded official LDraw geometry)
+        uses: actions/upload-artifact@v4
+        with:
+          name: LEGO2-085-LDraw-viewer-30-pieces-24-steps
+          path: artifacts/lego2-085/export/
+          if-no-files-found: error
+          retention-days: 21
