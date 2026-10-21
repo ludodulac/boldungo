@@ -21,6 +21,8 @@ jobs:
           python-version: '3.12'
       - name: Install project
         run: python -m pip install -e ".[dev]"
+      - name: Install LDraw geometry subpackage
+        run: python -m pip install -e "./lego_geometry_engine"
       - name: Run bounded candidate tests and connector-first gate
         run: |
           python -m pytest -q tests/bricks/test_connector_first_design_082.py tests/bricks/test_ridge_technique_candidates_083.py
