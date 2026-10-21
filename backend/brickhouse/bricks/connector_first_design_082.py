@@ -175,10 +175,15 @@ def screen_connector_first_candidate(
         if verdict != "DOCUMENTED_NOMINAL_INTERFACE":
             blocked.append(row)
 
+    documented_members = {member for item in pairs
+                          if item["design_gate"] == "DOCUMENTED_NOMINAL_INTERFACE"
+                          for member in (item["lower_id"], item["upper_id"])}
+    isolated = sorted(set(by_id) - documented_members)
     return {
         "decision": ("REJECTED_DUPLICATE_STUD_MATERIAL" if duplicated
                      else "REJECTED_UNDOCUMENTED_OR_INCOMPATIBLE_JOINT" if blocked
                      else "REJECTED_NO_REQUIRED_CONNECTIONS" if not pairs
+                     else "REJECTED_ISOLATED_PARTS" if isolated
                      else "ELIGIBLE_FOR_FURTHER_DESIGN_CHECKS"),
         "candidate_parts": len(parts),
         "nominal_connections_reviewed": len(pairs),
@@ -187,6 +192,7 @@ def screen_connector_first_candidate(
         "required_connection_checks": pairs,
         "duplicated_top_studs": duplicated,
         "blocked_connections": blocked,
+        "parts_without_documented_nominal_connections": isolated,
         "interface_profiles": {
             key: {"top_stud_count": len(profile.top_studs),
                   "receiver_count": len(profile.possible_receivers),
