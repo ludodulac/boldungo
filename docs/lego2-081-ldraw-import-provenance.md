@@ -60,6 +60,39 @@ En cas de correction de winding, les **trois paires originales de
 collisions** sont recalculées, et rien d'autre, sans refaire les
 localisations de 079 ni les diagnostics globaux.
 
+## Preuve chiffrée CI (workflow spécialisé #39591860050)
+
+La vérification officielle, limitée à 3005 et 30363, **a réussi** :
+
+| Pièce | Triangles exacts attendus depuis les lignes source 3/4 | Triangles réellement importés | Arêtes toujours non jointes après la correction BFC |
+|---|---:|---:|---:|
+| 3005 | 76 | 76 | **16** |
+| 30363 | 700 | 700 | **192** |
+
+La sous-pièce du 30363 contient **un fichier CW** et la fermeture de
+ses dépendances comporte **13 commandes BFC INVERTNEXT**. Le 3005 comporte
+**une** commande INVERTNEXT. La correction traite ces règles de winding
+et aucune face LDraw 3/4 n'est perdue à l'importation. Le nombre d'arêtes
+ouvertes ne change **pas** : l'origine des limites de fermeture est donc
+dans la **description/tessellation LDraw non étanche dans sa forme
+actuelle**, et non dans une omission de triangles pendant l'expansion.
+
+Il ne faut toutefois pas assimiler ces arêtes non appariées à des trous
+de plastique : raccords en T et primitives à faces volontairement
+partielles peuvent ne pas donner un maillage étanche dans le moteur,
+même avec toutes les surfaces importées. Le script d'import n'effectue
+aucune soudure, remaillage ni bouchage.
+
+Les **trois contrôles de collisions existants**, seuls réexécutés après
+la correction, renvoient encore `COLLISION` pour **chacune des deux
+orientations**. Les six verdicts matériels restent **UNKNOWN**.
+
+**Conclusion 081 : une erreur d'orientation BFC était avérée et a été
+corrigée ; elle n'était pas responsable de la perte des 16/192 arêtes.
+Le blocage volumique est celui d'une représentation de surface non
+étanche même lorsque toutes les faces officielles ont été comptées.
+Pas de nouvelle série d'audits.**
+
 ### Décision et suite physique indispensable
 
 - Si toutes les faces source sont présentes, mais les coques restent
