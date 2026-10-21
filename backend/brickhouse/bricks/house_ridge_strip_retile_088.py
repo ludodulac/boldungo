@@ -185,6 +185,7 @@ def retile_whole_ridge_088(
         "original_sloped_roof_part_count": base["original_roof_slope_count"],
         "nominal_candidate_pairs_checked": base["candidate_pairs_screened"],
         "proposed_cap_count": len(accepted),
+        "proposed_cap_placement_ids": sorted(cap.placement_id for cap in accepted),
         "replaced_old_ridge_tile_count": len(replaced_tiles),
         "replaced_old_ridge_tile_ids": sorted(replaced_tiles),
         "rejected_site_count": len(denied),
