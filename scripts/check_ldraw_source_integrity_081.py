@@ -12,9 +12,12 @@ from collections import Counter
 import json
 from pathlib import Path
 
-from lego_geometry_engine import LDrawLibrary
+from lego_geometry_engine import LDrawLibrary, instantiate
 from brickhouse.bricks.ridge_material_volume_080 import inspect_solid_shell
-from lego_geometry_engine import instantiate
+from brickhouse.bricks.ridge_central_post_076 import assess_central_ridge_post
+from brickhouse.bricks.ridge_four_piece_assembly_077 import _virtual_post
+from brickhouse.bricks.ridge_proposal_3d_066 import _pair
+from scripts.probe_ridge_full_ldraw_078 import small_ridge_model
 
 PARTS = ("3005", "30363")
 
@@ -87,6 +90,7 @@ def check_two_source_parts(ldraw_root: Path) -> dict:
         "material_certified": False,
         "physical_certification": "NOT_CERTIFIED",
         "model_mutated": False,
+        "three_collision_rerun_after_bfc_fix": [],
         "blockers": [],
     }
     for part in PARTS:
@@ -100,6 +104,40 @@ def check_two_source_parts(ldraw_root: Path) -> dict:
         and all(x["type3_type4_surfaces_accounted_for"]
                 for x in report["items"].values())
     )
+    # An import-winding fix can affect mesh relations. Reuse ONLY the three
+    # known 079 collision pairs, in the two already-established orientations.
+    # Do not repeat 079's 24 triangle localization or introduce new variants.
+    if report["source_faces_all_accounted_for"]:
+        for rotation in (0, 1):
+            model = small_ridge_model(rotation)
+            saved = model.model_dump_json()
+            source = assess_central_ridge_post(model, max_sites=1)["sites"][0]
+            original = {p.placement_id: p for p in model.parts}
+            parts = {
+                "post": _virtual_post(source, rotation),
+                "negative": original[source["slope_ids"]["negative"][0]],
+                "positive": original[source["slope_ids"]["positive"][0]],
+            }
+            cache, relation_cache = {}, {}
+            review = []
+            for a, b in (("post", "negative"), ("post", "positive"),
+                         ("negative", "positive")):
+                relation = _pair(parts[a], parts[b], library,
+                                 cache, relation_cache)
+                review.append({
+                    "roles": [a, b],
+                    "mesh_relation": relation.get("mesh_relation"),
+                    "status": relation["status"],
+                    "verdict": "UNKNOWN",
+                })
+                if relation.get("mesh_relation") is None:
+                    report["blockers"].append(
+                        f"ORIENTATION_{rotation}_{a}_{b}_MISSING_MESH")
+            report["three_collision_rerun_after_bfc_fix"].append({
+                "roof_orientation": rotation, "three_pairs": review,
+            })
+            if model.model_dump_json() != saved:
+                raise AssertionError("CANONICAL_081_MUTATED")
     return report
 
 
@@ -123,9 +161,15 @@ def main():
               "WINDING_EDGES", part["imported_shell"]["inconsistent_winding_edges"],
               "VOLUME", part["material_volume_verdict"])
     print("SOURCE_FACET_PARITY=", report["source_faces_all_accounted_for"])
+    for orientation in report["three_collision_rerun_after_bfc_fix"]:
+        for pair in orientation["three_pairs"]:
+            print("PREEXISTING_COLLISION_AFTER_BFC_FIX",
+                  orientation["roof_orientation"], "/".join(pair["roles"]),
+                  pair["mesh_relation"], pair["status"], pair["verdict"])
     print("BLOCKERS=", report["blockers"])
     print("PHYSICAL_CERTIFICATION=", report["physical_certification"])
-    if not report["source_faces_all_accounted_for"]:
+    if (not report["source_faces_all_accounted_for"] or report["blockers"]
+            or len(report["three_collision_rerun_after_bfc_fix"]) != 2):
         raise SystemExit(1)
 
 
