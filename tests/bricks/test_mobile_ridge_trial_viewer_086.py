@@ -74,12 +74,12 @@ def test_all_parts_have_correct_rotated_grid_dimensions():
     data = build_viewer_payload()
     for part in data["parts"]:
         if part["part_id"] == "BRICK_1X1":
-            assert (part["w"], part["d"], part["h"]) == (1, 1, 1.2)
+            assert (part["w"], part["d"]) == (1, 1) and part["h"] == pytest.approx(1.2)
         elif part["part_id"] == "BRICK_1X8":
-            assert (part["w"], part["d"], part["h"]) == (8, 1, 1.2)
+            assert (part["w"], part["d"]) == (8, 1) and part["h"] == pytest.approx(1.2)
         else:
             assert part["part_id"] == "BRICK_SLOPED_18_4X2"
-            assert (part["w"], part["d"], part["h"]) == (2, 4, 1.2)
+            assert (part["w"], part["d"]) == (2, 4) and part["h"] == pytest.approx(1.2)
 
 
 def test_template_renders_usable_offline_html_without_external_dependencies():
