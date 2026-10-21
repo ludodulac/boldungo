@@ -21,6 +21,7 @@ from brickhouse.bricks.brick_model import BrickModel
 from brickhouse.bricks.house_roof_rule_builder_088 import (
     construct_rule_based_roof_experiment_088,
 )
+from brickhouse.bricks.house_ridge_strip_retile_088 import retile_whole_ridge_088
 
 
 def construct_to_files(source: Path, output_dir: Path) -> dict:
@@ -35,7 +36,28 @@ def construct_to_files(source: Path, output_dir: Path) -> dict:
         raise ValueError(
             f"GUIDED-004 canonical expected 1890 pieces; actual={len(original.parts)}. "
             "Stop; never silently change the canonical count.")
-    report, model = construct_rule_based_roof_experiment_088(original)
+    first_pass, _ = construct_rule_based_roof_experiment_088(original)
+    whole_strip, model = retile_whole_ridge_088(original)
+    cap_ids = set(whole_strip["proposed_cap_placement_ids"])
+    joined_slope_ids = {
+        row[key] for row in first_pass["candidates"]
+        if row["cap_placement_id"] in cap_ids
+        for key in ("negative_slope", "positive_slope")
+    }
+    report = {
+        **first_pass,
+        "initial_piecewise_decision_counts": first_pass["decision_counts"],
+        "whole_strip_redesign": whole_strip,
+        "candidate_caps_proposed": whole_strip["proposed_cap_count"],
+        "replaced_whole_ridge_tile_count": whole_strip["replaced_old_ridge_tile_count"],
+        "roof_slope_parts_nominally_joined": len(joined_slope_ids),
+        "roof_slope_parts_not_yet_joined": first_pass["original_roof_slope_count"] - len(joined_slope_ids),
+        "lower_roof_courses_not_expected_to_connect_directly_to_ridge": True,
+        "generated_experimental_part_count": len(model.parts) if model else None,
+        "experimental_model_produced": model is not None,
+        "decision": ("EXPERIMENTAL_WHOLE_RIDGE_REDESIGN_CREATED_NOT_BUILD_APPROVED"
+                     if model else "NO_FULL_HOUSE_RIDGE_REDESIGN_ACCEPTED"),
+    }
     if original.model_dump_json() != BrickModel.model_validate_json(original_bytes).model_dump_json():
         raise AssertionError("Original house changed in memory")
     if hashlib.sha256(source.read_bytes()).hexdigest() != original_sha:
