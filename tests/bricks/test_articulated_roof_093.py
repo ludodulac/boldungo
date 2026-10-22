@@ -127,3 +127,18 @@ def test_actual_4276b_top_stud_seats_under_first_roof_plate():
             n=(-R[0][1],-R[1][1],-R[2][1])
             separation=sum((stud[i]-below[i])*n[i] for i in range(3))
             assert abs(separation)<1e-5, (side,t,separation)
+
+
+def test_3d_oriented_box_overlap_does_not_certify_hinge_strength():
+    from brickhouse.bricks.roof_collision_093 import (
+        envelope_intersect,roof_obb,rotate_about_world_z)
+    proof=build_093(second_house())
+    tiles=[p for p in proof["articulated_parts"] if p["kind"]=="roof_skin"]
+    a=next(p for p in tiles if p["placement_id"]=="093-negative-tile-0-0")
+    b=next(p for p in tiles if p["placement_id"]=="093-negative-tile-2-0")
+    assert envelope_intersect(roof_obb(a),roof_obb(a)) is True
+    assert envelope_intersect(roof_obb(a),roof_obb(b)) is False
+    at_same=rotate_about_world_z(a,(200.,-780.,0.),0.)
+    assert all(abs(x-y)<1e-5 for x,y in zip(
+        at_same["xyz_ldu"],a["xyz_ldu"]))
+    assert proof["report"]["hinge_finger_engagement_proven"]==0
