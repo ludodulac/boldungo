@@ -15,6 +15,7 @@ from brickhouse.bricks.brick_model import BrickModel
 from brickhouse.bricks.geometry_adapter import (
   CANONICAL_LDRAW_PARTS,brick_model_part_transform)
 from brickhouse.bricks.articulated_roof_093 import build_093, PARTS
+from brickhouse.bricks.roof_collision_093 import inspect_093_envelopes
 from brickhouse.bricks.catalog import standard_orthogonal_definitions
 
 DEFS=standard_orthogonal_definitions()
@@ -165,7 +166,18 @@ def run(source,output,pitch=22.):
           foundation.model_dump_json(indent=2)+"\n",encoding="utf8")
     ldraw=save_ldraw(foundation,a["articulated_parts"],output/"REAL-HINGED-ROOF-093.ldr")
     nviews=draw_views(foundation,a["articulated_parts"],output/"views")
+    base_report=a["report"]
+    pc=math.cos(math.radians(pitch))
+    pivots={
+      "negative":base_report["eave_world_cross_studs"][0]+4*pc,
+      "positive":base_report["eave_world_cross_studs"][1]-4*pc
+    }
+    collision=inspect_093_envelopes(foundation,a["articulated_parts"],
+                     pitch,pivots,base_report["eave_z_plates"])
+    (output/"ENVELOPE-AND-SAMPLED-SWEEP-093.json").write_text(
+      json.dumps(collision,indent=2)+"\n",encoding="utf8")
     rep={**a["report"],**ldraw,
+      "collision_and_insertion_screen":collision,
       "source_sha256":source_hash,"views_count":nviews,
       "model_schema":"COMPOSITE_BRICKMODEL_PLUS_REAL_LDRAW_RIGID_TRANSFORMS",
       "all_4275b_4276b_pivot_pairs_verified_coaxial":True,
@@ -177,13 +189,25 @@ def run(source,output,pitch=22.):
                    "hinge_axes":a["hinge_axes"],
                    "connections":a["connections"]},indent=2)+"\n",encoding="utf8")
     bom=Counter(p["ldraw_id"] for p in a["articulated_parts"])
+    new_sills=[p for p in foundation.parts if p.placement_id.startswith("EXPERIMENT-093-EAVE-")]
+    removed_deck=[p for p in model.parts if p.placement_id.startswith("EXPERIMENT-091-")]
+    sill_counts=Counter(p.part_id for p in new_sills)
+    removed_counts=Counter(p.part_id for p in removed_deck)
     b={"articulated_roof":[{"ldraw_id":k,"quantity":v,"color":"UNSPECIFIED"}
          for k,v in sorted(bom.items())],
        "structural_eave_sill_parts_count":rep["new_structural_eave_sill_parts"],
+       "new_structural_eave_sill_bom":[{"part_id":pid,
+            "ldraw_id":CANONICAL_LDRAW_PARTS[pid].ldraw_id,
+            "quantity":n,"color":"UNSPECIFIED"}
+             for pid,n in sorted(sill_counts.items())],
        "prior_091_parts_removed":rep["source_091_removed_count"],
+       "removed_091_bom":[{"part_id":pid,
+            "ldraw_id":CANONICAL_LDRAW_PARTS[pid].ldraw_id,
+            "quantity":n,"color":"UNSPECIFIED"}
+             for pid,n in sorted(removed_counts.items())],
        "new_total":rep["composite_total_part_count"],
        "prior_091_total":len(model.parts),
-       "all_positions_in":"ASSEMBLY-093-EXACT-PLACEMENTS-AND-CONNECTORS.json",
+       "all_positions_in":"ASSEMBLY-093-EXACT-PLACEMENTS-AND-CONNECTORS.json and BRICKMODEL-093-UNCHANGED-MASONRY-PLUS-EAVE-SILLS.json",
        "colors_ready_for_purchase":False}
     (output/"BOM-093.json").write_text(json.dumps(b,indent=2)+"\n",encoding="utf8")
     plan=[
@@ -210,6 +234,9 @@ def run(source,output,pitch=22.):
     print("LEGO2_093_HINGE_PAIRS",rep["coaxial_hinge_axis_pairs"])
     print("LEGO2_093_UNSUPPORTED_BEARINGS",len(rep["unsupported_hinge_bearings"]))
     print("LEGO2_093_RIDGE",rep["ridge_status"])
+    print("LEGO2_093_WALL_ENVELOPE_COLLISIONS",collision["tile_vs_orthogonal_wall_envelope_intersections_count"])
+    print("LEGO2_093_RIDGE_ENVELOPE_COLLISIONS",collision["ridge_opposing_tip_tile_envelope_intersections_count"])
+    print("LEGO2_093_SWEEP_ENVELOPE_COLLISIONS",collision["sampled_sweep_envelope_intersections_count"])
     print("LEGO2_093_MESH_INSERTION",rep["insertion_swept_mesh_screen"])
     print("LEGO2_093_VIEWS",nviews)
     print("LEGO2_093_PHYSICAL_STATUS",rep["physical_certification"])
