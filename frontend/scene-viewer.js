@@ -145,6 +145,7 @@ function renderPartialWallSegments() {
 
 function renderStairs() {
   for (const stair of currentScene.stairs ?? []) {
+    if (stair.render_inclined_surface === false) continue;
     const start = stair.start, end = stair.end;
     const width = Number(stair.width);
     if (!start || !end || ![Number(start.x), Number(start.y), Number(start.z), Number(end.x), Number(end.y), Number(end.z), width].every(Number.isFinite)) continue;
@@ -184,7 +185,45 @@ function renderTerrain() {
   for (const profile of profiles) {
     const hasMetricProfile = [profile.start_elevation, profile.end_elevation, profile.outward_extent].every(knownNumber);
     if (hasMetricProfile) {
-      terrainNotes.push(`Terrain ${profile.facade} : profil métrique disponible ; surface détaillée pas encore rendue dans cet aperçu.`);
+      const width = metric(host.width), depth = metric(host.depth);
+      const p = host.position ?? { x: 0, y: 0, z: 0 };
+      const startElevation = Number(profile.start_elevation);
+      const endElevation = Number(profile.end_elevation);
+      const extent = Number(profile.outward_extent);
+      const x0 = Number(p.x), y0 = Number(p.y), z0 = Number(p.z);
+      let points = null;
+      if (profile.facade === 'right') {
+        const wallX = x0 + width;
+        points = [
+          wallX, z0 + startElevation, y0,
+          wallX + extent, z0 + startElevation, y0,
+          wallX + extent, z0 + endElevation, y0 + depth,
+          wallX, z0 + startElevation, y0,
+          wallX + extent, z0 + endElevation, y0 + depth,
+          wallX, z0 + endElevation, y0 + depth,
+        ];
+      } else if (profile.facade === 'left') {
+        const wallX = x0;
+        points = [
+          wallX, z0 + startElevation, y0,
+          wallX - extent, z0 + startElevation, y0,
+          wallX - extent, z0 + endElevation, y0 + depth,
+          wallX, z0 + startElevation, y0,
+          wallX - extent, z0 + endElevation, y0 + depth,
+          wallX, z0 + endElevation, y0 + depth,
+        ];
+      }
+      if (points) {
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(points), 3));
+        geometry.computeVertexNormals();
+        const mesh = new THREE.Mesh(geometry, concreteMaterial);
+        mesh.userData.terrainGradeStatus = 'metric-profile';
+        mesh.userData.facade = profile.facade;
+        addEdges(mesh);
+        group.add(mesh);
+        terrainNotes.push(`Terrain ${profile.facade} : pente métrique rendue de ${startElevation} m à ${endElevation} m.`);
+      }
       continue;
     }
     const endpoints = facadeGroundEndpoints(host, profile.facade);
@@ -250,6 +289,33 @@ function gableRoofMesh(volume, roof, material) {
   return mesh;
 }
 
+function renderFrontGable(volume, roof) {
+  if (!roof.front_gable?.enabled || roof.front_gable.profile !== 'triangle') return;
+  if (roof.ridge_direction !== 'depth' || !knownNumber(roof.pitch_degrees)) return;
+  const width = metric(volume.width), height = metric(volume.height);
+  const p = volume.position ?? { x: 0, y: 0, z: 0 };
+  if (![width, height, Number(p.x), Number(p.y), Number(p.z)].every(Number.isFinite)) return;
+  const rise = Math.tan(THREE.MathUtils.degToRad(Number(roof.pitch_degrees))) * width / 2;
+  const frontY = Number(p.y) - 0.025;
+  const eaveZ = Number(p.z) + height;
+  const vertices = new Float32Array([
+    Number(p.x), eaveZ, frontY,
+    Number(p.x) + width, eaveZ, frontY,
+    Number(p.x) + width / 2, eaveZ + rise, frontY,
+  ]);
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+  geometry.computeVertexNormals();
+  const material = wallMaterial.clone();
+  material.side = THREE.DoubleSide;
+  material.transparent = false;
+  material.opacity = 1;
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.userData.architecturalObjectId = `${roof.id}_FRONT_GABLE`;
+  addEdges(mesh);
+  group.add(mesh);
+}
+
 function renderRoofs() {
   const notes = [];
   for (const roof of currentScene.roofs ?? []) {
@@ -270,6 +336,7 @@ function renderRoofs() {
       const mesh = gableRoofMesh(volume, roof, exactRoofMaterial);
       if (mesh) {
         group.add(mesh);
+        renderFrontGable(volume, roof);
         notes.push(`${roof.id} : toit à deux pans, faîtage ${roof.ridge_direction}, pente ${roof.pitch_degrees}°.`);
       } else {
         const unknowns = [];
