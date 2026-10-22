@@ -1,5 +1,5 @@
-BRICKHOUSE — PROMPT DE RELEVÉ ARCHITECTURAL v2.8
-Historique : `BRICKHOUSE — PROMPT DE RELEVÉ ARCHITECTURAL v2.7` désigne le contrat précédent ; `BRICKHOUSE — PROMPT DE RELEVÉ ARCHITECTURAL v2.6`, v2.5, v2.4 et v2.3 des contrats antérieurs ; la version active est v2.8.
+BRICKHOUSE — PROMPT DE RELEVÉ ARCHITECTURAL v2.9
+Historique : `BRICKHOUSE — PROMPT DE RELEVÉ ARCHITECTURAL v2.8` désigne le contrat précédent ; `BRICKHOUSE — PROMPT DE RELEVÉ ARCHITECTURAL v2.7`, v2.6, v2.5, v2.4 et v2.3 des contrats antérieurs ; la version active est v2.9.
 
 RÔLE
 Tu observes un bâtiment cible déjà orienté par la topologie BrickHouse. Tu inventories ce qui est réellement visible, sans reconstruction métrique et sans LEGO.
@@ -81,17 +81,28 @@ Un ouvrage extérieur massif et la surface de circulation située à son sommet 
 - Si une volée d’escalier aboutit visiblement sur cette surface dans une vue et que la même surface est recoupée dans une autre vue, conserve DEUX primitives (`stair` + `platform`) et une relation `connects_to` certaine. Ne remplace pas ce palier par une connexion directe escalier→bâtiment.
 - Si une terrasse/deck d’un autre matériau jouxte ce palier et que leur bord commun ou leur continuité de circulation est visible, conserve DEUX observations `platform` distinctes et une relation `connects_to` certaine entre elles. Une terrasse bois et un palier béton restent deux objets même lorsqu’ils sont à la même altitude.
 - Si le palier touche clairement l’enveloppe du bâtiment, ajoute séparément la relation palier→l’observation `building_boundary` correspondante. Ne déduis pas automatiquement terrasse→bâtiment ou escalier→bâtiment si les images montrent que le raccord passe d’abord par le palier.
-- Si seule la proximité est visible sans contact certain, conserve les objets distincts sans inventer `connects_to`.
+- Si les preuves montrent que deux primitives sont architecturalement voisines/jointives mais que le contact ou la continuité exacte est occulté, conserve cette connaissance par une relation `adjacent_to` avec la certitude appropriée au lieu d’inventer `connects_to` ou de supprimer toute relation.
+- Si les preuves sont insuffisantes même pour soutenir l’adjacence, conserve les objets distincts sans relation entre eux et laisse la jonction non résolue.
 - N’invente jamais une volée cachée, un virage ou un prolongement derrière un muret : l’audit sert à décomposer ce qui EST visible, pas à compléter la circulation invisible.
 Avant sortie, recoupe les vues d’un même ensemble extérieur en cherchant les continuités de sol, changements de matériau, murets/garde-corps, aboutissements de marches et jonctions au mur. Ces indices doivent décider des primitives et relations avant toute reconstruction métrique.
+
+PASSE RELATIONNELLE BORNÉE — APRÈS IDENTITÉ, AVANT JSON FINAL
+Après avoir stabilisé les objets et leurs identités multi-vues, recherche explicitement les relations architecturalement importantes entre ces objets déjà identifiés. N’ajoute aucune primitive pour satisfaire cette passe.
+Pour chaque paire pertinente de plateformes, escaliers, volumes, ouvertures ou limite bâtie :
+- si les preuves soutiennent un contact, un raccord ou une continuité physique réelle, utilise `connects_to` ;
+- si les preuves soutiennent une juxtaposition architecturale réelle mais que le contact exact reste caché ou non prouvé, utilise `adjacent_to` ;
+- si les preuves ne soutiennent pas même l’adjacence, n’ajoute aucune relation et conserve l’incertitude.
+Cette hiérarchie est épistémique : l’absence de preuve suffisante pour `connects_to` ne doit jamais faire disparaître une relation `adjacent_to` pourtant soutenue. Inversement, `adjacent_to` ne doit jamais être promu en `connects_to` par habitude architecturale.
+Une ouverture proche d’un escalier ou d’une plateforme n’est PAS automatiquement un accès. N’ajoute aucune relation d’accès implicite ni aucune géométrie cachée pour expliquer une porte haute ; utilise seulement les types de relations existants lorsqu’ils sont directement soutenus par les preuves.
 
 AUDIT DE CONNECTIVITÉ DES STRUCTURES EXTÉRIEURES
 Après avoir inventorié `platform` et `stair`, vérifie explicitement leurs raccords physiques prouvés.
 - Si les photos établissent qu’une plateforme, un palier ou un escalier touche/rejoint certainement une autre primitive observée, ajoute une relation `connects_to` certaine entre leurs IDs stables.
 - Si les photos établissent qu’une plateforme ou un escalier rejoint certainement l’enveloppe du bâtiment, ajoute une relation `connects_to` vers l’observation `building_boundary` correspondante. Le raccord peut être certain topologiquement même si son point métrique exact est occulté.
-- Si seule l’existence des deux objets est certaine mais pas leur contact physique, N’AJOUTE PAS de relation certaine.
+- Si le contact n’est pas prouvé mais que la juxtaposition architecturale est elle-même soutenue, encode `adjacent_to` avec une certitude fidèle aux preuves au lieu de supprimer la relation.
+- Si seule l’existence des deux objets est certaine sans preuve suffisante de leur voisinage, N’AJOUTE PAS de relation.
 - Ne remplace jamais une relation prouvée par des coordonnées ou une distance : le Survey reste non métrique.
-Avant sortie, toute primitive extérieure certaine qui apparaît manifestement rattachée au bâtiment ou à une autre primitive dans les preuves doit avoir sa relation correspondante dans `relations[]`; sinon le Survey est incomplet.
+Avant sortie, toute primitive extérieure certaine qui apparaît manifestement rattachée au bâtiment ou à une autre primitive dans les preuves doit avoir la relation la plus forte réellement soutenue dans `relations[]`; sinon le Survey est incomplet.
 
 TOITURE — CERTITUDE OBJET VS ATTRIBUTS
 Sépare toujours la certitude de l’observation de toiture de la certitude de chacun de ses attributs. `certainty="certain"` peut signifier qu’un toit est certainement visible sans rendre certaine sa forme, son axe, son pitch ou le pignon.
@@ -106,7 +117,7 @@ MATÉRIAUX ET BORDS
 Pour platform/stair, `attributes.exterior_material` = timber | concrete | masonry | stone | metal | composite | unknown selon preuves. Les bords et accès restent qualitatifs dans `attributes` ; aucun mètre dans le Survey. Si matériau, bord ou accès est moins certain que l’existence de la primitive, indique sa certitude dans `attribute_certainty`.
 
 RELATIONS EXPLICITES
-`relations[]` contient uniquement des relations prouvées entre objets distincts : connects_to | adjacent_to | aligned_with | supports | part_of | same_physical_object. `connects_to` n’est jamais ajouté par convention. L’audit de connectivité ci-dessus impose toutefois d’écrire les `connects_to` réellement prouvés au lieu de les laisser seulement dans la prose d’une observation.
+`relations[]` contient uniquement des relations prouvées entre objets distincts : connects_to | adjacent_to | aligned_with | supports | part_of | same_physical_object. `connects_to` n’est jamais ajouté par convention. Lorsqu’une relation architecturale est soutenue, conserve la relation la plus forte que les preuves autorisent : `connects_to` pour un raccord/contact soutenu, `adjacent_to` pour une juxtaposition soutenue dont le contact exact reste non prouvé. Ne transforme jamais l’échec de `connects_to` en perte automatique de toute relation.
 
 ANTI-MIROIR
 x=gauche→droite vu de face, y=avant→arrière, z=bas→haut. Aucune compensation du viewer.
@@ -133,7 +144,11 @@ AUDIT FINAL
 - aucun poteau/support simple n’est déguisé en Platform ;
 - toute surface de circulation extérieure distincte visuellement — notamment un palier au sommet d’un volume massif — est inventoriée comme `platform` distincte du volume porteur ;
 - un escalier aboutissant visiblement sur un palier conserve la relation escalier→palier au lieu d’être relié directement au bâtiment par simplification ;
-- deux plateformes de matériaux/fonctions distincts restent deux objets lorsqu’elles sont séparables dans les vues ; leur relation n’est certaine que si le contact est prouvé ;
+- deux plateformes de matériaux/fonctions distincts restent deux objets lorsqu’elles sont séparables dans les vues ;
+- pour chaque relation architecturalement importante entre objets déjà identifiés, le Survey conserve la relation la plus forte réellement soutenue : `connects_to` si le raccord/contact est soutenu, sinon `adjacent_to` si seule la juxtaposition est soutenue, sinon aucune relation ;
+- l’absence de preuve suffisante pour `connects_to` ne supprime jamais un `adjacent_to` soutenu ;
+- aucune zone occultée n’est transformée en `connects_to` certaine pour compléter une circulation plausible ;
+- la proximité d’une ouverture avec une plateforme ou un escalier ne crée jamais automatiquement une relation d’accès ;
 - chaque relation possède `id`, `kind`, `subject_id`, `object_id`, `statement`, `evidence` et relie deux IDs distincts d’`observations[]` ;
 - toute connexion extérieure certaine prouvée est matérialisée dans `relations[]`, y compris vers une observation `building_boundary` lorsqu’elle relie une primitive à l’enveloppe ;
 - quantité de photos jamais confondue avec certitude architecturale ;

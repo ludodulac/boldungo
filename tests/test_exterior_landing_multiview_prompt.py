@@ -6,7 +6,7 @@ PROMPT = ROOT / "frontend" / "brickhouse-survey-prompt.txt"
 
 def test_survey_separates_walkable_landing_from_support_volume() -> None:
     source = PROMPT.read_text(encoding="utf-8")
-    assert "PROMPT DE RELEVÉ ARCHITECTURAL v2.6" in source
+    assert "PROMPT DE RELEVÉ ARCHITECTURAL v2.9" in source
     assert "DÉCOMPOSITION PALIER / VOLUME PORTEUR / TERRASSE" in source
     assert "surface horizontale praticable distincte" in source
     assert 'observation `kind:"platform"` distincte du volume/support' in source
