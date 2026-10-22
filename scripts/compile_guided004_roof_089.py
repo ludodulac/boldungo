@@ -28,7 +28,7 @@ def export_real_assembly_dependency_plan(
     proposed = BrickModel.model_validate_json(experiments)
     if len(original.parts) != 1890:
         raise ValueError("REAL_GUIDED004_CANONICAL_PIECE_COUNT_NOT_1890")
-    if original.building_id + "-EXPERIMENTAL-088" not in proposed.building_id:
+    if proposed.building_id != original.building_id + "-EXPERIMENTAL-RIDGE-088":
         raise ValueError("UNRECOGNIZED_088_EXPERIMENTAL_SOURCE")
     if len(proposed.parts) != 1901:
         raise ValueError("EXPECTED_1901_PART_COMPLETE_RIDGE_EXPERIMENT")
