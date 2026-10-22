@@ -13,6 +13,12 @@ from brickhouse.vision.multiview import (
     IdentityCandidate,
     IdentityStatus,
     LocalObservation,
+    DiscriminatingTest,
+    InquiryState,
+    InquiryTestResult,
+    ObservablePrediction,
+    VisualInquiry,
+    apply_inquiry_test,
     MultiViewPass,
     MultiViewWorkspace,
     OpenHypothesis,
@@ -20,6 +26,7 @@ from brickhouse.vision.multiview import (
     VisibilityStatus,
 )
 from brickhouse.vision.openai_provider import PhotoInput, analyze_building_photos
+from brickhouse.survey.models import NormalizedImageRegion
 
 
 def _obs(identifier: str, photo: int, category: str = "opening") -> LocalObservation:
@@ -200,3 +207,149 @@ def test_provider_requests_structured_multiview_workspace_without_extra_ai_calls
     assert "multiview_workspace" in schema["properties"]
     prompt_text = client.responses.kwargs["input"][0]["content"][0]["text"]
     assert "both multiview passes" in prompt_text
+
+
+
+def _inquiry_fixture() -> tuple[VisualInquiry, list[OpenHypothesis]]:
+    continues = OpenHypothesis(
+        id="continues",
+        subject_refs=["obs-a", "obs-b"],
+        statement="The structure continues behind the occluder.",
+        competing_with=["terminates"],
+    )
+    terminates = OpenHypothesis(
+        id="terminates",
+        subject_refs=["obs-a", "obs-b"],
+        statement="The structure terminates behind the occluder.",
+        competing_with=["continues"],
+    )
+    inquiry = VisualInquiry(
+        id="continuity",
+        question="Does the structure continue behind the occluder?",
+        hypothesis_ids=["continues", "terminates"],
+        predictions=[
+            ObservablePrediction(
+                id="p-continues",
+                hypothesis_id="continues",
+                statement="A compatible continuation reappears in the target ROI.",
+            ),
+            ObservablePrediction(
+                id="p-terminates",
+                hypothesis_id="terminates",
+                statement="No continuation is present in the target ROI.",
+            ),
+        ],
+        tests=[
+            DiscriminatingTest(
+                id="view-2-roi",
+                photo_index=2,
+                region=NormalizedImageRegion(x0=0.4, y0=0.2, x1=0.7, y1=0.6),
+                prediction_ids=["p-continues", "p-terminates"],
+                evidence_sought="Inspect whether a compatible continuation reappears.",
+            )
+        ],
+    )
+    return inquiry, [continues, terminates]
+
+
+def test_inquiry_resolves_only_from_tested_discriminating_roi():
+    inquiry, _ = _inquiry_fixture()
+    result = InquiryTestResult(
+        test_id="view-2-roi",
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.VISIBLE,
+        sufficient_visibility=True,
+        statement="A compatible continuation is clearly visible.",
+        compatible_prediction_ids=["p-continues"],
+        discriminating=True,
+    )
+
+    resolved = apply_inquiry_test(inquiry, result)
+
+    assert resolved.state is InquiryState.RESOLVED
+    assert resolved.resolved_hypothesis_id == "continues"
+    assert resolved.resolution_test_id == "view-2-roi"
+    assert resolved.test_results[0].test_id == "view-2-roi"
+    assert resolved.predictions[0].statement != resolved.test_results[0].statement
+
+
+def test_inquiry_becomes_irreducible_unknown_when_accessible_evidence_is_exhausted():
+    inquiry, _ = _inquiry_fixture()
+    result = InquiryTestResult(
+        test_id="view-2-roi",
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.OCCLUDED,
+        sufficient_visibility=False,
+        statement="The target region is blocked.",
+        compatible_prediction_ids=["p-continues", "p-terminates"],
+        discriminating=False,
+    )
+
+    unresolved = apply_inquiry_test(
+        inquiry,
+        result,
+        no_more_candidate_evidence=True,
+        information_missing="An unoccluded view of the target region is unavailable.",
+    )
+
+    assert unresolved.state is InquiryState.IRREDUCIBLE_UNKNOWN
+    assert unresolved.viable_hypothesis_ids == ["continues", "terminates"]
+    assert "unoccluded" in unresolved.information_missing
+    assert unresolved.stop_reason
+
+
+def test_occluded_absence_cannot_refute_a_hypothesis():
+    inquiry, _ = _inquiry_fixture()
+
+    with pytest.raises(ValueError, match="discriminating evidence requires|occluded/non-visible ROI"):
+        InquiryTestResult(
+            test_id="view-2-roi",
+            inspected=True,
+            region_in_frame=True,
+            visibility=VisibilityStatus.OCCLUDED,
+            sufficient_visibility=False,
+            statement="No continuation is visible because the ROI is occluded.",
+            compatible_prediction_ids=["p-terminates"],
+            discriminating=True,
+        )
+
+    safe_result = InquiryTestResult(
+        test_id="view-2-roi",
+        inspected=True,
+        region_in_frame=True,
+        visibility=VisibilityStatus.OCCLUDED,
+        sufficient_visibility=False,
+        statement="No continuation can be assessed in the occluded ROI.",
+        compatible_prediction_ids=["p-continues", "p-terminates"],
+        discriminating=False,
+    )
+    still_open = apply_inquiry_test(inquiry, safe_result)
+    assert still_open.state is InquiryState.OPEN
+    assert still_open.viable_hypothesis_ids == ["continues", "terminates"]
+
+
+def test_existing_workspace_remains_valid_without_inquiry_fields():
+    legacy_payload = {
+        "schema_version": "0.1",
+        "photo_count": 1,
+        "pass_1": {"pass_number": 1},
+        "pass_2": {"pass_number": 2},
+    }
+
+    workspace = MultiViewWorkspace.model_validate(legacy_payload)
+
+    assert workspace.inquiries == []
+
+
+def test_workspace_inquiry_reuses_existing_hypotheses_without_survey_promotion():
+    inquiry, hypotheses = _inquiry_fixture()
+    workspace = MultiViewWorkspace(
+        photo_count=2,
+        pass_1=MultiViewPass(pass_number=1),
+        pass_2=MultiViewPass(pass_number=2, hypotheses=hypotheses),
+        inquiries=[inquiry],
+    )
+
+    assert workspace.inquiries[0].hypothesis_ids == ["continues", "terminates"]
