@@ -27,12 +27,11 @@ _OLD_TIE_UPPER = "EXPERIMENT-091-TIE-REINFORCE-"
 
 
 def _roof_cross_axis(deck):
-    """Infer slope direction from same-level 2x4 bricks, never a house ID."""
-    xvals = [p.x_studs for p in deck]
-    yvals = [p.y_studs for p in deck]
-    if max(xvals) - min(xvals) <= max(yvals) - min(yvals):
-        return "y"
-    return "x"
+    """Derive the slope axis from actual 2x4 brick footprint rotation."""
+    bricks=[p for p in deck if p.part_id=="BRICK_2X4"]
+    if not bricks or len({p.rotation_quarter_turns%2 for p in bricks})!=1:
+        raise ValueError("MIXED_OR_UNKNOWN_091_ROOF_AXIS")
+    return "x" if bricks[0].rotation_quarter_turns%2 else "y"
 
 
 def _sites(part, root, axis):
