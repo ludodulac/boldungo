@@ -22,6 +22,8 @@ PARTS={
  "4276b": ("HINGE_PLATE_1X2_2_FINGERS",2,1),
  "3460":("PLATE_1X8",8,1),
  "3710":("PLATE_1X4",4,1),
+ "3666":("PLATE_1X6",6,1),
+ "3023b":("PLATE_1X2",2,1),
  "87079":("TILE_2X4",4,2),
  "3008":("BRICK_1X8",8,1),
  "3001":("BRICK_2X4",4,2),
@@ -258,8 +260,49 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
                                     "to":tile["placement_id"],
                                     "type":"STANDARD_STUD_TUBE_MATING_PROPOSED",
                                     "stud_count":8,"strength":"NOT_PROVEN"})
+        # Two LONGITUDINAL purlins beneath this side's roof, connecting
+        # different 2-stud roof panels into a whole-house framed bay.
+        # Each is DOUBLE-LAYERED and staggered across its butt joints.
+        # Parts are rotated by the same actual 22-degree panel transform.
+        Q=((0.,0.,-1.),(0.,1.,0.),(1.,0.,0.))
+        purlin_R=tuple(tuple(sum(R[i][k]*Q[k][j] for k in range(3))
+                             for j in range(3)) for i in range(3))
+        depth=(ys[-1]+2)-ys[0]
+        def segments(origin,limit,first):
+            segments=[]
+            cur=origin
+            head=min(first,limit-cur)
+            if head>0:
+                segments.append((cur,head))
+                cur+=head
+            while cur<limit:
+                n=min(8,limit-cur)
+                segments.append((cur,n))
+                cur+=n
+            return segments
+        def actual_plate(length):
+            mapping={8:"3460",6:"3666",4:"3710",2:"3023b"}
+            if length not in mapping:
+                raise ValueError("UNSUPPORTED_PURLIN_PLATE_LENGTH")
+            return mapping[length]
+        for cross in (8,16):
+            uppers=segments(ys[0],ys[-1]+2,8)
+            lowers=segments(ys[0],ys[-1]+2,4)
+            for level,layer,runs in (("UPPER",0,uppers),("LAP",-1,lowers)):
+                for idx,(start,length) in enumerate(runs):
+                    rid=f"093-{side}-PURLIN-{cross}-{level}-{idx}"
+                    middle=roof_center(side,pivot,start,cross+.5,length,layer)
+                    add(rid,actual_plate(length),middle,purlin_R,
+                        "purlin_upper" if layer==0 else "purlin_lap",side)
+                    connections.append({
+                       "from":"SLOPED_RAILS" if layer==0 else "PURLIN_UPPER_COURSE",
+                       "to":rid,
+                       "type":"STANDARD_STUD_TO_ANTI_STUD_MATING_PROPOSED",
+                       "nominal_under_roof":True,
+                       "strength":"BENDING_LOAD_UNPROVEN"})
         per_side[side]={"eave_pivot_studs":center,"bays":len(ys),
-                        "nominal_wall_bearing_sites":side_hits}
+                        "nominal_wall_bearing_sites":side_hits,
+                        "purlin_rows":2}
 
     if len(instances)>max_parts:
         raise ValueError("PART_BUDGET_EXCEEDED")
@@ -312,6 +355,8 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
         "wall_bearing_pair_candidates":wall_stud_site_pairs,
         "unsupported_hinge_bearings":unsupported,
         "interior_truss_certified":False,
+        "under_roof_purlin_rows_total":4,
+        "load_bearing_purlin_stiffness":"NOT_ESTABLISHED",
         "roof_panel_to_foundation_mechanical_status":"UNPROVEN_HINGE_FRICTION_AND_LOAD",
         "roof_surface_studless_finished_tiles":(panel_length//4)*2*len(ys),
         "roof_smooth_surface":True,
