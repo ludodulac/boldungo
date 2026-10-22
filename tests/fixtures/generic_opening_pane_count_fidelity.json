@@ -1,0 +1,87 @@
+{
+  "survey": {
+    "schema_version": "0.1",
+    "id": "generic-opening-pane-survey",
+    "name": "Generic opening pane survey",
+    "photos": [
+      {
+        "photo_index": 1,
+        "capture_role": "facade_view",
+        "facade": "front",
+        "description": "Generic front facade evidence",
+        "source": {"kind": "user_provided", "confidence": 0.99},
+        "image_left_maps_to_facade_offset": "low"
+      }
+    ],
+    "observations": [
+      {
+        "id": "window_two_visible_panes",
+        "kind": "opening",
+        "facade": "front",
+        "certainty": "certain",
+        "statement": "One window opening with two visually distinct glazed subdivisions; operable leaves are not established.",
+        "evidence": [
+          {"photo_index": 1, "observation": "Two distinct glazed zones are visibly separated inside the same opening."}
+        ],
+        "attributes": {"semantic_type": "window", "physical_object_count": 1},
+        "opening_visual": {"pane_count": 2}
+      },
+      {
+        "id": "window_unknown_topology",
+        "kind": "opening",
+        "facade": "front",
+        "certainty": "certain",
+        "statement": "One window opening whose internal topology is not readable.",
+        "evidence": [
+          {"photo_index": 1, "observation": "Opening is visible but internal glazed/leaf subdivision cannot be established."}
+        ],
+        "attributes": {"semantic_type": "window", "physical_object_count": 1},
+        "opening_visual": {}
+      }
+    ]
+  },
+  "scene": {
+    "schema_version": "0.2",
+    "id": "generic-opening-pane-scene",
+    "name": "Generic opening pane scene",
+    "units": "m",
+    "volumes": [
+      {
+        "id": "main",
+        "position": {"x": 0, "y": 0, "z": 0},
+        "width": {"value": 8, "source": {"kind": "inferred", "confidence": 0.7}},
+        "depth": {"value": 6, "source": {"kind": "inferred", "confidence": 0.7}},
+        "height": {"value": 5, "source": {"kind": "inferred", "confidence": 0.7}},
+        "floors": 2,
+        "source": {"kind": "inferred", "confidence": 0.7}
+      }
+    ],
+    "openings": [
+      {
+        "id": "window_two_visible_panes",
+        "type": "window",
+        "volume_id": "main",
+        "facade": "front",
+        "offset_horizontal": 1.0,
+        "offset_vertical": 1.0,
+        "width": 1.6,
+        "height": 1.2,
+        "source": {"kind": "inferred", "confidence": 0.7},
+        "opening_visual": {"pane_count": 2}
+      },
+      {
+        "id": "window_unknown_topology",
+        "type": "window",
+        "volume_id": "main",
+        "facade": "front",
+        "offset_horizontal": 4.0,
+        "offset_vertical": 1.0,
+        "width": 0.8,
+        "height": 1.2,
+        "source": {"kind": "inferred", "confidence": 0.7},
+        "opening_visual": {}
+      }
+    ],
+    "appearance": {}
+  }
+}

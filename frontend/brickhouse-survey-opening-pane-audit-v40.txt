@@ -1,0 +1,14 @@
+BRICKHOUSE — AUDIT OUVERTURES / SUBDIVISIONS VITRÉES v4.0
+
+Ce complément s'applique au Survey photo actif. Il précise uniquement la sémantique de `opening_visual`; il n'ajoute aucun champ et n'autorise aucune reconstruction de menuiserie invisible.
+
+POUR CHAQUE OUVERTURE PHYSIQUE :
+- `opening_visual.pane_count` est le nombre de subdivisions / zones vitrées visuellement distinctes et observables dans cette ouverture. Il décrit une composition visible, pas un mécanisme d'ouverture.
+- Si deux zones vitrées distinctes sont clairement observables, `pane_count:2` est autorisé même si le nombre de vantaux ouvrants n'est pas établi.
+- `opening_visual.leaf_count` est réservé au nombre de vantaux / ouvrants lorsque ce nombre est réellement établi par les preuves. Ne déduis JAMAIS `leaf_count` de `pane_count`.
+- Si le nombre de vantaux n'est pas établi, omets `leaf_count` ou conserve-le à `null`.
+- `pane_count` seul n'autorise pas à inventer `pane_layout`, ni aucun style de fenêtre plus fort. En particulier, deux zones vitrées visibles ne signifient pas automatiquement une fenêtre architecturale de style `PAIRED`.
+- Si seule la division vitrée est certaine, la forme honnête est par exemple `opening_visual:{"pane_count":2}` ; `leaf_count` et `pane_layout` restent absents / nuls.
+- Si aucune topologie vitrée n'est lisible, n'invente ni `pane_count`, ni `leaf_count`, ni `pane_layout`.
+
+PRÉFLIGHT : vérifie séparément, pour chaque ouverture, (1) ce qui est visuellement subdivisé, (2) ce qui est réellement établi comme ouvrant. Une même valeur numérique ne doit jamais passer de (1) à (2) par convention.
