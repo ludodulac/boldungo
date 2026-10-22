@@ -171,8 +171,8 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
         normal=(-R[0][1], -R[1][1],0.) # equals (-sin,-cos) left
         world=[pivot[i]+mul(R,(along,0.,(t+width/2.)*20.*(1 if side=='negative' else -1)))[i]
                for i in range(3)]
-        # hinge stud top is 8 LDU from pivot, base plate top another 8, etc.
-        return tuple(world[i]+(8+layer*8)*normal[i] for i in range(3))
+        # OFFICIAL 4275b/4276b: hinge pivot y=4, top studs y=0.\n        # Stud top is exactly 4 LDU above the hinge axis, NOT 8.\n        # An 8-LDU plate atop it has its top at axis + 12 LDU.
+        return tuple(world[i]+(4+layer*8)*normal[i] for i in range(3))
 
     # Geometry: LDraw tile/plate local x = length, z = width.
     per_side={}
