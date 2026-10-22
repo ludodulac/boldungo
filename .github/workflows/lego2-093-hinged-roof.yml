@@ -4,6 +4,7 @@ on:
     branches: [feat/lego2-existing-house-021]
     paths:
       - 'backend/brickhouse/bricks/articulated_roof_093.py'
+      - 'backend/brickhouse/bricks/roof_collision_093.py'
       - 'scripts/construct_guided004_hinged_roof_093.py'
       - 'tests/bricks/test_articulated_roof_093.py'
       - '.github/workflows/lego2-093-hinged-roof.yml'
@@ -56,6 +57,8 @@ jobs:
           assert r['interior_truss_certified'] is False
           assert r['physical_certification']=='NOT_CERTIFIED'
           assert r['views_count']==7
+          assert r['collision_and_insertion_screen']['whole_roof_insertion_certified'] is False
+          assert 'ridge_opposing_tip_tile_envelope_intersections_count' in r['collision_and_insertion_screen']
           assert (out/'REAL-HINGED-ROOF-093.ldr').is_file()
           assert len(list((out/'views').glob('*.svg')))==7
           assert Path('artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json').is_file()
