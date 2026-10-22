@@ -42,6 +42,11 @@ def design_braced_skin_092(model: BrickModel, *, max_deck=2500,
                            max_girder_span_studs=8):
     before = model.model_dump_json()
     by_id = {p.placement_id: p for p in model.parts}
+    if any(p.part_id not in _DEFS for p in model.parts
+           if p.component in ("wall","roof_support") and
+           p.category in ("brick","plate")):
+        raise ValueError("UNKNOWN_STANDARD_STRUCTURAL_PART")
+
     deck = sorted((p for p in model.parts
                    if p.placement_id.startswith("EXPERIMENT-091-DECK-")),
                   key=lambda p: p.placement_id)
