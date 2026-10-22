@@ -12,9 +12,9 @@ sweep, ridge closure, strength and load capacity remain NOT CERTIFIED.
 from __future__ import annotations
 from collections import Counter,defaultdict
 from math import atan,cos,sin,radians,degrees,isclose
-from .brick_model import BrickModel
+from .brick_model import BrickModel,BrickModelPart
 from .catalog import standard_orthogonal_definitions
-from .roof_studdeck_designer_091 import _cells
+from .roof_studdeck_designer_091 import _cells,_orthogonal_clearance
 from .support_chain import analyze_standard_brick_support_chain
 
 PARTS={
@@ -97,9 +97,55 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
     if len([p for p in removed if p.placement_id.startswith("EXPERIMENT-091-DECK-")])!=len(deck):
         raise AssertionError("INCOMPLETE_091_DECK_REMOVAL")
     base=[p for p in model.parts if p.placement_id not in {p.placement_id for p in removed}]
+    # Build TWO continuous masonry-bonded eave sills, inside the house,
+    # under the hinge pivots, using real catalogue bricks and staggered plates.
+    # This raises the roofs by four plates and removes the eave/wall intersection.
+    rims=[]
+    sill_manifest=[]
+    root_wall={p.placement_id for p in base if p.component=="wall"
+               and p.placement_id in grounded and p.part_id in DEF}
+    for side,cross in (("negative",left-2),("positive",right)):
+        for j,along in enumerate(range(ys[0],ys[-1]+2,8)):
+            length=min(8,ys[-1]+2-along)
+            if length not in (6,8):
+                raise ValueError("EAVE_SILL_REQUIRES_MODULAR_END_LENGTH_6_OR_8")
+            part_id="BRICK_2X"+str(length)
+            brick=BrickModelPart(
+                placement_id=f"EXPERIMENT-093-EAVE-SILL-{side}-{j}",
+                part_id=part_id,category="brick",component="roof_support",
+                x_studs=cross,y_studs=along,z_plates=zbase,
+                rotation_quarter_turns=0)
+            supports=[p for p in base if p.placement_id in root_wall
+                and p.z_plates+DEF[p.part_id].height_plates==zbase
+                and _cells(p)&_cells(brick)]
+            if len(set().union(*(_cells(p)&_cells(brick) for p in supports))<4 if supports else True:
+                raise ValueError("EAVE_SILL_NO_GROUNDED_WALL_BEARING")
+            rims.append(brick)
+            sill_manifest.append({"part":brick.placement_id,
+                "wall_support_ids":[p.placement_id for p in supports],
+                "compression_joint_stud_sites":sorted(
+                    list(set().union(*(_cells(p)&_cells(brick) for p in supports)))})
+        # These bridge all brick-to-brick butt joints at 8-stud intervals.
+        cap_runs=[(ys[0],4)]
+        cap_runs +=[(v,8) for v in range(ys[0]+4,ys[-1]+2,8)
+                    if v+8<=ys[-1]+2]
+        last=cap_runs[-1][0]+cap_runs[-1][1]
+        if last<ys[-1]+2:
+            cap_runs.append((last,ys[-1]+2-last))
+        for dx in (0,1):
+            for j,(along,ln) in enumerate(cap_runs):
+                if ln not in (2,4,6,8):
+                    raise ValueError("EAVE_RIM_SEGMENT_LENGTH_INVALID")
+                rims.append(BrickModelPart(
+                    placement_id=f"EXPERIMENT-093-EAVE-CAP-{side}-{dx}-{j}",
+                    part_id="PLATE_1X"+str(ln),category="plate",
+                    component="roof_support",x_studs=cross+dx,y_studs=along,
+                    z_plates=zbase+3,rotation_quarter_turns=0,
+                    width_studs=1,length_studs=ln,height_plates=1))
+    _orthogonal_clearance(base,rims)
     foundation=BrickModel.model_validate({**model.model_dump(mode="json"),
         "building_id":model.building_id+"-EXPERIMENTAL-093-REAL-LDRAW-ANGLED",
-        "parts":[p.model_dump(mode="json") for p in base]})
+        "parts":[p.model_dump(mode="json") for p in [*base,*rims]]})
     # Other architectural components remain unchanged.
     assert model.model_dump_json()==old_dump
 
@@ -143,7 +189,7 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
         # The hinge axes MUST be co-located in all three coordinates.
         side_hits=0
         for t in ys:
-            pivot=(center*20.,-(zbase*8.+4),0.)
+            pivot=(center*20.,-((zbase+4)*8.+4),0.)
             for off in (0,1):
                 axis=(pivot[0],pivot[1],(t+off+.5)*20.)
                 base_off=mul(base_R,PIVOT_LOCAL)
@@ -164,10 +210,9 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
                 # bricks on the same roof bay and correct z plane.
                 plane=({(center-2,y) for y in range(t,t+2)} if side=="negative"
                        else {(center+1,y) for y in range(t,t+2)})
-                support=[p.placement_id for p in base if
-                    p.component=="wall" and p.placement_id in grounded
-                    and p.part_id in DEF and
-                    p.z_plates+DEF[p.part_id].height_plates==zbase and
+                support=[p.placement_id for p in rims if
+                    p.component=="roof_support" and p.part_id in DEF and
+                    p.z_plates+DEF[p.part_id].height_plates==zbase+4 and
                     _cells(p)&plane]
                 if support:
                     side_hits+=1;wall_stud_site_pairs+=len(support)
@@ -234,8 +279,10 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
         "architecture":"SLOPED_TWO_PANEL_HALF_ROOF_REAL_LDRAW_4275B_4276B",
         "source_091_parts":len(model.parts),
         "masonry_and_facade_retained":len(base),
+        "new_structural_eave_sill_parts":len(rims),
+        "eave_sill_connections":sill_manifest,
         "articulated_instances":len(instances),
-        "composite_total_part_count":len(base)+len(instances),
+        "composite_total_part_count":len(base)+len(rims)+len(instances),
         "source_091_removed_count":len(removed),
         "canonical_1890_unchanged":True,
         "roof_091_and_092_microsteps_not_reused":True,
@@ -249,8 +296,9 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
         "ridge_world_cross_studs":[roof_tip_l,roof_tip_r],
         "ridge_nominal_gap_studs":round(ridge_gap,5),
         "ridge_status":roof_ridge_status,
-        "eave_z_plates":zbase,
-        "ridge_z_plates_at_midspan":round(zbase+rise_at_ridge_studs,4),
+        "eave_z_plates":zbase+4,
+        "eave_rise_plates_from_historic_roof":4,
+        "ridge_z_plates_at_midspan":round(zbase+4+rise_at_ridge_studs,4),
         "hinge_axis_pairs":len(hinge_axes),
         "coaxial_hinge_axis_pairs":len(hinge_axes),
         "hinge_finger_engagement_proven":0,
