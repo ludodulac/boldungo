@@ -1,0 +1,34 @@
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js';
+
+const host=document.querySelector('#view');
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x15171a);
+const camera=new THREE.PerspectiveCamera(45,1,.05,200);
+const renderer=new THREE.WebGLRenderer({antialias:true}); renderer.setPixelRatio(Math.min(devicePixelRatio,2)); host.prepend(renderer.domElement);
+const controls=new OrbitControls(camera,renderer.domElement); controls.enableDamping=true;
+scene.add(new THREE.HemisphereLight(0xffffff,0x303030,2.2)); const sun=new THREE.DirectionalLight(0xffffff,2); sun.position.set(8,15,-10); scene.add(sun);
+const root=new THREE.Group(); scene.add(root); const labels=[];
+const MAT={wall:new THREE.MeshStandardMaterial({color:0xd8d0c4,roughness:.9}),roof:new THREE.MeshStandardMaterial({color:0x76584b,roughness:.9,side:THREE.DoubleSide}),opening:new THREE.MeshStandardMaterial({color:0x7ca2b8,roughness:.3}),wood:new THREE.MeshStandardMaterial({color:0x9a744b,roughness:.9}),masonry:new THREE.MeshStandardMaterial({color:0xb7afa3,roughness:1}),stair:new THREE.MeshStandardMaterial({color:0xaaa39a,roughness:1}),site:new THREE.MeshStandardMaterial({color:0x817b72,roughness:1})};
+const box=(x,y,z,w,d,h,mat=MAT.wall)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x+w/2,z+h/2,y+d/2);root.add(m);return m};
+const label=(id,x,y,z)=>{const el=document.createElement('div');el.className='label';el.textContent=id;host.append(el);labels.push({el,p:new THREE.Vector3(x,z,y)});};
+const levelMap=new Map();
+const data=await fetch('../benchmarks/real-house-5/scene-v2-test/results/scene-initial.json').then(r=>{if(!r.ok)throw Error('scene-initial.json '+r.status);return r.json()});
+if(data.schema_version!=='boldungo.scene.v2'||data.units!=='meters')throw Error('Unsupported Scene V2 input');
+const W=data.building.footprint.width_m,D=data.building.footprint.depth_m; data.building.levels.forEach(l=>levelMap.set(l.level_id,l));
+const top=Math.max(...data.building.levels.map(l=>l.floor_z_m+l.height_m)); box(0,0,0,W,D,top,MAT.wall);
+// Level seams are display-only guides at the exact level z values.
+data.building.levels.forEach(l=>{const g=new THREE.GridHelper(Math.max(W,D),10,0x555555,0x333333);g.position.set(W/2,l.floor_z_m,D/2);g.scale.set(W/Math.max(W,D),1,D/Math.max(W,D));root.add(g)});
+// Roof: deterministic metric interpretation of type/ridge/pitch; no scene values are altered.
+const roof=data.building.roof;if(roof?.type==='deux pentes'){const o=roof.overhang_m||0,p=THREE.MathUtils.degToRad(roof.pitch_deg||0),half=W/2+o,rise=Math.tan(p)*half,len=D+2*o;[-1,1].forEach(s=>{const geo=new THREE.BoxGeometry(half/Math.cos(p),.12,len);const m=new THREE.Mesh(geo,MAT.roof);m.rotation.z=s*p;m.position.set(W/2+s*half/2,top+rise/2,D/2);root.add(m)});roof.chimneys?.forEach(c=>box(c.x_m,c.y_m,top+rise-c.height_above_ridge_m*.05,c.width_m,c.depth_m,c.height_above_ridge_m,MAT.masonry));}
+function openingPose(f,o){const l=levelMap.get(o.level_id),z=(l?.floor_z_m||0)+o.sill_above_floor_m,h=o.height_m,t=.06;let x,y,w,d;if(f.side==='FRONT'){x=o.x_m;y=-t;w=o.width_m;d=t}else if(f.side==='BACK'){x=W-o.x_m-o.width_m;y=D;w=o.width_m;d=t}else if(f.side==='RIGHT'){x=W;y=o.x_m;w=t;d=o.width_m}else{x=-t;y=D-o.x_m-o.width_m;w=t;d=o.width_m}return{x,y,z,w,d,h};}
+data.facades.forEach(f=>f.openings.forEach(o=>{const p=openingPose(f,o);box(p.x,p.y,p.z,p.w,p.d,p.h,MAT.opening);label(o.opening_id,p.x+p.w/2,p.y+p.d/2,p.z+p.h/2)}));
+function fpBox(fp,z,h,mat){return box(fp.x_min_m,fp.y_min_m,z,fp.x_max_m-fp.x_min_m,fp.y_max_m-fp.y_min_m,h,mat)}
+data.platforms.forEach(p=>{const h=p.thickness_m||.15;fpBox(p.footprint,p.top_z_m-h,h,p.material?.includes('bois')?MAT.wood:MAT.masonry);label(p.platform_id,(p.footprint.x_min_m+p.footprint.x_max_m)/2,(p.footprint.y_min_m+p.footprint.y_max_m)/2,p.top_z_m+.2);p.supports?.forEach(s=>{const q=s.section_m||.15;if(s.type==='POST')box(s.x_m-q/2,s.y_m-q/2,0,q,q,p.top_z_m-h,MAT.wood);else if(s.type==='WALL')box(s.x_m-q/2,s.y_m-.5,0,q,1,p.top_z_m-h,MAT.masonry);else box(s.x_m-.5,s.y_m-q/2,p.top_z_m-h-q,1,q,q,MAT.wood)});p.railings?.forEach(r=>{const f=p.footprint,z=p.top_z_m,H=r.height_m||1,q=.06;if(r.side==='-x')box(f.x_min_m-q/2,f.y_min_m,z,q,f.y_max_m-f.y_min_m,H,MAT.wood);if(r.side==='+x')box(f.x_max_m-q/2,f.y_min_m,z,q,f.y_max_m-f.y_min_m,H,MAT.wood);if(r.side==='-y')box(f.x_min_m,f.y_min_m-q/2,z,f.x_max_m-f.x_min_m,q,H,MAT.wood);if(r.side==='+y')box(f.x_min_m,f.y_max_m-q/2,z,f.x_max_m-f.x_min_m,q,H,MAT.wood)})});
+data.stairs.forEach(st=>{label(st.stair_id,st.flights[0]?.start_x_m||0,st.flights[0]?.start_y_m||0,st.from_z_m+.2);let currentZ=st.from_z_m;st.flights.forEach(fl=>{label(fl.flight_id,fl.start_x_m,fl.start_y_m,currentZ+.35);for(let i=0;i<fl.steps;i++){const run=st.step_run_m,rise=st.step_rise_m,w=st.width_m;let x=fl.start_x_m,y=fl.start_y_m,bw=w,bd=run;if(fl.direction==='+y')y+=i*run;else if(fl.direction==='-y')y-=i*run+run;else if(fl.direction==='+x'){x+=i*run;bw=run;bd=w}else{x-=i*run+run;bw=run;bd=w}box(x,y,currentZ,bw,bd,rise*(i+1),MAT.stair)}currentZ+=fl.steps*st.step_rise_m});st.landings?.forEach(l=>fpBox(l,l.z_m-.12,.12,MAT.stair))});
+data.site_elements?.forEach(e=>{if(e.footprint)fpBox(e.footprint,0,e.height_m||.2,MAT.site)});
+const grid=new THREE.GridHelper(30,30,0x555b66,0x30343a);grid.position.set(W/2,-.16,D/2);root.add(grid);const axes=new THREE.AxesHelper(2);root.add(axes);
+const center=new THREE.Vector3(W/2,top/2,D/2);controls.target.copy(center);camera.position.set(W+9,top+8,-12);controls.update();
+function setView(v){const dist=Math.max(W,D,top)*2.2;controls.target.copy(center);if(v==='FRONT')camera.position.set(W/2,top/2,-dist);if(v==='BACK')camera.position.set(W/2,top/2,D+dist);if(v==='RIGHT')camera.position.set(W+dist,top/2,D/2);if(v==='LEFT')camera.position.set(-dist,top/2,D/2);if(v==='ORBIT')camera.position.set(W+9,top+8,-12);camera.lookAt(center);controls.update()}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}addEventListener('resize',resize);resize();
+function frame(){requestAnimationFrame(frame);controls.update();labels.forEach(a=>{const p=a.p.clone().project(camera),visible=p.z<1;a.el.style.display=visible?'block':'none';a.el.style.left=((p.x*.5+.5)*host.clientWidth)+'px';a.el.style.top=((-p.y*.5+.5)*host.clientHeight)+'px'});renderer.render(scene,camera)}frame();
