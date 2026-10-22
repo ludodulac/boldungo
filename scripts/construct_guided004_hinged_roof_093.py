@@ -103,7 +103,8 @@ def draw_views(foundation,assembly,out):
     for p in assembly:
         kinds={"roof_skin":"#75899f",
                "rafter_base":"#c38b62","rafter_lap":"#ba7850",
-               "hinge_base":"#c9723f","hinge_roof":"#d5a56c"}
+               "hinge_base":"#c9723f","hinge_roof":"#d5a56c",
+               "purlin_upper":"#886548","purlin_lap":"#755039"}
         panel.append({"id":p["placement_id"],"class":p["kind"],
                       "corners":part_bbox_transformed(p),
                       "color":kinds[p["kind"]]})
