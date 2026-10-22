@@ -11,6 +11,7 @@ from __future__ import annotations
 from collections import Counter
 from .brick_model import BrickModel, BrickModelPart
 from .catalog import standard_orthogonal_definitions
+from .geometry_adapter import CANONICAL_LDRAW_PARTS
 from .roof_connectivity_compiler_089 import (
     compile_roof_connections_089, _underface_30363_stud_candidate,
 )
@@ -270,7 +271,7 @@ def design_roof_eave_bearers_090(source: BrickModel):
     inserted = [p for p in candidate.parts if p.placement_id not in prior_ids]
     removed_parts = [p for p in source.parts if p.placement_id not in new_ids]
     def bom(parts):
-        return [{"part_id": key[0], "color": "UNSPECIFIED_BY_BRICKMODEL",
+        return [{"part_id": key[0], "ldraw_design_id": CANONICAL_LDRAW_PARTS[key[0]].ldraw_id, "color": "UNSPECIFIED_BY_BRICKMODEL",
                  "quantity": val} for key, val in sorted(Counter(
                      (p.part_id, "UNSPECIFIED_BY_BRICKMODEL") for p in parts).items())]
     result = {
