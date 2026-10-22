@@ -232,6 +232,39 @@ def design_roof_eave_bearers_090(source: BrickModel):
     for row in accepted:
         if row["roof_id"] not in corrected:
             raise AssertionError("DESIGNED_BRACKET_FAILED_089_RECHECK")
+    before_rows = {r["placement_id"]: r for r in report["nominal_roof_stud_rows"]}
+    after_rows = {r["placement_id"]: r for r in after["nominal_roof_stud_rows"]}
+    newly_grounded = sorted(pid for pid, old in before_rows.items()
+        if old["status"] != "NOMINAL_TWO_STUD_PATH_TO_WALL_ONLY"
+        and after_rows[pid]["status"] == "NOMINAL_TWO_STUD_PATH_TO_WALL_ONLY")
+    newly_connected_details = [{
+        "roof_id": pid,
+        "supporter_ids": after_rows[pid]["grounded_lower_ids"],
+        "grounded_stud_sites": after_rows[pid]["grounded_site_count"],
+        "evidence_types": sorted(after_rows[pid]["source_evidence"]),
+        "roof_interface_still_mechanically_unverified": True,
+    } for pid in newly_grounded]
+    remaining = [{"roof_id": pid, "status": r["status"],
+                  "candidate_lower_ids": r["candidate_lower_ids"]}
+                 for pid, r in sorted(after_rows.items())
+                 if r["status"] != "NOMINAL_TWO_STUD_PATH_TO_WALL_ONLY"]
+    before_caps = {r["placement_id"]: r["status"] for r in report["ridge_caps"]}
+    new_caps = {r["placement_id"]: r["status"] for r in after["ridge_caps"]}
+    caps_newly_grounded = sorted(pid for pid in new_caps
+        if new_caps[pid] == "NOMINAL_TWO_SIDED_BRIDGE_TO_GROUNDED_SLOPES"
+        and before_caps.get(pid) != new_caps[pid])
+    caps_blocked = [r for r in after["ridge_caps"]
+                    if r["status"] != "NOMINAL_TWO_SIDED_BRIDGE_TO_GROUNDED_SLOPES"]
+    provisional_order = {
+        "stage_1": "ORIGINAL_GROUNDED_WALLS_AND_RE-TILED_WALL_TOPS",
+        "stage_2_brackets": [r["beam_id"] for r in accepted],
+        "stage_3_30363_slope_ids_nominal_order_only":
+            after["nominal_slope_order_after_wall_assembly"],
+        "stage_4_cap_ids_nominal_only": sorted(
+            pid for pid, state in new_caps.items()
+            if state == "NOMINAL_TWO_SIDED_BRIDGE_TO_GROUNDED_SLOPES"),
+        "gate": "STOP_BEFORE_30363_INSTALLATION_UNTIL_MATING_AND_INSERTION_VERIFIED",
+    }
     prior_ids = {p.placement_id for p in source.parts}
     new_ids = {p.placement_id for p in candidate.parts}
     inserted = [p for p in candidate.parts if p.placement_id not in prior_ids]
@@ -249,6 +282,17 @@ def design_roof_eave_bearers_090(source: BrickModel):
         "accepted_eave_brackets": accepted,
         "bracket_count": len(accepted),
         "root_ids_with_new_nominal_path": corrected,
+        "nominal_roof_paths_newly_anchored": len(newly_grounded),
+        "newly_anchored_root_count": len([p for p in newly_grounded if p in unresolved]),
+        "newly_anchored_descendant_count": len([p for p in newly_grounded if p not in unresolved]),
+        "newly_anchored_slope_details": newly_connected_details,
+        "roof_paths_still_unreached": remaining,
+        "caps_newly_nominally_anchored": caps_newly_grounded,
+        "caps_still_blocked_details": caps_blocked,
+        "provisional_assembly_sequence": provisional_order,
+        "orthogonal_wall_overlap_screen": "PASS_FOR_SELECTED_SAME_COURSE_SOLIDS",
+        "nonorthogonal_3d_clearance_and_insertion": "NOT_PROVEN",
+
         "unresolved_root_designs": blockers,
         "before": {"nominal": report["roof_slope_grounded_nominal"],
                    "unreached": report["roof_slope_still_without_grounded_nominal_path"],
