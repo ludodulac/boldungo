@@ -90,6 +90,7 @@ def _house_parameters(model,design_angle):
 def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
     old_dump=model.model_dump_json()
     deck,zbase,left,right,ys=_house_parameters(model,pitch)
+    panel_length=max(8,min(32,4*round(((right-left)/(2*cos(radians(pitch)))+PANEL_HINGE_U)/4)))
     report_wall=analyze_standard_brick_support_chain(model)
     grounded={n.placement_id for n in report_wall.nodes if n.reaches_ground}
     # Strip ALL 091 roof: preserve masonry + prior 090 eave-wall additions.
@@ -228,7 +229,8 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
             # sandwich and exterior smooth 2x4 tiles at the proper angle.
             rails=[]
             for off in (0,1):
-                for u,L in [(0,8),(8,8),(16,8),(24,4)]:
+                for u in range(0,panel_length,8):
+                    L=min(8,panel_length-u)
                     pid=f"093-{side}-baseplate-{t}-{off}-{u}"
                     x=roof_center(side,pivot,t+off,u+L/2.,1,1)
                     rail=add(pid,"3460" if L==8 else "3710",x,R,"rafter_base",side)
@@ -239,14 +241,16 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
                                             "type":"DOCUMENTED_STANDARD_STUD_TUBE_ALIGNMENT",
                                             "stud_count":2,"strength":"NOT_PROVEN"})
                 # Separate staggered reinforced course; overlaps seams.
-                for u,L in [(0,4),(4,8),(12,8),(20,8)]:
+                lap_intervals=[(0,4)]
+                lap_intervals.extend((u,min(8,panel_length-u)) for u in range(4,panel_length,8))
+                for u,L in lap_intervals:
                     pid=f"093-{side}-interlockedplate-{t}-{off}-{u}"
                     x=roof_center(side,pivot,t+off,u+L/2.,1,2)
                     add(pid,"3460" if L==8 else "3710",x,R,"rafter_lap",side)
                     connections.append({"from":"lower_course_rails","to":pid,
                         "type":"STANDARD_STUD_TUBE_MATING_PROPOSED",
                         "stud_count":L,"strength":"NOT_PROVEN"})
-            for u in range(0,28,4):
+            for u in range(0,panel_length,4):
                 tile=add(f"093-{side}-tile-{t}-{u}","87079",
                          roof_center(side,pivot,t,u+2.,2,3),
                          R,"roof_skin",side)
@@ -264,8 +268,8 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
     rise_at_ridge_studs=half*20.*__import__("math").tan(radians(pitch))/8.
     x_front=left-4*cos(radians(pitch))
     x_back=right+4*cos(radians(pitch))
-    roof_tip_l=left+24*cos(radians(pitch))
-    roof_tip_r=right-24*cos(radians(pitch))
+    roof_tip_l=left+(panel_length-PANEL_HINGE_U)*cos(radians(pitch))
+    roof_tip_r=right-(panel_length-PANEL_HINGE_U)*cos(radians(pitch))
     ridge_gap=roof_tip_r-roof_tip_l
     if ridge_gap < -1:
         # Overlapping roof panels across centerline require actual mesh check.
@@ -298,6 +302,7 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
         "ridge_status":roof_ridge_status,
         "eave_z_plates":zbase+4,
         "eave_rise_plates_from_historic_roof":4,
+        "panel_length_studs":panel_length,
         "ridge_z_plates_at_midspan":round(zbase+4+rise_at_ridge_studs,4),
         "hinge_axis_pairs":len(hinge_axes),
         "coaxial_hinge_axis_pairs":len(hinge_axes),
@@ -308,7 +313,7 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
         "unsupported_hinge_bearings":unsupported,
         "interior_truss_certified":False,
         "roof_panel_to_foundation_mechanical_status":"UNPROVEN_HINGE_FRICTION_AND_LOAD",
-        "roof_surface_studless_finished_tiles":7*2*len(ys),
+        "roof_surface_studless_finished_tiles":(panel_length//4)*2*len(ys),
         "roof_smooth_surface":True,
         "roof_exterior_flat_plane_count":2,
         "insertion_swept_mesh_screen":"NOT_VERIFIED",
