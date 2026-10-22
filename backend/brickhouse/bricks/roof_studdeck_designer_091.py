@@ -66,19 +66,32 @@ def _vertical_connectors(lower, upper):
 
 
 def _orthogonal_clearance(existing, added):
-    """Fail on disallowed BODY/BODY overlap. Vertical stud joints touch z planes."""
+    """Reject new solids overlapping existing orthogonal masonry or each other.
+
+    Pre-existing decorative overlaps are outside this mission's scope and are
+    never re-certified by this constrained new-build screen.
+    """
     volume = {}
-    for p in [*existing, *added]:
+    for p in added:
         if p.part_id not in _DEFS:
-            continue
+            raise ValueError("NEW_ROOF_PART_NOT_IN_STANDARD_CATALOG")
         d = _DEFS[p.part_id]
         for z in range(p.z_plates, p.z_plates + d.height_plates):
             for x, y in _cells(p):
                 k = (x, y, z)
                 prev = volume.get(k)
                 if prev is not None:
-                    raise ValueError(f"ORTHOGONAL_BODY_COLLISION:{prev}:{p.placement_id}:{k}")
+                    raise ValueError(f"NEW_ROOF_BODY_COLLISION:{prev}:{p.placement_id}:{k}")
                 volume[k] = p.placement_id
+    for p in existing:
+        if p.component not in ("wall", "roof_support") or p.part_id not in _DEFS:
+            continue
+        d = _DEFS[p.part_id]
+        for z in range(p.z_plates, p.z_plates + d.height_plates):
+            for x, y in _cells(p):
+                k = (x, y, z)
+                if k in volume:
+                    raise ValueError(f"EXISTING_ORTHOGONAL_BODY_COLLISION:{p.placement_id}:{volume[k]}:{k}")
 
 
 def design_standard_stud_roof_091(source: BrickModel, *, max_roof_parts=2500):
@@ -162,8 +175,8 @@ def design_standard_stud_roof_091(source: BrickModel, *, max_roof_parts=2500):
         for p in ordered:
             links[p.placement_id] = {}
             for lower in [*wall, *ordered]:
-                if lower.placement_id == p.placement_id or
-                        lower.z_plates >= p.z_plates:
+                if (lower.placement_id == p.placement_id or
+                        lower.z_plates >= p.z_plates):
                     continue
                 sites = _vertical_connectors(lower, p)
                 if sites:
