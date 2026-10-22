@@ -61,7 +61,7 @@ def test_translation_does_not_hardcode_guided004_coordinates():
 
 def test_wrong_tie_length_fails_closed():
     source=build_other_house()
-    mutated=[p.model_copy(update={"part_id":"PLATE_1X6"})
+    mutated=[p.model_copy(update={"part_id":"PLATE_1X6","width_studs":1,"length_studs":6,"height_plates":1})
              if p.placement_id.startswith("EXPERIMENT-091-TIE-")
              and not p.placement_id.startswith("EXPERIMENT-091-TIE-REINFORCE-")
              else p for p in source.parts]
