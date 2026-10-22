@@ -121,13 +121,13 @@ def build_093(model:BrickModel,*,pitch=22.,max_parts=7000):
             supports=[p for p in base if p.placement_id in root_wall
                 and p.z_plates+DEF[p.part_id].height_plates==zbase
                 and _cells(p)&_cells(brick)]
-            if len(set().union(*(_cells(p)&_cells(brick) for p in supports))<4 if supports else True:
+            sites=set().union(*(_cells(p)&_cells(brick) for p in supports)) if supports else set()
+            if len(sites)<4:
                 raise ValueError("EAVE_SILL_NO_GROUNDED_WALL_BEARING")
             rims.append(brick)
             sill_manifest.append({"part":brick.placement_id,
                 "wall_support_ids":[p.placement_id for p in supports],
-                "compression_joint_stud_sites":sorted(
-                    list(set().union(*(_cells(p)&_cells(brick) for p in supports)))})
+                "compression_joint_stud_sites":[list(site) for site in sorted(sites)]})
         # These bridge all brick-to-brick butt joints at 8-stud intervals.
         cap_runs=[(ys[0],4)]
         cap_runs +=[(v,8) for v in range(ys[0]+4,ys[-1]+2,8)
