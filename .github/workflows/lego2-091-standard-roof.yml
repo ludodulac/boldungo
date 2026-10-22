@@ -1,0 +1,73 @@
+name: LEGO2-091 alternative standard-stud roof full-house construction
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/roof_studdeck_designer_091.py'
+      - 'scripts/construct_guided004_roof_091.py'
+      - 'tests/bricks/test_roof_studdeck_designer_091.py'
+      - '.github/workflows/lego2-091-standard-roof.yml'
+  workflow_dispatch:
+
+jobs:
+  reconstruct-actual-house:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing model and geometry engines
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Validate studded-roof architecture and other-house fixtures
+        run: python -m pytest -q tests/bricks/test_roof_studdeck_designer_091.py tests/bricks/test_roof_eave_bearer_builder_090.py
+      - name: Regenerate actual house base
+        run: python scripts/export_guided004_lego.py > guided004-source.log
+      - name: Rebuild preserved 088 ridge experiment
+        run: |
+          python scripts/construct_guided004_roof_088.py \
+            --source artifacts/lego2-guided-004/brick-model.json \
+            --output-dir artifacts/lego2-088-guided004-EXPERIMENTAL
+      - name: Rebuild preserved 090 eave experiment
+        run: |
+          python scripts/construct_guided004_eave_090.py \
+            --canonical artifacts/lego2-guided-004/brick-model.json \
+            --previous artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json \
+            --output artifacts/lego2-090
+      - name: Construct WHOLE house with alternative studded roof
+        run: |
+          python scripts/construct_guided004_roof_091.py \
+            --canonical artifacts/lego2-guided-004/brick-model.json \
+            --previous-088 artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json \
+            --previous-090 artifacts/lego2-090/GUIDED-004-EXPERIMENTAL-090-NOT-CERTIFIED.json \
+            --output artifacts/lego2-091
+      - name: Refuse uncertified physics and verify genuine family replacement
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          b=json.loads(Path('artifacts/lego2-091/STUDDED-ROOF-091-COMPLETE-EVIDENCE.json').read_text())
+          assert [b['canonical_count'],b['variant088_count'],b['variant090_count']] == [1890,1901,1909]
+          assert b['source_nonroof_unchanged'] is True
+          assert b['replaced_slopes']==408
+          assert b['removed_prior_caps']==23
+          assert b['30363_underside_claims']==0
+          assert b['geometric_30363_assumptions_promoted']==0
+          assert b['stud_interface_pairs_documented_type'] > 0
+          assert b['physical_certification']=='NOT_CERTIFIED'
+          assert b['roof_load_capacity_certified'] is False
+          assert b['whole_house_insertion_certified'] is False
+          assert not b['user_physical_test_requested']
+          print('LEGO2_091_ALTERNATIVE_ROOF_BUILT_NOT_CERTIFIED')
+          PY
+      - name: Store full real-house experimental model, per-interface graph, BOM and blocked assembly
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LEGO2-091-guided004-entire-roof-studded-alternative
+          path: artifacts/lego2-091/
+          retention-days: 30
+          if-no-files-found: warn
