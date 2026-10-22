@@ -189,6 +189,7 @@ def design_standard_stud_roof_091(source: BrickModel, *, max_roof_parts=2500):
 
     # Construction of links is based on standard studs, not spatial proximity.
     anchored, links = propagate({p.placement_id for p in wall})
+    compression_only_ids = set(anchored)
     initial_unsupported = [p for p in ordered if p.placement_id not in anchored]
     disconnected = defaultdict(list)
     for p in initial_unsupported:
@@ -352,7 +353,10 @@ def design_standard_stud_roof_091(source: BrickModel, *, max_roof_parts=2500):
         "parts_added": [p.model_dump(mode="json") for p in new],
         "parts_removed": [p.model_dump(mode="json") for p in [*old, *obsolete_caps]],
         "bom_added": bill(new), "bom_removed": bill([*old, *obsolete_caps]),
-        "direct_compression_connected_roof_bricks": len(anchored & deck_ids),
+        "direct_compression_connected_roof_bricks": len(compression_only_ids & deck_ids),
+        "newly_connected_through_tension_ties_total": len((connected - compression_only_ids) & deck_ids),
+        "descendants_dependent_on_tension_ties": len((connected - compression_only_ids - tied_ids) & deck_ids),
+        "compression_only_stud_path_before_ties": sorted(compression_only_ids & deck_ids),
         "roof_bricks_tied_only_no_compression_certification": len(tied_ids),
         "roof_bricks_connected_in_standard_stud_graph": len(connected & deck_ids),
         "roof_bricks_not_connected_to_walls": sorted(deck_ids - connected),
