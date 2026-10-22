@@ -84,3 +84,33 @@ def test_catalog_geometry_no_bogus_parts_or_replacements():
     assert r["bom_additions"] and r["bom_removals"]
     assert all(b["color"] == "UNSPECIFIED_BY_BRICKMODEL" for b in r["bom_additions"])
     assert {p.placement_id for p in exp.parts if p.component == "roof"} == {"first"}
+
+
+def test_translated_house_coordinates_not_guided004_special_case():
+    source = corner(True)
+    shifted = []
+    for p in source.parts:
+        shifted.append(p.model_copy(update={
+            "x_studs": p.x_studs + 11,
+            "y_studs": p.y_studs + 6,
+        }))
+    foreign = house(shifted)
+    result, candidate = design_roof_eave_bearers_090(foreign)
+    assert result["bracket_count"] == 1
+    assert result["after"]["unreached"] == 0
+    assert next(p for p in candidate.parts if p.placement_id == "EXPERIMENT-090-EAVE-first").x_studs == 27
+
+
+def test_beam_replaces_colliding_wall_solids_without_stacked_bricks():
+    from brickhouse.bricks.catalog import standard_orthogonal_definitions
+    from brickhouse.bricks.roof_eave_bearer_builder_090 import _cells
+    r, experiment = design_roof_eave_bearers_090(corner(True))
+    beam = next(p for p in experiment.parts
+                if p.placement_id == "EXPERIMENT-090-EAVE-first")
+    d = standard_orthogonal_definitions()
+    for other in experiment.parts:
+        if other.placement_id == beam.placement_id or other.part_id not in d:
+            continue
+        if other.z_plates < beam.z_plates + 3 and (
+                other.z_plates + d[other.part_id].height_plates > beam.z_plates):
+            assert not (_cells(beam) & _cells(other)), other.placement_id
