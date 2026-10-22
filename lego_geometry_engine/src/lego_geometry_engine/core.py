@@ -198,13 +198,22 @@ class LDrawLibrary:
         self._cache[key] = definition
         return definition
 
-    def _expand(self, path: Path, transform: Transform, stack: set[Path]) -> list[Triangle]:
+    def _expand(self, path: Path, transform: Transform, stack: set[Path],
+                flipped: bool = False) -> list[Triangle]:
+        """Expand LDraw 3/4 surfaces with correct BFC winding inheritance.
+
+        A file's local CW/CCW direction applies only to its own polygons.
+        INVERTNEXT applies to the next subfile, then resets. A negative
+        type-1 determinant mirrors the child and must also reverse its
+        winding. Winding is NEVER inferred as a watertight plastic solid.
+        """
         resolved_path = path.resolve()
         if resolved_path in stack:
             raise ValueError(f"Recursive LDraw reference: {path}")
         stack = stack | {resolved_path}
         output: list[Triangle] = []
         invert_next = False
+        clockwise = False
 
         for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
             line = raw.strip()
@@ -213,8 +222,14 @@ class LDrawLibrary:
             tokens = line.split()
             line_type = tokens[0]
             if line_type == "0":
-                if line.upper().startswith("0 BFC INVERTNEXT"):
-                    invert_next = True
+                if len(tokens) >= 3 and tokens[1] == "BFC":
+                    commands = tokens[2:]
+                    if "INVERTNEXT" in commands:
+                        invert_next = True
+                    if "CW" in commands:
+                        clockwise = True
+                    elif "CCW" in commands:
+                        clockwise = False
                 continue
             if line_type == "1":
                 if len(tokens) < 15:
@@ -222,29 +237,44 @@ class LDrawLibrary:
                 values = list(map(float, tokens[2:14]))
                 name = " ".join(tokens[14:])
                 x, y, z, a, b, c, d, e, f, g, h, i = values
-                local = Transform(((a, b, c, x), (d, e, f, y), (g, h, i, z), (0, 0, 0, 1)))
+                local = Transform(((a, b, c, x), (d, e, f, y),
+                                   (g, h, i, z), (0, 0, 0, 1)))
                 reference = self._resolve(name)
                 if reference is None:
                     if self.ignore_missing_primitives and path.parent.name.lower() in {"p", "s"}:
                         invert_next = False
                         continue
                     raise FileNotFoundError(f"Missing LDraw reference {name!r} from {path}")
-                child = self._expand(reference, transform.compose(local), stack)
-                if invert_next:
-                    child = [(triangle[0], triangle[2], triangle[1]) for triangle in child]
-                output.extend(child)
+                determinant = (a * (e * i - f * h)
+                               - b * (d * i - f * g)
+                               + c * (d * h - e * g))
+                # Mirroring and INVERTNEXT accumulate down the subfile chain.
+                child_flipped = flipped ^ invert_next ^ (determinant < 0)
+                output.extend(self._expand(
+                    reference, transform.compose(local), stack,
+                    flipped=child_flipped,
+                ))
                 invert_next = False
             elif line_type in {"3", "4"}:
                 numbers = list(map(float, tokens[2:]))
                 points = [
-                    transform.point((numbers[index], numbers[index + 1], numbers[index + 2]))
+                    transform.point((numbers[index], numbers[index + 1],
+                                     numbers[index + 2]))
                     for index in range(0, len(numbers), 3)
                 ]
+                reverse = flipped ^ clockwise
                 if line_type == "3" and len(points) >= 3:
-                    output.append((points[0], points[1], points[2]))
+                    if reverse:
+                        output.append((points[0], points[2], points[1]))
+                    else:
+                        output.append((points[0], points[1], points[2]))
                 elif line_type == "4" and len(points) >= 4:
-                    output.append((points[0], points[1], points[2]))
-                    output.append((points[0], points[2], points[3]))
+                    if reverse:
+                        output.append((points[0], points[2], points[1]))
+                        output.append((points[0], points[3], points[2]))
+                    else:
+                        output.append((points[0], points[1], points[2]))
+                        output.append((points[0], points[2], points[3]))
                 invert_next = False
             else:
                 invert_next = False
