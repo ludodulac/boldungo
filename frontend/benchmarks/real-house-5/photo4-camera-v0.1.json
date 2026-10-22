@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1",
+  "photo_index": 4,
+  "model": "pinhole",
+  "image_size": [
+    691,
+    1536
+  ],
+  "focal_px": 850,
+  "principal_point_px": [
+    345.5,
+    768
+  ],
+  "rotation_vector": [
+    -1.64577361,
+    0.56229582,
+    0.35141675
+  ],
+  "translation": [
+    1.1875438,
+    -2.24827748,
+    -5.37906198
+  ],
+  "status": "approximate_fit",
+  "notes": "Plausible perspective camera for projection comparison only; not recovered photographic calibration."
+}

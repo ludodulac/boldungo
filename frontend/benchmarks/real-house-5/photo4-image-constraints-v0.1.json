@@ -1,0 +1,141 @@
+{
+  "schema_version": "0.1",
+  "photo_index": 4,
+  "image_path": "frontend/benchmarks/real-house-5/04-original.jpg",
+  "coordinate_space": "normalized_image_xy_top_left",
+  "primitives": [
+    {
+      "id": "building-visible-boundary",
+      "kind": "POLYGON",
+      "points": [
+        [
+          0.02,
+          0.06
+        ],
+        [
+          0.16,
+          0.05
+        ],
+        [
+          0.78,
+          0.31
+        ],
+        [
+          0.78,
+          0.72
+        ],
+        [
+          0.18,
+          0.78
+        ],
+        [
+          0.05,
+          0.62
+        ]
+      ],
+      "confidence": "plausible"
+    },
+    {
+      "id": "left-upper-window",
+      "kind": "BBOX",
+      "bbox": [
+        0.21,
+        0.13,
+        0.36,
+        0.35
+      ],
+      "confidence": "certain"
+    },
+    {
+      "id": "left-lower-access",
+      "kind": "BBOX",
+      "bbox": [
+        0.31,
+        0.52,
+        0.56,
+        0.76
+      ],
+      "confidence": "certain"
+    },
+    {
+      "id": "masonry-landing-top",
+      "kind": "POLYLINE",
+      "points": [
+        [
+          0.12,
+          0.48
+        ],
+        [
+          0.55,
+          0.4
+        ],
+        [
+          0.78,
+          0.45
+        ]
+      ],
+      "confidence": "certain"
+    },
+    {
+      "id": "timber-deck-visible-edge",
+      "kind": "POLYLINE",
+      "points": [
+        [
+          0.76,
+          0.45
+        ],
+        [
+          0.99,
+          0.53
+        ]
+      ],
+      "confidence": "certain"
+    },
+    {
+      "id": "stair-visible-line",
+      "kind": "POLYLINE",
+      "points": [
+        [
+          0,
+          0.62
+        ],
+        [
+          0.17,
+          0.79
+        ]
+      ],
+      "confidence": "certain"
+    },
+    {
+      "id": "building-vertical",
+      "kind": "LINE",
+      "points": [
+        [
+          0.17,
+          0.05
+        ],
+        [
+          0.18,
+          0.78
+        ]
+      ],
+      "confidence": "plausible"
+    },
+    {
+      "id": "roof-eave",
+      "kind": "LINE",
+      "points": [
+        [
+          0.16,
+          0.05
+        ],
+        [
+          0.78,
+          0.31
+        ]
+      ],
+      "confidence": "certain"
+    }
+  ],
+  "notes": "First normalized-image witness only. Coordinates describe visible photo evidence; they are not house metric geometry."
+}

@@ -1,0 +1,30 @@
+name: Five-photo visual candidate proof
+on:
+  push:
+    branches:
+      - feat/five-photo-survey02-to-visual
+  workflow_dispatch:
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+      - run: python -m playwright install --with-deps chromium
+      - name: Validate Survey 0.2 and targeted tests
+        run: pytest -q tests/survey/test_survey_v02_minimal_contract.py
+      - name: Build candidate BrickModel
+        run: |
+          brickhouse-scene-build frontend/benchmarks/real-house-5/five-photo-scene-candidate-v0.1.json /tmp/five-photo-candidate-export.json --front-width-studs 48
+          cp /tmp/five-photo-candidate-export.json frontend/sample-export.json
+      - name: Capture candidate
+        run: python tests/five_photo_visual_candidate_proof.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: five-photo-house-candidate-captures
+          path: |
+            /tmp/five-photo-candidate-export.json
+            /tmp/five-photo-captures/*.png

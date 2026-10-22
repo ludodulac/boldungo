@@ -10,6 +10,7 @@ from .partial_wall import PartialWallSegment
 from .stair_system_links import SceneStairSystemLink
 from .topology import ArchitecturalScene as _TopologyArchitecturalScene
 from .wall_profile import WallProfileObservation
+from .topological_constraints import BoundaryConstraint, RoofPlanPosition
 
 
 class ArchitecturalScene(_TopologyArchitecturalScene):
@@ -25,6 +26,8 @@ class ArchitecturalScene(_TopologyArchitecturalScene):
     partial_wall_segments: list[PartialWallSegment] = Field(default_factory=list)
     wall_profile_observations: list[WallProfileObservation] = Field(default_factory=list)
     stair_system_links: list[SceneStairSystemLink] = Field(default_factory=list)
+    boundary_constraints: list[BoundaryConstraint] = Field(default_factory=list)
+    roof_plan_positions: list[RoofPlanPosition] = Field(default_factory=list)
 
     def _validate_ids_and_references(self):
         super()._validate_ids_and_references()

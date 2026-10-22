@@ -1,0 +1,18 @@
+{
+  "schema_version":"0.1",
+  "photo_index":4,
+  "coordinate_space":"normalized_image_xy_top_left",
+  "status":"FIRST_WITNESS_MANUAL_IMAGE_CONSTRAINTS",
+  "notes":"Constraints are image-space observations only, not house metres. They exist to test Scene hypotheses by reprojection.",
+  "camera_initial":{"yaw_degrees":-34,"pitch_degrees":8,"roll_degrees":0,"focal_normalized":1.0,"center_x":0.55,"center_y":0.57,"scale":0.072},
+  "constraints":[
+    {"id":"building-left-vertical","kind":"line","points":[{"x":0.29,"y":0.16},{"x":0.30,"y":0.89}],"scene_object_id":"volume-main","statement":"Visible building vertical/corner in photo 4.","confidence":0.8},
+    {"id":"building-right-vertical","kind":"line","points":[{"x":0.82,"y":0.18},{"x":0.80,"y":0.82}],"scene_object_id":"volume-main","statement":"Opposite visible facade boundary.","confidence":0.65},
+    {"id":"left-upper-window","kind":"bbox","points":[{"x":0.43,"y":0.27},{"x":0.57,"y":0.43}],"scene_object_id":"left-upper","statement":"High opening visible on lateral elevation.","confidence":0.85},
+    {"id":"left-access","kind":"bbox","points":[{"x":0.54,"y":0.48},{"x":0.67,"y":0.70}],"scene_object_id":"left-access","statement":"Access/opening adjacent to upper circulation zone.","confidence":0.7},
+    {"id":"timber-deck-edge","kind":"polyline","points":[{"x":0.52,"y":0.61},{"x":0.78,"y":0.60},{"x":0.94,"y":0.64}],"scene_object_id":"platform-timber-1","statement":"Visible timber deck edge and continuation.","confidence":0.85},
+    {"id":"masonry-landing-edge","kind":"polyline","points":[{"x":0.32,"y":0.66},{"x":0.50,"y":0.61},{"x":0.58,"y":0.66}],"scene_object_id":"platform-massive-1","statement":"Upper masonry circulation/landing edge.","confidence":0.8},
+    {"id":"stair-path-visible","kind":"polyline","points":[{"x":0.18,"y":0.90},{"x":0.28,"y":0.78},{"x":0.33,"y":0.68},{"x":0.48,"y":0.62}],"scene_object_id":"stair-exterior-1","statement":"Visible circulation path toward upper landing; segmentation remains uncertain.","confidence":0.7},
+    {"id":"deck-building-contact","kind":"contact","points":[{"x":0.57,"y":0.61}],"scene_object_id":"platform-timber-1","relation_target_id":"volume-main","statement":"Deck meets building/access zone.","confidence":0.75}
+  ]
+}
