@@ -108,3 +108,22 @@ def test_staggered_skin_stud_part_types_and_exact_counts():
     assert o["report"]["hinge_finger_engagement_proven"]==0
     assert o["report"]["roof_to_walls_load_rated_paths"]==0
     assert o["report"]["human_visual_approval"] is False
+
+
+def test_actual_4276b_top_stud_seats_under_first_roof_plate():
+    roof=build_093(second_house())
+    indexed={p["placement_id"]:p for p in roof["articulated_parts"]}
+    for side in ("negative","positive"):
+        for t in (0,2):
+            hinge=indexed[f"093-{side}-roofhinge-{t}-0"]
+            base=indexed[f"093-{side}-baseplate-{t}-0-0"]
+            # LDraw 4276b.dat stud x=-10,+10 at y=0, with pivot at y=4.
+            stud=transform_pt(hinge,(10.,0.,0.))
+            # Plane of baseplate underside = part centre + local Y down by 8 LDU.
+            below=transform_pt(base,(0.,8.,0.))
+            # The two points differ in slope/depth position, but MUST share
+            # the same roof-normal plane; an offset of 4 LDU is unacceptable.
+            R=base["rotation"]
+            n=(-R[0][1],-R[1][1],-R[2][1])
+            separation=sum((stud[i]-below[i])*n[i] for i in range(3))
+            assert abs(separation)<1e-5, (side,t,separation)
