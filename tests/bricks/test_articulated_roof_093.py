@@ -79,7 +79,7 @@ def test_grounded_crossed_brick_sills_before_hinges():
     report=obj["report"]
     assert report["new_structural_eave_sill_parts"]>0
     assert not report["unsupported_hinge_bearings"]
-    assert all(p["part_id"].startswith(("BRICK_","PLATE_"))
+    assert all(p.part_id.startswith(("BRICK_","PLATE_"))
       for p in obj["foundation"].parts
       if p.placement_id.startswith("EXPERIMENT-093"))
     assert len(obj["foundation"].parts) > len(second_house().parts)-8
