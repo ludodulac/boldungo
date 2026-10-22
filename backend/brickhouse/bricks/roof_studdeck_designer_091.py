@@ -253,6 +253,17 @@ def design_standard_stud_roof_091(source: BrickModel, *, max_roof_parts=2500):
             blocked.append({"roof_ids": [p.placement_id for p in group],
                             "reason": "NO_DOCUMENTED_STUD_PAIRS_FOR_TIE"})
             continue
+        # The ridge is an independent standard-stud redesign. A later brace
+        # may cross its deck or caps: exclude that candidate, never intersect.
+        try:
+            _orthogonal_clearance(base, [*deck, *seams, *tie_lower,
+                                         *tie_upper,
+                                         *(p for pair in proposed for p in pair[:2])])
+        except ValueError as exc:
+            blocked.append({"roof_ids": [p.placement_id for p in group],
+                            "reason": "TIE_WOULD_INTERSECT_NEW_ROOF_BODY",
+                            "detail": str(exc)})
+            continue
         for lower, upper, _ in proposed:
             tie_lower.append(lower)
             tie_upper.append(upper)
