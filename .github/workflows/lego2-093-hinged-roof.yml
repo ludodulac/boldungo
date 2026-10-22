@@ -1,0 +1,71 @@
+name: LEGO2-093 hinged true incline and under-roof purlin whole-house
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/articulated_roof_093.py'
+      - 'scripts/construct_guided004_hinged_roof_093.py'
+      - 'tests/bricks/test_articulated_roof_093.py'
+      - '.github/workflows/lego2-093-hinged-roof.yml'
+  workflow_dispatch:
+
+jobs:
+  real-house-articulated-roof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install original BrickModel/LDraw engines
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Run complete hinged geometry and independent-house regression tests
+        run: python -m pytest -q tests/bricks/test_articulated_roof_093.py tests/bricks/test_roof_studdeck_designer_091.py
+      - name: Generate real canonical house 1890
+        run: python scripts/export_guided004_lego.py > original-guided004.log
+      - name: Rebuild historic 088 experimental model
+        run: python scripts/construct_guided004_roof_088.py --source artifacts/lego2-guided-004/brick-model.json --output-dir artifacts/lego2-088-guided004-EXPERIMENTAL
+      - name: Rebuild historic 090 experimental model
+        run: |
+          python scripts/construct_guided004_eave_090.py --canonical artifacts/lego2-guided-004/brick-model.json --previous artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --output artifacts/lego2-090
+      - name: Rebuild original unchanged 091 experimental model
+        run: |
+          python scripts/construct_guided004_roof_091.py --canonical artifacts/lego2-guided-004/brick-model.json --previous-088 artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --previous-090 artifacts/lego2-090/GUIDED-004-EXPERIMENTAL-090-NOT-CERTIFIED.json --output artifacts/lego2-091
+      - name: Build complete actual LDraw hinged roof and seven views
+        run: |
+          python scripts/construct_guided004_hinged_roof_093.py --source artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json --output artifacts/lego2-093
+      - name: Assert physical-release fail closed, source models preserved
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          out=Path('artifacts/lego2-093')
+          x=json.loads((out/'ASSEMBLY-093-EXACT-PLACEMENTS-AND-CONNECTORS.json').read_text())
+          r=x['report']
+          assert r['source_091_parts']==1936
+          assert r['source_091_removed_count']>=408
+          assert r['roof_091_and_092_microsteps_not_reused'] is True
+          assert r['roof_smooth_surface'] is True
+          assert r['actual_panel_pitch_degrees']==22.
+          assert r['coaxial_hinge_axis_pairs']>=40
+          assert r['hinge_finger_engagement_proven']==0
+          assert r['roof_to_walls_load_rated_paths']==0
+          assert r['interior_truss_certified'] is False
+          assert r['physical_certification']=='NOT_CERTIFIED'
+          assert r['views_count']==7
+          assert (out/'REAL-HINGED-ROOF-093.ldr').is_file()
+          assert len(list((out/'views').glob('*.svg')))==7
+          assert Path('artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json').is_file()
+          print('LEGO2_093_REAL_PITCHED_ROOF_MODEL_BUILT_BUT_PHYSICS_NOT_CERTIFIED')
+          PY
+      - name: Upload real model, LDraw transforms, exact BOM, connectivities and seven visual proofs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LEGO2-093-full-house-articulated-LDraw-and-visual-evidence
+          path: artifacts/lego2-093/
+          retention-days: 30
+          if-no-files-found: warn
