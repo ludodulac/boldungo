@@ -199,7 +199,13 @@ def design_standard_stud_roof_091(source: BrickModel, *, max_roof_parts=2500):
     tie_upper = []
     tie_designs = []
     blocked = []
+    tied_ids = set()
     for key, group in sorted(disconnected.items()):
+        # A successful tie at an earlier/lower course can restore the entire
+        # upper chain. Never add redundant plates to already supported rows.
+        anchored, _ = propagate({p.placement_id for p in wall} | tied_ids)
+        if all(p.placement_id in anchored for p in group):
+            continue
         z, cross, rotation, side = key
         alongs = sorted(_coord(p, along_axis) for p in group)
         same_course = sorted((p for p in ordered if p.z_plates == z and
@@ -250,6 +256,7 @@ def design_standard_stud_roof_091(source: BrickModel, *, max_roof_parts=2500):
         for lower, upper, _ in proposed:
             tie_lower.append(lower)
             tie_upper.append(upper)
+        tied_ids.update(p.placement_id for p in group)
         tie_designs.append({
             "roof_ids": [p.placement_id for p in group],
             "grounded_anchor_ids": [preceding.placement_id, following.placement_id],
@@ -263,7 +270,6 @@ def design_standard_stud_roof_091(source: BrickModel, *, max_roof_parts=2500):
     new = [*deck, *tie_lower, *tie_upper, *seams]
     _orthogonal_clearance(base, new)
     deck_ids = {p.placement_id for p in deck}
-    tied_ids = {pid for row in tie_designs for pid in row["roof_ids"]}
     # The tied roots have a standard connection to a spanning plate; unlike
     # compression to a wall, their hanging/tension capacity is NOT established.
     connected, links = propagate({p.placement_id for p in wall} | tied_ids)
