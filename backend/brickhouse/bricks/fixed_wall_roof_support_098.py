@@ -97,9 +97,17 @@ def build_wall_tie(source, *, pitch=22.0, max_span_studs=40):
     l=sides["negative"][0];r=sides["positive"][0]
     x0=l.x_studs;xend=r.x_studs+2
     length=xend-x0
-    if length>max_span_studs:
+    overlong=length>max_span_studs
+    if overlong and max_span_studs<8:
         raise ValueError("SPAN_TOO_LONG_WITHOUT_REAL_MIDSPAN_WALL")
-    runs=interlocking_runs(x0,xend)
+    # IMPORTANT: do not create a 50+-stud unsupported trans-wall beam!
+    # For a very wide house, put just TWO real 2x8 eave bearing brackets
+    # on grounded masonry, and leave the central gap explicitly unsupported.
+    spans=[(x0,x0+8),(xend-8,xend)] if overlong else (
+          [(x0+sum(interlocking_runs(x0,xend)[:k]),
+            x0+sum(interlocking_runs(x0,xend)[:k+1]))
+           for k in range(len(interlocking_runs(x0,xend)))])
+    runs=[b-a for a,b in spans]
     zplate=l.z_plates
     pieces=[]; connections=[];old_sills=set()
     for side,(sill,proof) in sides.items():
@@ -111,17 +119,18 @@ def build_wall_tie(source, *, pitch=22.0, max_span_studs=40):
                 ((sill.x_studs+1)*STUD,-(zplate+3)*PLATE,(y+.5)*STUD),
                 I,"roof098_real_wall_sill_retile")
             pieces.append(brick)
-    current=x0
     transverse=[]
-    for k,n in enumerate(runs):
+    for k,(start,end) in enumerate(spans):
+        n=end-start
         part=rigid(f"098-fixed-crossbeam-{k}",BRICKS[n],
-                   ((current+n/2)*STUD,-(zplate+3)*PLATE,
+                   ((start+n/2)*STUD,-(zplate+3)*PLATE,
                     (eave_bay+1)*STUD),I,"roof098_fixed_transverse_beam")
         pieces.append(part)
-        transverse.append((current,current+n,part))
-        current+=n
+        transverse.append((start,end,part))
     seams=[]
     for i,(_,joint,beam) in enumerate(transverse[:-1]):
+        if transverse[i+1][0]!=joint:
+            continue # overlong house has a REAL UNSUPPORTED GAP, never stud-lap it
         # A real 2×4 plate centered on the stud row -2,-1,+0,+1.
         # It studs into both touching 2x8 bricks in two parallel rows.
         if joint-x0<4 or xend-joint<4:
@@ -209,7 +218,11 @@ def build_wall_tie(source, *, pitch=22.0, max_span_studs=40):
         "new_bom":dict(sorted(Counter(p["ldraw_id"] for p in pieces).items())),
         "fixed_crossbeam_segment_parts":len(transverse),
         "real_brick_course_lap_count":len(seams),
-        "wall_to_wall_fixed_beam_chains":1,
+        "wall_to_wall_fixed_beam_chains":0 if overlong else 1,
+        "independent_fixed_eave_bearing_modules":2 if overlong else 1,
+        "overlong_gap_studs":max(0,length-16) if overlong else 0,
+        "fixed_support_architecture":("TWO_WALL_ANCHORED_LOCAL_EAVE_MODULES_GAP_BLOCKED"
+                                    if overlong else "SHORT_STUD_LAPPED_TRANSVERSE_TIE"),
         "roof_panels_with_secondary_nonhinge_bearing_proven":0,
         "roof_to_wall_complete_stable_paths_proven":0,
         "eave_module_hinged_wall_bearing_nominal":1,
@@ -226,7 +239,8 @@ def build_wall_tie(source, *, pitch=22.0, max_span_studs=40):
         "roof_lateral_sliding_prevention_verified":False,
         "ridge_purlin_ground_path_proven":False,
         "physical_strength":"NOT_CERTIFIED",
-        "architecture_decision":"FIXED_TRANSVERSE_WALL_TIE_BUILT_BUT_SECOND_ROOF_BEARING_ABSENT"}
+        "architecture_decision":("NO_TRANSVERSE_TIE_LONG_SPAN_REPLACED_BY_TWO_REAL_WALL_BEARINGS"
+                                 if overlong else "FIXED_TRANSVERSE_WALL_TIE_BUILT_SECOND_ROOF_BEARING_ABSENT")}
     return {"foundation":f,"articulated_parts":overlay,
             "fixed_parts":pieces,"fixed_beam_ids":[t[2]["placement_id"] for t in transverse],
             "graph":connections,"report":report}
