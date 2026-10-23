@@ -55,6 +55,7 @@ def _axis_check(axes,allparts):
 def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
     if truss_step_bays<2 or truss_step_bays>8:
         raise ValueError("TRUSS_SPACING_OUTSIDE_DOCUMENTED_GEOMETRIC_RANGE")
+    pristine=source.model_dump_json()
     trial=build_093(source,pitch=pitch)
     r=trial["report"]
     full=list(trial["articulated_parts"])
@@ -143,6 +144,45 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
                 ((0.,1.,0.),(-1.,0.,0.),(0.,0.,1.)),
                 "truss_king_post")
             vertical_bricks.append(new["placement_id"])
+        # Real paired finger hinges at both feet AND at the A-frame apex.
+        # The 3+2 complementary finger types and coincident pivot are
+        # documented by LDraw h2.dat / h1.dat. Their stud clutch to beam
+        # ends and their *load rating* still require detailed proof.
+        for side in ("negative","positive"):
+            R=rotation(side,pitch)
+            flip=((-1.,0.,0.),(0.,1.,0.),(0.,0.,-1.))
+            moving=tuple(tuple(sum(R[i][k]*flip[k][j] for k in range(3))
+                                 for j in range(3)) for i in range(3))
+            base_rot=I if side=="negative" else flip
+            for place,xx,yy in (
+                    ("toe",left if side=="negative" else right,tie_top_y),
+                    ("apex",middle,ridge_y+PLATE*2)):
+                axis=(xx*STUD,yy,world_z)
+                def transformed(R,p):
+                    return tuple(sum(R[i][j]*p[j] for j in range(3)) for i in range(3))
+                pivot=(20.,4.,0.)
+                ba=transformed(base_rot,pivot)
+                mb=transformed(moving,pivot)
+                b=add(f"framehinge-{frame_no}-{side}-{place}-base",
+                      "4275b",tuple(axis[i]-ba[i] for i in range(3)),
+                      base_rot,"truss_hinge_base")
+                m=add(f"framehinge-{frame_no}-{side}-{place}-moving",
+                      "4276b",tuple(axis[i]-mb[i] for i in range(3)),
+                      moving,"truss_hinge_moving")
+                def actual_pivot(p):
+                    rot=p["rotation"];xyz=p["xyz_ldu"]
+                    return [xyz[i]+sum(rot[i][j]*pivot[j] for j in range(3))
+                            for i in range(3)]
+                if any(abs(va-vb)>1e-6 for va,vb
+                       in zip(actual_pivot(b),actual_pivot(m))):
+                    raise AssertionError("A_FRAME_REAL_HINGE_NOT_COAXIAL")
+                joints.append({"from":b["placement_id"],"to":m["placement_id"],
+                    "connector_type":"LDRAW_4275B_H2_TO_4276B_H1_COMPLEMENTARY_FINGERS",
+                    "three_plus_two_finger_family":"DOCUMENTED",
+                    "coaxial_geometry_verified":True,
+                    "finger_mesh_interference_verified":False,
+                    "standalone_usable_strain_rating":False,
+                    "attachment_to_frame_chord":"UNVERIFIED_STUD_ALIGNMENT"})
         load_rows=[
           {"from":"roof_tiles","to":"sloping_rafters",
            "connector_type":"STANDARD_STUD_TUBE_INTERFACE_CANDIDATE",
@@ -209,7 +249,7 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
                        "rated":False})
     full.extend(parts_new)
     if len(parts_new)>max_new_parts:raise ValueError("NEW_PARTS_BUDGET")
-    if source.model_dump_json()!=source.model_dump_json():
+    if source.model_dump_json()!=pristine:
         raise AssertionError("SOURCE_MUTATED")
     # This is a *candidate truss*: separated triangle pieces do not yet have
     # proven 3D LEGO vertex joints, and must not be counted as a load-rated truss.
@@ -223,7 +263,9 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
        "added_ridge_short_tiles":len(new_tips),
        "ridge_beam_parts":len(ridge_parts),
        "ridge_cover_tiles":sum(p["kind"]=="ridge_cover_flat" for p in parts_new),
-       "hinge_count":len(axes),
+       "hinge_count":len(axes)+8*len(frames),
+       "new_truss_hinge_pairs":4*len(frames),
+       "new_coaxial_truss_hinge_pairs":4*len(frames),
        "hinge_evidence":axes,
        "coaxial_finger_type_pairs_identified":len(axes),
        "hinge_finger_contact_mesh_verified":0,
