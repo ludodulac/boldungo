@@ -1,5 +1,7 @@
 const buildButton = document.querySelector('#build-partial-lego');
 const messageEl = document.querySelector('#message');
+const EXISTING_HOUSE_SCENE = './data/boldungo2-guided-004-real-scene.json';
+const existingHouseButton = document.querySelector('#build-existing-house-lego');
 const DEFAULT_API_URL = 'https://brickhouse-api.onrender.com';
 
 function loadScene() {
@@ -30,8 +32,23 @@ function engineApiUrl() {
     .replace(/\/$/, '');
 }
 
-async function buildTrustworthySubset() {
-  const scene = loadScene();
+async function buildTrustworthySubset({ existingHouse = false } = {}) {
+  let scene;
+  if (existingHouse) {
+    try {
+      const response = await fetch(EXISTING_HOUSE_SCENE, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      scene = await response.json();
+      if (scene?.schema_version !== '0.2' || !Array.isArray(scene.volumes)) {
+        throw new Error('La scène GUIDED-004 est invalide.');
+      }
+    } catch (error) {
+      messageEl.textContent = `Impossible de charger la maison existante : ${error.message}`;
+      return;
+    }
+  } else {
+    scene = loadScene();
+  }
   if (!scene) {
     messageEl.textContent = 'Aucune reconstruction architecturale disponible pour lancer la maquette LEGO.';
     return;
@@ -42,7 +59,8 @@ async function buildTrustworthySubset() {
     return;
   }
 
-  buildButton.disabled = true;
+  const button = existingHouse ? existingHouseButton : buildButton;
+  if (button) button.disabled = true;
   messageEl.textContent = 'BrickHouse prépare les premières briques fiables sans compléter les zones encore inconnues…';
   try {
     localStorage.setItem('brickhouse.engineApiUrl', base);
@@ -67,12 +85,16 @@ async function buildTrustworthySubset() {
     window.location.href = './viewer.html';
   } catch (error) {
     messageEl.textContent = `Impossible de préparer les premières briques : ${error.message}`;
-    buildButton.disabled = false;
+    if (button) button.disabled = false;
   }
 }
 
 if (buildButton) {
-  buildButton.addEventListener('click', buildTrustworthySubset);
+  buildButton.addEventListener('click', () => buildTrustworthySubset());
 }
 
-export { buildTrustworthySubset, loadScene };
+if (existingHouseButton) {
+  existingHouseButton.addEventListener('click', () => buildTrustworthySubset({ existingHouse: true }));
+}
+
+export { buildTrustworthySubset, loadScene, EXISTING_HOUSE_SCENE };

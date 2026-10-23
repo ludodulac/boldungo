@@ -1,0 +1,96 @@
+name: LEGO2-086 mobile offline physical trial viewer
+
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'frontend/experiments/ridge-trial-086.template.html'
+      - 'scripts/create_ridge_trial_viewer_086.py'
+      - 'tests/bricks/test_mobile_ridge_trial_viewer_086.py'
+      - '.github/workflows/lego2-086-mobile-trial.yml'
+  workflow_dispatch:
+
+jobs:
+  build-portable-viewer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python engine and LDraw adapter
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Verify source model and generated offline HTML contract
+        run: |
+          python -m pytest -q \
+            tests/bricks/test_ridge_technique_candidates_083.py \
+            tests/bricks/test_ridge_trial_assembly_084.py \
+            tests/bricks/test_mobile_ridge_trial_viewer_086.py
+      - name: Generate standalone clickable 30-piece prototype
+        run: python scripts/create_ridge_trial_viewer_086.py --output artifacts/lego2-086/prototype-30-pieces.html
+      - name: Check HTML data, independence and embedded JavaScript syntax
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          import json
+          from pathlib import Path
+          h=Path('artifacts/lego2-086/prototype-30-pieces.html').read_text(encoding='utf-8')
+          class Scripts(HTMLParser):
+              current=False
+              script=''
+              others=''
+              remote=[]
+              def handle_starttag(self,tag,attrs):
+                  attrs=dict(attrs)
+                  if tag=='script':
+                      if attrs.get('src'): self.remote.append(attrs['src'])
+                      self.current=attrs.get('id') or True
+                  if tag in ('img','link') and (attrs.get('src') or attrs.get('href','').startswith('http')):
+                      self.remote.append(attrs.get('src') or attrs.get('href'))
+              def handle_data(self,data):
+                  if self.current=='experiment-data': self.script+=data
+                  elif self.current is True: self.others+=data
+              def handle_endtag(self,tag):
+                  if tag=='script': self.current=False
+          obj=Scripts(); obj.feed(h)
+          assert not obj.remote, obj.remote
+          data=json.loads(obj.script)
+          assert len(data['parts'])==30
+          assert len(data['steps'])==24
+          assert len(data['roof_parts'])==6
+          assert data['physical_certification']=='NOT_CERTIFIED'
+          assert len(obj.others)>1000
+          Path('artifacts/lego2-086/embedded-viewer.js').write_text(obj.others,encoding='utf-8')
+          print('LEGO2_086_OFFLINE_DATA=PASS')
+          PY
+          node --check artifacts/lego2-086/embedded-viewer.js
+          rm artifacts/lego2-086/embedded-viewer.js
+      - name: Export user instructions for opening locally
+        run: |
+          cat > artifacts/lego2-086/OUVRIR-MOI.txt <<'EOF'
+          BOLDUNGO — ESSAI MOBILE 30 PIECES
+          =================================
+
+          1. Decompresser cette archive sur votre telephone ou ordinateur.
+          2. Ouvrir "prototype-30-pieces.html" dans Brave, Chrome ou un navigateur moderne.
+          3. Toucher Suivant pour parcourir les 24 etapes de l'ossature.
+          4. Glisser le doigt sur le dessin pour tourner le modele.
+          5. Les six pentes jaunes sont NON VALIDEES ; ne pas forcer les pieces.
+
+          Ce fichier ne necessite ni Internet, ni application LEGO.
+          C'est un SCHEMA VOLUMETRIQUE SIMPLIFIE, pas un maillage LDraw.
+          La stabilite et les connexions de toiture restent NOT_CERTIFIED.
+          EOF
+      - name: Upload offline file for real user inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: LEGO2-086-mobile-prototype-30-pieces
+          path: |
+            artifacts/lego2-086/prototype-30-pieces.html
+            artifacts/lego2-086/prototype-data.json
+            artifacts/lego2-086/OUVRIR-MOI.txt
+          if-no-files-found: error
+          retention-days: 30

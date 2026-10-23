@@ -1,0 +1,72 @@
+name: LEGO2-095 genuinely pinned Technic triangular modules full real house
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/technic_triangle_095.py'
+      - 'scripts/construct_guided004_technic_095.py'
+      - 'scripts/construct_guided004_hinged_roof_093.py'
+      - 'tests/bricks/test_technic_triangle_095.py'
+      - '.github/workflows/lego2-095-pinned-triangles.yml'
+      - 'missions/095/**'
+  workflow_dispatch:
+jobs:
+  construct-real-house:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install previous BrickModel and LDraw engines
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Test true pins and hole graphs, alternate real house and previous frame
+        run: |
+          python -m pytest -q tests/bricks/test_technic_triangle_095.py tests/bricks/test_triangular_frame_ridge_094.py tests/bricks/test_articulated_roof_093.py
+      - name: Rebuild untouched original canonical model
+        run: python scripts/export_guided004_lego.py > guided004-canonical.log
+      - name: Rebuild untouched 088
+        run: python scripts/construct_guided004_roof_088.py --source artifacts/lego2-guided-004/brick-model.json --output-dir artifacts/lego2-088-guided004-EXPERIMENTAL
+      - name: Rebuild untouched 090
+        run: |
+          python scripts/construct_guided004_eave_090.py --canonical artifacts/lego2-guided-004/brick-model.json --previous artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --output artifacts/lego2-090
+      - name: Rebuild untouched 091
+        run: |
+          python scripts/construct_guided004_roof_091.py --canonical artifacts/lego2-guided-004/brick-model.json --previous-088 artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --previous-090 artifacts/lego2-090/GUIDED-004-EXPERIMENTAL-090-NOT-CERTIFIED.json --output artifacts/lego2-091
+      - name: Regenerate complete 095 actual LDraw house with 5:12:13 Technic modules
+        run: |
+          python scripts/construct_guided004_technic_095.py --source artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json --output artifacts/lego2-095
+      - name: Block false grounding, roof loads and purchase claims
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifacts/lego2-095")
+          r=json.loads((p/"TECHNIC-095-COMPLETE-EVIDENCE.json").read_text())
+          assert r["new_assembly_documented_triangle_count"]>=1
+          assert r["new_assembly_unclosed_triangles"]==0
+          assert r["wall_grounded_truss_count"]>=1
+          assert r["adequate_wall_load_paths_verified"]>=1
+          assert r["wall_stud_to_real_3700_pin_to_technic_truss_pairs_verified"]>=2
+          assert r["roof_to_truss_transfer_still_blocked"] is True
+          assert r["physical_strength_certification"]=="NOT_CERTIFIED"
+          assert r["truss_to_roof_load_rated_paths"]==0
+          assert r["angle_unchanged_degrees"]==22.
+          assert r["views_produced"]==7
+          assert r["new_LDraw_type1_line_count"]==r["new_total"]
+          assert p.joinpath("BOLDUNGO-095-REAL-TECHNIC-TRIANGLES.ldr").is_file()
+          assert len(list((p/"views").glob("*.svg")))==7
+          print("LEGO2_095_PIN_CLOSED_GROUNDED_ANCHORS_BUT_ROOF_TRANSFER_UNVERIFIED")
+          PY
+      - name: Upload model, documented pin graph, photo catalogue and seven real control views
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LEGO2-095-real-pinned-technic-triangle-complete-house
+          path: |
+            artifacts/lego2-095/
+            missions/095/CATALOGUE-PIECES-REELLES.md
+          retention-days: 30
+          if-no-files-found: warn

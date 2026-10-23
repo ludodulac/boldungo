@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<title>BOLDÜNGO — Prototype LEGO expérimental</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#0b1220;color:#edf3ff}
+*{box-sizing:border-box}body{margin:0;min-height:100svh}header{padding:16px 20px;background:#182339;border-bottom:1px solid #394960}
+.top{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(18px,3vw,26px)}small{color:#aab9d4}.chip{display:inline-block;background:#503916;color:#ffe2a3;border:1px solid #86641f;padding:5px 9px;border-radius:50px;font-size:12px;font-weight:800}
+main{display:grid;grid-template-columns:minmax(280px,345px) minmax(0,1fr);max-width:1480px;margin:auto;min-height:calc(100svh - 75px)}
+aside{padding:18px 18px 36px;background:#111b2d;border-right:1px solid #26344e}
+h2{font-size:18px;margin:0 0 12px}p{line-height:1.45}section{margin:0 0 20px}
+.warning{border:1px solid #936d2b;border-radius:12px;padding:12px;background:#352911;color:#ffdfad;font-size:14px}
+.notice{border:1px solid #3b5677;border-radius:12px;padding:12px;background:#192840;color:#d5e5ff;font-size:14px}
+.controls{display:grid;gap:12px}button{cursor:pointer;border:1px solid #5275a5;background:#24446b;color:white;padding:11px;border-radius:9px;font-size:15px}
+button:hover{background:#345981}button:disabled{opacity:.35;cursor:not-allowed}
+.buttons{display:flex;gap:10px}.buttons button{flex:1}input[type=range]{width:100%;accent-color:#7ab6ff;cursor:pointer}
+#step-title{font-weight:800;font-size:16px;min-height:42px}#step-explain{font-size:14px;color:#c5d2e8;min-height:42px}
+progress{width:100%;height:9px;accent-color:#75b6ff}
+label.toggle{display:flex;gap:9px;align-items:flex-start;font-size:14px;cursor:pointer}
+label.toggle input{accent-color:#f2b443;width:18px;height:18px;flex:none}
+table{border-collapse:collapse;width:100%;font-size:14px}td,th{padding:7px;text-align:left;border-bottom:1px solid #344358}
+a{color:#9fd3ff}ul{padding-left:20px;color:#c7d5e8}li{margin:5px 0}
+.stage{position:relative;min-height:530px;overflow:hidden;background:radial-gradient(ellipse at center,#253e56 0%,#121c2d 70%)}
+canvas{display:block;width:100%;height:100%;touch-action:none;outline:0}
+.hint{position:absolute;left:14px;bottom:12px;background:#122033d9;padding:8px 12px;border-radius:9px;color:#c9d8ec;font-size:13px;pointer-events:none}
+.legend{position:absolute;right:14px;top:14px;background:#122033e8;border:1px solid #344c66;border-radius:8px;padding:10px;line-height:1.8;font-size:12px}
+.dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px}
+.orange{background:#fbbf46}.blue{background:#72abf9}.brown{background:#d8b795}.gray{background:#8798b7}
+#fatal{display:none;padding:16px;color:#ffe1a9}
+@media(max-width:850px){main{display:flex;flex-direction:column-reverse}aside{border-right:none;border-top:1px solid #34465c}.stage{height:min(58svh,580px);min-height:320px}header{padding:12px} .hint{font-size:11px;left:7px;bottom:5px}.legend{font-size:11px;right:6px;top:6px} }
+</style>
+</head>
+<body>
+<header><div class="top"><div><small>🧱 BOLDÜNGO • Atelier expérimental LEGO2-086</small><h1>Mon premier prototype de faîtage</h1></div><strong class="chip">NON CERTIFIÉ • 30 PIÈCES</strong></div></header>
+<main>
+<aside>
+<section class="warning"><strong>⚠️ Important</strong><br>Ce modèle sert à examiner une expérience, pas à certifier une construction. Les 6 pentes jaunes ne possèdent <strong>aucune liaison validée</strong>. Ne force jamais les pièces.</section>
+<section class="controls">
+<h2>Montage de l'ossature</h2>
+<div id="step-title" aria-live="polite">Initialisation…</div>
+<div id="step-explain" aria-live="polite"></div>
+<div><label for="step">Étape : <strong id="step-count">0 / 24</strong></label><input id="step" type="range" min="0" max="24" value="0" step="1"></div>
+<progress id="progress" max="24" value="0"></progress>
+<div class="buttons"><button id="previous" type="button">← Précédent</button><button id="next" type="button">Suivant →</button></div>
+<div class="buttons"><button id="reset-camera" type="button">Recentrer la vue</button><button id="all-frame" type="button">24 pièces</button></div>
+<label class="toggle"><input id="roof" type="checkbox"><span>Montrer les <strong>6 pentes jaunes</strong> (positions hypothétiques, <strong>non fixées</strong>)</span></label>
+</section>
+<section class="notice"><strong>Ce que le logiciel a vérifié</strong><br>24 pièces d'ossature, 26 liaisons nominales et leur ordre de montage. Il n'a pas prouvé la stabilité mécanique ni la connexion des versants.</section>
+<section>
+<h2>Liste exacte du mini-kit</h2>
+<table><thead><tr><th>Réf. LEGO</th><th>Description</th><th>Qté</th></tr></thead><tbody id="bom"></tbody></table>
+</section>
+<section>
+<h2>Après un montage réel</h2>
+<ul><li>Les quatre piles tiennent-elles sans soutien ?</li><li>Chaque pièce s'emboîte-t-elle naturellement ?</li><li>Les six pentes peuvent-elles être raccordées sans forcer ?</li><li>Les deux pans sont-ils liés au même faîtage ?</li></ul>
+<p><strong>En cas d'échec :</strong> indique le numéro d'étape et prends une photo des pièces, sans essayer de forcer l'assemblage.</p>
+</section>
+<p><small>Vue géométrique simplifiée (pas un rendu des volumes LDraw exacts). Z est exprimé en plaques dans le modèle. GUIDED-004 (1 890 pièces) reste intact et NOT_CERTIFIED.</small></p>
+</aside>
+<div class="stage" id="stage">
+<canvas id="viewer" aria-label="Vue 3D simplifiée du prototype LEGO avec rotation tactile" tabindex="0"></canvas>
+<div class="legend"><div><span class="dot brown"></span>Briques 1×1</div><div><span class="dot blue"></span>Poutres 1×8</div><div><span class="dot orange"></span>Pentes NON VALIDÉES</div><div><span class="dot gray"></span>Pièce ajoutée</div></div>
+<div class="hint">Glisser = tourner • Pincer / molette = zoomer<br>Flèches ← → = parcourir les étapes</div>
+<div id="fatal" role="alert"></div>
+</div>
+</main>
+<script id="experiment-data" type="application/json">__TRIAL_DATA_JSON__</script>
+<script>
+"use strict";
+(function(){
+const canvas=document.getElementById('viewer'), stage=document.getElementById('stage'), ctx=canvas.getContext('2d');
+const parse=()=>JSON.parse(document.getElementById('experiment-data').textContent);
+let data;
+try{data=parse(); if(!data || data.physical_certification!=='NOT_CERTIFIED' || data.parts.length!==30 || data.steps.length!==24 || data.roof_parts.length!==6)throw Error('Données expérimentales incohérentes');}
+catch(e){const fatal=document.getElementById('fatal');fatal.style.display='block';fatal.textContent='Modèle expérimental indisponible : '+e.message;return;}
+const idMap=new Map(data.parts.map(p=>[p.id,p]));
+const bom=document.getElementById('bom');
+for(const b of data.bom){let tr=document.createElement('tr');for(const word of [b.ldraw_id,b.label,String(b.quantity)]){const td=document.createElement('td');td.textContent=word;tr.appendChild(td)}bom.appendChild(tr)}
+let step=0,yaw=0.7,pitch=0.55,zoom=1,drag=false,last=null;
+const slider=document.getElementById('step'),roofCheckbox=document.getElementById('roof');
+const clamp=(a,l,h)=>Math.max(l,Math.min(h,a));
+function resize(){const r=stage.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);canvas.width=Math.max(200,Math.round(r.width*d));canvas.height=Math.max(200,Math.round(r.height*d));canvas.style.width=r.width+'px';canvas.style.height=r.height+'px';ctx.setTransform(d,0,0,d,0,0);draw()}
+const labels={BRICK_1X1:'Brique 1×1 (3005)',BRICK_1X8:'Brique 1×8 (3008)'};
+function sync(){
+ slider.value=String(step);
+ document.getElementById('step-count').textContent=step+' / 24';
+ document.getElementById('progress').value=step;
+ document.getElementById('previous').disabled=step===0;
+ document.getElementById('next').disabled=step===24;
+ if(step===0){document.getElementById('step-title').textContent='Départ • aucune pièce posée';document.getElementById('step-explain').textContent='Prépare les pièces et examine la structure prévue.'}
+ else{
+  const s=data.steps[step-1],p=idMap.get(s.id);
+  document.getElementById('step-title').textContent='Étape '+step+' : '+(labels[p.part_id]||p.part_id);
+  document.getElementById('step-explain').textContent='X='+p.x+', Y='+p.y+', Z='+p.z_plates+' plaques • '+(s.on_ground?'appui de base (stabilité NON démontrée)':'appui nominal sur '+s.supports.join(', '));
+ }
+ draw();
+}
+function rotatePoint(pt){
+ const c=Math.cos(yaw),s=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
+ const x=pt[0]-4.0, y=pt[1]-3.7, z=pt[2]-4.1;
+ const xx=c*x+s*y,depth=-s*x+c*y;
+ return [xx, depth*sp-z*cp, depth*cp+z*sp];
+}
+function material(part,highlight){
+ if(part.type==='roof')return highlight?'#ffe7a1':'#f2b745';
+ if(highlight)return '#b5c8e9';
+ return part.part_id==='BRICK_1X8'?'#709fdb':'#d8b693';
+}
+function cuboidFaces(part){
+ const x=part.x,y=part.y,z=part.z_plates*0.4,w=part.w,h=part.h,dep=part.d;
+ const low=part.type==='roof'?0.11:h;
+ const sign=part.side==='positive'?-1:1;
+ // The wedge is a VOLUME ILLUSTRATION, not exact LDraw slope shape.
+ const top=(xx,yy)=>part.type==='roof'?(sign>0?low+(h-low)*xx/w:low+(h-low)*(1-xx/w)):h;
+ const xyz=[[0,0,0],[w,0,0],[w,dep,0],[0,dep,0],
+           [0,0,top(0,0)],[w,0,top(w,0)],[w,dep,top(w,dep)],[0,dep,top(0,dep)]];
+ const pts=xyz.map(([a,b,c])=>rotatePoint([x+a,y+b,z+c]));
+ const quads=[[0,3,2,1],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[4,5,6,7]];
+ return quads.map((indices,i)=>{
+   const pp=indices.map(k=>pts[k]);
+   return {part,points:pp,z:pp.reduce((a,p)=>a+p[2],0)/4,face:i};
+ });
+}
+const multiply=(rgb,f)=>{const vals=rgb.match(/\w\w/g).map(v=>parseInt(v,16));return '#'+vals.map(v=>clamp(Math.round(v*f),0,255).toString(16).padStart(2,'0')).join('')};
+function draw(){
+ if(!data)return;
+ const r=stage.getBoundingClientRect(),w=r.width,h=r.height;
+ ctx.clearRect(0,0,w,h);
+ const scale=Math.min(w/13.5,h/11)*zoom;
+ const toScreen=p=>[w*.5+p[0]*scale,h*.55+p[1]*scale];
+ // Minimal ground grid for orientation, never a baseplate claim.
+ ctx.lineWidth=1;ctx.strokeStyle='#58718855';
+ for(let i=-3;i<=13;i++){
+  for(const line of [[[i,-3,0],[i,12,0]],[[-3,i,0],[13,i,0]]]){
+   const a=toScreen(rotatePoint(line[0])),b=toScreen(rotatePoint(line[1]));
+   ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();
+  }
+ }
+ const visibleIds=new Set(data.steps.slice(0,step).map(s=>s.id));
+ if(roofCheckbox.checked)for(const item of data.roof_parts)visibleIds.add(item);
+ const polygons=[];
+ for(const p of data.parts){if(!visibleIds.has(p.id))continue;for(const f of cuboidFaces(p))polygons.push(f);}
+ polygons.sort((a,b)=>b.z-a.z);
+ for(const f of polygons){
+  const screen=f.points.map(toScreen);
+  // draw back and front with conservative painter ordering.
+  const base=material(f.part,step>0&&f.part.id===data.steps[step-1].id);
+  const shades=[0.65,0.83,0.72,0.68,0.77,1.07];
+  ctx.fillStyle=multiply(base,shades[f.face]);
+  ctx.strokeStyle=f.part.type==='roof'?'#744a16':'#28374b';
+  ctx.lineWidth=1.15;
+  ctx.beginPath();ctx.moveTo(...screen[0]);for(let k=1;k<screen.length;k++)ctx.lineTo(...screen[k]);ctx.closePath();
+  ctx.fill();ctx.stroke();
+ }
+ if(roofCheckbox.checked && w>600){
+   ctx.save();ctx.fillStyle='#fff0bf';ctx.font='bold 13px system-ui';ctx.textAlign='center';
+   ctx.fillText('6 PENTES : POSITIONS NON VALIDÉES',w/2,27);ctx.restore();
+ }
+}
+function setStep(n){step=clamp(n,0,24);sync()}
+document.getElementById('previous').onclick=()=>setStep(step-1);
+document.getElementById('next').onclick=()=>setStep(step+1);
+document.getElementById('all-frame').onclick=()=>setStep(24);
+document.getElementById('reset-camera').onclick=()=>{yaw=.7;pitch=.55;zoom=1;draw()};
+slider.addEventListener('input',e=>setStep(Number(e.target.value)));
+roofCheckbox.addEventListener('change',draw);
+canvas.addEventListener('pointerdown',e=>{drag=true;last=[e.clientX,e.clientY];canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;let dx=e.clientX-last[0],dy=e.clientY-last[1];yaw+=dx*.009;pitch=clamp(pitch+dy*.007,.15,1.35);last=[e.clientX,e.clientY];draw()});
+canvas.addEventListener('pointerup',()=>{drag=false;last=null});
+canvas.addEventListener('pointercancel',()=>{drag=false;last=null});
+canvas.addEventListener('wheel',e=>{e.preventDefault();zoom=clamp(zoom*Math.exp(-e.deltaY*.001),.4,3);draw()},{passive:false});
+let pointers=new Map(),pinchDistance=null;
+canvas.addEventListener('pointerdown',e=>pointers.set(e.pointerId,[e.clientX,e.clientY]));
+canvas.addEventListener('pointermove',e=>{
+ if(!pointers.has(e.pointerId))return;
+ pointers.set(e.pointerId,[e.clientX,e.clientY]);
+ if(pointers.size===2){
+  const p=[...pointers.values()],dist=Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]);
+  if(pinchDistance)zoom=clamp(zoom*dist/pinchDistance,.4,3);
+  pinchDistance=dist;drag=false;draw();
+ }
+});
+for(const key of ['pointerup','pointercancel'])canvas.addEventListener(key,e=>{pointers.delete(e.pointerId);if(pointers.size<2)pinchDistance=null});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){setStep(step-1)}if(e.key==='ArrowRight'){setStep(step+1)}});
+if(typeof ResizeObserver==='function')new ResizeObserver(resize).observe(stage);else window.addEventListener('resize',resize);
+sync();resize();
+})();
+</script>
+</body>
+</html>

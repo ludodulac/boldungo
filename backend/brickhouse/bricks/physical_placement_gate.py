@@ -1,11 +1,15 @@
 """Physical placement gate for orthogonal LEGO bricks/plates.
 
-A placement is accepted only when it has catalog geometry, no solid overlap,
-and stud/tube support on an already accepted part. The base is an explicit
-first part at z=0. This module does not certify clutch strength or slope pieces.
+A placement is accepted only with catalog geometry, no solid overlap, and
+a documented VALID connector to an already accepted lower part. UNKNOWN
+connector evidence does not certify support. Ground parts start at z=0.
+A separate GeometricPlacementGate permits geometric-only continuity without
+connector proof; neither path certifies clutch strength, stability or insertion.
 """
 from dataclasses import dataclass
+from .brick_model import BrickModelPart
 from .catalog import standard_orthogonal_definitions
+from .connectors import validate_connection
 
 # Subset of the existing catalog.py, deliberately strict (no made-up pieces).
 CATALOG = standard_orthogonal_definitions()
@@ -27,7 +31,23 @@ class Placement:
         w, l = definition.footprint(self.rotation)
         return w, l, definition.height_plates
 
-class PhysicalPlacementGate:
+def _connector_view(part: Placement, index: int) -> BrickModelPart:
+    """Adapt a catalog-checked Placement to the existing connector contract.
+
+    model_construct avoids adding BrickModel-specific coordinate constraints
+    to this pre-existing Placement API; dimensions are checked by add().
+    Distinct generated IDs prevent unrelated placements sharing an identity.
+    """
+    return BrickModelPart.model_construct(
+        placement_id=f"physical-placement-{index}",
+        part_id=part.part_id, category=CATALOG[part.part_id].category,
+        component="roof_support", x_studs=part.x, y_studs=part.y,
+        z_plates=part.z, rotation_quarter_turns=part.rotation,
+    )
+
+class _OrthogonalPlacementGate:
+    """Shared catalog, grid, collision and geometric-support tests only."""
+
     def __init__(self):
         self.accepted = []
 
@@ -46,24 +66,60 @@ class PhysicalPlacementGate:
                 part.z < prev.z + ph and prev.z < part.z + h):
                 raise ValueError("SOLID_COLLISION")
         if part.z > 0:
-            # Rectangular orthogonal parts: top studs must meet underside tubes
-            # on an integer grid. Side contact is NOT an accepted connection.
-            if not any(
-                prev.z + prev.dimensions()[2] == part.z and
-                part.x < prev.x + prev.dimensions()[0] and prev.x < part.x + w and
-                part.y < prev.y + prev.dimensions()[1] and prev.y < part.y + l
-                for prev in self.accepted
-            ):
-                raise ValueError("NO_STUD_SUPPORT")
+            # Shared geometry of potential lower supporting contacts.
+            contact_indices = []
+            for i, prev in enumerate(self.accepted):
+                pw, pl, ph = prev.dimensions()
+                if (prev.z + ph == part.z and
+                    part.x < prev.x + pw and prev.x < part.x + w and
+                    part.y < prev.y + pl and prev.y < part.y + l):
+                    contact_indices.append(i)
+            self._require_support(part, contact_indices)
         self.accepted.append(part)
         return part
 
-def verify_connected(placements):
-    """Require one stud/tube-connected component, not disconnected ground islands.
 
-    Only vertical stud contacts count; mere edge-to-edge adjacency does not.
-    This is a connectivity preflight, not a strength or insertion proof.
+class PhysicalPlacementGate(_OrthogonalPlacementGate):
+    """Strict 060B: only documented VALID supports; not strength certification."""
+
+    validation_level = "CONNECTOR_EVIDENCE_STRICT"
+    connector_validation = "REQUIRED_VALID"
+    physical_certification = False
+
+    def _require_support(self, part, contact_indices):
+        """Strict 060B rule: ONLY documented VALID connector evidence supports."""
+        if not contact_indices:
+            raise ValueError("NO_STUD_SUPPORT")
+        candidate = _connector_view(part, len(self.accepted))
+        contacts = [
+            validate_connection(_connector_view(self.accepted[i], i), candidate)
+            for i in contact_indices
+        ]
+        if any(result.status == "VALID" for result in contacts):
+            return
+        unknown = next((r for r in contacts if r.status == "UNKNOWN"), None)
+        if unknown is not None:
+            raise ValueError(f"UNKNOWN_CONNECTOR_SUPPORT:{unknown.reason}")
+        raise ValueError(f"INVALID_CONNECTOR_SUPPORT:{contacts[0].reason}")
+
+
+class GeometricPlacementGate(_OrthogonalPlacementGate):
+    """Non-certifying geometry-only gate; connector evidence is NOT evaluated.
+
+    Shares grid/catalog/rotation/collision checks with the strict gate.
+    Vertical footprint contact proves only geometric continuity, never clutch.
     """
+
+    validation_level = "GEOMETRY_ONLY"
+    connector_validation = "NOT_CHECKED"
+    physical_certification = False
+
+    def _require_support(self, part, contact_indices):
+        if not contact_indices:
+            raise ValueError("NO_STUD_SUPPORT")
+
+def _verify_components(placements, connector_evidence_required):
+    """Shared graph traversal; caller explicitly selects evidenced or geometric edges."""
     if not placements:
         raise ValueError("EMPTY_ASSEMBLY")
     parent = list(range(len(placements)))
@@ -77,6 +133,8 @@ def verify_connected(placements):
     def join(i, j):
         parent[root(i)] = root(j)
 
+    connector_parts = ([_connector_view(p, i) for i, p in enumerate(placements)]
+                       if connector_evidence_required else None)
     for i, a in enumerate(placements):
         aw, al, ah = a.dimensions()
         for j in range(i):
@@ -84,11 +142,33 @@ def verify_connected(placements):
             bw, bl, bh = b.dimensions()
             if ((a.z == b.z + bh or b.z == a.z + ah)
                     and a.x < b.x + bw and b.x < a.x + aw
-                    and a.y < b.y + bl and b.y < a.y + al):
+                    and a.y < b.y + bl and b.y < a.y + al
+                    and (not connector_evidence_required or
+                         validate_connection(connector_parts[i], connector_parts[j]).status == "VALID")):
                 join(i, j)
     if len({root(i) for i in range(len(placements))}) != 1:
         raise ValueError("DISCONNECTED_ASSEMBLY")
     return True
+
+
+def verify_connected(placements):
+    """Strict 060B: only VALID connector edges may connect components."""
+    return _verify_components(placements, connector_evidence_required=True)
+
+
+def verify_geometrically_connected(placements):
+    """Geometry-only contact graph, no connector-evidence verification."""
+    return _verify_components(placements, connector_evidence_required=False)
+
+
+def build_geometrically(parts):
+    """Explicitly non-certifying geometric preflight for orthogonal fixtures."""
+    gate = GeometricPlacementGate()
+    for part in parts:
+        gate.add(part)
+    verify_geometrically_connected(gate.accepted)
+    return gate
+
 
 def build(parts):
     gate = PhysicalPlacementGate()
