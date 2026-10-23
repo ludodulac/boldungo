@@ -1,0 +1,75 @@
+name: LEGO2-096 real Technic roof transfer candidates on actual GUIDED-004
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/roof_technic_transfer_096.py'
+      - 'scripts/construct_guided004_roof_technic_096.py'
+      - 'tests/bricks/test_roof_technic_transfer_096.py'
+      - '.github/workflows/lego2-096-roof-technic-transfer.yml'
+      - 'missions/095/CATALOGUE-PIECES-REELLES.md'
+  workflow_dispatch:
+jobs:
+  real-house-096-construction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install actual existing engines
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Test cross-house construction and prior Technic rules
+        run: |
+          python -m pytest -q tests/bricks/test_roof_technic_transfer_096.py tests/bricks/test_technic_triangle_095.py
+      - name: Regenerate historic canonical 1890 untouched
+        run: python scripts/export_guided004_lego.py > guided004-canonical.log
+      - name: Rebuild historic roof 088 unchanged
+        run: |
+          python scripts/construct_guided004_roof_088.py --source artifacts/lego2-guided-004/brick-model.json --output-dir artifacts/lego2-088-guided004-EXPERIMENTAL
+      - name: Rebuild historic eave 090 unchanged
+        run: |
+          python scripts/construct_guided004_eave_090.py --canonical artifacts/lego2-guided-004/brick-model.json --previous artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --output artifacts/lego2-090
+      - name: Rebuild historic roof studs 091 unchanged
+        run: |
+          python scripts/construct_guided004_roof_091.py --canonical artifacts/lego2-guided-004/brick-model.json --previous-088 artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --previous-090 artifacts/lego2-090/GUIDED-004-EXPERIMENTAL-090-NOT-CERTIFIED.json --output artifacts/lego2-091
+      - name: Construct 096 full real LDraw with fail-closed 2780 to 3700 adapters
+        run: |
+          python scripts/construct_guided004_roof_technic_096.py --source artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json --output artifacts/lego2-096
+      - name: Verify exact output, no fake load path or 2780 collar sweep
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifacts/lego2-096")
+          r=json.loads((p/"ROOF-TECHNIC-096-EVIDENCE.json").read_text())
+          bom=json.loads((p/"BOM-096-FULL-EXACT.json").read_text())
+          assert r["original_095_total"]==2935
+          assert r["technic_frames"]==7
+          assert r["grounded_two_wall_frames"]==2
+          assert r["frames_still_without_two_wall_anchors"]==5
+          assert r["roof_pitch_degrees"]==22.
+          assert r["roof_bracket_brace_candidate_chains"]>=1
+          assert r["new_total"]==sum(bom["per_part_ldraw_exact"].values())
+          assert r["source_091_mutated"] is False
+          assert r["n4_load_path_proven"] is False
+          assert r["n5_full_mount_sequence_proven"] is False
+          assert r["pin_full_body_sweeps_verified"]==0
+          assert r["physical_certification"]=="NOT_CERTIFIED"
+          assert r["views_count"]==7
+          assert len(list((p/"views").glob("*.svg")))==7
+          assert sum(1 for x in (p/"BOLDUNGO-096-ROOF-TECHNIC-COMPOSITE.ldr").read_text().splitlines() if x.startswith("1 "))==r["new_total"]
+          print("LEGO2_096_REAL_BRACKET_CANDIDATES_NO_UNPROVEN_PATH_CERTIFICATE")
+          PY
+      - name: Persist FULL LDraw, exact BOM, pin chain, montage and seven views
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LEGO2-096-real-house-roof-to-technic-chain-candidates
+          path: |
+            artifacts/lego2-096/
+            missions/095/CATALOGUE-PIECES-REELLES.md
+          if-no-files-found: warn
+          retention-days: 30
