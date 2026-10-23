@@ -4,7 +4,28 @@ import pytest
 from brickhouse.bricks.articulated_technic_transfer_097 import (
     build_097, circle_elbows, thin_liftarm, check_three_axial_stacks,
     construct_one_exact_joint_chain)
-from test_roof_technic_transfer_096 import independent_house
+from brickhouse.bricks.brick_model import BrickModel,BrickModelPart
+
+def independent_house(two_wall_studs=False,dx=0,dy=0):
+    def part(pid,typ,kind,component,x,y,z,turn=0):
+        return BrickModelPart(placement_id=pid,part_id=typ,
+            category=kind,component=component,
+            facade=None if component=="roof_support" else "front",
+            x_studs=x+dx,y_studs=y+dy,z_plates=z,
+            rotation_quarter_turns=turn)
+    parts=[part("terrain","TERRAIN","terrain","facade_detail",0,0,0)]
+    for label,x in (("west",8),("east",35)):
+        parts.append(part(label,"BRICK_1X8","brick","wall",x,0,90))
+        if two_wall_studs:
+            parts.append(part(label+"-inside","BRICK_1X8","brick","wall",
+                              x+(1 if x==8 else -1),0,90))
+    for x in (6,35):
+        for y in (0,2,4,6):
+            parts.append(part(f"EXPERIMENT-091-DECK-roof-{x}-{y}",
+                         "BRICK_2X4","brick","roof_support",x,y,93,1))
+    return BrickModel(building_id="OTHER-GABLE-097",volume_id="test",
+           width_studs=65,depth_studs=28,height_plates=124,parts=parts)
+
 
 
 def test_circles_reach_any_non_grid_endpoint_without_hole_fudging():
