@@ -135,11 +135,41 @@ nouvelle poutre. **ZÉRO panneau entièrement stabilisé**. Le graphe de
 studs de la poutre et l'audit réel des axes sont dans les preuves JSON.
 """
     if report["overlong_gap_studs"]:
-        notice=notice.replace("la poutre transversale en briques est réellement\\nbondée sur les murs",
-            "deux courtes poutres 3007 sont réellement\\nfixées sur les murs")
-        notice=notice.replace(
-            "3. Insérer depuis l'intérieur la succession de vraies briques LEGO 3007\\n   de 2×8, de mur à mur : chaque extrémité reprend au moins deux tenons\\n   fondés du modèle réel. Laisser toutes les façades et ouvertures intactes.\\n4. Verrouiller chaque joint entre 3007 avec une vraie plaque 3020 2×4,\\n   à cheval sur les deux briques, à hauteur des studs existants.",
-            f"3. Fixer UNE brique 3007 sur chaque couronnement de mur fondé ;\\n   ces deux vrais appuis NE SE REJOIGNENT PAS : il reste\\n   {report['overlong_gap_studs']} tenons de vide entre elles.\\n4. NE PAS inventer de plaque 3020 de liaison à travers ce vide ;\\n   aucune traverse porteuse n'a été construite pour cette largeur.")
+        notice=f"""# BOLDÜNGO — 098 : deux appuis courts VÉRIFIÉS sur murs
+
+**ATTENTION À GUIDED-004 :** la distance entre murs est {report['span_studs']}
+tenons. Une traverse libre sur cette portée n'est pas une structure
+LEGO raisonnablement stable. Le moteur a DONC construit DEUX appuis courts
+EN 3007 (2×8), chacun à deux colonnes de vrais tenons du mur fondé.
+Il existe un VIDE CENTRAL de **{report['overlong_gap_studs']} TENONS** entre
+les deux pièces : AUCUNE LIAISON DE MUR À MUR n'est revendiquée.
+
+1. Construire les murs originaux et vérifier leurs deux vrais tenons
+   d'assise aux deux rives (deux colonnes sur chaque mur).
+2. Remplacer seulement le rang des deux anciennes grosses briques de
+   couronnement 093 par les pièces 3004 de la variante 098, hors baie
+   choisie.
+3. Fixer une 3007 2×8 sur les vrais tenons du mur gauche ; elle s'avance
+   de six studs sans fondation : portée en console NON RÉSISTANTE prouvée.
+4. Fixer la seconde 3007 sur le mur droit, toujours indépendamment.
+   INTERDICTION de poser un faux pont de 32 studs dans le vide.
+5. Reposer les plaques de couronnement d'origine et leurs charnières
+   4275b/4276b sur les vrais tenons des nouvelles 3007.
+6. Poser le toit 22° à titre de représentation **non stabilisée**.
+   Les charnières ne fixent PAS l'inclinaison sous charge à elles seules.
+7. **STOP :** ni le faîtage ni la seconde assise du panneau ne sont
+   raccordés à un appui porteur démontré. Les 2 appuis sont RÉELS
+   mais ZÉRO module de toiture entier n'est certifié stable.
+8. Vérification de l'insertion réelle et des interférences locales encore
+   requise. Aucune estimation de résistance et aucun achat de pièces.
+
+La variante de seconde maison (distance <=40 tenons) produit au contraire
+une seule poutre de mur à mur dont les joints sont coiffés de véritables
+plaques 3020 2×4 studées sur ses briques. Ce cas ne s'applique PAS aux
+48 studs de GUIDED-004.
+
+Certifications N4/N5/N6 : NOT_CERTIFIED.
+"""
     (output/"NOTICE-098-SUPPORT-FIXE-ET-STOP.md").write_text(notice,encoding="utf8")
     print("LEGO2_098_FULL_HOUSE",report["full_house_composite_parts"])
     print("LEGO2_098_FIXED_WALL_CROSSBEAMS",report["wall_to_wall_fixed_beam_chains"])
