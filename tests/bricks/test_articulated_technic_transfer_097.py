@@ -3,7 +3,7 @@ from math import hypot
 import pytest
 from brickhouse.bricks.articulated_technic_transfer_097 import (
     build_097, circle_elbows, thin_liftarm, check_three_axial_stacks,
-    construct_one_exact_joint_chain)
+    construct_one_exact_joint_chain, _physical_hole_y_matrix)
 from brickhouse.bricks.brick_model import BrickModel,BrickModelPart
 
 def independent_house(two_wall_studs=False,dx=0,dy=0):
@@ -102,3 +102,24 @@ def test_097_pin_center_axes_and_link_exterior_are_true_LDRAW_poses():
     assert not actual["collar_path_free_verified"]
     assert all(x["faces_touch_exactly"] for x in actual["three_axial_stack_evidence"])
     assert {e["axis_exact"] for e in actual["edges"]}=={True}
+
+def test_genuine_ldraw_peghole_axes_point_along_world_z_not_local_x():
+    from brickhouse.bricks.technic_triangle_095 import beam_matrix
+    wrong=beam_matrix((12/13,-5/13))
+    assert abs(wrong[2][1])<1e-10  # historic 095 false positive
+    corrected=_physical_hole_y_matrix((12/13,-5/13))
+    assert all(abs(corrected[i][1]-(0.,0.,1.)[i])<1e-9 for i in range(3))
+
+def test_real_097_corrects_all_technic_beams_on_selected_frame_only():
+    model=build_097(independent_house(two_wall_studs=True))
+    report=model["report"]
+    corrected=report["real_095_technic_hole_axis_corrections"]
+    assert len(corrected)>=5
+    assert all(name.startswith("095-F0-") for name in corrected)
+    by={x["placement_id"]:x for x in model["articulated_parts"]}
+    for name in corrected:
+        p=by[name]
+        assert all(abs(p["rotation"][i][1]-(0.,0.,1.)[i])<1e-8 for i in range(3))
+    for p in model["new_subassembly"]["new_parts"]:
+        if p["ldraw_id"]=="32017":
+            assert p["rotation"][2][1]==1.
