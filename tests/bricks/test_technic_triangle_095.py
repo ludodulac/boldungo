@@ -3,7 +3,29 @@ import math
 import pytest
 from brickhouse.bricks.technic_triangle_095 import (
     build_095, complete_technic_frame, beam, beam_matrix,PARTS095)
-from test_triangular_frame_ridge_094 import other_building
+
+from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
+
+
+def other_building(dx=0,dy=0):
+    """Independent 094-style second house without test-module imports."""
+    def wall(pid,x):
+        return BrickModelPart(placement_id=pid,part_id="BRICK_1X8",
+            category="brick",component="wall",facade="front",
+            x_studs=x+dx,y_studs=dy,z_plates=90,rotation_quarter_turns=0)
+    terrain=BrickModelPart(placement_id="terrain",part_id="TERRAIN",
+        category="terrain",component="facade_detail",facade="front",
+        x_studs=dx,y_studs=dy,z_plates=0,rotation_quarter_turns=0)
+    parts=[terrain,wall("left",8),wall("right",35)]
+    for x in (6,35):
+        for y in (0,2,4,6):
+            parts.append(BrickModelPart(
+                placement_id=f"EXPERIMENT-091-DECK-roof-{x}-{y}",
+                part_id="BRICK_2X4",category="brick",component="roof_support",
+                x_studs=x+dx,y_studs=y+dy,z_plates=93,rotation_quarter_turns=1))
+    return BrickModel(building_id="OTHER-GABLE-095",volume_id="test",
+            width_studs=65,depth_studs=28,height_plates=124,parts=parts)
+
 
 
 def test_technics_real_hole_positions_and_rotations():
