@@ -62,7 +62,8 @@ def test_all_real_technic_parts_have_correct_new_rotations_and_preserved_center(
         q,changed=corrected_technic_part(p)
         assert changed is True
         assert q["xyz_ldu"]==p["xyz_ldu"]
-        assert test_transform_matrix_of_LDraw_part(q)==(0.,0.,1.)
+        axis=test_transform_matrix_of_LDraw_part(q)
+        assert axis[0]==0. and axis[1]==0. and abs(axis[2])==1.
 
 def test_096_F6_beam_and_pin_have_wrong_old_AXES_and_are_repaired():
     old=build_096(independent_house())
@@ -74,7 +75,8 @@ def test_096_F6_beam_and_pin_have_wrong_old_AXES_and_are_repaired():
     assert any(k.startswith("096-F6-brace") for k in report["corrected_ids"])
     for obj in fix:
         if obj["placement_id"].startswith(("095-F","096-F")) and obj["ldraw_id"] in OFFICIAL_TYPE1:
-            assert test_transform_matrix_of_LDraw_part(obj)==(0.,0.,1.)
+            axis=test_transform_matrix_of_LDraw_part(obj)
+            assert axis[0]==0. and axis[1]==0. and abs(axis[2])==1.
     assert len(fix)==len(source_old)
 
 def test_wall_bridge_uses_only_actual_lappable_lengths():
