@@ -129,3 +129,28 @@ def test_no_094_mobile_trusses_in_fixed_house():
                    for p in a["articulated_parts"])
     assert sum(1 for p in a["articulated_parts"]
                if p["kind"]=="roof098_fixed_transverse_beam")>=2
+
+def test_fixed_masonry_course_has_true_LDraw_top_plane_and_plate_underface():
+    m=independent_house()
+    result=build_wall_tie(m)
+    a=result["articulated_parts"]
+    beams=[p for p in a if p["kind"]=="roof098_fixed_transverse_beam"]
+    lap=[p for p in a if p["ldraw_id"]=="3020" and p["placement_id"].startswith("098-")]
+    assert beams and lap
+    # Original grounded walls have z_plates=90, brick height=3 plates => top=93.
+    # Replaced 093 sill at z=93..96 => LEGO brick top -96*8=-768 LDU.
+    assert all(abs(p["xyz_ldu"][1]+768.)<1e-6 for p in beams)
+    # Plate at z=96..97 has top -97*8=-776, underside at -768.
+    assert all(abs(p["xyz_ldu"][1]+776.)<1e-6 for p in lap)
+    assert all(abs((p["xyz_ldu"][1]+8)-beams[0]["xyz_ldu"][1])<1e-6 for p in lap)
+
+def test_archived_095_replacement_y_datum_is_not_trusted_by_fixed_beam():
+    m=independent_house()
+    old=build_096(m)
+    old_095=[p for p in old["articulated_parts"]
+             if p["placement_id"].startswith("095-REPLACE-")]
+    if old_095:
+        assert any(abs(p["xyz_ldu"][1]+768)>1e-3 for p in old_095)
+    new=build_wall_tie(m)
+    assert any(abs(p["xyz_ldu"][1]+768)<1e-6 for p in new["fixed_parts"]
+               if p["ldraw_id"]=="3007")
