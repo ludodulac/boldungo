@@ -114,9 +114,15 @@ def test_second_house_missing_wall_cells_must_fail_closed():
     with pytest.raises(ValueError,match="NO_TWO_REAL_GROUNDED"):
         build_wall_tie(independent_house(two_walls=False))
 
-def test_reject_unbraced_overlong_house():
+def test_overlong_house_must_not_get_a_fictitious_wall_to_wall_bridge():
+    result=build_wall_tie(independent_house(),max_span_studs=16)
+    r=result["report"]
+    assert r["wall_to_wall_fixed_beam_chains"]==0
+    assert r["overlong_gap_studs"]>0
+    assert r["independent_fixed_eave_bearing_modules"]==2
+    assert r["real_brick_course_lap_count"]==0
     with pytest.raises(ValueError,match="SPAN_TOO_LONG"):
-        build_wall_tie(independent_house(),max_span_studs=16)
+        build_wall_tie(independent_house(),max_span_studs=7)
 
 def test_reject_other_pitch_not_silently_built():
     with pytest.raises(ValueError,match="22_DEG"):
