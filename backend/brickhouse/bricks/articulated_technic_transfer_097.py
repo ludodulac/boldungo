@@ -90,22 +90,37 @@ def construct_one_exact_joint_chain(previous,frame_no=0):
         frame=next((f for f in frames if f["frame"]==frame_no),None)
         if frame is None or frame["grounded_wall_pin_count"]!=2:
             raise ValueError("NO_GROUNDED_FRAME_WITH_ROOF_STUD_CONNECTION")
-        bracket,reason=_roof_bracket(frame,previous["articulated_parts"])
-        if reason:
+        from .roof_technic_transfer_096 import _vadd
+        from .articulated_roof_093 import rigid,transform_pt
+        rails=[p for p in previous["articulated_parts"]
+               if p["placement_id"].startswith(
+                    f"093-negative-baseplate-{frame['bay']}-0-")
+               and p["ldraw_id"]=="3460"]
+        if not rails:
             raise ValueError("NO_ACTUAL_ROOF_RAIL_FOR_STUD_BRACKET")
-        hole=bracket["hole"]
         holes=_frame_rafter_holes(frame)
-        viable=[(abs(hypot(hole[0]-pt[0],hole[1]-pt[1])-120.),
-                 k,pt) for k,pt in enumerate(holes)
-                if 1<k<13 and hypot(hole[0]-pt[0],hole[1]-pt[1])<2*LINK_RADIUS]
-        if not viable:
-            raise ValueError("NO_TWO_REAL_THIN_LINKS_CAN_REACH")
-        _,k,pt=min(viable)
+        options=[]
+        for rail in rails:
+            # Authentic 1x8 plate has four alternative pairs of neighboring
+            # stud columns for 3700. All are on actual standard anti-studs.
+            for offset in (-40.,-20.,0.,20.,40.):
+                q=rigid(f"096-F{frame_no}-roof-3700","3700",
+                        _vadd(rail["xyz_ldu"],rail["rotation"],(offset,8.,0.)),
+                        rail["rotation"],
+                        "roof096_stud_mounted_technic_bracket",side="negative")
+                h=transform_pt(q,(0.,10.,0.))
+                for k,pt in enumerate(holes):
+                    d=hypot(h[0]-pt[0],h[1]-pt[1])
+                    if 2<=k<=12 and 1<d<2*LINK_RADIUS-1:
+                        options.append((abs(d-120.),d,k,pt,q,h,rail))
+        if not options:raise ValueError("NO_TWO_REAL_THIN_LINKS_CAN_REACH")
+        _,d,k,pt,q,hole,rail=min(options,key=lambda x:x[0])
         trial={"frame":frame_no,"bay":frame["bay"],
                "roof_hole_world":hole,"rafter_hole_world":pt,
+               "roof_rail_id":rail["placement_id"],
                "rafter_hole_index":k,
-               "axis_residual_ldu":round(abs(hypot(hole[0]-pt[0],hole[1]-pt[1])-120.),7)}
-        new_roof_3700=bracket["part"]
+               "axis_residual_ldu":round(abs(d-120.),7)}
+        new_roof_3700=q
     elif trial["axis_residual_ldu"] <= 1e-7:
         raise ValueError("NO_NONZERO_RESIDUAL_TO_REPLACE")
     A=tuple(trial["roof_hole_world"])
@@ -145,7 +160,7 @@ def construct_one_exact_joint_chain(previous,frame_no=0):
             f"095-F{frame_no}-rafter-left"]
     # N2 graph: real joint families and centers; N5 only planned at this stage.
     edges=([
-      {"from":f"093-negative-baseplate-{trial['bay']}-0-16",
+      {"from":trial["roof_rail_id"],
        "to":new_roof_3700["placement_id"],
        "interface":"STANDARD_TWO_STUD_TO_3460_ANTISTUD",
        "axis_exact":True}] if new_roof_3700 else [])+[
@@ -171,6 +186,7 @@ def construct_one_exact_joint_chain(previous,frame_no=0):
         raise AssertionError("DOUBLE_LINK_HAS_NONZERO_FINAL_PIN_RESIDUAL")
     return {"frame":frame_no,"bay":trial["bay"],"part_ids":bridge,
             "new_parts":added,"remove_ids":removed,"edges":edges,
+            "roof_rail_id":trial.get("roof_rail_id",f"093-negative-baseplate-{trial['bay']}-0-16"),
             "roof_hole":A,"frame_hole":B,"elbow_hole_xy":E,
             "hinge_joint_count":3,"hole_axis_residual_max_ldu":round(err,8),
             "legacy_096_replaced":bool(removed),
