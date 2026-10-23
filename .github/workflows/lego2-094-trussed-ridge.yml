@@ -53,6 +53,9 @@ jobs:
           assert r["frame_count"]>=2
           assert r["ridge_beam_parts"]>=1
           assert r["ridge_cover_tiles"]>=1
+          assert r["ridge_tip_to_cap_body_overlap_count"]==0
+          assert r["ridge_cap_purlin_nominal_stud_interfaces"]>=r["ridge_cover_tiles"]
+          assert r["ridge_real_3d_envelope_pairs_screened"]>0
           assert r["coaxial_finger_type_pairs_identified"]==92
           assert r["hinge_finger_contact_mesh_verified"]==0
           assert r["truss_to_wall_compression_documented_verified"]==0
