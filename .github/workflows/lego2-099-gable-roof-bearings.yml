@@ -46,6 +46,8 @@ jobs:
           assert e["facades"]["front"]["gable_piece_count"]>0
           assert e["facades"]["rear"]["gable_piece_count"]>0
           assert e["facades"]["front"]["grounded_gable_piece_count"]>0
+          assert e["pedestal"] is not None
+          assert e["pedestal"]["independent_second_point_lever_arm_studs"]>=6
           assert e["roof_panels_with_two_restrained_fixed_supports"]==0
           assert e["roof_to_wall_two_support_N4_paths"]==0
           assert e["pedestal_is_positive_engagement_to_22deg_roof"] is False
