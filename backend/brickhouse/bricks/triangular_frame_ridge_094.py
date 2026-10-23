@@ -28,6 +28,10 @@ NEW_PARTS={"3007":(8,2),"3001":(4,2),"3008":(8,1),
            "3460":(8,1),"3666":(6,1),"3710":(4,1),
            "87079":(4,2),"3068b":(2,2)}
 LOCAL_PARTS={**PARTS,**{k:(k,*v) for k,v in NEW_PARTS.items()}}
+# The short 2x2 tile is official LDraw 3068b, added to the orthogonal
+# envelope screen; it is NOT an invented custom half-tile.
+PARTS.setdefault("3068b",("TILE_2X2",2,2))
+
 
 
 def _rotated_z(R):
@@ -249,6 +253,25 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
                        "rated":False})
     full.extend(parts_new)
     if len(parts_new)>max_new_parts:raise ValueError("NEW_PARTS_BUDGET")
+    # Explicit 3D screen at the newly CONSTRUCTED ridge. This tests actual
+    # transformed catalogue tile ENVELOPES, never repaired fake watertight
+    # meshes. A collision is a blocking result, not an approved interlock.
+    ridge_caps=[p for p in parts_new if p["kind"]=="ridge_cover_flat"]
+    short_tips=[p for p in parts_new if p["placement_id"].startswith("094-short-")]
+    ridge_overlaps=[]
+    tested=0
+    for tip in short_tips:
+        for cap in ridge_caps:
+            tested+=1
+            if envelope_intersect(roof_obb(tip),roof_obb(cap)):
+                ridge_overlaps.append([tip["placement_id"],cap["placement_id"]])
+    ridge_purlins=[p for p in parts_new if p["kind"]=="ridge_purlin"]
+    cover_support_envelope_intersections=0
+    for cap in ridge_caps:
+        for support in ridge_purlins:
+            if envelope_intersect(roof_obb(cap),roof_obb(support)):
+                cover_support_envelope_intersections+=1
+
     if source.model_dump_json()!=pristine:
         raise AssertionError("SOURCE_MUTATED")
     # This is a *candidate truss*: separated triangle pieces do not yet have
@@ -278,7 +301,11 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
        "remaining_unverified_mechanical_paths":len(frames),
        "vertex_and_fastening_blockers":blockers,
        "ridge_shape_solution":"SEPARATE_HORIZONTAL_CAP_ON_RIDGE_PURLIN_WITH_SHORTENED_SIDE_TILES",
-       "ridge_body_collision_verified":False,
+       "ridge_body_collision_verified":tested>0 and not ridge_overlaps,
+       "ridge_real_3d_envelope_pairs_screened":tested,
+       "ridge_tip_to_cap_body_overlap_count":len(ridge_overlaps),
+       "ridge_tip_to_cap_body_overlap_examples":ridge_overlaps[:20],
+       "ridge_cap_purlin_envelope_contacts_count":cover_support_envelope_intersections,
        "ridge_insertable":False,
        "overall_mesh_clearance_verified":False,
        "roof_finger_sweep_complete":False,
