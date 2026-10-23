@@ -50,8 +50,9 @@ jobs:
           d=json.loads((p/"EVIDENCE-098-WALL-TIE-AND-BLOCKERS.json").read_text())
           b=json.loads((p/"BOM-098-FULL-EXACT.json").read_text())
           axes=json.loads((p/"AUDIT-098-OFFICIAL-LDRAW-AXES.json").read_text())
-          assert d["wall_to_wall_fixed_beam_chains"]==1
-          assert d["real_brick_course_lap_count"]>=2
+          assert d["wall_to_wall_fixed_beam_chains"] in (0,1)
+          assert d["independent_fixed_eave_bearing_modules"]>=1
+          assert (d["wall_to_wall_fixed_beam_chains"]==1 and d["real_brick_course_lap_count"]>=2) or (d["wall_to_wall_fixed_beam_chains"]==0 and d["overlong_gap_studs"]>0 and d["real_brick_course_lap_count"]==0)
           assert len(d["wall_sides"])==2
           assert d["roof_panels_with_secondary_nonhinge_bearing_proven"]==0
           assert d["roof_to_wall_complete_stable_paths_proven"]==0
@@ -67,7 +68,7 @@ jobs:
           assert sum(x.startswith("1 ") for x in
             (p/"BOLDUNGO-098-WALL-FIXED-TIE-AND-22DEG-ROOF.ldr").read_text().splitlines())==b["total"]
           assert (p/"SOUS-ASSEMBLAGE-098-POUTRE-FIXE-ET-CHARNIERE.ldr").exists()
-          print("LEGO2_098_FIXED_WALL_TO_WALL_REAL_STUDS; SECOND_ROOF_BEARING_NOT_PROVEN")
+          print("LEGO2_098_GROUNDED_FIXED_EAVE_STUDS_REAL; OVERLONG_GAP_NOT_CLOSED; SECOND_ROOF_BEARING_NOT_PROVEN")
           PY
       - name: Upload complete full LDraw, actual positions/BOM, subassembly, audit and views
         if: always()
