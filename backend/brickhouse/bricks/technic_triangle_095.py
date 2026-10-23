@@ -315,9 +315,9 @@ def build_095(source,*,pitch=22.,max_frames=32):
     for m in anchored:
         for side,row in m["wall_supports"].items():
             b=m["bay"]
-            old=row["sill"]
+            parent_sill=row["sill"]
             anchor=next((p for p in replacement_sills
-                        if p["placement_id"]==f"095-REPLACE-{old.placement_id}-y{b}"),None)
+                        if p["placement_id"]==f"095-REPLACE-{parent_sill.placement_id}-y{b}"),None)
             if anchor is None or anchor["ldraw_id"]!="3700":
                 raise AssertionError("REAL_WALL_3700_NOT_PLACED")
             ext=next(p for p in m["parts"] if p["placement_id"]==
