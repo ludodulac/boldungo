@@ -48,15 +48,15 @@ def _physical_hole_y_matrix(direction):
     return ((-dy,0.,dx),(dx,0.,dy),(0.,1.,0.))
 
 
-def correct_one_095_frame_hole_axes(parts,frame_no):
-    """Rotate all existing 095 Technic beams in ONE frame around long axes.
+def correct_095_beam_hole_axes_all_frames(parts):
+    """Rotate 095 Technic beams in every frame around unchanged long axes.
 
     Preserves centerline, positional holes and wall/roof silhouette.
-    Historical source is never touched and other frames remain unproven.
+    Historical sources remain untouched; mechanical strength stays unproven.
     """
     changed=[];result=[]
     for old in parts:
-        if (old["placement_id"].startswith(f"095-F{frame_no}-") and
+        if (old["placement_id"].startswith("095-F") and
                 old["ldraw_id"] in ("32278","32524")):
             q=dict(old)
             R=old["rotation"]
@@ -264,8 +264,7 @@ def build_097(source,frame_no=0):
     removed=set(assembled["remove_ids"])
     before=prev["articulated_parts"]
     previous_kept=[p for p in before if p["placement_id"] not in removed]
-    repaired,beam_axis_corrections=correct_one_095_frame_hole_axes(
-        previous_kept,frame_no)
+    repaired,beam_axis_corrections=correct_095_beam_hole_axes_all_frames(previous_kept)
     now=repaired+assembled["new_parts"]
     ids=[p["placement_id"] for p in now]
     if len(ids)!=len(set(ids)):raise AssertionError("DUPLICATE_LDRAW_PIECES")
@@ -280,7 +279,7 @@ def build_097(source,frame_no=0):
     report={
         "previous_096_parts":prev["report"]["new_total"],
         "real_095_technic_hole_axis_corrections":beam_axis_corrections,
-        "unmodified_frames_physical_technic_axes_unverified":prev["report"]["technic_frames"]-1,
+        "unmodified_frames_physical_technic_axes_unverified":0,
         "new_total":len(prev["foundation"].parts)+len(now),
         "removed_actual_ids":assembled["remove_ids"],
         "added_real_parts_by_ldraw":dict(delta),
