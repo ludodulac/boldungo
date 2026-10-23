@@ -217,7 +217,7 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
         length=8 if bay+8 <= ys[-1]+2 else 4
         if length not in (4,8):continue
         ridge=add(f"ridge-beam-{idx}", "3008",
-            (middle*STUD,ridge_y+PLATE*2,(bay+length/2)*STUD),
+            (middle*STUD,ridge_y-PLATE,(bay+length/2)*STUD),
             ((0.,0.,1.),(0.,1.,0.),(-1.,0.,0.)),"ridge_purlin")
         ridge_parts.append(ridge["placement_id"])
     # Replace the existing tip row (last 4-stud tile) on each side with
@@ -245,7 +245,7 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
     # studs. The independent cap is 0° and does not torque tilted slopes.
     for bay in spans[::2]:
         cap=add(f"ridge-cover-{bay}","87079",
-            (middle*STUD,ridge_y-PLATE,(bay+2.)*STUD),
+            (middle*STUD,ridge_y-2*PLATE,(bay+2.)*STUD),
             ((1.,0.,0.),(0.,1.,0.),(0.,0.,1.)),
             "ridge_cover_flat")
         joints.append({"from":"ridge_purlin","to":cap["placement_id"],
@@ -267,10 +267,32 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
                 ridge_overlaps.append([tip["placement_id"],cap["placement_id"]])
     ridge_purlins=[p for p in parts_new if p["kind"]=="ridge_purlin"]
     cover_support_envelope_intersections=0
+    supported_ridge_covers=[]
     for cap in ridge_caps:
+        cap_nominal_sites=[]
         for support in ridge_purlins:
-            if envelope_intersect(roof_obb(cap),roof_obb(support)):
-                cover_support_envelope_intersections+=1
+            # Standard LDraw 3008 roof purlin has TOP STUDS at its
+            # y reference, and 87079 tile has underside at y+8 LDU.
+            # Mate only with actual coincident planes and overlapping
+            # catalogue footprints (no imagined hinge at the ridge).
+            top=support["xyz_ldu"][1]
+            tile_under=cap["xyz_ldu"][1]+PLATE
+            if abs(top-tile_under)>1e-5:
+                continue
+            along_gap=abs(cap["xyz_ldu"][2]-support["xyz_ldu"][2])
+            # Two tile underside cavities nominally fall inside
+            # the beam's 8-stud length and 1-stud transverse width.
+            max_gap=(4-1)*STUD
+            if along_gap<=max_gap+1e-5 and abs(cap["xyz_ldu"][0]-support["xyz_ldu"][0])<1e-5:
+                cap_nominal_sites.append({"beam_id":support["placement_id"],
+                    "tile_id":cap["placement_id"],
+                    "nominal_stud_cells":2,
+                    "type":"STANDARD_STUD_TO_TILE_UNDERSIDE_MATING_GEOMETRY",
+                    "physical_strength":"NOT_TESTED"})
+        supported_ridge_covers.extend(cap_nominal_sites)
+    if len(supported_ridge_covers)<len(ridge_caps):
+        blockers.append({"reason":"RIDGE_COVER_NOT_ALL_STUD_SUPPORTED",
+                         "unsupported_cover_count":len(ridge_caps)-len(supported_ridge_covers)})
 
     if source.model_dump_json()!=pristine:
         raise AssertionError("SOURCE_MUTATED")
@@ -286,7 +308,8 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
        "added_ridge_short_tiles":len(new_tips),
        "ridge_beam_parts":len(ridge_parts),
        "ridge_cover_tiles":sum(p["kind"]=="ridge_cover_flat" for p in parts_new),
-       "hinge_count":len(axes)+8*len(frames),
+       "hinge_count":len(axes)+4*len(frames),
+       "hinge_physical_part_count":2*(len(axes)+4*len(frames)),
        "new_truss_hinge_pairs":4*len(frames),
        "new_coaxial_truss_hinge_pairs":4*len(frames),
        "hinge_evidence":axes,
@@ -305,6 +328,9 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
        "ridge_real_3d_envelope_pairs_screened":tested,
        "ridge_tip_to_cap_body_overlap_count":len(ridge_overlaps),
        "ridge_tip_to_cap_body_overlap_examples":ridge_overlaps[:20],
+       "ridge_cap_purlin_nominal_stud_interfaces":len(supported_ridge_covers),
+       "ridge_cap_purlin_nominal_stud_cells":sum(x["nominal_stud_cells"] for x in supported_ridge_covers),
+       "ridge_cap_supported_joint_details":supported_ridge_covers,
        "ridge_cap_purlin_envelope_contacts_count":cover_support_envelope_intersections,
        "ridge_insertable":False,
        "overall_mesh_clearance_verified":False,
