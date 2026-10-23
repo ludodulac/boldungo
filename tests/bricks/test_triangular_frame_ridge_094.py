@@ -69,7 +69,7 @@ def test_catalog_only_and_part_quantity_accounting():
     report=obj["report"]
     new=report["part_id_additions"]
     removed=report["part_id_removals"]
-    assert all(k in {"3007","3001","3008","3009","3010","3004","3460","3666","3710","87079","3068b","4275b","4276b"}
+    assert all(k in {"3007","3001","3008","3009","3010","3004","3023b","3460","3666","3710","87079","3068b","4275b","4276b"}
                for k in new)
     assert sum(new.values())==report["new_parts"]
     assert sum(removed.values())==report["removed_old_tip_tiles"]
@@ -115,3 +115,13 @@ def test_real_ridge_tiles_mate_to_independent_ridge_beam_nominally():
     assert r["ridge_real_3d_envelope_pairs_screened"]>0
     assert r["ridge_insertable"] is False
     assert r["actual_load_rated_roof_paths"]==0
+
+
+def test_real_bottom_chord_to_eave_risers_nominal_2_stud_courses():
+    r=build_094(other_building())["report"]
+    assert r["toe_riser_parts_count"]==4*r["frame_count"]
+    assert r["toe_riser_connection_sites_nominal"]==8*r["frame_count"]
+    assert all(len(f["toe_riser_parts"])==4 for f in r["frames"])
+    assert all(f["nominal_toe_stud_site_count"]==8 for f in r["frames"])
+    assert r["toe_riser_to_hinge_interface"]=="UNVERIFIED"
+    assert r["tie_end_to_original_wall_stud_interface"]=="UNVERIFIED"
