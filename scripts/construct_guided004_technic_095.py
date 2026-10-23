@@ -11,6 +11,7 @@ from pathlib import Path
 from brickhouse.bricks.brick_model import BrickModel
 from brickhouse.bricks.technic_triangle_095 import build_095,PARTS095
 from brickhouse.bricks.triangular_frame_ridge_094 import LOCAL_PARTS
+from brickhouse.bricks.geometry_adapter import CANONICAL_LDRAW_PARTS
 from construct_guided004_hinged_roof_093 import PARTS,save_ldraw,draw_views
 PARTS.update(LOCAL_PARTS)
 PARTS.update(PARTS095)
@@ -45,12 +46,14 @@ def main(src:Path,output:Path):
            "construction_gate":"HOLD_WALL_BRACKET_ROOF_TRANSFER_COLLISION_SWEEP"}
     (output/"TECHNIC-095-COMPLETE-EVIDENCE.json").write_text(
         json.dumps(proof,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
-    new=Counter(p["ldraw_id"] for m in r["triangles"] for p in m["parts"])
-    removed=r["removed_bom"]
+    new=Counter(r["new_bom"])
+    removed=Counter(r["removed_bom"])
+    for partid in r["retiled_old_sills"].values():
+        removed[CANONICAL_LDRAW_PARTS[partid].ldraw_id]+=1
     bom={"new_total":r["new_total"],"old_total_094":r["old_total"],
          "net_delta":r["net_delta"],
          "added_exact_ldraw_quantities":dict(sorted(new.items())),
-         "removed_exact_ldraw_quantities":removed,
+         "removed_exact_ldraw_quantities":dict(sorted(removed.items())),
          "all_added_positions_in":"TECHNIC-095-COMPLETE-EVIDENCE.json",
          "colors":"UNSPECIFIED_BY_SOURCE_MODEL",
          "order_ready":False,
@@ -76,8 +79,16 @@ def main(src:Path,output:Path):
       "   par une 6558 : les DEUX cycles triangulaires sont alors fermés.",
       "8. Ajouter les deux extensions Technic 32278 aux mêmes broches",
       "   de pieds : ne pas tenter d'insérer une deuxième broche au même trou.",
-      "9. ARRET : insertion du module dans le corps entier de la maison,",
-      "   jonctions 3700/Studs aux murs et supports de couverture non prouvés.",
+      "9. Lorsque DEUX véritables cellules de murs fondés sont présentes",
+      "   sous le même module d'avant-toit, remplacer SEULEMENT dans le",
+      "   modèle 095 le grand bloc de couronnement par de vraies 3004 1x2",
+      "   et une 3700 trouée au niveau de la baie ; préserver les cap plates.",
+      "10. Aligner le trou réel de la 3700 (10 LDU sous le top) à la",
+      "    dernière poutre 32278 de l'extension. Introduire la broche 2780",
+      "    par le côté, hors du plan des doigts de la charnière.",
+      "11. Vérifier la connexion réelle des deux appuis aux murs de fondation.",
+      "12. ARRET : soutènement de la couverture, insertion complète et",
+      "    capacité mécanique en charge restent à démontrer.",
       "10. Ne poser ni la toiture ni les panneaux de zinc sur cette ferme",
       "   comme si la capacité des appuis était établie.",
       "",
@@ -87,6 +98,7 @@ def main(src:Path,output:Path):
     print("LEGO2_095_COMPLETE_HOUSE",r["new_total"])
     print("LEGO2_095_PIN_CLOSED_A_FRAMES",r["new_assembly_documented_triangle_count"])
     print("LEGO2_095_WALL_GROUNDED_TRUSSES",r["wall_grounded_truss_count"])
+    print("LEGO2_095_REAL_3700_WALL_PIN_INTERFACES",r["wall_stud_to_real_3700_pin_to_technic_truss_pairs_verified"])
     print("LEGO2_095_ROOF_LOAD_PATH_RATED",r["truss_to_roof_load_rated_paths"])
     print("LEGO2_095_SPECIALIZED_COMPONENTS_ADDED",len(new),sum(new.values()))
     print("LEGO2_095_VISUALS",nviews)
