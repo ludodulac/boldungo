@@ -69,7 +69,7 @@ def test_catalog_only_and_part_quantity_accounting():
     report=obj["report"]
     new=report["part_id_additions"]
     removed=report["part_id_removals"]
-    assert all(k in {"3007","3001","3008","3460","3666","3710","87079","3068b","4275b","4276b"}
+    assert all(k in {"3007","3001","3008","3009","3010","3004","3460","3666","3710","87079","3068b","4275b","4276b"}
                for k in new)
     assert sum(new.values())==report["new_parts"]
     assert sum(removed.values())==report["removed_old_tip_tiles"]
@@ -104,3 +104,14 @@ def test_real_truss_corner_hinge_pairs_are_coaxial_but_not_load_rated():
     assert not any(x["standalone_usable_strain_rating"] for x in h)
     assert all(x["attachment_to_frame_chord"]=="UNVERIFIED_STUD_ALIGNMENT"
                for x in h)
+
+
+def test_real_ridge_tiles_mate_to_independent_ridge_beam_nominally():
+    x=build_094(other_building())
+    r=x["report"]
+    assert r["ridge_cap_purlin_nominal_stud_interfaces"]>=r["ridge_cover_tiles"]
+    assert r["ridge_cap_purlin_nominal_stud_cells"]>=2*r["ridge_cover_tiles"]
+    assert r["ridge_tip_to_cap_body_overlap_count"]==0
+    assert r["ridge_real_3d_envelope_pairs_screened"]>0
+    assert r["ridge_insertable"] is False
+    assert r["actual_load_rated_roof_paths"]==0
