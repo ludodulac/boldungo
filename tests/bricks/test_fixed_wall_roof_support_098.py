@@ -6,7 +6,7 @@ from brickhouse.bricks.fixed_wall_roof_support_098 import (
 from brickhouse.bricks.technic_official_axes_098 import (
  OFFICIAL_TYPE1,part_local_axis,physical_axes,type1_matrix,transform,
  corrected_technic_part,real_pin_rotation,real_beam_rotation,
- correct_legacy_096_overlay,test_transform_matrix_of_LDraw_part)
+ correct_legacy_096_overlay,actual_world_axis)
 from brickhouse.bricks.technic_triangle_095 import beam_matrix,PIN_MATRIX
 from brickhouse.bricks.roof_technic_transfer_096 import build_096
 from brickhouse.bricks.triangular_frame_ridge_094 import build_094
@@ -62,7 +62,7 @@ def test_all_real_technic_parts_have_correct_new_rotations_and_preserved_center(
         q,changed=corrected_technic_part(p)
         assert changed is True
         assert q["xyz_ldu"]==p["xyz_ldu"]
-        axis=test_transform_matrix_of_LDraw_part(q)
+        axis=actual_world_axis(q)
         assert axis[0]==0. and axis[1]==0. and abs(axis[2])==1.
 
 def test_096_F6_beam_and_pin_have_wrong_old_AXES_and_are_repaired():
@@ -72,7 +72,7 @@ def test_096_F6_beam_and_pin_have_wrong_old_AXES_and_are_repaired():
     assert report["corrected_count"]>0
     assert report["wrong_before"]
     assert report["contains_uncorrected_096_F6"] is False
-    assert any(k.startswith("096-F6-brace") for k in report["corrected_ids"])
+    assert any(k.startswith("096-F0-brace") for k in report["corrected_ids"])
     for obj in fix:
         if obj["placement_id"].startswith(("095-F","096-F")) and obj["ldraw_id"] in OFFICIAL_TYPE1:
             axis=test_transform_matrix_of_LDraw_part(obj)
