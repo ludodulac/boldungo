@@ -59,11 +59,11 @@ def save_ldraw(model,assembly,path):
 def part_bbox_transformed(p):
     """Corners of real catalogue part lengths, rotated by its rigid LDraw matrix."""
     length,width=PARTS[p["ldraw_id"]][1:]
-    if p["ldraw_id"] in ("32278","32524","6558","2780","3700"):
+    if p["ldraw_id"] in ("32278","32524","32017","6558","2780","3700"):
         # Unlike standard plates, real LDraw Technic liftarms extend along
         # LOCAL Z with through-holes along LOCAL X. Pins extend LOCAL Y.
-        half_z={"32278":140.,"32524":60.,"6558":6.,"2780":6.,"3700":10.}[p["ldraw_id"]]
-        extents=({"32278":(10.,10.,half_z),"32524":(10.,10.,half_z),
+        half_z={"32278":140.,"32524":60.,"32017":40.,"6558":6.,"2780":6.,"3700":10.}[p["ldraw_id"]]
+        extents=({"32278":(10.,10.,half_z),"32524":(10.,10.,half_z),"32017":(9.,5.,half_z),
                   "6558":(7.,30.,7.),"2780":(7.,20.,7.),
                   "3700":(20.,12.,10.)}[p["ldraw_id"]])
         local=[]
@@ -124,7 +124,8 @@ def draw_views(foundation,assembly,out):
                "truss_bottom_tie":"#7d5b35","truss_sloping_chord":"#995a26",
                "truss_king_post":"#d18832","ridge_purlin":"#714e2d",
                "ridge_cover_flat":"#617e94",
-               "truss095_technic_beam":"#536b86","truss095_technic_pin":"#268cc4"}
+               "truss095_technic_beam":"#536b86","truss095_technic_pin":"#268cc4",
+               "truss097_real_technic_thin_beam":"#25765c"}
         panel.append({"id":p["placement_id"],"class":p["kind"],
                       "corners":part_bbox_transformed(p),
                       "color":kinds.get(p["kind"],"#828899")})
