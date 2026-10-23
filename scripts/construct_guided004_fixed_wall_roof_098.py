@@ -134,9 +134,15 @@ Un module eave hinge→mur est documenté à l'origine et consolidé par la
 nouvelle poutre. **ZÉRO panneau entièrement stabilisé**. Le graphe de
 studs de la poutre et l'audit réel des axes sont dans les preuves JSON.
 """
+    if report["overlong_gap_studs"]:
+        notice=notice.replace("la poutre transversale en briques est réellement\\nbondée sur les murs",
+            "deux courtes poutres 3007 sont réellement\\nfixées sur les murs")
+        notice=notice.replace(
+            "3. Insérer depuis l'intérieur la succession de vraies briques LEGO 3007\\n   de 2×8, de mur à mur : chaque extrémité reprend au moins deux tenons\\n   fondés du modèle réel. Laisser toutes les façades et ouvertures intactes.\\n4. Verrouiller chaque joint entre 3007 avec une vraie plaque 3020 2×4,\\n   à cheval sur les deux briques, à hauteur des studs existants.",
+            f"3. Fixer UNE brique 3007 sur chaque couronnement de mur fondé ;\\n   ces deux vrais appuis NE SE REJOIGNENT PAS : il reste\\n   {report['overlong_gap_studs']} tenons de vide entre elles.\\n4. NE PAS inventer de plaque 3020 de liaison à travers ce vide ;\\n   aucune traverse porteuse n'a été construite pour cette largeur.")
     (output/"NOTICE-098-SUPPORT-FIXE-ET-STOP.md").write_text(notice,encoding="utf8")
     print("LEGO2_098_FULL_HOUSE",report["full_house_composite_parts"])
-    print("LEGO2_098_FIXED_WALL_CROSSBEAMS",report["wall_to_wall_fixed_beam_chains"])
+    print("LEGO2_098_FIXED_WALL_CROSSBEAMS",report["wall_to_wall_fixed_beam_chains"])\n    print("LEGO2_098_GROUNDED_EAVE_MODULES",report["independent_fixed_eave_bearing_modules"])\n    print("LEGO2_098_UNSUPPORTED_GAP_STUDS",report["overlong_gap_studs"])
     print("LEGO2_098_BRICK_SEAM_STUD_LAPS",report["real_brick_course_lap_count"])
     print("LEGO2_098_SPAN_STUDS",report["span_studs"])
     print("LEGO2_098_PANELS_WITH_SECOND_FIXED_SUPPORT",report["roof_panels_with_secondary_nonhinge_bearing_proven"])
