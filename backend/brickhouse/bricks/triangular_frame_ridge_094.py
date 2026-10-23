@@ -26,6 +26,7 @@ I=((1.,0.,0.),(0.,1.,0.),(0.,0.,1.))
 # Existing, real LDraw catalogue designs. No custom roof piece.
 NEW_PARTS={"3007":(8,2),"3001":(4,2),"3008":(8,1),
            "3009":(6,1),"3010":(4,1),"3004":(2,1),
+           "3023b":(2,1),
            "3460":(8,1),"3666":(6,1),"3710":(4,1),
            "87079":(4,2),"3068b":(2,2)}
 LOCAL_PARTS={**PARTS,**{k:(k,*v) for k,v in NEW_PARTS.items()}}
@@ -93,7 +94,10 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
     if truss_starts[-1]!=spans[-1]:truss_starts.append(spans[-1])
     # A-frame runs below roofing, half-stud inset from the skin.
     # Truss pitches explicitly match the real roof angle, not a 90° grid.
-    tie_top_y=eave_y+PLATE*2.0  # support beam BELOW eave by two plates
+    # Put tie beams FLUSH with the underside of the prior 093 eave sill
+    # bricks: four plates below the roof hinge plane. This avoids the
+    # incompatible solid/solid overlap that a two-plate drop would create.
+    tie_top_y=eave_y+PLATE*4.0
     run=middle-left
     angled_length=run/c
     along_segments=[]
@@ -149,6 +153,27 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
                 ((0.,1.,0.),(-1.,0.,0.),(0.,0.,1.)),
                 "truss_king_post")
             vertical_bricks.append(new["placement_id"])
+        # Raise the ends of the bottom chord to the existing eave hinge
+        # elevation with one real 1x2 brick + one 1x2 plate per side.
+        # Top stud: tie_top_y (brick underside), brick top eave+8,
+        # plate underside eave+8, plate top eave. Standard stud-cell chains
+        # are nominally explicit; final engagement to hinge base is not.
+        toe_risers=[]
+        for side in ("negative","positive"):
+            toe_cross=left+1.5 if side=="negative" else right-1.5
+            lower=add(f"toe-riser-{frame_no}-{side}-brick","3004",
+                      (toe_cross*STUD,eave_y+PLATE,world_z),
+                      I,"truss_toe_riser_brick")
+            upper=add(f"toe-riser-{frame_no}-{side}-plate","3023b",
+                      (toe_cross*STUD,eave_y,world_z),
+                      I,"truss_toe_riser_plate")
+            toe_risers.extend([lower["placement_id"],upper["placement_id"]])
+            joints.append({"from":"truss_bottom_tie","to":lower["placement_id"],
+                   "connector_type":"STANDARD_STUD_ANTI_STUD_PROPOSED_2_SITES",
+                   "nominal_site_count":2,"mechanically_rated":False})
+            joints.append({"from":lower["placement_id"],"to":upper["placement_id"],
+                   "connector_type":"STANDARD_STUD_ANTI_STUD_PROPOSED_2_SITES",
+                   "nominal_site_count":2,"mechanically_rated":False})
         # Real paired finger hinges at both feet AND at the A-frame apex.
         # The 3+2 complementary finger types and coincident pivot are
         # documented by LDraw h2.dat / h1.dat. Their stud clutch to beam
@@ -160,7 +185,7 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
                                  for j in range(3)) for i in range(3))
             base_rot=I if side=="negative" else flip
             for place,xx,yy in (
-                    ("toe",left if side=="negative" else right,tie_top_y),
+                    ("toe",left+3 if side=="negative" else right-3,eave_y),
                     ("apex",middle,ridge_y+PLATE*2)):
                 axis=(xx*STUD,yy,world_z)
                 def transformed(R,p):
@@ -323,6 +348,10 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
        "hinge_load_rated_count":0,
        "constructed_triangle_layout_count":len(frames),
        "mechanically_closed_triangle_count":0,
+       "toe_riser_connection_sites_nominal":8*len(frames),
+       "toe_riser_parts_count":4*len(frames),
+       "tie_end_to_original_wall_stud_interface":"UNVERIFIED",
+       "toe_riser_to_hinge_interface":"UNVERIFIED",
        "truss_to_wall_compression_documented_verified":0,
        "actual_load_rated_roof_paths":0,
        "proposed_load_path_interfaces":joints,
