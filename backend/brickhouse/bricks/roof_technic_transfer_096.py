@@ -38,7 +38,7 @@ def _frame_rafter_holes(frame):
               if abs(v[2] - (frame["bay"] + 2.5)*STUD) < 1e-6)
     hi = next(v for v in vertices["APEX"]["hole_centers_ldu"]
               if abs(v[2] - lo[2]) < 1e-6)
-    return [(round(lo[i]+(hi[i]-lo[i])*k/13., 7) for i in range(3))
+    return [tuple(round(lo[i]+(hi[i]-lo[i])*k/13., 7) for i in range(3))
             for k in range(14)]
 
 
