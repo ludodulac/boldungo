@@ -32,6 +32,12 @@ def main(source:Path,output:Path,pitch=22.):
         foundation.model_dump_json(indent=2)+"\n",encoding="utf8")
     ldraw=save_ldraw(foundation,parts,output/"GUIDED004-ROOF-094-REAL-LEGO.ldr")
     views=draw_views(foundation,parts,output/"views")
+    # Only relabel the SVG title, never draw fictitious material or shift any
+    # placement: every actual 3D corner still comes from the 094 LDraw model.
+    for svg in (output/"views").glob("*.svg"):
+        raw=svg.read_text(encoding="utf8")
+        svg.write_text(raw.replace("BOLDUNGO 093", "BOLDUNGO 094"),
+                       encoding="utf8")
     if views!=7:raise AssertionError("EXPECTED_REAL_MODEL_VIEWS")
     report={**r,**ldraw,"source_091_sha256":sha,
         "full_house_LDraw_part_count":ldraw["ldraw_mapped_brick_model_part_count"]+len(parts),
