@@ -18,7 +18,7 @@ def other_building(dx=0,dy=0,grounded_two_studs=False):
         x_studs=dx,y_studs=dy,z_plates=0,rotation_quarter_turns=0)
     parts=[terrain,wall("left",8),wall("right",35)]
     if grounded_two_studs:
-        parts.extend([wall("left-inner",9),wall("right-inner",36)])
+        parts.extend([wall("left-inner",9),wall("right-inner",34)])
     for x in (6,35):
         for y in (0,2,4,6):
             parts.append(BrickModelPart(
