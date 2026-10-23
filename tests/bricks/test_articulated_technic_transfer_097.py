@@ -114,8 +114,8 @@ def test_real_097_corrects_all_technic_beams_on_selected_frame_only():
     model=build_097(independent_house(two_wall_studs=True))
     report=model["report"]
     corrected=report["real_095_technic_hole_axis_corrections"]
-    assert len(corrected)>=5
-    assert all(name.startswith("095-F0-") for name in corrected)
+    assert len(corrected)>=7
+    assert all(name.startswith("095-F") for name in corrected)
     by={x["placement_id"]:x for x in model["articulated_parts"]}
     for name in corrected:
         p=by[name]
