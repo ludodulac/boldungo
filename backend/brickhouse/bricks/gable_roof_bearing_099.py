@@ -96,13 +96,21 @@ def _find_gable_pedestal(source,built,facades,*,max_pl=4):
             top_after=gable_top-layers*PLATE
             gap=round(top_after-bottom_y,7)
             if gap < -0.01 or gap >= PLATE:continue
-            anchored.append((gap,layers,x,y,candidate,member,bottom_y))
+            # A 22-degree plane varies approximately 8.1 LDU across
+            # ONE stud; a nominal center clearance could still put the
+            # left edge of a real plate THROUGH the roof. Check BOTH edges.
+            edges=[top_after-_underside_at_cross_x(member,edge)[0]
+                   for edge in (x*STUD,(x+1)*STUD)]
+            if min(edges)<0 or max(edges)>1.6*PLATE:
+                continue
+            anchored.append((gap,layers,x,y,candidate,member,bottom_y,
+                             round(min(edges),7),round(max(edges),7)))
             break
     if not anchored:
         return None,"NO_GABLE_STUD_WITH_CONSERVATIVE_ROOF_UNDERSIDE_CLEARANCE"
     # One module only. Avoid a tiny nearly overconstrained stiff assembly:
     # select nearest positive gap among actual grounded stud locations.
-    gap,n,x,y,cell,member,bottom_y=min(anchored,key=lambda t:(t[0],abs(t[2]-30)))
+    gap,n,x,y,cell,member,bottom_y,min_edge,max_edge=min(anchored,key=lambda t:(t[0],abs(t[2]-30)))
     plates=[]
     for layer in range(n):
         # LDraw part 3024 PLATE_1X1, top plane at source gable top + layers+1.
@@ -116,6 +124,8 @@ def _find_gable_pedestal(source,built,facades,*,max_pl=4):
     return {"x":x,"y":y,"eave_pivot_x_studs":eave_x,
          "independent_second_point_lever_arm_studs":round(x-eave_x,3),
          "layer_count":n,"gap_ldu":gap,
+         "minimum_roof_plane_to_plate_edge_clearance_ldu":min_edge,
+         "maximum_roof_plane_to_plate_edge_clearance_ldu":max_edge,
          "source_gable_brick":cell["id"],"grounded":True,
          "roof_rail_id":member["placement_id"],
          "roof_rail_actual_LDraw_id":"3460",
