@@ -220,7 +220,7 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
             raise ValueError("RIDGE_LAST_BEAM_LENGTH_CANNOT_BE_REAL_LEGO")
         ldraw={2:"3004",4:"3010",6:"3009",8:"3008"}[length]
         ridge=add(f"ridge-beam-{idx}", ldraw,
-            (middle*STUD,ridge_y-PLATE,(bay+length/2)*STUD),
+            (middle*STUD,ridge_y-2*PLATE,(bay+length/2)*STUD),
             ((0.,0.,1.),(0.,1.,0.),(-1.,0.,0.)),"ridge_purlin")
         ridge_parts.append(ridge["placement_id"])
     # Replace the existing tip row (last 4-stud tile) on each side with
@@ -248,7 +248,7 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
     # studs. The independent cap is 0° and does not torque tilted slopes.
     for bay in spans[::2]:
         cap=add(f"ridge-cover-{bay}","87079",
-            (middle*STUD,ridge_y-2*PLATE,
+            (middle*STUD,ridge_y-3*PLATE,
              (bay+(1 if bay==ys[-1] else 2.))*STUD),
             ((1.,0.,0.),(0.,1.,0.),(0.,0.,1.)),
             "ridge_cover_flat")
@@ -328,7 +328,8 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
        "proposed_load_path_interfaces":joints,
        "remaining_unverified_mechanical_paths":len(frames),
        "vertex_and_fastening_blockers":blockers,
-       "ridge_shape_solution":"SEPARATE_HORIZONTAL_CAP_ON_RIDGE_PURLIN_WITH_SHORTENED_SIDE_TILES",
+       "ridge_shape_solution":"STUD_SEATED_RAISED_CENTER_CAP_ON_RIDGE_PURLIN_WITH_SHORTENED_SIDE_TILES",
+       "ridge_cap_vertical_offset_above_previous_094_plates":1,
        "ridge_body_collision_verified":False,
        "ridge_tile_ENVELOPE_clearance_pass":tested>0 and not ridge_overlaps,
        "ridge_real_3d_envelope_pairs_screened":tested,
