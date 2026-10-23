@@ -123,5 +123,7 @@ def test_real_bottom_chord_to_eave_risers_nominal_2_stud_courses():
     assert r["toe_riser_connection_sites_nominal"]==8*r["frame_count"]
     assert all(len(f["toe_riser_parts"])==4 for f in r["frames"])
     assert all(f["nominal_toe_stud_site_count"]==8 for f in r["frames"])
-    assert r["toe_riser_to_hinge_interface"]=="UNVERIFIED"
+    assert r["toe_riser_to_hinge_interface"].startswith("TWO_STUD_GEOMETRY_MATCHES")
+    assert r["toe_riser_to_hinge_nominal_documented_pairs"]==2*r["frame_count"]
+    assert r["toe_riser_to_hinge_nominal_stud_cells"]==4*r["frame_count"]
     assert r["tie_end_to_original_wall_stud_interface"]=="UNVERIFIED"
