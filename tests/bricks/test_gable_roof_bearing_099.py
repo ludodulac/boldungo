@@ -63,3 +63,10 @@ def test_no_certified_load_path_from_vertical_plate_to_inclined_roof():
     assert r["remaining_roof_hinge_rotation_upward"]
     assert not r["full_pin_clutch_insertion_verified"]
     assert r["structural_decision"]=="STOP_NO_SECOND_POSITIVELY_LOCKED_GABLE_ROOF_INTERFACE"
+
+def test_independent_second_point_requires_nonzero_lever_arm():
+    # Actual GUIDED004 is asserted in workflow; no synthetic gable is used
+    # to counterfeit the roof/gable interface.
+    q=build_099(other_house(with_fake_gable=True))
+    assert q["report"]["pedestal"] is None
+    assert q["report"]["roof_panels_with_two_restrained_fixed_supports"]==0
