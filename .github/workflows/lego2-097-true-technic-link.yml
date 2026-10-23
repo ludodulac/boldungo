@@ -1,0 +1,77 @@
+name: LEGO2-097 — real thin Technic exact three-pin articulation on house
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/articulated_technic_transfer_097.py'
+      - 'scripts/construct_guided004_roof_technic_097.py'
+      - 'scripts/construct_guided004_hinged_roof_093.py'
+      - 'tests/bricks/test_articulated_technic_transfer_097.py'
+      - 'missions/097/**'
+      - '.github/workflows/lego2-097-true-technic-link.yml'
+  workflow_dispatch:
+jobs:
+  actual-097-house-and-joints:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install source LDraw and BrickModel engines
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Validate real joint axes, part thickness, independent house and 096
+        run: |
+          python -m pytest -q tests/bricks/test_articulated_technic_transfer_097.py tests/bricks/test_roof_technic_transfer_096.py tests/bricks/test_technic_triangle_095.py
+      - name: Rebuild original 1890-piece canonical
+        run: |
+          python scripts/export_guided004_lego.py > artifacts-guided004.log
+      - name: Rebuild historic experimental 088
+        run: |
+          python scripts/construct_guided004_roof_088.py --source artifacts/lego2-guided-004/brick-model.json --output-dir artifacts/lego2-088-guided004-EXPERIMENTAL
+      - name: Rebuild historic experimental 090
+        run: |
+          python scripts/construct_guided004_eave_090.py --canonical artifacts/lego2-guided-004/brick-model.json --previous artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --output artifacts/lego2-090
+      - name: Rebuild historic experimental 091
+        run: |
+          python scripts/construct_guided004_roof_091.py --canonical artifacts/lego2-guided-004/brick-model.json --previous-088 artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --previous-090 artifacts/lego2-090/GUIDED-004-EXPERIMENTAL-090-NOT-CERTIFIED.json --output artifacts/lego2-091
+      - name: Build 097 true full house LDraw plus frame and walls mini-assembly
+        run: |
+          python scripts/construct_guided004_roof_technic_097.py --source artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json --output artifacts/lego2-097
+      - name: Refuse phantom clutch, N4, N5, N6 and inconsistent BOM
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifacts/lego2-097")
+          r=json.loads((p/"PREUVES-097-LEGO-CONNEXIONS.json").read_text())
+          b=json.loads((p/"BOM-097-COMPLET-EXACT.json").read_text())
+          assert r["previous_096_parts"]==2943
+          assert r["new_total"]==2945
+          assert r["two_walls_grounded_frames"]==2
+          assert r["unanchored_frames"]==5
+          assert r["geometrically_exact_roof_to_truss_to_wall_connector_chains"]==1
+          assert r["new_max_joint_residual_ldu"]<1e-5
+          assert r["mechanically_stable_roof_to_wall_load_paths"]==0
+          assert r["complete_insertion_sweeps_verified"]==0
+          assert r["kinematically_stable"] is False
+          assert r["physical_certification"]=="NOT_CERTIFIED"
+          assert r["views_generated"]==7
+          assert len(list((p/"views").glob("*.svg")))==7
+          assert r["subassembly_ldraw_piece_count"]>20
+          assert sum(b["part_by_ldraw"].values())==2945
+          assert p.joinpath("SOUS-ASSEMBLAGE-097-FERME0.ldr").is_file()
+          assert sum(x.startswith("1 ") for x in p.joinpath("BOLDUNGO-097-REAL-ARTICULATED-TECHNIC-COMPOSITE.ldr").read_text().splitlines())==2945
+          print("097_REAL_LDRAW_CONNECTOR_PATH_EXACT_BUT_1DOF_NOT_LOAD_BEARING")
+          PY
+      - name: Preserve real BOM, complete LDraw, walls subassembly and seven views
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-097-real-thin-technic-exact-joint-actual-house
+          path: artifacts/lego2-097/
+          if-no-files-found: warn
+          retention-days: 30
