@@ -44,7 +44,7 @@ def test_unfounded_fake_gable_does_not_create_a_support():
     assert r["gable_blocker"]=="NO_GROUNDED_FRONT_GABLE"
 
 def test_translated_second_house_cannot_invent_gable_masonry():
-    for dx,dy in ((0,0),(7,10),(-5,8)):
+    for dx,dy in ((0,0),(7,10),(5,8)):
         r=build_099(other_house(dx=dx,dy=dy))["report"]
         assert not r["real_grounded_gable_detected"]
         assert r["added_3024_gable_plates"]==0
