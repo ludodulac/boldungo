@@ -85,3 +85,17 @@ def test_no_fake_mechanical_closure_on_unproven_vertices():
     assert r["overall_mesh_clearance_verified"] is False
     assert r["ridge_insertable"] is False
     assert r["roof_finger_sweep_complete"] is False
+
+
+def test_real_truss_corner_hinge_pairs_are_coaxial_but_not_load_rated():
+    obj=build_094(other_building())
+    r=obj["report"]
+    assert r["new_truss_hinge_pairs"]==4*r["frame_count"]
+    assert r["new_coaxial_truss_hinge_pairs"]==4*r["frame_count"]
+    h=[x for x in obj["links"] if
+       x.get("connector_type")=="LDRAW_4275B_H2_TO_4276B_H1_COMPLEMENTARY_FINGERS"]
+    assert len(h)==4*r["frame_count"]
+    assert all(x["coaxial_geometry_verified"] for x in h)
+    assert not any(x["standalone_usable_strain_rating"] for x in h)
+    assert all(x["attachment_to_frame_chord"]=="UNVERIFIED_STUD_ALIGNMENT"
+               for x in h)
