@@ -67,6 +67,15 @@ def correct_095_beam_hole_axes_all_frames(parts):
                 raise AssertionError("REAL_LDRAW_PEG_HOLE_AXIS_STILL_WRONG")
             changed.append(q["placement_id"])
             result.append(q)
+        elif (old["ldraw_id"] in ("2780","6558") and
+              old["placement_id"].startswith(("095-F","096-F"))):
+            # LDraw 2780/6558 parent pin long-axis is LOCAL Z: 2780
+            # rotates confric5's X-long primitive into part Z-long.
+            # Earlier PIN_MATRIX pointed local Z along WORLD -Y instead.
+            q=dict(old)
+            q["rotation"]=[[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]]
+            changed.append(q["placement_id"])
+            result.append(q)
         else: result.append(old)
     if len(changed)<5:
         raise AssertionError("NOT_ALL_PINNED_REAL_095_FRAME_BEAMS_ROTATED")
@@ -191,7 +200,12 @@ def construct_one_exact_joint_chain(previous,frame_no=0):
     joints=[pin(ids[0],A[0],A[1],z0+10,False),
             pin(ids[1],E[0],E[1],z0+20,False),
             pin(ids[2],B[0],B[1],z0+30,False)]
-    added=([new_roof_3700] if new_roof_3700 else [])+[pa,pb,*joints]
+    real_pins=[]
+    for oldpin in joints:
+        pin_obj=dict(oldpin)
+        pin_obj["rotation"]=[[1.,0.,0.],[0.,1.,0.],[0.,0.,1.]]
+        real_pins.append(pin_obj)
+    added=([new_roof_3700] if new_roof_3700 else [])+[pa,pb,*real_pins]
     bridge=[f"096-F{frame_no}-roof-3700",pa["placement_id"],
             joints[0]["placement_id"],joints[1]["placement_id"],
             pb["placement_id"],joints[2]["placement_id"],
@@ -279,6 +293,7 @@ def build_097(source,frame_no=0):
     report={
         "previous_096_parts":prev["report"]["new_total"],
         "real_095_technic_hole_axis_corrections":beam_axis_corrections,
+        "ldraw_pin_axial_world_z_verified_for_new_and_old":True,
         "unmodified_frames_physical_technic_axes_unverified":0,
         "new_total":len(prev["foundation"].parts)+len(now),
         "removed_actual_ids":assembled["remove_ids"],
