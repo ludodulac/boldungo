@@ -1,0 +1,72 @@
+name: LEGO2-099 real grounded gable bearing inspection and roof module
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/gable_roof_bearing_099.py'
+      - 'scripts/construct_guided004_gable_099.py'
+      - 'tests/bricks/test_gable_roof_bearing_099.py'
+      - '.github/workflows/lego2-099-gable-roof-bearings.yml'
+      - 'missions/099/**'
+  workflow_dispatch:
+jobs:
+  construct-099-real-gable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install actual BrickModel and LEGO geometry modules
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Test real 22 degree underside, second house and no fabricated walls
+        run: |
+          python -m pytest -q tests/bricks/test_gable_roof_bearing_099.py tests/bricks/test_fixed_wall_roof_support_098.py
+      - name: Preserve canonical 1890
+        run: python scripts/export_guided004_lego.py > guided004-canonical.log
+      - name: Rebuild 088 historical
+        run: python scripts/construct_guided004_roof_088.py --source artifacts/lego2-guided-004/brick-model.json --output-dir artifacts/lego2-088-guided004-EXPERIMENTAL
+      - name: Rebuild 090 historical
+        run: python scripts/construct_guided004_eave_090.py --canonical artifacts/lego2-guided-004/brick-model.json --previous artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --output artifacts/lego2-090
+      - name: Rebuild 091 historical
+        run: python scripts/construct_guided004_roof_091.py --canonical artifacts/lego2-guided-004/brick-model.json --previous-088 artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --previous-090 artifacts/lego2-090/GUIDED-004-EXPERIMENTAL-090-NOT-CERTIFIED.json --output artifacts/lego2-091
+      - name: Export 099 complete house, authentic gable masonry and attempted second roof bearing
+        run: |
+          python scripts/construct_guided004_gable_099.py --source artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json --output artifacts/lego2-099
+      - name: Verify actual facade inventory, full LDraw and no fictional two-support proof
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path("artifacts/lego2-099")
+          e=json.loads((p/"GRAPHE-ET-INVENTAIRE-099.json").read_text())
+          b=json.loads((p/"BOM-099-EXACT.json").read_text())
+          assert e["facades"]["front"]["gable_piece_count"]>0
+          assert e["facades"]["rear"]["gable_piece_count"]>0
+          assert e["facades"]["front"]["grounded_gable_piece_count"]>0
+          assert e["pedestal"] is not None
+          assert e["pedestal"]["independent_second_point_lever_arm_studs"]>=6
+          assert e["pedestal"]["minimum_roof_plane_to_plate_edge_clearance_ldu"]>=0
+          assert any(v.get("interface")=="UNCONNECTED_GAP_NOT_A_LEGO_JOINT" for v in e["graph_edges"])
+          assert e["roof_panels_with_two_restrained_fixed_supports"]==0
+          assert e["roof_to_wall_two_support_N4_paths"]==0
+          assert e["pedestal_is_positive_engagement_to_22deg_roof"] is False
+          assert e["remaining_roof_hinge_rotation_upward"] is True
+          assert e["N6"]=="NOT_CERTIFIED"
+          assert e["view_count"]==7
+          assert len(list((p/"views").glob("*.svg")))==7
+          assert b["parts"]==sum(b["ldraw_counts"].values())==e["full_house_parts"]
+          assert sum(s.startswith("1 ") for s in (p/"BOLDUNGO-099-GABLE-AND-22DEG-ROOF.ldr").read_text().splitlines())==b["parts"]
+          assert (p/"SOUS-ASSEMBLAGE-099-PIGNON-ET-TOIT.ldr").exists()
+          print("LEGO2_099_REAL_GABLE_EXISTS_SECOND_LOCK_NOT_CERTIFIED")
+          PY
+      - name: Upload actual LDraw, exact BOM, gable inventory, false-fit guard, assembly and seven views
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-099-authentic-gable-22deg-roof-bearing-attempt
+          path: artifacts/lego2-099/
+          if-no-files-found: warn
+          retention-days: 30
