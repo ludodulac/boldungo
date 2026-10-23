@@ -197,6 +197,28 @@ def construct_one_exact_joint_chain(previous,frame_no=0):
             "collar_path_free_verified":False,
             "load_path_graph_N2":True,"loaded_support_path_N4":False}
 
+def _thin_arm_against_real_22degree_tiles(newparts,overlay):
+    """Honest OBB-body screen: rotated LDraw 32017 solid envelope v roof tiles.
+
+    Does not model the pin hole as solid. No hinge/collar insertion sweep.
+    32017 local coordinates: ±9 LDU X, ±5 LDU Y, ±40 LDU Z.
+    """
+    from .roof_collision_093 import envelope_intersect,roof_obb
+    thin=[p for p in newparts if p["ldraw_id"]=="32017"]
+    skin=[p for p in overlay if p["kind"] in ("roof_skin","ridge_cover_flat")]
+    hits=[]
+    for beam in thin:
+        axes=[list(c) for c in zip(*beam["rotation"])]
+        envelope=(beam["xyz_ldu"],axes,[9.,5.,40.])
+        for tile in skin:
+            if envelope_intersect(envelope,roof_obb(tile)):
+                hits.append((beam["placement_id"],tile["placement_id"]))
+    return {"thin_32017_beams":len(thin),
+            "actual_tilted_tile_pairs_screened":len(thin)*len(skin),
+            "body_envelope_intersections":len(hits),
+            "samples":hits[:15],
+            "true_mesh_or_full_swept_pin_clearance":False}
+
 def build_097(source,frame_no=0):
     original=source.model_dump_json()
     prev=build_096(source)
@@ -211,9 +233,7 @@ def build_097(source,frame_no=0):
     graph+=assembled["edges"]
     delta=Counter(p["ldraw_id"] for p in assembled["new_parts"])
     sub=Counter(p["ldraw_id"] for p in before if p["placement_id"] in removed)
-    screened=screen_technic_roof_clearance(
-        [p for p in assembled["new_parts"] if p["ldraw_id"] in ("32278","32524")],
-        before)
+    screened=_thin_arm_against_real_22degree_tiles(assembled["new_parts"],before)
     if source.model_dump_json()!=original:
         raise AssertionError("ORIGINAL_VARIANT_MUTATED")
     report={
