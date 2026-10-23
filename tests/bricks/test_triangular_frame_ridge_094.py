@@ -10,7 +10,12 @@ def other_building(dx=0,dy=0):
         return BrickModelPart(placement_id=pid,part_id="BRICK_1X8",
           category="brick",component="wall",facade="front",
           x_studs=x+dx,y_studs=dy,z_plates=90,rotation_quarter_turns=0)
-    parts=[wall("support-negative",8),wall("support-positive",35)]
+    # Preserve the independent 093 fixture's modeled terrain, needed by
+    # the real grounded-wall support-chain calculation.
+    terrain=BrickModelPart(placement_id="scene-terrain",part_id="TERRAIN",
+      category="terrain",component="facade_detail",facade="front",
+      x_studs=dx,y_studs=dy,z_plates=0,rotation_quarter_turns=0)
+    parts=[terrain,wall("support-negative",8),wall("support-positive",35)]
     for x in (6,35):
         for y in (0,2,4,6):
             parts.append(BrickModelPart(
