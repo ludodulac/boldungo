@@ -108,14 +108,14 @@ def build_wall_tie(source, *, pitch=22.0, max_span_studs=40):
         for y in range(sill.y_studs,sill.y_studs+h):
             if y in (eave_bay,eave_bay+1):continue
             brick=rigid(f"098-{side}-retile-y{y}","3004",
-                ((sill.x_studs+1)*STUD,-zplate*PLATE,(y+.5)*STUD),
+                ((sill.x_studs+1)*STUD,-(zplate+3)*PLATE,(y+.5)*STUD),
                 I,"roof098_real_wall_sill_retile")
             pieces.append(brick)
     current=x0
     transverse=[]
     for k,n in enumerate(runs):
         part=rigid(f"098-fixed-crossbeam-{k}",BRICKS[n],
-                   ((current+n/2)*STUD,-zplate*PLATE,
+                   ((current+n/2)*STUD,-(zplate+3)*PLATE,
                     (eave_bay+1)*STUD),I,"roof098_fixed_transverse_beam")
         pieces.append(part)
         transverse.append((current,current+n,part))
@@ -127,7 +127,7 @@ def build_wall_tie(source, *, pitch=22.0, max_span_studs=40):
         if joint-x0<4 or xend-joint<4:
             raise ValueError("LAP_OVERLAPS_OLD_EAVE_CAP")
         plate=rigid(f"098-beam-lap-{i}",LAP,
-                     (joint*STUD,-(zplate+3)*PLATE,
+                     (joint*STUD,-(zplate+4)*PLATE,
                       (eave_bay+1)*STUD),
                      I,"roof098_studded_joint_lap")
         pieces.append(plate)
@@ -139,6 +139,17 @@ def build_wall_tie(source, *, pitch=22.0, max_span_studs=40):
                                 "documented_stud_cells":4,
                                 "interface_geometry":"INTEGER_GRID_EXACT",
                                 "load_capacity_verified":False})
+    # Exact physical local DAT datum: top of 3007 at world -(zplate+3)*8
+    # on top of grounded wall whose stud plane is -(zplate)*8;
+    # top of 3020 at -(zplate+4)*8, its underside at brick top.
+    # These checks catch the previous 095 error which placed replacement
+    # bricks at world -(zplate)*8, i.e. 24 LDU too LOW.
+    if any(abs(row[2]["xyz_ldu"][1]+(zplate+3)*PLATE)>1e-6
+           for row in transverse):
+        raise AssertionError("FIXED_TIE_LDRAW_BRICK_TOP_WRONG")
+    if any(abs(p["xyz_ldu"][1]+(zplate+4)*PLATE)>1e-6
+           for p in pieces if p["ldraw_id"]==LAP):
+        raise AssertionError("FIXED_TIE_LDRAW_PLATE_TOP_WRONG")
     # The original 093 eave-cap plates remain at precisely their old positions;
     # verify that the replacement end bricks carry the actual stud cells
     # under each one (not merely that a cap is nearby).
