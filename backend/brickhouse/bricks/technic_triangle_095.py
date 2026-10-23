@@ -389,7 +389,10 @@ def build_095(source,*,pitch=22.,max_frames=32):
         "retiled_old_sills":{uid:retiled[uid]["original"].part_id for uid in retiled},
         "frame_bays":[m["bay"] for m in selected],
         "support_span_studs":24,
-        "triangles":selected,
+        "triangles":[{**m,"wall_supports":{
+             side:{**record,"sill":record["sill"].placement_id}
+             for side,record in m.get("wall_supports",{}).items()}}
+             for m in selected],
     }
     return {"foundation":foundation,"articulated_parts":keep+new,
             "report":report,"real_technic_graph":graph,
