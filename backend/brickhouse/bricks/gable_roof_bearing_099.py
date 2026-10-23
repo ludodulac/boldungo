@@ -148,6 +148,22 @@ def build_099(source,pitch=22):
           "parts":[p.model_dump(mode="json")
                    for p in list(base["foundation"].parts)+placed]})
     if source.model_dump_json()!=original:raise AssertionError("SOURCE_HISTORY_MUTATED")
+    graph=list(base["graph"])
+    if pedestal:
+        chain=[pedestal["source_gable_brick"]]+[
+            q.placement_id for q in pedestal["modelled_plates"]]
+        for left,right in zip(chain,chain[1:]):
+            graph.append({"from":left,"to":right,
+              "interface":"REAL_STANDARD_3024_STUD_TO_ANTISTUD",
+              "cell":[pedestal["x"],pedestal["y"]],
+              "positive_stud_mating_documented":True,
+              "source_wall_grounded":True})
+        graph.append({"from":chain[-1],"to":pedestal["roof_rail_id"],
+              "interface":"UNCONNECTED_GAP_NOT_A_LEGO_JOINT",
+              "world_center_gap_ldu":pedestal["gap_ldu"],
+              "positive_stud_mating_documented":False,
+              "upward_hinge_rotation_unrestrained":True,
+              "graph_edge_is_only_unconnected_inspection_candidate":True})
     detail=({k:v for k,v in pedestal.items() if k!="modelled_plates"}
             if pedestal else None)
     report={
@@ -158,6 +174,8 @@ def build_099(source,pitch=22):
              int(v["grounded_gable_piece_count"]>0) for v in facades.values()),
         "facades":facades,"pedestal":detail,
         "gable_blocker":blocker,
+        "roof_gap_is_NOT_a_true_edge":True,
+        "graph_edges":graph,
         "roof_pitch":pitch,"historic_canonical_modified":False,
         "roof_panels_with_two_restrained_fixed_supports":0,
         "roof_to_wall_two_support_N4_paths":0,
