@@ -105,13 +105,16 @@ def draw_views(foundation,assembly,out):
         kinds={"roof_skin":"#75899f",
                "rafter_base":"#c38b62","rafter_lap":"#ba7850",
                "hinge_base":"#c9723f","hinge_roof":"#d5a56c",
-               "purlin_upper":"#886548","purlin_lap":"#755039"}
+               "purlin_upper":"#886548","purlin_lap":"#755039",
+               "truss_bottom_tie":"#7d5b35","truss_sloping_chord":"#995a26",
+               "truss_king_post":"#d18832","ridge_purlin":"#714e2d",
+               "ridge_cover_flat":"#617e94"}
         panel.append({"id":p["placement_id"],"class":p["kind"],
                       "corners":part_bbox_transformed(p),
-                      "color":kinds[p["kind"]]})
+                      "color":kinds.get(p["kind"],"#828899")})
     for view in ("perspective","front","rear","north","south","roof","frame"):
         # Hide ONLY tile skin for exposed structure view.
-        show=struct+[p for p in panel if view!="frame" or p["class"]!="roof_skin"]
+        show=struct+[p for p in panel if view!="frame" or p["class"] not in ("roof_skin","ridge_cover_flat")]
         projected=[(p,[project(view,x) for x in p["corners"]]) for p in show]
         extrema=[v for item,pts in projected for v in pts]
         minx=min(p[0] for p in extrema);maxx=max(p[0] for p in extrema)
