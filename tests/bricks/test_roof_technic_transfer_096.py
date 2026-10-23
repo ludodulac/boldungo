@@ -12,7 +12,8 @@ from brickhouse.bricks.roof_technic_transfer_096 import (
 def independent_house(two_wall_studs=False,dx=0,dy=0):
     def part(pid,typ,kind,component,x,y,z,rotation_quarter_turns=0):
         return BrickModelPart(placement_id=pid,part_id=typ,
-          category=kind,component=component,\n          facade=None if component=="roof_support" else "front",
+          category=kind,component=component,
+          facade=None if component=="roof_support" else "front",
           x_studs=x+dx,y_studs=y+dy,z_plates=z,
           rotation_quarter_turns=rotation_quarter_turns)
     parts=[part("terrain","TERRAIN","terrain","facade_detail",0,0,0)]
