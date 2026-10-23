@@ -119,7 +119,20 @@ def test_real_097_corrects_all_technic_beams_on_selected_frame_only():
     by={x["placement_id"]:x for x in model["articulated_parts"]}
     for name in corrected:
         p=by[name]
-        assert all(abs(p["rotation"][i][1]-(0.,0.,1.)[i])<1e-8 for i in range(3))
+        axial_col=1 if p["ldraw_id"] in ("32278","32524") else 2
+        assert all(abs(p["rotation"][i][axial_col]-(0.,0.,1.)[i])<1e-8
+                   for i in range(3))
     for p in model["new_subassembly"]["new_parts"]:
         if p["ldraw_id"]=="32017":
             assert p["rotation"][2][1]==1.
+        if p["ldraw_id"]=="2780":
+            assert p["rotation"][2][2]==1.
+
+def test_real_2780_and_6558_part_axes_in_ldraw_point_world_z():
+    from brickhouse.bricks.technic_triangle_095 import PIN_MATRIX
+    # Historic 095 falsely put pin's LOCAL Z axis along -WORLD_Y.
+    assert abs(PIN_MATRIX[2][2])<1e-8
+    b=build_097(independent_house(two_wall_studs=True))
+    for p in b["articulated_parts"]:
+        if p["placement_id"].startswith(("095-F","096-F","097-F")) and p["ldraw_id"] in ("6558","2780"):
+            assert [p["rotation"][i][2] for i in range(3)]==[0.,0.,1.]
