@@ -7,7 +7,9 @@ from brickhouse.bricks.brick_model import BrickModel
 from brickhouse.bricks.geometry_adapter import CANONICAL_LDRAW_PARTS
 from brickhouse.bricks.roof_technic_transfer_096 import build_096
 from brickhouse.bricks.technic_triangle_095 import PARTS095
+from brickhouse.bricks.triangular_frame_ridge_094 import LOCAL_PARTS
 from construct_guided004_hinged_roof_093 import PARTS,save_ldraw,draw_views
+PARTS.update(LOCAL_PARTS)
 PARTS.update(PARTS095)
 
 
