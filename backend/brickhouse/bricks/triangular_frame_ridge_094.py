@@ -230,6 +230,8 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
         frames.append({"frame":frame_no,"bay_studs":bay,
                        "tie_bricks":bricks,"rafter_parts":rafters,
                        "king_post_bricks":vertical_bricks,
+                       "toe_riser_parts":toe_risers,
+                       "nominal_toe_stud_site_count":8,
                        "clear_span_studs":round(right-left,4),
                        "nominal_bending_span_studs":run_studs,
                        "pitch_degrees":pitch,"transverse_triangle_visible":bool(rafters),
