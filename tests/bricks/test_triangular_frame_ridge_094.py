@@ -64,7 +64,7 @@ def test_catalog_only_and_part_quantity_accounting():
     report=obj["report"]
     new=report["part_id_additions"]
     removed=report["part_id_removals"]
-    assert all(k in {"3007","3001","3008","3460","3666","3710","87079","3068b"}
+    assert all(k in {"3007","3001","3008","3460","3666","3710","87079","3068b","4275b","4276b"}
                for k in new)
     assert sum(new.values())==report["new_parts"]
     assert sum(removed.values())==report["removed_old_tip_tiles"]
