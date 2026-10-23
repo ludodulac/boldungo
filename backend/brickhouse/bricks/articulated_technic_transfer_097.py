@@ -13,7 +13,7 @@ capacity and no complete swept assembly proof are inferred.
 from __future__ import annotations
 from collections import Counter
 from math import hypot,sqrt,isclose
-from .roof_technic_transfer_096 import build_096
+from .roof_technic_transfer_096 import build_096, _roof_bracket, _frame_rafter_holes
 from .technic_triangle_095 import beam_matrix,pin,screen_technic_roof_clearance
 from .articulated_roof_093 import rigid
 
@@ -83,24 +83,46 @@ def construct_one_exact_joint_chain(previous,frame_no=0):
     """Replace ONLY one 096 rigid near-miss. Preserve second test candidate."""
     records=previous["report"]["candidate_details"]
     trial=next((x for x in records if x["frame"]==frame_no),None)
+    new_roof_3700 = None
     if trial is None or "roof_hole_world" not in trial:
-        raise ValueError("NO_GROUNDED_FRAME_WITH_ROOF_STUD_CONNECTION")
-    if trial["axis_residual_ldu"] <= 1e-7:
+        # Alternate houses need not inherit a 096 near-miss. Design first.
+        frames=previous["previous_095"]["report"]["triangles"]
+        frame=next((f for f in frames if f["frame"]==frame_no),None)
+        if frame is None or frame["grounded_wall_pin_count"]!=2:
+            raise ValueError("NO_GROUNDED_FRAME_WITH_ROOF_STUD_CONNECTION")
+        bracket,reason=_roof_bracket(frame,previous["articulated_parts"])
+        if reason:
+            raise ValueError("NO_ACTUAL_ROOF_RAIL_FOR_STUD_BRACKET")
+        hole=bracket["hole"]
+        holes=_frame_rafter_holes(frame)
+        viable=[(abs(hypot(hole[0]-pt[0],hole[1]-pt[1])-120.),
+                 k,pt) for k,pt in enumerate(holes)
+                if 1<k<13 and hypot(hole[0]-pt[0],hole[1]-pt[1])<2*LINK_RADIUS]
+        if not viable:
+            raise ValueError("NO_TWO_REAL_THIN_LINKS_CAN_REACH")
+        _,k,pt=min(viable)
+        trial={"frame":frame_no,"bay":frame["bay"],
+               "roof_hole_world":hole,"rafter_hole_world":pt,
+               "rafter_hole_index":k,
+               "axis_residual_ldu":round(abs(hypot(hole[0]-pt[0],hole[1]-pt[1])-120.),7)}
+        new_roof_3700=bracket["part"]
+    elif trial["axis_residual_ldu"] <= 1e-7:
         raise ValueError("NO_NONZERO_RESIDUAL_TO_REPLACE")
     A=tuple(trial["roof_hole_world"])
     B=tuple(trial["rafter_hole_world"])
     elbows=circle_elbows(A,B)
     if not elbows:raise ValueError("REAL_THIN_2LINK_SPAN_OUT_OF_RANGE")
     old=previous["articulated_parts"]
-    removed=[
+    legacy=[
         f"096-F{frame_no}-brace-7-hole",
         f"096-F{frame_no}-pin-at-roof-2780",
         f"096-F{frame_no}-pin-at-rafter-2780"]
     found={p["placement_id"]:p for p in old}
-    if any(i not in found for i in removed):
-        raise AssertionError("CANONICAL_096_ADAPTER_NOT_FOUND")
-    if found[removed[0]]["ldraw_id"]!="32524":
+    removed=legacy if all(i in found for i in legacy) else []
+    if removed and found[legacy[0]]["ldraw_id"]!="32524":
         raise AssertionError("WRONG_096_BRACE_FAMILY")
+    if new_roof_3700 is not None and new_roof_3700["placement_id"] in found:
+        raise AssertionError("DOUBLE_REAL_ROOF_BRACKET")
     z0=A[2]; z3=B[2]
     l1=z0+15; l2=l1+10
     layers=check_three_axial_stacks(A,B,l1,l2)
@@ -116,13 +138,17 @@ def construct_one_exact_joint_chain(previous,frame_no=0):
     joints=[pin(ids[0],A[0],A[1],z0+10,False),
             pin(ids[1],E[0],E[1],z0+20,False),
             pin(ids[2],B[0],B[1],z0+30,False)]
-    added=[pa,pb,*joints]
+    added=([new_roof_3700] if new_roof_3700 else [])+[pa,pb,*joints]
     bridge=[f"096-F{frame_no}-roof-3700",pa["placement_id"],
             joints[0]["placement_id"],joints[1]["placement_id"],
             pb["placement_id"],joints[2]["placement_id"],
             f"095-F{frame_no}-rafter-left"]
     # N2 graph: real joint families and centers; N5 only planned at this stage.
-    edges=[
+    edges=([
+      {"from":f"093-negative-baseplate-{trial['bay']}-0-16",
+       "to":new_roof_3700["placement_id"],
+       "interface":"STANDARD_TWO_STUD_TO_3460_ANTISTUD",
+       "axis_exact":True}] if new_roof_3700 else [])+[
        {"from":f"096-F{frame_no}-roof-3700","to":ids[0],
         "interface":"REAL_3700_HOLE_TO_2780","axis_exact":True},
        {"from":ids[0],"to":pa["placement_id"],
@@ -147,6 +173,7 @@ def construct_one_exact_joint_chain(previous,frame_no=0):
             "new_parts":added,"remove_ids":removed,"edges":edges,
             "roof_hole":A,"frame_hole":B,"elbow_hole_xy":E,
             "hinge_joint_count":3,"hole_axis_residual_max_ldu":round(err,8),
+            "legacy_096_replaced":bool(removed),
             "three_axial_stack_evidence":layers,
             "roof_angle_deg":22.0,"truss_angle_deg":previous["report"]["technic_truss_pitch_degrees"],
             "kinematics":"TWO_LINK_1_DOF_UNBRACED_ELBOW",
