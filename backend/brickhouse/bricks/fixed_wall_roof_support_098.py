@@ -37,7 +37,7 @@ def grounded_masonry_under_sill(source,sill,grounded,bay):
        and _cells(p)&two_y]
     hits=sorted(set().union(*(_cells(p)&two_y for p in candidates))
                 if candidates else [])
-    if len(hits)<2:
+    if len({x for x,y in hits})<2:
         return None
     return {"wall_ids":[p.placement_id for p in candidates],
             "stud_cells":[list(h) for h in hits]}
