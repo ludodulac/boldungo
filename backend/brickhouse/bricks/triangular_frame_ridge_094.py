@@ -25,6 +25,7 @@ PLATE=8.0
 I=((1.,0.,0.),(0.,1.,0.),(0.,0.,1.))
 # Existing, real LDraw catalogue designs. No custom roof piece.
 NEW_PARTS={"3007":(8,2),"3001":(4,2),"3008":(8,1),
+           "3009":(6,1),"3010":(4,1),"3004":(2,1),
            "3460":(8,1),"3666":(6,1),"3710":(4,1),
            "87079":(4,2),"3068b":(2,2)}
 LOCAL_PARTS={**PARTS,**{k:(k,*v) for k,v in NEW_PARTS.items()}}
@@ -214,9 +215,11 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
     ridge_parts=[]
     ys=spans
     for idx,bay in enumerate(ys[::4]):
-        length=8 if bay+8 <= ys[-1]+2 else 4
-        if length not in (4,8):continue
-        ridge=add(f"ridge-beam-{idx}", "3008",
+        length=min(8,ys[-1]+2-bay)
+        if length not in (2,4,6,8):
+            raise ValueError("RIDGE_LAST_BEAM_LENGTH_CANNOT_BE_REAL_LEGO")
+        ldraw={2:"3004",4:"3010",6:"3009",8:"3008"}[length]
+        ridge=add(f"ridge-beam-{idx}", ldraw,
             (middle*STUD,ridge_y-PLATE,(bay+length/2)*STUD),
             ((0.,0.,1.),(0.,1.,0.),(-1.,0.,0.)),"ridge_purlin")
         ridge_parts.append(ridge["placement_id"])
@@ -245,7 +248,8 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
     # studs. The independent cap is 0° and does not torque tilted slopes.
     for bay in spans[::2]:
         cap=add(f"ridge-cover-{bay}","87079",
-            (middle*STUD,ridge_y-2*PLATE,(bay+2.)*STUD),
+            (middle*STUD,ridge_y-2*PLATE,
+             (bay+(1 if bay==ys[-1] else 2.))*STUD),
             ((1.,0.,0.),(0.,1.,0.),(0.,0.,1.)),
             "ridge_cover_flat")
         joints.append({"from":"ridge_purlin","to":cap["placement_id"],
@@ -282,7 +286,8 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
             along_gap=abs(cap["xyz_ldu"][2]-support["xyz_ldu"][2])
             # Two tile underside cavities nominally fall inside
             # the beam's 8-stud length and 1-stud transverse width.
-            max_gap=(4-1)*STUD
+            beam_length=LOCAL_PARTS[support["ldraw_id"]][1]
+            max_gap=(beam_length/2.-.5)*STUD
             if along_gap<=max_gap+1e-5 and abs(cap["xyz_ldu"][0]-support["xyz_ldu"][0])<1e-5:
                 cap_nominal_sites.append({"beam_id":support["placement_id"],
                     "tile_id":cap["placement_id"],
