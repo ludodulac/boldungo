@@ -64,7 +64,7 @@ def part_bbox_transformed(p):
         # LOCAL Z with through-holes along LOCAL X. Pins extend LOCAL Y.
         half_z={"32278":140.,"32524":60.,"32017":40.,"6558":6.,"2780":6.,"3700":10.}[p["ldraw_id"]]
         extents=({"32278":(10.,10.,half_z),"32524":(10.,10.,half_z),"32017":(9.,5.,half_z),
-                  "6558":(7.,30.,7.),"2780":(7.,20.,7.),
+                  "6558":(7.,7.,30.),"2780":(7.,7.,20.),
                   "3700":(20.,12.,10.)}[p["ldraw_id"]])
         local=[]
         for x in (-extents[0],extents[0]):
