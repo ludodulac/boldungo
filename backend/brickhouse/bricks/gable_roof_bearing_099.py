@@ -12,6 +12,7 @@ from collections import Counter
 from math import floor, hypot
 from .fixed_wall_roof_support_098 import build_wall_tie, STUD, PLATE, D
 from .brick_model import BrickModel,BrickModelPart
+from .articulated_roof_093 import PIVOT_LOCAL,transform_pt
 from .roof_studdeck_designer_091 import _cells,_orthogonal_clearance
 from .support_chain import analyze_standard_brick_support_chain
 
@@ -67,9 +68,19 @@ def _find_gable_pedestal(source,built,facades,*,max_pl=4):
           p["placement_id"].startswith("093-negative-baseplate-") and
           p["ldraw_id"]=="3460" and p["kind"]=="rafter_base"]
     if not rail:return None,"NO_TRUE_22DEG_RAIL"
+    eave_hinges=[p for p in built["articulated_parts"]
+                 if p["placement_id"].startswith("093-negative-basehinge-")
+                 and p["kind"]=="hinge_base"]
+    if not eave_hinges:
+        return None,"NO_REAL_EAVE_HINGE_FOR_INDEPENDENT_SECOND_BEARING"
+    eave_x=min(transform_pt(p,PIVOT_LOCAL)[0]/STUD for p in eave_hinges)
     anchored=[]
     for candidate in candidates:
         x,y=candidate["stud_cell"]
+        # A post at the EAVE ITSELF gives no second moment arm, even if
+        # perfectly touching! Require >=6 studs independent of hinge.
+        if not eave_x+6<=x<=eave_x+16:
+            continue
         if x%3 not in (0,1,2):raise AssertionError("unreachable")
         center_x=(x+.5)*STUD
         center_z=(y+.5)*STUD
@@ -102,7 +113,9 @@ def _find_gable_pedestal(source,built,facades,*,max_pl=4):
             x_studs=x,y_studs=y,z_plates=cell["top_plates"]+layer,
             width_studs=1,length_studs=1,height_plates=1,
             rotation_quarter_turns=0))
-    return {"x":x,"y":y,"layer_count":n,"gap_ldu":gap,
+    return {"x":x,"y":y,"eave_pivot_x_studs":eave_x,
+         "independent_second_point_lever_arm_studs":round(x-eave_x,3),
+         "layer_count":n,"gap_ldu":gap,
          "source_gable_brick":cell["id"],"grounded":True,
          "roof_rail_id":member["placement_id"],
          "roof_rail_actual_LDraw_id":"3460",
