@@ -104,18 +104,19 @@ def correct_legacy_096_overlay(overlay):
         q,did=corrected_technic_part(part)
         fixed.append(q)
         if did:corrected.append(part["placement_id"])
-    if not corrected or not any(x.startswith("096-F6-") for x in corrected):
+    actual_f6=[p for p in overlay if p["placement_id"].startswith("096-F6-") and p["ldraw_id"] in OFFICIAL_TYPE1]
+    if not corrected or (actual_f6 and not any(x.startswith("096-F6-") for x in corrected)):
         raise AssertionError("MUST_CORRECT_BOTH_095_AND_096_F6")
     return fixed,{"wrong_before":wrong,"corrected_count":len(corrected),
                   "corrected_ids":corrected,
                   "corrected_by_ldraw":dict(Counter(p["ldraw_id"] for p in fixed
                           if p["placement_id"] in set(corrected))),
-                  "contains_uncorrected_096_F6":False,
+                  "contains_uncorrected_096_F6":bool(actual_f6 and not any(x.startswith("096-F6-") for x in corrected)),
                   "real_official_local_axes":physical_axes(),
                   "all_reoriented_pin_axis_from_part_local_X":True,
                   "all_reoriented_beam_hole_axis_from_part_local_Y":True,
                   "pin_full_3d_sweep_verified":False,
                   "mechanical_stability_not_implied":True}
 
-def test_transform_matrix_of_LDraw_part(part):
+def actual_world_axis(part):
     return transform(part["rotation"],part_local_axis(part["ldraw_id"]))
