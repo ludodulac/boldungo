@@ -10,7 +10,9 @@ from collections import Counter
 from pathlib import Path
 from brickhouse.bricks.brick_model import BrickModel
 from brickhouse.bricks.technic_triangle_095 import build_095,PARTS095
+from brickhouse.bricks.triangular_frame_ridge_094 import LOCAL_PARTS
 from construct_guided004_hinged_roof_093 import PARTS,save_ldraw,draw_views
+PARTS.update(LOCAL_PARTS)
 PARTS.update(PARTS095)
 
 
