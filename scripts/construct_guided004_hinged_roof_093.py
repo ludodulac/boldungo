@@ -114,7 +114,7 @@ def draw_views(foundation,assembly,out):
                       "color":kinds.get(p["kind"],"#828899")})
     for view in ("perspective","front","rear","north","south","roof","frame"):
         # Hide ONLY tile skin for exposed structure view.
-        show=struct+[p for p in panel if view!="frame" or p["class"]!="roof_skin"]
+        show=struct+[p for p in panel if view!="frame" or p["class"] not in ("roof_skin","ridge_cover_flat")]
         projected=[(p,[project(view,x) for x in p["corners"]]) for p in show]
         extrema=[v for item,pts in projected for v in pts]
         minx=min(p[0] for p in extrema);maxx=max(p[0] for p in extrema)
