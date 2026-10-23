@@ -59,6 +59,21 @@ def save_ldraw(model,assembly,path):
 def part_bbox_transformed(p):
     """Corners of real catalogue part lengths, rotated by its rigid LDraw matrix."""
     length,width=PARTS[p["ldraw_id"]][1:]
+    if p["ldraw_id"] in ("32278","32524","6558","2780","3700"):
+        # Unlike standard plates, real LDraw Technic liftarms extend along
+        # LOCAL Z with through-holes along LOCAL X. Pins extend LOCAL Y.
+        half_z={"32278":140.,"32524":60.,"6558":6.,"2780":6.,"3700":10.}[p["ldraw_id"]]
+        extents=({"32278":(10.,10.,half_z),"32524":(10.,10.,half_z),
+                  "6558":(7.,30.,7.),"2780":(7.,20.,7.),
+                  "3700":(20.,12.,10.)}[p["ldraw_id"]])
+        local=[]
+        for x in (-extents[0],extents[0]):
+            for y in ((0.,24.) if p["ldraw_id"]=="3700" else
+                      (-extents[1],extents[1])):
+                for z in (-extents[2],extents[2]):
+                    local.append((x,y,z))
+        return [[p["xyz_ldu"][i]+sum(p["rotation"][i][j]*pt[j]
+                    for j in range(3)) for i in range(3)] for pt in local]
     # LDraw plate and tile top at y=0, underface at y=8. Hinge fingers
     # deliberately excluded: visual envelopes do NOT certify hinge clearance.
     points=[]
@@ -108,7 +123,8 @@ def draw_views(foundation,assembly,out):
                "purlin_upper":"#886548","purlin_lap":"#755039",
                "truss_bottom_tie":"#7d5b35","truss_sloping_chord":"#995a26",
                "truss_king_post":"#d18832","ridge_purlin":"#714e2d",
-               "ridge_cover_flat":"#617e94"}
+               "ridge_cover_flat":"#617e94",
+               "truss095_technic_beam":"#536b86","truss095_technic_pin":"#268cc4"}
         panel.append({"id":p["placement_id"],"class":p["kind"],
                       "corners":part_bbox_transformed(p),
                       "color":kinds.get(p["kind"],"#828899")})
