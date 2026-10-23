@@ -160,7 +160,7 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
         # are nominally explicit; final engagement to hinge base is not.
         toe_risers=[]
         for side in ("negative","positive"):
-            toe_cross=left+1.5 if side=="negative" else right-1.5
+            toe_cross=left+2 if side=="negative" else right-2
             lower=add(f"toe-riser-{frame_no}-{side}-brick","3004",
                       (toe_cross*STUD,eave_y+PLATE,world_z),
                       I,"truss_toe_riser_brick")
@@ -185,7 +185,7 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
                                  for j in range(3)) for i in range(3))
             base_rot=I if side=="negative" else flip
             for place,xx,yy in (
-                    ("toe",left+3 if side=="negative" else right-3,eave_y),
+                    ("toe",left+3 if side=="negative" else right-3,eave_y-4),
                     ("apex",middle,ridge_y+PLATE*2)):
                 axis=(xx*STUD,yy,world_z)
                 def transformed(R,p):
@@ -206,6 +206,24 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
                 if any(abs(va-vb)>1e-6 for va,vb
                        in zip(actual_pivot(b),actual_pivot(m))):
                     raise AssertionError("A_FRAME_REAL_HINGE_NOT_COAXIAL")
+                if place=="toe":
+                    # Official 4275b pivot y=4 and body underside y=8.
+                    # Body reference is axis_y-4; underside is axis_y+4.
+                    # Riser PLATE top is eave_y, so axis=eave_y-4
+                    # produces true flush 2-stud geometry (not just touch).
+                    riser_x=left+2 if side=="negative" else right-2
+                    base_reference=b["xyz_ldu"]
+                    if (abs(base_reference[0]-riser_x*STUD)>1e-5 or
+                        abs(base_reference[1]+8-eave_y)>1e-5 or
+                        abs(base_reference[2]-world_z)>1e-5):
+                        raise AssertionError("TRUSS_HINGE_TO_RISER_STUD_DATUM_INVALID")
+                    joints.append({
+                        "from":f"094-toe-riser-{frame_no}-{side}-plate",
+                        "to":b["placement_id"],
+                        "connector_type":"REAL_4275B_UNDERSIDE_TO_PLATE_1X2_STANDARD_STUD_GEOMETRY",
+                        "nominal_stud_cells":2,
+                        "documented_connector_type":True,
+                        "load_rating":"NOT_PROVEN"})
                 joints.append({"from":b["placement_id"],"to":m["placement_id"],
                     "connector_type":"LDRAW_4275B_H2_TO_4276B_H1_COMPLEMENTARY_FINGERS",
                     "three_plus_two_finger_family":"DOCUMENTED",
@@ -353,7 +371,9 @@ def build_094(source,*,pitch=22.,truss_step_bays=4,max_new_parts=1500):
        "toe_riser_connection_sites_nominal":8*len(frames),
        "toe_riser_parts_count":4*len(frames),
        "tie_end_to_original_wall_stud_interface":"UNVERIFIED",
-       "toe_riser_to_hinge_interface":"UNVERIFIED",
+       "toe_riser_to_hinge_interface":"TWO_STUD_GEOMETRY_MATCHES_REAL_HINGE_DATUM_LOAD_UNVERIFIED",
+       "toe_riser_to_hinge_nominal_documented_pairs":2*len(frames),
+       "toe_riser_to_hinge_nominal_stud_cells":4*len(frames),
        "truss_to_wall_compression_documented_verified":0,
        "actual_load_rated_roof_paths":0,
        "proposed_load_path_interfaces":joints,
