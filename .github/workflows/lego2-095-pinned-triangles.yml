@@ -47,8 +47,10 @@ jobs:
           r=json.loads((p/"TECHNIC-095-COMPLETE-EVIDENCE.json").read_text())
           assert r["new_assembly_documented_triangle_count"]>=1
           assert r["new_assembly_unclosed_triangles"]==0
-          assert r["wall_grounded_truss_count"]==0
-          assert r["adequate_wall_load_paths_verified"]==0
+          assert r["wall_grounded_truss_count"]>=1
+          assert r["adequate_wall_load_paths_verified"]>=1
+          assert r["wall_stud_to_real_3700_pin_to_technic_truss_pairs_verified"]>=2
+          assert r["roof_to_truss_transfer_still_blocked"] is True
           assert r["physical_strength_certification"]=="NOT_CERTIFIED"
           assert r["truss_to_roof_load_rated_paths"]==0
           assert r["angle_unchanged_degrees"]==22.
@@ -56,7 +58,7 @@ jobs:
           assert r["new_LDraw_type1_line_count"]==r["new_total"]
           assert p.joinpath("BOLDUNGO-095-REAL-TECHNIC-TRIANGLES.ldr").is_file()
           assert len(list((p/"views").glob("*.svg")))==7
-          print("LEGO2_095_CLOSED_PINNED_TRIANGLE_WITH_UNVERIFIED_WALL_AND_ROOF")
+          print("LEGO2_095_PIN_CLOSED_GROUNDED_ANCHORS_BUT_ROOF_TRANSFER_UNVERIFIED")
           PY
       - name: Upload model, documented pin graph, photo catalogue and seven real control views
         if: always()
