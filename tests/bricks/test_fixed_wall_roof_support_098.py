@@ -75,7 +75,7 @@ def test_096_F6_beam_and_pin_have_wrong_old_AXES_and_are_repaired():
     assert any(k.startswith("095-F0-") for k in report["corrected_ids"])
     for obj in fix:
         if obj["placement_id"].startswith(("095-F","096-F")) and obj["ldraw_id"] in OFFICIAL_TYPE1:
-            axis=test_transform_matrix_of_LDraw_part(obj)
+            axis=actual_world_axis(obj)
             assert axis[0]==0. and axis[1]==0. and abs(axis[2])==1.
     assert len(fix)==len(source_old)
 
