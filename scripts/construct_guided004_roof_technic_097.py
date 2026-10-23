@@ -65,7 +65,7 @@ def export(source:Path,output:Path):
     wanted.update(x["placement_id"] for x in a if x["placement_id"].startswith("095-REPLACE-")
                   and x["ldraw_id"]=="3700" and
                   x["xyz_ldu"][2]==(sub["bay"]+.5)*20)
-    wanted.add(f"093-negative-baseplate-{sub['bay']}-0-16")
+    wanted.add(sub["roof_rail_id"])
     mini=[p for p in a if p["placement_id"] in wanted]
     save_ldraw(subfoundation,mini,out/"SOUS-ASSEMBLAGE-097-FERME0.ldr")
     n=draw_views(f,a,out/"views")
