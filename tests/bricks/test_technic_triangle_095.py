@@ -7,7 +7,7 @@ from brickhouse.bricks.technic_triangle_095 import (
 from brickhouse.bricks.brick_model import BrickModel, BrickModelPart
 
 
-def other_building(dx=0,dy=0):
+def other_building(dx=0,dy=0,grounded_two_studs=False):
     """Independent 094-style second house without test-module imports."""
     def wall(pid,x):
         return BrickModelPart(placement_id=pid,part_id="BRICK_1X8",
@@ -17,6 +17,8 @@ def other_building(dx=0,dy=0):
         category="terrain",component="facade_detail",facade="front",
         x_studs=dx,y_studs=dy,z_plates=0,rotation_quarter_turns=0)
     parts=[terrain,wall("left",8),wall("right",35)]
+    if grounded_two_studs:
+        parts.extend([wall("left-inner",9),wall("right-inner",36)])
     for x in (6,35):
         for y in (0,2,4,6):
             parts.append(BrickModelPart(
@@ -110,3 +112,24 @@ def test_no_fake_labeled_assembly_as_physically_certified():
     assert r["adequate_wall_load_paths_verified"]==0
     assert r["insertion_complete"]=="NOT_PROVEN"
     assert r["remaining_wall_anchoring_and_roof_transfer_blocked"]
+
+
+def test_real_documented_wall_adapter_replaces_only_new_variant_sill_rows():
+    old=other_building(grounded_two_studs=True)
+    frozen=old.model_dump_json()
+    x=build_095(old)
+    r=x["report"]
+    assert old.model_dump_json()==frozen
+    assert r["wall_grounded_truss_count"]>=1
+    assert r["wall_stud_to_real_3700_pin_to_technic_truss_pairs_verified"]>=2
+    assert r["historic_eave_sills_removed_count"]>=2
+    assert r["only_new_095_foundation_retile"]
+    assert r["historical_source_091_preserved"]
+    assert r["wall_path_rating"]=="CONNECTED_BUT_LOAD_CAPACITY_UNTESTED"
+    assert r["adequate_wall_load_paths_verified"]>=1
+    assert r["truss_to_roof_load_rated_paths"]==0
+    added={p["ldraw_id"] for p in x["articulated_parts"]}
+    assert {"3700","2780","32278","32524","6558"}<=added
+    assert sum(p["ldraw_id"]=="3700" for p in x["articulated_parts"])>=2
+    links=x["real_technic_graph"]
+    assert len([e for e in links if e.get("type")=="3700_HOLE_TO_REAL_2780_2L_PIN"])>=2
