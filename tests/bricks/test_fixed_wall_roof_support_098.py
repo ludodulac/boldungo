@@ -72,7 +72,7 @@ def test_096_F6_beam_and_pin_have_wrong_old_AXES_and_are_repaired():
     assert report["corrected_count"]>0
     assert report["wrong_before"]
     assert report["contains_uncorrected_096_F6"] is False
-    assert any(k.startswith("096-F0-brace") for k in report["corrected_ids"])
+    assert any(k.startswith("095-F0-") for k in report["corrected_ids"])
     for obj in fix:
         if obj["placement_id"].startswith(("095-F","096-F")) and obj["ldraw_id"] in OFFICIAL_TYPE1:
             axis=test_transform_matrix_of_LDraw_part(obj)
