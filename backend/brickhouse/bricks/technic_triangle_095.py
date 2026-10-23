@@ -39,6 +39,43 @@ PIN_MATRIX=((1.,0.,0.),(0.,0.,-1.),(0.,1.,0.))
 I=((1.,0.,0.),(0.,1.,0.),(0.,0.,1.))
 
 
+def technic_beam_obb(instance):
+    """Conservative 3D LDraw-oriented body envelope of a thick Technic beam.
+
+    In the official 32278.dat / 32524.dat, beam length lies along LOCAL Z
+    with through-holes along LOCAL X. This is NOT a fake horizontal plate.
+    """
+    half={"32278":140.,"32524":60.}.get(instance["ldraw_id"])
+    if half is None:raise ValueError("NOT_A_TECHNIC_BEAM")
+    R=instance["rotation"]
+    axes=[list(col) for col in zip(*R)]
+    return instance["xyz_ldu"],axes,[10.,10.,half]
+
+
+def screen_technic_roof_clearance(assembly,old_roof):
+    """Screen all candidate real liftarm envelopes against the 22° roof skin.
+
+    Pins and actual voids are *excluded* from this conservative test. True
+    LDraw mesh collision and swept insertion remain separately unverified.
+    """
+    beams=[p for p in assembly if p["ldraw_id"] in ("32278","32524")]
+    roofing=[p for p in old_roof if p["kind"] in ("roof_skin","ridge_cover_flat")]
+    overlaps=[]
+    for b in beams:
+        box=technic_beam_obb(b)
+        for q in roofing:
+            if envelope_intersect(box,roof_obb(q)):
+                overlaps.append([b["placement_id"],q["placement_id"]])
+                if len(overlaps)>70:break
+        if len(overlaps)>70:break
+    return {"real_liftarms_tested":len(beams),
+            "actual_22deg_tile_envelope_pairs_tested":len(beams)*len(roofing),
+            "body_envelope_clashes":len(overlaps),
+            "sample":overlaps[:20],
+            "ldraw_mesh_and_pin_collar_sweep_verified":False,
+            "global_subassembly_insertion_verified":False}
+
+
 def beam_matrix(direction):
     """LDraw 32278/32524 length LOCAL Z, pin holes along LOCAL X.
     Map the holes to a roof transverse XY frame; local X is world Z.
@@ -354,8 +391,10 @@ def build_095(source,*,pitch=22.,max_frames=32):
         raise AssertionError("HISTORIC_SOURCE_MUTATED")
     closure=sum(m["full_triangle_documented_type"] for m in selected)
     graph=[*graph_extra,*(link for m in selected for link in m["links"])]
+    collision=screen_technic_roof_clearance(new,keep)
     report={
         "source_variant":"EXPERIMENT_094_COMPOSITE_3054",
+        "actual_roof_vs_technic_collision_screen":collision,
         "architecture":"GENERIC_PIN_CLOSED_TECHNIC_5_12_13_MODULE",
         "angle_unchanged_degrees":pitch,
         "old_094_trusses_removed_count":len(old),
@@ -384,6 +423,7 @@ def build_095(source,*,pitch=22.,max_frames=32):
            x["exact_hole_axis_verified"] for x in graph),
         "physical_strength_certification":"NOT_CERTIFIED",
         "insertion_complete":"NOT_PROVEN",
+        "roof_vs_new_technic_3d_envelope_clash_count":collision["body_envelope_clashes"],
         "new_bom":dict(Counter(p["ldraw_id"] for p in new)),
         "removed_bom":dict(Counter(p["ldraw_id"] for p in old)),
         "retiled_old_sills":{uid:retiled[uid]["original"].part_id for uid in retiled},
