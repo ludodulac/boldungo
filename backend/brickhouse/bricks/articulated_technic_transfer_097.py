@@ -14,7 +14,7 @@ from __future__ import annotations
 from collections import Counter
 from math import hypot,sqrt,isclose
 from .roof_technic_transfer_096 import build_096, _roof_bracket, _frame_rafter_holes
-from .technic_triangle_095 import beam_matrix,pin,screen_technic_roof_clearance
+from .technic_triangle_095 import pin,screen_technic_roof_clearance
 from .articulated_roof_093 import rigid
 
 LINK_ID="32017"
@@ -35,6 +35,44 @@ def circle_elbows(a,b,radius=LINK_RADIUS):
     mx,my=(a[0]+b[0])/2,(a[1]+b[1])/2
     return [(mx+s*(-dy/d)*h,my+s*(dx/d)*h) for s in (1,-1)]
 
+def _physical_hole_y_matrix(direction):
+    """Authentic 32278/32524/32017 LDraw pegholes have LOCAL Y hole axes.
+
+    Mapping local Y to world Z is mandatory when physical pins are placed
+    parallel to world Z. 095 beam_matrix accidentally mapped LOCAL X to Z,
+    a geometrical alignment that is orthogonal to the actual through-holes.
+    """
+    dx,dy=direction
+    if abs(hypot(dx,dy)-1.)>1e-7:
+        raise ValueError("INVALID_REAL_LDRAW_BEAM_DIRECTION")
+    return ((-dy,0.,dx),(dx,0.,dy),(0.,1.,0.))
+
+
+def correct_one_095_frame_hole_axes(parts,frame_no):
+    """Rotate all existing 095 Technic beams in ONE frame around long axes.
+
+    Preserves centerline, positional holes and wall/roof silhouette.
+    Historical source is never touched and other frames remain unproven.
+    """
+    changed=[];result=[]
+    for old in parts:
+        if (old["placement_id"].startswith(f"095-F{frame_no}-") and
+                old["ldraw_id"] in ("32278","32524")):
+            q=dict(old)
+            R=old["rotation"]
+            direction=(R[0][2],R[1][2])
+            q["rotation"]=[list(row) for row in _physical_hole_y_matrix(direction)]
+            if any(abs(q["rotation"][i][1]-(0.,0.,1.)[i])>1e-8
+                   for i in range(3)):
+                raise AssertionError("REAL_LDRAW_PEG_HOLE_AXIS_STILL_WRONG")
+            changed.append(q["placement_id"])
+            result.append(q)
+        else: result.append(old)
+    if len(changed)<5:
+        raise AssertionError("NOT_ALL_PINNED_REAL_095_FRAME_BEAMS_ROTATED")
+    return result,changed
+
+
 def thin_liftarm(a,b,z,name):
     dx,dy=b[0]-a[0],b[1]-a[1]
     distance=hypot(dx,dy)
@@ -42,7 +80,7 @@ def thin_liftarm(a,b,z,name):
         raise ValueError("REAL_32017_IS_FIVE_HOLES_FOUR_INTERVALS")
     ux,uy=dx/distance,dy/distance
     center=(a[0]+dx/2,a[1]+dy/2,z)
-    part=rigid(name,LINK_ID,center,beam_matrix((ux,uy)),
+    part=rigid(name,LINK_ID,center,_physical_hole_y_matrix((ux,uy)),
                "truss097_real_technic_thin_beam")
     holes=[(round(a[0]+i*ux*20.,7),
             round(a[1]+i*uy*20.,7),z) for i in range(5)]
@@ -225,7 +263,10 @@ def build_097(source,frame_no=0):
     assembled=construct_one_exact_joint_chain(prev,frame_no)
     removed=set(assembled["remove_ids"])
     before=prev["articulated_parts"]
-    now=[p for p in before if p["placement_id"] not in removed]+assembled["new_parts"]
+    previous_kept=[p for p in before if p["placement_id"] not in removed]
+    repaired,beam_axis_corrections=correct_one_095_frame_hole_axes(
+        previous_kept,frame_no)
+    now=repaired+assembled["new_parts"]
     ids=[p["placement_id"] for p in now]
     if len(ids)!=len(set(ids)):raise AssertionError("DUPLICATE_LDRAW_PIECES")
     graph=[x for x in prev["graph"]
@@ -238,6 +279,8 @@ def build_097(source,frame_no=0):
         raise AssertionError("ORIGINAL_VARIANT_MUTATED")
     report={
         "previous_096_parts":prev["report"]["new_total"],
+        "real_095_technic_hole_axis_corrections":beam_axis_corrections,
+        "unmodified_frames_physical_technic_axes_unverified":prev["report"]["technic_frames"]-1,
         "new_total":len(prev["foundation"].parts)+len(now),
         "removed_actual_ids":assembled["remove_ids"],
         "added_real_parts_by_ldraw":dict(delta),
