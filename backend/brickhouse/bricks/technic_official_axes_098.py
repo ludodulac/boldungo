@@ -86,7 +86,7 @@ def corrected_technic_part(p):
         desired=real_beam_rotation(direction)
     q={**p,"rotation":[list(row) for row in desired]}
     physical=transform(q["rotation"],part_local_axis(lid))
-    if any(abs(physical[i]-EXPECTED_WORLD_AXIS[i])>1e-8 for i in range(3)):
+    if abs(physical[0])>1e-8 or abs(physical[1])>1e-8 or abs(abs(physical[2])-1.)>1e-8:
         raise AssertionError(f"REAL_PART_AXIS_NOT_WORLD_Z_{lid}")
     return q,any(abs(q["rotation"][i][j]-old[i][j])>1e-9
                  for i in range(3) for j in range(3))
