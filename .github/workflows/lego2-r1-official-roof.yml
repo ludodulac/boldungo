@@ -52,6 +52,10 @@ jobs:
           assert m["summary"]["our_variant_is_official_lego_build"] is False
           assert m["summary"]["full_insertion_proven"] is False
           assert m["summary"]["physical_strength_proven"] is False
+          assert m["summary"]["real_4445_to_3007_primitive_mates_aligned"] == 4
+          assert m["summary"]["real_3022_to_opposing_4445_four_stud_mates_aligned"] == 4
+          assert m["summary"]["all_eight_roof_parts_have_verified_static_mating_geometry"] is True
+          assert m["summary"]["mesh_collisions_detected_in_checked_pairs"] == 0
           assert d["audit"]["total_parts"]==41
           assert d["audit"]["roof_parts"]==8
           print("R1_PROVENANCE_GUARDS_PASS",d["source"]["set"],"PIECES",d["audit"]["total_parts"],"N6_NOT_CERTIFIED")
