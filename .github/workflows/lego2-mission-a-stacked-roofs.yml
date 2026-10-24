@@ -5,6 +5,9 @@ on:
     paths:
       - 'scripts/experiment_stacked_roofs_a.py'
       - 'scripts/probe_stacked_roof_mesh_a.py'
+      - 'scripts/construct_small_roof_a2.py'
+      - 'scripts/verify_small_roof_a2.py'
+      - 'tests/bricks/test_small_roof_a2.py'
       - 'tests/bricks/test_stacked_roofs_a.py'
       - 'missions/A/**'
       - '.github/workflows/lego2-mission-a-stacked-roofs.yml'
@@ -23,15 +26,18 @@ jobs:
           python -m pip install pytest
           python -m pip install -e ./lego_geometry_engine
       - name: Verify experimental 30363 placement and fail-closed claims
-        run: python -m pytest -q tests/bricks/test_stacked_roofs_a.py
+        run: python -m pytest -q tests/bricks/test_stacked_roofs_a.py tests/bricks/test_small_roof_a2.py
       - name: Generate three complete genuine-part LDraw houses and evidence
         run: python scripts/experiment_stacked_roofs_a.py --output artifacts/lego2-mission-a
       - name: Fetch pinned official LDraw dependency closure (not committed)
         run: |
-          python scripts/download_ldraw_probe_066.py /tmp/mission-a-ldraw --max-files 240 --parts 30363 3007 3003 3023b 3008 3811
+          python scripts/download_ldraw_probe_066.py /tmp/mission-a-ldraw --max-files 240 --parts 30363 3007 3003 3023b 3008 3811 3022
       - name: Verify six actual inclined-roof LDraw meshes and nominal coordinates
         run: |
           python scripts/probe_stacked_roof_mesh_a.py --ldraw-root /tmp/mission-a-ldraw --output artifacts/lego2-mission-a/LDraw-REAL-MESH-SIX-PAIRS.json
+      - name: Compare two real A1-roof micro-module assembly candidates (diagnostic evidence)
+        run: |
+          python scripts/verify_small_roof_a2.py --ldraw-root /tmp/mission-a-ldraw --output artifacts/lego2-a2-small-module
       - name: Verify exported part counts and conservative nominal status
         run: |
           python - <<'PY'
@@ -59,6 +65,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: BOLDUNGO-MISSION-A-3-STACKED-SLOPE-HOUSES-NOT-CERTIFIED
-          path: artifacts/lego2-mission-a/
+          path: |
+            artifacts/lego2-mission-a/
+            artifacts/lego2-a2-small-module/
           if-no-files-found: warn
           retention-days: 30
