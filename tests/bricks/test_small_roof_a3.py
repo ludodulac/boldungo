@@ -3,6 +3,7 @@
 Executed only AFTER the pinned CI runner downloads its official LDraw closure.
 """
 import os
+import pytest
 from pathlib import Path
 import sys
 
@@ -16,6 +17,8 @@ from verify_small_roof_a3 import (audit_seats, primitive_spec, STATUS_BAD,
                                    parent_chains)
 
 def fixture():
+    if "A3_LDRAW_ROOT" not in os.environ:
+        pytest.skip("A-3 official LDraw geometry tests require pinned CI dependency closure")
     root=Path(os.environ["A3_LDRAW_ROOT"])
     parts=staged_parts(generate("3022"))
     instances=located(parts,LDrawLibrary(root))
