@@ -147,7 +147,8 @@ def ldraw(parts):
         pos_y=-8*(p.z+p.height)
         matrix=rot.strip() if p.role=="slope" and p.side=="right" else ident
         color=1 if p.role=="slope" else 8 if p.role=="ridge" else 71
-        lines.append(f"1 {color} {pos_x} {pos_y} {pos_z} {matrix} {p.ldraw}.dat")
+        fmt=lambda v: str(int(v)) if int(v)==v else str(v)
+        lines.append(f"1 {color} {fmt(pos_x)} {fmt(pos_y)} {fmt(pos_z)} {matrix} {p.ldraw}.dat")
     return "\n".join(lines)+"\n"
 
 
