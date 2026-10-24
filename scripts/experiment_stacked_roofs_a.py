@@ -323,7 +323,7 @@ def _technical_elevation_svg(parts, width, length, title):
     lines.append(f'<text x="20" y="{height-36}" font-size="12" font-family="sans-serif" fill="#424956">Positions des pièces projetées sur X/hauteur ; la profondeur est aplatie.</text>')
     lines.append(f'<text x="20" y="{height-18}" font-size="12" font-family="sans-serif" fill="#ab345b">NON CERTIFIÉ : vrais maillages, insertion, adhérence et résistance non établis.</text>')
     lines.append('</svg>')
-    return "\\n".join(lines)+"\\n"
+    return "\n".join(lines)+"\n"
 
 def main(output):
     output = Path(output)
