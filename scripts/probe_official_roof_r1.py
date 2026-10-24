@@ -77,6 +77,49 @@ def actual_4445_primitive_alignment(root,parts,inst):
                        "full_interference_free_insertion_proved":False})
     return result
 
+def real_3022_ridge_primitive_alignment(root,parts,inst):
+    """Four true top studs of the opposing 4445 at the 3022 central stud4.
+
+    Uses *each* official stud.dat entry and the actual world LDraw matrices.
+    It proves the final-position 2x2 connector geometry, not the insertion.
+    """
+    plate_source=(Path(root)/"parts/3022.dat").read_text()
+    slope_source=(Path(root)/"parts/4445.dat").read_text()
+    assert sum(line.strip().endswith("stud4.dat") for line in plate_source.splitlines())==1
+    stud_refs=[]
+    for line in slope_source.splitlines():
+        t=line.split()
+        if t and t[0]=="1" and t[-1].lower()=="stud.dat":
+            stud_refs.append(tuple(float(v) for v in t[2:5]))
+    if len(stud_refs)!=8:
+        raise AssertionError("R1_EXPECT_8_REAL_STUDS_ON_4445")
+    roof=[p for p in parts if p.role=="slope" and p.course==1]
+    out=[]
+    for plate in (p for p in parts if p.role=="ridge"):
+        cap=inst[plate.pid]
+        tube=cap.transform.point((0,8,0))
+        positions=[]
+        for side in roof:
+            sl=inst[side.pid]
+            for x,y,z in stud_refs:
+                pt=sl.transform.point((x,y-4,z))
+                if abs(pt[0]-tube[0])<11 and abs(pt[2]-tube[2])<11:
+                    positions.append((side.pid,pt))
+        offsets=sorted((round(p[0]-tube[0],6),round(p[2]-tube[2],6))
+                      for _,p in positions)
+        expected=[(-10.,-10.),(-10.,10.),(10.,-10.),(10.,10.)]
+        depths=[round(tube[1]-p[1],6) for _,p in positions]
+        verified=(len(positions)==4 and offsets==expected
+                  and all(abs(d-4)<.02 for d in depths)
+                  and len(set(i for i,_ in positions))==2)
+        out.append({"child":plate.pid,"two_parent_slopes":sorted(set(i for i,_ in positions)),
+             "official_four_top_stud_offsets":offsets,
+             "stud_tip_engagement_depths_ldu":depths,
+             "real_3022_stud4_to_four_4445_studs_geometry_proven":verified,
+             "continuous_insertion_proven":False})
+    return out
+
+
 def run(ldraw_root,output):
     parts=recipe()
     lib=LDrawLibrary(ldraw_root)
@@ -106,6 +149,7 @@ def run(ldraw_root,output):
         relation=check_collision(ia,ib) if ia.bbox.relation(ib.bbox) is not Relation.SEPARATED else Relation.SEPARATED
         near.append({"pair":[group[0].pid,group[1].pid],"relation":relation.value})
     align=actual_4445_primitive_alignment(ldraw_root,parts,inst)
+    ridge_align=real_3022_ridge_primitive_alignment(ldraw_root,parts,inst)
     collisions=[d for d in checks+near if d.get("official_real_mesh_relation",d.get("relation"))=="COLLISION"]
     summary={"total_parts":len(parts),"roof_parts":8,
         "nominal_support_edges":edges,"nominal_unsupported":len(unsupported),
@@ -113,6 +157,8 @@ def run(ldraw_root,output):
         "roof_supporting_mesh_pairs_checked":len(checks),
         "adjacent_course_mesh_pairs_checked":len(near),
         "real_4445_to_3007_primitive_mates_aligned":sum(x["geometry_alignment_proved"] for x in align),
+        "real_3022_to_opposing_4445_four_stud_mates_aligned":sum(x["real_3022_stud4_to_four_4445_studs_geometry_proven"] for x in ridge_align),
+        "all_eight_roof_parts_have_verified_static_mating_geometry":all(x["geometry_alignment_proved"] for x in align) and all(x["real_3022_stud4_to_four_4445_studs_geometry_proven"] for x in ridge_align),
         "mesh_collisions_detected_in_checked_pairs":len(collisions),
         "all_model_mesh_pairs_checked":False,
         "roof_assembly_order_in_official_manual":True,
@@ -120,7 +166,7 @@ def run(ldraw_root,output):
         "full_insertion_proven":False,
         "physical_strength_proven":False,
         "scope":"roof mate pairs and two adjacent-course pairs only; no exhaustive mesh sweep"}
-    result={"summary":summary,"stud_alignment":align,"mesh_mates":checks,
+    result={"summary":summary,"stud_alignment":align,"ridge_stud_alignment":ridge_align,"mesh_mates":checks,
             "adjacent_courses":near,"collisions":collisions}
     output=Path(output)
     output.parent.mkdir(parents=True,exist_ok=True)
@@ -128,6 +174,7 @@ def run(ldraw_root,output):
     for x in align:print("R1_PRIMITIVE_4445_TO_3007",x["child"],
         "centres",x["all_seven_tube_centres_align_with_3007"],
         "depth_ldu",x["stud_depth_ldu"])
+    for x in ridge_align:print("R1_PRIMITIVE_3022_RIDGE",x["child"],"centres",x["real_3022_stud4_to_four_4445_studs_geometry_proven"],"depths",x["stud_tip_engagement_depths_ldu"])
     for x in checks:print("R1_MESH_MATE",x["child"],x["parent"],
                           x["official_real_mesh_relation"])
     for x in near:print("R1_ADJACENT_COURSES",x["pair"],x["relation"])
