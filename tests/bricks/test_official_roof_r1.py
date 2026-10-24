@@ -1,5 +1,6 @@
 """Bounded R-1 tests: real LDraw part IDs and independently reproducible BOM."""
 from collections import Counter
+from dataclasses import replace
 import json
 from pathlib import Path
 import pytest
@@ -70,3 +71,14 @@ def test_manual_provenance_is_clearly_not_an_official_replica():
     assert SOURCE["official_instructions"].endswith("/6038244.pdf")
     assert SOURCE["not_official_assembly_replica"] is True
     assert SOURCE["ldraw_pin"].startswith("c43ed06")
+
+def test_intentionally_misaligned_slope_has_no_nominal_bearing():
+    parts=recipe()
+    target=next(p for p in parts if p.role=="slope" and p.side=="left" and p.course==1)
+    damaged=[replace(p,gx=p.gx+1) if p.pid==target.pid else p for p in parts]
+    parents,unsupported,edges=parent_candidates(damaged)
+    assert parents[target.pid]==[]
+    assert target.pid in unsupported
+    assert edges<48
+    # The other side still has a path: do not confuse graph reachability
+    # through another member with proof of this particular missing bearing.
