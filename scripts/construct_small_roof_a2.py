@@ -10,7 +10,10 @@ from dataclasses import replace
 from pathlib import Path
 import argparse,json
 
-from experiment_stacked_roofs_a import Piece, _ldraw
+try:
+    from scripts.experiment_stacked_roofs_a import Piece, _ldraw
+except ModuleNotFoundError:
+    from experiment_stacked_roofs_a import Piece, _ldraw
 
 W,L = 20,20
 # Two inner adjacent 30363 courses, j=1 and j=2, from A1. Roof cross section
