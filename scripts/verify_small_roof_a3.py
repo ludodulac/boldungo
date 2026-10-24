@@ -157,6 +157,17 @@ def audit_seats(parts,instances,root):
         footprint_all=sorted((round(p[0]-meanx,4),round(p[2]-meanz,4)) for p in pts)
         expected=[(-10,-10),(-10,10),(10,-10),(10,10)]
         fitted &= footprint_all==expected
+        # LDraw primitives: stud.dat radius 6; stud4(a).dat inner radius 6,
+        # outer radius 8. Four studs sit at (+/-10,+/-10), so the
+        # stud-to-tube outer surface nominal clearance is sqrt(200)-14.
+        # The 2x2 inner wall is at +/-16: the outermost stud edge touches it.
+        # This is a cross-sectional containment/engagement witness,
+        # NOT a force/friction estimate nor an insertion-sweep certificate.
+        radial_gaps=[round(hypot(x,z)-(6+8),6) for x,z in footprint_all]
+        inside_enclosing_shell=all(abs(x)+6 <= 16+EPS and
+                                   abs(z)+6 <= 16+EPS for x,z in footprint_all)
+        radial_fit=inside_enclosing_shell and all(v>=-EPS for v in radial_gaps)
+        fitted &= radial_fit
         # Stud-top y from official stud primitive is -4, tube mouth is
         # upper part underside Y=24/8 plus .032 LDU LDraw rounding.
         depths=[round(mouth[1]-p[1],4) for p in pts]
@@ -189,6 +200,9 @@ def audit_seats(parts,instances,root):
             "mouth_world_ldu":list(mouth),"tube_center_world_ldu":list(tube),
             "stud_tips_world_ldu":[list(p) for p in pts],
             "four_stud_offsets_world_xz":footprint_all,
+            "stud_radius_ldu":6,"tube_outside_radius_ldu":8,
+            "tube_radial_stud_clearances_ldu":radial_gaps,
+            "inside_2x2_16ldu_enclosing_shell":inside_enclosing_shell,
             "tube_source_transform":src,
             "stud_engagement_ldu":depths,
             "true_depth_verified":depth_ok,
@@ -253,7 +267,25 @@ def run(root,output):
     # The module contains 24 directed parent edges (3022 has TWO supports);
     # 23 non-baseplate parts each need at least one demonstrated mating.
     edges=sum(len(s["parents"]) for s in seats)
+    # Official 3811 baseplate: foundation exterior lies between world Y=0
+    # and Y=+4; its studs reach Y=-4. Parts at z>=3 have material entirely
+    # above stud height except possible named mating pieces, handled as seats.
+    baseplate=lib.load_part("3811.dat")
+    base_bbox=baseplate.bbox
+    if not (-4.001<=base_bbox.minimum[1]<=-3.999 and
+            3.999<=base_bbox.maximum[1]<=4.001):
+        raise AssertionError("A3_UNEXPECTED_3811_Y_BOUNDS")
+    non_base_attachment=[p for p in parts if p.role!="base" and
+                         "baseplate" not in parents[p.pid]]
+    baseplate_safe_aabb=[p.pid for p in non_base_attachment
+                         if instances[p.pid].bbox.minimum[1] < -4.001 and
+                            instances[p.pid].bbox.maximum[1] < -4.001]
     summary={"total_parts":len(parts),"roof_parts":len(roof),
+        "baseplate_official_mesh_world_y_minmax":[base_bbox.minimum[1],base_bbox.maximum[1]],
+        "foundation_direct_four_primitive_seats":sum(
+            s["parents"]==["baseplate"] and s["status"]==STATUS_OK for s in seats),
+        "baseplate_other_parts_disjoint_by_aabb":len(baseplate_safe_aabb),
+        "baseplate_other_parts_unresolved":len(non_base_attachment)-len(baseplate_safe_aabb),
         "nominal_components":nominal["connected_components_nominal"],
         "nominal_unsupported":nominal["unsupported_nominal_count"],
         "static_official_geometry_seats_demonstrated":sum(s["status"]==STATUS_OK for s in seats),
@@ -275,6 +307,7 @@ def run(root,output):
     result={"status":"NOT_CERTIFIED","summary":summary,
             "static_seating_facts":seats,
             "foundation_and_pillar_chains":parents,
+            "baseplate_other_parts_aabb_disjoint":baseplate_safe_aabb,
             "unproven_static_support_paths":no_static_path,
             "vertical_continuous_broadphase":insertion,
             "scope_note":"Verified primitive 2x2 static mating only, no continuous collision-free path, no physical force. Original A2 collisions remain separately in A2 evidence."}
