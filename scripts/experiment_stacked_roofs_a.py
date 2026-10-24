@@ -277,6 +277,54 @@ def construct(width, length, pitch=22.0, overhang=0, wall_courses=4):
     return parts, audit
 
 
+
+def _technical_elevation_svg(parts, width, length, title):
+    """A visible 2D X/height placement projection, NOT an official mesh render.
+
+    It collapses length into one view (do not infer actual depth overlaps).
+    Actual bricks/purlins/piers are each drawn using their exact grid positions.
+    30363 roof pieces have schematic wedge top shapes, not mesh certification.
+    """
+    scale_x, scale_z = 22, 6
+    pad_x, pad_y = 60, 42
+    top_plates = max(p.z+p.height for p in parts if p.role != "base")+3
+    height = pad_y + top_plates*scale_z + 68
+    view_w = 2*pad_x + width*scale_x
+    colors = {"wall":"#e9d8b7","gablewall":"#d7bf94",
+              "pier":"#b5d8e9","beam":"#9dbcaa",
+              "slope":"#49385c","ridge":"#be6c90"}
+    def xx(x):
+        return pad_x + x*scale_x
+    def yy(z):
+        return pad_y+(top_plates-z)*scale_z
+    lines=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{view_w}" height="{height}" viewBox="0 0 {view_w} {height}">',
+           '<rect width="100%" height="100%" fill="#fcfbf9"/>',
+           f'<text x="20" y="25" font-size="18" font-family="sans-serif" fill="#1f2635">{title} — élévation technique X / hauteur</text>',
+           f'<line x1="{xx(0)}" y1="{yy(0)}" x2="{xx(width)}" y2="{yy(0)}" stroke="#485163" stroke-width="3"/>']
+    seen=set()
+    for p in sorted(parts,key=lambda p:({"wall":0,"gablewall":1,"pier":2,"beam":3,"slope":4,"ridge":5}.get(p.role,6),p.z,p.x)):
+        if p.role=="base":
+            continue
+        key=(p.role,p.x,p.z,p.sx,p.side)
+        if key in seen:
+            continue
+        seen.add(key)
+        color=colors[p.role]
+        if p.role=="slope":
+            if p.side=="left":
+                points=[(p.x,p.z),(p.x+4,p.z),(p.x+4,p.z+3),(p.x,p.z+0.5)]
+            else:
+                points=[(p.x,p.z),(p.x+4,p.z),(p.x+4,p.z+0.5),(p.x,p.z+3)]
+            coords=" ".join(f"{xx(x):.1f},{yy(z):.1f}" for x,z in points)
+            lines.append(f'<polygon points="{coords}" fill="{color}" stroke="#2a2836" stroke-width="1.2"/>')
+        else:
+            x,y=xx(p.x),yy(p.z+p.height)
+            lines.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{p.sx*scale_x:.1f}" height="{p.height*scale_z:.1f}" fill="{color}" stroke="#6d6573" stroke-width="0.7"/>')
+    lines.append(f'<text x="20" y="{height-36}" font-size="12" font-family="sans-serif" fill="#424956">Positions des pièces projetées sur X/hauteur ; la profondeur est aplatie.</text>')
+    lines.append(f'<text x="20" y="{height-18}" font-size="12" font-family="sans-serif" fill="#ab345b">NON CERTIFIÉ : vrais maillages, insertion, adhérence et résistance non établis.</text>')
+    lines.append('</svg>')
+    return "\\n".join(lines)+"\\n"
+
 def main(output):
     output = Path(output)
     output.mkdir(parents=True,exist_ok=True)
@@ -292,6 +340,8 @@ def main(output):
             _ldraw(parts,w,length, f"Boldungo Mission A {name}"),encoding="utf8")
         (sub / f"{name}-EVIDENCE.json").write_text(
             json.dumps(audit,ensure_ascii=False,indent=2)+"\n", encoding="utf8")
+        (sub / f"{name}-ELEVATION-TECHNIQUE.svg").write_text(
+            _technical_elevation_svg(parts,w,length,name),encoding="utf8")
         (sub / f"{name}-BOM.json").write_text(
             json.dumps(audit["bom_ldraw"],indent=2)+"\n",encoding="utf8")
         (sub / f"{name}-ASSEMBLY-ORDER.md").write_text(
