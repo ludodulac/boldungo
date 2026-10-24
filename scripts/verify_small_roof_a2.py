@@ -236,6 +236,7 @@ def run(root,outdir):
               "official_tube_match",row["official_LDraw_tube_and_stud_geometry"]["tube_stud_grid_match"],
               "mesh",row["actual_mesh_pair_relation"])
         for row in bad:print("A2_COLLISION",candidate,row["a"],row["b"],row["relation"])
+        for row in bad:print("A2_COLLISION_WITNESS",candidate,row["a"],row["b"],json.dumps(row.get("collision_witness")))
         for row in blocked[:6]: print("A2_EARLY_INSERTION_BLOCK",candidate,row["pid"],row["blocking_earlier_steps"][:2])
         allsummary.append({"candidate":candidate,**counters})
     (outdir/"COMPARE-CANDIDATES.json").write_text(json.dumps(allsummary,indent=2)+"\n")
