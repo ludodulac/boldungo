@@ -228,7 +228,7 @@ def _audit(parts):
 def _ldraw(parts, width, length, title):
     # The official 3811 baseplate is centered at the LDraw origin.
     # Our geometric house is centered on its 32x32 studs.
-    normal = "1 0 0 0 1 0 0 0 1 0 0 0 1"
+    normal = "1 0 0 0 1 0 0 0 1"
     turned = "0 0 1 0 1 0 -1 0 0"
     flipped = "-1 0 0 0 1 0 0 0 -1"
     lines = ["0 " + title, "0 Name: "+title.replace(" ","_")+".ldr",
