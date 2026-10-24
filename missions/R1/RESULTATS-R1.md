@@ -37,9 +37,9 @@ Le rapport n'annonce pas « zéro collision sur 41 pièces » : les **820 paires
 
 **Graphe NOMINAL :** 41 pièces, 8 de toiture, 48 liens de support, 0 pièce sans chemin d'appui **nominal**, 1 composante nominale.
 
-**Connexions démontrées :** 4 correspondances réelles des primitives de tubes des 4445 sur les 3007, profondeur 4 LDU ; les 8 interfaces de faîtage restent pour l'instant `CONTACT` **sans preuve exhaustive de compatibilité positive**. Tous les appuis des piliers et pannes sur fondations ne sont documentés que par le graphe nominal, ils ne doivent PAS être qualifiés de certifiés.
+**Connexions démontrées à la position finale : 8/8 pièces de toiture.** Les quatre 4445 possèdent chacune 7 alignements de tubes sur pannes 3007 (profondeur 4 LDU). Les quatre faîtages 3022 possèdent chacun quatre tenons provenant des deux versants aux positions (±10,±10) LDU dans leur tube central (profondeur 4 LDU). Les 12 interfaces de soutien du toit donnent `CONTACT` au maillage officiel, et les deux jonctions de rangs donnent `CONTACT`. **Aucune de ces vérifications statiques n'est une preuve d'insertion continue.** Tous les appuis des piliers et pannes sur fondations ne sont documentés que par le graphe nominal, ils ne doivent PAS être qualifiés de certifiés.
 
-**Pièces sans appui démontré selon le critère strict :** 0 sans appui NOMINAL ; **8 pièces de toiture moins les quatre 4445 = 4 pièces de faîtage non qualifiées**, et les 32 éléments structurels hors fondation n'ont pas encore une chaîne de preuves réelles complète. Un nombre de « pièces sans chaîne géométrique complète démontrée » ne peut donc pas être annoncé 0 ; **40/40 pièces autres que la baseplate restent sans chaîne de la pièce jusqu'aux fondations intégralement certifiée**, car aucun pilier n'a encore une chaîne réelle complète validée.
+**Pièces sans appui démontré selon le critère strict :** 0 sans appui NOMINAL ; **0 élément de toiture sans interface statique locale vérifiée**, mais les **32 éléments structurels hors fondation** n'ont pas encore une chaîne de preuves réelles complète. Un nombre de « pièces sans chaîne géométrique complète démontrée » ne peut donc pas être annoncé 0 ; **40/40 pièces autres que la baseplate restent sans chaîne de la pièce jusqu'aux fondations intégralement certifiée**, car aucun pilier n'a encore une chaîne réelle complète validée.
 
 **Insertion continue :** NON DÉMONTRÉE dans notre adaptation, y compris en présence d'une vraie notice LEGO de référence. **Résistance mécanique/physique :** NON DÉMONTRÉE.
 
@@ -76,12 +76,16 @@ R1_PRIMITIVE_4445_TO_3007 left-c1-b0-roof centres True depth_ldu 4.0
 R1_PRIMITIVE_4445_TO_3007 right-c1-b0-roof centres True depth_ldu 4.0
 R1_MESH_MATE (4 x slope-to-purlin) CONTACT
 R1_MESH_MATE (8 x ridge-to-upper-slope) CONTACT
+R1_PRIMITIVE_3022_RIDGE (4 x) centres True depths [4.0, 4.0, 4.0, 4.0]
 R1_ADJACENT_COURSES (2 x) CONTACT
 R1_GEOMETRY_SUMMARY {
   "mesh_collisions_detected_in_checked_pairs":0,
   "roof_supporting_mesh_pairs_checked":12,
   "adjacent_course_mesh_pairs_checked":2,
   "nominal_support_edges":48,
+  "real_4445_to_3007_primitive_mates_aligned":4,
+  "real_3022_to_opposing_4445_four_stud_mates_aligned":4,
+  "all_eight_roof_parts_have_verified_static_mating_geometry":true,
   "all_model_mesh_pairs_checked":false,
   "full_insertion_proven":false,
   "physical_strength_proven":false
