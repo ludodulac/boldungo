@@ -22,7 +22,7 @@ W,L = 20,20
 def generate(candidate="3023b"):
     if candidate not in ("3023b","3022"):
         raise ValueError("Only two authorized ridge candidates")
-    pieces=[Piece("module-base-3811","3811","base",0,0,-1,W,L,1)]
+    pieces=[Piece("baseplate","3811","base",0,0,-1,W,L,1)]
     for step in (1,2):
         for side in ("left","right"):
             x=3*step if side=="left" else W-4-3*step
