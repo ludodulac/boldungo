@@ -84,8 +84,13 @@ def first_intersecting_triangle_pair(a,b):
                     },
                     "source":"existing _tri_intersection_kind: explicit strict interior edge-to-triangle crossing",
                 }
+    from lego_geometry_engine.core import _point_in_mesh
     return {"no_crossing_triangle_found":True,
-            "warning":"mesh collision may instead be from containment or non-watertight geometry"}
+            "a_first_triangle_world_vertex_ldu":list(a.triangles[0][0]),
+            "b_first_triangle_world_vertex_ldu":list(b.triangles[0][0]),
+            "a_first_vertex_inside_mesh_b":bool(_point_in_mesh(a.triangles[0][0],b.triangles)),
+            "b_first_vertex_inside_mesh_a":bool(_point_in_mesh(b.triangles[0][0],a.triangles)),
+            "warning":"containment ray casting is not a local overlapping-material volume proof; do not reclassify COLLISION without resolving this predicate"}
 
 def known_roof_pairs(parts, instances):
     roof=[p for p in parts if p.role in ("slope","ridge")]
