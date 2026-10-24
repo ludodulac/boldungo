@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600">
+<title>Boldungo R-1 roof model cross-section, 41 real LDraw pieces</title><rect width="960" height="600" fill="#f8fafc"/>
+<text x="45" y="48" font-family="sans-serif" font-size="27" fill="#14243a" font-weight="700">BOLDÜNGO R-1 — 41 pièces LEGO</text>
+<text x="45" y="78" font-family="sans-serif" font-size="16" fill="#334155">Notice LEGO officielle #31009 : principe des pentes 45°, adaptation expérimentale</text>
+<rect x="120" y="514" width="704" height="10" fill="#a7c4ac" stroke="#456351" stroke-width="2"/>
+<rect x="384" y="397" width="44" height="117" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+<line x1="384" y1="475" x2="428" y2="475" stroke="#64748b" stroke-width="1"/>
+<line x1="384" y1="436" x2="428" y2="436" stroke="#64748b" stroke-width="1"/>
+<rect x="384" y="358" width="44" height="39" fill="#69a89c" stroke="#25625a" stroke-width="1.5"/>
+<rect x="428" y="358" width="44" height="156" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+<line x1="428" y1="475" x2="472" y2="475" stroke="#64748b" stroke-width="1"/>
+<line x1="428" y1="436" x2="472" y2="436" stroke="#64748b" stroke-width="1"/>
+<line x1="428" y1="397" x2="472" y2="397" stroke="#64748b" stroke-width="1"/>
+<rect x="428" y="319" width="44" height="39" fill="#69a89c" stroke="#25625a" stroke-width="1.5"/>
+<rect x="472" y="358" width="44" height="156" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+<line x1="472" y1="475" x2="516" y2="475" stroke="#64748b" stroke-width="1"/>
+<line x1="472" y1="436" x2="516" y2="436" stroke="#64748b" stroke-width="1"/>
+<line x1="472" y1="397" x2="516" y2="397" stroke="#64748b" stroke-width="1"/>
+<rect x="472" y="319" width="44" height="39" fill="#69a89c" stroke="#25625a" stroke-width="1.5"/>
+<rect x="516" y="397" width="44" height="117" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+<line x1="516" y1="475" x2="560" y2="475" stroke="#64748b" stroke-width="1"/>
+<line x1="516" y1="436" x2="560" y2="436" stroke="#64748b" stroke-width="1"/>
+<rect x="516" y="358" width="44" height="39" fill="#69a89c" stroke="#25625a" stroke-width="1.5"/>
+<polygon points="384,352.15 428,319 428,358 384,358" fill="#2b579c" fill-opacity="0.97" stroke="#183764" stroke-width="2"/>
+<polygon points="428,313.15 472,280 472,319 428,319" fill="#2b579c" fill-opacity="0.97" stroke="#183764" stroke-width="2"/>
+<polygon points="472,280 516,313.15 516,319 472,319" fill="#2b579c" fill-opacity="0.97" stroke="#183764" stroke-width="2"/>
+<polygon points="516,319 560,352.15 560,358 516,358" fill="#2b579c" fill-opacity="0.97" stroke="#183764" stroke-width="2"/>
+<rect x="450" y="267" width="44" height="13" fill="#d7a24a" stroke="#8a5e22" stroke-width="2"/>
+<text x="564" y="293" font-family="sans-serif" font-size="18" fill="#1d4d83">4445 — pentes 45°</text>
+<text x="572" y="358" font-family="sans-serif" font-size="16" fill="#2e746b">3007 — pannes</text>
+<text x="572" y="449" font-family="sans-serif" font-size="16" fill="#475569">3003 — piliers</text>
+<text x="528" y="254" font-family="sans-serif" font-size="16" fill="#a26a1a">3022 — faîtage</text>
+<text x="45" y="566" font-family="sans-serif" font-size="14" fill="#334155">Coupe technique schématique (profondeur aplatie) : la géométrie exacte se trouve dans le fichier .ldr.</text>
+<text x="45" y="588" font-family="sans-serif" font-size="14" fill="#b52c3b">Ni copie fidèle d'un set LEGO, ni preuve de montage continu ou de résistance physique.</text></svg>
