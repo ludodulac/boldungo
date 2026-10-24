@@ -2,7 +2,7 @@
 from collections import Counter
 
 from scripts.construct_small_roof_a2 import generate,staged_parts
-from scripts.experiment_stacked_roofs_a import _ldraw
+from scripts.experiment_stacked_roofs_a import _ldraw, _audit
 
 def test_two_explicit_real_ridge_candidates():
     for candidate in ("3023b","3022"):
@@ -14,6 +14,11 @@ def test_two_explicit_real_ridge_candidates():
         assert {p.ldraw for p in parts if p.role=="ridge"}=={candidate}
         assert Counter(p.ldraw for p in parts)["3003"]>=4
         assert parts[0].ldraw=="3811"
+        assert parts[0].pid=="baseplate"
+        nominal = _audit(parts)
+        assert nominal["unsupported_nominal_count"]==0
+        assert nominal["connected_components_nominal"]==1
+        assert nominal["orthogonal_body_aabb_collision_count"]==0
         assert parts[-1].role=="ridge"
         assert all(len(x.split())==15 for x in _ldraw(parts,20,20,"A-2").splitlines() if x.startswith("1 "))
 
