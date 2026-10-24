@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.experiment_stacked_roofs_a import construct, _ldraw, _audit
+from scripts.experiment_stacked_roofs_a import construct, _ldraw, _audit, _technical_elevation_svg
 
 @pytest.mark.parametrize("width,length,pitch,courses", [
     (20, 20, 18, 3),
@@ -33,6 +33,11 @@ def test_three_independent_small_houses(width,length,pitch,courses):
     assert len(lines)==len(parts)
     assert all(len(line.split()) == 15 for line in lines), "LDraw requires 12 transform values"
     assert lines[0].endswith(" 3811.dat")
+    svg = _technical_elevation_svg(parts,width,length,"Case")
+    assert svg.startswith("<svg")
+    assert svg.count("<polygon") > 0
+    assert "</svg>\n" in svg
+    assert "\\n" not in svg
     assert sum(x.endswith(" 30363.dat") for x in lines) == report["roof_slope_30363"]
 
 @pytest.mark.parametrize("overhang,pitch,width,length", [
