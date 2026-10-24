@@ -224,33 +224,59 @@ def strict_separated_xy(a,b,eps=1e-7):
     return any(a.bbox.maximum[i] < b.bbox.minimum[i]-eps or
                b.bbox.maximum[i] < a.bbox.minimum[i]-eps for i in (0,2))
 
-def vertical_broadphase(parts,instances,parents):
-    """A continuous broadphase (AABB union under vertical translation).
+def vertical_broadphase(parts,instances,parents,seats=None):
+    """Conservative, continuous vertical audit from +infinity to final.
 
-    Disjoint XZ *proves* no intersection for any height, including unbounded
-    overhead start. Overlapping projected boxes are UNKNOWN, never certified.
-    Mating pairs are always UNKNOWN for the actual continuous insertion
-    unless a separate exact primitive-specific swept proof exists.
+    A non-parent fixed piece is *proven harmless for the entire translation*
+    if its projected XZ bounding box is disjoint, OR the moving part's final
+    lowest extent (maximum world Y) already lies strictly ABOVE the fixed
+    piece's highest extent (minimum world Y). Moving upward preserves either
+    separating axis for every intermediate real-valued translation.
+
+    Standard 2x2 3003 bricks are an exceptional, bounded analytic case:
+    stud.dat has cylindrical 6-LDU radius and height 4; stud4.dat has
+    central tube outside radius 8, and the vertical inner box is +/-16.
+    Four studs at (+/-10,+/-10) have sqrt(200)-14 > 0 radial clearance
+    from tube and meet the shell at +/-16. They insert axially by 4 LDU,
+    with no other material above the parent in the 4-LDU engagement zone.
+    For this exact geometry, not a general 'all LEGO parts' claim, their
+    local vertical axial motion is clearance-preserving continuously.
+    Any other primitive / slope / ridge remains NON_DEMONTREE.
     """
+    seat_by_id={s["child"]:s for s in (seats or [])}
     done=[]
     out=[]
     for part in parts:
         if part.role=="base":
             done.append(part)
             continue
+        moving=instances[part.pid]
         fixed=[p for p in done if p.role!="base"]
-        separated=[p.pid for p in fixed if strict_separated_xy(
-               instances[part.pid],instances[p.pid])]
-        overlapping=[p.pid for p in fixed if p.pid not in separated]
-        contacts_expected=[pid for pid in parents[part.pid] if pid in overlapping]
-        others=[pid for pid in overlapping if pid not in contacts_expected]
+        safe_xz=[p.pid for p in fixed if strict_separated_xy(moving,instances[p.pid])]
+        safe_height=[p.pid for p in fixed if p.pid not in safe_xz and
+            moving.bbox.maximum[1] < instances[p.pid].bbox.minimum[1] - EPS]
+        overlapping=[p.pid for p in fixed if p.pid not in safe_xz and p.pid not in safe_height]
+        expected=[pid for pid in parents[part.pid] if pid in overlapping]
+        other=[pid for pid in overlapping if pid not in expected]
+        st=seat_by_id.get(part.pid,{})
+        # Only direct standard 2x2 3003 seats, if the complete static
+        # primitive check passed AND no other installed piece can intersect
+        # the swept path. Baseplate is allowed solely as its direct parent.
+        proven=(part.ldraw=="3003" and st.get("status")==STATUS_OK and
+                len(parents[part.pid])==1 and
+                all(pid=="baseplate" or pid in expected for pid in parents[part.pid])
+                and not other)
         out.append({"id":part.pid,"direction":"VERTICAL_FROM_ABOVE_LDRAW_Y_INCREASES",
-             "whole_translation_proved_disjoint_from_previous_pieces":separated,
-             "potential_projected_obstruction_not_excluded":others,
-             "mating_interactions_without_continuous_sweep_proof":contacts_expected,
-             "entire_insertion_proven":False,
-             "status":STATUS_UNKNOWN,
-             "reason":"NO_CONTINUOUS_TRIANGLE_OR_PRIMITIVE_SWEPT_VOLUME_PROOF"})
+             "whole_translation_proved_disjoint_from_previous_pieces":safe_xz,
+             "whole_translation_proved_y_separated_from_previous_pieces":safe_height,
+             "potential_projected_obstruction_not_excluded":other,
+             "mating_interactions":expected,
+             "mating_geometry":"OFFICIAL_VERTICAL_PRISM_2x2_STUD4" if proven else
+                                "SLOPED_OR_UNVERIFIED_MATING",
+             "entire_insertion_proven":proven,
+             "status":STATUS_OK if proven else STATUS_UNKNOWN,
+             "reason":"STANDARD_3003_MOUTH_STUD_SWEEP_AND_SEPARATION_AXES" if proven
+                 else "NO_CONTINUOUS_SWEPT_GEOMETRY_PROOF_FOR_ALL_RELEVANT_PAIRS"})
         done.append(part)
     return out
 
@@ -259,7 +285,7 @@ def run(root,output):
     lib=LDrawLibrary(root)
     instances=located(parts,lib)
     seats,parents,no_static_path=audit_seats(parts,instances,root)
-    insertion=vertical_broadphase(parts,instances,parents)
+    insertion=vertical_broadphase(parts,instances,parents,seats)
     nominal=_audit(parts)
     bad_seats=[s for s in seats if s["status"]==STATUS_BAD]
     unknown_seats=[s for s in seats if s["status"]==STATUS_UNKNOWN]
@@ -296,8 +322,10 @@ def run(root,output):
         "pieces_without_demonstrated_static_support_path":len(no_static_path),
         "roof_without_demonstrated_static_support_path":
             sum(s["child"] in no_static_path for s in roof),
-        "fully_verified_continuous_insertions":0,
-        "continuous_insertions_not_demonstrated":len(insertion),
+        "fully_verified_continuous_insertions":sum(x["entire_insertion_proven"] for x in insertion),
+        "continuous_insertions_not_demonstrated":sum(not x["entire_insertion_proven"] for x in insertion),
+        "fully_verified_continuous_roof_insertions":sum(x["entire_insertion_proven"] for x in insertion
+            if next(p for p in parts if p.pid==x["id"]).role in ("slope","ridge")),
         "unknown_cross_piece_vertical_projections":sum(
             len(x["potential_projected_obstruction_not_excluded"]) for x in insertion),
         "final_static_forbidden_mesh_collisions_nonbase_A2":0,
