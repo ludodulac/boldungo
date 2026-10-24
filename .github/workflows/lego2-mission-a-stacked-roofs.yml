@@ -1,0 +1,82 @@
+name: LEGO2 Mission A stacked 30363 roof prototype proof
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'scripts/experiment_stacked_roofs_a.py'
+      - 'scripts/probe_stacked_roof_mesh_a.py'
+      - 'scripts/construct_small_roof_a2.py'
+      - 'scripts/verify_small_roof_a2.py'
+      - 'scripts/verify_small_roof_a3.py'
+      - 'tests/bricks/test_small_roof_a2.py'
+      - 'tests/bricks/test_small_roof_a3.py'
+      - 'tests/bricks/test_stacked_roofs_a.py'
+      - 'missions/A/**'
+      - '.github/workflows/lego2-mission-a-stacked-roofs.yml'
+  workflow_dispatch:
+jobs:
+  test-and-construct-three-houses:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test runner
+        run: |
+          python -m pip install pytest
+          python -m pip install -e ./lego_geometry_engine
+      - name: Verify experimental 30363 placement and fail-closed claims
+        run: python -m pytest -q tests/bricks/test_stacked_roofs_a.py tests/bricks/test_small_roof_a2.py
+      - name: Generate three complete genuine-part LDraw houses and evidence
+        run: python scripts/experiment_stacked_roofs_a.py --output artifacts/lego2-mission-a
+      - name: Fetch pinned official LDraw dependency closure (not committed)
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/mission-a-ldraw --max-files 240 --parts 30363 3007 3003 3023b 3008 3811 3022
+      - name: Verify six actual inclined-roof LDraw meshes and nominal coordinates
+        run: |
+          python scripts/probe_stacked_roof_mesh_a.py --ldraw-root /tmp/mission-a-ldraw --output artifacts/lego2-mission-a/LDraw-REAL-MESH-SIX-PAIRS.json
+      - name: Compare two real A1-roof micro-module assembly candidates (diagnostic evidence)
+        run: |
+          python scripts/verify_small_roof_a2.py --ldraw-root /tmp/mission-a-ldraw --output artifacts/lego2-a2-small-module
+      - name: A-3 final official primitive 4-LDU engagement and negative connector rejection
+        run: |
+          A3_LDRAW_ROOT=/tmp/mission-a-ldraw python -m pytest -q tests/bricks/test_small_roof_a3.py
+          python scripts/verify_small_roof_a3.py --ldraw-root /tmp/mission-a-ldraw --output artifacts/lego2-a2-small-module/3022/A3-FINAL-STATIC-SEATS-AND-INSERTION.json
+      - name: Prove committed experimental 24-part LDraw exactly matches generated version
+        run: |
+          cmp missions/A/A2-MODULE-3022-PROPOSE.ldr artifacts/lego2-a2-small-module/3022/SMALL-ROOF-A2.ldr
+          echo A2_COMMITTED_LDRAW_EQUALS_REGENERATED
+      - name: Verify exported part counts and conservative nominal status
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path("artifacts/lego2-mission-a")
+          data=json.loads((root/"COMPARE-THREE-HOUSES.json").read_text())
+          assert len(data)==3
+          for d in data:
+              c=d["case"]
+              path=root/c
+              ldraw=(path/f"{c}-REAL-PARTS-EXPERIMENT.ldr").read_text()
+              assert sum(x.startswith("1 ") for x in ldraw.splitlines())==d["total_parts"]
+              assert d["total_parts"]==sum(d["bom_ldraw"].values())
+              assert d["roof_parts"]>0
+              assert d["unsupported_nominal_count"]==0
+              assert d["connected_components_nominal"]==1
+              assert d["orthogonal_body_aabb_collision_count"]==0
+              assert d["complete_LDraw_mesh_clearance_proven"] is False
+              assert d["mechanical_strength_or_n6_certified"] is False
+              print("MISSION_A_VERIFIED",c,d["total_parts"],d["roof_parts"],d["connected_components_nominal"])
+          PY
+      - name: Publish three house models, part lists and negative-certification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-MISSION-A-3-STACKED-SLOPE-HOUSES-NOT-CERTIFIED
+          path: |
+            artifacts/lego2-mission-a/
+            artifacts/lego2-a2-small-module/
+          if-no-files-found: warn
+          retention-days: 30

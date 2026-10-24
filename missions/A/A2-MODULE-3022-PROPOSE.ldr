@@ -1,0 +1,50 @@
+0 BOLDUNGO-A2-NON-CERTIFIE-3022
+0 Name: BOLDUNGO-A2-NON-CERTIFIE-3022.ldr
+0 // EXPERIMENTAL GEOMETRY ONLY: NO PHYSICAL/N5/N6 CERTIFICATE
+1 2 0 0 0 1 0 0 0 1 0 0 0 1 3811.dat
+0 // left-j1-pier-z0 pier
+1 71 -140 -24 -100 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j2-pier-z0 pier
+1 71 -140 -24 -40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j1-pier-z0 pier
+1 71 -140 -24 100 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j2-pier-z0 pier
+1 71 -140 -24 40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j1-pier-z3 pier
+1 71 -140 -48 -100 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j2-pier-z3 pier
+1 71 -140 -48 -40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j1-pier-z3 pier
+1 71 -140 -48 100 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j2-pier-z3 pier
+1 71 -140 -48 40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j1-pier-z6 pier
+1 71 -140 -72 -100 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j2-pier-z6 pier
+1 71 -140 -72 -40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j1-pier-z6 pier
+1 71 -140 -72 100 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j2-pier-z6 pier
+1 71 -140 -72 40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j2-pier-z9 pier
+1 71 -140 -96 -40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j2-pier-z9 pier
+1 71 -140 -96 40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j1-bearing beam
+1 71 -140 -96 -100 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j1-bearing beam
+1 71 -140 -96 100 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j2-bearing beam
+1 71 -140 -120 -40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-j2-bearing beam
+1 71 -140 -120 40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-j1-30363 slope
+1 8 -140 -120 -70 1 0 0 0 1 0 0 0 1 30363.dat
+0 // right-j1-30363 slope
+1 8 -140 -120 70 -1 0 0 0 1 0 0 0 -1 30363.dat
+0 // left-j2-30363 slope
+1 8 -140 -144 -10 1 0 0 0 1 0 0 0 1 30363.dat
+0 // right-j2-30363 slope
+1 8 -140 -144 10 -1 0 0 0 1 0 0 0 -1 30363.dat
+0 // ridge-3022 ridge
+1 0 -140 -152 0 1 0 0 0 1 0 0 0 1 3022.dat
