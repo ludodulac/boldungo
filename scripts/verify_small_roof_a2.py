@@ -1,0 +1,170 @@
+"""Mission A-2: inspect TWO concrete A1-derived roofs against pinned LDraw DAT.
+
+Retains *negative* collision results and sampled insertion blockers. Uses the
+project's LDrawLibrary/check_collision, not a new geometry framework.
+"""
+from __future__ import annotations
+
+from collections import Counter,defaultdict
+from pathlib import Path
+import argparse,json
+
+from lego_geometry_engine import (LDrawLibrary, instantiate,
+    transform_from_ldraw, check_collision, Relation, Transform)
+from experiment_stacked_roofs_a import _ldraw
+from construct_small_roof_a2 import W,L, generate, staged_parts,export
+
+def located(parts,lib):
+    lines=_ldraw(parts,W,L,"A2-part-positions").splitlines()
+    byid={}
+    current=None
+    for line in lines:
+        if line.startswith("0 // ") and len(line.split())>=4:
+            current=line.split()[2]
+        elif line.startswith("1 ") and current:
+            t=line.split()
+            if len(t)!=15: raise AssertionError("BAD_LDRAW_TYPE1_FIELD_COUNT")
+            definition=lib.load_part(t[-1])
+            byid[current]=instantiate(definition,current,
+                transform_from_ldraw([float(x) for x in t[2:14]]))
+            current=None
+    if len(byid)!=len(parts)-1:raise AssertionError("MISSING_REAL_LDRAW_INSTANCE")
+    return byid
+
+def shifted(instance,delta_y):
+    return instantiate(instance.definition,instance.instance_id+"-moved",
+        Transform.translation(0,-delta_y,0).compose(instance.transform))
+
+def bbox_relevant(a,b):
+    return a.bbox.relation(b.bbox) is not Relation.SEPARATED
+
+def roof_parent(part,parts):
+    if part.role=="slope":
+        return next(p for p in parts if p.role=="beam" and p.x==part.x+1
+             and p.y==part.y and p.z+p.height==part.z)
+    if part.role=="ridge":
+        return next(p for p in parts if p.role=="slope" and p.side=="left"
+            and p.step==2 and p.y==part.y if part.ldraw=="3023b") if part.ldraw=="3023b" else next(
+            p for p in parts if p.role=="slope" and p.side=="left" and p.step==2)
+    raise ValueError(part)
+
+def nominal_connector_cells(parent,child):
+    # All these *coordinates* are nominal; true slope underside tubes must be
+    # independently checked from s/30363s01.dat.
+    if child.role=="slope":
+        tube_x=set(range(child.x+1,child.x+4)) if child.side=="left" else set(range(child.x,child.x+3))
+        return sorted((x,y) for x in tube_x for y in range(child.y,child.y+child.sy)
+                      if (x,y) in parent.top_studs())
+    if child.role=="ridge":
+        return sorted(parent.top_studs() & child.bottom_cavities())
+    return []
+
+def known_roof_pairs(parts, instances):
+    roof=[p for p in parts if p.role in ("slope","ridge")]
+    pairs=[]
+    for i,a in enumerate(roof):
+        for b in roof[i+1:]:
+            ia,ib=instances[a.pid],instances[b.pid]
+            if not bbox_relevant(ia,ib):
+                continue
+            rel=check_collision(ia,ib).value
+            pairs.append({"a":a.pid,"b":b.pid,"a_part":a.ldraw,"b_part":b.ldraw,
+                "relation":rel,"possible_stud_region":
+                    (a.role=="ridge" or b.role=="ridge"),"allow_collisions":False})
+    return pairs
+
+def sample_insertion(parts,instances):
+    """Samples fixed axis -Y movement, no claim of continuous sweep clearance.
+
+    For this official mesh engine, connector interference may appear as
+    COLLISION during last 4 LDU, so such collision is explicitly UNKNOWN.
+    """
+    done=[]
+    results=[]
+    for p in parts:
+        if p.role=="base":
+            done.append(p)
+            continue
+        final=instances[p.pid]
+        visited=[]
+        for dist in (48,32,24,16,8,4,2,0):
+            moving=shifted(final,dist)
+            hits=[]
+            for q in done:
+                if q.role=="base":
+                    continue
+                fixed=instances[q.pid]
+                if not bbox_relevant(moving,fixed):continue
+                relation=check_collision(moving,fixed)
+                if relation is Relation.COLLISION:
+                    hits.append(q.pid)
+            visited.append({"height_ldu":dist,"collision_part_ids":sorted(hits)})
+        before_engagement=[v for v in visited if v["height_ldu"]>4 and v["collision_part_ids"]]
+        at_final=next(v for v in visited if v["height_ldu"]==0)
+        results.append({"pid":p.pid,"part":p.ldraw,"role":p.role,"direction":"WORLD_MINUS_Y_TO_FINAL",
+            "samples":visited if p.role in ("slope","ridge") else [],
+            "blocked_before_last_4_ldu":bool(before_engagement),
+            "blocking_earlier_steps":before_engagement,
+            "unclassified_final_mesh_collisions":at_final["collision_part_ids"],
+            "continuous_insertion_proven":False,
+            "connector_clutch_friction_proven":False})
+        done.append(p)
+    return results
+
+def run(root,outdir):
+    lib=LDrawLibrary(root)
+    outdir=export(outdir)
+    allsummary=[]
+    for candidate in ("3023b","3022"):
+        parts=staged_parts(generate(candidate))
+        instances=located(parts,lib)
+        possible=[]
+        for part in parts:
+            if part.role not in ("slope","ridge"):continue
+            parent=roof_parent(part,parts)
+            cells=nominal_connector_cells(parent,part)
+            # Official file states 30363s01 local underside tube centers at
+            # local Z=-10,-30,-50; this verifies only XY projection, not force.
+            pair_rel=check_collision(instances[part.pid],instances[parent.pid]).value
+            possible.append({"roof_piece_id":part.pid,"bearing_piece_id":parent.pid,
+                "roof_ldraw":part.ldraw,"bearing_ldraw":parent.ldraw,
+                "matching_local_30363_tube_projection":bool(cells) if part.role=="slope" else None,
+                "nominal_stud_cells":[list(x) for x in cells],
+                "actual_mesh_pair_relation":pair_rel,
+                "geometry_positive_clutch_certified":False,
+                "reason":"MATCHED_STUD_PROJECTION_BUT_CLUTCH_AND_INSERTION_NOT_PROVEN"})
+        pairs=known_roof_pairs(parts,instances)
+        insertion=sample_insertion(parts,instances)
+        bad=[x for x in pairs if x["relation"]=="COLLISION"]
+        blocked=[x for x in insertion if x["blocked_before_last_4_ldu"]]
+        unproven=[x["roof_piece_id"] for x in possible if
+              not x["geometry_positive_clutch_certified"]]
+        counters={"model_pieces":len(parts),"roof_pieces":sum(p.role in ("slope","ridge") for p in parts),
+            "other_structural_pieces":sum(p.role in ("pier","beam") for p in parts),
+            "stud_projection_candidates":sum(bool(x["nominal_stud_cells"]) for x in possible),
+            "roof_pieces_without_demonstrated_positive_connection":len(unproven),
+            "nominal_roof_supports_without_confirmed_clutch":unproven,
+            "sampled_mesh_roof_pairs":len(pairs),"unclassified_roof_mesh_collisions":len(bad),
+            "roof_mesh_collisions":bad,"insertions_blocked_before_clutch_zone":len(blocked),
+            "blocked_insertions":blocked,"all_insertions_continuously_verified":False,
+            "genuine_lego_material_strength_verified":False}
+        report={"candidate":candidate,"counts":counters,"roof_connections":possible,
+            "selected_actual_mesh_pair_relations":pairs,"insertion_samples":insertion,
+            "notes":"Only bbox-screened roof pairs, every movement tested at finite sampled 48,32,24,16,8,4,2,0 LDU; no all-pairs insertion/proven continuous path",
+            "approval":"NOT_VALIDATED"}
+        path=outdir/candidate/"REAL-LDRAW-ROOF-AND-INSERTION.json"
+        path.write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
+        print("A2_CANDIDATE",candidate,json.dumps({k:v for k,v in counters.items()
+             if not isinstance(v,list)},sort_keys=True))
+        for row in bad:print("A2_COLLISION",candidate,row["a"],row["b"],row["relation"])
+        for row in blocked[:6]: print("A2_EARLY_INSERTION_BLOCK",candidate,row["pid"],row["blocking_earlier_steps"][:2])
+        allsummary.append({"candidate":candidate,**counters})
+    (outdir/"COMPARE-CANDIDATES.json").write_text(json.dumps(allsummary,indent=2)+"\n")
+    return allsummary
+
+if __name__=="__main__":
+    p=argparse.ArgumentParser()
+    p.add_argument("--ldraw-root",type=Path,required=True)
+    p.add_argument("--output",type=Path,required=True)
+    args=p.parse_args()
+    run(args.ldraw_root,args.output)
