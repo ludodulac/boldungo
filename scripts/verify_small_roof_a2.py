@@ -59,6 +59,34 @@ def nominal_connector_cells(parent,child):
         return sorted(parent.top_studs() & child.bottom_cavities())
     return []
 
+def first_intersecting_triangle_pair(a,b):
+    """Exact segment/triangle witness from existing collision engine,
+    not a volumetric decomposition or material-overlap volume.
+    """
+    from lego_geometry_engine.core import _tri_intersection_kind
+    for ia,ta in enumerate(a.triangles):
+        amin=[min(v[c] for v in ta) for c in range(3)]
+        amax=[max(v[c] for v in ta) for c in range(3)]
+        for ib,tb in enumerate(b.triangles):
+            bmin=[min(v[c] for v in tb) for c in range(3)]
+            bmax=[max(v[c] for v in tb) for c in range(3)]
+            if any(amax[c] < bmin[c]-1e-5 or bmax[c] < amin[c]-1e-5 for c in range(3)):
+                continue
+            if _tri_intersection_kind(ta,tb) is Relation.COLLISION:
+                return {
+                    "first_crossing_triangle_index_part_a":ia,
+                    "first_crossing_triangle_index_part_b":ib,
+                    "triangle_a_world_ldu":[list(v) for v in ta],
+                    "triangle_b_world_ldu":[list(v) for v in tb],
+                    "axiswise_shared_bbox_world_ldu":{
+                        "minimum":[round(max(amin[c],bmin[c]),5) for c in range(3)],
+                        "maximum":[round(min(amax[c],bmax[c]),5) for c in range(3)],
+                    },
+                    "source":"existing _tri_intersection_kind: explicit strict interior edge-to-triangle crossing",
+                }
+    return {"no_crossing_triangle_found":True,
+            "warning":"mesh collision may instead be from containment or non-watertight geometry"}
+
 def known_roof_pairs(parts, instances):
     roof=[p for p in parts if p.role in ("slope","ridge")]
     pairs=[]
@@ -69,7 +97,9 @@ def known_roof_pairs(parts, instances):
                 continue
             rel=check_collision(ia,ib).value
             pairs.append({"a":a.pid,"b":b.pid,"a_part":a.ldraw,"b_part":b.ldraw,
-                "relation":rel,"possible_stud_region":
+                "relation":rel,
+                "collision_witness":first_intersecting_triangle_pair(ia,ib) if rel=="COLLISION" else None,
+                "possible_stud_region":
                     (a.role=="ridge" or b.role=="ridge"),"allow_collisions":False})
     return pairs
 
