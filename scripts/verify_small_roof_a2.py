@@ -44,7 +44,7 @@ def roof_parent(part,parts):
              and p.y==part.y and p.z+p.height==part.z)
     if part.role=="ridge":
         return next(p for p in parts if p.role=="slope" and p.side=="left"
-            and p.step==2 and p.y==part.y if part.ldraw=="3023b") if part.ldraw=="3023b" else next(
+            and p.step==2 and p.y<=part.y<p.y+p.sy if part.ldraw=="3023b") if part.ldraw=="3023b" else next(
             p for p in parts if p.role=="slope" and p.side=="left" and p.step==2)
     raise ValueError(part)
 
