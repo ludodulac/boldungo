@@ -19,9 +19,9 @@ def located(parts,lib):
     byid={}
     current=None
     for line in lines:
-        if line.startswith("0 // ") and len(line.split())>=4:
+        if line.startswith("0 // ") and len(line.split())>=4 and line.split()[2] in {p.pid for p in parts if p.role!="base"}:
             current=line.split()[2]
-        elif line.startswith("1 ") and current:
+        elif line.startswith("1 ") and current is not None:
             t=line.split()
             if len(t)!=15: raise AssertionError("BAD_LDRAW_TYPE1_FIELD_COUNT")
             definition=lib.load_part(t[-1])
