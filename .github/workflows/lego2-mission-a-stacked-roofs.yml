@@ -1,0 +1,55 @@
+name: LEGO2 Mission A stacked 30363 roof prototype proof
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'scripts/experiment_stacked_roofs_a.py'
+      - 'tests/bricks/test_stacked_roofs_a.py'
+      - 'missions/A/**'
+      - '.github/workflows/lego2-mission-a-stacked-roofs.yml'
+  workflow_dispatch:
+jobs:
+  test-and-construct-three-houses:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test runner
+        run: python -m pip install pytest
+      - name: Verify experimental 30363 placement and fail-closed claims
+        run: python -m pytest -q tests/bricks/test_stacked_roofs_a.py
+      - name: Generate three complete genuine-part LDraw houses and evidence
+        run: python scripts/experiment_stacked_roofs_a.py --output artifacts/lego2-mission-a
+      - name: Verify exported part counts and conservative nominal status
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path("artifacts/lego2-mission-a")
+          data=json.loads((root/"COMPARE-THREE-HOUSES.json").read_text())
+          assert len(data)==3
+          for d in data:
+              c=d["case"]
+              path=root/c
+              ldraw=(path/f"{c}-REAL-PARTS-EXPERIMENT.ldr").read_text()
+              assert sum(x.startswith("1 ") for x in ldraw.splitlines())==d["total_parts"]
+              assert d["total_parts"]==sum(d["bom_ldraw"].values())
+              assert d["roof_parts"]>0
+              assert d["unsupported_nominal_count"]==0
+              assert d["connected_components_nominal"]==1
+              assert d["orthogonal_body_aabb_collision_count"]==0
+              assert d["complete_LDraw_mesh_clearance_proven"] is False
+              assert d["mechanical_strength_or_n6_certified"] is False
+              print("MISSION_A_VERIFIED",c,d["total_parts"],d["roof_parts"],d["connected_components_nominal"])
+          PY
+      - name: Publish three house models, part lists and negative-certification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-MISSION-A-3-STACKED-SLOPE-HOUSES-NOT-CERTIFIED
+          path: artifacts/lego2-mission-a/
+          if-no-files-found: warn
+          retention-days: 30
