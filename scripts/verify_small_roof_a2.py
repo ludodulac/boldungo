@@ -103,6 +103,46 @@ def known_roof_pairs(parts, instances):
                     (a.role=="ridge" or b.role=="ridge"),"allow_collisions":False})
     return pairs
 
+def official_tube_evidence(root,part,parent):
+    """Only the two primitive families actually used by this module.
+
+    Coordinates in stud-grid boundaries, not guessed underside 'studs':
+    the 30363's three stud4a cylinders lie BETWEEN its two rows of studs,
+    not centered on individual tenon locations.
+    """
+    if part.role=="slope":
+        source=(Path(root)/"parts/s/30363s01.dat").read_text()
+        assert "stud4a.dat" in source and "stud4s.dat" in source
+        assert all((" -10 " in source," -30 " in source," -50 " in source))
+        tube_centres=[(part.x+i,part.y+1) for i in (1,2,3)]
+        parent_four_studs={(x+.5,y+.5) for x,y in parent.top_studs()}
+        middle=(parent.x+1,parent.y+1)
+        established=(middle in tube_centres and len(parent_four_studs)==4
+            and parent.z+parent.height==part.z)
+        return {"source":"LDraw s/30363s01.dat stud4a/stud4s",
+            "tube_centres_at_stud_cell_boundaries":tube_centres,
+            "supporting_four_stud_centres":sorted(parent_four_studs),
+            "supporting_pair_centre":middle,
+            "tube_stud_grid_match":established,
+            "contact_plane_y_ldu":-8*part.z}
+    if part.ldraw=="3022":
+        source=(Path(root)/"parts/3022.dat").read_text()
+        assert "stud4.dat" in source and "box5.dat" in source
+        middle=(part.x+1,part.y+1)
+        return {"source":"LDraw 3022.dat central stud4 support tube",
+            "central_tube_boundary":middle,"contact_plane_y_ldu":-8*part.z,
+            "top_stud_cells_expected":[(9,2),(9,3),(10,2),(10,3)],
+            "tube_stud_grid_match":part.x==9 and part.y==2 and part.z==18}
+    if part.ldraw=="3023b":
+        source=(Path(root)/"parts/s/3023bs01.dat").read_text()
+        assert "stud3.dat" in source
+        return {"source":"LDraw s/3023bs01.dat underside central stud3",
+            "center_between_opposing_slopes":(part.x+1,part.y+.5),
+            "contact_plane_y_ldu":-8*part.z,
+            "tube_stud_grid_match":part.x==9 and part.z==18,
+            "status":"primitive exists; actual material crossing must be traced"}
+    raise ValueError("Unsupported test piece "+part.ldraw)
+
 def sample_insertion(parts,instances):
     """Samples fixed axis -Y movement, no claim of continuous sweep clearance.
 
@@ -160,6 +200,7 @@ def run(root,outdir):
                 "roof_ldraw":part.ldraw,"bearing_ldraw":parent.ldraw,
                 "matching_local_30363_tube_projection":bool(cells) if part.role=="slope" else None,
                 "nominal_stud_cells":[list(x) for x in cells],
+                "official_LDraw_tube_and_stud_geometry":official_tube_evidence(root,part,parent),
                 "actual_mesh_pair_relation":pair_rel,
                 "geometry_positive_clutch_certified":False,
                 "reason":"MATCHED_STUD_PROJECTION_BUT_CLUTCH_AND_INSERTION_NOT_PROVEN"})
@@ -175,6 +216,10 @@ def run(root,outdir):
             "roof_pieces_without_demonstrated_positive_connection":len(unproven),
             "nominal_roof_supports_without_confirmed_clutch":unproven,
             "sampled_mesh_roof_pairs":len(pairs),"unclassified_roof_mesh_collisions":len(bad),
+            "roof_interfaces_with_real_tube_grid_alignment":sum(x["official_LDraw_tube_and_stud_geometry"]["tube_stud_grid_match"] for x in possible),
+            "contact_mesh_bearing_pairs":sum(x["actual_mesh_pair_relation"]=="CONTACT" for x in possible),
+            "roof_interfaces_with_contact_and_tube_grid_alignment":sum(x["actual_mesh_pair_relation"]=="CONTACT" and x["official_LDraw_tube_and_stud_geometry"]["tube_stud_grid_match"] for x in possible),
+            "all_final_step_mesh_collision_occurrences":sum(len(x["unclassified_final_mesh_collisions"]) for x in insertion),
             "roof_mesh_collisions":bad,"insertions_blocked_before_clutch_zone":len(blocked),
             "blocked_insertions":blocked,"all_insertions_continuously_verified":False,
             "genuine_lego_material_strength_verified":False}
@@ -186,6 +231,10 @@ def run(root,outdir):
         path.write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
         print("A2_CANDIDATE",candidate,json.dumps({k:v for k,v in counters.items()
              if not isinstance(v,list)},sort_keys=True))
+        for row in possible: print("A2_ROOF_BEARING",candidate,row["roof_piece_id"],
+              "parent",row["bearing_piece_id"],
+              "official_tube_match",row["official_LDraw_tube_and_stud_geometry"]["tube_stud_grid_match"],
+              "mesh",row["actual_mesh_pair_relation"])
         for row in bad:print("A2_COLLISION",candidate,row["a"],row["b"],row["relation"])
         for row in blocked[:6]: print("A2_EARLY_INSERTION_BLOCK",candidate,row["pid"],row["blocking_earlier_steps"][:2])
         allsummary.append({"candidate":candidate,**counters})
