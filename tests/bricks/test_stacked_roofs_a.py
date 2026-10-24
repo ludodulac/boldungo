@@ -31,6 +31,7 @@ def test_three_independent_small_houses(width,length,pitch,courses):
     lines = [line for line in _ldraw(parts,width,length,"test").splitlines()
              if line.startswith("1 ")]
     assert len(lines)==len(parts)
+    assert all(len(line.split()) == 15 for line in lines), "LDraw requires 12 transform values"
     assert lines[0].endswith(" 3811.dat")
     assert sum(x.endswith(" 30363.dat") for x in lines) == report["roof_slope_30363"]
 
