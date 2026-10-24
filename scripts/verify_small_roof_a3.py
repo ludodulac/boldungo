@@ -59,7 +59,7 @@ def primitive_spec(root):
         raise AssertionError("A3_UNEXPECTED_TUBE_COUNT")
     if len(stud_30363)!=2 or len(stud_3022)!=4:
         raise AssertionError("A3_UNEXPECTED_TOP_STUD_COUNT")
-    if "stug8.dat" not in base or "stug-2x2.dat" not in brick_base:
+    if "stug8.dat" not in base or "stug-2x2.dat" not in brick:
         raise AssertionError("A3_UNKNOWN_BASEPLATE_OR_BRICK_STUD_GRID")
     stud_unit=lines_of(root,"p/stud.dat")
     tube_unit=lines_of(root,"p/stud4a.dat")
@@ -159,8 +159,7 @@ def audit_seats(parts,instances,root):
         fitted &= footprint_all==expected
         # Stud-top y from official stud primitive is -4, tube mouth is
         # upper part underside Y=24/8 plus .032 LDU LDraw rounding.
-        seat_y=mouth[1]-4
-        depths=[round(seat_y-p[1],4) for p in pts]
+        depths=[round(mouth[1]-p[1],4) for p in pts]
         # Lower stud *top* must lie about 4 LDU into the tube mouth,
         # i.e. mouth Y minus stud tip Y = +4 LDU (Y increases down).
         # Stud tips are higher = numerically more negative.
@@ -180,11 +179,12 @@ def audit_seats(parts,instances,root):
         else:
             relations=[check_collision(upper,instances[p]).value for p in par_ids]
             relation="/".join(relations)
-            static_ok=all(r!="COLLISION" for r in relations)
+            static_ok=all(r=="CONTACT" for r in relations)
         ok=fitted and depth_ok and grid_ok and static_ok
+        status=(STATUS_OK if ok else STATUS_BAD if not (fitted and depth_ok and grid_ok) else STATUS_UNKNOWN)
         seats.append({"child":child.pid,"parents":par_ids,
             "type":"2x2_four_studs_around_central_open_tube",
-            "status":STATUS_OK if ok else STATUS_BAD,
+            "status":status,
             "confirmed_geometry_only":ok,
             "mouth_world_ldu":list(mouth),"tube_center_world_ldu":list(tube),
             "stud_tips_world_ldu":[list(p) for p in pts],
