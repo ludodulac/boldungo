@@ -246,7 +246,7 @@ def _ldraw(parts, width, length, title):
         if p.role == "slope":
             matrix = normal if p.side == "left" else flipped
             cz += 30 if p.side == "left" else -30
-        elif p.sy > p.sx and p.role not in ("pier",):
+        elif p.sx > p.sy and p.role not in ("pier",):
             matrix = turned
         numbers = lambda v: str(int(v)) if int(v)==v else f"{v:.4f}"
         lines.append(f"0 // {p.pid} {p.role}")
