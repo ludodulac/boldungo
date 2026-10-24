@@ -1,0 +1,85 @@
+0 BOLDUNGO R-1 — experimental roof inspired by LEGO 31009
+0 Name: R1-31009-EXPERIMENT.ldr
+0 // NOT an official LEGO 31009 reconstruction; geometry unvalidated
+0 // foundation-3811 base
+1 2 0 0 0 1 0 0 0 1 0 0 0 1 3811.dat
+0 // left-c0-b0-pier0-z0 pier
+1 71 -60 -24 -60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c1-b0-pier0-z0 pier
+1 71 -60 -24 -20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c1-b0-pier0-z0 pier
+1 71 -60 -24 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c0-b0-pier0-z0 pier
+1 71 -60 -24 60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c0-b0-pier6-z0 pier
+1 71 60 -24 -60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c1-b0-pier6-z0 pier
+1 71 60 -24 -20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c1-b0-pier6-z0 pier
+1 71 60 -24 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c0-b0-pier6-z0 pier
+1 71 60 -24 60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c0-b0-pier0-z3 pier
+1 71 -60 -48 -60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c1-b0-pier0-z3 pier
+1 71 -60 -48 -20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c1-b0-pier0-z3 pier
+1 71 -60 -48 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c0-b0-pier0-z3 pier
+1 71 -60 -48 60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c0-b0-pier6-z3 pier
+1 71 60 -48 -60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c1-b0-pier6-z3 pier
+1 71 60 -48 -20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c1-b0-pier6-z3 pier
+1 71 60 -48 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c0-b0-pier6-z3 pier
+1 71 60 -48 60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c0-b0-pier0-z6 pier
+1 71 -60 -72 -60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c1-b0-pier0-z6 pier
+1 71 -60 -72 -20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c1-b0-pier0-z6 pier
+1 71 -60 -72 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c0-b0-pier0-z6 pier
+1 71 -60 -72 60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c0-b0-pier6-z6 pier
+1 71 60 -72 -60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c1-b0-pier6-z6 pier
+1 71 60 -72 -20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c1-b0-pier6-z6 pier
+1 71 60 -72 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c0-b0-pier6-z6 pier
+1 71 60 -72 60 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c1-b0-pier0-z9 pier
+1 71 -60 -96 -20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c1-b0-pier0-z9 pier
+1 71 -60 -96 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c1-b0-pier6-z9 pier
+1 71 60 -96 -20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // right-c1-b0-pier6-z9 pier
+1 71 60 -96 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // left-c0-b0-purlin beam
+1 71 0 -96 -60 1 0 0 0 1 0 0 0 1 3007.dat
+0 // right-c0-b0-purlin beam
+1 71 0 -96 60 1 0 0 0 1 0 0 0 1 3007.dat
+0 // left-c1-b0-purlin beam
+1 71 0 -120 -20 1 0 0 0 1 0 0 0 1 3007.dat
+0 // right-c1-b0-purlin beam
+1 71 0 -120 20 1 0 0 0 1 0 0 0 1 3007.dat
+0 // left-c0-b0-roof slope
+1 1 0 -120 -50 1 0 0 0 1 0 0 0 1 4445.dat
+0 // right-c0-b0-roof slope
+1 1 0 -120 50 -1 0 0 0 1 0 0 0 -1 4445.dat
+0 // left-c1-b0-roof slope
+1 1 0 -144 -10 1 0 0 0 1 0 0 0 1 4445.dat
+0 // right-c1-b0-roof slope
+1 1 0 -144 10 -1 0 0 0 1 0 0 0 -1 4445.dat
+0 // ridge-b0-y0 ridge
+1 8 -60 -152 0 1 0 0 0 1 0 0 0 1 3022.dat
+0 // ridge-b0-y2 ridge
+1 8 -20 -152 0 1 0 0 0 1 0 0 0 1 3022.dat
+0 // ridge-b0-y4 ridge
+1 8 20 -152 0 1 0 0 0 1 0 0 0 1 3022.dat
+0 // ridge-b0-y6 ridge
+1 8 60 -152 0 1 0 0 0 1 0 0 0 1 3022.dat
