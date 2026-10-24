@@ -11,7 +11,7 @@ import argparse,json
 
 from lego_geometry_engine import (LDrawLibrary, instantiate,
     transform_from_ldraw, check_collision, Relation, Transform)
-from experiment_stacked_roofs_a import _ldraw
+from experiment_stacked_roofs_a import _ldraw, _audit
 from construct_small_roof_a2 import W,L, generate, staged_parts,export
 
 def located(parts,lib):
@@ -187,6 +187,7 @@ def run(root,outdir):
     allsummary=[]
     for candidate in ("3023b","3022"):
         parts=staged_parts(generate(candidate))
+        graph_nominal=_audit(parts)
         instances=located(parts,lib)
         possible=[]
         for part in parts:
@@ -211,6 +212,9 @@ def run(root,outdir):
         unproven=[x["roof_piece_id"] for x in possible if
               not x["geometry_positive_clutch_certified"]]
         counters={"model_pieces":len(parts),"roof_pieces":sum(p.role in ("slope","ridge") for p in parts),
+            "connected_components_nominal":graph_nominal["connected_components_nominal"],
+            "parts_without_nominal_support":graph_nominal["unsupported_nominal_count"],
+            "orthogonal_boxes_colliding":graph_nominal["orthogonal_body_aabb_collision_count"],
             "other_structural_pieces":sum(p.role in ("pier","beam") for p in parts),
             "stud_projection_candidates":sum(bool(x["nominal_stud_cells"]) for x in possible),
             "roof_pieces_without_demonstrated_positive_connection":len(unproven),
@@ -225,6 +229,7 @@ def run(root,outdir):
             "genuine_lego_material_strength_verified":False}
         report={"candidate":candidate,"counts":counters,"roof_connections":possible,
             "selected_actual_mesh_pair_relations":pairs,"insertion_samples":insertion,
+            "source_nominal_support_chain":graph_nominal["graph_supporter_counts"],
             "notes":"Only bbox-screened roof pairs, every movement tested at finite sampled 48,32,24,16,8,4,2,0 LDU; no all-pairs insertion/proven continuous path",
             "approval":"NOT_VALIDATED"}
         path=outdir/candidate/"REAL-LDRAW-ROOF-AND-INSERTION.json"
