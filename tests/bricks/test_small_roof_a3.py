@@ -51,8 +51,11 @@ def test_bad_20_ldu_shift_cannot_pass_as_valid_stud_tube_seat():
 
 def test_disjoint_xy_broadphase_is_continuous_only_when_mathematically_disjoint():
     root,parts,instances=fixture()
-    stages=vertical_broadphase(parts,instances,parent_chains(parts))
+    seats,parents,missing=audit_seats(parts,instances,root)
+    stages=vertical_broadphase(parts,instances,parents,seats)
     assert len(stages)==23
-    assert all(x["entire_insertion_proven"] is False for x in stages)
-    assert all(x["status"]==STATUS_UNKNOWN for x in stages)
+    assert sum(x["entire_insertion_proven"] for x in stages)==18
+    assert sum(x["status"]==STATUS_UNKNOWN for x in stages)==5
+    assert all(x["entire_insertion_proven"] is False for x in stages
+        if next(p for p in parts if p.pid==x["id"]).role in ("slope","ridge"))
     assert any(x["whole_translation_proved_disjoint_from_previous_pieces"] for x in stages)
