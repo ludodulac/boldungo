@@ -38,6 +38,10 @@ jobs:
       - name: Compare two real A1-roof micro-module assembly candidates (diagnostic evidence)
         run: |
           python scripts/verify_small_roof_a2.py --ldraw-root /tmp/mission-a-ldraw --output artifacts/lego2-a2-small-module
+      - name: Prove committed experimental 24-part LDraw exactly matches generated version
+        run: |
+          cmp missions/A/A2-MODULE-3022-PROPOSE.ldr artifacts/lego2-a2-small-module/3022/SMALL-ROOF-A2.ldr
+          echo A2_COMMITTED_LDRAW_EQUALS_REGENERATED
       - name: Verify exported part counts and conservative nominal status
         run: |
           python - <<'PY'
