@@ -1,0 +1,49 @@
+name: LEGO2 R-2 original LEGO 31009 roof steps reconstruction
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'scripts/reconstruct_official_31009_r2.py'
+      - 'tests/bricks/test_official_roof_r2.py'
+      - 'missions/R2/**'
+      - '.github/workflows/lego2-r2-official-31009.yml'
+  workflow_dispatch:
+jobs:
+  reproduce-roof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fast specific regression tests; reject invented parts
+        run: |
+          python -m pip install pytest
+          python -m pytest -q tests/bricks/test_official_roof_r2.py
+      - name: Build official-correlated 25-step 80-part roof and 3D preview
+        run: |
+          python scripts/reconstruct_official_31009_r2.py --output artifacts/lego2-r2-official-31009
+      - name: Compare live generated 80-part model to versioned LDraw and BOM
+        run: |
+          cmp missions/R2/31009-ROOF-R2-OFFICIAL-STEP-RECONSTRUCTION.ldr artifacts/lego2-r2-official-31009/31009-ROOF-R2-OFFICIAL-STEP-RECONSTRUCTION.ldr
+          echo R2_LDRAW_EXACTLY_REPRODUCED
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          committed=json.loads(Path('missions/R2/BOM.json').read_text())
+          generated=json.loads(Path('artifacts/lego2-r2-official-31009/BOM.json').read_text())
+          assert committed['total']==generated['pieces']==80
+          assert committed['inclined_roof_parts']==generated['roof_sloped_parts']==29
+          assert committed['ldraw_designs']==generated['bom_by_design']
+          assert len(json.loads(Path('artifacts/lego2-r2-official-31009/OFFICIAL-STEPS-ORDER.json').read_text()))==25
+          print('R2_EXACT_BOM_AND_25_OFFICIAL_STEP_COUNTS_PASS')
+          PY
+      - name: Archive visible 3D LDraw, BOM, 25 steps and isometric SVG
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-R2-LEGO31009-80PARTS-25STEPS-COMMUNITY_COORDINATES
+          path: artifacts/lego2-r2-official-31009/
+          if-no-files-found: warn
+          retention-days: 30
