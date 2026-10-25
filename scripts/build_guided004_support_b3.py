@@ -238,7 +238,7 @@ def produce(output,ldrawroot):
     if audit1["collision_voxel_overlaps"]!=0:
         raise AssertionError("B3_NEW_BRIDGE_CAUSES_ORTHOGONAL_COLLISION")
     path=prove_local_chain(variant,ctx,ldrawroot)
-    dst=output/"B3-EXPERIMENTAL-1905"
+    dst=output/"B3-EXPERIMENTAL-1904"
     dst.mkdir(parents=True,exist_ok=True)
     info=export_ldraw(variant,LDrawLibrary(ldrawroot),
                       dst/"GUIDED004-B3-1904.ldr","GUIDED004_B3_1904")
