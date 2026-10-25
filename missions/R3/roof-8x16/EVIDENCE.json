@@ -1,0 +1,64 @@
+{
+  "source": {
+    "LEGO_set": "31009",
+    "official_manual": "https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6038244.pdf",
+    "original_31009_mapped_steps": {
+      "3001": [
+        12
+      ],
+      "3022": [
+        24
+      ],
+      "3023": [
+        6
+      ],
+      "3832": [
+        2
+      ],
+      "4445": [
+        4,
+        10,
+        13,
+        18,
+        23
+      ]
+    },
+    "community_R2_model": "missions/R2/31009-ROOF-STEP-PLACEMENTS.tsv",
+    "R3_not_official_31009_placement": true,
+    "pitch_degrees": 45,
+    "continuous_assembly_certified": false,
+    "physical_strength_certified": false
+  },
+  "parameters": {
+    "width_studs": 8,
+    "length_studs": 16,
+    "pitch_degrees": 45,
+    "overhang_studs": 0
+  },
+  "nominal": {
+    "parts": 46,
+    "roof_parts": 16,
+    "roof_slopes": 8,
+    "nominal_parent_edges": 60,
+    "nominal_components": 1,
+    "nominal_components_sizes": [
+      46
+    ],
+    "no_nominal_bearing": [],
+    "nominal_misaligned_parent_pairs": [],
+    "not_reaching_nominal_foundation": [],
+    "static_lego_connector_proven": false,
+    "continuous_insertion_proven": false,
+    "physical_strength_proven": false
+  },
+  "bom": {
+    "3001": 24,
+    "3022": 8,
+    "3023": 2,
+    "3832": 4,
+    "4445": 8
+  },
+  "full_collision_audit": "NOT_EXECUTED",
+  "complete_real_support_chains": "NOT_PROVEN",
+  "physical_strength_proven": false
+}
