@@ -4,6 +4,7 @@ on:
     branches: [feat/lego2-existing-house-021]
     paths:
       - 'scripts/build_guided004_connections_b2.py'
+      - 'scripts/check_b2_mesh_sample.py'
       - 'tests/bricks/test_guided004_connections_b2.py'
       - '.github/workflows/lego2-b2-connections.yml'
   workflow_dispatch:
@@ -31,10 +32,16 @@ jobs:
       - name: Real compatible and deliberately incompatible 1x3 connector
         run: python -m pytest -q tests/bricks/test_guided004_connections_b2.py
       - name: Official pinned LDraw 30363 necessary for whole roof transforms
-        run: python scripts/download_ldraw_probe_066.py /tmp/ldraw-b2 --max-files 150 --parts 30363
+        run: python scripts/download_ldraw_probe_066.py /tmp/ldraw-b2 --max-files 240 --parts 30363 3002 3622 3623 3008 3007
       - name: Rebuild B1 in isolated location then B2 without ever touching original
         run: |
           python scripts/build_guided004_connections_b2.py --ldraw-root /tmp/ldraw-b2 --output artifacts/lego2-b2
+      - name: Check four sampled actual official LDraw mesh interfaces without claiming certification
+        run: |
+          python scripts/check_b2_mesh_sample.py \
+            --ldraw-root /tmp/ldraw-b2 \
+            --model artifacts/lego2-b2/EXPERIMENTAL-1905-FULL-HOUSE/BRICKMODEL-B2-1905.json \
+            --output artifacts/lego2-b2/EXPERIMENTAL-1905-FULL-HOUSE/MESH-4-INTERFACE-SAMPLE.json
       - name: Assert full 1905 house, constructive terrace repair, and zero false certification
         run: |
           python - <<'PY'
@@ -58,6 +65,11 @@ jobs:
           order=json.loads((p/"ORDER-B2-NOT-CERTIFIED.json").read_text())
           assert order["full_house_steps"]==272
           assert m["positive_clutch_proven"]=="NO"
+          sample=json.loads((p/"MESH-4-INTERFACE-SAMPLE.json").read_text())
+          assert sample["checked_distinct_pairs"]==4
+          assert sample["sampled_not_exhaustive"] is True
+          assert sample["roof_fully_verified"]=="NO"
+          print("B2_SAMPLE_MESH_4_INTERFACES_NOT_CERTIFIED")
           print("B2_1905_TRUE_LDRAW_LINES_PASS")
           print("B2_REPAIRED_SINGLE_ORPHAN_BOARD_FLOOR_COMPONENT_29_PLUS_1_TO_34_PASS")
           print("B2_B1_ALL_1901_POSITIONS_UNCHANGED_PASS")
@@ -86,6 +98,7 @@ jobs:
           cp artifacts/lego2-b2/EXPERIMENTAL-1905-FULL-HOUSE/BEFORE-AFTER-B1-B2.json missions/B2/generated/
           cp artifacts/lego2-b2/EXPERIMENTAL-1905-FULL-HOUSE/ORDER-B2-NOT-CERTIFIED.json missions/B2/generated/
           cp artifacts/lego2-b2/EXPERIMENTAL-1905-FULL-HOUSE/ALL-42-B1-CLASSIFIED.json missions/B2/generated/
+          cp artifacts/lego2-b2/EXPERIMENTAL-1905-FULL-HOUSE/MESH-4-INTERFACE-SAMPLE.json missions/B2/generated/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add missions/B2/generated/
