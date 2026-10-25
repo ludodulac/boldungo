@@ -1,0 +1,57 @@
+{
+  "checked_distinct_pairs": 4,
+  "checked_actual_pinned_official_mesh": true,
+  "sampled_not_exhaustive": true,
+  "pairs": [
+    {
+      "interface": "deck_2x3_plate",
+      "parts": [
+        "EXPERIMENT-B2-DECK-SEAM-1",
+        "scene-platform:south-timber-deck-main:board:00027"
+      ],
+      "actual_official_LDraw_mesh_relation": "CONTACT",
+      "explicit_compatible_connectors_from_current_engine": 2,
+      "if_COLLISION_it_is_not_silently_reclassified": true,
+      "positive_clutch_and_continuous_insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "interface": "deck_1x3_plate",
+      "parts": [
+        "EXPERIMENT-B2-DECK-SEAM-1",
+        "scene-platform:south-timber-deck-main:board:00033"
+      ],
+      "actual_official_LDraw_mesh_relation": "CONTACT",
+      "explicit_compatible_connectors_from_current_engine": 1,
+      "if_COLLISION_it_is_not_silently_reclassified": true,
+      "positive_clutch_and_continuous_insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "interface": "ridge_30363_left",
+      "parts": [
+        "EXPERIMENT-088-JOINT-x-120-39-0-roof-000185-roof-000392",
+        "roof-000185"
+      ],
+      "actual_official_LDraw_mesh_relation": "CONTACT",
+      "explicit_compatible_connectors_from_current_engine": 0,
+      "if_COLLISION_it_is_not_silently_reclassified": true,
+      "positive_clutch_and_continuous_insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "interface": "ridge_30363_right",
+      "parts": [
+        "EXPERIMENT-088-JOINT-x-120-39-0-roof-000185-roof-000392",
+        "roof-000392"
+      ],
+      "actual_official_LDraw_mesh_relation": "CONTACT",
+      "explicit_compatible_connectors_from_current_engine": 0,
+      "if_COLLISION_it_is_not_silently_reclassified": true,
+      "positive_clutch_and_continuous_insertion": "NOT_DEMONSTRATED"
+    }
+  ],
+  "interference_signals_in_sample": 0,
+  "separated_pairs_in_sample": 0,
+  "roof_fully_verified": "NO",
+  "connector_clutch_proven": "NO",
+  "all_real_insertions_proven": "NO",
+  "full_house_mesh_collision_count": "UNKNOWN"
+}

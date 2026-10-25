@@ -1,0 +1,31 @@
+{
+  "parts": 1904,
+  "by_part": {
+    "BRICK_1X1": 474,
+    "BRICK_1X2": 52,
+    "BRICK_1X3": 49,
+    "BRICK_1X4": 52,
+    "BRICK_1X6": 116,
+    "BRICK_1X8": 597,
+    "BRICK_2X10": 6,
+    "BRICK_2X2": 10,
+    "BRICK_2X3": 36,
+    "BRICK_2X4": 1,
+    "BRICK_2X6": 28,
+    "BRICK_2X8": 56,
+    "BRICK_SLOPED_18_4X2": 408,
+    "PLATE_1X2": 3,
+    "PLATE_1X3": 6,
+    "PLATE_1X4": 2,
+    "PLATE_1X6": 2,
+    "PLATE_1X8": 6
+  },
+  "added": {
+    "BRICK_2X4": 1
+  },
+  "removed": {
+    "BRICK_1X1": 1,
+    "BRICK_2X2": 1
+  },
+  "procurement": false
+}
