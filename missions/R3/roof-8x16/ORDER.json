@@ -37,30 +37,18 @@
   },
   {
     "number": 5,
-    "id": "join-8-x-1",
-    "part": "3023",
+    "id": "join-8",
+    "part": "3022",
     "role": "joint",
     "parents": [
       "bay0-cross6",
       "bay1-cross0"
     ],
-    "source": "31009_STEP_6_PART_R3_NEW_BAY_JOIN",
+    "source": "31009_STEP_24_CHIMNEY_PART_R3_NEW_BAY_BRIDGE",
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
     "number": 6,
-    "id": "join-8-x8",
-    "part": "3023",
-    "role": "joint",
-    "parents": [
-      "bay0-cross6",
-      "bay1-cross0"
-    ],
-    "source": "31009_STEP_6_PART_R3_NEW_BAY_JOIN",
-    "direction": "vertical approach proposed — continuous path NOT certified"
-  },
-  {
-    "number": 7,
     "id": "bay0-L0-bed0-z0",
     "part": "3001",
     "role": "wall",
@@ -71,7 +59,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 8,
+    "number": 7,
     "id": "bay0-L1-bed0-z0",
     "part": "3001",
     "role": "wall",
@@ -82,7 +70,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 9,
+    "number": 8,
     "id": "bay0-R1-bed0-z0",
     "part": "3001",
     "role": "wall",
@@ -93,7 +81,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 10,
+    "number": 9,
     "id": "bay0-R0-bed0-z0",
     "part": "3001",
     "role": "wall",
@@ -104,7 +92,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 11,
+    "number": 10,
     "id": "bay0-L0-bed4-z0",
     "part": "3001",
     "role": "wall",
@@ -115,7 +103,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 12,
+    "number": 11,
     "id": "bay0-L1-bed4-z0",
     "part": "3001",
     "role": "wall",
@@ -126,7 +114,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 13,
+    "number": 12,
     "id": "bay0-R1-bed4-z0",
     "part": "3001",
     "role": "wall",
@@ -137,7 +125,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 14,
+    "number": 13,
     "id": "bay0-R0-bed4-z0",
     "part": "3001",
     "role": "wall",
@@ -148,7 +136,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 15,
+    "number": 14,
     "id": "bay1-L0-bed0-z0",
     "part": "3001",
     "role": "wall",
@@ -159,7 +147,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 16,
+    "number": 15,
     "id": "bay1-L1-bed0-z0",
     "part": "3001",
     "role": "wall",
@@ -170,7 +158,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 17,
+    "number": 16,
     "id": "bay1-R1-bed0-z0",
     "part": "3001",
     "role": "wall",
@@ -181,7 +169,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 18,
+    "number": 17,
     "id": "bay1-R0-bed0-z0",
     "part": "3001",
     "role": "wall",
@@ -192,7 +180,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 19,
+    "number": 18,
     "id": "bay1-L0-bed4-z0",
     "part": "3001",
     "role": "wall",
@@ -203,7 +191,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 20,
+    "number": 19,
     "id": "bay1-L1-bed4-z0",
     "part": "3001",
     "role": "wall",
@@ -214,7 +202,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 21,
+    "number": 20,
     "id": "bay1-R1-bed4-z0",
     "part": "3001",
     "role": "wall",
@@ -225,7 +213,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 22,
+    "number": 21,
     "id": "bay1-R0-bed4-z0",
     "part": "3001",
     "role": "wall",
@@ -236,7 +224,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 23,
+    "number": 22,
     "id": "bay0-L1-bed0-z3",
     "part": "3001",
     "role": "wall",
@@ -247,7 +235,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 24,
+    "number": 23,
     "id": "bay0-R1-bed0-z3",
     "part": "3001",
     "role": "wall",
@@ -258,7 +246,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 25,
+    "number": 24,
     "id": "bay0-L1-bed4-z3",
     "part": "3001",
     "role": "wall",
@@ -269,7 +257,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 26,
+    "number": 25,
     "id": "bay0-R1-bed4-z3",
     "part": "3001",
     "role": "wall",
@@ -280,7 +268,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 27,
+    "number": 26,
     "id": "bay1-L1-bed0-z3",
     "part": "3001",
     "role": "wall",
@@ -291,7 +279,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 28,
+    "number": 27,
     "id": "bay1-R1-bed0-z3",
     "part": "3001",
     "role": "wall",
@@ -302,7 +290,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 29,
+    "number": 28,
     "id": "bay1-L1-bed4-z3",
     "part": "3001",
     "role": "wall",
@@ -313,7 +301,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 30,
+    "number": 29,
     "id": "bay1-R1-bed4-z3",
     "part": "3001",
     "role": "wall",
@@ -324,7 +312,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 31,
+    "number": 30,
     "id": "bay0-L0-slope",
     "part": "4445",
     "role": "slope",
@@ -336,7 +324,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 32,
+    "number": 31,
     "id": "bay0-R0-slope",
     "part": "4445",
     "role": "slope",
@@ -348,7 +336,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 33,
+    "number": 32,
     "id": "bay1-L0-slope",
     "part": "4445",
     "role": "slope",
@@ -360,7 +348,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 34,
+    "number": 33,
     "id": "bay1-R0-slope",
     "part": "4445",
     "role": "slope",
@@ -372,7 +360,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 35,
+    "number": 34,
     "id": "bay0-L1-slope",
     "part": "4445",
     "role": "slope",
@@ -384,7 +372,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 36,
+    "number": 35,
     "id": "bay0-R1-slope",
     "part": "4445",
     "role": "slope",
@@ -396,7 +384,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 37,
+    "number": 36,
     "id": "bay1-L1-slope",
     "part": "4445",
     "role": "slope",
@@ -408,7 +396,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 38,
+    "number": 37,
     "id": "bay1-R1-slope",
     "part": "4445",
     "role": "slope",
@@ -420,7 +408,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 39,
+    "number": 38,
     "id": "bay0-ridge0",
     "part": "3022",
     "role": "ridge",
@@ -432,7 +420,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 40,
+    "number": 39,
     "id": "bay0-ridge2",
     "part": "3022",
     "role": "ridge",
@@ -444,7 +432,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 41,
+    "number": 40,
     "id": "bay0-ridge4",
     "part": "3022",
     "role": "ridge",
@@ -456,7 +444,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 42,
+    "number": 41,
     "id": "bay0-ridge6",
     "part": "3022",
     "role": "ridge",
@@ -468,7 +456,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 43,
+    "number": 42,
     "id": "bay1-ridge0",
     "part": "3022",
     "role": "ridge",
@@ -480,7 +468,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 44,
+    "number": 43,
     "id": "bay1-ridge2",
     "part": "3022",
     "role": "ridge",
@@ -492,7 +480,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 45,
+    "number": 44,
     "id": "bay1-ridge4",
     "part": "3022",
     "role": "ridge",
@@ -504,7 +492,7 @@
     "direction": "vertical approach proposed — continuous path NOT certified"
   },
   {
-    "number": 46,
+    "number": 45,
     "id": "bay1-ridge6",
     "part": "3022",
     "role": "ridge",

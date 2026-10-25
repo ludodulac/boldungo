@@ -3,9 +3,9 @@
 0 // ORIGINAL ROOF RECIPE; NOT EXACT LEGO 31009 INSTRUCTIONS
 0 // This is NOT a GUIDED-004 model, nor certified strength/insertion
 0 // bay0-cross0 cross SOURCE 31009_STEP_2_PART_R3_LOCATION
-1 8 -60 0 0 0 0 1 0 1 0 -1 0 0 3832.dat
+1 8 -60 0 -20 0 0 1 0 1 0 -1 0 0 3832.dat
 0 // bay0-cross6 cross SOURCE 31009_STEP_2_PART_R3_LOCATION
-1 8 60 0 0 0 0 1 0 1 0 -1 0 0 3832.dat
+1 8 60 0 -20 0 0 1 0 1 0 -1 0 0 3832.dat
 0 STEP
 0 // bay0-L0-bed0-z0 wall SOURCE 31009_STEP_12_PART_R3_LOCATION
 1 71 -40 -24 -60 1 0 0 0 1 0 0 0 1 3001.dat

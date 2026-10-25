@@ -11,15 +11,15 @@ Programme : `scripts/generate_roof_recipe_r3.py`, fonction `recipe(width_studs, 
 | | Prototype 1 | Prototype 2 |
 |---|---:|---:|
 | Dimensions demandées (tenons) | **8 × 8** | **8 × 16** |
-| Total pièces | **22** | **46** |
+| Total pièces | **22** | **45** |
 | Pièces de toiture (4445 + 3022) | **8** | **16** |
 | Pentes 4445 45° | 4 | 8 |
 | Faîtages 3022 (adaptation) | 4 | 8 |
 | Supports 3001 2×4 | 12 | 24 |
 | Plaques transversales 3832 | 2 | 4 |
-| Plaques de jonction 3023 (adaptation entre modules) | 0 | 2 |
+| Plaque de jonction 3022 (adaptation entre modules) | 0 | 1 |
 | Composantes **NOMINALES** du graphe | **1** | **1** |
-| Liens parent→enfant **NOMINAUX** | **28** | **60** |
+| Liens parent→enfant **NOMINAUX** | **28** | **58** |
 | Pièces sans parent nominal injustifié | **0** | **0** |
 | Chaînes jusqu'à une baseplate/maison réelle certifiées | **NON** | **NON** |
 | Insertions continues certifiées | **NON** | **NON** |
@@ -27,7 +27,7 @@ Programme : `scripts/generate_roof_recipe_r3.py`, fonction `recipe(width_studs, 
 
 **Livrables immuables sur la branche expérimentale** (`missions/R3/`) :
 
-- `roof-8x8/ROOF-R3.ldr` et `roof-8x16/ROOF-R3.ldr` — véritables placements LDraw, 22 et 46 pièces ;
+- `roof-8x8/ROOF-R3.ldr` et `roof-8x16/ROOF-R3.ldr` — véritables placements LDraw, 22 et 45 pièces ;
 - chaque sous-dossier : `BOM.json`, `ORDER.json`, `EVIDENCE.json`, `ISOMETRIC-SCHEMATIC.svg` ;
 - vues SVG **isométriques simplifiées**, **PAS** un rendu exact des triangles officiels ; fichiers LDraw pour la vraie géométrie ;
 - `scripts/render_roof_r3_preview.py` — production déterministe des deux aperçus ;
@@ -38,7 +38,7 @@ Programme : `scripts/generate_roof_recipe_r3.py`, fonction `recipe(width_studs, 
 
 Notice LEGO **31009**, livret 1, `6038244.pdf`, pages imprimées 47–68 ; coordonnées numériques étudiées dans R-2 issues du CAD communautaire LTRON, **pas officiel**.
 
-Les références choisies existent dans la séquence originale : `3832` support (étape 2/page 47), `4445` pentes longues (étapes 4,10,13,18,23), `3001` briques structurelles (étape 12/page 54), `3023` plaque (étape 6/page 50), `3022` plaque (étape 24/page 66, **dans la cheminée d'origine**).
+Les références choisies existent dans la séquence originale : `3832` support (étape 2/page 47), `4445` pentes longues (étapes 4,10,13,18,23), `3001` briques structurelles (étape 12/page 54), `3023` plaque (étape 6/page 50, essai rejeté), `3022` plaque (étape 24/page 66, **dans la cheminée d'origine** ; désormais employée aussi comme raccord de baie).
 
 **AUCUN assemblage R-3 ne doit être qualifié de sous-ensemble identique à la notice officielle.** La position, les deux lits de briques `3001`, la jonction entre modules et le faîtage `3022` sont de nouvelles **ADAPTATIONS R-3**. Le `3022` est ici utilisé comme faîtage bien qu'il servît à la cheminée dans R-2. R-1 avait déjà testé cette forme de faîtage sur des pentes 4445 ; ce choix est motivé par la collision avec le candidat `3023` de la première itération R-3 et NON par une fausse attribution à LEGO.
 
@@ -48,7 +48,7 @@ La première itération R-3 utilisait 8 plaques `3023` pour la crête d'un modul
 - **8 `COLLISION` au faîtage** sur 8×8 (entre `3023` et le pan droit `4445`) ;
 - **9 `COLLISION` sur 8×16**, dont l'assemblage de pont `3832`.
 
-Les journaux **ne masquent pas** ces collisions en `CONTACT`. Le modèle de sortie définitif est corrigé : une plaque `3022` sur deux rangs longitudinaux pour la crête, et deux petites plaques `3023` à l'extérieur des appuis pour la liaison entre modules. Les 22/46 pièces produites sont cette **deuxième itération**. Leur nombre de collisions du dernier audit doit être confirmé dans la CI correspondante ; aucune preuve intégrale ne peut être annoncée par anticipation.
+Les journaux **ne masquent pas** ces collisions en `CONTACT`. Le modèle de sortie définitif est corrigé : une plaque `3022` sur deux rangs longitudinaux pour la crête, et une plaque `3022` à l'extérieur des appuis pour la liaison entre modules. Les 22/45 pièces produites sont cette **deuxième itération**. Leur nombre de collisions du dernier audit doit être confirmé dans la CI correspondante ; aucune preuve intégrale ne peut être annoncée par anticipation.
 
 ### Commandes de reconstruction
 
@@ -70,10 +70,10 @@ Les vérifications GitHub Actions en CI spécialisée `LEGO2 R-3 generic 45deg r
 
 ## HYPOTHÈSE — comparaison des méthodes
 
-| Critère | A (24 pièces de test) | R-1 (41 pièces) | R-2 (80 pièces) | R-3 (22 / 46 pièces) |
+| Critère | A (24 pièces de test) | R-1 (41 pièces) | R-2 (80 pièces) | R-3 (22 / 45 pièces) |
 |---|---|---|---|---|
 | Pente | brique 30363 ~18°, progression globale ~21,8° | 45° | 45° | 45° |
-| Principe | rangs 30363, piliers indépendants, faîtage 3022 | 4445, pannes 3007, piliers 3003, 3022 | authentiques rangs/supports du LEGO 31009, avec lucarne et cheminée | 3832 transversal, 3001 empilées, 4445, faîtage 3022, jonction 3023 |
+| Principe | rangs 30363, piliers indépendants, faîtage 3022 | 4445, pannes 3007, piliers 3003, 3022 | authentiques rangs/supports du LEGO 31009, avec lucarne et cheminée | 3832 transversal, 3001 empilées, 4445, faîtage 3022, jonction 3022 |
 | Appuis statiques démontrés | 23/23 au micro-module A-3 | 8/8 pièces toiture statiquement contrôlées | 0 support complet démontré par nos validateurs | géométries LDraw **partielles**, voir audit spécialisé du HEAD |
 | Appuis nominaux sans chemin | 0 | 0 | non établi en 3D sur toutes pièces | 0 / 0 dans les graphes |
 | Connexions non démontrées | cinq insertions continues de toiture | chaînes vers baseplate non certifiées | très nombreuses, non exhaustivement auditées | aucune chaîne physique entière ni insertion certifiée |

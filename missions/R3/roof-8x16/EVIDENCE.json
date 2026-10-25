@@ -9,9 +9,6 @@
       "3022": [
         24
       ],
-      "3023": [
-        6
-      ],
       "3832": [
         2
       ],
@@ -36,13 +33,13 @@
     "overhang_studs": 0
   },
   "nominal": {
-    "parts": 46,
+    "parts": 45,
     "roof_parts": 16,
     "roof_slopes": 8,
-    "nominal_parent_edges": 60,
+    "nominal_parent_edges": 58,
     "nominal_components": 1,
     "nominal_components_sizes": [
-      46
+      45
     ],
     "no_nominal_bearing": [],
     "nominal_misaligned_parent_pairs": [],
@@ -53,8 +50,7 @@
   },
   "bom": {
     "3001": 24,
-    "3022": 8,
-    "3023": 2,
+    "3022": 9,
     "3832": 4,
     "4445": 8
   },
