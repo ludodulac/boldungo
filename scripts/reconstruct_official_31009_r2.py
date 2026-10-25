@@ -28,7 +28,7 @@ SLOPES={"4445.dat","3037.dat","3038.dat","3039.dat","3046.dat"}
 ROOF_COMPONENTS={"3001.dat","3002.dat","3003.dat","3004.dat",
 "3005.dat","3009.dat","3010.dat","3022.dat","3023.dat",
 "32001.dat","32028.dat","3622.dat","3659.dat","3832.dat",
-"60592.dat","60601.dat","6141.dat"}|SLOPES
+"60592.dat","60601.dat","6141.dat","3062.dat"}|SLOPES
 
 def read_parts(source=DATA):
     rows=[]
