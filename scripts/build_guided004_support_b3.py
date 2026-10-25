@@ -276,12 +276,33 @@ def produce(output,ldrawroot):
          "procurement":False}
     (dst/"BOM-B3.json").write_text(json.dumps(bom,ensure_ascii=False,indent=2)+"\n")
     orig_plan=json.loads((from_b2/"EXPERIMENTAL-1905-FULL-HOUSE"/"ORDER-B2-NOT-CERTIFIED.json").read_text())
+    stages=json.loads(json.dumps(orig_plan["existing_B1_stages_unchanged"]))
+    where=[]
+    for stage in stages:
+        oldids=stage["placement_ids"]
+        if any(x in oldids for x in ctx["removed"]):
+            if set(ctx["removed"])<=set(oldids):
+                stage["placement_ids"]=[x for x in oldids if x not in ctx["removed"]]
+                stage["placement_ids"].append(ctx["added"])
+                stage["insertion_warning_B3"]="Horizontal replacement of two post-course bricks: stagewise approach NOT verified."
+                where.append(stage["step_id"])
+            else:
+                raise AssertionError("B3_REMOVED_POSTS_NOT_IN_SAME_INSTALL_STAGE")
+    if len(where)!=1:raise AssertionError("B3_LINK_STEP_NOT_UNIQUE")
+    ordered=[p for stage in stages for p in stage["placement_ids"]]
+    ordered+=orig_plan["stage_terrace_preassembly"]["sequence"]
+    if set(ordered)!={p.placement_id for p in variant.parts} or len(ordered)!=len(variant.parts):
+        raise AssertionError("B3_FULL_PROPOSED_PLAN_NOT_1904_IDS")
     plan={"proposed_stages_before_B3":orig_plan["full_house_steps"],
        "B3_changed_internal_post_stage":{
+         "replace_at_step_id":where[0],
          "remove_old":ctx["removed"],"replace_with":ctx["added"],
          "prerequisite":"Build concrete and timber columns to replacement elevation; insert horizontal bridge then upper timber post and floor.",
          "full_continuous_insertion":"NOT_PROVEN"},
-       "proposed_stages_B3":orig_plan["full_house_steps"],
+       "original_stages_revised_for_one_bridge":stages,
+       "terrace_B2_preassembly":orig_plan["stage_terrace_preassembly"],
+       "all_B3_placement_ids_once":True,
+       "proposed_stages_B3":len(stages)+1,
        "existing_B2_order_is_preserved_except_one_replacement":True,
        "complete_build_certification":"NOT_PROVEN"}
     (dst/"ORDER-B3-PROPOSED.json").write_text(json.dumps(plan,indent=2,ensure_ascii=False)+"\n")
