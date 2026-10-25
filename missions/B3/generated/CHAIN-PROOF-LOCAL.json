@@ -1,0 +1,429 @@
+{
+  "path_ids": [
+    "scene-platform:south-timber-deck-main:board:00001",
+    "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0033:00022",
+    "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0030:00021",
+    "EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0024:00009",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0021:00008",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0018:00007",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0015:00006",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0012:00005",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0009:00004",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0006:00003",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0003:00002",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0000:00001"
+  ],
+  "path_part_refs": [
+    "3007",
+    "3005",
+    "3005",
+    "3001",
+    "3003",
+    "3003",
+    "3003",
+    "3003",
+    "3003",
+    "3003",
+    "3003",
+    "3003",
+    "3003"
+  ],
+  "path_edges": [
+    {
+      "from": "scene-platform:south-timber-deck-main:board:00001",
+      "to": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0033:00022",
+      "from_ref": "3007",
+      "to_ref": "3005",
+      "mesh_relation": "COLLISION",
+      "explicit_stud_cavity_connector_count": 1,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -288.0,
+          370.0
+        ]
+      ],
+      "geometry_supported": false,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0033:00022",
+      "to": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0030:00021",
+      "from_ref": "3005",
+      "to_ref": "3005",
+      "mesh_relation": "COLLISION",
+      "explicit_stud_cavity_connector_count": 1,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -264.0,
+          370.0
+        ]
+      ],
+      "geometry_supported": false,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0030:00021",
+      "to": "EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE",
+      "from_ref": "3005",
+      "to_ref": "3001",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 1,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -240.0,
+          370.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0024:00009",
+      "from_ref": "3001",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -216.0,
+          310.0
+        ],
+        [
+          70.0,
+          -216.0,
+          310.0
+        ],
+        [
+          90.0,
+          -216.0,
+          330.0
+        ],
+        [
+          70.0,
+          -216.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0024:00009",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0021:00008",
+      "from_ref": "3003",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -192.0,
+          310.0
+        ],
+        [
+          70.0,
+          -192.0,
+          310.0
+        ],
+        [
+          90.0,
+          -192.0,
+          330.0
+        ],
+        [
+          70.0,
+          -192.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0021:00008",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0018:00007",
+      "from_ref": "3003",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -168.0,
+          310.0
+        ],
+        [
+          70.0,
+          -168.0,
+          310.0
+        ],
+        [
+          90.0,
+          -168.0,
+          330.0
+        ],
+        [
+          70.0,
+          -168.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0018:00007",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0015:00006",
+      "from_ref": "3003",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -144.0,
+          310.0
+        ],
+        [
+          70.0,
+          -144.0,
+          310.0
+        ],
+        [
+          90.0,
+          -144.0,
+          330.0
+        ],
+        [
+          70.0,
+          -144.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0015:00006",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0012:00005",
+      "from_ref": "3003",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -120.0,
+          310.0
+        ],
+        [
+          70.0,
+          -120.0,
+          310.0
+        ],
+        [
+          90.0,
+          -120.0,
+          330.0
+        ],
+        [
+          70.0,
+          -120.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0012:00005",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0009:00004",
+      "from_ref": "3003",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -96.0,
+          310.0
+        ],
+        [
+          70.0,
+          -96.0,
+          310.0
+        ],
+        [
+          90.0,
+          -96.0,
+          330.0
+        ],
+        [
+          70.0,
+          -96.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0009:00004",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0006:00003",
+      "from_ref": "3003",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -72.0,
+          310.0
+        ],
+        [
+          70.0,
+          -72.0,
+          310.0
+        ],
+        [
+          90.0,
+          -72.0,
+          330.0
+        ],
+        [
+          70.0,
+          -72.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0006:00003",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0003:00002",
+      "from_ref": "3003",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -48.0,
+          310.0
+        ],
+        [
+          70.0,
+          -48.0,
+          310.0
+        ],
+        [
+          90.0,
+          -48.0,
+          330.0
+        ],
+        [
+          70.0,
+          -48.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    },
+    {
+      "from": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0003:00002",
+      "to": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0000:00001",
+      "from_ref": "3003",
+      "to_ref": "3003",
+      "mesh_relation": "CONTACT",
+      "explicit_stud_cavity_connector_count": 4,
+      "connector_positions_ldu": [
+        [
+          90.0,
+          -24.0,
+          310.0
+        ],
+        [
+          70.0,
+          -24.0,
+          310.0
+        ],
+        [
+          90.0,
+          -24.0,
+          330.0
+        ],
+        [
+          70.0,
+          -24.0,
+          330.0
+        ]
+      ],
+      "geometry_supported": true,
+      "continuous_insertion_verified": false,
+      "physical_strength_certified": false
+    }
+  ],
+  "additional_timber_branch": {
+    "from": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0024:00019",
+    "to": "EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE",
+    "from_ref": "3005",
+    "to_ref": "3001",
+    "mesh_relation": "COLLISION",
+    "explicit_stud_cavity_connector_count": 1,
+    "connector_positions_ldu": [
+      [
+        90.0,
+        -216.0,
+        370.0
+      ]
+    ],
+    "geometry_supported": false,
+    "continuous_insertion_verified": false,
+    "physical_strength_certified": false
+  },
+  "edges_positive_stud_cavity": 10,
+  "edges_total": 12,
+  "last_established_edge": -1,
+  "verified_bridge_to_concrete_base_edges": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "preexisting_stud_mating_mesh_collision_signals": [
+    0,
+    1
+  ],
+  "new_bridge_mesh_collisions": [],
+  "new_bridge_connections_positive": true,
+  "first_unproven_edge": 0,
+  "reaches_modeled_z0": true,
+  "reaches_main_house_wall_or_LEGO_baseplate": "NOT_PROVEN",
+  "true_stability_and_load_transmission": "NOT_CERTIFIED",
+  "continuous_insertions": "NOT_PROVEN"
+}

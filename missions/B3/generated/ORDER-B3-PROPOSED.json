@@ -1,0 +1,15 @@
+{
+  "proposed_stages_before_B3": 272,
+  "B3_changed_internal_post_stage": {
+    "remove_old": [
+      "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0027:00020",
+      "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0027:00010"
+    ],
+    "replace_with": "EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE",
+    "prerequisite": "Build concrete and timber columns to replacement elevation; insert horizontal bridge then upper timber post and floor.",
+    "full_continuous_insertion": "NOT_PROVEN"
+  },
+  "proposed_stages_B3": 272,
+  "existing_B2_order_is_preserved_except_one_replacement": true,
+  "complete_build_certification": "NOT_PROVEN"
+}
