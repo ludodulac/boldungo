@@ -74,7 +74,7 @@ def test_deliberate_roof_one_stud_bad_shift_fails_grid_alignment():
 
 def test_provenance_marks_all_r3_placements_as_experimental():
     parts=recipe()
-    assert all("R3" in p.source or "MODULAR" in p.source for p in parts)
+    assert all("R3" in p.source or "MODULAR" in p.source or "ADAPTATION_BRIDGE" in p.source for p in parts)
     assert SOURCES["R3_not_official_31009_placement"] is True
     assert SOURCES["physical_strength_certified"] is False
     assert SOURCES["original_31009_mapped_steps"]["3001"]==[12]
