@@ -139,10 +139,10 @@ def create_deck_reinforcement(b1):
     # come from the actual deck board extents and 2x8 standard LEGO footprint.
     main_boards=[p for p in floor if p.placement_id.startswith(
           "scene-platform:south-timber-deck-main:")
-          and p.part_id=="BRICK_2X8" and p.z_plates==orphan.z_plates]
+          and p.part_id in ("BRICK_2X8","BRICK_1X8") and p.z_plates==orphan.z_plates]
     if not main_boards:raise ValueError("B2_NO_LONG_PLANKS")
     y0=min(p.y_studs for p in main_boards)
-    common_length=min(p.length_studs for p in main_boards)
+    common_length=min(bounds(p)[4]-bounds(p)[1] for p in main_boards)
     if common_length<8:raise ValueError("B2_REQUIRES_AT_LEAST_8_STUD_PLANKS")
     beam_x=o[3]-8
     beams=[]
