@@ -195,6 +195,36 @@ def prove_local_chain(after,context,ldrawroot):
     for edge in edges: print("B3_MESH_LINK",edge["from"],"->",edge["to"],edge["mesh_relation"],edge["explicit_stud_cavity_connector_count"])
     return output
 
+def draw_link_zoom(after,ctx,proof,target):
+    """Only the verified/proposed local support route, 2D SVG schematic."""
+    ids=set(proof["path_ids"])
+    ids.add(ctx["lower_timber_supports"][0].placement_id)
+    included=[p for p in after.parts if p.placement_id in ids]
+    boxes=[(p,bounds(p)) for p in included]
+    boxes=[(p,b) for p,b in boxes if b is not None]
+    # Elevation in (Y horizontal, Z vertical); footprint x annotated.
+    miny=min(b[1] for p,b in boxes);maxy=max(b[4] for p,b in boxes)
+    minz=min(b[2] for p,b in boxes);maxz=max(b[5] for p,b in boxes)
+    unit=min(28,540/max(1,maxz-minz))
+    px=lambda y:150+(y-miny)*38
+    pz=lambda z:800-(z-minz)*unit
+    elements=['<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="910" viewBox="0 0 1100 910">',
+      '<rect width="1100" height="910" fill="#f6f9fd"/>',
+      '<text x="32" y="42" font-family="sans-serif" font-size="26" fill="#172b47">B-3 — Jonction intérieure de la terrasse</text>',
+      '<text x="32" y="72" font-family="sans-serif" font-size="16" fill="#39516b">Coupe schématique y/z · vrais niveaux et volumes, PAS maillages LDraw</text>']
+    for p,b in sorted(boxes,key=lambda pb:(pb[1][2],pb[0].placement_id)):
+        color=("#e4872c" if p.placement_id==ctx["added"] else
+           "#597bb5" if "timber-post" in p.placement_id else
+           "#84ad89" if "concrete-support" in p.placement_id else "#ac8c65")
+        x,y,z,X,Y,Z=b
+        elements.append(f'<rect x="{px(y):.1f}" y="{pz(Z):.1f}" width="{max(2,(Y-y)*38-1):.1f}" height="{(Z-z)*unit:.1f}" fill="{color}" stroke="#24364c" stroke-width=".6"/>')
+    elements += [
+        '<text x="34" y="845" font-family="sans-serif" font-size="15" fill="#593f2b">Orange : nouvelle brique 2×4. Bleu : poteau bois. Vert : poteau béton. Brun : plancher.</text>',
+        '<text x="34" y="870" font-family="sans-serif" font-size="14" fill="#593f2b">10/12 interfaces LDraw examinées sans collision ; 2 interfaces LEGO anciennes restent collision signalée.</text>',
+        '<text x="34" y="891" font-family="sans-serif" font-size="13" fill="#593f2b">Ni liaison au mur principal, ni insertion continue, ni stabilité certifiées.</text>',
+        '</svg>']
+    Path(target).write_text("\\n".join(elements)+"\\n",encoding="utf8")
+
 def produce(output,ldrawroot):
     output=Path(output)
     from_b2=output/"REGENERATED-B2-SOURCE-READONLY"
@@ -215,6 +245,7 @@ def produce(output,ldrawroot):
     if info["unmapped_count"] or info["ldraw_type1_count"]!=len(variant.parts):
         raise AssertionError("B3_LDRAW_MISSING_ORIGIN")
     preview_svg(variant,dst/"B3-FULL-HOUSE-SCHEMATIC.svg")
+    draw_link_zoom(variant,ctx,path,dst/"B3-STRUCTURAL-LINK-ZOOM.svg")
     (dst/"BRICKMODEL-B3-1905.json").write_text(variant.model_dump_json(indent=2)+"\n")
     (dst/"CHAIN-PROOF-LOCAL.json").write_text(json.dumps(path,indent=2,ensure_ascii=False)+"\n")
     delta={"b2_parts":len(initial.parts),"b3_parts":len(variant.parts),
