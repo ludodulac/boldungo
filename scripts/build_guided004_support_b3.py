@@ -45,6 +45,8 @@ def _columns(base):
 def find_candidate(base):
     by,timber,concrete=_columns(base)
     candidates=[]
+    reasons=Counter()
+    examples=[]
     # One timber 1x1 at the uppermost concrete-post termination height,
     # while its timber post continues above. Find 2x2 support immediately
     # below the candidate replacing course; horizontal gap <= 2 studs.
@@ -54,6 +56,7 @@ def find_candidate(base):
             obox=bounds(old)
             if obox[2]!=cbox[5]:
                 continue
+            reasons["matching_plane"]+=1
             if not any(other.placement_id!=old.placement_id
                        and other.part_id=="BRICK_1X1" and
                        bounds(other)[2]==obox[5]
@@ -62,6 +65,8 @@ def find_candidate(base):
             gapx=max(0,cbox[0]-obox[3],obox[0]-cbox[3])
             gapy=max(0,cbox[1]-obox[4],obox[1]-cbox[4])
             if gapx!=0 or gapy>2:continue
+            reasons["adjacent_posts"]+=1
+            if len(examples)<3: examples.append({"old":old.placement_id,"concrete":c.placement_id,"old_box":obox,"concrete_box":cbox})
             # The proposed 1x4 attaches on one stud column over the
             # concrete 2x2, one over the timber support; 3studs high.
             for x in range(cbox[0],cbox[3]):
@@ -79,7 +84,9 @@ def find_candidate(base):
                         upper=[t for t in timber if t.placement_id!=old.placement_id
                                and bounds(t)[2]==nb[5] and contact_cells(candidate,t)]
                         if not underneath or not upper:
+                            reasons["no_under_over"]+=1
                             continue
+                        reasons["upper_and_lower"]+=1
                         if not (obox[0]>=nb[0] and obox[3]<=nb[3]
                                 and obox[1]>=nb[1] and obox[4]<=nb[4]):
                             continue
@@ -88,11 +95,15 @@ def find_candidate(base):
                         conflicted=[q.placement_id for q in base.parts
                             if q.placement_id!=old.placement_id and
                             bounds(q) is not None and overlaps(nb,bounds(q))]
-                        if conflicted:continue
+                        if conflicted:
+                            reasons["collision"]+=1
+                            if len(examples)<6:examples.append({"new_box":nb,"colliders":conflicted[:7]})
+                            continue
                         # To avoid gratuitous free cantilevers, require each
                         # extra stud lane to be on the concrete or timber line,
                         # or lie only in the one-stud gap between them.
                         candidates.append((old,c,candidate,underneath,upper))
+    print("B3_CANDIDATE_DIAGNOSTIC",json.dumps({"reason_counts":reasons,"examples":examples},default=list))
     if not candidates:raise ValueError("B3_NO_SAFE_CONCRETE_TIMBER_COLUMN_BRIDGE")
     # Favor shortest span with min empty middle and stable deterministic ID.
     def rank(v):
