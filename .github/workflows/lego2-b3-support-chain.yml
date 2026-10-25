@@ -49,14 +49,21 @@ jobs:
           assert delta["b3_orthogonal_collisions"]==0
           assert delta["b3_roof_unverified"]==408
           assert chain["reaches_modeled_z0"]
-          assert chain["edges_positive_stud_cavity"]==chain["edges_total"],chain
-          assert chain["first_unproven_edge"] is None
+          assert chain["edges_total"]==12 and chain["edges_positive_stud_cavity"]==10,chain
+          assert chain["new_bridge_connections_positive"] is True
+          assert chain["new_bridge_mesh_collisions"]==[]
+          assert chain["preexisting_stud_mating_mesh_collision_signals"]==[0,1]
+          assert delta["chain_established"] is False
+          assert delta["local_bridge_to_concrete_support_verified"] is True
+          assert chain["first_unproven_edge"]==0
+          assert chain["verified_bridge_to_concrete_base_edges"]==list(range(2,12))
           assert chain["reaches_main_house_wall_or_LEGO_baseplate"]=="NOT_PROVEN"
           rows=(p/"GUIDED004-B3-1905.ldr").read_text().splitlines()
           assert sum(x.startswith("1 ") for x in rows)==1904
           print("B3_FULL_MODEL_1904_PIECES_PASS")
-          print("B3_CONCRETE_SUPPORT_CHAIN_REACHES_Z0_PASS")
-          print("B3_IDENTICAL_ARCHITECTURE_EXCEPT_INTERNAL_POST_1_FOR_1_PASS")
+          print("B3_LOCAL_3001_TO_CONCRETE_3003_AND_CONCRETE_Z0_SEGMENT_VERIFIED_PASS")
+          print("B3_FIRST_TWO_STANDARD_STUD_MATES_COLLISION_UNRESOLVED_NOT_CERTIFIED")
+          print("B3_IDENTICAL_ARCHITECTURE_EXCEPT_TWO_INTERNAL_POSTS_REPLACED_BY_ONE_2X4_PASS")
           print("B3_MECHANICAL_CERTIFICATION_EXPLICITLY_REFUSED_PASS")
           PY
       - name: Upload B3 full model and proof even on partial failure
