@@ -15,8 +15,8 @@ from scripts.generate_roof_recipe_r3 import (
 from scripts.render_roof_r3_preview import svg
 
 @pytest.mark.parametrize("length,pieces,roof,braces",[
-    (8,26,12,2),
-    (16,53,24,5)
+    (8,22,8,2),
+    (16,46,16,6)
 ])
 def test_two_generatable_lengths_have_two_pans_two_courses_ridge(length,pieces,roof,braces,tmp_path):
     arr=recipe(width_studs=8,length_studs=length,pitch_degrees=45,overhang_studs=0)
@@ -29,10 +29,11 @@ def test_two_generatable_lengths_have_two_pans_two_courses_ridge(length,pieces,r
     assert not info["nominal_misaligned_parent_pairs"]
     assert not info["not_reaching_nominal_foundation"]
     assert all(len(p.parents)==2 for p in arr if p.role in ("slope","ridge"))
-    assert {p.part for p in arr}=={"3832","3001","4445","3023"}
+    assert {p.part for p in arr}==({"3832","3001","4445","3022"} if length==8 else {"3832","3001","4445","3022","3023"})
     assert sum(p.part=="3001" for p in arr)==12*(length//8)
     assert sum(p.part=="4445" for p in arr)==4*(length//8)
-    assert sum(p.part=="3023" for p in arr)==8*(length//8)
+    assert sum(p.part=="3023" for p in arr)==2*(length//8-1)
+    assert sum(p.part=="3022" for p in arr)==4*(length//8)
     lines=[x.split() for x in ldraw(arr,length).splitlines() if x.startswith("1 ")]
     assert len(lines)==pieces and all(len(x)==15 for x in lines)
     out=tmp_path/f"R3-{length}"
@@ -78,3 +79,4 @@ def test_provenance_marks_all_r3_placements_as_experimental():
     assert SOURCES["R3_not_official_31009_placement"] is True
     assert SOURCES["physical_strength_certified"] is False
     assert SOURCES["original_31009_mapped_steps"]["3001"]==[12]
+    assert SOURCES["original_31009_mapped_steps"]["3022"]==[24]
