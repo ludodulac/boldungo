@@ -41,7 +41,7 @@ jobs:
           echo R3_DETERMINISTIC_MODEL_COMPARISON_OK
       - name: Retrieve only pinned real LDraw DAT closure needed in experiment
         run: |
-          python scripts/download_ldraw_probe_066.py /tmp/lego2-r3-ldraw --max-files 240 --parts 4445 3001 3832 3023
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-r3-ldraw --max-files 240 --parts 4445 3001 3832 3023 3022
       - name: Check bounded actual distinct LDraw mesh mates for short roof
         run: |
           python scripts/audit_roof_recipe_r3.py --ldraw-root /tmp/lego2-r3-ldraw --length-studs 8 --output artifacts/lego2-r3/roof-8x8/GEOMETRY.json
