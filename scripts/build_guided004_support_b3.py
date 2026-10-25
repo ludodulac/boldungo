@@ -98,7 +98,7 @@ def find_candidate(base):
     def rank(v):
         old,c,bridge,under,up=v
         b=bounds(bridge);a=bounds(c)
-        return (abs(b[1]-a[1]),b[0],b[1],old.placement_id)
+        return (-a[5],abs(b[1]-a[1]),b[0],b[1],old.placement_id)
     candidates.sort(key=rank)
     return candidates[0]
 
