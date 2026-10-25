@@ -83,6 +83,7 @@ jobs:
           mkdir -p missions/B3/generated
           cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/GUIDED004-B3-1905.ldr missions/B3/generated/
           cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/B3-FULL-HOUSE-SCHEMATIC.svg missions/B3/generated/
+          cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/B3-STRUCTURAL-LINK-ZOOM.svg missions/B3/generated/
           cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/BOM-B3.json missions/B3/generated/
           cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/B2-VS-B3.json missions/B3/generated/
           cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/CHAIN-PROOF-LOCAL.json missions/B3/generated/
