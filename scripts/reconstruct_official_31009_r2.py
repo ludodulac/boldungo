@@ -15,8 +15,9 @@ from collections import Counter
 from pathlib import Path
 
 EXPECTED_PER_STEP=(2,2,2,3,2,6,2,1,2,2,4,6,4,4,4,4,2,2,4,2,4,3,3,5,5)
+PRINTED_PAGE_BY_STEP=(47,47,48,49,49,50,51,51,52,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,68)
 SOURCE={
- "set":"31009","manual_number":"6038244","printed_pages":"47–68",
+ "set":"31009","manual_number":"6038244","printed_pages":"47–68","step_24_continues_page_67":True,
  "official_manual":"https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6038244.pdf",
  "independent_CAD_source":"https://github.com/willsaliba/M3_Model/blob/31c2222a4b007298e9e53b429562957c78972017/data/train/building377.mpd",
  "independent_CAD_author":"LTRON","full_model_original_ordinals":[149,228],
@@ -50,7 +51,7 @@ def read_parts(source=DATA):
     per_step=Counter(p["step"] for p in rows)
     if tuple(per_step[x] for x in range(1,26))!=EXPECTED_PER_STEP:
         raise AssertionError("R2_OFFICIAL_MANUAL_STEP_COUNTS_MISMATCH")
-    if any(r["page"]!=46+r["step"] or r["within"]<1 for r in rows):
+    if any(r["page"]!=PRINTED_PAGE_BY_STEP[r["step"]-1] or r["within"]<1 for r in rows):
         raise AssertionError("R2_MANUAL_PAGE_STEP_MAPPING_MISMATCH")
     if Counter(x["part"] for x in rows)["4445.dat"]!=6:
         raise AssertionError("R2_OFFICIAL_SLOPE_REFERENCE_COUNT_CHANGED")
@@ -67,7 +68,7 @@ def assemble_ldraw(rows):
        "0 // NOT an official LEGO digital model; no strength certificate"
     ]
     for step in range(1,26):
-        out.append(f"0 // OFFICIAL LEGO STEP {step}, PRINTED PAGE {46+step}")
+        out.append(f"0 // OFFICIAL LEGO STEP {step}, PRINTED PAGE {PRINTED_PAGE_BY_STEP[step-1]}")
         for r in rows:
             if r["step"]==step:
                 out.append(f"0 // part index {r['ord']} from credited third-party MPD")
@@ -151,7 +152,7 @@ def build(output,source=DATA):
     model=assemble_ldraw(rows);bom=stats(rows)
     (o/"31009-ROOF-R2-OFFICIAL-STEP-RECONSTRUCTION.ldr").write_text(model,encoding="utf8")
     (o/"BOM.json").write_text(json.dumps(bom,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
-    order=[{"official_step":step,"printed_manual_page":46+step,
+    order=[{"official_step":step,"printed_manual_page":PRINTED_PAGE_BY_STEP[step-1],
        "pieces":[{"source_full_model_ordinal":p["ord"],"part":p["part"],
                   "ldraw_color":p["color"],"position_world_ldu":p["transform"][:3]}
                   for p in rows if p["step"]==step]}
