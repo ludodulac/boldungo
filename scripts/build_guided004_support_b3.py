@@ -223,7 +223,7 @@ def draw_link_zoom(after,ctx,proof,target):
         '<text x="34" y="870" font-family="sans-serif" font-size="14" fill="#593f2b">10/12 interfaces LDraw examinées sans collision ; 2 interfaces LEGO anciennes restent collision signalée.</text>',
         '<text x="34" y="891" font-family="sans-serif" font-size="13" fill="#593f2b">Ni liaison au mur principal, ni insertion continue, ni stabilité certifiées.</text>',
         '</svg>']
-    Path(target).write_text("\\n".join(elements)+"\\n",encoding="utf8")
+    Path(target).write_text("\n".join(elements)+"\n",encoding="utf8")
 
 def produce(output,ldrawroot):
     output=Path(output)
