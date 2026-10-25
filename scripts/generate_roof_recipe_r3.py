@@ -5,8 +5,8 @@ Inspired by, *not copied from*, source 31009 / PDF 6038244:
   3832 2x10 support plates — official roof step 2 (page 47);
   3001 2x4 structural bricks — official step 12 (page 54);
   4445 45° 2x8 slopes — official steps 4, 10, 13, 18, 23;
-  3023 1x2 plates — official step 6 (page 50), used only as bay join.
-  3022 2x2 plates — official step 24 (chimney), experimentally repurposed at ridge.
+  3022 2x2 plates — official step 24 (chimney), adapted for ridge AND bay joint.
+  3023 1x2 (original step 6) was REJECTED for R3 after collision detection.
 The 3022 ridge arrangement and flat-bed supports are NEW R-3 ADAPTATIONS.
 R-1, R-2, A and GUIDED-004 are neither read nor modified.
 
@@ -26,7 +26,7 @@ SOURCES={
  "LEGO_set":"31009",
  "official_manual":"https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6038244.pdf",
  "original_31009_mapped_steps":{"3832":[2],"3001":[12],
-                                   "4445":[4,10,13,18,23],"3023":[6],"3022":[24]},
+                                   "4445":[4,10,13,18,23],"3022":[24]},
  "community_R2_model":"missions/R2/31009-ROOF-STEP-PLACEMENTS.tsv",
  "R3_not_official_31009_placement":True,
  "pitch_degrees":45,
@@ -75,17 +75,18 @@ def recipe(width_studs=8,length_studs=8,pitch_degrees=45,overhang_studs=0):
         for end in (0,6):
             yy=y0+end
             out.append(Brick(f"bay{bay}-cross{end}","3832","cross",
-                 -1,yy,-1,10,2,1,TURN,
+                 -2,yy,-1,10,2,1,TURN,
                  "31009_STEP_2_PART_R3_LOCATION"))
-    # Direct 1x2 connector plates over both neighboring bays, outside
-    # 2x4 wall beds. Each connector spans one stud of each 3832 crossplate.
+    # A SINGLE 3022 2x2 plate bridges four genuine studs: two on the
+    # previous 3832 and two on the next. It lives OUTSIDE the building
+    # support beds (x=-2,-1; all 3001 bed bricks start at x>=0).
+    # The failed 3023 1x2 joint was abandoned after real LDraw collision.
     for j in range(1,bays):
         yy=8*j
-        for xx in (-1,8):
-            out.append(Brick(f"join-{yy}-x{xx}","3023","joint",
-               xx,yy-1,0,1,2,1,IDENT,
-               "31009_STEP_6_PART_R3_NEW_BAY_JOIN",
-               (f"bay{j-1}-cross6",f"bay{j}-cross0")))
+        out.append(Brick(f"join-{yy}","3022","joint",
+             -2,yy-1,0,2,2,1,IDENT,
+             "31009_STEP_24_CHIMNEY_PART_R3_NEW_BAY_BRIDGE",
+             (f"bay{j-1}-cross6",f"bay{j}-cross0")))
     # Layer-by-layer studs on plate bearings (no R-1 3003 posts).
     for level in (0,3):
         for bay in range(bays):
@@ -167,7 +168,7 @@ def nominal_mating_alignment(child,parent):
     if parent.z+parent.height!=child.z:
         return False
     if child.role=="joint" and parent.role=="cross":
-        return len(child.xy() & parent.xy())==1  # one end stud from each crossplate
+        return len(child.xy() & parent.xy())==2  # two end studs from each crossplate
     if child.role=="wall" and parent.role=="cross":
         return len(child.xy() & parent.xy())==4  # 2x2 stud pad at bearing
     if child.role=="wall" and parent.role=="wall":
