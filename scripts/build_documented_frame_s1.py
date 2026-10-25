@@ -239,7 +239,7 @@ def produce(out,libroot):
     (out/"CHEMIN-D-APPUI.json").write_text(json.dumps({
       "root":"S1-BASE","parent_links":graph,
       "per_floor_plate_routes":{p.id:route(p) for p in ps if p.role=="floor"},
-      "bearing_is_geometric_only":True},indent=2)+"\\n")
+      "bearing_is_geometric_only":True},indent=2)+"\n")
     results=audit(ps,LDrawLibrary(libroot))
     (out/"PREUVES-GEOMETRIE.json").write_text(json.dumps(results,indent=2)+"\n")
     (out/"PROVENANCE.json").write_text(json.dumps({
