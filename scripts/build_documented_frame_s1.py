@@ -61,8 +61,12 @@ def model():
 def stud_mating(upper,lower):
     """Strict 2D stud grid and vertical boundary test, NOT a mesh clutch proof."""
     overlap=upper.footprint() & lower.footprint()
-    if upper.z != lower.z+lower.h or not overlap:
-        return {"valid":False,"common_stud_cells":0,"reason":"LEVEL_OR_STUD_GRID_MISMATCH"}
+    # Four actual stud positions must carry every interface in this
+    # bounded design; a part shifted by one stud overlaps only 2 studs
+    # and MUST NOT be reported as valid.
+    if upper.z != lower.z+lower.h or len(overlap)!=4:
+        return {"valid":False,"common_stud_cells":len(overlap),
+                "reason":"LEVEL_OR_ALL_FOUR_STUD_CENTRES_MISMATCH"}
     return {"valid":True,"common_stud_cells":len(overlap),
             "stud_centres_studs":sorted(map(list,overlap)),
             "nominal_engagement_interface":"upper underside receives lower studs",
@@ -225,13 +229,17 @@ def produce(out,libroot):
       "steps":5,"full_continuous_insertion":"NOT_PROVEN",
       "authoritative_official_steps":"NOT_IDENTICAL_TO_31009"},indent=2)+"\n")
     (out/"OSSATURE-VUE-3D-SCHEMATIQUE.svg").write_text(svg(ps),encoding="utf8")
+    byid={p.id:p for p in ps}
+    def route(p):
+        seq=[p.id]
+        while p.parents:
+            p=byid[p.parents[0]]
+            seq.append(p.id)
+        return seq
     (out/"CHEMIN-D-APPUI.json").write_text(json.dumps({
       "root":"S1-BASE","parent_links":graph,
-      "per_floor_plate_routes":{p.id:
-         [p.id,p.parents[0],next(q for q in ps if q.id==p.parents[0]).parents[0],
-          next(q for q in ps if q.id==next(q for q in ps if q.id==p.parents[0]).parents[0]).parents[0]]
-         for p in ps if p.role=="floor"}, # advisory only: audit has full routes
-      "bearing_is_geometric_only":True},indent=2)+"\n")
+      "per_floor_plate_routes":{p.id:route(p) for p in ps if p.role=="floor"},
+      "bearing_is_geometric_only":True},indent=2)+"\\n")
     results=audit(ps,LDrawLibrary(libroot))
     (out/"PREUVES-GEOMETRIE.json").write_text(json.dumps(results,indent=2)+"\n")
     (out/"PROVENANCE.json").write_text(json.dumps({
