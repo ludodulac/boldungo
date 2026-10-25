@@ -241,7 +241,7 @@ def produce(output,ldrawroot):
     dst=output/"B3-EXPERIMENTAL-1905"
     dst.mkdir(parents=True,exist_ok=True)
     info=export_ldraw(variant,LDrawLibrary(ldrawroot),
-                      dst/"GUIDED004-B3-1905.ldr","GUIDED004_B3_1905")
+                      dst/"GUIDED004-B3-1904.ldr","GUIDED004_B3_1904")
     if info["unmapped_count"] or info["ldraw_type1_count"]!=len(variant.parts):
         raise AssertionError("B3_LDRAW_MISSING_ORIGIN")
     preview_svg(variant,dst/"B3-FULL-HOUSE-SCHEMATIC.svg")
