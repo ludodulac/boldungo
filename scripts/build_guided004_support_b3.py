@@ -1,6 +1,6 @@
 """BOLDUNGO B-3 / last B mission — bridge timber deck to concrete terrace post.
 
-No new geometric engine; 1-for-1 replacement in isolated B-2 model.
+No new geometric engine; 2-for-1 replacement in isolated B-2 model.
 At most one single-support-column contact is made:
   board -> timber post -> NEW transverse 1x4 -> concrete support column ->
   concrete support base at local z=0.
@@ -47,14 +47,14 @@ def find_candidate(base):
     candidates=[]
     reasons=Counter()
     examples=[]
-    # One timber 1x1 at the uppermost concrete-post termination height,
-    # while its timber post continues above. Find 2x2 support immediately
-    # below the candidate replacing course; horizontal gap <= 2 studs.
+    # Merge one existing 2x2 concrete post course and one parallel 1x1
+    # timber post course AT THE SAME LEVEL into a LEGO 2x4, leaving the
+    # surrounding courses, scene, roof, boards and architecture untouched.
     for c in concrete:
         cbox=bounds(c)
         for old in timber:
             obox=bounds(old)
-            if obox[2]!=cbox[5]:
+            if obox[2]!=cbox[2]:
                 continue
             reasons["matching_plane"]+=1
             if not any(other.placement_id!=old.placement_id
@@ -67,67 +67,59 @@ def find_candidate(base):
             if gapx!=0 or gapy>2:continue
             reasons["adjacent_posts"]+=1
             if len(examples)<3: examples.append({"old":old.placement_id,"concrete":c.placement_id,"old_box":obox,"concrete_box":cbox})
-            # The proposed 1x4 attaches on one stud column over the
-            # concrete 2x2, one over the timber support; 3studs high.
-            for x in range(cbox[0],cbox[3]):
-                if not (obox[0]<=x<obox[3]):continue
-                for y in range(cbox[1],cbox[4]):
-                    for start in range(y-3,y+1):
-                        candidate=new_part("EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE",
-                            "BRICK_1X4",x,start,obox[2],0)
-                        nb=bounds(candidate)
-                        # 1 x 4 x 3, EXACT plane & both vertical contact footprints.
-                        if nb[5]!=obox[5] or not contact_cells(c,candidate):
-                            continue
-                        underneath=[t for t in timber if t.placement_id!=old.placement_id
-                                    and bounds(t)[5]==nb[2] and contact_cells(t,candidate)]
-                        upper=[t for t in timber if t.placement_id!=old.placement_id
-                               and bounds(t)[2]==nb[5] and contact_cells(candidate,t)]
-                        if not underneath or not upper:
-                            reasons["no_under_over"]+=1
-                            continue
-                        reasons["upper_and_lower"]+=1
-                        if not (obox[0]>=nb[0] and obox[3]<=nb[3]
-                                and obox[1]>=nb[1] and obox[4]<=nb[4]):
-                            continue
-                        # no collision with ANY other existing orthogonal
-                        # piece, even an architecturally protected part.
-                        conflicted=[q.placement_id for q in base.parts
-                            if q.placement_id!=old.placement_id and
-                            bounds(q) is not None and overlaps(nb,bounds(q))]
-                        if conflicted:
-                            reasons["collision"]+=1
-                            if len(examples)<6:examples.append({"new_box":nb,"colliders":conflicted[:7]})
-                            continue
-                        # To avoid gratuitous free cantilevers, require each
-                        # extra stud lane to be on the concrete or timber line,
-                        # or lie only in the one-stud gap between them.
-                        candidates.append((old,c,candidate,underneath,upper))
-    print("B3_CANDIDATE_DIAGNOSTIC",json.dumps({"reason_counts":reasons,"examples":examples},default=list))
+            # 2x4 fills exactly the 2x2 concrete footprint and bridges
+            # the one-stud gap to the 1x1 timber footprint.
+            candidate=new_part("EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE",
+                    "BRICK_2X4",cbox[0],cbox[1],obox[2],0)
+            nb=bounds(candidate)
+            # Both original post segments must be contained, and a
+            # timber column must continue BELOW and ABOVE.
+            if not all(nb[k]<=o[k] and o[k+3]<=nb[k+3] for k in (0,1) for o in (cbox,obox)):
+                reasons["not_in_2x4_span"]+=1
+                continue
+            underneath=[t for t in timber if t.placement_id!=old.placement_id
+                        and bounds(t)[5]==nb[2] and contact_cells(t,candidate)]
+            upper=[t for t in timber if t.placement_id!=old.placement_id
+                   and bounds(t)[2]==nb[5] and contact_cells(candidate,t)]
+            con_lower=[q for q in concrete if q.placement_id!=c.placement_id
+                       and bounds(q)[5]==nb[2] and bounds(q)[:2]==cbox[:2]]
+            if not underneath or not upper or not con_lower:
+                reasons["no_under_over"]+=1
+                continue
+            reasons["upper_and_lower"]+=1
+            conflicted=[q.placement_id for q in base.parts
+                if q.placement_id not in (old.placement_id,c.placement_id)
+                and bounds(q) is not None and overlaps(nb,bounds(q))]
+            if conflicted:
+                reasons["collision"]+=1
+                if len(examples)<6:examples.append({"new_box":nb,"colliders":conflicted[:7]})
+                continue
+            candidates.append((old,c,candidate,underneath,upper,con_lower))
     if not candidates:raise ValueError("B3_NO_SAFE_CONCRETE_TIMBER_COLUMN_BRIDGE")
     # Favor shortest span with min empty middle and stable deterministic ID.
     def rank(v):
-        old,c,bridge,under,up=v
+        old,c,bridge,under,up,con_lower=v
         b=bounds(bridge);a=bounds(c)
-        return (-a[5],abs(b[1]-a[1]),b[0],b[1],old.placement_id)
+        return (-a[2],abs(b[1]-a[1]),b[0],b[1],old.placement_id)
     candidates.sort(key=rank)
     return candidates[0]
 
 def replace_one(base):
-    old,concrete,bridge,under,upper=find_candidate(base)
+    old,concrete,bridge,under,upper,con_lower=find_candidate(base)
     original={p.placement_id:p.model_dump(mode="json") for p in base.parts}
     after=base.model_copy(update={"parts":[p for p in base.parts
-           if p.placement_id!=old.placement_id]+[bridge]})
+           if p.placement_id not in (old.placement_id,concrete.placement_id)]+[bridge]})
     changed={p.placement_id:p.model_dump(mode="json") for p in after.parts}
-    if set(original)-set(changed)!={old.placement_id}:
+    if set(original)-set(changed)!={old.placement_id,concrete.placement_id}:
         raise AssertionError("B3_WRONG_DELETIONS")
     if set(changed)-set(original)!={bridge.placement_id}:
         raise AssertionError("B3_WRONG_ADDITIONS")
-    if any(changed[k]!=v for k,v in original.items() if k!=old.placement_id):
+    if any(changed[k]!=v for k,v in original.items() if k not in (old.placement_id,concrete.placement_id)):
         raise AssertionError("B3_OTHER_ORIGINAL_PART_MOVED")
-    return after,{"removed":old.placement_id,"added":bridge.placement_id,
+    return after,{"removed":[old.placement_id,concrete.placement_id],"added":bridge.placement_id,
             "former_post":old,"new_bridge":bridge,"concrete":concrete,
-            "lower_timber_supports":under,"upper_timber_supports":upper}
+            "lower_timber_supports":under,"upper_timber_supports":upper,
+            "concrete_lower_support":con_lower[0]}
 
 def _mesh_edge(lib,a,b):
     aa=brick_model_part_to_instance(a,lib)
@@ -150,7 +142,7 @@ def prove_local_chain(after,context,ldrawroot):
     bridge=context["new_bridge"]
     under=context["lower_timber_supports"][0]
     upper=context["upper_timber_supports"][0]
-    concrete=context["concrete"]
+    concrete=context["concrete_lower_support"]
     # Existing terrace concrete support extends downward through exactly
     # aligned LEGO bricks until it reaches the local modeled ground datum.
     downward=[concrete]
@@ -222,7 +214,7 @@ def produce(output,ldrawroot):
     (dst/"BRICKMODEL-B3-1905.json").write_text(variant.model_dump_json(indent=2)+"\n")
     (dst/"CHAIN-PROOF-LOCAL.json").write_text(json.dumps(path,indent=2,ensure_ascii=False)+"\n")
     delta={"b2_parts":len(initial.parts),"b3_parts":len(variant.parts),
-      "added_ids":[ctx["added"]],"removed_ids":[ctx["removed"]],
+      "added_ids":[ctx["added"]],"removed_ids":ctx["removed"],
       "moved_ids":[],"floor_original_positions_preserved":True,
       "b2_sha256":hashlib.sha256(src).hexdigest(),
       "b2_bytes_unchanged":source.read_bytes()==src,
@@ -243,7 +235,7 @@ def produce(output,ldrawroot):
     bom={"parts":len(variant.parts),
          "by_part":dict(sorted(Counter(p.part_id for p in variant.parts).items())),
          "added":{ctx["new_bridge"].part_id:1},
-         "removed":{ctx["former_post"].part_id:1},
+         "removed":{ctx["former_post"].part_id:1,ctx["concrete"].part_id:1},
          "procurement":False}
     (dst/"BOM-B3.json").write_text(json.dumps(bom,ensure_ascii=False,indent=2)+"\n")
     orig_plan=json.loads((from_b2/"EXPERIMENTAL-1905-FULL-HOUSE"/"ORDER-B2-NOT-CERTIFIED.json").read_text())
