@@ -1,0 +1,19 @@
+{
+  "official_set": "LEGO Creator 31009 Small Cottage",
+  "official_manual": "https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6038244.pdf",
+  "manual_steps": {
+    "base": "printed 5 / LEGO step 2",
+    "stack": "printed 14 step 9; printed 25 step 19",
+    "horizontal_tie": "printed 43-44 / steps 33-34"
+  },
+  "faithful_reconstruction": false,
+  "adaptations": [
+    "91405 plate16x16 substituted for official set 3811 baseplate",
+    "4 x 3003 column stacks are a new 3-course grid",
+    "2 x 3006 transverse beams and 5 x 3832 2x10 deck plates are a new floor arrangement"
+  ],
+  "follows_design_principle": "baseplate wall stack horizontal bracing illustrated by official LEGO 31009",
+  "LDRAW_PARTS_VERSION": "pybricks/ldraw @ c43ed06a128a10ed65675166bf42eb6fd608b9b0",
+  "full_insertion": false,
+  "mechanical_strength": false
+}

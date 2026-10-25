@@ -1,0 +1,113 @@
+{
+  "root": "S1-BASE",
+  "parent_links": {
+    "S1-BASE": [],
+    "S1-COLUMN-X-5-Y-5-LEVEL0": [
+      "S1-BASE"
+    ],
+    "S1-COLUMN-X-5-Y3-LEVEL0": [
+      "S1-BASE"
+    ],
+    "S1-COLUMN-X3-Y-5-LEVEL0": [
+      "S1-BASE"
+    ],
+    "S1-COLUMN-X3-Y3-LEVEL0": [
+      "S1-BASE"
+    ],
+    "S1-COLUMN-X-5-Y-5-LEVEL1": [
+      "S1-COLUMN-X-5-Y-5-LEVEL0"
+    ],
+    "S1-COLUMN-X-5-Y3-LEVEL1": [
+      "S1-COLUMN-X-5-Y3-LEVEL0"
+    ],
+    "S1-COLUMN-X3-Y-5-LEVEL1": [
+      "S1-COLUMN-X3-Y-5-LEVEL0"
+    ],
+    "S1-COLUMN-X3-Y3-LEVEL1": [
+      "S1-COLUMN-X3-Y3-LEVEL0"
+    ],
+    "S1-COLUMN-X-5-Y-5-LEVEL2": [
+      "S1-COLUMN-X-5-Y-5-LEVEL1"
+    ],
+    "S1-COLUMN-X-5-Y3-LEVEL2": [
+      "S1-COLUMN-X-5-Y3-LEVEL1"
+    ],
+    "S1-COLUMN-X3-Y-5-LEVEL2": [
+      "S1-COLUMN-X3-Y-5-LEVEL1"
+    ],
+    "S1-COLUMN-X3-Y3-LEVEL2": [
+      "S1-COLUMN-X3-Y3-LEVEL1"
+    ],
+    "S1-BEAM-Y-5": [
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X3-Y-5-LEVEL2"
+    ],
+    "S1-BEAM-Y3": [
+      "S1-COLUMN-X-5-Y3-LEVEL2",
+      "S1-COLUMN-X3-Y3-LEVEL2"
+    ],
+    "S1-FLOOR-X-5": [
+      "S1-BEAM-Y-5",
+      "S1-BEAM-Y3"
+    ],
+    "S1-FLOOR-X-3": [
+      "S1-BEAM-Y-5",
+      "S1-BEAM-Y3"
+    ],
+    "S1-FLOOR-X-1": [
+      "S1-BEAM-Y-5",
+      "S1-BEAM-Y3"
+    ],
+    "S1-FLOOR-X1": [
+      "S1-BEAM-Y-5",
+      "S1-BEAM-Y3"
+    ],
+    "S1-FLOOR-X3": [
+      "S1-BEAM-Y-5",
+      "S1-BEAM-Y3"
+    ]
+  },
+  "per_floor_plate_routes": {
+    "S1-FLOOR-X-5": [
+      "S1-FLOOR-X-5",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ],
+    "S1-FLOOR-X-3": [
+      "S1-FLOOR-X-3",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ],
+    "S1-FLOOR-X-1": [
+      "S1-FLOOR-X-1",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ],
+    "S1-FLOOR-X1": [
+      "S1-FLOOR-X1",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ],
+    "S1-FLOOR-X3": [
+      "S1-FLOOR-X3",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ]
+  },
+  "bearing_is_geometric_only": true
+}
