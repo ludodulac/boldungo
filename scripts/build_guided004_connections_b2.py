@@ -71,11 +71,13 @@ def _two_host_plate_clearance(plate,neighbor,orphan):
     margins=[]
     for upper in (neighbor,orphan):
         for x,y in contacts[upper.placement_id]:
-            longitudinal=(y-upper.y_studs)*20 - (upper.length_studs-1)*10
-            end=upper.length_studs*10-4-(abs(longitudinal)+6)
+            upper_len=bounds(upper)[4]-bounds(upper)[1]
+            upper_width=bounds(upper)[3]-bounds(upper)[0]
+            longitudinal=(y-upper.y_studs)*20 - (upper_len-1)*10
+            end=upper_len*10-4-(abs(longitudinal)+6)
             if upper.part_id=="BRICK_2X3":
-                transverse=(x-upper.x_studs)*20-(upper.width_studs-1)*10
-                side=upper.width_studs*10-4-(abs(transverse)+6)
+                transverse=(x-upper.x_studs)*20-(upper_width-1)*10
+                side=upper_width*10-4-(abs(transverse)+6)
                 tube=min(math.hypot(transverse,longitudinal-t)-14 for t in (-10,10))
                 margins.append({"host":upper.placement_id,"grid":[x,y],
                                 "side_gap_ldu":side,"end_gap_ldu":end,
