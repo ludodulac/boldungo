@@ -5,8 +5,9 @@ Inspired by, *not copied from*, source 31009 / PDF 6038244:
   3832 2x10 support plates — official roof step 2 (page 47);
   3001 2x4 structural bricks — official step 12 (page 54);
   4445 45° 2x8 slopes — official steps 4, 10, 13, 18, 23;
-  3023 1x2 plates — official step 6 (page 50).
-The 3023 ridge arrangement and flat-bed supports are NEW R-3 ADAPTATIONS.
+  3023 1x2 plates — official step 6 (page 50), used only as bay join.
+  3022 2x2 plates — official step 24 (chimney), experimentally repurposed at ridge.
+The 3022 ridge arrangement and flat-bed supports are NEW R-3 ADAPTATIONS.
 R-1, R-2, A and GUIDED-004 are neither read nor modified.
 
 There is only one width (8 studs), zero overhang, 45°, and integral
@@ -25,7 +26,7 @@ SOURCES={
  "LEGO_set":"31009",
  "official_manual":"https://www.lego.com/cdn/product-assets/product.bi.core.pdf/6038244.pdf",
  "original_31009_mapped_steps":{"3832":[2],"3001":[12],
-                                   "4445":[4,10,13,18,23],"3023":[6]},
+                                   "4445":[4,10,13,18,23],"3023":[6],"3022":[24]},
  "community_R2_model":"missions/R2/31009-ROOF-STEP-PLACEMENTS.tsv",
  "R3_not_official_31009_placement":True,
  "pitch_degrees":45,
@@ -69,19 +70,22 @@ def recipe(width_studs=8,length_studs=8,pitch_degrees=45,overhang_studs=0):
     validate(width_studs,length_studs,pitch_degrees,overhang_studs)
     out=[]
     bays=length_studs//8
-    # Seam plates go one plate below the 3832 cross-bearings.
-    for j in range(1,bays):
-        yy=8*j
-        out.append(Brick(f"join-{yy}","3832","joint", -1,yy-1,-2,10,2,1,TURN,
-                     "ADAPTATION_BRIDGE_TWO_OFFICIAL_3832_SUPPORT_BAYS"))
     for bay in range(bays):
         y0=8*bay
         for end in (0,6):
             yy=y0+end
-            par=(f"join-{y0}",) if end==0 and bay>0 else (
-                 (f"join-{y0+8}",) if end==6 and bay<bays-1 else ())
             out.append(Brick(f"bay{bay}-cross{end}","3832","cross",
-                       -1,yy,-1,10,2,1,TURN,"31009_STEP_2_PART_R3_LOCATION",par))
+                 -1,yy,-1,10,2,1,TURN,
+                 "31009_STEP_2_PART_R3_LOCATION"))
+    # Direct 1x2 connector plates over both neighboring bays, outside
+    # 2x4 wall beds. Each connector spans one stud of each 3832 crossplate.
+    for j in range(1,bays):
+        yy=8*j
+        for xx in (-1,8):
+            out.append(Brick(f"join-{yy}-x{xx}","3023","joint",
+               xx,yy-1,0,1,2,1,IDENT,
+               "31009_STEP_6_PART_R3_NEW_BAY_JOIN",
+               (f"bay{j-1}-cross6",f"bay{j}-cross0")))
     # Layer-by-layer studs on plate bearings (no R-1 3003 posts).
     for level in (0,3):
         for bay in range(bays):
@@ -110,10 +114,12 @@ def recipe(width_studs=8,length_studs=8,pitch_degrees=45,overhang_studs=0):
                     "31009_STEPS_4_10_13_18_23_PART_R3_MODULAR_POSITION",p))
     for bay in range(bays):
         y0=8*bay
-        for j in range(8):
-            out.append(Brick(f"bay{bay}-ridge{j}","3023","ridge",3,y0+j,
-                9,2,1,1,TURN,"31009_STEP_6_PART_R3_NEW_RIDGE_LAYOUT",
+        for j in (0,2,4,6):
+            out.append(Brick(f"bay{bay}-ridge{j}","3022","ridge",
+                3,y0+j,9,2,2,1,IDENT,
+                "31009_STEP_24_CHIMNEY_PART_R3_NEW_RIDGE_LAYOUT",
                 (f"bay{bay}-L1-slope",f"bay{bay}-R1-slope")))
+    out.sort(key=lambda p: ({"cross":0,"joint":1,"wall":2,"slope":3,"ridge":4}[p.role],p.z,p.y,p.x,p.id))
     ids=[p.id for p in out]
     if len(ids)!=len(set(ids)):raise AssertionError("R3_DUPLICATE_ID")
     index={p.id:p for p in out}
@@ -160,8 +166,8 @@ def nominal_mating_alignment(child,parent):
     """
     if parent.z+parent.height!=child.z:
         return False
-    if child.role=="cross" and parent.role=="joint":
-        return len(child.xy() & parent.xy())==10  # one overlapping stud row x 10
+    if child.role=="joint" and parent.role=="cross":
+        return len(child.xy() & parent.xy())==1  # one end stud from each crossplate
     if child.role=="wall" and parent.role=="cross":
         return len(child.xy() & parent.xy())==4  # 2x2 stud pad at bearing
     if child.role=="wall" and parent.role=="wall":
@@ -187,7 +193,7 @@ def nominal_audit(parts):
             for nxt in adj[stack.pop()]-found:
                 found.add(nxt);stack.append(nxt)
         components.append(sorted(found));remaining-=found
-    roots=[p.id for p in parts if p.role in ("cross","joint")]
+    roots=[p.id for p in parts if p.role=="cross"]
     visited=set(roots)
     changed=True
     while changed:
