@@ -6,7 +6,6 @@ on:
       - "scripts/build_documented_frame_s1.py"
       - "tests/bricks/test_documented_frame_s1.py"
       - ".github/workflows/lego2-s1-bearing-frame.yml"
-      - "missions/S1/**"
   workflow_dispatch:
 
 permissions:
