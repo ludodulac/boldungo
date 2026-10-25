@@ -58,7 +58,7 @@ jobs:
           assert chain["first_unproven_edge"]==0
           assert chain["verified_bridge_to_concrete_base_edges"]==list(range(2,12))
           assert chain["reaches_main_house_wall_or_LEGO_baseplate"]=="NOT_PROVEN"
-          rows=(p/"GUIDED004-B3-1905.ldr").read_text().splitlines()
+          rows=(p/"GUIDED004-B3-1904.ldr").read_text().splitlines()
           assert sum(x.startswith("1 ") for x in rows)==1904
           print("B3_FULL_MODEL_1904_PIECES_PASS")
           print("B3_LOCAL_3001_TO_CONCRETE_3003_AND_CONCRETE_Z0_SEGMENT_VERIFIED_PASS")
@@ -81,7 +81,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p missions/B3/generated
-          cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/GUIDED004-B3-1905.ldr missions/B3/generated/
+          cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/GUIDED004-B3-1904.ldr missions/B3/generated/
           cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/B3-FULL-HOUSE-SCHEMATIC.svg missions/B3/generated/
           cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/B3-STRUCTURAL-LINK-ZOOM.svg missions/B3/generated/
           cp artifacts/lego2-b3/B3-EXPERIMENTAL-1905/BOM-B3.json missions/B3/generated/
