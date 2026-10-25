@@ -182,12 +182,16 @@ def prove_local_chain(after,context,ldrawroot):
        "edges_positive_stud_cavity":sum(e["geometry_supported"] for e in edges),
        "edges_total":len(edges),
        "last_established_edge":next((i-1 for i,e in enumerate(edges) if not e["geometry_supported"]),len(edges)-1),
+       "verified_bridge_to_concrete_base_edges":[i for i,e in enumerate(edges) if i>=2 and e["geometry_supported"]],
+       "preexisting_stud_mating_mesh_collision_signals":[i for i,e in enumerate(edges) if e["mesh_relation"]=="COLLISION"],
+       "new_bridge_mesh_collisions":[i for i,e in enumerate(edges) if i>=2 and e["mesh_relation"]=="COLLISION"],
+       "new_bridge_connections_positive":all(e["geometry_supported"] for e in edges[2:4]),
        "first_unproven_edge":next((i for i,e in enumerate(edges) if not e["geometry_supported"]),None),
        "reaches_modeled_z0":bounds(path[-1])[2]==0,
        "reaches_main_house_wall_or_LEGO_baseplate":"NOT_PROVEN",
        "true_stability_and_load_transmission":"NOT_CERTIFIED",
        "continuous_insertions":"NOT_PROVEN"}
-    print("B3_CHAIN",json.dumps({k:output[k] for k in ("edges_positive_stud_cavity","edges_total","first_unproven_edge","reaches_modeled_z0")}))
+    print("B3_CHAIN",json.dumps({k:output[k] for k in ("edges_positive_stud_cavity","edges_total","first_unproven_edge","reaches_modeled_z0","preexisting_stud_mating_mesh_collision_signals","new_bridge_connections_positive")}))
     for edge in edges: print("B3_MESH_LINK",edge["from"],"->",edge["to"],edge["mesh_relation"],edge["explicit_stud_cavity_connector_count"])
     return output
 
@@ -227,6 +231,8 @@ def produce(output,ldrawroot):
       "b2_roof_unverified":audit0["roof_parts_unverified"],
       "b3_roof_unverified":audit1["roof_parts_unverified"],
       "chain_established":path["edges_positive_stud_cavity"]==path["edges_total"],
+      "local_bridge_to_concrete_support_verified":path["new_bridge_connections_positive"],
+      "old_mesh_collision_signals_unresolved":len(path["preexisting_stud_mating_mesh_collision_signals"]),
       "chain_to_z0":path["reaches_modeled_z0"],
       "chain_to_primary_house":"NOT_PROVEN",
       "full_house_mesh_collision_exhaustive":"NOT_TESTED",
