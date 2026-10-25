@@ -1,0 +1,248 @@
+[
+  {
+    "number": 1,
+    "id": "bay0-cross0",
+    "part": "3832",
+    "role": "cross",
+    "parents": [],
+    "source": "31009_STEP_2_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 2,
+    "id": "bay0-cross6",
+    "part": "3832",
+    "role": "cross",
+    "parents": [],
+    "source": "31009_STEP_2_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 3,
+    "id": "bay0-L0-bed0-z0",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-cross0"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 4,
+    "id": "bay0-L1-bed0-z0",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-cross0"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 5,
+    "id": "bay0-R1-bed0-z0",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-cross0"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 6,
+    "id": "bay0-R0-bed0-z0",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-cross0"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 7,
+    "id": "bay0-L0-bed4-z0",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-cross6"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 8,
+    "id": "bay0-L1-bed4-z0",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-cross6"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 9,
+    "id": "bay0-R1-bed4-z0",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-cross6"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 10,
+    "id": "bay0-R0-bed4-z0",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-cross6"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 11,
+    "id": "bay0-L1-bed0-z3",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-L1-bed0-z0"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 12,
+    "id": "bay0-R1-bed0-z3",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-R1-bed0-z0"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 13,
+    "id": "bay0-L1-bed4-z3",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-L1-bed4-z0"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 14,
+    "id": "bay0-R1-bed4-z3",
+    "part": "3001",
+    "role": "wall",
+    "parents": [
+      "bay0-R1-bed4-z0"
+    ],
+    "source": "31009_STEP_12_PART_R3_LOCATION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 15,
+    "id": "bay0-L0-slope",
+    "part": "4445",
+    "role": "slope",
+    "parents": [
+      "bay0-L0-bed0-z0",
+      "bay0-L0-bed4-z0"
+    ],
+    "source": "31009_STEPS_4_10_13_18_23_PART_R3_MODULAR_POSITION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 16,
+    "id": "bay0-R0-slope",
+    "part": "4445",
+    "role": "slope",
+    "parents": [
+      "bay0-R0-bed0-z0",
+      "bay0-R0-bed4-z0"
+    ],
+    "source": "31009_STEPS_4_10_13_18_23_PART_R3_MODULAR_POSITION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 17,
+    "id": "bay0-L1-slope",
+    "part": "4445",
+    "role": "slope",
+    "parents": [
+      "bay0-L1-bed0-z3",
+      "bay0-L1-bed4-z3"
+    ],
+    "source": "31009_STEPS_4_10_13_18_23_PART_R3_MODULAR_POSITION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 18,
+    "id": "bay0-R1-slope",
+    "part": "4445",
+    "role": "slope",
+    "parents": [
+      "bay0-R1-bed0-z3",
+      "bay0-R1-bed4-z3"
+    ],
+    "source": "31009_STEPS_4_10_13_18_23_PART_R3_MODULAR_POSITION",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 19,
+    "id": "bay0-ridge0",
+    "part": "3022",
+    "role": "ridge",
+    "parents": [
+      "bay0-L1-slope",
+      "bay0-R1-slope"
+    ],
+    "source": "31009_STEP_24_CHIMNEY_PART_R3_NEW_RIDGE_LAYOUT",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 20,
+    "id": "bay0-ridge2",
+    "part": "3022",
+    "role": "ridge",
+    "parents": [
+      "bay0-L1-slope",
+      "bay0-R1-slope"
+    ],
+    "source": "31009_STEP_24_CHIMNEY_PART_R3_NEW_RIDGE_LAYOUT",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 21,
+    "id": "bay0-ridge4",
+    "part": "3022",
+    "role": "ridge",
+    "parents": [
+      "bay0-L1-slope",
+      "bay0-R1-slope"
+    ],
+    "source": "31009_STEP_24_CHIMNEY_PART_R3_NEW_RIDGE_LAYOUT",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  },
+  {
+    "number": 22,
+    "id": "bay0-ridge6",
+    "part": "3022",
+    "role": "ridge",
+    "parents": [
+      "bay0-L1-slope",
+      "bay0-R1-slope"
+    ],
+    "source": "31009_STEP_24_CHIMNEY_PART_R3_NEW_RIDGE_LAYOUT",
+    "direction": "vertical approach proposed — continuous path NOT certified"
+  }
+]

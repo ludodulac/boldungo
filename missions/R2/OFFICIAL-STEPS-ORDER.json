@@ -1,0 +1,977 @@
+[
+  {
+    "official_step": 1,
+    "printed_manual_page": 47,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 149,
+        "part": "32001",
+        "color": 15,
+        "position_ldu": [
+          -80,
+          -192,
+          -40
+        ]
+      },
+      {
+        "original_index": 150,
+        "part": "3010",
+        "color": 4,
+        "position_ldu": [
+          -80,
+          -216,
+          -30
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 2,
+    "printed_manual_page": 47,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 151,
+        "part": "3832",
+        "color": 15,
+        "position_ldu": [
+          0,
+          -192,
+          40
+        ]
+      },
+      {
+        "original_index": 152,
+        "part": "3832",
+        "color": 15,
+        "position_ldu": [
+          -160,
+          -192,
+          40
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 3,
+    "printed_manual_page": 48,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 153,
+        "part": "3002",
+        "color": 4,
+        "position_ldu": [
+          -10,
+          -216,
+          -20
+        ]
+      },
+      {
+        "original_index": 154,
+        "part": "3002",
+        "color": 4,
+        "position_ldu": [
+          -150,
+          -216,
+          -20
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 4,
+    "printed_manual_page": 49,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 155,
+        "part": "3039",
+        "color": 272,
+        "position_ldu": [
+          -180,
+          -216,
+          -50
+        ]
+      },
+      {
+        "original_index": 156,
+        "part": "4445",
+        "color": 272,
+        "position_ldu": [
+          -80,
+          -216,
+          -50
+        ]
+      },
+      {
+        "original_index": 157,
+        "part": "3039",
+        "color": 272,
+        "position_ldu": [
+          20,
+          -216,
+          -50
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 5,
+    "printed_manual_page": 49,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 158,
+        "part": "3622",
+        "color": 4,
+        "position_ldu": [
+          -150,
+          -216,
+          10
+        ]
+      },
+      {
+        "original_index": 159,
+        "part": "3622",
+        "color": 4,
+        "position_ldu": [
+          -10,
+          -216,
+          10
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 6,
+    "printed_manual_page": 50,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 160,
+        "part": "3023",
+        "color": 4,
+        "position_ldu": [
+          -170,
+          -200,
+          40
+        ]
+      },
+      {
+        "original_index": 161,
+        "part": "3023",
+        "color": 4,
+        "position_ldu": [
+          -170,
+          -208,
+          40
+        ]
+      },
+      {
+        "original_index": 162,
+        "part": "3023",
+        "color": 4,
+        "position_ldu": [
+          10,
+          -200,
+          40
+        ]
+      },
+      {
+        "original_index": 163,
+        "part": "3023",
+        "color": 4,
+        "position_ldu": [
+          10,
+          -208,
+          40
+        ]
+      },
+      {
+        "original_index": 164,
+        "part": "32028",
+        "color": 28,
+        "position_ldu": [
+          10,
+          -216,
+          40
+        ]
+      },
+      {
+        "original_index": 165,
+        "part": "32028",
+        "color": 28,
+        "position_ldu": [
+          -170,
+          -216,
+          40
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 7,
+    "printed_manual_page": 51,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 166,
+        "part": "3622",
+        "color": 4,
+        "position_ldu": [
+          -150,
+          -216,
+          70
+        ]
+      },
+      {
+        "original_index": 167,
+        "part": "3622",
+        "color": 4,
+        "position_ldu": [
+          -10,
+          -216,
+          70
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 8,
+    "printed_manual_page": 51,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 168,
+        "part": "32001",
+        "color": 15,
+        "position_ldu": [
+          -80,
+          -192,
+          120
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 9,
+    "printed_manual_page": 52,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 169,
+        "part": "3002",
+        "color": 4,
+        "position_ldu": [
+          -150,
+          -216,
+          100
+        ]
+      },
+      {
+        "original_index": 170,
+        "part": "3002",
+        "color": 4,
+        "position_ldu": [
+          -10,
+          -216,
+          100
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 10,
+    "printed_manual_page": 52,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 171,
+        "part": "4445",
+        "color": 272,
+        "position_ldu": [
+          -40,
+          -216,
+          130
+        ]
+      },
+      {
+        "original_index": 172,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          -160,
+          -216,
+          130
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 11,
+    "printed_manual_page": 53,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 173,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          0,
+          -240,
+          110
+        ]
+      },
+      {
+        "original_index": 174,
+        "part": "4445",
+        "color": 272,
+        "position_ldu": [
+          -120,
+          -240,
+          110
+        ]
+      },
+      {
+        "original_index": 175,
+        "part": "3002",
+        "color": 4,
+        "position_ldu": [
+          -150,
+          -240,
+          80
+        ]
+      },
+      {
+        "original_index": 176,
+        "part": "3002",
+        "color": 4,
+        "position_ldu": [
+          -10,
+          -240,
+          80
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 12,
+    "printed_manual_page": 54,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 177,
+        "part": "3001",
+        "color": 4,
+        "position_ldu": [
+          -140,
+          -240,
+          0
+        ]
+      },
+      {
+        "original_index": 178,
+        "part": "3001",
+        "color": 4,
+        "position_ldu": [
+          -20,
+          -240,
+          0
+        ]
+      },
+      {
+        "original_index": 179,
+        "part": "3005",
+        "color": 4,
+        "position_ldu": [
+          -110,
+          -240,
+          -30
+        ]
+      },
+      {
+        "original_index": 180,
+        "part": "3005",
+        "color": 4,
+        "position_ldu": [
+          -50,
+          -240,
+          -30
+        ]
+      },
+      {
+        "original_index": 181,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          -160,
+          -240,
+          -30
+        ]
+      },
+      {
+        "original_index": 182,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          0,
+          -240,
+          -30
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 13,
+    "printed_manual_page": 55,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 183,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          -160,
+          -264,
+          90
+        ]
+      },
+      {
+        "original_index": 184,
+        "part": "4445",
+        "color": 272,
+        "position_ldu": [
+          -40,
+          -264,
+          90
+        ]
+      },
+      {
+        "original_index": 185,
+        "part": "3004",
+        "color": 4,
+        "position_ldu": [
+          -160,
+          -264,
+          70
+        ]
+      },
+      {
+        "original_index": 186,
+        "part": "3004",
+        "color": 4,
+        "position_ldu": [
+          0,
+          -264,
+          70
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 14,
+    "printed_manual_page": 56,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 187,
+        "part": "60592",
+        "color": 15,
+        "position_ldu": [
+          -170,
+          -264,
+          40
+        ]
+      },
+      {
+        "original_index": 188,
+        "part": "60601",
+        "color": 47,
+        "position_ldu": [
+          -170,
+          -264,
+          40
+        ]
+      },
+      {
+        "original_index": 189,
+        "part": "60592",
+        "color": 15,
+        "position_ldu": [
+          10,
+          -264,
+          40
+        ]
+      },
+      {
+        "original_index": 190,
+        "part": "60601",
+        "color": 47,
+        "position_ldu": [
+          10,
+          -264,
+          40
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 15,
+    "printed_manual_page": 57,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 191,
+        "part": "3004",
+        "color": 4,
+        "position_ldu": [
+          -160,
+          -264,
+          10
+        ]
+      },
+      {
+        "original_index": 192,
+        "part": "3659",
+        "color": 4,
+        "position_ldu": [
+          -130,
+          -264,
+          40
+        ]
+      },
+      {
+        "original_index": 193,
+        "part": "3659",
+        "color": 4,
+        "position_ldu": [
+          -30,
+          -264,
+          40
+        ]
+      },
+      {
+        "original_index": 194,
+        "part": "3004",
+        "color": 4,
+        "position_ldu": [
+          0,
+          -264,
+          10
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 16,
+    "printed_manual_page": 58,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 195,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          -160,
+          -264,
+          -10
+        ]
+      },
+      {
+        "original_index": 196,
+        "part": "3622",
+        "color": 4,
+        "position_ldu": [
+          -110,
+          -264,
+          -10
+        ]
+      },
+      {
+        "original_index": 197,
+        "part": "3622",
+        "color": 4,
+        "position_ldu": [
+          -50,
+          -264,
+          -10
+        ]
+      },
+      {
+        "original_index": 198,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          0,
+          -264,
+          -10
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 17,
+    "printed_manual_page": 59,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 199,
+        "part": "60592",
+        "color": 15,
+        "position_ldu": [
+          -80,
+          -264,
+          -30
+        ]
+      },
+      {
+        "original_index": 200,
+        "part": "60601",
+        "color": 47,
+        "position_ldu": [
+          -80,
+          -264,
+          -30
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 18,
+    "printed_manual_page": 60,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 201,
+        "part": "4445",
+        "color": 272,
+        "position_ldu": [
+          -120,
+          -288,
+          70
+        ]
+      },
+      {
+        "original_index": 202,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          0,
+          -288,
+          70
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 19,
+    "printed_manual_page": 61,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 203,
+        "part": "3009",
+        "color": 4,
+        "position_ldu": [
+          -80,
+          -288,
+          50
+        ]
+      },
+      {
+        "original_index": 204,
+        "part": "3009",
+        "color": 4,
+        "position_ldu": [
+          -80,
+          -288,
+          30
+        ]
+      },
+      {
+        "original_index": 205,
+        "part": "6141",
+        "color": 27,
+        "position_ldu": [
+          -70,
+          -224,
+          -50
+        ]
+      },
+      {
+        "original_index": 206,
+        "part": "6141",
+        "color": 14,
+        "position_ldu": [
+          -90,
+          -224,
+          -50
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 20,
+    "printed_manual_page": 62,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 207,
+        "part": "3003",
+        "color": 4,
+        "position_ldu": [
+          -160,
+          -288,
+          40
+        ]
+      },
+      {
+        "original_index": 208,
+        "part": "3003",
+        "color": 4,
+        "position_ldu": [
+          0,
+          -288,
+          40
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 21,
+    "printed_manual_page": 63,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 209,
+        "part": "3038",
+        "color": 272,
+        "position_ldu": [
+          -170,
+          -288,
+          10
+        ]
+      },
+      {
+        "original_index": 210,
+        "part": "3046",
+        "color": 272,
+        "position_ldu": [
+          -110,
+          -288,
+          10
+        ]
+      },
+      {
+        "original_index": 211,
+        "part": "3046",
+        "color": 272,
+        "position_ldu": [
+          -50,
+          -288,
+          10
+        ]
+      },
+      {
+        "original_index": 212,
+        "part": "3038",
+        "color": 272,
+        "position_ldu": [
+          10,
+          -288,
+          10
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 22,
+    "printed_manual_page": 64,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 213,
+        "part": "3004",
+        "color": 4,
+        "position_ldu": [
+          -80,
+          -288,
+          -30
+        ]
+      },
+      {
+        "original_index": 214,
+        "part": "3039",
+        "color": 272,
+        "position_ldu": [
+          -50,
+          -288,
+          -40
+        ]
+      },
+      {
+        "original_index": 215,
+        "part": "3039",
+        "color": 272,
+        "position_ldu": [
+          -110,
+          -288,
+          -40
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 23,
+    "printed_manual_page": 65,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 216,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          -160,
+          -312,
+          50
+        ]
+      },
+      {
+        "original_index": 217,
+        "part": "4445",
+        "color": 272,
+        "position_ldu": [
+          -40,
+          -312,
+          50
+        ]
+      },
+      {
+        "original_index": 218,
+        "part": "3039",
+        "color": 272,
+        "position_ldu": [
+          -180,
+          -312,
+          30
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 24,
+    "printed_manual_page": 66,
+    "note": "Chimney subassembly continues on printed page 67",
+    "pieces": [
+      {
+        "original_index": 219,
+        "part": "3003",
+        "color": 71,
+        "position_ldu": [
+          -140,
+          -312,
+          20
+        ]
+      },
+      {
+        "original_index": 220,
+        "part": "3004",
+        "color": 19,
+        "position_ldu": [
+          -150,
+          -336,
+          20
+        ]
+      },
+      {
+        "original_index": 221,
+        "part": "3004",
+        "color": 71,
+        "position_ldu": [
+          -130,
+          -336,
+          20
+        ]
+      },
+      {
+        "original_index": 222,
+        "part": "3022",
+        "color": 19,
+        "position_ldu": [
+          -140,
+          -344,
+          20
+        ]
+      },
+      {
+        "original_index": 223,
+        "part": "3062",
+        "color": 0,
+        "position_ldu": [
+          -140,
+          -368,
+          20
+        ]
+      }
+    ]
+  },
+  {
+    "official_step": 25,
+    "printed_manual_page": 68,
+    "note": null,
+    "pieces": [
+      {
+        "original_index": 224,
+        "part": "3046",
+        "color": 272,
+        "position_ldu": [
+          -90,
+          -312,
+          30
+        ]
+      },
+      {
+        "original_index": 225,
+        "part": "3038",
+        "color": 272,
+        "position_ldu": [
+          -90,
+          -312,
+          -30
+        ]
+      },
+      {
+        "original_index": 226,
+        "part": "3046",
+        "color": 272,
+        "position_ldu": [
+          -70,
+          -312,
+          30
+        ]
+      },
+      {
+        "original_index": 227,
+        "part": "3038",
+        "color": 272,
+        "position_ldu": [
+          -70,
+          -312,
+          -30
+        ]
+      },
+      {
+        "original_index": 228,
+        "part": "3037",
+        "color": 272,
+        "position_ldu": [
+          0,
+          -312,
+          30
+        ]
+      }
+    ]
+  }
+]

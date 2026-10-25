@@ -1,0 +1,70 @@
+name: LEGO2 R-1 roof from documented LEGO 31009 manual
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - "scripts/experiment_official_roof_r1.py"
+      - "scripts/probe_official_roof_r1.py"
+      - "tests/bricks/test_official_roof_r1.py"
+      - "missions/R1/**"
+      - ".github/workflows/lego2-r1-official-roof.yml"
+  workflow_dispatch:
+
+jobs:
+  build-test-document-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing geometry engine and pytest
+        run: |
+          python -m pip install pytest
+          python -m pip install -e ./lego_geometry_engine
+      - name: Run fail-closed reproducible independent roof recipe tests
+        run: python -m pytest -q tests/bricks/test_official_roof_r1.py
+      - name: Generate first visible generic module, BOM, assembly steps
+        run: python scripts/experiment_official_roof_r1.py --length-studs 8 --output artifacts/lego2-r1-official-roof
+      - name: Verify committed first real LDraw is exactly reproducible
+        run: |
+          cmp missions/R1/R1-31009-EXPERIMENT.ldr artifacts/lego2-r1-official-roof/R1-31009-EXPERIMENT.ldr
+          cmp missions/R1/BOM.json artifacts/lego2-r1-official-roof/BOM.json
+          cmp missions/R1/ORDER.json artifacts/lego2-r1-official-roof/ORDER.json
+          echo R1_COMMITTED_MODEL_BOM_ORDER_EQUALS_GENERATED
+      - name: Load only needed official LDraw DAT primitives into runner, pinned
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-r1-ldraw --max-files 240 --parts 4445 3007 3003 3022 3811
+      - name: Bounded real official LDraw geometry verification (no auto-approval)
+        run: |
+          python scripts/probe_official_roof_r1.py --ldraw-root /tmp/lego2-r1-ldraw --output artifacts/lego2-r1-official-roof/REAL-LDRAW-GEOMETRY.json
+      - name: Guard source/reference and explicitly unproven claims
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("artifacts/lego2-r1-official-roof/EVIDENCE.json").read_text())
+          m=json.loads(Path("artifacts/lego2-r1-official-roof/REAL-LDRAW-GEOMETRY.json").read_text())
+          assert d["source"]["set"]=="31009"
+          assert d["source"]["not_official_assembly_replica"] is True
+          assert d["audit"]["physical_stability_proven"] is False
+          assert m["summary"]["our_variant_is_official_lego_build"] is False
+          assert m["summary"]["full_insertion_proven"] is False
+          assert m["summary"]["physical_strength_proven"] is False
+          assert m["summary"]["real_4445_to_3007_primitive_mates_aligned"] == 4
+          assert m["summary"]["real_3022_to_opposing_4445_four_stud_mates_aligned"] == 4
+          assert m["summary"]["all_eight_roof_parts_have_verified_static_mating_geometry"] is True
+          assert m["summary"]["mesh_collisions_detected_in_checked_pairs"] == 0
+          assert d["audit"]["total_parts"]==41
+          assert d["audit"]["roof_parts"]==8
+          print("R1_PROVENANCE_GUARDS_PASS",d["source"]["set"],"PIECES",d["audit"]["total_parts"],"N6_NOT_CERTIFIED")
+          PY
+      - name: Save first R-1 model, BOM, manual references and geometry evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-R1-OFFICIAL-MANUAL-INSPIRED-ROOF-EXPERIMENT-NOT-CERTIFIED
+          path: artifacts/lego2-r1-official-roof/
+          if-no-files-found: warn
+          retention-days: 30

@@ -1,0 +1,167 @@
+{
+  "total": 80,
+  "inclined_roof_parts": 29,
+  "supports_fittings_and_windows": 51,
+  "ldraw_designs": {
+    "3001": 2,
+    "3002": 6,
+    "3003": 3,
+    "3004": 7,
+    "3005": 2,
+    "3009": 2,
+    "3010": 1,
+    "3022": 1,
+    "3023": 4,
+    "3037": 10,
+    "3038": 4,
+    "3039": 5,
+    "3046": 4,
+    "3062": 1,
+    "3622": 6,
+    "3659": 2,
+    "3832": 2,
+    "4445": 6,
+    "6141": 2,
+    "32001": 2,
+    "32028": 2,
+    "60592": 3,
+    "60601": 3
+  },
+  "ldraw_colors": [
+    {
+      "part": "3001",
+      "color": 4,
+      "quantity": 2
+    },
+    {
+      "part": "3002",
+      "color": 4,
+      "quantity": 6
+    },
+    {
+      "part": "3003",
+      "color": 4,
+      "quantity": 2
+    },
+    {
+      "part": "3003",
+      "color": 71,
+      "quantity": 1
+    },
+    {
+      "part": "3004",
+      "color": 19,
+      "quantity": 1
+    },
+    {
+      "part": "3004",
+      "color": 4,
+      "quantity": 5
+    },
+    {
+      "part": "3004",
+      "color": 71,
+      "quantity": 1
+    },
+    {
+      "part": "3005",
+      "color": 4,
+      "quantity": 2
+    },
+    {
+      "part": "3009",
+      "color": 4,
+      "quantity": 2
+    },
+    {
+      "part": "3010",
+      "color": 4,
+      "quantity": 1
+    },
+    {
+      "part": "3022",
+      "color": 19,
+      "quantity": 1
+    },
+    {
+      "part": "3023",
+      "color": 4,
+      "quantity": 4
+    },
+    {
+      "part": "3037",
+      "color": 272,
+      "quantity": 10
+    },
+    {
+      "part": "3038",
+      "color": 272,
+      "quantity": 4
+    },
+    {
+      "part": "3039",
+      "color": 272,
+      "quantity": 5
+    },
+    {
+      "part": "3046",
+      "color": 272,
+      "quantity": 4
+    },
+    {
+      "part": "3062",
+      "color": 0,
+      "quantity": 1
+    },
+    {
+      "part": "32001",
+      "color": 15,
+      "quantity": 2
+    },
+    {
+      "part": "32028",
+      "color": 28,
+      "quantity": 2
+    },
+    {
+      "part": "3622",
+      "color": 4,
+      "quantity": 6
+    },
+    {
+      "part": "3659",
+      "color": 4,
+      "quantity": 2
+    },
+    {
+      "part": "3832",
+      "color": 15,
+      "quantity": 2
+    },
+    {
+      "part": "4445",
+      "color": 272,
+      "quantity": 6
+    },
+    {
+      "part": "60592",
+      "color": 15,
+      "quantity": 3
+    },
+    {
+      "part": "60601",
+      "color": 47,
+      "quantity": 3
+    },
+    {
+      "part": "6141",
+      "color": 14,
+      "quantity": 1
+    },
+    {
+      "part": "6141",
+      "color": 27,
+      "quantity": 1
+    }
+  ]
+}

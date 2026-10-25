@@ -1,0 +1,214 @@
+0 BOLDUNGO R-2 LEGO 31009 roof subassembly — 25 step sequence
+0 Name: 31009-ROOF-R2-OFFICIAL-STEP-RECONSTRUCTION.ldr
+0 // LEGO 6038244.pdf printed pp47-68, steps 1..25
+0 // LDraw coordinates based on independent third-party LTRON MPD
+0 // NOT an official LEGO digital model; no strength certificate
+0 // OFFICIAL LEGO STEP 1, PRINTED PAGE 47
+0 // part index 149 from credited third-party MPD
+1 15 -80 -192 -40 1 0 0 0 1 0 0 0 1 32001.dat
+0 // part index 150 from credited third-party MPD
+1 4 -80 -216 -30 1 0 0 0 1 0 0 0 1 3010.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 2, PRINTED PAGE 47
+0 // part index 151 from credited third-party MPD
+1 15 0 -192 40 0 0 -1 0 1 0 1 0 0 3832.dat
+0 // part index 152 from credited third-party MPD
+1 15 -160 -192 40 0 0 -1 0 1 0 1 0 0 3832.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 3, PRINTED PAGE 48
+0 // part index 153 from credited third-party MPD
+1 4 -10 -216 -20 1 0 0 0 1 0 0 0 1 3002.dat
+0 // part index 154 from credited third-party MPD
+1 4 -150 -216 -20 1 0 0 0 1 0 0 0 1 3002.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 4, PRINTED PAGE 49
+0 // part index 155 from credited third-party MPD
+1 272 -180 -216 -50 1 0 0 0 1 0 0 0 1 3039.dat
+0 // part index 156 from credited third-party MPD
+1 272 -80 -216 -50 1 0 0 0 1 0 0 0 1 4445.dat
+0 // part index 157 from credited third-party MPD
+1 272 20 -216 -50 1 0 0 0 1 0 0 0 1 3039.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 5, PRINTED PAGE 49
+0 // part index 158 from credited third-party MPD
+1 4 -150 -216 10 1 0 0 0 1 0 0 0 1 3622.dat
+0 // part index 159 from credited third-party MPD
+1 4 -10 -216 10 1 0 0 0 1 0 0 0 1 3622.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 6, PRINTED PAGE 50
+0 // part index 160 from credited third-party MPD
+1 4 -170 -200 40 0 0 -1 0 1 0 1 0 0 3023.dat
+0 // part index 161 from credited third-party MPD
+1 4 -170 -208 40 0 0 -1 0 1 0 1 0 0 3023.dat
+0 // part index 162 from credited third-party MPD
+1 4 10 -200 40 0 0 -1 0 1 0 1 0 0 3023.dat
+0 // part index 163 from credited third-party MPD
+1 4 10 -208 40 0 0 -1 0 1 0 1 0 0 3023.dat
+0 // part index 164 from credited third-party MPD
+1 28 10 -216 40 0 0 -1 0 1 0 1 0 0 32028.dat
+0 // part index 165 from credited third-party MPD
+1 28 -170 -216 40 0 0 1 0 1 0 -1 0 0 32028.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 7, PRINTED PAGE 51
+0 // part index 166 from credited third-party MPD
+1 4 -150 -216 70 1 0 0 0 1 0 0 0 1 3622.dat
+0 // part index 167 from credited third-party MPD
+1 4 -10 -216 70 1 0 0 0 1 0 0 0 1 3622.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 8, PRINTED PAGE 51
+0 // part index 168 from credited third-party MPD
+1 15 -80 -192 120 1 0 0 0 1 0 0 0 1 32001.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 9, PRINTED PAGE 52
+0 // part index 169 from credited third-party MPD
+1 4 -150 -216 100 1 0 0 0 1 0 0 0 1 3002.dat
+0 // part index 170 from credited third-party MPD
+1 4 -10 -216 100 1 0 0 0 1 0 0 0 1 3002.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 10, PRINTED PAGE 52
+0 // part index 171 from credited third-party MPD
+1 272 -40 -216 130 -1 0 0 0 1 0 0 0 -1 4445.dat
+0 // part index 172 from credited third-party MPD
+1 272 -160 -216 130 -1 0 0 0 1 0 0 0 -1 3037.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 11, PRINTED PAGE 53
+0 // part index 173 from credited third-party MPD
+1 272 0 -240 110 -1 0 0 0 1 0 0 0 -1 3037.dat
+0 // part index 174 from credited third-party MPD
+1 272 -120 -240 110 -1 0 0 0 1 0 0 0 -1 4445.dat
+0 // part index 175 from credited third-party MPD
+1 4 -150 -240 80 1 0 0 0 1 0 0 0 1 3002.dat
+0 // part index 176 from credited third-party MPD
+1 4 -10 -240 80 1 0 0 0 1 0 0 0 1 3002.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 12, PRINTED PAGE 54
+0 // part index 177 from credited third-party MPD
+1 4 -140 -240 0 1 0 0 0 1 0 0 0 1 3001.dat
+0 // part index 178 from credited third-party MPD
+1 4 -20 -240 0 1 0 0 0 1 0 0 0 1 3001.dat
+0 // part index 179 from credited third-party MPD
+1 4 -110 -240 -30 1 0 0 0 1 0 0 0 1 3005.dat
+0 // part index 180 from credited third-party MPD
+1 4 -50 -240 -30 1 0 0 0 1 0 0 0 1 3005.dat
+0 // part index 181 from credited third-party MPD
+1 272 -160 -240 -30 1 0 0 0 1 0 0 0 1 3037.dat
+0 // part index 182 from credited third-party MPD
+1 272 0 -240 -30 1 0 0 0 1 0 0 0 1 3037.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 13, PRINTED PAGE 55
+0 // part index 183 from credited third-party MPD
+1 272 -160 -264 90 -1 0 0 0 1 0 0 0 -1 3037.dat
+0 // part index 184 from credited third-party MPD
+1 272 -40 -264 90 -1 0 0 0 1 0 0 0 -1 4445.dat
+0 // part index 185 from credited third-party MPD
+1 4 -160 -264 70 1 0 0 0 1 0 0 0 1 3004.dat
+0 // part index 186 from credited third-party MPD
+1 4 0 -264 70 1 0 0 0 1 0 0 0 1 3004.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 14, PRINTED PAGE 56
+0 // part index 187 from credited third-party MPD
+1 15 -170 -264 40 0 0 1 0 1 0 -1 0 0 60592.dat
+0 // part index 188 from credited third-party MPD
+1 47 -170 -264 40 0 0 1 0 1 0 -1 0 0 60601.dat
+0 // part index 189 from credited third-party MPD
+1 15 10 -264 40 0 0 -1 0 1 0 1 0 0 60592.dat
+0 // part index 190 from credited third-party MPD
+1 47 10 -264 40 0 0 -1 0 1 0 1 0 0 60601.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 15, PRINTED PAGE 57
+0 // part index 191 from credited third-party MPD
+1 4 -160 -264 10 1 0 0 0 1 0 0 0 1 3004.dat
+0 // part index 192 from credited third-party MPD
+1 4 -130 -264 40 0 0 -1 0 1 0 1 0 0 3659.dat
+0 // part index 193 from credited third-party MPD
+1 4 -30 -264 40 0 0 -1 0 1 0 1 0 0 3659.dat
+0 // part index 194 from credited third-party MPD
+1 4 0 -264 10 1 0 0 0 1 0 0 0 1 3004.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 16, PRINTED PAGE 58
+0 // part index 195 from credited third-party MPD
+1 272 -160 -264 -10 1 0 0 0 1 0 0 0 1 3037.dat
+0 // part index 196 from credited third-party MPD
+1 4 -110 -264 -10 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // part index 197 from credited third-party MPD
+1 4 -50 -264 -10 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // part index 198 from credited third-party MPD
+1 272 0 -264 -10 1 0 0 0 1 0 0 0 1 3037.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 17, PRINTED PAGE 59
+0 // part index 199 from credited third-party MPD
+1 15 -80 -264 -30 1 0 0 0 1 0 0 0 1 60592.dat
+0 // part index 200 from credited third-party MPD
+1 47 -80 -264 -30 1 0 0 0 1 0 0 0 1 60601.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 18, PRINTED PAGE 60
+0 // part index 201 from credited third-party MPD
+1 272 -120 -288 70 -1 0 0 0 1 0 0 0 -1 4445.dat
+0 // part index 202 from credited third-party MPD
+1 272 0 -288 70 -1 0 0 0 1 0 0 0 -1 3037.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 19, PRINTED PAGE 61
+0 // part index 203 from credited third-party MPD
+1 4 -80 -288 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // part index 204 from credited third-party MPD
+1 4 -80 -288 30 1 0 0 0 1 0 0 0 1 3009.dat
+0 // part index 205 from credited third-party MPD
+1 27 -70 -224 -50 1 0 0 0 1 0 0 0 1 6141.dat
+0 // part index 206 from credited third-party MPD
+1 14 -90 -224 -50 1 0 0 0 1 0 0 0 1 6141.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 20, PRINTED PAGE 62
+0 // part index 207 from credited third-party MPD
+1 4 -160 -288 40 1 0 0 0 1 0 0 0 1 3003.dat
+0 // part index 208 from credited third-party MPD
+1 4 0 -288 40 1 0 0 0 1 0 0 0 1 3003.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 21, PRINTED PAGE 63
+0 // part index 209 from credited third-party MPD
+1 272 -170 -288 10 1 0 0 0 1 0 0 0 1 3038.dat
+0 // part index 210 from credited third-party MPD
+1 272 -110 -288 10 0 0 1 0 1 0 -1 0 0 3046.dat
+0 // part index 211 from credited third-party MPD
+1 272 -50 -288 10 1 0 0 0 1 0 0 0 1 3046.dat
+0 // part index 212 from credited third-party MPD
+1 272 10 -288 10 1 0 0 0 1 0 0 0 1 3038.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 22, PRINTED PAGE 64
+0 // part index 213 from credited third-party MPD
+1 4 -80 -288 -30 1 0 0 0 1 0 0 0 1 3004.dat
+0 // part index 214 from credited third-party MPD
+1 272 -50 -288 -40 0 0 -1 0 1 0 1 0 0 3039.dat
+0 // part index 215 from credited third-party MPD
+1 272 -110 -288 -40 0 0 1 0 1 0 -1 0 0 3039.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 23, PRINTED PAGE 65
+0 // part index 216 from credited third-party MPD
+1 272 -160 -312 50 -1 0 0 0 1 0 0 0 -1 3037.dat
+0 // part index 217 from credited third-party MPD
+1 272 -40 -312 50 -1 0 0 0 1 0 0 0 -1 4445.dat
+0 // part index 218 from credited third-party MPD
+1 272 -180 -312 30 1 0 0 0 1 0 0 0 1 3039.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 24, PRINTED PAGE 66
+0 // part index 219 from credited third-party MPD
+1 71 -140 -312 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // part index 220 from credited third-party MPD
+1 19 -150 -336 20 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // part index 221 from credited third-party MPD
+1 71 -130 -336 20 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // part index 222 from credited third-party MPD
+1 19 -140 -344 20 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // part index 223 from credited third-party MPD
+1 0 -140 -368 20 0 0 -1 0 1 0 1 0 0 3062.dat
+0 STEP
+0 // OFFICIAL LEGO STEP 25, PRINTED PAGE 68
+0 // part index 224 from credited third-party MPD
+1 272 -90 -312 30 0 0 1 0 1 0 -1 0 0 3046.dat
+0 // part index 225 from credited third-party MPD
+1 272 -90 -312 -30 0 0 1 0 1 0 -1 0 0 3038.dat
+0 // part index 226 from credited third-party MPD
+1 272 -70 -312 30 1 0 0 0 1 0 0 0 1 3046.dat
+0 // part index 227 from credited third-party MPD
+1 272 -70 -312 -30 0 0 -1 0 1 0 1 0 0 3038.dat
+0 // part index 228 from credited third-party MPD
+1 272 0 -312 30 1 0 0 0 1 0 0 0 1 3037.dat

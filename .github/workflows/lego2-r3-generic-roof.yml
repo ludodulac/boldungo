@@ -1,0 +1,76 @@
+name: LEGO2 R-3 generic 45deg roof two real models
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - "scripts/generate_roof_recipe_r3.py"
+      - "scripts/render_roof_r3_preview.py"
+      - "scripts/audit_roof_recipe_r3.py"
+      - "tests/bricks/test_generic_roof_r3.py"
+      - "missions/R3/**"
+      - ".github/workflows/lego2-r3-generic-roof.yml"
+  workflow_dispatch:
+
+jobs:
+  generate-two-models:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install minimal existing validator
+        run: |
+          python -m pip install pytest
+          python -m pip install -e ./lego_geometry_engine
+      - name: Test constrained 45 degree recipe and deliberate bad piece
+        run: python -m pytest -q tests/bricks/test_generic_roof_r3.py
+      - name: Generate 8 by 8 tenon LEGO roof, BOM, order and preview
+        run: |
+          python scripts/generate_roof_recipe_r3.py --width-studs 8 --length-studs 8 --pitch-degrees 45 --overhang-studs 0 --output artifacts/lego2-r3/roof-8x8
+          python scripts/render_roof_r3_preview.py --width-studs 8 --length-studs 8 --output artifacts/lego2-r3/roof-8x8/ISOMETRIC-SCHEMATIC.svg
+      - name: Generate 8 by 16 tenon LEGO roof, BOM, order and preview
+        run: |
+          python scripts/generate_roof_recipe_r3.py --width-studs 8 --length-studs 16 --pitch-degrees 45 --overhang-studs 0 --output artifacts/lego2-r3/roof-8x16
+          python scripts/render_roof_r3_preview.py --width-studs 8 --length-studs 16 --output artifacts/lego2-r3/roof-8x16/ISOMETRIC-SCHEMATIC.svg
+      - name: Check both committed models if present without merging
+        run: |
+          test ! -f missions/R3/roof-8x8/ROOF-R3.ldr || cmp missions/R3/roof-8x8/ROOF-R3.ldr artifacts/lego2-r3/roof-8x8/ROOF-R3.ldr
+          test ! -f missions/R3/roof-8x16/ROOF-R3.ldr || cmp missions/R3/roof-8x16/ROOF-R3.ldr artifacts/lego2-r3/roof-8x16/ROOF-R3.ldr
+          echo R3_DETERMINISTIC_MODEL_COMPARISON_OK
+      - name: Retrieve only pinned real LDraw DAT closure needed in experiment
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-r3-ldraw --max-files 240 --parts 4445 3001 3832 3022
+      - name: Check bounded actual distinct LDraw mesh mates for short roof
+        run: |
+          python scripts/audit_roof_recipe_r3.py --ldraw-root /tmp/lego2-r3-ldraw --length-studs 8 --output artifacts/lego2-r3/roof-8x8/GEOMETRY.json
+      - name: Check bounded actual distinct LDraw mesh mates for long roof
+        run: |
+          python scripts/audit_roof_recipe_r3.py --ldraw-root /tmp/lego2-r3-ldraw --length-studs 16 --output artifacts/lego2-r3/roof-8x16/GEOMETRY.json
+      - name: Assert real two models generated with honest proof limits
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path("artifacts/lego2-r3/roof-8x8/EVIDENCE.json").read_text())
+          b=json.loads(Path("artifacts/lego2-r3/roof-8x16/EVIDENCE.json").read_text())
+          ga=json.loads(Path("artifacts/lego2-r3/roof-8x8/GEOMETRY.json").read_text())
+          gb=json.loads(Path("artifacts/lego2-r3/roof-8x16/GEOMETRY.json").read_text())
+          assert a["parameters"]["length_studs"]==8
+          assert b["parameters"]["length_studs"]==16
+          assert a["nominal"]["nominal_components"]==b["nominal"]["nominal_components"]==1
+          assert a["source"]["R3_not_official_31009_placement"] is True
+          assert b["source"]["physical_strength_certified"] is False
+          assert ga["summary"]["full_insertion_proven"] is False
+          assert gb["summary"]["all_repeated_instances_checked"] is False
+          print("R3_TWO_DIFFERENT_MODELS_BUILT_AND_NOT_MISREPRESENTED")
+          PY
+      - name: Preserve two models + actual mesh evidence as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-R3-TWO-GENERIC-45DEG-LEGO-ROOFS-NOT-CERTIFIED
+          path: artifacts/lego2-r3/
+          retention-days: 30
+          if-no-files-found: warn

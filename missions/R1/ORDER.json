@@ -1,0 +1,289 @@
+[
+  {
+    "step": 1,
+    "id": "foundation-3811",
+    "ldraw": "3811",
+    "role": "base",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 2,
+    "id": "left-c0-b0-pier0-z0",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 3,
+    "id": "left-c1-b0-pier0-z0",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 4,
+    "id": "right-c1-b0-pier0-z0",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 5,
+    "id": "right-c0-b0-pier0-z0",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 6,
+    "id": "left-c0-b0-pier6-z0",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 7,
+    "id": "left-c1-b0-pier6-z0",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 8,
+    "id": "right-c1-b0-pier6-z0",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 9,
+    "id": "right-c0-b0-pier6-z0",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 10,
+    "id": "left-c0-b0-pier0-z3",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 11,
+    "id": "left-c1-b0-pier0-z3",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 12,
+    "id": "right-c1-b0-pier0-z3",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 13,
+    "id": "right-c0-b0-pier0-z3",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 14,
+    "id": "left-c0-b0-pier6-z3",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 15,
+    "id": "left-c1-b0-pier6-z3",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 16,
+    "id": "right-c1-b0-pier6-z3",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 17,
+    "id": "right-c0-b0-pier6-z3",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 18,
+    "id": "left-c0-b0-pier0-z6",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 19,
+    "id": "left-c1-b0-pier0-z6",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 20,
+    "id": "right-c1-b0-pier0-z6",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 21,
+    "id": "right-c0-b0-pier0-z6",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 22,
+    "id": "left-c0-b0-pier6-z6",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 23,
+    "id": "left-c1-b0-pier6-z6",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 24,
+    "id": "right-c1-b0-pier6-z6",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 25,
+    "id": "right-c0-b0-pier6-z6",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 26,
+    "id": "left-c1-b0-pier0-z9",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 27,
+    "id": "right-c1-b0-pier0-z9",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 28,
+    "id": "left-c1-b0-pier6-z9",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 29,
+    "id": "right-c1-b0-pier6-z9",
+    "ldraw": "3003",
+    "role": "pier",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 30,
+    "id": "left-c0-b0-purlin",
+    "ldraw": "3007",
+    "role": "beam",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 31,
+    "id": "right-c0-b0-purlin",
+    "ldraw": "3007",
+    "role": "beam",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 32,
+    "id": "left-c1-b0-purlin",
+    "ldraw": "3007",
+    "role": "beam",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 33,
+    "id": "right-c1-b0-purlin",
+    "ldraw": "3007",
+    "role": "beam",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 34,
+    "id": "left-c0-b0-roof",
+    "ldraw": "4445",
+    "role": "slope",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 35,
+    "id": "right-c0-b0-roof",
+    "ldraw": "4445",
+    "role": "slope",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 36,
+    "id": "left-c1-b0-roof",
+    "ldraw": "4445",
+    "role": "slope",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 37,
+    "id": "right-c1-b0-roof",
+    "ldraw": "4445",
+    "role": "slope",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 38,
+    "id": "ridge-b0-y0",
+    "ldraw": "3022",
+    "role": "ridge",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 39,
+    "id": "ridge-b0-y2",
+    "ldraw": "3022",
+    "role": "ridge",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 40,
+    "id": "ridge-b0-y4",
+    "ldraw": "3022",
+    "role": "ridge",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  },
+  {
+    "step": 41,
+    "id": "ridge-b0-y6",
+    "ldraw": "3022",
+    "role": "ridge",
+    "insertion": "vertical-down proposed; NOT fully proven"
+  }
+]
