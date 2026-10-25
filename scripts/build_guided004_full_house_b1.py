@@ -183,10 +183,28 @@ def _finish(output,src,source_scene_sha,source_sha,exp,decision,library):
     exact=export_ldraw(exp,library,out/"GUIDED004-B1-FULL-HOUSE-22DEG.ldr","GUIDED004_B1_1901")
     surfaces=preview_svg(exp,out/"GUIDED004-B1-FULL-HOUSE-ISOMETRIC.svg")
     audit=audit_physical_model(exp)
-    assembly=generate_assembly_plan(exp)
+    # The existing canonical AssemblyPlan (rightly) does not know how to
+    # schedule EXPERIMENT-088-JOINT roof_support pieces. DO NOT mutate that
+    # planner or lie about its completeness: plan all ordinary 1878 pieces
+    # with the existing function, append the 23 new joints as an explicitly
+    # unproven experimental phase with a separate provenance flag.
+    extra_joint_ids=sorted(added)
+    core=BrickModel.model_validate({**exp.model_dump(mode="json"),
+         "parts":[p.model_dump(mode="json") for p in exp.parts
+                  if p.placement_id not in added]})
+    assembly=generate_assembly_plan(core)
+    core_steps=assembly.model_dump(mode="json")["steps"]
     ordered=[pid for step in assembly.steps for pid in step.placement_ids]
+    ordered+=extra_joint_ids
     if len(ordered)!=len(exp.parts) or set(ordered)!={p.placement_id for p in exp.parts}:
         raise AssertionError("B1_ASSEMBLY_ORDER_MISSING_PARTS")
+    supplemental_step={
+      "step_id":"EXPERIMENTAL-088-RIDGE-CONNECTORS-B1",
+      "title":"23 nouveaux connecteurs du faîtage — insertion non démontrée",
+      "placement_ids":extra_joint_ids,
+      "insertion_status":"NOT_DEMONSTRATED",
+      "parent_stud_tube_compatibility":"NOT_CERTIFIED",
+      "provenance":"EXPERIMENTAL_088_NEW_PARTS_NOT_IN_EXISTING_ASSEMBLY_PLANNER"}
     bom=generate_bom(exp)
     if bom.total_parts!=len(exp.parts):
         raise AssertionError("B1_GENERATED_BOM_MISMATCH")
@@ -198,7 +216,9 @@ def _finish(output,src,source_scene_sha,source_sha,exp,decision,library):
        "colors_proven":False,"procurement_approved":False,
        "source_sha256":source_sha},indent=2,ensure_ascii=False)+"\n")
     (out/"ASSEMBLY-ORDER-NOT-CERTIFIED.json").write_text(
-        json.dumps({"steps":assembly.model_dump(mode="json")["steps"],
+        json.dumps({"steps":[*core_steps,supplemental_step],
+          "existing_planner_pieces":len(core.parts),
+          "additional_088_ridge_connector_pieces":len(extra_joint_ids),
           "all_source_parts_ordered":True,"real_insertion_demonstrated":False,
           "physical_stability_demonstrated":False,
           "status":"PROPOSED_BY_EXISTING_BUILDER_NOT_CERTIFIED"},
@@ -237,7 +257,7 @@ def _finish(output,src,source_scene_sha,source_sha,exp,decision,library):
        "orthogonal_unsupported":audit["unsupported_parts"],
        "roof_unverified":audit["roof_parts_unverified"],
        "fully_proven_load_paths":0,"no_full_support_proof":len(exp.parts),
-       "assembly_steps":len(assembly.steps),"svg_faces":surfaces},sort_keys=True))
+       "assembly_steps":len(core_steps)+1,"svg_faces":surfaces},sort_keys=True))
     return comparison
 
 def build(output,ldraw_root,source=SOURCE):
