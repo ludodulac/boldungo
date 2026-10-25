@@ -154,12 +154,23 @@ def _finish(output,src,source_scene_sha,source_sha,exp,decision,library):
     def preserved(m):
         return {p.placement_id:p.model_dump(mode="json") for p in m.parts if invariant(p)}
     original_fixed=preserved(orig);exp_fixed=preserved(exp)
-    if original_fixed!=exp_fixed:
-        delta={"missing":sorted(set(original_fixed)-set(exp_fixed))[:12],
-               "added":sorted(set(exp_fixed)-set(original_fixed))[:12],
-               "changed":sorted(k for k in original_fixed.keys()&exp_fixed.keys()
-                                 if original_fixed[k]!=exp_fixed[k])[:12]}
+    # 088 adds NEW ridge connector bricks in roof_support. Their existence
+    # is the intended experiment and must never be mistaken for a change to
+    # the canonical walls, openings, stairs, terrace or chimneys.
+    removed=set(original_fixed)-set(exp_fixed)
+    added=set(exp_fixed)-set(original_fixed)
+    changed={k for k in original_fixed.keys()&exp_fixed.keys()
+             if original_fixed[k]!=exp_fixed[k]}
+    forbidden_new={k for k in added
+             if not (k.startswith("EXPERIMENT-088-JOINT-")
+                 and exp_fixed[k]["component"]=="roof_support")}
+    if removed or changed or forbidden_new:
+        delta={"missing":sorted(removed)[:12],
+               "forbidden_additions":sorted(forbidden_new)[:12],
+               "changed":sorted(changed)[:12]}
         raise AssertionError("B1_NON_RIDGE_ARCHITECTURE_CHANGED:"+json.dumps(delta))
+    print("B1_NONRIDGE_OLD_IDS_UNCHANGED",len(original_fixed),
+          "NEW_EXPERIMENTAL_RIDGE_JOINTS",len(added))
     before_roof=Counter(p.part_id for p in orig.parts if p.component=="roof")
     after_roof=Counter(p.part_id for p in exp.parts if p.component=="roof")
     slopes_orig=sum(p.part_id=="BRICK_SLOPED_18_4X2" for p in orig.parts)
@@ -204,7 +215,8 @@ def _finish(output,src,source_scene_sha,source_sha,exp,decision,library):
       "mechanical_strength":"NOT_CERTIFIED"},indent=2,ensure_ascii=False)+"\n")
     comparison={"canonical_count":len(orig.parts),"experimental_count":len(exp.parts),
        "net_delta":len(exp.parts)-len(orig.parts),
-       "same_nonridge_parts":True,"same_nonridge_part_count":len(original_fixed),
+       "all_original_nonridge_parts_unchanged":True,"original_nonridge_part_count":len(original_fixed),
+       "added_new_ridge_connector_bricks":len(added),
        "canonical_roof_part_bom":dict(sorted(before_roof.items())),
        "experimental_roof_part_bom":dict(sorted(after_roof.items())),
        "slope_30363_original":slopes_orig,"slope_30363_experiment":slopes_exp,
