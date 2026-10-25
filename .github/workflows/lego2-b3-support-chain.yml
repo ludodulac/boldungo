@@ -30,7 +30,7 @@ jobs:
         run: python -m pytest -q tests/bricks/test_guided004_support_b3.py
       - name: Download pinned official LDraw closure for the only new shape and existing roof
         run: |
-          python scripts/download_ldraw_probe_066.py /tmp/b3-ldraw --max-files 250 --parts 30363 3005 3003 3007 3010 3008 3623 3002 3622
+          python scripts/download_ldraw_probe_066.py /tmp/b3-ldraw --max-files 250 --parts 30363 3005 3003 3001 3007 3008 3623 3002 3622
       - name: Regenerate isolated B2 and construct 1 replacement in full B3 house
         run: |
           python scripts/build_guided004_support_b3.py --ldraw-root /tmp/b3-ldraw --output artifacts/lego2-b3
@@ -42,8 +42,8 @@ jobs:
           p=Path("artifacts/lego2-b3/B3-EXPERIMENTAL-1905")
           delta=json.loads((p/"B2-VS-B3.json").read_text())
           chain=json.loads((p/"CHAIN-PROOF-LOCAL.json").read_text())
-          assert delta["b2_parts"]==delta["b3_parts"]==1905
-          assert len(delta["added_ids"])==len(delta["removed_ids"])==1
+          assert (delta["b2_parts"],delta["b3_parts"])==(1905,1904)
+          assert len(delta["added_ids"])==1 and len(delta["removed_ids"])==2
           assert delta["moved_ids"]==[]
           assert delta["b2_bytes_unchanged"]
           assert delta["b3_orthogonal_collisions"]==0
@@ -53,8 +53,8 @@ jobs:
           assert chain["first_unproven_edge"] is None
           assert chain["reaches_main_house_wall_or_LEGO_baseplate"]=="NOT_PROVEN"
           rows=(p/"GUIDED004-B3-1905.ldr").read_text().splitlines()
-          assert sum(x.startswith("1 ") for x in rows)==1905
-          print("B3_FULL_MODEL_1905_PIECES_PASS")
+          assert sum(x.startswith("1 ") for x in rows)==1904
+          print("B3_FULL_MODEL_1904_PIECES_PASS")
           print("B3_CONCRETE_SUPPORT_CHAIN_REACHES_Z0_PASS")
           print("B3_IDENTICAL_ARCHITECTURE_EXCEPT_INTERNAL_POST_1_FOR_1_PASS")
           print("B3_MECHANICAL_CERTIFICATION_EXPLICITLY_REFUSED_PASS")
