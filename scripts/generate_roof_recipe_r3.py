@@ -152,9 +152,31 @@ def ldraw(parts,length_studs):
         data.append(f"1 {color} {f(wx)} {f(wy)} {f(wz)} {_matrix_string(p.matrix)} {p.part}.dat")
     return "\n".join(data)+"\n"
 
+def nominal_mating_alignment(child,parent):
+    """STRICT GRID/HEIGHT sanity check, never a substitute for LDraw mesh.
+
+    The deliberate one-stud bad-shift regression must fail even though
+    an incidental footprint overlap would still remain.
+    """
+    if parent.z+parent.height!=child.z:
+        return False
+    if child.role=="cross" and parent.role=="joint":
+        return len(child.xy() & parent.xy())==10  # one overlapping stud row x 10
+    if child.role=="wall" and parent.role=="cross":
+        return len(child.xy() & parent.xy())==4  # 2x2 stud pad at bearing
+    if child.role=="wall" and parent.role=="wall":
+        return child.xy()==parent.xy()
+    if child.role=="slope" and parent.role=="wall":
+        return child.x==parent.x and len(child.xy() & parent.xy())==8
+    if child.role=="ridge" and parent.role=="slope":
+        return child.y>=parent.y and child.y<parent.y+8 and len(child.xy() & parent.xy())==1
+    return False
+
 def nominal_audit(parts):
     byid={p.id:p for p in parts}
     adj={p.id:set() for p in parts}
+    bad_pairs=[(p.id,pid) for p in parts for pid in p.parents
+               if not nominal_mating_alignment(p,byid[pid])]
     for part in parts:
         for parent in part.parents:
             adj[part.id].add(parent);adj[parent].add(part.id)
@@ -178,6 +200,7 @@ def nominal_audit(parts):
         "nominal_components":len(components),
         "nominal_components_sizes":sorted(map(len,components)),
         "no_nominal_bearing":no_parent,
+        "nominal_misaligned_parent_pairs":bad_pairs,
         "not_reaching_nominal_foundation":sorted(set(byid)-visited),
         "static_lego_connector_proven":False,
         "continuous_insertion_proven":False,"physical_strength_proven":False}
