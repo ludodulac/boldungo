@@ -43,7 +43,8 @@ jobs:
           model=(base/"GUIDED004-B1-FULL-HOUSE-22DEG.ldr").read_text()
           assert cmp["canonical_count"]==1890
           assert cmp["experimental_count"]==1901
-          assert cmp["same_nonridge_parts"] and cmp["net_delta"]==11
+          assert cmp["all_original_nonridge_parts_unchanged"] and cmp["net_delta"]==11
+          assert cmp["added_new_ridge_connector_bricks"] > 0
           assert cmp["slope_30363_original"]==cmp["slope_30363_experiment"]==408
           assert cmp["ldraw"]["complete_file"], cmp["ldraw"]["unmapped"][:8]
           assert cmp["ldraw"]["ldraw_type1_count"]==1901
