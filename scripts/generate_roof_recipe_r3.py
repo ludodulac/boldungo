@@ -175,7 +175,7 @@ def nominal_mating_alignment(child,parent):
     if child.role=="slope" and parent.role=="wall":
         return child.x==parent.x and len(child.xy() & parent.xy())==8
     if child.role=="ridge" and parent.role=="slope":
-        return child.y>=parent.y and child.y<parent.y+8 and len(child.xy() & parent.xy())==1
+        return child.y>=parent.y and child.y+child.sy<=parent.y+8 and len(child.xy() & parent.xy())==child.sy
     return False
 
 def nominal_audit(parts):
