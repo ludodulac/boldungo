@@ -30,7 +30,7 @@ except ModuleNotFoundError:
     from audit_terrace_059l_full_house_install import components,blocked
     from export_guided004_059m_reinforced import bounds,overlaps,contact_cells
 
-SCOPE="B2_EXPERIMENTAL_FLOOR_LINK_NOT_PHYSICALLY_CERTIFIED"
+SCOPE="B2_EXPERIMENTAL_FLOOR_LINK_NOT_CERTIFIED"
 
 def original_floor(model):
     return [p for p in model.parts
