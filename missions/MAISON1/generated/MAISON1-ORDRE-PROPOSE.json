@@ -1,0 +1,310 @@
+{
+  "initial_masonry_original": [
+    "wall-000001",
+    "wall-000017",
+    "wall-000016",
+    "wall-000002",
+    "wall-000041",
+    "wall-000040",
+    "wall-000039",
+    "wall-000023",
+    "wall-000024",
+    "wall-000048",
+    "wall-000065",
+    "wall-000064",
+    "wall-000049",
+    "wall-000088",
+    "wall-000087",
+    "wall-000086",
+    "wall-000071",
+    "window-000001",
+    "window-000007",
+    "window-000013",
+    "window-000019",
+    "window-000025",
+    "wall-000072",
+    "wall-000095",
+    "wall-000112",
+    "wall-000111",
+    "wall-000096",
+    "window-000002",
+    "window-000008",
+    "window-000014",
+    "window-000020",
+    "window-000026",
+    "wall-000097",
+    "wall-000135",
+    "wall-000134",
+    "wall-000133",
+    "wall-000118",
+    "window-000003",
+    "window-000009",
+    "window-000015",
+    "window-000021",
+    "window-000027",
+    "wall-000119",
+    "wall-000142",
+    "wall-000159",
+    "wall-000158",
+    "wall-000143",
+    "window-000004",
+    "window-000010",
+    "window-000016",
+    "window-000022",
+    "window-000028",
+    "wall-000144",
+    "wall-000182",
+    "wall-000181",
+    "wall-000180",
+    "wall-000165",
+    "window-000005",
+    "window-000011",
+    "window-000017",
+    "window-000023",
+    "window-000029",
+    "wall-000166",
+    "wall-000189",
+    "wall-000206",
+    "wall-000205",
+    "wall-000190",
+    "window-000006",
+    "window-000012",
+    "window-000018",
+    "window-000024",
+    "window-000030",
+    "wall-000191",
+    "wall-000229",
+    "wall-000228",
+    "wall-000227",
+    "wall-000212",
+    "wall-000213",
+    "wall-000236",
+    "wall-000252",
+    "wall-000251",
+    "wall-000237",
+    "wall-000275",
+    "wall-000274",
+    "wall-000273",
+    "wall-000258",
+    "wall-000259",
+    "guided004-031:house-timber:wall-retile:03",
+    "wall-000282",
+    "wall-000297",
+    "wall-000283"
+  ],
+  "original_brick_count": 91,
+  "experimental_assembly": [
+    {
+      "step": 1,
+      "part_id": "M1-EXPERIMENTAL-BASE-3811",
+      "ref": "3811",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 2,
+      "part_id": "M1-POST-0-COURSE-0",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 3,
+      "part_id": "M1-POST-1-COURSE-0",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 4,
+      "part_id": "M1-POST-0-COURSE-1",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 5,
+      "part_id": "M1-POST-1-COURSE-1",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 6,
+      "part_id": "M1-POST-0-COURSE-2",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 7,
+      "part_id": "M1-POST-1-COURSE-2",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 8,
+      "part_id": "M1-POST-0-COURSE-3",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 9,
+      "part_id": "M1-POST-1-COURSE-3",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 10,
+      "part_id": "M1-POST-0-COURSE-4",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 11,
+      "part_id": "M1-POST-1-COURSE-4",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 12,
+      "part_id": "M1-POST-0-COURSE-5",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 13,
+      "part_id": "M1-POST-1-COURSE-5",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 14,
+      "part_id": "M1-POST-0-COURSE-6",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 15,
+      "part_id": "M1-POST-1-COURSE-6",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 16,
+      "part_id": "M1-POST-0-COURSE-7",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 17,
+      "part_id": "M1-POST-1-COURSE-7",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 18,
+      "part_id": "M1-POST-0-COURSE-8",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 19,
+      "part_id": "M1-POST-1-COURSE-8",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 20,
+      "part_id": "M1-POST-0-COURSE-9",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 21,
+      "part_id": "M1-POST-1-COURSE-9",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 22,
+      "part_id": "M1-POST-0-COURSE-10",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 23,
+      "part_id": "M1-POST-1-COURSE-10",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 24,
+      "part_id": "M1-POST-0-COURSE-11",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 25,
+      "part_id": "M1-POST-1-COURSE-11",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 26,
+      "part_id": "M1-POST-0-COURSE-12",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 27,
+      "part_id": "M1-POST-1-COURSE-12",
+      "ref": "3003",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 28,
+      "part_id": "M1-TRUE-CORNER-BOND",
+      "ref": "3022",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 29,
+      "part_id": "M1-BEAM-0",
+      "ref": "3006",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 30,
+      "part_id": "M1-BEAM-1",
+      "ref": "3006",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 31,
+      "part_id": "M1-UPPER-FLOOR-0",
+      "ref": "3832",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 32,
+      "part_id": "M1-UPPER-FLOOR-1",
+      "ref": "3832",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 33,
+      "part_id": "M1-UPPER-FLOOR-2",
+      "ref": "3832",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 34,
+      "part_id": "M1-UPPER-FLOOR-3",
+      "ref": "3832",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 35,
+      "part_id": "M1-UPPER-FLOOR-4",
+      "ref": "3832",
+      "insertion": "VERTICAL_PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    }
+  ],
+  "continuous_insertion": "NOT_DEMONSTRATED",
+  "load_capacity": "NOT_CERTIFIED"
+}

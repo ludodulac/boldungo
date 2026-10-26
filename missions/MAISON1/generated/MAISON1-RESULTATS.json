@@ -1,0 +1,15 @@
+{
+  "parts": 126,
+  "source_parts": 91,
+  "new_parts": 35,
+  "front_wall_count": 29,
+  "south_wall_count": 32,
+  "original_window_proxy_count": 30,
+  "nominal_terrain_ground_base": "EXPERIMENTAL_3811_NOT_OBSERVED_IN_SCENE",
+  "new_orthogonal_body_collisions": 0,
+  "new_connections": 42,
+  "new_connections_with_actual_connector": 40,
+  "mesh_sample_collision_signals": 0,
+  "complete_assembly": "NOT_PROVEN",
+  "mechanical_strength": "NOT_PROVEN"
+}
