@@ -1,0 +1,68 @@
+{
+  "base": "S1-BASE",
+  "upper_floor_paths": {
+    "S3-UPPER-FLOOR-0": [
+      "S3-UPPER-FLOOR-0",
+      "S3-UPPER-BEAM-0",
+      "S3-WALL-0-SEG-0-COURSE-1",
+      "S3-WALL-0-SEG-0-COURSE-0",
+      "S1-FLOOR-X-5",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ],
+    "S3-UPPER-FLOOR-1": [
+      "S3-UPPER-FLOOR-1",
+      "S3-UPPER-BEAM-0",
+      "S3-WALL-0-SEG-0-COURSE-1",
+      "S3-WALL-0-SEG-0-COURSE-0",
+      "S1-FLOOR-X-5",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ],
+    "S3-UPPER-FLOOR-2": [
+      "S3-UPPER-FLOOR-2",
+      "S3-UPPER-BEAM-0",
+      "S3-WALL-0-SEG-0-COURSE-1",
+      "S3-WALL-0-SEG-0-COURSE-0",
+      "S1-FLOOR-X-5",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ],
+    "S3-UPPER-FLOOR-3": [
+      "S3-UPPER-FLOOR-3",
+      "S3-UPPER-BEAM-0",
+      "S3-WALL-0-SEG-0-COURSE-1",
+      "S3-WALL-0-SEG-0-COURSE-0",
+      "S1-FLOOR-X-5",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ],
+    "S3-UPPER-FLOOR-4": [
+      "S3-UPPER-FLOOR-4",
+      "S3-UPPER-BEAM-0",
+      "S3-WALL-0-SEG-0-COURSE-1",
+      "S3-WALL-0-SEG-0-COURSE-0",
+      "S1-FLOOR-X-5",
+      "S1-BEAM-Y-5",
+      "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "S1-BASE"
+    ]
+  },
+  "links_nominal": 66,
+  "links_new": 40,
+  "not_a_mechanical_load_capacity_certification": true
+}
