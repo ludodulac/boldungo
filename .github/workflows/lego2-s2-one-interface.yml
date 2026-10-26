@@ -43,8 +43,13 @@ jobs:
           assert x["actual_DAT_plate_underside_tubes_count"]==9
           assert x["actual_horizontal_stud_to_cavity_axis_matches"]==4
           assert x["nominal_normal_collision_has_not_been_silently_ignored"]
-          assert x["repetitions_examined"]==1
-          assert x["static_interface_verdict"]=="NON_RESOLU"
+          assert x["repetitions_examined"]==10
+          assert x["static_interface_verdict"]=="COMPATIBLE",x
+          assert x["negative_wrong_depth_has_actual_triangles_crossing"] is True
+          assert x["original_mesh_collision_comes_from_containment_fallback_not_triangle_crossing"] is True
+          assert x["all_ten_actual_stud_cavity_alignments_compatible"] is True
+          assert len(x["repeated_ten_couplings_actual_official_DAT"])==10
+          assert x["original_body_complete_bbox_containment_either_way"] is False
           print("S2_ONE_REAL_MESH_PAIR_AND_NEGATIVE_CASE_DOCUMENTED")
           PY
       - name: Preserve bounded geometry evidence with hashes/logs
