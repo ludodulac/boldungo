@@ -1,0 +1,88 @@
+name: LEGO2 MAISON-1 real GUIDED-004 east-south ground floor fragment
+on:
+  pull_request:
+    branches: [feat/lego2-s1-documented-bearing-frame]
+    paths:
+      - 'scripts/build_guided004_corner_maison1.py'
+      - 'tests/bricks/test_guided004_corner_maison1.py'
+      - '.github/workflows/lego2-maison1-real-scene.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-first-real-house-fragment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 19
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing LEGO pipeline / geometry
+        run: |
+          python -m pip install -e .
+          python -m pip install -e ./lego_geometry_engine
+          python -m pip install pytest
+      - name: Fast negative tests with shifted corner and wrong height
+        run: python -m pytest -q tests/bricks/test_guided004_corner_maison1.py
+      - name: Pinned official LDraw closure, no guessed parts
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/maison1-ldraw --max-files 250 --parts 3811 3003 3006 3832 3022 3005 3004 3008 3009 3010 3622
+      - name: FIRST create real LDraw from the original Scene and its 1890-part BrickModel; THEN check new joints
+        run: |
+          python scripts/build_guided004_corner_maison1.py --ldraw-root /tmp/maison1-ldraw --output artifacts/lego2-maison1
+      - name: Verify source provenance, actual window/walls, BOM and honest limits
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('artifacts/lego2-maison1')
+          bom=json.loads((p/'MAISON1-NOMENCLATURE.json').read_text())
+          proof=json.loads((p/'MAISON1-CONTROLES-NOUVEAUX-RACCORDS.json').read_text())
+          results=json.loads((p/'MAISON1-RESULTATS.json').read_text())
+          origin=json.loads((p/'MAISON1-PROVENANCE.json').read_text())
+          assert origin['source_canonical_count']==1890
+          assert origin['dimensions_source_scene']=={'east_front_m':9.3,'south_side_m':8.2}
+          assert results['front_wall_count']>10 and results['south_wall_count']>10
+          assert results['original_window_proxy_count']==30
+          assert results['new_orthogonal_body_collisions']==0
+          assert bom['total']==results['parts']==sum(bom['by_real_LDraw_part'].values())
+          assert sum(s.startswith('1 ') for s in (p/'MAISON1-EST-SUD-FRAGMENT.ldr').read_text().splitlines())==results['parts']
+          assert proof['continuous_insertion']=='NOT_PROVEN'
+          assert proof['physical_strength']=='NOT_CERTIFIED'
+          print('MAISON1_REAL_FRONT_AND_SOUTH_WALLS_WITH_30_WINDOW_PROXY_PIECES_PASS')
+          print('MAISON1_SCENE_9_3_BY_8_2_AND_ORIGINAL_1890_UNCHANGED_PASS')
+          print('MAISON1_FULL_FRAGMENT_LDRAW_AND_BOM_PASS')
+          PY
+      - name: Archive real 3D fragment and targeted proof on any outcome
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-MAISON1-REAL-GUIDED004-SCENE-FRAGMENT-NOT-CERTIFIED
+          path: artifacts/lego2-maison1/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Persist essential real scene fragment in THIS new DRAFT PR, never the source
+        if: ${{ success() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+        env:
+          NEW_BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          mkdir -p missions/MAISON1/generated
+          cp artifacts/lego2-maison1/MAISON1-*.ldr missions/MAISON1/generated/
+          cp artifacts/lego2-maison1/MAISON1-*.svg missions/MAISON1/generated/
+          cp artifacts/lego2-maison1/MAISON1-NOMENCLATURE.json missions/MAISON1/generated/
+          cp artifacts/lego2-maison1/MAISON1-PROVENANCE.json missions/MAISON1/generated/
+          cp artifacts/lego2-maison1/MAISON1-ORDRE-PROPOSE.json missions/MAISON1/generated/
+          cp artifacts/lego2-maison1/MAISON1-CONTROLES-NOUVEAUX-RACCORDS.json missions/MAISON1/generated/
+          cp artifacts/lego2-maison1/MAISON1-RESULTATS.json missions/MAISON1/generated/
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add missions/MAISON1/generated/
+          if ! git diff --cached --quiet; then
+            git commit -m 'MAISON-1: preserve actual GUIDED-004 east/south corner with original front window, adapted floor and real LDraw'
+            git push origin "HEAD:refs/heads/${NEW_BRANCH}"
+          fi
