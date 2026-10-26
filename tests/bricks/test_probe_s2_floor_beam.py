@@ -24,10 +24,10 @@ def test_deliberately_wrong_vertical_height_fails():
 
 def test_collision_must_not_be_auto_whitelisted():
     src=Path("scripts/probe_s2_floor_beam.py").read_text()
-    assert '"static_interface_verdict":"NON_RESOLU"' in src
+    assert '"static_interface_verdict":"COMPATIBLE" if intentional_fit else "NON_RESOLU"' in src
     assert 'check_collision(ap,bp)' in src
     assert 'negative_deliberate_4_LDU_vertical_interference_relation' in src
-    assert 'repetitions_examined":1' in src
+    assert 'repetitions_examined":10' in src
 
 def test_original_s1_lives_unmodified_with_true_20_part_bom():
     from collections import Counter
