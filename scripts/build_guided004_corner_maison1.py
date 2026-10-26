@@ -99,7 +99,11 @@ def select_fragment(model,scene):
             selected.append(p)
         elif p.facade=="left" and a[0]<=x0 and a[3]>=x0 and a[1]>=y0 and a[4]<=side_end:
             selected.append(p)
-    # This is the FIRST level; south upper-storey door proxy begins at z36,\n    # though it is not a ground-floor architectural opening. Preserve only\n    # the actual RDC east window in the selected facade-detail placeholders.\n    selected=[p for p in selected if p.component=="wall" or p.opening_id==opening.id]\n    ids={p.placement_id for p in selected}
+    # This is the FIRST level; south upper-storey door proxy begins at z36,
+    # though it is not a ground-floor architectural opening. Preserve only
+    # the actual RDC east window in the selected facade-detail placeholders.
+    selected=[p for p in selected if p.component=="wall" or p.opening_id==opening.id]
+    ids={p.placement_id for p in selected}
     if len(ids)!=len(selected):raise AssertionError("DUPLICATE_ORIGINAL")
     if not {p.placement_id for p in visual}<=ids:
         raise ValueError("MAISON1_CUT_TRUNCATED_REAL_WINDOW")
