@@ -10,7 +10,10 @@ from dataclasses import replace
 
 from lego_geometry_engine import LDrawLibrary,Relation,check_collision,find_connections,instantiate,Transform
 from lego_geometry_engine.core import _tri_intersection_kind
-from scripts.build_documented_frame_s1 import model,_instance,ldraw_line
+try:
+    from scripts.build_documented_frame_s1 import model,_instance,ldraw_line
+except ModuleNotFoundError:
+    from build_documented_frame_s1 import model,_instance,ldraw_line
 
 MIRROR_SHA="c43ed06a128a10ed65675166bf42eb6fd608b9b0"
 
