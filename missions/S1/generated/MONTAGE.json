@@ -1,0 +1,212 @@
+{
+  "build_order": [
+    {
+      "number": 1,
+      "id": "S1-BASE",
+      "role": "base",
+      "part": "91405",
+      "bearing_on": [],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 2,
+      "id": "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-BASE"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 3,
+      "id": "S1-COLUMN-X-5-Y3-LEVEL0",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-BASE"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 4,
+      "id": "S1-COLUMN-X3-Y-5-LEVEL0",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-BASE"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 5,
+      "id": "S1-COLUMN-X3-Y3-LEVEL0",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-BASE"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 6,
+      "id": "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-COLUMN-X-5-Y-5-LEVEL0"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 7,
+      "id": "S1-COLUMN-X-5-Y3-LEVEL1",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-COLUMN-X-5-Y3-LEVEL0"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 8,
+      "id": "S1-COLUMN-X3-Y-5-LEVEL1",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-COLUMN-X3-Y-5-LEVEL0"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 9,
+      "id": "S1-COLUMN-X3-Y3-LEVEL1",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-COLUMN-X3-Y3-LEVEL0"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 10,
+      "id": "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-COLUMN-X-5-Y-5-LEVEL1"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 11,
+      "id": "S1-COLUMN-X-5-Y3-LEVEL2",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-COLUMN-X-5-Y3-LEVEL1"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 12,
+      "id": "S1-COLUMN-X3-Y-5-LEVEL2",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-COLUMN-X3-Y-5-LEVEL1"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 13,
+      "id": "S1-COLUMN-X3-Y3-LEVEL2",
+      "role": "column",
+      "part": "3003",
+      "bearing_on": [
+        "S1-COLUMN-X3-Y3-LEVEL1"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 14,
+      "id": "S1-BEAM-Y-5",
+      "role": "beam",
+      "part": "3006",
+      "bearing_on": [
+        "S1-COLUMN-X-5-Y-5-LEVEL2",
+        "S1-COLUMN-X3-Y-5-LEVEL2"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 15,
+      "id": "S1-BEAM-Y3",
+      "role": "beam",
+      "part": "3006",
+      "bearing_on": [
+        "S1-COLUMN-X-5-Y3-LEVEL2",
+        "S1-COLUMN-X3-Y3-LEVEL2"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 16,
+      "id": "S1-FLOOR-X-5",
+      "role": "floor",
+      "part": "3832",
+      "bearing_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 17,
+      "id": "S1-FLOOR-X-3",
+      "role": "floor",
+      "part": "3832",
+      "bearing_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 18,
+      "id": "S1-FLOOR-X-1",
+      "role": "floor",
+      "part": "3832",
+      "bearing_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 19,
+      "id": "S1-FLOOR-X1",
+      "role": "floor",
+      "part": "3832",
+      "bearing_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    },
+    {
+      "number": 20,
+      "id": "S1-FLOOR-X3",
+      "role": "floor",
+      "part": "3832",
+      "bearing_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "direction": "vertical top-down APPROACH SUGGESTED, NOT PROVEN CONTINUOUS"
+    }
+  ],
+  "steps": 5,
+  "full_continuous_insertion": "NOT_PROVEN",
+  "authoritative_official_steps": "NOT_IDENTICAL_TO_31009"
+}

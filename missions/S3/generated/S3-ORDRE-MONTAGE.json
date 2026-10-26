@@ -1,0 +1,495 @@
+{
+  "steps": [
+    {
+      "step": 1,
+      "part_id": "S1-BASE",
+      "ldraw_reference": "91405",
+      "role": "base",
+      "resting_on": [],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 2,
+      "part_id": "S1-COLUMN-X-5-Y-5-LEVEL0",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-BASE"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 3,
+      "part_id": "S1-COLUMN-X-5-Y3-LEVEL0",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-BASE"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 4,
+      "part_id": "S1-COLUMN-X3-Y-5-LEVEL0",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-BASE"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 5,
+      "part_id": "S1-COLUMN-X3-Y3-LEVEL0",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-BASE"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 6,
+      "part_id": "S1-COLUMN-X-5-Y-5-LEVEL1",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-COLUMN-X-5-Y-5-LEVEL0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 7,
+      "part_id": "S1-COLUMN-X-5-Y3-LEVEL1",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-COLUMN-X-5-Y3-LEVEL0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 8,
+      "part_id": "S1-COLUMN-X3-Y-5-LEVEL1",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-COLUMN-X3-Y-5-LEVEL0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 9,
+      "part_id": "S1-COLUMN-X3-Y3-LEVEL1",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-COLUMN-X3-Y3-LEVEL0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 10,
+      "part_id": "S1-COLUMN-X-5-Y-5-LEVEL2",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-COLUMN-X-5-Y-5-LEVEL1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 11,
+      "part_id": "S1-COLUMN-X-5-Y3-LEVEL2",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-COLUMN-X-5-Y3-LEVEL1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 12,
+      "part_id": "S1-COLUMN-X3-Y-5-LEVEL2",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-COLUMN-X3-Y-5-LEVEL1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 13,
+      "part_id": "S1-COLUMN-X3-Y3-LEVEL2",
+      "ldraw_reference": "3003",
+      "role": "column",
+      "resting_on": [
+        "S1-COLUMN-X3-Y3-LEVEL1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 14,
+      "part_id": "S1-BEAM-Y-5",
+      "ldraw_reference": "3006",
+      "role": "beam",
+      "resting_on": [
+        "S1-COLUMN-X-5-Y-5-LEVEL2",
+        "S1-COLUMN-X3-Y-5-LEVEL2"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 15,
+      "part_id": "S1-BEAM-Y3",
+      "ldraw_reference": "3006",
+      "role": "beam",
+      "resting_on": [
+        "S1-COLUMN-X-5-Y3-LEVEL2",
+        "S1-COLUMN-X3-Y3-LEVEL2"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 16,
+      "part_id": "S1-FLOOR-X-5",
+      "ldraw_reference": "3832",
+      "role": "floor",
+      "resting_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 17,
+      "part_id": "S1-FLOOR-X-3",
+      "ldraw_reference": "3832",
+      "role": "floor",
+      "resting_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 18,
+      "part_id": "S1-FLOOR-X-1",
+      "ldraw_reference": "3832",
+      "role": "floor",
+      "resting_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 19,
+      "part_id": "S1-FLOOR-X1",
+      "ldraw_reference": "3832",
+      "role": "floor",
+      "resting_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 20,
+      "part_id": "S1-FLOOR-X3",
+      "ldraw_reference": "3832",
+      "role": "floor",
+      "resting_on": [
+        "S1-BEAM-Y-5",
+        "S1-BEAM-Y3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 21,
+      "part_id": "S3-WALL-0-SEG-0-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X-5"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 22,
+      "part_id": "S3-WALL-0-SEG-1-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X-3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 23,
+      "part_id": "S3-WALL-0-SEG-2-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 24,
+      "part_id": "S3-WALL-0-SEG-3-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 25,
+      "part_id": "S3-WALL-0-SEG-4-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 26,
+      "part_id": "S3-WALL-1-SEG-0-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X-5"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 27,
+      "part_id": "S3-WALL-1-SEG-1-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X-3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 28,
+      "part_id": "S3-WALL-1-SEG-2-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 29,
+      "part_id": "S3-WALL-1-SEG-3-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 30,
+      "part_id": "S3-WALL-1-SEG-4-COURSE-0",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S1-FLOOR-X3"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 31,
+      "part_id": "S3-WALL-0-SEG-0-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-0-SEG-0-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 32,
+      "part_id": "S3-WALL-0-SEG-1-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-0-SEG-1-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 33,
+      "part_id": "S3-WALL-0-SEG-2-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-0-SEG-2-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 34,
+      "part_id": "S3-WALL-0-SEG-3-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-0-SEG-3-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 35,
+      "part_id": "S3-WALL-0-SEG-4-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-0-SEG-4-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 36,
+      "part_id": "S3-WALL-1-SEG-0-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-1-SEG-0-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 37,
+      "part_id": "S3-WALL-1-SEG-1-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-1-SEG-1-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 38,
+      "part_id": "S3-WALL-1-SEG-2-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-1-SEG-2-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 39,
+      "part_id": "S3-WALL-1-SEG-3-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-1-SEG-3-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 40,
+      "part_id": "S3-WALL-1-SEG-4-COURSE-1",
+      "ldraw_reference": "3003",
+      "role": "wall",
+      "resting_on": [
+        "S3-WALL-1-SEG-4-COURSE-0"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 41,
+      "part_id": "S3-UPPER-BEAM-0",
+      "ldraw_reference": "3006",
+      "role": "upper_beam",
+      "resting_on": [
+        "S3-WALL-0-SEG-0-COURSE-1",
+        "S3-WALL-0-SEG-1-COURSE-1",
+        "S3-WALL-0-SEG-2-COURSE-1",
+        "S3-WALL-0-SEG-3-COURSE-1",
+        "S3-WALL-0-SEG-4-COURSE-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 42,
+      "part_id": "S3-UPPER-BEAM-1",
+      "ldraw_reference": "3006",
+      "role": "upper_beam",
+      "resting_on": [
+        "S3-WALL-1-SEG-0-COURSE-1",
+        "S3-WALL-1-SEG-1-COURSE-1",
+        "S3-WALL-1-SEG-2-COURSE-1",
+        "S3-WALL-1-SEG-3-COURSE-1",
+        "S3-WALL-1-SEG-4-COURSE-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 43,
+      "part_id": "S3-UPPER-FLOOR-0",
+      "ldraw_reference": "3832",
+      "role": "upper_floor",
+      "resting_on": [
+        "S3-UPPER-BEAM-0",
+        "S3-UPPER-BEAM-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 44,
+      "part_id": "S3-UPPER-FLOOR-1",
+      "ldraw_reference": "3832",
+      "role": "upper_floor",
+      "resting_on": [
+        "S3-UPPER-BEAM-0",
+        "S3-UPPER-BEAM-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 45,
+      "part_id": "S3-UPPER-FLOOR-2",
+      "ldraw_reference": "3832",
+      "role": "upper_floor",
+      "resting_on": [
+        "S3-UPPER-BEAM-0",
+        "S3-UPPER-BEAM-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 46,
+      "part_id": "S3-UPPER-FLOOR-3",
+      "ldraw_reference": "3832",
+      "role": "upper_floor",
+      "resting_on": [
+        "S3-UPPER-BEAM-0",
+        "S3-UPPER-BEAM-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    },
+    {
+      "step": 47,
+      "part_id": "S3-UPPER-FLOOR-4",
+      "ldraw_reference": "3832",
+      "role": "upper_floor",
+      "resting_on": [
+        "S3-UPPER-BEAM-0",
+        "S3-UPPER-BEAM-1"
+      ],
+      "vertical_insertion": "PROPOSED_NOT_CONTINUOUSLY_PROVEN"
+    }
+  ],
+  "total_steps_individual_pieces": 47,
+  "additions_only_new_assembly_steps": 27,
+  "continuous_assembly_proven": false
+}

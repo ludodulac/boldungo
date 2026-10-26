@@ -1,0 +1,185 @@
+{
+  "mission": "S-2",
+  "status": "FINISHED_ONE_INTERFACE_NO_MODEL_CHANGES",
+  "branch": "feat/lego2-s1-documented-bearing-frame",
+  "compared_parts": [
+    "3832.dat",
+    "3006.dat"
+  ],
+  "normal_position": {
+    "upper": "1 15 -80 -104 0 0 0 1 0 1 0 -1 0 0 3832.dat",
+    "lower": "1 4 0 -96 -80 1 0 0 0 1 0 0 0 1 3006.dat",
+    "upper_stud_axis_count_from_official_DAT": 20,
+    "lower_stud_axis_count_from_official_DAT": 20,
+    "upper_underplate_tube_axis_count_from_official_DAT": 9,
+    "common_real_stud_axes": 4,
+    "stud_into_cavity_depth_ldu": 4,
+    "beam_body_top_plane_y_ldu": -96,
+    "upper_plate_underside_y_ldu": -96,
+    "beam_stud_tip_y_ldu": -100,
+    "plate_cavity_ceiling_y_ldu": -100,
+    "tube_outer_radius_ldu": 8,
+    "stud_radius_ldu": 6,
+    "nearest_tube_stud_axis_separation_ldu": 14.142135623730951,
+    "minimum_radial_clearance_ldu": 0.142135623730951,
+    "raw_existing_engine_relation": "COLLISION",
+    "triangle_mesh_interior_crossings_found": 0,
+    "ray_containment_fallback_inside_plate_first_vertex_in_beam": true,
+    "ray_containment_fallback_inside_beam_first_vertex_in_plate": false,
+    "part_whole_bounding_box_contained_in_other": false,
+    "collision_cause": "EXISTING_RAY_PARITY_CONTAINMENT_FALLBACK_TRIGGERED_ON_NON_SOLID_OPEN_LDRAW_SUBPRIMITIVES",
+    "no_global_collision_engine_change": true
+  },
+  "negative_intentionally_wrong": {
+    "plate_y_translated_downward_ldu": 4,
+    "existing_engine_relation": "COLLISION",
+    "actual_intersecting_triangles_found": true,
+    "first_triangle_indices": [
+      866,
+      885
+    ],
+    "representative_intersecting_plate_triangle": [
+      [
+        -64,
+        -96,
+        96
+      ],
+      [
+        -64,
+        -92,
+        -96
+      ],
+      [
+        -64,
+        -92,
+        96
+      ]
+    ],
+    "representative_intersecting_beam_triangle": [
+      [
+        -100,
+        -96,
+        -60
+      ],
+      [
+        100,
+        -72,
+        -60
+      ],
+      [
+        100,
+        -96,
+        -60
+      ]
+    ],
+    "result": "INCOMPATIBLE_REAL_SOLID_INTERFERENCE"
+  },
+  "all_ten_real_DAT_stud_cavity_and_clearance_checks": [
+    {
+      "floor": "S1-FLOOR-X-5",
+      "beam": "S1-BEAM-Y-5",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X-5",
+      "beam": "S1-BEAM-Y3",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X-3",
+      "beam": "S1-BEAM-Y-5",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X-3",
+      "beam": "S1-BEAM-Y3",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X-1",
+      "beam": "S1-BEAM-Y-5",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X-1",
+      "beam": "S1-BEAM-Y3",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X1",
+      "beam": "S1-BEAM-Y-5",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X1",
+      "beam": "S1-BEAM-Y3",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X3",
+      "beam": "S1-BEAM-Y-5",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    },
+    {
+      "floor": "S1-FLOOR-X3",
+      "beam": "S1-BEAM-Y3",
+      "official_3832_3006_stud_axes": 4,
+      "official_plate_tube_outer_vs_beam_stud_clearance_ldu": 0.142136,
+      "underside_sits_on_beam_top_plane": true,
+      "static_stud_fit": "COMPATIBLE_ANALYTIC_OFFICIAL_DAT",
+      "triangle_pair_exhaustive": false
+    }
+  ],
+  "rechecked_ten_distinct_placements": 10,
+  "ten_geometrically_compatible_at_final_static_position": 10,
+  "ten_fully_exhaustive_individual_triangle_mesh_checks": 0,
+  "single_representative_pair_full_triangle_scan": 1,
+  "S1_other_sixteen_nominal_parent_edges_previously_in_3_CONTACT_CLASSES": 16,
+  "S1_one_fully_exhaustive_mesh_scan_per_other_class_from_S1": 1,
+  "entire_20_piece_frame_full_pairwise_mesh_certification": "NOT_PERFORMED",
+  "full_26_edge_reproof_individually": "NOT_PERFORMED",
+  "floor_to_base_nominal_routes": 5,
+  "floor_to_base_static_placement_connectors_likely_compatible": true,
+  "whole_frame_full_geometric_assembly_proven": "NO",
+  "continuous_insertions_proven": "NO",
+  "stud_tube_retention_force_certified": "NO",
+  "physical_strength_certified": "NO",
+  "verdict_exact_floor_to_beam_interface": "COMPATIBLE_STATIC_ONLY",
+  "decision": "PRESERVE_UNMODIFIED_S1_AND_STOP_S2"
+}

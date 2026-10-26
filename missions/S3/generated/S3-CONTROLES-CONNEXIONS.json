@@ -1,0 +1,1362 @@
+{
+  "summary": {
+    "total_pieces": 47,
+    "original_S1_pieces_unchanged": 20,
+    "new_pieces": 27,
+    "new_support_edges": 40,
+    "new_edges_with_four_real_stud_centres": 40,
+    "new_edges_with_engine_recognized_connectors": 40,
+    "mesh_representative_classes": 4,
+    "mesh_representative_COLLISION_classes": 1,
+    "mesh_representatives": {
+      "3003_TO_3832": {
+        "upper": "S3-WALL-0-SEG-0-COURSE-0",
+        "lower": "S1-FLOOR-X-5",
+        "actual_official_mesh_relation": "CONTACT"
+      },
+      "3003_TO_3003": {
+        "upper": "S3-WALL-0-SEG-0-COURSE-1",
+        "lower": "S3-WALL-0-SEG-0-COURSE-0",
+        "actual_official_mesh_relation": "CONTACT"
+      },
+      "3006_TO_3003": {
+        "upper": "S3-UPPER-BEAM-0",
+        "lower": "S3-WALL-0-SEG-0-COURSE-1",
+        "actual_official_mesh_relation": "CONTACT"
+      },
+      "3832_TO_3006": {
+        "upper": "S3-UPPER-FLOOR-0",
+        "lower": "S3-UPPER-BEAM-0",
+        "actual_official_mesh_relation": "COLLISION"
+      }
+    },
+    "full_47_piece_mesh_collision_scan": "NOT_PERFORMED",
+    "new_body_AABB_overlaps": 0,
+    "full_path_47_piece_continuous_insertions_proven": false,
+    "physical_stability_certified": false
+  },
+  "new_edges": [
+    {
+      "upper": "S3-WALL-0-SEG-0-COURSE-0",
+      "lower": "S1-FLOOR-X-5",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -90.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          -90.0,
+          -104.0,
+          -70.0
+        ],
+        [
+          -70.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          -70.0,
+          -104.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": true,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-1-COURSE-0",
+      "lower": "S1-FLOOR-X-3",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -50.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          -50.0,
+          -104.0,
+          -70.0
+        ],
+        [
+          -30.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          -30.0,
+          -104.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-2-COURSE-0",
+      "lower": "S1-FLOOR-X-1",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -10.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          -10.0,
+          -104.0,
+          -70.0
+        ],
+        [
+          10.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          10.0,
+          -104.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-3-COURSE-0",
+      "lower": "S1-FLOOR-X1",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          30.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          30.0,
+          -104.0,
+          -70.0
+        ],
+        [
+          50.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          50.0,
+          -104.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-4-COURSE-0",
+      "lower": "S1-FLOOR-X3",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          70.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          70.0,
+          -104.0,
+          -70.0
+        ],
+        [
+          90.0,
+          -104.0,
+          -90.0
+        ],
+        [
+          90.0,
+          -104.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-0-COURSE-0",
+      "lower": "S1-FLOOR-X-5",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -90.0,
+          -104.0,
+          70.0
+        ],
+        [
+          -90.0,
+          -104.0,
+          90.0
+        ],
+        [
+          -70.0,
+          -104.0,
+          70.0
+        ],
+        [
+          -70.0,
+          -104.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-1-COURSE-0",
+      "lower": "S1-FLOOR-X-3",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -50.0,
+          -104.0,
+          70.0
+        ],
+        [
+          -50.0,
+          -104.0,
+          90.0
+        ],
+        [
+          -30.0,
+          -104.0,
+          70.0
+        ],
+        [
+          -30.0,
+          -104.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-2-COURSE-0",
+      "lower": "S1-FLOOR-X-1",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -10.0,
+          -104.0,
+          70.0
+        ],
+        [
+          -10.0,
+          -104.0,
+          90.0
+        ],
+        [
+          10.0,
+          -104.0,
+          70.0
+        ],
+        [
+          10.0,
+          -104.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-3-COURSE-0",
+      "lower": "S1-FLOOR-X1",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          30.0,
+          -104.0,
+          70.0
+        ],
+        [
+          30.0,
+          -104.0,
+          90.0
+        ],
+        [
+          50.0,
+          -104.0,
+          70.0
+        ],
+        [
+          50.0,
+          -104.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-4-COURSE-0",
+      "lower": "S1-FLOOR-X3",
+      "class": "3003_TO_3832",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          70.0,
+          -104.0,
+          70.0
+        ],
+        [
+          70.0,
+          -104.0,
+          90.0
+        ],
+        [
+          90.0,
+          -104.0,
+          70.0
+        ],
+        [
+          90.0,
+          -104.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-0-COURSE-1",
+      "lower": "S3-WALL-0-SEG-0-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -90.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          -90.0,
+          -128.0,
+          -70.0
+        ],
+        [
+          -70.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          -70.0,
+          -128.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": true,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-1-COURSE-1",
+      "lower": "S3-WALL-0-SEG-1-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -50.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          -50.0,
+          -128.0,
+          -70.0
+        ],
+        [
+          -30.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          -30.0,
+          -128.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-2-COURSE-1",
+      "lower": "S3-WALL-0-SEG-2-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -10.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          -10.0,
+          -128.0,
+          -70.0
+        ],
+        [
+          10.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          10.0,
+          -128.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-3-COURSE-1",
+      "lower": "S3-WALL-0-SEG-3-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          30.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          30.0,
+          -128.0,
+          -70.0
+        ],
+        [
+          50.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          50.0,
+          -128.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-0-SEG-4-COURSE-1",
+      "lower": "S3-WALL-0-SEG-4-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          70.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          70.0,
+          -128.0,
+          -70.0
+        ],
+        [
+          90.0,
+          -128.0,
+          -90.0
+        ],
+        [
+          90.0,
+          -128.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-0-COURSE-1",
+      "lower": "S3-WALL-1-SEG-0-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -90.0,
+          -128.0,
+          70.0
+        ],
+        [
+          -90.0,
+          -128.0,
+          90.0
+        ],
+        [
+          -70.0,
+          -128.0,
+          70.0
+        ],
+        [
+          -70.0,
+          -128.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-1-COURSE-1",
+      "lower": "S3-WALL-1-SEG-1-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -50.0,
+          -128.0,
+          70.0
+        ],
+        [
+          -50.0,
+          -128.0,
+          90.0
+        ],
+        [
+          -30.0,
+          -128.0,
+          70.0
+        ],
+        [
+          -30.0,
+          -128.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-2-COURSE-1",
+      "lower": "S3-WALL-1-SEG-2-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -10.0,
+          -128.0,
+          70.0
+        ],
+        [
+          -10.0,
+          -128.0,
+          90.0
+        ],
+        [
+          10.0,
+          -128.0,
+          70.0
+        ],
+        [
+          10.0,
+          -128.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-3-COURSE-1",
+      "lower": "S3-WALL-1-SEG-3-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          30.0,
+          -128.0,
+          70.0
+        ],
+        [
+          30.0,
+          -128.0,
+          90.0
+        ],
+        [
+          50.0,
+          -128.0,
+          70.0
+        ],
+        [
+          50.0,
+          -128.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-WALL-1-SEG-4-COURSE-1",
+      "lower": "S3-WALL-1-SEG-4-COURSE-0",
+      "class": "3003_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          70.0,
+          -128.0,
+          70.0
+        ],
+        [
+          70.0,
+          -128.0,
+          90.0
+        ],
+        [
+          90.0,
+          -128.0,
+          70.0
+        ],
+        [
+          90.0,
+          -128.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-0",
+      "lower": "S3-WALL-0-SEG-0-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -90.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          -90.0,
+          -152.0,
+          -70.0
+        ],
+        [
+          -70.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          -70.0,
+          -152.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": true,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-0",
+      "lower": "S3-WALL-0-SEG-1-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -50.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          -50.0,
+          -152.0,
+          -70.0
+        ],
+        [
+          -30.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          -30.0,
+          -152.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-0",
+      "lower": "S3-WALL-0-SEG-2-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -10.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          -10.0,
+          -152.0,
+          -70.0
+        ],
+        [
+          10.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          10.0,
+          -152.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-0",
+      "lower": "S3-WALL-0-SEG-3-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          30.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          30.0,
+          -152.0,
+          -70.0
+        ],
+        [
+          50.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          50.0,
+          -152.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-0",
+      "lower": "S3-WALL-0-SEG-4-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          70.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          70.0,
+          -152.0,
+          -70.0
+        ],
+        [
+          90.0,
+          -152.0,
+          -90.0
+        ],
+        [
+          90.0,
+          -152.0,
+          -70.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-1",
+      "lower": "S3-WALL-1-SEG-0-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -90.0,
+          -152.0,
+          70.0
+        ],
+        [
+          -90.0,
+          -152.0,
+          90.0
+        ],
+        [
+          -70.0,
+          -152.0,
+          70.0
+        ],
+        [
+          -70.0,
+          -152.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-1",
+      "lower": "S3-WALL-1-SEG-1-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -50.0,
+          -152.0,
+          70.0
+        ],
+        [
+          -50.0,
+          -152.0,
+          90.0
+        ],
+        [
+          -30.0,
+          -152.0,
+          70.0
+        ],
+        [
+          -30.0,
+          -152.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-1",
+      "lower": "S3-WALL-1-SEG-2-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -10.0,
+          -152.0,
+          70.0
+        ],
+        [
+          -10.0,
+          -152.0,
+          90.0
+        ],
+        [
+          10.0,
+          -152.0,
+          70.0
+        ],
+        [
+          10.0,
+          -152.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-1",
+      "lower": "S3-WALL-1-SEG-3-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          30.0,
+          -152.0,
+          70.0
+        ],
+        [
+          30.0,
+          -152.0,
+          90.0
+        ],
+        [
+          50.0,
+          -152.0,
+          70.0
+        ],
+        [
+          50.0,
+          -152.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-BEAM-1",
+      "lower": "S3-WALL-1-SEG-4-COURSE-1",
+      "class": "3006_TO_3003",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          70.0,
+          -152.0,
+          70.0
+        ],
+        [
+          70.0,
+          -152.0,
+          90.0
+        ],
+        [
+          90.0,
+          -152.0,
+          70.0
+        ],
+        [
+          90.0,
+          -152.0,
+          90.0
+        ]
+      ],
+      "representative_mesh_relation": "CONTACT",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-0",
+      "lower": "S3-UPPER-BEAM-0",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -90.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          -70.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          -90.0,
+          -176.0,
+          -90.0
+        ],
+        [
+          -70.0,
+          -176.0,
+          -90.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": true,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-0",
+      "lower": "S3-UPPER-BEAM-1",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -90.0,
+          -176.0,
+          90.0
+        ],
+        [
+          -70.0,
+          -176.0,
+          90.0
+        ],
+        [
+          -90.0,
+          -176.0,
+          70.0
+        ],
+        [
+          -70.0,
+          -176.0,
+          70.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-1",
+      "lower": "S3-UPPER-BEAM-0",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -50.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          -30.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          -50.0,
+          -176.0,
+          -90.0
+        ],
+        [
+          -30.0,
+          -176.0,
+          -90.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-1",
+      "lower": "S3-UPPER-BEAM-1",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -50.0,
+          -176.0,
+          90.0
+        ],
+        [
+          -30.0,
+          -176.0,
+          90.0
+        ],
+        [
+          -50.0,
+          -176.0,
+          70.0
+        ],
+        [
+          -30.0,
+          -176.0,
+          70.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-2",
+      "lower": "S3-UPPER-BEAM-0",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -10.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          10.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          -10.0,
+          -176.0,
+          -90.0
+        ],
+        [
+          10.0,
+          -176.0,
+          -90.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-2",
+      "lower": "S3-UPPER-BEAM-1",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          -10.0,
+          -176.0,
+          90.0
+        ],
+        [
+          10.0,
+          -176.0,
+          90.0
+        ],
+        [
+          -10.0,
+          -176.0,
+          70.0
+        ],
+        [
+          10.0,
+          -176.0,
+          70.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-3",
+      "lower": "S3-UPPER-BEAM-0",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          30.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          50.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          30.0,
+          -176.0,
+          -90.0
+        ],
+        [
+          50.0,
+          -176.0,
+          -90.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-3",
+      "lower": "S3-UPPER-BEAM-1",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          30.0,
+          -176.0,
+          90.0
+        ],
+        [
+          50.0,
+          -176.0,
+          90.0
+        ],
+        [
+          30.0,
+          -176.0,
+          70.0
+        ],
+        [
+          50.0,
+          -176.0,
+          70.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-4",
+      "lower": "S3-UPPER-BEAM-0",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          70.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          90.0,
+          -176.0,
+          -70.0
+        ],
+        [
+          70.0,
+          -176.0,
+          -90.0
+        ],
+        [
+          90.0,
+          -176.0,
+          -90.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    },
+    {
+      "upper": "S3-UPPER-FLOOR-4",
+      "lower": "S3-UPPER-BEAM-1",
+      "class": "3832_TO_3006",
+      "nominal_common_studs": 4,
+      "actual_LDraw_stud_cavity_connectors": 4,
+      "actual_LDraw_connector_positions": [
+        [
+          70.0,
+          -176.0,
+          90.0
+        ],
+        [
+          90.0,
+          -176.0,
+          90.0
+        ],
+        [
+          70.0,
+          -176.0,
+          70.0
+        ],
+        [
+          90.0,
+          -176.0,
+          70.0
+        ]
+      ],
+      "representative_mesh_relation": "COLLISION",
+      "actual_this_specific_pair_triangle_mesh_scanned": false,
+      "insertion_continuous": "NOT_PROVEN",
+      "physical_load_strength": "NOT_PROVEN"
+    }
+  ],
+  "S2_proof_reused": "missions/S2/RESULTATS-S2.md; all 10 original floor/beam static interfaces only",
+  "limits": "New connector alignment measured on all new pairs, full triangle test only on one representative of each shape-class. No insertion continuity or strength proof."
+}
