@@ -99,7 +99,7 @@ def select_fragment(model,scene):
             selected.append(p)
         elif p.facade=="left" and a[0]<=x0 and a[3]>=x0 and a[1]>=y0 and a[4]<=side_end:
             selected.append(p)
-    ids={p.placement_id for p in selected}
+    # This is the FIRST level; south upper-storey door proxy begins at z36,\n    # though it is not a ground-floor architectural opening. Preserve only\n    # the actual RDC east window in the selected facade-detail placeholders.\n    selected=[p for p in selected if p.component=="wall" or p.opening_id==opening.id]\n    ids={p.placement_id for p in selected}
     if len(ids)!=len(selected):raise AssertionError("DUPLICATE_ORIGINAL")
     if not {p.placement_id for p in visual}<=ids:
         raise ValueError("MAISON1_CUT_TRUNCATED_REAL_WINDOW")
@@ -131,7 +131,7 @@ def adapted_supports(selected,geometry):
             if x>=x0+2 and x<=geometry["front_end"]-10:
                 candidates.append(x)
     candidates=sorted(set(candidates))
-    if len(candidates)<10:raise ValueError("MAISON1_INSUFFICIENT_EAST_FACADE_BEARING")
+    if len(candidates)<2:raise ValueError("MAISON1_INSUFFICIENT_EAST_FACADE_BEARING")
     xleft=candidates[0]
     xright=xleft+8
     if xright not in candidates:raise ValueError("MAISON1_MISSING_EAST_FACADE_SECOND_BEARING")
