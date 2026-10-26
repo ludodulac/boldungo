@@ -1,0 +1,57 @@
+name: LEGO2 S-2 one 3832 to 3006 LDraw interface
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - "scripts/probe_s2_floor_beam.py"
+      - "tests/bricks/test_probe_s2_floor_beam.py"
+      - ".github/workflows/lego2-s2-one-interface.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-single-mating-pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Existing engine only, no geometric engine modifications
+        run: |
+          python -m pip install -e ./lego_geometry_engine
+          python -m pip install pytest
+      - name: Fast single-pair tests including deliberately wrong fit
+        run: python -m pytest -q tests/bricks/test_probe_s2_floor_beam.py
+      - name: Pinned LDraw 3832 + 3006 only
+        run: python scripts/download_ldraw_probe_066.py /tmp/s2-official --max-files 100 --parts 3832 3006
+      - name: ONE official LDraw geometry witness and normal-vs-wrong pair
+        run: |
+          python scripts/probe_s2_floor_beam.py --ldraw-root /tmp/s2-official --output artifacts/s2/S2-PAIR-3832-3006.json
+      - name: Fail closed and preserve honest outcome
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("artifacts/s2/S2-PAIR-3832-3006.json").read_text())
+          assert (x["part_upper"],x["part_lower"])==("S1-FLOOR-X-5","S1-BEAM-Y-5")
+          assert x["actual_DAT_beam_stud_centres_count"]==20
+          assert x["actual_DAT_plate_stud_centres_count"]==20
+          assert x["actual_DAT_plate_underside_tubes_count"]==9
+          assert x["actual_horizontal_stud_to_cavity_axis_matches"]==4
+          assert x["nominal_normal_collision_has_not_been_silently_ignored"]
+          assert x["repetitions_examined"]==1
+          assert x["static_interface_verdict"]=="NON_RESOLU"
+          print("S2_ONE_REAL_MESH_PAIR_AND_NEGATIVE_CASE_DOCUMENTED")
+          PY
+      - name: Preserve bounded geometry evidence with hashes/logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-S2-ONE-3832-3006-REAL-MESH-INTERFACE
+          path: artifacts/s2/
+          retention-days: 30
+          if-no-files-found: warn
