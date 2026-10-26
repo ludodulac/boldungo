@@ -9,7 +9,7 @@ from pathlib import Path
 from dataclasses import replace
 
 from lego_geometry_engine import LDrawLibrary,Relation,check_collision,find_connections,instantiate,Transform
-from lego_geometry_engine.core import _tri_intersection_kind
+from lego_geometry_engine.core import _tri_intersection_kind,_point_in_mesh
 try:
     from scripts.build_documented_frame_s1 import model,_instance,ldraw_line
 except ModuleNotFoundError:
@@ -126,6 +126,55 @@ def experiment(ldrawroot):
     shifted=instantiate(ap.definition,"ILLEGAL_PLATE_4_LDU_TOO_LOW",
         Transform.translation(0,4,0).compose(ap.transform))
     invalid_relation=check_collision(shifted,bp)
+    # Same ALREADY EXISTING triangulated intersection detector on deliberately
+    # invalid vertical overlap. If true physical shell interference cannot be
+    # detected, do not proclaim our witness test trustworthy.
+    wrong_witness=witness(shifted,bp)
+    vertex_in_beam=_point_in_mesh(ap.triangles[0][0],bp.triangles)
+    vertex_in_plate=_point_in_mesh(bp.triangles[0][0],ap.triangles)
+    plate_bbox=ap.bbox;beam_bbox=bp.bbox
+    plate_encloses_beam=all(plate_bbox.minimum[i]<=beam_bbox.minimum[i]
+                             and beam_bbox.maximum[i]<=plate_bbox.maximum[i]
+                             for i in range(3))
+    beam_encloses_plate=all(beam_bbox.minimum[i]<=plate_bbox.minimum[i]
+                             and plate_bbox.maximum[i]<=beam_bbox.maximum[i]
+                             for i in range(3))
+    # Verify every original floor/beam mate using actual DAT, not merely the
+    # engine's descriptor-derived connectors (3006 and 3832 both have the
+    # long dimension along local X, despite the "2 x 10" name).
+    all_pairs=[]
+    for up in (p for p in ps if p.role=="floor"):
+        for pid in up.parents:
+            lo=next(p for p in ps if p.id==pid)
+            upper_studs=three_d_studs(lib,up,"stud.dat")
+            lower_studs=three_d_studs(lib,lo,"stud.dat")
+            upper_tubes=three_d_studs(lib,up,"stud4.dat")
+            common=sorted(set(map(xy,upper_studs))&set(map(xy,lower_studs)))
+            minimum=min(math.hypot(x[0]-y[0],x[2]-y[2])
+                         for x in upper_tubes for y in lower_studs)
+            same_level=abs(_instance(up,lib).transform.point((0,8,0))[1]-
+                           _instance(lo,lib).transform.point((0,0,0))[1])<1e-8
+            count=len(common)
+            all_pairs.append({"plate":up.id,"beam":lo.id,
+                 "genuine_dat_stud_axes_in_common":count,
+                 "underside_outer_tube_to_lower_stud_clearance_ldu":round(minimum-14,6),
+                 "plate_underside_equals_beam_top_plane":same_level,
+                 "positive_static_stud_fit":count==4 and minimum>14 and same_level})
+    # Conclusive only for the geometry in this bounded interface:
+    # no surface crossings, no fully contained part, actual 4-axis match,
+    # positive tube/stud separation, and counterexample shows actual crossing.
+    # Geometry engine's original COLLISION remains RAW and unchanged.
+    no_cross="triangle_intersection_found" in wit and False or (
+        wit.get("triangle_intersection_found") is False)
+    negative_real_cross=("first_triangle_indices" in wrong_witness)
+    intentional_fit=(relation==Relation.COLLISION and no_cross
+         and (vertex_in_beam or vertex_in_plate)
+         and not plate_encloses_beam and not beam_encloses_plate
+         and len(axes)==4 and min_tube_clearance>0
+         and abs(stud_top_y-plate_cavity_ceiling)<1e-8
+         and abs(lower_top_y-plate_bottom_y)<1e-8
+         and negative_real_cross
+         and len(all_pairs)==10 and all(x["positive_static_stud_fit"] for x in all_pairs))
     result={
       "part_upper":plate.id,"part_lower":beam.id,
       "upper_LDraw_row":ldraw_line(plate),"lower_LDraw_row":ldraw_line(beam),
@@ -150,14 +199,27 @@ def experiment(ldrawroot):
       "min_tube_stud_radial_clearance_LDU":min_tube_clearance,
       "witness":wit,
       "negative_deliberate_4_LDU_vertical_interference_relation":invalid_relation.value,
+      "negative_wrong_depth_has_actual_triangles_crossing":negative_real_cross,
+      "negative_wrong_depth_triangle_witness":wrong_witness,
+      "original_mesh_inside_ray_vertex_plate_to_beam":vertex_in_beam,
+      "original_mesh_inside_ray_vertex_beam_to_plate":vertex_in_plate,
+      "original_body_complete_bbox_containment_either_way":plate_encloses_beam or beam_encloses_plate,
+      "original_mesh_collision_comes_from_containment_fallback_not_triangle_crossing":relation==Relation.COLLISION and no_cross,
+      "repeated_ten_couplings_actual_official_DAT":all_pairs,
+      "all_ten_actual_stud_cavity_alignments_compatible":all(x["positive_static_stud_fit"] for x in all_pairs),
+      "counterexample_detected_as_real_interference":negative_real_cross,
+      "bounded_static_geometric_verdict":"COMPATIBLE" if intentional_fit else "NON_RESOLU",
       "nominal_normal_collision_has_not_been_silently_ignored":relation==Relation.COLLISION,
-      "repetitions_examined":1,
-      "static_interface_verdict":"NON_RESOLU",
+      "repetitions_examined":10,
+      "triangle_intersection_representative_pairs":1,
+      "static_interface_verdict":"COMPATIBLE" if intentional_fit else "NON_RESOLU",
       "insertion_continuous":"NON_DEMONTREE",
       "mechanical_strength":"NON_CERTIFIEE",
       "notes":"Only a genuine overlap of solids in the original geometry can prove incompatible. A mesh intersection in a documented stud-cavity region alone is not a validated physical interference or a permitted exception."
     }
-    print("S2_RAW",json.dumps({k:v for k,v in result.items() if k not in ("witness","engine_connector_locations","actual_overlapping_stud_axis_xz_ldu")},sort_keys=True))
+    print("S2_RAW",json.dumps({k:v for k,v in result.items() if k not in ("witness","negative_wrong_depth_triangle_witness","engine_connector_locations","actual_overlapping_stud_axis_xz_ldu","repeated_ten_couplings_actual_official_DAT")},sort_keys=True))
+    print("S2_TEN_MATES",json.dumps(all_pairs,sort_keys=True))
+    print("S2_BAD_WITNESS",json.dumps(wrong_witness,sort_keys=True))
     print("S2_WITNESS",json.dumps(wit,sort_keys=True))
     return result
 
