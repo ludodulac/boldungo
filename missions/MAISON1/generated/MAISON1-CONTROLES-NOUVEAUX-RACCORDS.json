@@ -1,0 +1,422 @@
+{
+  "new_edges": [
+    {
+      "upper": "M1-POST-0-COURSE-0",
+      "lower": "M1-EXPERIMENTAL-BASE-3811",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 0,
+      "explicit_connectors": false,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-1",
+      "lower": "M1-POST-0-COURSE-0",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-2",
+      "lower": "M1-POST-0-COURSE-1",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-3",
+      "lower": "M1-POST-0-COURSE-2",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-4",
+      "lower": "M1-POST-0-COURSE-3",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-5",
+      "lower": "M1-POST-0-COURSE-4",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-6",
+      "lower": "M1-POST-0-COURSE-5",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-7",
+      "lower": "M1-POST-0-COURSE-6",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-8",
+      "lower": "M1-POST-0-COURSE-7",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-9",
+      "lower": "M1-POST-0-COURSE-8",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-10",
+      "lower": "M1-POST-0-COURSE-9",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-11",
+      "lower": "M1-POST-0-COURSE-10",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-0-COURSE-12",
+      "lower": "M1-POST-0-COURSE-11",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-BEAM-0",
+      "lower": "wall-000282",
+      "common_stud_cells": 2,
+      "real_LDraw_connector_count": 2,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-BEAM-0",
+      "lower": "M1-POST-0-COURSE-12",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-0",
+      "lower": "M1-EXPERIMENTAL-BASE-3811",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 0,
+      "explicit_connectors": false,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-1",
+      "lower": "M1-POST-1-COURSE-0",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-2",
+      "lower": "M1-POST-1-COURSE-1",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-3",
+      "lower": "M1-POST-1-COURSE-2",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-4",
+      "lower": "M1-POST-1-COURSE-3",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-5",
+      "lower": "M1-POST-1-COURSE-4",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-6",
+      "lower": "M1-POST-1-COURSE-5",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-7",
+      "lower": "M1-POST-1-COURSE-6",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-8",
+      "lower": "M1-POST-1-COURSE-7",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-9",
+      "lower": "M1-POST-1-COURSE-8",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-10",
+      "lower": "M1-POST-1-COURSE-9",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-11",
+      "lower": "M1-POST-1-COURSE-10",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-POST-1-COURSE-12",
+      "lower": "M1-POST-1-COURSE-11",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-BEAM-1",
+      "lower": "wall-000283",
+      "common_stud_cells": 2,
+      "real_LDraw_connector_count": 2,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-BEAM-1",
+      "lower": "M1-POST-1-COURSE-12",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-0",
+      "lower": "M1-BEAM-0",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-0",
+      "lower": "M1-BEAM-1",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-1",
+      "lower": "M1-BEAM-0",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-1",
+      "lower": "M1-BEAM-1",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-2",
+      "lower": "M1-BEAM-0",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-2",
+      "lower": "M1-BEAM-1",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-3",
+      "lower": "M1-BEAM-0",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-3",
+      "lower": "M1-BEAM-1",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-4",
+      "lower": "M1-BEAM-0",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-UPPER-FLOOR-4",
+      "lower": "M1-BEAM-1",
+      "common_stud_cells": 4,
+      "real_LDraw_connector_count": 4,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-TRUE-CORNER-BOND",
+      "lower": "wall-000282",
+      "common_stud_cells": 2,
+      "real_LDraw_connector_count": 2,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "M1-TRUE-CORNER-BOND",
+      "lower": "wall-000297",
+      "common_stud_cells": 1,
+      "real_LDraw_connector_count": 1,
+      "explicit_connectors": true,
+      "mesh_relation": "NOT_INDIVIDUALLY_CHECKED",
+      "insertion": "NOT_DEMONSTRATED"
+    }
+  ],
+  "new_edges_total": 42,
+  "engine_recognized_connector_edges": 40,
+  "sampled_class_geometry": {
+    "('3003', '3811')": {
+      "upper": "M1-POST-0-COURSE-0",
+      "lower": "M1-EXPERIMENTAL-BASE-3811",
+      "mesh": "CONTACT"
+    },
+    "('3003', '3003')": {
+      "upper": "M1-POST-0-COURSE-1",
+      "lower": "M1-POST-0-COURSE-0",
+      "mesh": "CONTACT"
+    },
+    "('3006', '3008')": {
+      "upper": "M1-BEAM-0",
+      "lower": "wall-000282",
+      "mesh": "CONTACT"
+    },
+    "('3006', '3003')": {
+      "upper": "M1-BEAM-0",
+      "lower": "M1-POST-0-COURSE-12",
+      "mesh": "CONTACT"
+    },
+    "('3832', '3006')": {
+      "upper": "M1-UPPER-FLOOR-0",
+      "lower": "M1-BEAM-0",
+      "mesh": "CONTACT"
+    },
+    "('3022', '3008')": {
+      "upper": "M1-TRUE-CORNER-BOND",
+      "lower": "wall-000282",
+      "mesh": "CONTACT"
+    }
+  },
+  "sample_mesh_collision_signals": 0,
+  "full_model_mesh_collisions": "NOT_EXHAUSTIVELY_CHECKED",
+  "original_canonical_wall_joins_reaudited": false,
+  "complete_load_chains": "NOT_CERTIFIED",
+  "continuous_insertion": "NOT_PROVEN",
+  "physical_strength": "NOT_CERTIFIED"
+}

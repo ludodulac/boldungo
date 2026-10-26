@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 750" width="1100" height="750">
+<rect width="1100" height="750" fill="#f6f8fb"/>
+<text x="30" y="45" font-family="Arial" font-size="26">GUIDED-004 — Portion de la vraie Scene (plan du RDC)</text>
+<text x="30" y="74" font-family="Arial" font-size="17">Façade EST / avant : 9.3 m (confirmé) · SUD / gauche : 8.2 m (confirmé)</text>
+<rect x="150" y="150" width="558.00" height="492.00" fill="#e9e5dd" stroke="#304d68" stroke-width="5"/>
+<rect x="150" y="150" width="232.50" height="232.50" fill="#8ed9a8" fill-opacity=".78" stroke="#287b52" stroke-width="3" stroke-dasharray="7 5"/>
+<rect x="231.00" y="142" width="63.00" height="16" fill="#288fd4"/>
+<text x="150" y="125" font-family="Arial" font-size="18">EST — façade avant (fenêtre bleue)</text>
+<text transform="translate(125,350) rotate(-90)" font-family="Arial" font-size="18">SUD — façade gauche</text>
+<text x="770" y="190" font-family="Arial" font-size="17">VERT : zone extraite du BrickModel canonique</text>
+<text x="770" y="220" font-family="Arial" font-size="16">Fenêtre : east-rdc-window-left</text>
+<text x="770" y="250" font-family="Arial" font-size="16">Découpe issue du modèle, non dessin inventé.</text>
+<text x="30" y="702" font-family="Arial" font-size="15">Vue de situation fidèle à la Scene ; l’intérieur LEGO et la dalle de soutien restent des EXPÉRIMENTATIONS.</text>
+</svg>
