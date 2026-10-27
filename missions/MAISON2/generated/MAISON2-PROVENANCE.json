@@ -1,0 +1,33 @@
+{
+  "scene_sha256": "752c407f3e087e18f71e4e298a152a87f30011692affff0d210b65933a1ae98e",
+  "canonical_model_count": 1890,
+  "source_dimensions_m": {
+    "east": 9.3,
+    "south": 8.2
+  },
+  "maison1_exact_placement_prefix": 126,
+  "maison1_ldraw_sha256": "3be135d0772e660670addd4fab1e6918880d581bda0228356615454b22eaad22",
+  "new_source_placement_ids": [
+    "wall-000003",
+    "wall-000025",
+    "wall-000050",
+    "wall-000073",
+    "wall-000098",
+    "wall-000120",
+    "wall-000145",
+    "wall-000167",
+    "wall-000192",
+    "wall-000214",
+    "wall-000238",
+    "wall-000260",
+    "wall-000284"
+  ],
+  "bay_old_wall_end_studs": 36,
+  "bay_new_wall_end_studs": 44,
+  "bay_studs": 8,
+  "studs_per_meter": 5.161290322580645,
+  "maison1_floor_height_m_not_approved": 2.5170731707317073,
+  "nominal_level_m": 2.4,
+  "scene_mutated": false,
+  "old_model_mutated": false
+}
