@@ -1,0 +1,1075 @@
+{
+  "new_body_collisions_count": 0,
+  "new_body_collision_pairs": [],
+  "new_support_edges": 124,
+  "new_support_edges_with_engine_connectors": 123,
+  "new_support_edges_details": [
+    {
+      "upper": "wall-000004",
+      "lower": "M1-EXPERIMENTAL-BASE-3811",
+      "stud_cells": 8,
+      "connector_count": 0,
+      "recognized": false,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000026",
+      "lower": "wall-000004",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000026",
+      "lower": "wall-000005",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000027",
+      "lower": "wall-000005",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000031",
+      "lower": "wall-000005",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000040",
+      "lower": "wall-000005",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000049",
+      "lower": "wall-000005",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000058",
+      "lower": "wall-000005",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000067",
+      "lower": "wall-000005",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000076",
+      "lower": "wall-000005",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000085",
+      "lower": "wall-000006",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000028",
+      "lower": "wall-000006",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000051",
+      "lower": "wall-000025",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000051",
+      "lower": "wall-000026",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000052",
+      "lower": "wall-000026",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000052",
+      "lower": "wall-000027",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000032",
+      "lower": "window-000031",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000041",
+      "lower": "window-000040",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000050",
+      "lower": "window-000049",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000059",
+      "lower": "window-000058",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000068",
+      "lower": "window-000067",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000077",
+      "lower": "window-000076",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000086",
+      "lower": "window-000085",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000053",
+      "lower": "wall-000028",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000054",
+      "lower": "wall-000028",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000074",
+      "lower": "wall-000051",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000074",
+      "lower": "wall-000052",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000033",
+      "lower": "window-000032",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000042",
+      "lower": "window-000041",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000051",
+      "lower": "window-000050",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000060",
+      "lower": "window-000059",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000069",
+      "lower": "window-000068",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000078",
+      "lower": "window-000077",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000087",
+      "lower": "window-000086",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000075",
+      "lower": "wall-000053",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000075",
+      "lower": "wall-000054",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000099",
+      "lower": "wall-000073",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000099",
+      "lower": "wall-000074",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000034",
+      "lower": "window-000033",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000043",
+      "lower": "window-000042",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000052",
+      "lower": "window-000051",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000061",
+      "lower": "window-000060",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000070",
+      "lower": "window-000069",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000079",
+      "lower": "window-000078",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000088",
+      "lower": "window-000087",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000100",
+      "lower": "wall-000075",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000101",
+      "lower": "wall-000075",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000121",
+      "lower": "wall-000099",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000035",
+      "lower": "window-000034",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000044",
+      "lower": "window-000043",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000053",
+      "lower": "window-000052",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000062",
+      "lower": "window-000061",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000071",
+      "lower": "window-000070",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000080",
+      "lower": "window-000079",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000089",
+      "lower": "window-000088",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000122",
+      "lower": "wall-000100",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000122",
+      "lower": "wall-000101",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000146",
+      "lower": "wall-000120",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000146",
+      "lower": "wall-000121",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000036",
+      "lower": "window-000035",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000045",
+      "lower": "window-000044",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000054",
+      "lower": "window-000053",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000063",
+      "lower": "window-000062",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000072",
+      "lower": "window-000071",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000081",
+      "lower": "window-000080",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000090",
+      "lower": "window-000089",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000147",
+      "lower": "wall-000122",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000148",
+      "lower": "wall-000122",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000168",
+      "lower": "wall-000146",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000037",
+      "lower": "window-000036",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000046",
+      "lower": "window-000045",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000055",
+      "lower": "window-000054",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000064",
+      "lower": "window-000063",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000073",
+      "lower": "window-000072",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000082",
+      "lower": "window-000081",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000091",
+      "lower": "window-000090",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000169",
+      "lower": "wall-000147",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000169",
+      "lower": "wall-000148",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000193",
+      "lower": "wall-000167",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000193",
+      "lower": "wall-000168",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000038",
+      "lower": "window-000037",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000047",
+      "lower": "window-000046",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000056",
+      "lower": "window-000055",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000065",
+      "lower": "window-000064",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000074",
+      "lower": "window-000073",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000083",
+      "lower": "window-000082",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000092",
+      "lower": "window-000091",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000194",
+      "lower": "wall-000169",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000195",
+      "lower": "wall-000169",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000215",
+      "lower": "wall-000192",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000215",
+      "lower": "wall-000193",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000216",
+      "lower": "wall-000193",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000039",
+      "lower": "window-000038",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000048",
+      "lower": "window-000047",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000057",
+      "lower": "window-000056",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000066",
+      "lower": "window-000065",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000075",
+      "lower": "window-000074",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000084",
+      "lower": "window-000083",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "window-000093",
+      "lower": "window-000092",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000217",
+      "lower": "wall-000194",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000217",
+      "lower": "wall-000195",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000239",
+      "lower": "wall-000214",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000239",
+      "lower": "wall-000215",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000240",
+      "lower": "wall-000215",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000240",
+      "lower": "wall-000216",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000240",
+      "lower": "window-000039",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000240",
+      "lower": "window-000048",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000240",
+      "lower": "window-000057",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000240",
+      "lower": "window-000066",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000240",
+      "lower": "window-000075",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000240",
+      "lower": "window-000084",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000241",
+      "lower": "window-000093",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000241",
+      "lower": "wall-000217",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000261",
+      "lower": "wall-000239",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000261",
+      "lower": "wall-000240",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000262",
+      "lower": "wall-000240",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000262",
+      "lower": "wall-000241",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000263",
+      "lower": "wall-000241",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000285",
+      "lower": "wall-000260",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000285",
+      "lower": "wall-000261",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000286",
+      "lower": "wall-000261",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000286",
+      "lower": "wall-000262",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000287",
+      "lower": "wall-000262",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000287",
+      "lower": "wall-000263",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    }
+  ],
+  "new_without_underlying_stud_bearing": [
+    "wall-000005",
+    "wall-000006"
+  ],
+  "lateral_seam_contacts": [
+    {
+      "new": "wall-000004",
+      "old": "wall-000003",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000026",
+      "old": "wall-000025",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000051",
+      "old": "wall-000050",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000074",
+      "old": "wall-000073",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000099",
+      "old": "wall-000098",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000121",
+      "old": "wall-000120",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000146",
+      "old": "wall-000145",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000168",
+      "old": "wall-000167",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000193",
+      "old": "wall-000192",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000215",
+      "old": "wall-000214",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000239",
+      "old": "wall-000238",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000261",
+      "old": "wall-000260",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    },
+    {
+      "new": "wall-000285",
+      "old": "wall-000284",
+      "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+    }
+  ],
+  "old_maison1_2_links_not_retested": true,
+  "full_mesh_collision_audit": "NOT_PERFORMED",
+  "continuous_insertion": "NOT_PROVEN",
+  "mechanical_strength": "NOT_CERTIFIED"
+}
