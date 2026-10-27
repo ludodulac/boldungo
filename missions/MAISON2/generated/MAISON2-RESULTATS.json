@@ -1,0 +1,15 @@
+{
+  "parts_total": 139,
+  "preserved": 126,
+  "new_source_bricks": 13,
+  "bay": [
+    36,
+    44
+  ],
+  "new_connections": 20,
+  "recognized_new_connections": 19,
+  "unsupported_new_bricks": 0,
+  "new_collisions": 0,
+  "mechanics": "NOT_CERTIFIED",
+  "floor_difference_m_not_approved": 0.1171
+}

@@ -1,0 +1,240 @@
+{
+  "new_collisions": 0,
+  "new_support_edges": 20,
+  "new_support_edges_with_real_connectors": 19,
+  "new_support_edges_detail": [
+    {
+      "upper": "wall-000003",
+      "lower": "M1-EXPERIMENTAL-BASE-3811",
+      "overlap_stud_cells": 8,
+      "actual_engine_connector_count": 0,
+      "engine_recognized": false,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000025",
+      "lower": "wall-000003",
+      "overlap_stud_cells": 7,
+      "actual_engine_connector_count": 7,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000050",
+      "lower": "wall-000024",
+      "overlap_stud_cells": 1,
+      "actual_engine_connector_count": 1,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000050",
+      "lower": "wall-000025",
+      "overlap_stud_cells": 7,
+      "actual_engine_connector_count": 7,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000073",
+      "lower": "wall-000050",
+      "overlap_stud_cells": 4,
+      "actual_engine_connector_count": 4,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000098",
+      "lower": "wall-000072",
+      "overlap_stud_cells": 2,
+      "actual_engine_connector_count": 2,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000098",
+      "lower": "wall-000073",
+      "overlap_stud_cells": 6,
+      "actual_engine_connector_count": 6,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000120",
+      "lower": "wall-000098",
+      "overlap_stud_cells": 6,
+      "actual_engine_connector_count": 6,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000145",
+      "lower": "wall-000119",
+      "overlap_stud_cells": 2,
+      "actual_engine_connector_count": 2,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000145",
+      "lower": "wall-000120",
+      "overlap_stud_cells": 6,
+      "actual_engine_connector_count": 6,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000167",
+      "lower": "wall-000145",
+      "overlap_stud_cells": 6,
+      "actual_engine_connector_count": 6,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000192",
+      "lower": "wall-000166",
+      "overlap_stud_cells": 2,
+      "actual_engine_connector_count": 2,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000192",
+      "lower": "wall-000167",
+      "overlap_stud_cells": 6,
+      "actual_engine_connector_count": 6,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000214",
+      "lower": "wall-000191",
+      "overlap_stud_cells": 1,
+      "actual_engine_connector_count": 1,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000214",
+      "lower": "wall-000192",
+      "overlap_stud_cells": 7,
+      "actual_engine_connector_count": 7,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000238",
+      "lower": "wall-000213",
+      "overlap_stud_cells": 1,
+      "actual_engine_connector_count": 1,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000238",
+      "lower": "wall-000214",
+      "overlap_stud_cells": 7,
+      "actual_engine_connector_count": 7,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000260",
+      "lower": "wall-000238",
+      "overlap_stud_cells": 7,
+      "actual_engine_connector_count": 7,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000284",
+      "lower": "wall-000259",
+      "overlap_stud_cells": 1,
+      "actual_engine_connector_count": 1,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    },
+    {
+      "upper": "wall-000284",
+      "lower": "wall-000260",
+      "overlap_stud_cells": 7,
+      "actual_engine_connector_count": 7,
+      "engine_recognized": true,
+      "insertion": "NOT_DEMONSTRATED"
+    }
+  ],
+  "new_parts_without_underlying_support": [],
+  "side_seam_contacts_non_mechanical": [
+    {
+      "new": "wall-000003",
+      "existing": "wall-000002",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000025",
+      "existing": "wall-000024",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000050",
+      "existing": "wall-000049",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000073",
+      "existing": "wall-000072",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000098",
+      "existing": "wall-000097",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000120",
+      "existing": "wall-000119",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000145",
+      "existing": "wall-000144",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000167",
+      "existing": "wall-000166",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000192",
+      "existing": "wall-000191",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000214",
+      "existing": "wall-000213",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000238",
+      "existing": "wall-000237",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000260",
+      "existing": "wall-000259",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    },
+    {
+      "new": "wall-000284",
+      "existing": "wall-000283",
+      "result": "SIDE_CONTACT_NOT_STUD_BOND"
+    }
+  ],
+  "maison1_old_42_edges_retested": false,
+  "maison1_two_baseplate_post_joins": "NOT_PROVEN",
+  "mesh_exhaustive": "NOT_DONE",
+  "continuous_insertion": "NOT_PROVEN",
+  "physical_strength": "NOT_CERTIFIED"
+}

@@ -1,0 +1,20 @@
+{
+  "total": 139,
+  "maison1_preserved": 126,
+  "actual_canonical_bricks_added": 13,
+  "by_real_LDraw_part": {
+    "3003": 26,
+    "3004": 6,
+    "3005": 33,
+    "3006": 2,
+    "3008": 47,
+    "3009": 13,
+    "3022": 1,
+    "3622": 4,
+    "3710": 1,
+    "3811": 1,
+    "3832": 5
+  },
+  "new_window_proxies": 0,
+  "original_30_window_proxies_still_not_certified_glazing": true
+}
