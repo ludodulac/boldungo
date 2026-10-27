@@ -1,0 +1,20 @@
+{
+  "total": 239,
+  "maison2_preserved": 139,
+  "new_scene_placements": 100,
+  "by_real_LDraw_part": {
+    "3003": 26,
+    "3004": 7,
+    "3005": 98,
+    "3006": 2,
+    "3008": 64,
+    "3009": 22,
+    "3010": 4,
+    "3022": 1,
+    "3622": 8,
+    "3710": 1,
+    "3811": 1,
+    "3832": 5
+  },
+  "symbolic_openings_are_not_genuine_glazing": true
+}

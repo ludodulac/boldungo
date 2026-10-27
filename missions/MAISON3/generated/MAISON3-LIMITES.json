@@ -1,0 +1,11 @@
+{
+  "scene_genuine_front_wall": "ALL_CANONICAL_RDC_RELEVANT_BRICKS_INCLUDED",
+  "windows_and_french_door": "CANONICAL_SYMBOLS_OR_SCENE_OUTLINES_NOT_GENUINE_LEGO_GLAZING",
+  "prior_2_post_baseplate_links": "NOT_PROVEN_AS_MAISON1",
+  "prior_maison2_connector_unrecognized": "NOT_RETESTED",
+  "old_floor_height_offset_m": 0.1171,
+  "roof": "NOT_INSTALLED",
+  "terrace": "NOT_INSTALLED",
+  "old_levels": "UNCHANGED",
+  "mechanics": "NOT_CERTIFIED"
+}

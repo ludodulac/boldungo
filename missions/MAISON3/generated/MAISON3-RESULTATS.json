@@ -1,0 +1,13 @@
+{
+  "total_placements": 239,
+  "maison2_original_placements_preserved_verbatim": 139,
+  "new_canonical_placements": 100,
+  "new_wall_parts": 37,
+  "new_opening_proxy_parts": 63,
+  "new_engine_support_edges": 124,
+  "new_engine_recognized_edges": 123,
+  "new_orthogonal_collision_pairs": 0,
+  "front_RDC_canonical_placements_covered": 172,
+  "complete_real_manufactured_door": "NOT_CERTIFIED",
+  "full_physical_strength": "NOT_CERTIFIED"
+}
