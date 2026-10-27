@@ -1,0 +1,79 @@
+name: LEGO2 MAISON-3 complete canonical east ground floor
+on:
+  pull_request:
+    branches: [feat/lego2-maison2-guided004-east-bay]
+    paths:
+      - 'scripts/build_guided004_corner_maison3.py'
+      - 'tests/bricks/test_guided004_corner_maison3.py'
+      - '.github/workflows/lego2-maison3-east-rdc.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  maison3-single-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 19
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install previously developed construction tools
+        run: |
+          python -m pip install -e .
+          python -m pip install -e ./lego_geometry_engine
+          python -m pip install pytest
+      - name: Known real LDraw parts, no new research
+        run: python scripts/download_ldraw_probe_066.py /tmp/maison3-ldraw --max-files 250 --parts 3811 3003 3006 3832 3022 3005 3004 3008 3009 3010 3622 3710
+      - name: One construction - deliver LDraw and schematic BEFORE diagnostics
+        run: python scripts/build_guided004_corner_maison3.py --ldraw-root /tmp/maison3-ldraw --output artifacts/lego2-maison3
+      - name: One targeted test campaign, without prior mission suites
+        run: python -m pytest -q tests/bricks/test_guided004_corner_maison3.py
+      - name: Verify new files and 139 preserved LDraw placements
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('artifacts/lego2-maison3')
+          r=json.loads((p/'MAISON3-RESULTATS.json').read_text())
+          b=json.loads((p/'MAISON3-NOMENCLATURE.json').read_text())
+          prov=json.loads((p/'MAISON3-PROVENANCE.json').read_text())
+          ldr=lambda t:[s for s in t.splitlines() if s.startswith('1 ')]
+          old=ldr(Path('missions/MAISON2/generated/MAISON2-FRAGMENT-AGRANDI.ldr').read_text())
+          new=ldr((p/'MAISON3-FACADE-EST-RDC.ldr').read_text())
+          assert len(old)==139 and new[:139]==old
+          assert len(new)==r['total_placements']>139
+          assert r['new_canonical_placements']>0
+          assert prov['bounds']['east_grid_end_studs']==64
+          assert prov['bounds']['east_front_m']==9.3
+          assert b['total']==len(new)==sum(b['by_real_LDraw_part'].values())
+          assert (p/'MAISON3-VUE-3D-SCHEMATIQUE.svg').is_file()
+          print('MAISON3_COMPLETE_EAST_RDC_SOURCE_AND_139_PRESERVED_PASS')
+          PY
+      - name: Archive single-build proof also when partial
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-MAISON3-EST-RDC-NOT-CERTIFIED
+          path: artifacts/lego2-maison3/MAISON3-*
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Directly publish stable files to new PR branch with FAST-FORWARD only
+        if: ${{ success() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          git fetch origin "+refs/heads/${BRANCH}:refs/remotes/origin/${BRANCH}"
+          git switch -C "${BRANCH}" "refs/remotes/origin/${BRANCH}"
+          mkdir -p missions/MAISON3/generated
+          cp artifacts/lego2-maison3/MAISON3-* missions/MAISON3/generated/
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add missions/MAISON3/generated/
+          if ! git diff --cached --quiet; then
+            git commit -m 'MAISON-3: save full canonical east RDC LDraw and checks'
+            git push origin "HEAD:refs/heads/${BRANCH}"
+          fi
