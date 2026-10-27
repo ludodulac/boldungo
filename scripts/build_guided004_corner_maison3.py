@@ -109,10 +109,16 @@ def fresh_interfaces(old_source, old_supports, new, root):
         for name, (other, _) in existing.items():
             if name.startswith("M1-"):
                 continue
-            if (box[1], box[4]) == (other[1], other[4]) and (
-                box[0] == other[3] or box[3] == other[0]) and
-                min(box[5], other[5]) > max(box[2], other[2]):
-                sides.append({"new": ident, "old": name, "result": "SIDE_CONTACT_NOT_STUD_JOIN"})
+            if (
+                (box[1], box[4]) == (other[1], other[4])
+                and (box[0] == other[3] or box[3] == other[0])
+                and min(box[5], other[5]) > max(box[2], other[2])
+            ):
+                sides.append({
+                    "new": ident,
+                    "old": name,
+                    "result": "SIDE_CONTACT_NOT_STUD_JOIN"
+                })
     return {
         "new_body_collisions_count": len(coll), "new_body_collision_pairs": coll,
         "new_support_edges": len(edges),
