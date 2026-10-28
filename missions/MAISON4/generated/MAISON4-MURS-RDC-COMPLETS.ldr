@@ -1,0 +1,725 @@
+0 FILE GUIDED004-MAISON1-EST-SUD-RDC.ldr
+0 MAISON-1: Actual canonical GUIDED-004 front-east and left-south window corner.
+0 East window panes are ORIGINAL BRICK_1X1 visual PROXIES, NOT certified real window pieces.
+0 Experimental structure: LEGO baseplate, two interior posts, 2 beams, 5 floor panels, one corner plate.
+0 DO NOT silently call this an official LEGO model or physical construction certification.
+0 // CANONICAL-UNCHANGED wall-000001 facade=Facade.FRONT
+1 19 400 -24 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000017 facade=Facade.LEFT
+1 19 330 -24 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000016 facade=Facade.LEFT
+1 19 330 -24 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000002 facade=Facade.FRONT
+1 19 560 -24 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000041 facade=Facade.LEFT
+1 19 330 -48 60 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-UNCHANGED wall-000040 facade=Facade.LEFT
+1 19 330 -48 110 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // CANONICAL-UNCHANGED wall-000039 facade=Facade.LEFT
+1 19 330 -48 220 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000023 facade=Facade.FRONT
+1 19 420 -48 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000024 facade=Facade.FRONT
+1 19 580 -48 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000048 facade=Facade.FRONT
+1 19 400 -72 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000065 facade=Facade.LEFT
+1 19 330 -72 120 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-UNCHANGED wall-000064 facade=Facade.LEFT
+1 19 330 -72 260 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000049 facade=Facade.FRONT
+1 19 560 -72 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000088 facade=Facade.LEFT
+1 19 330 -96 60 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-UNCHANGED wall-000087 facade=Facade.LEFT
+1 19 330 -96 110 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // CANONICAL-UNCHANGED wall-000086 facade=Facade.LEFT
+1 19 330 -96 220 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000071 facade=Facade.FRONT
+1 19 400 -96 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED window-000001 facade=Facade.FRONT
+1 47 470 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000007 facade=Facade.FRONT
+1 47 490 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000013 facade=Facade.FRONT
+1 47 510 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000019 facade=Facade.FRONT
+1 47 530 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000025 facade=Facade.FRONT
+1 47 550 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED wall-000072 facade=Facade.FRONT
+1 19 640 -96 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000095 facade=Facade.FRONT
+1 19 380 -120 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED wall-000112 facade=Facade.LEFT
+1 19 330 -120 120 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-UNCHANGED wall-000111 facade=Facade.LEFT
+1 19 330 -120 260 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000096 facade=Facade.FRONT
+1 19 450 -120 50 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-UNCHANGED window-000002 facade=Facade.FRONT
+1 47 470 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000008 facade=Facade.FRONT
+1 47 490 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000014 facade=Facade.FRONT
+1 47 510 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000020 facade=Facade.FRONT
+1 47 530 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000026 facade=Facade.FRONT
+1 47 550 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED wall-000097 facade=Facade.FRONT
+1 19 620 -120 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED wall-000135 facade=Facade.LEFT
+1 19 330 -144 60 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-UNCHANGED wall-000134 facade=Facade.LEFT
+1 19 330 -144 110 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // CANONICAL-UNCHANGED wall-000133 facade=Facade.LEFT
+1 19 330 -144 220 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000118 facade=Facade.FRONT
+1 19 400 -144 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED window-000003 facade=Facade.FRONT
+1 47 470 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000009 facade=Facade.FRONT
+1 47 490 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000015 facade=Facade.FRONT
+1 47 510 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000021 facade=Facade.FRONT
+1 47 530 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000027 facade=Facade.FRONT
+1 47 550 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED wall-000119 facade=Facade.FRONT
+1 19 640 -144 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000142 facade=Facade.FRONT
+1 19 380 -168 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED wall-000159 facade=Facade.LEFT
+1 19 330 -168 120 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-UNCHANGED wall-000158 facade=Facade.LEFT
+1 19 330 -168 260 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000143 facade=Facade.FRONT
+1 19 450 -168 50 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-UNCHANGED window-000004 facade=Facade.FRONT
+1 47 470 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000010 facade=Facade.FRONT
+1 47 490 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000016 facade=Facade.FRONT
+1 47 510 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000022 facade=Facade.FRONT
+1 47 530 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000028 facade=Facade.FRONT
+1 47 550 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED wall-000144 facade=Facade.FRONT
+1 19 620 -168 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED wall-000182 facade=Facade.LEFT
+1 19 330 -192 60 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-UNCHANGED wall-000181 facade=Facade.LEFT
+1 19 330 -192 110 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // CANONICAL-UNCHANGED wall-000180 facade=Facade.LEFT
+1 19 330 -192 220 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000165 facade=Facade.FRONT
+1 19 400 -192 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED window-000005 facade=Facade.FRONT
+1 47 470 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000011 facade=Facade.FRONT
+1 47 490 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000017 facade=Facade.FRONT
+1 47 510 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000023 facade=Facade.FRONT
+1 47 530 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000029 facade=Facade.FRONT
+1 47 550 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED wall-000166 facade=Facade.FRONT
+1 19 640 -192 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000189 facade=Facade.FRONT
+1 19 380 -216 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED wall-000206 facade=Facade.LEFT
+1 19 330 -216 120 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-UNCHANGED wall-000205 facade=Facade.LEFT
+1 19 330 -216 260 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000190 facade=Facade.FRONT
+1 19 450 -216 50 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-UNCHANGED window-000006 facade=Facade.FRONT
+1 47 470 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000012 facade=Facade.FRONT
+1 47 490 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000018 facade=Facade.FRONT
+1 47 510 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000024 facade=Facade.FRONT
+1 47 530 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED window-000030 facade=Facade.FRONT
+1 47 550 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-UNCHANGED wall-000191 facade=Facade.FRONT
+1 19 620 -216 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-UNCHANGED wall-000229 facade=Facade.LEFT
+1 19 330 -240 60 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-UNCHANGED wall-000228 facade=Facade.LEFT
+1 19 330 -240 160 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000227 facade=Facade.LEFT
+1 19 330 -240 320 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000212 facade=Facade.FRONT
+1 19 420 -240 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000213 facade=Facade.FRONT
+1 19 580 -240 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000236 facade=Facade.FRONT
+1 19 400 -264 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000252 facade=Facade.LEFT
+1 19 330 -264 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000251 facade=Facade.LEFT
+1 19 330 -264 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000237 facade=Facade.FRONT
+1 19 560 -264 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000275 facade=Facade.LEFT
+1 19 330 -288 60 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-UNCHANGED wall-000274 facade=Facade.LEFT
+1 19 330 -288 160 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000273 facade=Facade.LEFT
+1 19 330 -288 320 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000258 facade=Facade.FRONT
+1 19 420 -288 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000259 facade=Facade.FRONT
+1 19 580 -288 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED guided004-031:house-timber:wall-retile:03 facade=Facade.LEFT
+1 19 300 -288 410 1 0 0 0 1 0 0 0 1 3710.dat
+0 // CANONICAL-UNCHANGED wall-000282 facade=Facade.FRONT
+1 19 400 -312 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-UNCHANGED wall-000297 facade=Facade.LEFT
+1 19 330 -312 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-UNCHANGED wall-000283 facade=Facade.FRONT
+1 19 560 -312 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // EXPERIMENTAL-ADDED M1-EXPERIMENTAL-BASE-3811 role=base
+1 2 640 0 360 1 0 0 0 1 0 0 0 1 3811.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-0 role=post
+1 7 380 -24 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-1 role=post
+1 7 380 -48 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-2 role=post
+1 7 380 -72 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-3 role=post
+1 7 380 -96 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-4 role=post
+1 7 380 -120 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-5 role=post
+1 7 380 -144 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-6 role=post
+1 7 380 -168 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-7 role=post
+1 7 380 -192 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-8 role=post
+1 7 380 -216 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-9 role=post
+1 7 380 -240 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-10 role=post
+1 7 380 -264 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-11 role=post
+1 7 380 -288 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-0-COURSE-12 role=post
+1 7 380 -312 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-BEAM-0 role=beam
+1 4 380 -336 140 0 0 1 0 1 0 -1 0 0 3006.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-0 role=post
+1 7 540 -24 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-1 role=post
+1 7 540 -48 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-2 role=post
+1 7 540 -72 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-3 role=post
+1 7 540 -96 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-4 role=post
+1 7 540 -120 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-5 role=post
+1 7 540 -144 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-6 role=post
+1 7 540 -168 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-7 role=post
+1 7 540 -192 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-8 role=post
+1 7 540 -216 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-9 role=post
+1 7 540 -240 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-10 role=post
+1 7 540 -264 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-11 role=post
+1 7 540 -288 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-POST-1-COURSE-12 role=post
+1 7 540 -312 220 1 0 0 0 1 0 0 0 1 3003.dat
+0 // EXPERIMENTAL-ADDED M1-BEAM-1 role=beam
+1 4 540 -336 140 0 0 1 0 1 0 -1 0 0 3006.dat
+0 // EXPERIMENTAL-ADDED M1-UPPER-FLOOR-0 role=floor
+1 15 460 -344 60 1 0 0 0 1 0 0 0 1 3832.dat
+0 // EXPERIMENTAL-ADDED M1-UPPER-FLOOR-1 role=floor
+1 15 460 -344 100 1 0 0 0 1 0 0 0 1 3832.dat
+0 // EXPERIMENTAL-ADDED M1-UPPER-FLOOR-2 role=floor
+1 15 460 -344 140 1 0 0 0 1 0 0 0 1 3832.dat
+0 // EXPERIMENTAL-ADDED M1-UPPER-FLOOR-3 role=floor
+1 15 460 -344 180 1 0 0 0 1 0 0 0 1 3832.dat
+0 // EXPERIMENTAL-ADDED M1-UPPER-FLOOR-4 role=floor
+1 15 460 -344 220 1 0 0 0 1 0 0 0 1 3832.dat
+0 // EXPERIMENTAL-ADDED M1-TRUE-CORNER-BOND role=corner_bond
+1 19 340 -320 60 1 0 0 0 1 0 0 0 1 3022.dat
+0 // MAISON-2: EXACT old 126 LDraw placements plus one REAL GUIDED-004 east facade bay.
+0 // M1 interior floor discrepancy NOT APPROVED; no new floor or roof.
+0 // CANONICAL-MAISON2 wall-000003 facade=front
+1 19 720 -24 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000025 facade=front
+1 19 740 -48 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000050 facade=front
+1 19 720 -72 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000073 facade=front
+1 19 800 -96 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000098 facade=front
+1 19 760 -120 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000120 facade=front
+1 19 800 -144 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000145 facade=front
+1 19 760 -168 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000167 facade=front
+1 19 800 -192 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000192 facade=front
+1 19 760 -216 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000214 facade=front
+1 19 740 -240 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000238 facade=front
+1 19 720 -264 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000260 facade=front
+1 19 740 -288 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON2 wall-000284 facade=front
+1 19 720 -312 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // MAISON-3: east/front RDC to the right edge, original Scene coordinates.
+0 // Openings, if represented by source BRICK_1X1 proxies, are NOT genuine glazing.
+0 // Previous 139 placements preserved in precisely the same order.
+0 // CANONICAL-MAISON3 wall-000004 component=wall opening=-
+1 19 880 -24 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000005 component=wall opening=-
+1 19 1040 -24 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000006 component=wall opening=-
+1 19 1200 -24 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000026 component=wall opening=-
+1 19 900 -48 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000027 component=wall opening=-
+1 19 990 -48 50 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-MAISON3 window-000031 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -48 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000040 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -48 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000049 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -48 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000058 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -48 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000067 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -48 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000076 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -48 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000085 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -48 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000028 component=wall opening=-
+1 19 1200 -48 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 wall-000051 component=wall opening=-
+1 19 880 -72 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000052 component=wall opening=-
+1 19 980 -72 50 1 0 0 0 1 0 0 0 1 3004.dat
+0 // CANONICAL-MAISON3 window-000032 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -72 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000041 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -72 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000050 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -72 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000059 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -72 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000068 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -72 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000077 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -72 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000086 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -72 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000053 component=wall opening=-
+1 19 1180 -72 50 1 0 0 0 1 0 0 0 1 3010.dat
+0 // CANONICAL-MAISON3 wall-000054 component=wall opening=-
+1 19 1250 -72 50 1 0 0 0 1 0 0 0 1 3622.dat
+0 // CANONICAL-MAISON3 wall-000074 component=wall opening=-
+1 19 940 -96 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 window-000033 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000042 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000051 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000060 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000069 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000078 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000087 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -96 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000075 component=wall opening=-
+1 19 1200 -96 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 wall-000099 component=wall opening=-
+1 19 920 -120 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 window-000034 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000043 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000052 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000061 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000070 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000079 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000088 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -120 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000100 component=wall opening=-
+1 19 1180 -120 50 1 0 0 0 1 0 0 0 1 3010.dat
+0 // CANONICAL-MAISON3 wall-000101 component=wall opening=-
+1 19 1250 -120 50 1 0 0 0 1 0 0 0 1 3622.dat
+0 // CANONICAL-MAISON3 wall-000121 component=wall opening=-
+1 19 940 -144 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 window-000035 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000044 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000053 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000062 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000071 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000080 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000089 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -144 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000122 component=wall opening=-
+1 19 1200 -144 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 wall-000146 component=wall opening=-
+1 19 920 -168 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 window-000036 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000045 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000054 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000063 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000072 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000081 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000090 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -168 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000147 component=wall opening=-
+1 19 1180 -168 50 1 0 0 0 1 0 0 0 1 3010.dat
+0 // CANONICAL-MAISON3 wall-000148 component=wall opening=-
+1 19 1250 -168 50 1 0 0 0 1 0 0 0 1 3622.dat
+0 // CANONICAL-MAISON3 wall-000168 component=wall opening=-
+1 19 940 -192 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 window-000037 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000046 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000055 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000064 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000073 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000082 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000091 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -192 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000169 component=wall opening=-
+1 19 1200 -192 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 wall-000193 component=wall opening=-
+1 19 920 -216 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 window-000038 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000047 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000056 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000065 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000074 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000083 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000092 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -216 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000194 component=wall opening=-
+1 19 1180 -216 50 1 0 0 0 1 0 0 0 1 3010.dat
+0 // CANONICAL-MAISON3 wall-000195 component=wall opening=-
+1 19 1250 -216 50 1 0 0 0 1 0 0 0 1 3622.dat
+0 // CANONICAL-MAISON3 wall-000215 component=wall opening=-
+1 19 900 -240 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000216 component=wall opening=-
+1 19 990 -240 50 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-MAISON3 window-000039 component=facade_detail opening=east-rdc-french-door-right
+1 47 1010 -240 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000048 component=facade_detail opening=east-rdc-french-door-right
+1 47 1030 -240 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000057 component=facade_detail opening=east-rdc-french-door-right
+1 47 1050 -240 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000066 component=facade_detail opening=east-rdc-french-door-right
+1 47 1070 -240 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000075 component=facade_detail opening=east-rdc-french-door-right
+1 47 1090 -240 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000084 component=facade_detail opening=east-rdc-french-door-right
+1 47 1110 -240 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 window-000093 component=facade_detail opening=east-rdc-french-door-right
+1 47 1130 -240 50 1 0 0 0 1 0 0 0 1 3005.dat
+0 // CANONICAL-MAISON3 wall-000217 component=wall opening=-
+1 19 1200 -240 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 wall-000239 component=wall opening=-
+1 19 880 -264 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000240 component=wall opening=-
+1 19 1040 -264 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000241 component=wall opening=-
+1 19 1200 -264 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000261 component=wall opening=-
+1 19 900 -288 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000262 component=wall opening=-
+1 19 1060 -288 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000263 component=wall opening=-
+1 19 1200 -288 50 1 0 0 0 1 0 0 0 1 3009.dat
+0 // CANONICAL-MAISON3 wall-000285 component=wall opening=-
+1 19 880 -312 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000286 component=wall opening=-
+1 19 1040 -312 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // CANONICAL-MAISON3 wall-000287 component=wall opening=-
+1 19 1200 -312 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // MAISON-4: original MAISON-3 239 placements verbatim, plus all remaining RDC wall source parts.
+0 // Door/window visual proxies are not real LEGO glazing.
+0 // CANONICAL-MAISON4 wall-000015 facade=left component=wall opening=-
+1 19 330 -24 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000014 facade=left component=wall opening=-
+1 19 330 -24 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000013 facade=left component=wall opening=-
+1 19 330 -24 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000018 facade=right component=wall opening=-
+1 19 1270 -24 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000019 facade=right component=wall opening=-
+1 19 1270 -24 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000020 facade=right component=wall opening=-
+1 19 1270 -24 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000021 facade=right component=wall opening=-
+1 19 1270 -24 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000022 facade=right component=wall opening=-
+1 19 1270 -24 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000038 facade=left component=wall opening=-
+1 19 330 -48 380 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000037 facade=left component=wall opening=-
+1 19 330 -48 550 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-MAISON4 wall-000036 facade=left component=wall opening=-
+1 19 330 -48 640 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000035 facade=left component=wall opening=-
+1 19 330 -48 800 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000042 facade=right component=wall opening=-
+1 19 1270 -48 120 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000043 facade=right component=wall opening=-
+1 19 1270 -48 280 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000044 facade=right component=wall opening=-
+1 19 1270 -48 440 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000045 facade=right component=wall opening=-
+1 19 1270 -48 600 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000046 facade=right component=wall opening=-
+1 19 1270 -48 760 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000047 facade=right component=wall opening=-
+1 19 1270 -48 860 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-MAISON4 wall-000063 facade=left component=wall opening=-
+1 19 330 -72 400 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000062 facade=left component=wall opening=-
+1 19 330 -72 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000061 facade=left component=wall opening=-
+1 19 330 -72 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000066 facade=right component=wall opening=-
+1 19 1270 -72 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000067 facade=right component=wall opening=-
+1 19 1270 -72 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000068 facade=right component=wall opening=-
+1 19 1270 -72 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000069 facade=right component=wall opening=-
+1 19 1270 -72 600 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000070 facade=right component=wall opening=-
+1 19 1270 -72 830 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // CANONICAL-MAISON4 wall-000085 facade=left component=wall opening=-
+1 19 330 -96 380 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000084 facade=left component=wall opening=-
+1 19 330 -96 550 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-MAISON4 wall-000083 facade=left component=wall opening=-
+1 19 330 -96 640 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000082 facade=left component=wall opening=-
+1 19 330 -96 800 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000089 facade=right component=wall opening=-
+1 19 1270 -96 120 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000090 facade=right component=wall opening=-
+1 19 1270 -96 280 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000091 facade=right component=wall opening=-
+1 19 1270 -96 440 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000092 facade=right component=wall opening=-
+1 19 1270 -96 580 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000093 facade=right component=wall opening=-
+1 19 1270 -96 650 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-MAISON4 wall-000094 facade=right component=wall opening=-
+1 19 1270 -96 840 0 0 -1 0 1 0 1 0 0 3010.dat
+0 // CANONICAL-MAISON4 wall-000110 facade=left component=wall opening=-
+1 19 330 -120 400 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000109 facade=left component=wall opening=-
+1 19 330 -120 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000108 facade=left component=wall opening=-
+1 19 330 -120 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000113 facade=right component=wall opening=-
+1 19 1270 -120 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000114 facade=right component=wall opening=-
+1 19 1270 -120 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000115 facade=right component=wall opening=-
+1 19 1270 -120 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000116 facade=right component=wall opening=-
+1 19 1270 -120 600 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000117 facade=right component=wall opening=-
+1 19 1270 -120 830 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // CANONICAL-MAISON4 wall-000132 facade=left component=wall opening=-
+1 19 330 -144 380 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000131 facade=left component=wall opening=-
+1 19 330 -144 550 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-MAISON4 wall-000130 facade=left component=wall opening=-
+1 19 330 -144 640 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000129 facade=left component=wall opening=-
+1 19 330 -144 800 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000136 facade=right component=wall opening=-
+1 19 1270 -144 120 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000137 facade=right component=wall opening=-
+1 19 1270 -144 280 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000138 facade=right component=wall opening=-
+1 19 1270 -144 440 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000139 facade=right component=wall opening=-
+1 19 1270 -144 580 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000140 facade=right component=wall opening=-
+1 19 1270 -144 650 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-MAISON4 wall-000141 facade=right component=wall opening=-
+1 19 1270 -144 840 0 0 -1 0 1 0 1 0 0 3010.dat
+0 // CANONICAL-MAISON4 wall-000157 facade=left component=wall opening=-
+1 19 330 -168 400 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000156 facade=left component=wall opening=-
+1 19 330 -168 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000155 facade=left component=wall opening=-
+1 19 330 -168 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000160 facade=right component=wall opening=-
+1 19 1270 -168 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000161 facade=right component=wall opening=-
+1 19 1270 -168 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000162 facade=right component=wall opening=-
+1 19 1270 -168 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000163 facade=right component=wall opening=-
+1 19 1270 -168 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000164 facade=right component=wall opening=-
+1 19 1270 -168 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000179 facade=left component=wall opening=-
+1 19 330 -192 380 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000178 facade=left component=wall opening=-
+1 19 330 -192 550 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // CANONICAL-MAISON4 wall-000177 facade=left component=wall opening=-
+1 19 330 -192 640 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000176 facade=left component=wall opening=-
+1 19 330 -192 800 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000183 facade=right component=wall opening=-
+1 19 1270 -192 120 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000184 facade=right component=wall opening=-
+1 19 1270 -192 280 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000185 facade=right component=wall opening=-
+1 19 1270 -192 440 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000186 facade=right component=wall opening=-
+1 19 1270 -192 600 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000187 facade=right component=wall opening=-
+1 19 1270 -192 760 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000188 facade=right component=wall opening=-
+1 19 1270 -192 860 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-MAISON4 wall-000204 facade=left component=wall opening=-
+1 19 330 -216 400 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000203 facade=left component=wall opening=-
+1 19 330 -216 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000202 facade=left component=wall opening=-
+1 19 330 -216 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000207 facade=right component=wall opening=-
+1 19 1270 -216 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000208 facade=right component=wall opening=-
+1 19 1270 -216 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000209 facade=right component=wall opening=-
+1 19 1270 -216 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000210 facade=right component=wall opening=-
+1 19 1270 -216 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000211 facade=right component=wall opening=-
+1 19 1270 -216 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000226 facade=left component=wall opening=-
+1 19 330 -240 480 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000225 facade=left component=wall opening=-
+1 19 330 -240 640 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000224 facade=left component=wall opening=-
+1 19 330 -240 800 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000230 facade=right component=wall opening=-
+1 19 1270 -240 120 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000231 facade=right component=wall opening=-
+1 19 1270 -240 280 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000232 facade=right component=wall opening=-
+1 19 1270 -240 440 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000233 facade=right component=wall opening=-
+1 19 1270 -240 600 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000234 facade=right component=wall opening=-
+1 19 1270 -240 760 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000235 facade=right component=wall opening=-
+1 19 1270 -240 860 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-MAISON4 wall-000250 facade=left component=wall opening=-
+1 19 330 -264 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000249 facade=left component=wall opening=-
+1 19 330 -264 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000248 facade=left component=wall opening=-
+1 19 330 -264 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000253 facade=right component=wall opening=-
+1 19 1270 -264 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000254 facade=right component=wall opening=-
+1 19 1270 -264 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000255 facade=right component=wall opening=-
+1 19 1270 -264 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000256 facade=right component=wall opening=-
+1 19 1270 -264 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000257 facade=right component=wall opening=-
+1 19 1270 -264 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 guided004-031:house-timber:wall-retile:01 facade=left component=wall opening=-
+1 19 330 -272 480 0 0 -1 0 1 0 1 0 0 3460.dat
+0 // CANONICAL-MAISON4 wall-000271 facade=left component=wall opening=-
+1 19 330 -288 640 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000270 facade=left component=wall opening=-
+1 19 330 -288 800 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000276 facade=right component=wall opening=-
+1 19 1270 -288 120 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000277 facade=right component=wall opening=-
+1 19 1270 -288 280 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000278 facade=right component=wall opening=-
+1 19 1270 -288 440 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000279 facade=right component=wall opening=-
+1 19 1270 -288 600 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000280 facade=right component=wall opening=-
+1 19 1270 -288 760 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000281 facade=right component=wall opening=-
+1 19 1270 -288 860 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // CANONICAL-MAISON4 guided004-031:house-timber:wall-retile:02 facade=left component=wall opening=-
+1 19 330 -280 480 0 0 -1 0 1 0 1 0 0 3460.dat
+0 // CANONICAL-MAISON4 guided004-031:house-timber:wall-retile:04 facade=left component=wall opening=-
+1 19 330 -288 450 0 0 -1 0 1 0 1 0 0 3623.dat
+0 // CANONICAL-MAISON4 guided004-031:house-timber:wall-retile:05 facade=left component=wall opening=-
+1 19 330 -288 520 0 0 -1 0 1 0 1 0 0 3710.dat
+0 // CANONICAL-MAISON4 wall-000296 facade=left component=wall opening=-
+1 19 330 -312 460 0 0 -1 0 1 0 1 0 0 3009.dat
+0 // CANONICAL-MAISON4 wall-000295 facade=left component=wall opening=-
+1 19 330 -312 600 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000294 facade=left component=wall opening=-
+1 19 330 -312 820 0 0 -1 0 1 0 1 0 0 3010.dat
+0 // CANONICAL-MAISON4 wall-000298 facade=right component=wall opening=-
+1 19 1270 -312 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000299 facade=right component=wall opening=-
+1 19 1270 -312 300 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000300 facade=right component=wall opening=-
+1 19 1270 -312 460 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000301 facade=right component=wall opening=-
+1 19 1270 -312 620 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // CANONICAL-MAISON4 wall-000302 facade=right component=wall opening=-
+1 19 1270 -312 780 0 0 -1 0 1 0 1 0 0 3008.dat
+0 NOFILE
