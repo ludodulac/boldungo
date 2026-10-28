@@ -1,0 +1,1557 @@
+{
+  "new_body_collisions_count": 0,
+  "new_body_collision_pairs": [],
+  "new_support_edges": 192,
+  "new_support_edges_with_engine_connectors": 190,
+  "new_support_edges_details": [
+    {
+      "upper": "wall-000015",
+      "lower": "M1-EXPERIMENTAL-BASE-3811",
+      "stud_cells": 8,
+      "connector_count": 0,
+      "recognized": false,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000014",
+      "lower": "M1-EXPERIMENTAL-BASE-3811",
+      "stud_cells": 7,
+      "connector_count": 0,
+      "recognized": false,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000038",
+      "lower": "wall-000016",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000038",
+      "lower": "wall-000015",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000037",
+      "lower": "wall-000014",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000036",
+      "lower": "wall-000014",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000036",
+      "lower": "wall-000013",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000035",
+      "lower": "wall-000013",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000042",
+      "lower": "wall-000006",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000042",
+      "lower": "wall-000018",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000043",
+      "lower": "wall-000018",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000043",
+      "lower": "wall-000019",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000044",
+      "lower": "wall-000019",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000044",
+      "lower": "wall-000020",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000045",
+      "lower": "wall-000020",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000045",
+      "lower": "wall-000021",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000046",
+      "lower": "wall-000021",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000046",
+      "lower": "wall-000022",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000047",
+      "lower": "wall-000022",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000063",
+      "lower": "wall-000038",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000062",
+      "lower": "wall-000037",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000062",
+      "lower": "wall-000036",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000061",
+      "lower": "wall-000036",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000061",
+      "lower": "wall-000035",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000066",
+      "lower": "wall-000042",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000066",
+      "lower": "wall-000043",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000067",
+      "lower": "wall-000043",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000067",
+      "lower": "wall-000044",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000068",
+      "lower": "wall-000044",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000068",
+      "lower": "wall-000045",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000069",
+      "lower": "wall-000045",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000070",
+      "lower": "wall-000046",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000070",
+      "lower": "wall-000047",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000085",
+      "lower": "wall-000064",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000085",
+      "lower": "wall-000063",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000084",
+      "lower": "wall-000062",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000083",
+      "lower": "wall-000062",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000083",
+      "lower": "wall-000061",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000082",
+      "lower": "wall-000061",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000089",
+      "lower": "wall-000054",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000089",
+      "lower": "wall-000066",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000090",
+      "lower": "wall-000066",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000090",
+      "lower": "wall-000067",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000091",
+      "lower": "wall-000067",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000091",
+      "lower": "wall-000068",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000092",
+      "lower": "wall-000068",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000092",
+      "lower": "wall-000069",
+      "stud_cells": 5,
+      "connector_count": 5,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000093",
+      "lower": "wall-000069",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000094",
+      "lower": "wall-000070",
+      "stud_cells": 3,
+      "connector_count": 3,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000110",
+      "lower": "wall-000085",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000109",
+      "lower": "wall-000084",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000109",
+      "lower": "wall-000083",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000108",
+      "lower": "wall-000083",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000108",
+      "lower": "wall-000082",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000113",
+      "lower": "wall-000089",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000113",
+      "lower": "wall-000090",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000114",
+      "lower": "wall-000090",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000114",
+      "lower": "wall-000091",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000115",
+      "lower": "wall-000091",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000115",
+      "lower": "wall-000092",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000116",
+      "lower": "wall-000092",
+      "stud_cells": 5,
+      "connector_count": 5,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000116",
+      "lower": "wall-000093",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000117",
+      "lower": "wall-000094",
+      "stud_cells": 3,
+      "connector_count": 3,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000132",
+      "lower": "wall-000111",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000132",
+      "lower": "wall-000110",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000131",
+      "lower": "wall-000109",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000130",
+      "lower": "wall-000109",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000130",
+      "lower": "wall-000108",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000129",
+      "lower": "wall-000108",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000136",
+      "lower": "wall-000101",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000136",
+      "lower": "wall-000113",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000137",
+      "lower": "wall-000113",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000137",
+      "lower": "wall-000114",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000138",
+      "lower": "wall-000114",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000138",
+      "lower": "wall-000115",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000139",
+      "lower": "wall-000115",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000139",
+      "lower": "wall-000116",
+      "stud_cells": 5,
+      "connector_count": 5,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000140",
+      "lower": "wall-000116",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000141",
+      "lower": "wall-000117",
+      "stud_cells": 3,
+      "connector_count": 3,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000157",
+      "lower": "wall-000132",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000156",
+      "lower": "wall-000131",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000156",
+      "lower": "wall-000130",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000155",
+      "lower": "wall-000130",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000155",
+      "lower": "wall-000129",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000160",
+      "lower": "wall-000136",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000160",
+      "lower": "wall-000137",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000161",
+      "lower": "wall-000137",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000161",
+      "lower": "wall-000138",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000162",
+      "lower": "wall-000138",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000162",
+      "lower": "wall-000139",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000163",
+      "lower": "wall-000139",
+      "stud_cells": 5,
+      "connector_count": 5,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000163",
+      "lower": "wall-000140",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000164",
+      "lower": "wall-000141",
+      "stud_cells": 3,
+      "connector_count": 3,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000179",
+      "lower": "wall-000158",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000179",
+      "lower": "wall-000157",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000178",
+      "lower": "wall-000156",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000177",
+      "lower": "wall-000156",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000177",
+      "lower": "wall-000155",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000176",
+      "lower": "wall-000155",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000183",
+      "lower": "wall-000148",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000183",
+      "lower": "wall-000160",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000184",
+      "lower": "wall-000160",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000184",
+      "lower": "wall-000161",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000185",
+      "lower": "wall-000161",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000185",
+      "lower": "wall-000162",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000186",
+      "lower": "wall-000162",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000186",
+      "lower": "wall-000163",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000187",
+      "lower": "wall-000163",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000187",
+      "lower": "wall-000164",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000188",
+      "lower": "wall-000164",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000204",
+      "lower": "wall-000179",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000203",
+      "lower": "wall-000178",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000203",
+      "lower": "wall-000177",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000202",
+      "lower": "wall-000177",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000202",
+      "lower": "wall-000176",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000207",
+      "lower": "wall-000183",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000207",
+      "lower": "wall-000184",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000208",
+      "lower": "wall-000184",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000208",
+      "lower": "wall-000185",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000209",
+      "lower": "wall-000185",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000209",
+      "lower": "wall-000186",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000210",
+      "lower": "wall-000186",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000210",
+      "lower": "wall-000187",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000211",
+      "lower": "wall-000187",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000211",
+      "lower": "wall-000188",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000226",
+      "lower": "wall-000204",
+      "stud_cells": 3,
+      "connector_count": 3,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000226",
+      "lower": "wall-000203",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000225",
+      "lower": "wall-000203",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000225",
+      "lower": "wall-000202",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000224",
+      "lower": "wall-000202",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000230",
+      "lower": "wall-000195",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000230",
+      "lower": "wall-000207",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000231",
+      "lower": "wall-000207",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000231",
+      "lower": "wall-000208",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000232",
+      "lower": "wall-000208",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000232",
+      "lower": "wall-000209",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000233",
+      "lower": "wall-000209",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000233",
+      "lower": "wall-000210",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000234",
+      "lower": "wall-000210",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000234",
+      "lower": "wall-000211",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000235",
+      "lower": "wall-000211",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000250",
+      "lower": "wall-000227",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000250",
+      "lower": "wall-000226",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000249",
+      "lower": "wall-000226",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000249",
+      "lower": "wall-000225",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000248",
+      "lower": "wall-000225",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000248",
+      "lower": "wall-000224",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000253",
+      "lower": "wall-000230",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000253",
+      "lower": "wall-000231",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000254",
+      "lower": "wall-000231",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000254",
+      "lower": "wall-000232",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000255",
+      "lower": "wall-000232",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000255",
+      "lower": "wall-000233",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000256",
+      "lower": "wall-000233",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000256",
+      "lower": "wall-000234",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000257",
+      "lower": "wall-000234",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000257",
+      "lower": "wall-000235",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "guided004-031:house-timber:wall-retile:01",
+      "lower": "wall-000250",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "guided004-031:house-timber:wall-retile:01",
+      "lower": "wall-000249",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000271",
+      "lower": "wall-000249",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000271",
+      "lower": "wall-000248",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000270",
+      "lower": "wall-000248",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000276",
+      "lower": "wall-000241",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000276",
+      "lower": "wall-000253",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000277",
+      "lower": "wall-000253",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000277",
+      "lower": "wall-000254",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000278",
+      "lower": "wall-000254",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000278",
+      "lower": "wall-000255",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000279",
+      "lower": "wall-000255",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000279",
+      "lower": "wall-000256",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000280",
+      "lower": "wall-000256",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000280",
+      "lower": "wall-000257",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000281",
+      "lower": "wall-000257",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "guided004-031:house-timber:wall-retile:02",
+      "lower": "guided004-031:house-timber:wall-retile:01",
+      "stud_cells": 8,
+      "connector_count": 8,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "guided004-031:house-timber:wall-retile:04",
+      "lower": "guided004-031:house-timber:wall-retile:02",
+      "stud_cells": 3,
+      "connector_count": 3,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "guided004-031:house-timber:wall-retile:05",
+      "lower": "guided004-031:house-timber:wall-retile:02",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000296",
+      "lower": "guided004-031:house-timber:wall-retile:03",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000296",
+      "lower": "guided004-031:house-timber:wall-retile:04",
+      "stud_cells": 3,
+      "connector_count": 3,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000296",
+      "lower": "guided004-031:house-timber:wall-retile:05",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000295",
+      "lower": "wall-000271",
+      "stud_cells": 6,
+      "connector_count": 6,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000295",
+      "lower": "guided004-031:house-timber:wall-retile:05",
+      "stud_cells": 2,
+      "connector_count": 2,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000294",
+      "lower": "wall-000270",
+      "stud_cells": 4,
+      "connector_count": 4,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000298",
+      "lower": "wall-000276",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000298",
+      "lower": "wall-000277",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000299",
+      "lower": "wall-000277",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000299",
+      "lower": "wall-000278",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000300",
+      "lower": "wall-000278",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000300",
+      "lower": "wall-000279",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000301",
+      "lower": "wall-000279",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000301",
+      "lower": "wall-000280",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000302",
+      "lower": "wall-000280",
+      "stud_cells": 7,
+      "connector_count": 7,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    },
+    {
+      "upper": "wall-000302",
+      "lower": "wall-000281",
+      "stud_cells": 1,
+      "connector_count": 1,
+      "recognized": true,
+      "vertical_insertion": "NOT_PROVEN"
+    }
+  ],
+  "new_without_underlying_stud_bearing": [
+    "wall-000013",
+    "wall-000018",
+    "wall-000019",
+    "wall-000020",
+    "wall-000021",
+    "wall-000022"
+  ],
+  "lateral_seam_contacts": [],
+  "old_maison1_2_links_not_retested": true,
+  "full_mesh_collision_audit": "NOT_PERFORMED",
+  "continuous_insertion": "NOT_PROVEN",
+  "mechanical_strength": "NOT_CERTIFIED"
+}

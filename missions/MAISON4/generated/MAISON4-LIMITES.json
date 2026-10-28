@@ -1,0 +1,15 @@
+{
+  "facades_incomplete": [
+    "back"
+  ],
+  "facade_status_file": "MAISON4-ETAT-FACADES.json",
+  "old_unsupported_links": "NOT_RETESTED",
+  "old_experimental_floor_height_m": 2.5170731707317073,
+  "doors_windows": "SYMBOLIC_CANONICAL_PROXIES_NOT_REAL_GLAZING",
+  "north_grade": "NOT_MEASURED",
+  "full_mesh_collisions": "NOT_AUDITED",
+  "boundary_crossers_not_included": [],
+  "insertion": "NOT_PROVEN",
+  "roof_terraces_upper_floors_chimneys": "NOT_ADDED",
+  "mechanical_strength": "NOT_CERTIFIED"
+}
