@@ -31,7 +31,7 @@ jobs:
       - name: Syntax check BEFORE run
         run: python -m py_compile scripts/build_guided004_maison4.py
       - name: Existing approved LDraw part catalog
-        run: python scripts/download_ldraw_probe_066.py /tmp/maison4-ldraw --max-files 250 --parts 3811 3003 3006 3832 3022 3005 3004 3008 3009 3010 3622 3710
+        run: python scripts/download_ldraw_probe_066.py /tmp/maison4-ldraw --max-files 250 --parts 3811 3003 3006 3832 3022 3005 3004 3008 3009 3010 3622 3710 3460 3623
       - name: ONE construction, then only NEW interfaces
         run: python scripts/build_guided004_maison4.py --ldraw-root /tmp/maison4-ldraw --output artifacts/lego2-maison4
       - name: ONE targeted campaign only
