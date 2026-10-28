@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 
 def test_maison4_239_preserved_and_source_coverage():
-    p=Path("artifacts/lego2-maison4")
+    p=Path("missions/MAISON4/generated/")
     a=[s for s in Path("missions/MAISON3/generated/MAISON3-FACADE-EST-RDC.ldr").read_text().splitlines() if s.startswith("1 ")]
     b=[s for s in (p/"MAISON4-MURS-RDC-COMPLETS.ldr").read_text().splitlines() if s.startswith("1 ")]
     r=json.loads((p/"MAISON4-RESULTATS.json").read_text())
@@ -18,7 +18,7 @@ def test_maison4_239_preserved_and_source_coverage():
     assert r["full_available_RDC_source_parts_included"]
 
 def test_deliverables_and_limits():
-    p=Path("artifacts/lego2-maison4")
+    p=Path("missions/MAISON4/generated/")
     bom=json.loads((p/"MAISON4-NOMENCLATURE.json").read_text())
     r=json.loads((p/"MAISON4-RESULTATS.json").read_text())
     limits=json.loads((p/"MAISON4-LIMITES.json").read_text())
