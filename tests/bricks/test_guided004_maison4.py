@@ -9,7 +9,12 @@ def test_maison4_239_preserved_and_source_coverage():
     r=json.loads((p/"MAISON4-RESULTATS.json").read_text())
     assert len(a)==239 and b[:239]==a
     assert len(b)==r["total_placements"]==239+r["new_canonical_parts"]
-    assert all(r["new_by_facade"][f]>0 for f in ("left","right","back"))
+    face=json.loads((p/"MAISON4-ETAT-FACADES.json").read_text())
+    for f in ("left","right","back"):
+        assert face[f]["source_rdc_available_parts_in_selection"] == (
+            face[f]["already_represented_in_maison3"]+face[f]["newly_selected"])
+        assert r["new_by_facade"][f]==face[f]["newly_selected"]
+        assert face[f]["status"]=="CANONICAL_RDC_PARTS_COVERED" or face[f]["status"].startswith("INCOMPLETE_")
     assert r["full_available_RDC_source_parts_included"]
 
 def test_deliverables_and_limits():

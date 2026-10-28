@@ -94,13 +94,54 @@ def build(output,ldraw_root):
     relevant_all=[p for p in model.parts if relevant(p,top,openingids)]
     new=sorted((p for p in relevant_all if p.placement_id not in original_canonical),
                key=lambda p:(p.z_plates,FACADES.index(facade_id(p.facade)),p.y_studs,p.x_studs,p.placement_id))
-    if not new:raise AssertionError("M4_NO_NEW_CANONICAL_WALLS")
+    # An existing or absent canonical face must NOT force fabrication or block a real partial delivery.
     newids={p.placement_id for p in new}
     if len(new)!=len(newids) or {p.placement_id for p in relevant_all}-set(original_canonical)-newids:
         raise AssertionError("M4_GROUND_WALL_SOURCE_COVERAGE_FAILED")
     byface=Counter(facade_id(p.facade) for p in new)
-    if not all(byface[f]>0 for f in FACADES):
-        raise AssertionError("M4_MISSING_SOUTH_NORTH_OR_WEST")
+    existing_by_face=Counter(facade_id(p.facade) for p in relevant_all
+                             if p.placement_id in original_canonical)
+    available_by_face=Counter(facade_id(p.facade) for p in relevant_all)
+    all_wall_by_face=Counter(facade_id(p.facade) for p in model.parts
+                             if facade_id(p.facade) in FACADES and p.component=="wall")
+    crossed_by_face=Counter(facade_id(p.facade) for p in model.parts
+                             if facade_id(p.facade) in FACADES and p.component=="wall"
+                             and m1.gridbox(p)[2]<top<m1.gridbox(p)[5])
+    ground_wall_by_face=Counter(facade_id(p.facade) for p in model.parts
+                                if facade_id(p.facade) in FACADES and p.component=="wall"
+                                and m1.gridbox(p)[2]<top)
+    state={}
+    for facade in FACADES:
+        available=available_by_face[facade]
+        retained=existing_by_face[facade]
+        added=byface[facade]
+        if available != retained+added:
+            raise AssertionError("M4_MISSING_AVAILABLE_CANONICAL_PARTS:"+facade)
+        if available==0:
+            if all_wall_by_face[facade]==0:
+                status="INCOMPLETE_NO_WALL_IN_CANONICAL_SOURCE"
+            elif ground_wall_by_face[facade]>0:
+                status="INCOMPLETE_RDC_WALL_EXCLUDED_BY_FILTER"
+            else:
+                status="INCOMPLETE_NO_RDC_WALL_IN_CANONICAL_SOURCE"
+        elif crossed_by_face[facade]>0:
+            status="INCOMPLETE_CANONICAL_PART_CROSSES_RDC_LIMIT"
+        else:
+            status="CANONICAL_RDC_PARTS_COVERED"
+        state[facade]={
+            "status":status,
+            "source_all_wall_parts_all_levels":all_wall_by_face[facade],
+            "source_rdc_wall_parts_intersecting_level":ground_wall_by_face[facade],
+            "source_rdc_boundary_crossers_excluded":crossed_by_face[facade],
+            "source_rdc_available_parts_in_selection":available,
+            "already_represented_in_maison3":retained,
+            "newly_selected":added,
+            "total_represented_canonical_rdc":retained+added,
+            "complete_architecture_or_mechanical_certificate":False
+        }
+    (output/"MAISON4-ETAT-FACADES.json").write_text(
+        json.dumps(state,indent=2,ensure_ascii=False)+"\n")
+    print("MAISON4_PER_FACADE_REAL_CANONICAL_INVENTORY",json.dumps(state,sort_keys=True),flush=True)
     raw=original.splitlines()[:-1]+[
       "0 // MAISON-4: original MAISON-3 239 placements verbatim, plus all remaining RDC wall source parts.",
       "0 // Door/window visual proxies are not real LEGO glazing."]
@@ -138,13 +179,18 @@ def build(output,ldraw_root):
     crossing=[p.placement_id for p in model.parts if facade_id(p.facade) in FACADES and p.component in ("wall","facade_detail")
               and m1.gridbox(p)[2]<top<m1.gridbox(p)[5]]
     results={"total_placements":len(ldrawrows),"maison3_preserved":OLD_COUNT,
-             "new_canonical_parts":len(new),"new_by_facade":dict(byface),
+             "new_canonical_parts":len(new),"new_by_facade":{f:byface[f] for f in FACADES},
+             "facade_coverage":{f:state[f]["status"] for f in FACADES},
              "new_connections":checks["new_support_edges"],
              "new_connections_recognized":checks["new_support_edges_with_engine_connectors"],
              "new_orthogonal_collisions":checks["new_body_collisions_count"],
-             "full_available_RDC_source_parts_included":True,
+             "full_available_RDC_source_parts_included":all(
+                 state[f]["source_rdc_available_parts_in_selection"] ==
+                 state[f]["total_represented_canonical_rdc"] for f in FACADES),
              "boundary_crossers_not_included":crossing,"mechanics":"NOT_CERTIFIED"}
-    limits={"old_unsupported_links":"NOT_RETESTED",
+    limits={"facades_incomplete":[f for f in FACADES if state[f]["status"].startswith("INCOMPLETE")],
+            "facade_status_file":"MAISON4-ETAT-FACADES.json",
+            "old_unsupported_links":"NOT_RETESTED",
             "old_experimental_floor_height_m":prior["bounds"]["old_experimental_floor_height_m_unvalidated"],
             "doors_windows":"SYMBOLIC_CANONICAL_PROXIES_NOT_REAL_GLAZING",
             "north_grade":"NOT_MEASURED","full_mesh_collisions":"NOT_AUDITED",
