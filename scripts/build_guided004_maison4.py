@@ -19,6 +19,9 @@ M3=ROOT/"missions/MAISON3/generated"
 OLD_COUNT=239
 FACADES=("left","right","back")
 
+def facade_id(value):
+    return value.value if hasattr(value, "value") else str(value)
+
 def old_canonical_rows(raw):
     result={};current=None
     for line in raw.splitlines():
@@ -35,11 +38,11 @@ def old_canonical_rows(raw):
 
 def ground_openings(scene,nominal_height):
     return {o.id for o in scene.openings
-            if o.facade in FACADES and o.offset_vertical<nominal_height and
+            if facade_id(o.facade) in FACADES and o.offset_vertical<nominal_height and
             o.offset_vertical+o.height>0}
 
 def relevant(p,top,openings):
-    if p.facade not in FACADES:return False
+    if facade_id(p.facade) not in FACADES:return False
     box=m1.gridbox(p)
     if box[2]<0 or box[5]>top:return False
     if p.component=="wall":return True
@@ -90,19 +93,19 @@ def build(output,ldraw_root):
     openingids=ground_openings(scene,scene.volumes[0].height.value/scene.volumes[0].floors)
     relevant_all=[p for p in model.parts if relevant(p,top,openingids)]
     new=sorted((p for p in relevant_all if p.placement_id not in original_canonical),
-               key=lambda p:(p.z_plates,FACADES.index(str(p.facade)),p.y_studs,p.x_studs,p.placement_id))
+               key=lambda p:(p.z_plates,FACADES.index(facade_id(p.facade)),p.y_studs,p.x_studs,p.placement_id))
     if not new:raise AssertionError("M4_NO_NEW_CANONICAL_WALLS")
     newids={p.placement_id for p in new}
     if len(new)!=len(newids) or {p.placement_id for p in relevant_all}-set(original_canonical)-newids:
         raise AssertionError("M4_GROUND_WALL_SOURCE_COVERAGE_FAILED")
-    byface=Counter(str(p.facade) for p in new)
+    byface=Counter(facade_id(p.facade) for p in new)
     if not all(byface[f]>0 for f in FACADES):
         raise AssertionError("M4_MISSING_SOUTH_NORTH_OR_WEST")
     raw=original.splitlines()[:-1]+[
       "0 // MAISON-4: original MAISON-3 239 placements verbatim, plus all remaining RDC wall source parts.",
       "0 // Door/window visual proxies are not real LEGO glazing."]
     for p in new:
-        raw+=[f"0 // CANONICAL-MAISON4 {p.placement_id} facade={p.facade} component={p.component} opening={p.opening_id or '-'}",
+        raw+=[f"0 // CANONICAL-MAISON4 {p.placement_id} facade={facade_id(p.facade)} component={p.component} opening={p.opening_id or '-'}",
               m1._ldraw_canonical(p)]
     raw+=["0 NOFILE",""]
     result_text="\n".join(raw)
@@ -132,7 +135,7 @@ def build(output,ldraw_root):
     print("MAISON4_MODEL_SVG_BOM_PUBLISHED_IN_JOB",len(ldrawrows),len(new),dict(byface),flush=True)
     checks=m3.fresh_interfaces(oldparts,oldadaptations,new,ldraw_root)
     (output/"MAISON4-CONNEXIONS-COLLISIONS.json").write_text(json.dumps(checks,indent=2,ensure_ascii=False)+"\n")
-    crossing=[p.placement_id for p in model.parts if p.facade in FACADES and p.component in ("wall","facade_detail")
+    crossing=[p.placement_id for p in model.parts if facade_id(p.facade) in FACADES and p.component in ("wall","facade_detail")
               and m1.gridbox(p)[2]<top<m1.gridbox(p)[5]]
     results={"total_placements":len(ldrawrows),"maison3_preserved":OLD_COUNT,
              "new_canonical_parts":len(new),"new_by_facade":dict(byface),
