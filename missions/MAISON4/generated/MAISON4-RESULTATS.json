@@ -1,0 +1,21 @@
+{
+  "total_placements": 356,
+  "maison3_preserved": 239,
+  "new_canonical_parts": 117,
+  "new_by_facade": {
+    "left": 46,
+    "right": 71,
+    "back": 0
+  },
+  "facade_coverage": {
+    "left": "CANONICAL_RDC_PARTS_COVERED",
+    "right": "CANONICAL_RDC_PARTS_COVERED",
+    "back": "INCOMPLETE_NO_WALL_IN_CANONICAL_SOURCE"
+  },
+  "new_connections": 192,
+  "new_connections_recognized": 190,
+  "new_orthogonal_collisions": 0,
+  "full_available_RDC_source_parts_included": true,
+  "boundary_crossers_not_included": [],
+  "mechanics": "NOT_CERTIFIED"
+}

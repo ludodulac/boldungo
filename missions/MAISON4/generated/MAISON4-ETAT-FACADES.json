@@ -1,0 +1,35 @@
+{
+  "left": {
+    "status": "CANONICAL_RDC_PARTS_COVERED",
+    "source_all_wall_parts_all_levels": 177,
+    "source_rdc_wall_parts_intersecting_level": 78,
+    "source_rdc_boundary_crossers_excluded": 0,
+    "source_rdc_available_parts_in_selection": 78,
+    "already_represented_in_maison3": 32,
+    "newly_selected": 46,
+    "total_represented_canonical_rdc": 78,
+    "complete_architecture_or_mechanical_certificate": false
+  },
+  "right": {
+    "status": "CANONICAL_RDC_PARTS_COVERED",
+    "source_all_wall_parts_all_levels": 172,
+    "source_rdc_wall_parts_intersecting_level": 71,
+    "source_rdc_boundary_crossers_excluded": 0,
+    "source_rdc_available_parts_in_selection": 71,
+    "already_represented_in_maison3": 0,
+    "newly_selected": 71,
+    "total_represented_canonical_rdc": 71,
+    "complete_architecture_or_mechanical_certificate": false
+  },
+  "back": {
+    "status": "INCOMPLETE_NO_WALL_IN_CANONICAL_SOURCE",
+    "source_all_wall_parts_all_levels": 0,
+    "source_rdc_wall_parts_intersecting_level": 0,
+    "source_rdc_boundary_crossers_excluded": 0,
+    "source_rdc_available_parts_in_selection": 0,
+    "already_represented_in_maison3": 0,
+    "newly_selected": 0,
+    "total_represented_canonical_rdc": 0,
+    "complete_architecture_or_mechanical_certificate": false
+  }
+}
