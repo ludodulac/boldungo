@@ -3,6 +3,8 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'lego_geometry_engine/src/lego_geometry_engine/library.py'
+      - 'lego_geometry_engine/tests/test_connector_axes.py'
       - 'scripts/validation1_geometry_proof.py'
       - 'scripts/download_ldraw_probe_066.py'
       - 'scripts/validation1_browser.py'
@@ -11,6 +13,10 @@ on:
       - '.github/workflows/validation1-targeted.yml'
 permissions:
   contents: write
+# Only one report publisher may run for this DRAFT PR at a time.
+concurrency:
+  group: validation1-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 jobs:
   geometry-and-visual:
     if: github.event.pull_request.head.repo.full_name == github.repository
@@ -28,6 +34,8 @@ jobs:
           python -m pip install -e "./lego_geometry_engine"
           python -m pip install playwright
           python -m playwright install --with-deps chromium
+      - name: Test exact 3811↔3008 nominal stud alignment and reject bad placements
+        run: python -m pytest -q lego_geometry_engine/tests/test_connector_axes.py
       - name: Fetch only selected official real LDraw part families at pinned revision
         run: python scripts/download_ldraw_probe_066.py /tmp/validation1-ldraw --max-files 160 --parts 3811 3008 3004 3622 3009
       - name: ONE real mesh, connector, support, insertion analysis (FAIL means evidence, not a broken CI)
