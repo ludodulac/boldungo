@@ -1,0 +1,33 @@
+name: VISIONNEUSE-1 — 356-piece existing viewer, real Chromium test
+on:
+  pull_request:
+    branches: [feat/lego2-maison4-guided004-all-rdc-walls]
+    paths:
+      - 'frontend/data/guided004-maison4-356-brickhouse.json'
+      - 'frontend/viewer.html'
+      - 'tests/frontend/test_maison4_356_real_browser.py'
+      - '.github/workflows/visionneuse1-maison4-browser.yml'
+permissions:
+  contents: read
+jobs:
+  visual-one-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Browser testing dependencies (no changes to BrickHouse)
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: One real Chromium test — desktop orbit, four sides, zoom and Android simulated touch/pinch
+        run: python tests/frontend/test_maison4_356_real_browser.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: VISIONNEUSE1-356-CHROMIUM-SCREENSHOTS
+          path: artifacts/visionneuse1/*.png
+          if-no-files-found: warn
+          retention-days: 14
