@@ -25,6 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # PR merged-preview checkout has unrelated parent; only exact head is fast-forward safe.
+          ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: true
       - uses: actions/setup-python@v5
         with:

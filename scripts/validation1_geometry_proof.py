@@ -152,14 +152,18 @@ def main(ldraw):
             "preexisting_nominal_support":supports,
             "full_official_mesh_continuous_insertion":"NON DÉMONTRÉ"})
         placed.append(pid)
+    ambiguous_edge=next((e for e in edges if e["joint_status"]!="PASS_NOMINAL_CONNECTOR"),None)
     first_problem=(
         {"piece":failing_base[0]["upper"],"interface":failing_base[0]["lower"],
-         "reason":"LDraw 3811 baseplate: no supported stud/cavity match in current official-geometry connector inference. Support and insertion to real base NOT DEMONSTRATED."}
+         "reason":"Base connector not recognized: no demonstrated structural link to the 3811 baseplate."}
         if failing_base else
         {"piece":solid_collision[0]["part_a"],"interface":solid_collision[0]["part_b"],
          "reason":"Mesh intersection without a mating connector: collision not cleared."}
         if solid_collision else
-        {"piece":ids[0],"interface":None,"reason":"Insertion along continuous official meshes and physical mechanical stability not certified."}
+        {"piece":ambiguous_edge["upper"],"interface":ambiguous_edge["lower"],
+         "reason":"Aligned nominal connectors found, but official LDraw mesh reports COLLISION; legal stud/cavity engagement versus forbidden solid penetration is NOT resolved."}
+        if ambiguous_edge else
+        {"piece":ids[0],"interface":None,"reason":"Continuous official-mesh insertion and physical stability are not certified."}
     )
     connection_status=("FAIL" if any(e["official_connector_matches"]==0 for e in edges) else
                        "NON DÉMONTRÉ" if ambiguous_collision else "PASS")
@@ -179,7 +183,7 @@ def main(ldraw):
         "physical_stability":"NON DÉMONTRÉ","real_lego_hands_test":"NOT_DONE",
         "certify_strength":False,"certify_buildable":False,
         "limits":["Official LDraw mesh is not a certified collision/fastening simulator.",
-                  "Baseplate connector metadata absent; do not claim attachment.",
+                  "3811 top stud connector grid now inferred; seven mating pairs remain mesh-ambiguous, do not certify attachment.",
                   "Nominal top-down bounding-box path does not prove full real part insertion."]}
     dump("CONNEXIONS-COLLISIONS.json",{"geometry_loaded":actual_defs,
         "nominal_solid_overlaps":nominal_collisions,"nominal_edges":edges,
