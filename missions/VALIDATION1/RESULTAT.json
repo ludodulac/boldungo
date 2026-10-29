@@ -1,0 +1,14 @@
+{
+  "status": "FAIL",
+  "selected_count": 10,
+  "real_LDraw_refs": 5,
+  "connections": "NON DÉMONTRÉ",
+  "collisions": "NON DÉMONTRÉ",
+  "appuis": "NON DÉMONTRÉ",
+  "insertion": "NON DÉMONTRÉ",
+  "visualization": "NON DÉMONTRÉ",
+  "first_blocker": "baseplate 3811 ↔ wall-000001/000017: no previously recognized connector; physical official mesh test to follow.",
+  "certify_strength": false,
+  "certify_buildable": false,
+  "explanation": "Static report before dedicated CI measurement. Do not upgrade to PASS without generated evidence."
+}

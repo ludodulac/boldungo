@@ -1,0 +1,17 @@
+{
+  "status": "NON DÉMONTRÉ",
+  "order_proposed": [
+    "M1-EXPERIMENTAL-BASE-3811",
+    "wall-000001",
+    "wall-000017",
+    "wall-000041",
+    "wall-000040",
+    "wall-000023",
+    "wall-000048",
+    "wall-000065",
+    "wall-000071",
+    "wall-000088"
+  ],
+  "geometric_path_clearance": "NON DÉMONTRÉ",
+  "real_part_insertion": "NON DÉMONTRÉ"
+}
