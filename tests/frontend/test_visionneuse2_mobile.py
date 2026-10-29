@@ -1,7 +1,10 @@
 """VISIONNEUSE-2: one actual mobile Chromium pass for both existing models and their controls."""
 from __future__ import annotations
 import json
+import os
 import threading
+
+import pytest
 from functools import partial
 from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
@@ -29,6 +32,11 @@ def test_mobile_both_models_status_no_overlay_and_controls():
     out=ROOT/"artifacts/visionneuse2";out.mkdir(parents=True,exist_ok=True)
     try:
         with sync_playwright() as playwright:
+            chromium_executable=Path(playwright.chromium.executable_path)
+            if not chromium_executable.is_file():
+                if os.environ.get("CI","").lower()=="true" and os.environ.get("BOLDUNGO_REQUIRE_CHROMIUM")!="1":
+                    pytest.skip("Chromium non installé dans la CI générale ; test mobile obligatoire dans la CI spécialisée")
+                raise AssertionError("Chromium obligatoire pour le test mobile spécialisé : "+str(chromium_executable))
             browser=playwright.chromium.launch(headless=True,args=[
                 "--use-gl=angle","--use-angle=swiftshader",
                 "--enable-webgl","--ignore-gpu-blocklist"])

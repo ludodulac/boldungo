@@ -24,6 +24,8 @@ jobs:
           python -m pip install pytest playwright
           python -m playwright install --with-deps chromium
       - name: One mobile Chromium test — complete model 019 and LEGO 356
+        env:
+          BOLDUNGO_REQUIRE_CHROMIUM: "1"
         run: python -m pytest -q tests/frontend/test_visionneuse2_mobile.py
       - if: always()
         uses: actions/upload-artifact@v4
