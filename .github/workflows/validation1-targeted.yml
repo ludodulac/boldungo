@@ -1,0 +1,58 @@
+name: VALIDATION-1 — one geometry proof and 10-part mobile viewer
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/validation1_geometry_proof.py'
+      - 'scripts/validation1_browser.py'
+      - 'missions/VALIDATION1/EST-SUD-10.ldr'
+      - 'missions/VALIDATION1/VIEWER-10.json'
+      - '.github/workflows/validation1-targeted.yml'
+permissions:
+  contents: write
+jobs:
+  geometry-and-visual:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing LDraw engine and browser dependencies
+        run: |
+          python -m pip install -e "./lego_geometry_engine"
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Fetch only selected official real LDraw part families at pinned revision
+        run: python scripts/download_ldraw_probe_066.py /tmp/validation1-ldraw --max-files 160 --parts 3811 3008 3004 3622 3009
+      - name: ONE real mesh, connector, support, insertion analysis (FAIL means evidence, not a broken CI)
+        run: python scripts/validation1_geometry_proof.py --ldraw-root /tmp/validation1-ldraw
+      - name: ONE true Chromium Android-mobile 3D visualization
+        run: python scripts/validation1_browser.py
+      - name: Archive all measured proof outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: VALIDATION1-TEN-PARTS-EVIDENCE-NOT-A-CERTIFICATE
+          path: |
+            missions/VALIDATION1/*.json
+            missions/VALIDATION1/*.ldr
+            missions/VALIDATION1/*.png
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Persist exact measured JSON reports to DRAFT branch only
+        if: success() && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add missions/VALIDATION1/CONNEXIONS-COLLISIONS.json missions/VALIDATION1/APPUIS.json missions/VALIDATION1/INSERTION.json missions/VALIDATION1/RESULTAT.json missions/VALIDATION1/visuel-mobile.png
+          if ! git diff --cached --quiet; then
+            git commit -m "VALIDATION-1: record measured official LDraw evidence and real Chromium screenshot"
+            git push origin "HEAD:refs/heads/${BRANCH}"
+          fi
