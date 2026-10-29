@@ -24,7 +24,7 @@ jobs:
           python -m pip install -e "./lego_geometry_engine[dev]"
 
       - name: Run application tests
-        run: pytest -q
+        run: python -m pytest -q
 
       - name: Install BH-231 browser driver
         run: python -m pip install 'playwright>=1.50,<2'
