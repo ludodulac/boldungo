@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/validation1_geometry_proof.py'
+      - 'scripts/download_ldraw_probe_066.py'
       - 'scripts/validation1_browser.py'
       - 'missions/VALIDATION1/EST-SUD-10.ldr'
       - 'missions/VALIDATION1/VIEWER-10.json'
