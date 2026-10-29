@@ -31,7 +31,7 @@ jobs:
           python-version: '3.12'
       - name: Install existing LDraw engine and browser dependencies
         run: |
-          python -m pip install -e "./lego_geometry_engine"
+          python -m pip install -e "./lego_geometry_engine[dev]"
           python -m pip install playwright
           python -m playwright install --with-deps chromium
       - name: Test exact 3811↔3008 nominal stud alignment and reject bad placements
