@@ -1,75 +1,412 @@
 {
-  "status": "PRELIMINARY_GRID_ONLY_NOT_PHYSICAL_PROOF",
-  "selected_count": 10,
-  "nominal_orthogonal_body_overlaps": 0,
-  "nominal_support_edges": [
+  "geometry_loaded": {
+    "M1-EXPERIMENTAL-BASE-3811": {
+      "ldraw_ref": "3811.dat",
+      "mesh_triangles": 49236,
+      "connectors_inferred": 1024,
+      "description": "Baseplate 32 x 32",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000001": {
+      "ldraw_ref": "3008.dat",
+      "mesh_triangles": 748,
+      "connectors_inferred": 16,
+      "description": "Brick  1 x  8",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000017": {
+      "ldraw_ref": "3008.dat",
+      "mesh_triangles": 748,
+      "connectors_inferred": 16,
+      "description": "Brick  1 x  8",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000041": {
+      "ldraw_ref": "3004.dat",
+      "mesh_triangles": 172,
+      "connectors_inferred": 4,
+      "description": "Brick  1 x  2",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000040": {
+      "ldraw_ref": "3622.dat",
+      "mesh_triangles": 268,
+      "connectors_inferred": 6,
+      "description": "Brick  1 x  3",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000023": {
+      "ldraw_ref": "3008.dat",
+      "mesh_triangles": 748,
+      "connectors_inferred": 16,
+      "description": "Brick  1 x  8",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000048": {
+      "ldraw_ref": "3008.dat",
+      "mesh_triangles": 748,
+      "connectors_inferred": 16,
+      "description": "Brick  1 x  8",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000065": {
+      "ldraw_ref": "3009.dat",
+      "mesh_triangles": 556,
+      "connectors_inferred": 12,
+      "description": "Brick  1 x  6",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000071": {
+      "ldraw_ref": "3009.dat",
+      "mesh_triangles": 556,
+      "connectors_inferred": 12,
+      "description": "Brick  1 x  6",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    },
+    "wall-000088": {
+      "ldraw_ref": "3004.dat",
+      "mesh_triangles": 172,
+      "connectors_inferred": 4,
+      "description": "Brick  1 x  2",
+      "geometry_source": "PINNED_LDRAW_MIRROR"
+    }
+  },
+  "nominal_solid_overlaps": [],
+  "nominal_edges": [
     {
       "upper": "wall-000001",
       "lower": "M1-EXPERIMENTAL-BASE-3811",
-      "shared_cells": 8
+      "common_nominal_studs": 8,
+      "official_mesh_relation": "COLLISION",
+      "official_connector_matches": 8,
+      "joint_status": "NON DÉMONTRÉ"
     },
     {
       "upper": "wall-000017",
       "lower": "M1-EXPERIMENTAL-BASE-3811",
-      "shared_cells": 8
+      "common_nominal_studs": 8,
+      "official_mesh_relation": "COLLISION",
+      "official_connector_matches": 8,
+      "joint_status": "NON DÉMONTRÉ"
     },
     {
       "upper": "wall-000041",
       "lower": "wall-000001",
-      "shared_cells": 1
+      "common_nominal_studs": 1,
+      "official_mesh_relation": "CONTACT",
+      "official_connector_matches": 1,
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000041",
       "lower": "wall-000017",
-      "shared_cells": 1
+      "common_nominal_studs": 1,
+      "official_mesh_relation": "COLLISION",
+      "official_connector_matches": 1,
+      "joint_status": "NON DÉMONTRÉ"
     },
     {
       "upper": "wall-000040",
       "lower": "wall-000017",
-      "shared_cells": 3
+      "common_nominal_studs": 3,
+      "official_mesh_relation": "CONTACT",
+      "official_connector_matches": 3,
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000023",
       "lower": "wall-000001",
-      "shared_cells": 7
+      "common_nominal_studs": 7,
+      "official_mesh_relation": "COLLISION",
+      "official_connector_matches": 7,
+      "joint_status": "NON DÉMONTRÉ"
     },
     {
       "upper": "wall-000048",
       "lower": "wall-000041",
-      "shared_cells": 1
+      "common_nominal_studs": 1,
+      "official_mesh_relation": "CONTACT",
+      "official_connector_matches": 1,
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000048",
       "lower": "wall-000023",
-      "shared_cells": 7
+      "common_nominal_studs": 7,
+      "official_mesh_relation": "COLLISION",
+      "official_connector_matches": 7,
+      "joint_status": "NON DÉMONTRÉ"
     },
     {
       "upper": "wall-000065",
       "lower": "wall-000041",
-      "shared_cells": 1
+      "common_nominal_studs": 1,
+      "official_mesh_relation": "CONTACT",
+      "official_connector_matches": 1,
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000065",
       "lower": "wall-000040",
-      "shared_cells": 3
+      "common_nominal_studs": 3,
+      "official_mesh_relation": "CONTACT",
+      "official_connector_matches": 3,
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000071",
       "lower": "wall-000048",
-      "shared_cells": 6
+      "common_nominal_studs": 6,
+      "official_mesh_relation": "COLLISION",
+      "official_connector_matches": 6,
+      "joint_status": "NON DÉMONTRÉ"
     },
     {
       "upper": "wall-000088",
       "lower": "wall-000048",
-      "shared_cells": 1
+      "common_nominal_studs": 1,
+      "official_mesh_relation": "CONTACT",
+      "official_connector_matches": 1,
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000088",
       "lower": "wall-000065",
-      "shared_cells": 1
+      "common_nominal_studs": 1,
+      "official_mesh_relation": "COLLISION",
+      "official_connector_matches": 1,
+      "joint_status": "NON DÉMONTRÉ"
     }
   ],
-  "official_mesh_relations": "NON DÉMONTRÉ — generated by one pinned LDraw CI check",
-  "connector_evidence": "NON DÉMONTRÉ",
-  "first_known_risk": "wall-000001 → M1-EXPERIMENTAL-BASE-3811: previous MAISON-1 reports zero recognized LDraw connectors for baseplate 3811"
+  "official_mesh_pairs_examined": [
+    {
+      "part_a": "M1-EXPERIMENTAL-BASE-3811",
+      "part_b": "wall-000001",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 8,
+      "nominal_support_studs": 8,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "M1-EXPERIMENTAL-BASE-3811",
+      "part_b": "wall-000017",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 8,
+      "nominal_support_studs": 8,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000001",
+      "part_b": "wall-000017",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 0,
+      "nominal_support_studs": 0,
+      "classification": "SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
+    },
+    {
+      "part_a": "wall-000001",
+      "part_b": "wall-000041",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 1,
+      "nominal_support_studs": 1,
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION"
+    },
+    {
+      "part_a": "wall-000001",
+      "part_b": "wall-000023",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 7,
+      "nominal_support_studs": 7,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000017",
+      "part_b": "wall-000041",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 1,
+      "nominal_support_studs": 1,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000017",
+      "part_b": "wall-000040",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 3,
+      "nominal_support_studs": 3,
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION"
+    },
+    {
+      "part_a": "wall-000017",
+      "part_b": "wall-000023",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 0,
+      "nominal_support_studs": 0,
+      "classification": "SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
+    },
+    {
+      "part_a": "wall-000041",
+      "part_b": "wall-000040",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 0,
+      "nominal_support_studs": 0,
+      "classification": "SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
+    },
+    {
+      "part_a": "wall-000041",
+      "part_b": "wall-000023",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 0,
+      "nominal_support_studs": 0,
+      "classification": "SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
+    },
+    {
+      "part_a": "wall-000041",
+      "part_b": "wall-000048",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 1,
+      "nominal_support_studs": 1,
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION"
+    },
+    {
+      "part_a": "wall-000041",
+      "part_b": "wall-000065",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 1,
+      "nominal_support_studs": 1,
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION"
+    },
+    {
+      "part_a": "wall-000040",
+      "part_b": "wall-000065",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 3,
+      "nominal_support_studs": 3,
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION"
+    },
+    {
+      "part_a": "wall-000023",
+      "part_b": "wall-000048",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 7,
+      "nominal_support_studs": 7,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000023",
+      "part_b": "wall-000065",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 0,
+      "nominal_support_studs": 0,
+      "classification": "SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
+    },
+    {
+      "part_a": "wall-000048",
+      "part_b": "wall-000065",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 0,
+      "nominal_support_studs": 0,
+      "classification": "SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
+    },
+    {
+      "part_a": "wall-000048",
+      "part_b": "wall-000071",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 6,
+      "nominal_support_studs": 6,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000048",
+      "part_b": "wall-000088",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 1,
+      "nominal_support_studs": 1,
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION"
+    },
+    {
+      "part_a": "wall-000065",
+      "part_b": "wall-000071",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 0,
+      "nominal_support_studs": 0,
+      "classification": "SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
+    },
+    {
+      "part_a": "wall-000065",
+      "part_b": "wall-000088",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 1,
+      "nominal_support_studs": 1,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000071",
+      "part_b": "wall-000088",
+      "official_mesh_relation": "CONTACT",
+      "connector_matches": 0,
+      "nominal_support_studs": 0,
+      "classification": "SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
+    }
+  ],
+  "unresolved_solid_intersections": [],
+  "undecided_stud_cavity_mesh_overlap": [
+    {
+      "part_a": "M1-EXPERIMENTAL-BASE-3811",
+      "part_b": "wall-000001",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 8,
+      "nominal_support_studs": 8,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "M1-EXPERIMENTAL-BASE-3811",
+      "part_b": "wall-000017",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 8,
+      "nominal_support_studs": 8,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000001",
+      "part_b": "wall-000023",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 7,
+      "nominal_support_studs": 7,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000017",
+      "part_b": "wall-000041",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 1,
+      "nominal_support_studs": 1,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000023",
+      "part_b": "wall-000048",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 7,
+      "nominal_support_studs": 7,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000048",
+      "part_b": "wall-000071",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 6,
+      "nominal_support_studs": 6,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    },
+    {
+      "part_a": "wall-000065",
+      "part_b": "wall-000088",
+      "official_mesh_relation": "COLLISION",
+      "connector_matches": 1,
+      "nominal_support_studs": 1,
+      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
+    }
+  ],
+  "status_connections": "NON DÉMONTRÉ",
+  "status_collisions": "NON DÉMONTRÉ"
 }

@@ -2,13 +2,25 @@
   "status": "FAIL",
   "selected_count": 10,
   "real_LDraw_refs": 5,
+  "official_ldraw_geometry_all_loaded": true,
   "connections": "NON DÉMONTRÉ",
   "collisions": "NON DÉMONTRÉ",
-  "appuis": "NON DÉMONTRÉ",
+  "appuis": "FAIL",
   "insertion": "NON DÉMONTRÉ",
-  "visualization": "NON DÉMONTRÉ",
-  "first_blocker": "baseplate 3811 ↔ wall-000001/000017: no previously recognized connector; physical official mesh test to follow.",
+  "nominal_vertical_sweep": "PASS",
+  "visualization": "PASS (real Chromium Android-like mobile touch, 10 pieces displayed; four views, zoom and orbit)",
+  "first_blocker": {
+    "piece": "wall-000001",
+    "interface": "M1-EXPERIMENTAL-BASE-3811",
+    "reason": "Aligned nominal connectors found, but official LDraw mesh reports COLLISION; legal stud/cavity engagement versus forbidden solid penetration is NOT resolved."
+  },
+  "physical_stability": "NON DÉMONTRÉ",
+  "real_lego_hands_test": "NOT_DONE",
   "certify_strength": false,
   "certify_buildable": false,
-  "explanation": "Static report before dedicated CI measurement. Do not upgrade to PASS without generated evidence."
+  "limits": [
+    "Official LDraw mesh is not a certified collision/fastening simulator.",
+    "3811 top stud connector grid now inferred; seven mating pairs remain mesh-ambiguous, do not certify attachment.",
+    "Nominal top-down bounding-box path does not prove full real part insertion."
+  ]
 }
