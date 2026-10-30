@@ -135,6 +135,7 @@ class AssemblyReport:
     connections: list[dict] = field(default_factory=list)
     unsupported_parts: list[str] = field(default_factory=list)
     disconnected_components: list[list[str]] = field(default_factory=list)
+    indeterminate_pairs: list[dict] = field(default_factory=list)
 
     def to_dict(self):
         return asdict(self)
@@ -488,64 +489,9 @@ def find_connections(a: PartInstance, b: PartInstance):
 
 
 def analyze_assembly(parts: Sequence[PartInstance]) -> AssemblyReport:
-    collisions = []
-    contacts = []
-    connections = []
-    graph = {part.instance_id: set() for part in parts}
-    for index, a in enumerate(parts):
-        for b in parts[index + 1 :]:
-            relation = check_collision(a, b)
-            if relation is Relation.COLLISION:
-                collisions.append({"part_a": a.instance_id, "part_b": b.instance_id, "type": "solid_intersection"})
-            elif relation is Relation.CONTACT:
-                contacts.append({"part_a": a.instance_id, "part_b": b.instance_id, "type": "surface_contact"})
-                graph[a.instance_id].add(b.instance_id)
-                graph[b.instance_id].add(a.instance_id)
-            pair_connections = find_connections(a, b)
-            connections.extend(pair_connections)
-            if pair_connections:
-                graph[a.instance_id].add(b.instance_id)
-                graph[b.instance_id].add(a.instance_id)
-
-    if parts:
-        base = max(part.bbox.maximum[1] for part in parts)
-        roots = {part.instance_id for part in parts if abs(part.bbox.maximum[1] - base) <= CONTACT_EPS}
-    else:
-        roots = set()
-
-    supported = set(roots)
-    frontier = list(roots)
-    while frontier:
-        node = frontier.pop()
-        for neighbor in graph[node]:
-            if neighbor not in supported:
-                supported.add(neighbor)
-                frontier.append(neighbor)
-    unsupported = [part.instance_id for part in parts if part.instance_id not in supported]
-
-    components = []
-    unseen = set(graph)
-    while unseen:
-        start = next(iter(unseen))
-        component = set()
-        stack = [start]
-        while stack:
-            node = stack.pop()
-            if node in component:
-                continue
-            component.add(node)
-            unseen.discard(node)
-            stack.extend(graph[node] - component)
-        components.append(sorted(component))
-
-    return AssemblyReport(
-        not collisions and not unsupported,
-        collisions,
-        contacts,
-        connections,
-        unsupported,
-        sorted(components),
-    )
+    """Use one conservative assembly implementation; never downgrade collision by connector alignment."""
+    from .assembly import analyze_assembly as safe_analyze_assembly
+    return safe_analyze_assembly(parts)
 
 
 def transform_from_ldraw(values: Sequence[float]) -> Transform:

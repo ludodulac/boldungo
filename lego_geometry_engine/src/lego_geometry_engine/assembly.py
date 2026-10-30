@@ -28,105 +28,56 @@ def _validate_instance_ids(parts: Sequence[PartInstance]) -> None:
 
 
 def analyze_assembly(parts: Sequence[PartInstance]) -> AssemblyReport:
-    """Analyze collisions, contacts, connections, and support topology.
+    """Connect only *demonstrated* nominal joints; never excuse a mesh collision.
 
-    LDraw meshes include studs and anti-stud cavities. At an exact legal mating
-    transform those surfaces can numerically look like a narrow solid
-    intersection after a rigid rotation even though the connector model proves
-    the parts are on the same nominal mating plane. Only that specific
-    COLLISION-plus-exact-connector case is reclassified as assembly contact.
-    Connector-only pairs that remain geometrically separated stay connections
-    without becoming surface contacts.
+    Simple surface touching is not a stud/cavity connection. Floating and
+    ambiguous pieces cannot become supported merely through contact.
     """
+    from .joint_validation import assess_pair
     _validate_instance_ids(parts)
-
-    collisions = []
-    contacts = []
-    connections = []
-    graph = {part.instance_id: set() for part in parts}
-
-    for a, b in candidate_pairs(parts):
-        pair_connections = find_connections(a, b)
-        relation = check_collision(a, b)
-
-        if relation is Relation.COLLISION:
-            if pair_connections:
-                contacts.append(
-                    {
-                        "part_a": a.instance_id,
-                        "part_b": b.instance_id,
-                        "type": "connector_contact",
-                    }
-                )
-                graph[a.instance_id].add(b.instance_id)
-                graph[b.instance_id].add(a.instance_id)
-            else:
-                collisions.append(
-                    {
-                        "part_a": a.instance_id,
-                        "part_b": b.instance_id,
-                        "type": "solid_intersection",
-                    }
-                )
+    collisions, contacts, connections, uncertain=[],[],[],[]
+    graph={p.instance_id:set() for p in parts}
+    for a,b in candidate_pairs(parts):
+        nominal=find_connections(a,b)
+        relation=check_collision(a,b)
+        verdict=assess_pair(a,b,relation=relation,connections=nominal)
+        item={"part_a":a.instance_id,"part_b":b.instance_id,
+              "type":verdict.verdict,"reason":verdict.reason}
+        if verdict.verdict=="FORBIDDEN_COLLISION":
+            collisions.append(item)
+        elif verdict.verdict=="INDETERMINATE":
+            uncertain.append(item)
+        elif verdict.verdict=="COMPATIBLE_MATING":
+            contacts.append({**item,"type":"verified_nominal_mating"})
+            connections.extend(nominal)
+            graph[a.instance_id].add(b.instance_id)
+            graph[b.instance_id].add(a.instance_id)
         elif relation is Relation.CONTACT:
-            contacts.append(
-                {
-                    "part_a": a.instance_id,
-                    "part_b": b.instance_id,
-                    "type": "surface_contact",
-                }
-            )
-            graph[a.instance_id].add(b.instance_id)
-            graph[b.instance_id].add(a.instance_id)
-
-        connections.extend(pair_connections)
-        if pair_connections:
-            graph[a.instance_id].add(b.instance_id)
-            graph[b.instance_id].add(a.instance_id)
-
+            contacts.append({**item,"type":"surface_contact_without_attachment"})
+    # Historical base heuristic retained, but only VERIFIED edges can reach it.
+    # This is topological nominal support, not physical load-bearing certification.
     if parts:
-        base = max(part.bbox.maximum[1] for part in parts)
-        roots = {
-            part.instance_id
-            for part in parts
-            if abs(part.bbox.maximum[1] - base) <= CONTACT_EPS
-        }
-    else:
-        roots = set()
-
-    supported = set(roots)
-    frontier = list(roots)
+        base=max(part.bbox.maximum[1] for part in parts)
+        roots={part.instance_id for part in parts if abs(part.bbox.maximum[1]-base)<=CONTACT_EPS}
+    else: roots=set()
+    supported=set(roots)
+    frontier=list(roots)
     while frontier:
-        node = frontier.pop()
+        node=frontier.pop()
         for neighbor in graph[node]:
             if neighbor not in supported:
                 supported.add(neighbor)
                 frontier.append(neighbor)
-
-    unsupported = [
-        part.instance_id for part in parts if part.instance_id not in supported
-    ]
-
-    components = []
-    unseen = set(graph)
+    unsupported=[part.instance_id for part in parts if part.instance_id not in supported]
+    components=[]
+    unseen=set(graph)
     while unseen:
-        start = next(iter(unseen))
-        component = set()
-        stack = [start]
+        start=next(iter(unseen));component=set();stack=[start]
         while stack:
-            node = stack.pop()
-            if node in component:
-                continue
-            component.add(node)
-            unseen.discard(node)
-            stack.extend(graph[node] - component)
+            node=stack.pop()
+            if node in component:continue
+            component.add(node);unseen.discard(node);stack.extend(graph[node]-component)
         components.append(sorted(component))
-
-    return AssemblyReport(
-        not collisions and not unsupported,
-        collisions,
-        contacts,
-        connections,
-        unsupported,
-        sorted(components),
-    )
+    return AssemblyReport(not collisions and not uncertain and not unsupported,
+                          collisions,contacts,connections,unsupported,
+                          sorted(components),uncertain)

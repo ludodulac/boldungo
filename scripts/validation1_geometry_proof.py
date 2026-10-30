@@ -9,7 +9,7 @@ import argparse, json, hashlib
 from pathlib import Path
 from collections import deque
 from itertools import combinations
-from lego_geometry_engine import LDrawLibrary, Relation, check_collision, find_connections, instantiate, transform_from_ldraw
+from lego_geometry_engine import LDrawLibrary, Relation, check_collision, find_connections, instantiate, transform_from_ldraw, assess_pair, first_mesh_crossing
 
 ROOT=Path(__file__).resolve().parents[1]
 DIR=ROOT/"missions/VALIDATION1"
@@ -103,21 +103,23 @@ def main(ldraw):
             relation=check_collision(A,B).value
         edge=next((x for x in edges if {x["upper"],x["lower"]}=={a,b}),None)
         nominal_mating=edge is not None
-        if relation=="COLLISION" and con and nominal_mating:
-            classification="NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"
-        elif relation=="COLLISION":
-            classification="UNRESOLVED_MESH_COLLISION_NOT_CLEARED"
-        elif con and nominal_mating:
-            classification="CONNECTOR_MATCH_MESH_NO_COLLISION"
-        elif relation=="CONTACT":
-            classification="SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH"
-        else:
-            classification="SEPARATED"
+        verdict=assess_pair(A,B,relation=Relation(relation),connections=con)
+        classification={
+            "COMPATIBLE_MATING":"CONNECTOR_MATCH_MESH_NO_COLLISION",
+            "FORBIDDEN_COLLISION":"UNRESOLVED_MESH_COLLISION_NOT_CLEARED",
+            "INDETERMINATE":"NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
+            "NO_MECHANICAL_LINK":"SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH",
+        }[verdict.verdict]
+        witness=(first_mesh_crossing(A,B) if relation=="COLLISION" and con and nominal_mating else None)
         if relation!="SEPARATED" or con or nominal_mating:
             mesh_pairs.append({"part_a":a,"part_b":b,
                 "official_mesh_relation":relation,"connector_matches":len(con),
                 "nominal_support_studs":edge["common_nominal_studs"] if edge else 0,
-                "classification":classification})
+                "classification":classification,"engine_verdict":verdict.verdict,
+                "body_aabb_ldu":verdict.body_a,"body_b_aabb_ldu":verdict.body_b,
+                "verified_body_overlap":verdict.body_overlap,
+                "precise_mesh_surface_crossing":witness,
+                "mesh_crossing_is_not_proof_of_solid_material":True})
     for e in edges:
         m=next(q for q in mesh_pairs if {q["part_a"],q["part_b"]}=={e["upper"],e["lower"]})
         e.update({"official_mesh_relation":m["official_mesh_relation"],
@@ -172,6 +174,9 @@ def main(ldraw):
     support_status="FAIL" if unknown_support else "PASS"
     insertion_status="NON DÉMONTRÉ" if all(x["nominal_swept_box_clear"] for x in insertion) else "FAIL"
     final={
+        "engine_fix":"COLLISION_WITH_CONNECTOR_NO_LONGER_AUTO_CONTACT; surface-only contacts never support",
+        "seven_ambiguous_interfaces_located":[p for p in mesh_pairs if p["classification"]=="NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"],
+        "roof_interface":"NON DÉMONTRÉ — module has unresolved intersections, roof follow-up prohibited by mission safety gate",
         "status":"FAIL" if connection_status=="FAIL" or collisions_status=="FAIL" or support_status=="FAIL" else "NON DÉMONTRÉ",
         "selected_count":len(ids),"real_LDraw_refs":len({p["ldraw_ref"] for p in selected}),
         "official_ldraw_geometry_all_loaded":True,
@@ -183,7 +188,7 @@ def main(ldraw):
         "physical_stability":"NON DÉMONTRÉ","real_lego_hands_test":"NOT_DONE",
         "certify_strength":False,"certify_buildable":False,
         "limits":["Official LDraw mesh is not a certified collision/fastening simulator.",
-                  "3811 top stud connector grid now inferred; seven mating pairs remain mesh-ambiguous, do not certify attachment.",
+                  "3811 stud/cavity connector grid inferred. Raw mesh intersections are kept indeterminate; actual crossing coordinates recorded, not silently accepted.",
                   "Nominal top-down bounding-box path does not prove full real part insertion."]}
     dump("CONNEXIONS-COLLISIONS.json",{"geometry_loaded":actual_defs,
         "nominal_solid_overlaps":nominal_collisions,"nominal_edges":edges,
