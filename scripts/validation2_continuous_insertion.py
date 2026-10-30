@@ -197,7 +197,8 @@ def verify_steps(ids,byid):
         # moving mesh AABB. Thus our continuous certificate starts free.
         start_min=moving.bbox.minimum[1]-TRAVEL
         start_max=moving.bbox.maximum[1]-TRAVEL
-        for old in placed:
+        for prev_id in placed:
+            old=byid[prev_id]
             if not (start_max<old.bbox.minimum[1]-CONTACT_EPS or
                     old.bbox.maximum[1]<start_min-CONTACT_EPS or
                     moving.bbox.maximum[0]<old.bbox.minimum[0]-CONTACT_EPS or
