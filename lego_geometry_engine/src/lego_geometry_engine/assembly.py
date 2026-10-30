@@ -78,6 +78,9 @@ def analyze_assembly(parts: Sequence[PartInstance]) -> AssemblyReport:
             if node in component:continue
             component.add(node);unseen.discard(node);stack.extend(graph[node]-component)
         components.append(sorted(component))
-    return AssemblyReport(not collisions and not uncertain and not unsupported,
+    # Independent pieces resting at the same nominal ground elevation are
+    # NOT a connected assembly: all root components must be joined.
+    return AssemblyReport(not collisions and not uncertain and not unsupported
+                          and len(components)<=1,
                           collisions,contacts,connections,unsupported,
                           sorted(components),uncertain)

@@ -41,7 +41,9 @@ def test_negative_simply_touching_without_studs_not_structural_edge():
     # Side touch is not nominal support.
     roof=instantiate(brick,"roof",Transform.translation(20,-24,0))
     report=analyze_assembly([lower,beside,roof])
-    assert "roof" in report.unsupported_parts or not report.valid
+    assert not report.valid, "Two independent grounded components must not be a valid assembly"
+    assert len(report.disconnected_components)==2
+    assert not any({"lower","side-touch"} <= set(component) for component in report.disconnected_components)
 
 def test_negative_floating_piece_is_not_supported():
     brick,lower,upper=parts()
