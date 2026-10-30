@@ -1,0 +1,11 @@
+{
+  "selected_count": 10,
+  "insertion_demonstrated": 0,
+  "blocked_demonstrated": 0,
+  "undetermined": 10,
+  "first_non_demonstrated": "NON DÉMONTRÉ — test ciblé à exécuter",
+  "sequence_status": "NON DÉMONTRÉ",
+  "geometric_assembly_status": "NON DÉMONTRÉ",
+  "visualization": "NON DÉMONTRÉ",
+  "physical_strength": "NON DÉMONTRÉ"
+}
