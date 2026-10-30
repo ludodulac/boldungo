@@ -10,6 +10,7 @@ from pathlib import Path
 from collections import deque
 from itertools import combinations
 from lego_geometry_engine import LDrawLibrary, Relation, check_collision, find_connections, instantiate, transform_from_ldraw, assess_pair, first_mesh_crossing
+from lego_geometry_engine.core import _point_in_mesh_status, _point_on_mesh_surface
 
 ROOT=Path(__file__).resolve().parents[1]
 DIR=ROOT/"missions/VALIDATION1"
@@ -110,7 +111,26 @@ def main(ldraw):
             "INDETERMINATE":"NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
             "NO_MECHANICAL_LINK":"SURFACE_CONTACT_NOT_PROOF_OF_CLUTCH",
         }[verdict.verdict]
-        witness=(first_mesh_crossing(A,B) if relation=="COLLISION" and con and nominal_mating else None)
+        is_original_seven=frozenset((a,b)) in {
+            frozenset(x) for x in (
+                ("wall-000001","M1-EXPERIMENTAL-BASE-3811"),
+                ("wall-000017","M1-EXPERIMENTAL-BASE-3811"),
+                ("wall-000041","wall-000017"),
+                ("wall-000023","wall-000001"),
+                ("wall-000048","wall-000023"),
+                ("wall-000071","wall-000048"),
+                ("wall-000088","wall-000065"),
+            )
+        }
+        witness=(first_mesh_crossing(A,B) if is_original_seven else None)
+        strict_containment_probe=({
+            "a_first_vertex_world_ldu":list(A.triangles[0][0]),
+            "b_first_vertex_world_ldu":list(B.triangles[0][0]),
+            "a_first_vertex_on_b_surface":_point_on_mesh_surface(A.triangles[0][0],B.triangles),
+            "b_first_vertex_on_a_surface":_point_on_mesh_surface(B.triangles[0][0],A.triangles),
+            "a_first_vertex_in_b":_point_in_mesh_status(A.triangles[0][0],B.triangles),
+            "b_first_vertex_in_a":_point_in_mesh_status(B.triangles[0][0],A.triangles)
+        } if is_original_seven else None)
         if relation!="SEPARATED" or con or nominal_mating:
             mesh_pairs.append({"part_a":a,"part_b":b,
                 "official_mesh_relation":relation,"connector_matches":len(con),
@@ -119,6 +139,7 @@ def main(ldraw):
                 "body_aabb_ldu":verdict.body_a,"body_b_aabb_ldu":verdict.body_b,
                 "verified_body_overlap":verdict.body_overlap,
                 "precise_mesh_surface_crossing":witness,
+                "robust_strict_containment":strict_containment_probe,
                 "mesh_crossing_is_not_proof_of_solid_material":True})
     for e in edges:
         m=next(q for q in mesh_pairs if {q["part_a"],q["part_b"]}=={e["upper"],e["lower"]})
@@ -176,6 +197,11 @@ def main(ldraw):
     final={
         "engine_fix":"COLLISION_WITH_CONNECTOR_NO_LONGER_AUTO_CONTACT; surface-only contacts never support",
         "seven_ambiguous_interfaces_located":[p for p in mesh_pairs if p["classification"]=="NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED"],
+        "target_seven_reassessed":[p for p in mesh_pairs if p["robust_strict_containment"] is not None],
+        "seven_resolved_compatible":sum(1 for p in mesh_pairs if p["robust_strict_containment"] is not None and p["engine_verdict"]=="COMPATIBLE_MATING"),
+        "seven_resolved_forbidden":sum(1 for p in mesh_pairs if p["robust_strict_containment"] is not None and p["engine_verdict"]=="FORBIDDEN_COLLISION"),
+        "seven_still_indeterminate":sum(1 for p in mesh_pairs if p["robust_strict_containment"] is not None and p["engine_verdict"]=="INDETERMINATE"),
+        "seven_no_link":sum(1 for p in mesh_pairs if p["robust_strict_containment"] is not None and p["engine_verdict"]=="NO_MECHANICAL_LINK"),
         "roof_interface":"NON DÉMONTRÉ — module has unresolved intersections, roof follow-up prohibited by mission safety gate",
         "status":"FAIL" if connection_status=="FAIL" or collisions_status=="FAIL" or support_status=="FAIL" else "NON DÉMONTRÉ",
         "selected_count":len(ids),"real_LDraw_refs":len({p["ldraw_ref"] for p in selected}),
@@ -188,7 +214,7 @@ def main(ldraw):
         "physical_stability":"NON DÉMONTRÉ","real_lego_hands_test":"NOT_DONE",
         "certify_strength":False,"certify_buildable":False,
         "limits":["Official LDraw mesh is not a certified collision/fastening simulator.",
-                  "3811 stud/cavity connector grid inferred. Raw mesh intersections are kept indeterminate; actual crossing coordinates recorded, not silently accepted.",
+                  "Boundary vertices are excluded from containment, checked with three nonparallel rays. Real closed-volume containment and actual solid triangle crossings remain forbidden.",
                   "Nominal top-down bounding-box path does not prove full real part insertion."]}
     dump("CONNEXIONS-COLLISIONS.json",{"geometry_loaded":actual_defs,
         "nominal_solid_overlaps":nominal_collisions,"nominal_edges":edges,

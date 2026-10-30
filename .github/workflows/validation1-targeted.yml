@@ -8,6 +8,7 @@ on:
       - 'lego_geometry_engine/src/lego_geometry_engine/core.py'
       - 'lego_geometry_engine/src/lego_geometry_engine/joint_validation.py'
       - 'lego_geometry_engine/tests/test_joint_validation.py'
+      - 'lego_geometry_engine/tests/test_strict_containment.py'
       - 'lego_geometry_engine/tests/test_connector_axes.py'
       - 'scripts/validation1_geometry_proof.py'
       - 'scripts/download_ldraw_probe_066.py'
@@ -41,7 +42,7 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
       - name: Targeted positive and negative joint rules, plus original connector-axis regression
-        run: python -m pytest -q lego_geometry_engine/tests/test_joint_validation.py lego_geometry_engine/tests/test_connector_axes.py lego_geometry_engine/tests/test_engine.py
+        run: python -m pytest -q lego_geometry_engine/tests/test_strict_containment.py lego_geometry_engine/tests/test_joint_validation.py lego_geometry_engine/tests/test_connector_axes.py lego_geometry_engine/tests/test_engine.py
       - name: Fetch only selected official real LDraw part families at pinned revision
         run: python scripts/download_ldraw_probe_066.py /tmp/validation1-ldraw --max-files 160 --parts 3811 3008 3004 3622 3009
       - name: ONE real mesh, connector, support, insertion analysis (FAIL means evidence, not a broken CI)

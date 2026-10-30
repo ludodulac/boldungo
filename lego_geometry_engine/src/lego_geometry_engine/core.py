@@ -352,17 +352,62 @@ def _ray_triangle_distance(origin: Vec3, direction: Vec3, triangle: Triangle, ep
     return distance
 
 
+# Three deliberately non-parallel probe rays; numerical geometry directions,
+# NOT invented LEGO physical tolerances.
+_CONTAINMENT_RAYS = (RAY_DIRECTION, (0.317181, 1.0, 0.413173), (0.227731, 0.377981, 1.0))
+
+
+def _point_on_mesh_surface(point: Vec3, triangles: Sequence[Triangle], eps: float = CONTACT_EPS) -> bool:
+    """A surface vertex is NOT proof of interior material containment.
+
+    LDraw studs/cavities often place vertices directly on the opposing surface.
+    The old odd-ray test could classify those boundary vertices as inside.
+    """
+    for triangle in triangles:
+        if any(point[k] < min(v[k] for v in triangle)-eps or
+               point[k] > max(v[k] for v in triangle)+eps for k in range(3)):
+            continue
+        u = _vsub(triangle[1],triangle[0])
+        v = _vsub(triangle[2],triangle[0])
+        n = _cross(u,v)
+        length = _norm(n)
+        if length <= eps:
+            continue
+        if abs(_dot(_vsub(point,triangle[0]),n)) > eps*length:
+            continue
+        drop=max(range(3),key=lambda k:abs(n[k]))
+        flat_triangle=[tuple(x[k] for k in range(3) if k!=drop) for x in triangle]
+        flat_point=tuple(point[k] for k in range(3) if k!=drop)
+        if _point2(flat_point,flat_triangle,eps=eps):
+            return True
+    return False
+
+
+def _point_in_mesh_status(point: Vec3, triangles: Sequence[Triangle]) -> bool | None:
+    """Strict inside / outside / indeterminate. Boundary and inconsistent rays are unknown.
+
+    Parity is only justified away from all mesh surfaces; rays must agree.
+    LDraw is a rendering mesh, so a single odd ray must never prove overlap.
+    """
+    if _point_on_mesh_surface(point, triangles):
+        return None
+    parity=[]
+    for ray in _CONTAINMENT_RAYS:
+        distances=sorted(
+            distance for triangle in triangles
+            if (distance:=_ray_triangle_distance(point,ray,triangle)) is not None
+        )
+        unique=[]
+        for distance in distances:
+            if not unique or abs(distance-unique[-1])>CONTACT_EPS:
+                unique.append(distance)
+        parity.append(len(unique)%2==1)
+    return parity[0] if parity[0]==parity[1]==parity[2] else None
+
+
 def _point_in_mesh(point: Vec3, triangles: Sequence[Triangle]) -> bool:
-    distances = sorted(
-        distance
-        for triangle in triangles
-        if (distance := _ray_triangle_distance(point, RAY_DIRECTION, triangle)) is not None
-    )
-    unique_distances: list[float] = []
-    for distance in distances:
-        if not unique_distances or abs(distance - unique_distances[-1]) > CONTACT_EPS:
-            unique_distances.append(distance)
-    return len(unique_distances) % 2 == 1
+    """Only a strictly interior point proves containment, never a boundary point."""
+    return _point_in_mesh_status(point,triangles) is True
 
 
 def _coplanar(t1: Triangle, t2: Triangle, eps: float = CONTACT_EPS) -> bool:
@@ -448,9 +493,16 @@ def check_collision(a: PartInstance, b: PartInstance) -> Relation:
             if relation is Relation.CONTACT:
                 saw_contact = True
 
-    # Surface-only intersection tests miss the case where one closed mesh is
-    # fully enclosed by another. Test representative vertices in both directions.
-    if _point_in_mesh(a.triangles[0][0], b.triangles) or _point_in_mesh(b.triangles[0][0], a.triangles):
+    # Retain real containment rejection, but NEVER interpret a vertex lying
+    # exactly on the opposing mesh as strictly inside it. Sample representative
+    # distant triangles to catch closed nested solids after boundary exclusions.
+    def contained_vertex_witness(subject: PartInstance, container: PartInstance) -> bool:
+        triangles=subject.triangles
+        for index in sorted({0,len(triangles)//3,2*len(triangles)//3,len(triangles)-1}):
+            if _point_in_mesh(triangles[index][0],container.triangles):
+                return True
+        return False
+    if contained_vertex_witness(a,b) or contained_vertex_witness(b,a):
         return Relation.COLLISION
     return Relation.CONTACT if saw_contact else Relation.SEPARATED
 
