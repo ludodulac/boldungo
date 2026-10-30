@@ -5,17 +5,17 @@
       "upper": "wall-000001",
       "lower": "M1-EXPERIMENTAL-BASE-3811",
       "common_nominal_studs": 8,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 8,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000017",
       "lower": "M1-EXPERIMENTAL-BASE-3811",
       "common_nominal_studs": 8,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 8,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000041",
@@ -29,9 +29,9 @@
       "upper": "wall-000041",
       "lower": "wall-000017",
       "common_nominal_studs": 1,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 1,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000040",
@@ -45,9 +45,9 @@
       "upper": "wall-000023",
       "lower": "wall-000001",
       "common_nominal_studs": 7,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 7,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000048",
@@ -61,9 +61,9 @@
       "upper": "wall-000048",
       "lower": "wall-000023",
       "common_nominal_studs": 7,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 7,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000065",
@@ -85,9 +85,9 @@
       "upper": "wall-000071",
       "lower": "wall-000048",
       "common_nominal_studs": 6,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 6,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000088",
@@ -101,9 +101,9 @@
       "upper": "wall-000088",
       "lower": "wall-000065",
       "common_nominal_studs": 1,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 1,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     }
   ],
   "base_connectors_recognized": [
@@ -111,32 +111,31 @@
       "upper": "wall-000001",
       "lower": "M1-EXPERIMENTAL-BASE-3811",
       "common_nominal_studs": 8,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 8,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     },
     {
       "upper": "wall-000017",
       "lower": "M1-EXPERIMENTAL-BASE-3811",
       "common_nominal_studs": 8,
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "official_connector_matches": 8,
-      "joint_status": "NON DÉMONTRÉ"
+      "joint_status": "PASS_NOMINAL_CONNECTOR"
     }
   ],
   "rooted_via_recognized_noncolliding_connections": [
-    "M1-EXPERIMENTAL-BASE-3811"
-  ],
-  "not_proven_attached_to_base": [
+    "M1-EXPERIMENTAL-BASE-3811",
     "wall-000001",
     "wall-000017",
-    "wall-000041",
-    "wall-000040",
     "wall-000023",
+    "wall-000040",
+    "wall-000041",
     "wall-000048",
     "wall-000065",
     "wall-000071",
     "wall-000088"
   ],
-  "status": "FAIL"
+  "not_proven_attached_to_base": [],
+  "status": "PASS"
 }

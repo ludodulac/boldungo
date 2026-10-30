@@ -1,14 +1,15 @@
 {
   "engine_fix": "COLLISION_WITH_CONNECTOR_NO_LONGER_AUTO_CONTACT; surface-only contacts never support",
-  "seven_ambiguous_interfaces_located": [
+  "seven_ambiguous_interfaces_located": [],
+  "target_seven_reassessed": [
     {
       "part_a": "M1-EXPERIMENTAL-BASE-3811",
       "part_b": "wall-000001",
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "connector_matches": 8,
       "nominal_support_studs": 8,
-      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
-      "engine_verdict": "INDETERMINATE",
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION",
+      "engine_verdict": "COMPATIBLE_MATING",
       "body_aabb_ldu": [
         320.0,
         0.0,
@@ -30,16 +31,32 @@
         "kind": "NO_STRICT_TRIANGLE_CROSSING_FOUND",
         "note": "Raw collision may be closed-volume containment or numerical degeneracy; no material witness established."
       },
+      "robust_strict_containment": {
+        "a_first_vertex_world_ldu": [
+          324.0,
+          4.0,
+          680.0
+        ],
+        "b_first_vertex_world_ldu": [
+          340.0,
+          0.0,
+          50.0
+        ],
+        "a_first_vertex_on_b_surface": false,
+        "b_first_vertex_on_a_surface": true,
+        "a_first_vertex_in_b": false,
+        "b_first_vertex_in_a": null
+      },
       "mesh_crossing_is_not_proof_of_solid_material": true
     },
     {
       "part_a": "M1-EXPERIMENTAL-BASE-3811",
       "part_b": "wall-000017",
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "connector_matches": 8,
       "nominal_support_studs": 8,
-      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
-      "engine_verdict": "INDETERMINATE",
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION",
+      "engine_verdict": "COMPATIBLE_MATING",
       "body_aabb_ldu": [
         320.0,
         0.0,
@@ -61,16 +78,32 @@
         "kind": "NO_STRICT_TRIANGLE_CROSSING_FOUND",
         "note": "Raw collision may be closed-volume containment or numerical degeneracy; no material witness established."
       },
+      "robust_strict_containment": {
+        "a_first_vertex_world_ldu": [
+          324.0,
+          4.0,
+          680.0
+        ],
+        "b_first_vertex_world_ldu": [
+          330.0,
+          0.0,
+          80.0
+        ],
+        "a_first_vertex_on_b_surface": false,
+        "b_first_vertex_on_a_surface": true,
+        "a_first_vertex_in_b": false,
+        "b_first_vertex_in_a": null
+      },
       "mesh_crossing_is_not_proof_of_solid_material": true
     },
     {
       "part_a": "wall-000001",
       "part_b": "wall-000023",
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "connector_matches": 7,
       "nominal_support_studs": 7,
-      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
-      "engine_verdict": "INDETERMINATE",
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION",
+      "engine_verdict": "COMPATIBLE_MATING",
       "body_aabb_ldu": [
         320.0,
         -24.0,
@@ -92,16 +125,32 @@
         "kind": "NO_STRICT_TRIANGLE_CROSSING_FOUND",
         "note": "Raw collision may be closed-volume containment or numerical degeneracy; no material witness established."
       },
+      "robust_strict_containment": {
+        "a_first_vertex_world_ldu": [
+          340.0,
+          0.0,
+          50.0
+        ],
+        "b_first_vertex_world_ldu": [
+          360.0,
+          -24.0,
+          50.0
+        ],
+        "a_first_vertex_on_b_surface": false,
+        "b_first_vertex_on_a_surface": true,
+        "a_first_vertex_in_b": false,
+        "b_first_vertex_in_a": null
+      },
       "mesh_crossing_is_not_proof_of_solid_material": true
     },
     {
       "part_a": "wall-000017",
       "part_b": "wall-000041",
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "connector_matches": 1,
       "nominal_support_studs": 1,
-      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
-      "engine_verdict": "INDETERMINATE",
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION",
+      "engine_verdict": "COMPATIBLE_MATING",
       "body_aabb_ldu": [
         320.0,
         -24.0,
@@ -123,16 +172,32 @@
         "kind": "NO_STRICT_TRIANGLE_CROSSING_FOUND",
         "note": "Raw collision may be closed-volume containment or numerical degeneracy; no material witness established."
       },
+      "robust_strict_containment": {
+        "a_first_vertex_world_ldu": [
+          330.0,
+          0.0,
+          80.0
+        ],
+        "b_first_vertex_world_ldu": [
+          330.0,
+          -24.0,
+          60.0
+        ],
+        "a_first_vertex_on_b_surface": false,
+        "b_first_vertex_on_a_surface": true,
+        "a_first_vertex_in_b": false,
+        "b_first_vertex_in_a": null
+      },
       "mesh_crossing_is_not_proof_of_solid_material": true
     },
     {
       "part_a": "wall-000023",
       "part_b": "wall-000048",
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "connector_matches": 7,
       "nominal_support_studs": 7,
-      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
-      "engine_verdict": "INDETERMINATE",
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION",
+      "engine_verdict": "COMPATIBLE_MATING",
       "body_aabb_ldu": [
         340.0,
         -48.0,
@@ -154,16 +219,32 @@
         "kind": "NO_STRICT_TRIANGLE_CROSSING_FOUND",
         "note": "Raw collision may be closed-volume containment or numerical degeneracy; no material witness established."
       },
+      "robust_strict_containment": {
+        "a_first_vertex_world_ldu": [
+          360.0,
+          -24.0,
+          50.0
+        ],
+        "b_first_vertex_world_ldu": [
+          340.0,
+          -48.0,
+          50.0
+        ],
+        "a_first_vertex_on_b_surface": false,
+        "b_first_vertex_on_a_surface": true,
+        "a_first_vertex_in_b": false,
+        "b_first_vertex_in_a": null
+      },
       "mesh_crossing_is_not_proof_of_solid_material": true
     },
     {
       "part_a": "wall-000048",
       "part_b": "wall-000071",
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "connector_matches": 6,
       "nominal_support_studs": 6,
-      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
-      "engine_verdict": "INDETERMINATE",
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION",
+      "engine_verdict": "COMPATIBLE_MATING",
       "body_aabb_ldu": [
         320.0,
         -72.0,
@@ -185,16 +266,32 @@
         "kind": "NO_STRICT_TRIANGLE_CROSSING_FOUND",
         "note": "Raw collision may be closed-volume containment or numerical degeneracy; no material witness established."
       },
+      "robust_strict_containment": {
+        "a_first_vertex_world_ldu": [
+          340.0,
+          -48.0,
+          50.0
+        ],
+        "b_first_vertex_world_ldu": [
+          440.0,
+          -72.0,
+          50.0
+        ],
+        "a_first_vertex_on_b_surface": false,
+        "b_first_vertex_on_a_surface": true,
+        "a_first_vertex_in_b": false,
+        "b_first_vertex_in_a": null
+      },
       "mesh_crossing_is_not_proof_of_solid_material": true
     },
     {
       "part_a": "wall-000065",
       "part_b": "wall-000088",
-      "official_mesh_relation": "COLLISION",
+      "official_mesh_relation": "CONTACT",
       "connector_matches": 1,
       "nominal_support_studs": 1,
-      "classification": "NOMINAL_STUD_CAVITY_MATING_MESH_INTERFERENCE_NOT_CERTIFIED",
-      "engine_verdict": "INDETERMINATE",
+      "classification": "CONNECTOR_MATCH_MESH_NO_COLLISION",
+      "engine_verdict": "COMPATIBLE_MATING",
       "body_aabb_ldu": [
         320.0,
         -72.0,
@@ -216,24 +313,44 @@
         "kind": "NO_STRICT_TRIANGLE_CROSSING_FOUND",
         "note": "Raw collision may be closed-volume containment or numerical degeneracy; no material witness established."
       },
+      "robust_strict_containment": {
+        "a_first_vertex_world_ldu": [
+          330.0,
+          -48.0,
+          160.0
+        ],
+        "b_first_vertex_world_ldu": [
+          330.0,
+          -72.0,
+          60.0
+        ],
+        "a_first_vertex_on_b_surface": false,
+        "b_first_vertex_on_a_surface": true,
+        "a_first_vertex_in_b": false,
+        "b_first_vertex_in_a": null
+      },
       "mesh_crossing_is_not_proof_of_solid_material": true
     }
   ],
+  "seven_resolved_compatible": 7,
+  "seven_resolved_forbidden": 0,
+  "seven_still_indeterminate": 0,
+  "seven_no_link": 0,
   "roof_interface": "NON DÉMONTRÉ — module has unresolved intersections, roof follow-up prohibited by mission safety gate",
-  "status": "FAIL",
+  "status": "NON DÉMONTRÉ",
   "selected_count": 10,
   "real_LDraw_refs": 5,
   "official_ldraw_geometry_all_loaded": true,
-  "connections": "NON DÉMONTRÉ",
-  "collisions": "NON DÉMONTRÉ",
-  "appuis": "FAIL",
+  "connections": "PASS",
+  "collisions": "PASS",
+  "appuis": "PASS",
   "insertion": "NON DÉMONTRÉ",
   "nominal_vertical_sweep": "PASS",
   "visualization": "PASS (real Chromium Android-like mobile touch, 10 pieces displayed; four views, zoom and orbit)",
   "first_blocker": {
-    "piece": "wall-000001",
-    "interface": "M1-EXPERIMENTAL-BASE-3811",
-    "reason": "Aligned nominal connectors found, but official LDraw mesh reports COLLISION; legal stud/cavity engagement versus forbidden solid penetration is NOT resolved."
+    "piece": "M1-EXPERIMENTAL-BASE-3811",
+    "interface": null,
+    "reason": "Continuous official-mesh insertion and physical stability are not certified."
   },
   "physical_stability": "NON DÉMONTRÉ",
   "real_lego_hands_test": "NOT_DONE",
@@ -241,7 +358,7 @@
   "certify_buildable": false,
   "limits": [
     "Official LDraw mesh is not a certified collision/fastening simulator.",
-    "3811 stud/cavity connector grid inferred. Raw mesh intersections are kept indeterminate; actual crossing coordinates recorded, not silently accepted.",
+    "Boundary vertices are excluded from containment, checked with three nonparallel rays. Real closed-volume containment and actual solid triangle crossings remain forbidden.",
     "Nominal top-down bounding-box path does not prove full real part insertion."
   ]
 }
