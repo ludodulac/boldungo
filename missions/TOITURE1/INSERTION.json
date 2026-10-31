@@ -1,8 +1,62 @@
 {
-  "status": "NON DÉMONTRÉ — CI ciblée non exécutée",
+  "motion": "LDraw vertical Y positive down; entire closed interval t in [0,1]; constant orientation",
   "order": [
     "scene-chimney:house-chimney-antenna:00043:solution",
     "scene-chimney:house-chimney-antenna:00052:solution",
     "roof-000338"
-  ]
+  ],
+  "steps": [
+    {
+      "part": "scene-chimney:house-chimney-antenna:00043:solution",
+      "start_xyz": [
+        950,
+        -888,
+        630
+      ],
+      "target_xyz": [
+        950,
+        -840,
+        630
+      ],
+      "approach_ldu": 48,
+      "root": "local chimney lower course only; global foundation NOT PROVEN"
+    },
+    {
+      "part": "scene-chimney:house-chimney-antenna:00052:solution",
+      "start_xyz": [
+        950,
+        -912,
+        630
+      ],
+      "target_xyz": [
+        950,
+        -864,
+        630
+      ],
+      "approach_ldu": 48,
+      "start_clear": true,
+      "joint": "COMPATIBLE_MATING",
+      "rigorous_sweep": "rectangular upright brick stud primitive, as bounded in VALIDATION2"
+    },
+    {
+      "part": "roof-000338",
+      "start_xyz": [
+        970,
+        -936,
+        620
+      ],
+      "target_xyz": [
+        970,
+        -888,
+        620
+      ],
+      "approach_ldu": 48,
+      "start_clear": true,
+      "body_separate_for_all_t": true,
+      "stud_sweep_clear_for_all_t": true,
+      "joint": "NON DÉMONTRÉ"
+    }
+  ],
+  "continuous_check_not_sampled": true,
+  "status": "NON DÉMONTRÉ"
 }
