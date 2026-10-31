@@ -143,8 +143,12 @@ def main(ldraw):
                   and lower_rel is Relation.SEPARATED and body_separate
                   and start_clear and not threats)
     connection="PASS" if matched_roof and support_verdict.verdict=="COMPATIBLE_MATING" else "NON DÉMONTRÉ"
-    collision="PASS" if roof_rel is not Relation.COLLISION and lower_rel is not Relation.COLLISION and
-                        support_rel is not Relation.COLLISION and not threats else "NON DÉMONTRÉ"
+    collision=("PASS" if (
+        roof_rel is not Relation.COLLISION
+        and lower_rel is not Relation.COLLISION
+        and support_rel is not Relation.COLLISION
+        and not threats
+    ) else "NON DÉMONTRÉ")
     support="PASS" if connection=="PASS" else "NON DÉMONTRÉ"
     insertion="PASS" if matched_roof and support_start_clear and support_verdict.verdict=="COMPATIBLE_MATING" else "NON DÉMONTRÉ"
     report_conn={
