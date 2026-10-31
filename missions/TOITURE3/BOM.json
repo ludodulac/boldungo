@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1",
+  "total_parts": 7,
+  "unique_part_types": 3,
+  "lines": [
+    {
+      "part_id": "BRICK_1X3",
+      "ldraw_ref": "3622.dat",
+      "category": "brick",
+      "quantity": 1
+    },
+    {
+      "part_id": "BRICK_2X10",
+      "ldraw_ref": "3006.dat",
+      "category": "brick",
+      "quantity": 1
+    },
+    {
+      "part_id": "BRICK_SLOPED_18_4X2",
+      "ldraw_ref": "30363.dat",
+      "category": "roof",
+      "quantity": 5
+    }
+  ]
+}

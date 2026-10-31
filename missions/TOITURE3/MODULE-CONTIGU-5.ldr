@@ -1,0 +1,19 @@
+0 FILE TOITURE3-CONTIGUOUS-5-ORIGINAL-ROOFS.ldr
+0 Five EXACT ORIGINAL B-3 30363 parts retained, with ONE shared real LEGO 3006 Beam and ONE original 3622 root.
+0 Experimental replacement of B3 upper 3622 and the earlier TOITURE2 3002 bridge in this ONLY local module.
+0 No changes to any original B-3 roof or other source files.
+0 // scene-chimney:house-chimney-antenna:00043:solution
+1 19 950 -840 630 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // TOITURE3-VARIANT-3006-ROW336-340
+1 19 960 -864 620 0 0 -1 0 1 0 1 0 0 3006.dat
+0 // roof-000336
+1 1 970 -888 540 0 0 -1 0 1 0 1 0 0 30363.dat
+0 // roof-000337
+1 1 970 -888 580 0 0 -1 0 1 0 1 0 0 30363.dat
+0 // roof-000338
+1 1 970 -888 620 0 0 -1 0 1 0 1 0 0 30363.dat
+0 // roof-000339
+1 1 970 -888 660 0 0 -1 0 1 0 1 0 0 30363.dat
+0 // roof-000340
+1 1 970 -888 700 0 0 -1 0 1 0 1 0 0 30363.dat
+0 NOFILE
