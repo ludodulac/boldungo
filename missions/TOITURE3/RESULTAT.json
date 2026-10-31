@@ -1,16 +1,44 @@
 {
   "studied_30363": 15,
-  "integrated_30363": 0,
+  "integrated_30363": 5,
+  "locally_compatible_30363": 5,
   "integrated_target_max": 5,
   "experimental_parts_added": 1,
+  "experimental_part_refs": [
+    "3006.dat"
+  ],
   "prior_B3_upper_replaced": 1,
-  "connections": "NON DÉMONTRÉ (CI pending)",
-  "collisions": "NON DÉMONTRÉ",
-  "supports": "NON DÉMONTRÉ",
-  "insertion": "NON DÉMONTRÉ",
+  "original_roof_placement_changes": 0,
+  "connections": "PASS",
+  "collisions": "PASS",
+  "supports": "PASS",
+  "insertion": "PASS",
   "structure_house": "NON DÉMONTRÉ",
-  "visualization": "NON DÉMONTRÉ",
+  "visualization": "PASS — actual Chromium 390x844 mobile, five contiguous roof slopes and 3006 shared beam, seven-step assembly",
   "first_blocker": null,
+  "whole_house_assembly": "NON DÉMONTRÉ",
   "physical_stability": "NON DÉMONTRÉ",
-  "overall": "NON DÉMONTRÉ"
+  "local_module": "PASS",
+  "overall": "PARTIAL_PROGRESS",
+  "scope": "FIVE contiguous original 30363 roof pieces, one shared genuine 3006, one unchanged B3 3622. Fifteen roof positions studied; remaining ten unintegrated due missing support to house.",
+  "environment_checks": {
+    "B3_records": 1904,
+    "nearby_conservative_window": [
+      810,
+      1170,
+      -1020,
+      -690,
+      380,
+      860
+    ],
+    "nearby_placements_considered": 111,
+    "actual_mesh_pairs_checked": 12,
+    "ref_types_found": [
+      "3002.dat",
+      "30363.dat",
+      "3622.dat"
+    ],
+    "forbidden_pairs": 0
+  },
+  "warning": "NO claim that the chimney alone is an adequate roof-bearing structure."
 }
