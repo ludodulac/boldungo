@@ -1,13 +1,35 @@
 {
-  "original_connection": "NON DÉMONTRÉ (TOITURE-1 existing)",
-  "experimental_connection": "NON DÉMONTRÉ — awaiting actual official mesh run",
-  "additional_physical_pieces": 1,
-  "net_piece_change": 0,
-  "collisions": "NON DÉMONTRÉ",
-  "support_to_local_root": "NON DÉMONTRÉ",
-  "continuous_insertion": "NON DÉMONTRÉ",
-  "visualization": "NON DÉMONTRÉ",
-  "full_B3_to_foundations": "NON DÉMONTRÉ",
-  "physical_strength": "NON DÉMONTRÉ",
-  "overall": "NON DÉMONTRÉ"
+  "original_toiture1_upper_3622_to_roof": "NON DÉMONTRÉ (0 aligned centers, unchanged B-3)",
+  "candidate_support": "3002.dat Brick 2 x 3 at x960 y-864 z630, original B-3 upper 3622 substituted in separate experimental model",
+  "roof": "roof-000338 30363.dat at x970 y-888 z620, source unchanged",
+  "lower_root": "scene-chimney:house-chimney-antenna:00043:solution 3622.dat unchanged",
+  "variant_necessary": "OUI",
+  "additional_ref": "3002.dat",
+  "new_physical_piece_count": 1,
+  "replaced_original_in_variant_only": "3622.dat",
+  "net_piece_count_change": 0,
+  "connection": "PASS",
+  "collisions": "PASS",
+  "support_to_local_lower_3622": "PASS",
+  "support_to_house_foundations": "NON DÉMONTRÉ",
+  "insertion": "PASS",
+  "visualization": "PASS: real mobile Chromium, exact three references and complete 3-step selection; schematic geometry only",
+  "negative_tests": "PASS",
+  "negative_test_data": {
+    "horizontal_shift_plus_10_ldu_expected_no_matched_connectors": {
+      "support_matches": 0,
+      "roof_matches": 0
+    },
+    "vertical_shift_plus_8_ldu_expected_no_matched_connectors": {
+      "support_matches": 0,
+      "roof_matches": 0
+    },
+    "identical_solid_3002_duplicate": "COLLISION",
+    "isolated_side_surface_does_not_prove_mating": 0
+  },
+  "first_blocker": null,
+  "whole_408_piece_roof": "NOT_TESTED",
+  "real_stability_and_clutch_force": "NON DÉMONTRÉ",
+  "overall": "PASS",
+  "scope": "ONLY exact three selected official LDraw meshes in local isolated support; no global neighboring house collision proof"
 }
