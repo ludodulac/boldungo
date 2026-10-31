@@ -1,0 +1,59 @@
+{
+  "original_file": "missions/TOITURE1/MODULE-B3-ORIGINAL.ldr",
+  "original_blob": "58ca87dda4b9a23a3ae0493f020994eec6bba88c",
+  "read_only_model": "PR #931, missions/B3/generated/GUIDED004-B3-1904.ldr",
+  "read_only_model_commit": "3c8c5f19f5d7c5ee6d81383bbd24dc3ea38a8003",
+  "selected_originals": [
+    {
+      "placement_id": "scene-chimney:house-chimney-antenna:00043:solution",
+      "ldraw_line": "1 19 950 -840 630 0 0 -1 0 1 0 1 0 0 3622.dat"
+    },
+    {
+      "placement_id": "roof-000338",
+      "ldraw_line": "1 1 970 -888 620 0 0 -1 0 1 0 1 0 0 30363.dat"
+    }
+  ],
+  "excluded_upper_original_kept_unchanged_in_B3": {
+    "placement_id": "scene-chimney:house-chimney-antenna:00052:solution",
+    "ldraw_line": "1 19 950 -864 630 0 0 -1 0 1 0 1 0 0 3622.dat"
+  },
+  "experimental_replacement": {
+    "placement_id": "TOITURE2-VARIANT-3002",
+    "ldraw_line": "1 19 960 -864 630 0 0 -1 0 1 0 1 0 0 3002.dat",
+    "part_id": "3002.dat",
+    "meaning": "one substituted real LEGO piece, never writes to B3"
+  },
+  "same_footprint_reference": "LDraw local 3002 Brick 2 x 3 occupies ±30 in X, ±20 in Z, and body Y 0..24; 3622 occupies ±30 in X, ±10 in Z",
+  "planned_connector_grid_world": {
+    "upper_to_roof": [
+      [
+        970,
+        -864,
+        610
+      ],
+      [
+        970,
+        -864,
+        630
+      ]
+    ],
+    "lower_to_mid": [
+      [
+        950,
+        -864,
+        610
+      ],
+      [
+        950,
+        -864,
+        630
+      ],
+      [
+        950,
+        -864,
+        650
+      ]
+    ]
+  },
+  "status": "HYPOTHESIS UNTIL TOITURE2 COMPUTATION"
+}

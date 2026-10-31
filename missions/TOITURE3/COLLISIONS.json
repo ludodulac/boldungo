@@ -1,0 +1,83 @@
+{
+  "original_source_B3_immutable": true,
+  "replaced_upper_3622_excluded_only_in_variant": "scene-chimney:house-chimney-antenna:00052:solution",
+  "checked_local_roof_sibling_pairs": 10,
+  "local_forbidden_pairs": [],
+  "neighboring_source_candidates": 111,
+  "neighboring_real_mesh_pairs": [
+    {
+      "module_id": "roof-000336",
+      "original_neighbor": "roof-000313",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000337",
+      "original_neighbor": "roof-000314",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000338",
+      "original_neighbor": "roof-000315",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000339",
+      "original_neighbor": "roof-000316",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000340",
+      "original_neighbor": "roof-000317",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000336",
+      "original_neighbor": "roof-000359",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000337",
+      "original_neighbor": "roof-000360",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000338",
+      "original_neighbor": "roof-000361",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000339",
+      "original_neighbor": "roof-000362",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "roof-000340",
+      "original_neighbor": "roof-000363",
+      "neighbor_ref": "30363.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "TOITURE3-VARIANT-3006-ROW336-340",
+      "original_neighbor": "scene-chimney:house-chimney-antenna:00061:solution",
+      "neighbor_ref": "3622.dat",
+      "official_mesh_relation": "CONTACT"
+    },
+    {
+      "module_id": "scene-chimney:house-chimney-antenna:00043:solution",
+      "original_neighbor": "scene-chimney:house-chimney-antenna:00034:solution",
+      "neighbor_ref": "3622.dat",
+      "official_mesh_relation": "CONTACT"
+    }
+  ],
+  "neighboring_forbidden_pairs": [],
+  "status": "PASS"
+}

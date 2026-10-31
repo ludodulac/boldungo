@@ -1,0 +1,429 @@
+{
+  "original_toiture2_preserved": true,
+  "official_geometry": {
+    "pinned_official_ldraw": true,
+    "30363_underside_candidate_y": 24,
+    "30363_slope_degrees": 18,
+    "3006_length_ldu": 200,
+    "3006_width_ldu": 40,
+    "primitive_stud_radius_ldu": 6,
+    "source": "c43ed06a128a10ed65675166bf42eb6fd608b9b0"
+  },
+  "lower_to_shared_beam": {
+    "matches": 3,
+    "relation": "CONTACT",
+    "continuous_approach": {
+      "role": "Original 3622 bottom to 3006 shared beam",
+      "start_disjoint": true,
+      "solid_body_y_plane_separate_for_all_t": true,
+      "actual_studs_all_checked": 3,
+      "stud_cylinder_continuous_clearance": true,
+      "first_obstacle": null,
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "roof_to_shared_beam": [
+    {
+      "id": "roof-000338",
+      "ldraw_ref": "30363.dat",
+      "source_ldraw_xyz": [
+        970,
+        -888,
+        620
+      ],
+      "roof_underside_candidates_ldu": [
+        [
+          970.0,
+          -864.0,
+          610.0
+        ],
+        [
+          970.0,
+          -864.0,
+          630.0
+        ]
+      ],
+      "matched_3006_studs_ldu": [
+        [
+          970.0,
+          -864.0,
+          610.0
+        ],
+        [
+          970.0,
+          -864.0,
+          630.0
+        ]
+      ],
+      "roof_mesh_relation_to_shared_beam": "CONTACT",
+      "roof_mesh_relation_to_original_lower": "SEPARATED",
+      "roof_entire_continuous_vertical_approach": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "older_roof_neighbor_checks": [],
+      "status": "PASS"
+    },
+    {
+      "id": "roof-000337",
+      "ldraw_ref": "30363.dat",
+      "source_ldraw_xyz": [
+        970,
+        -888,
+        580
+      ],
+      "roof_underside_candidates_ldu": [
+        [
+          970.0,
+          -864.0,
+          570.0
+        ],
+        [
+          970.0,
+          -864.0,
+          590.0
+        ]
+      ],
+      "matched_3006_studs_ldu": [
+        [
+          970.0,
+          -864.0,
+          570.0
+        ],
+        [
+          970.0,
+          -864.0,
+          590.0
+        ]
+      ],
+      "roof_mesh_relation_to_shared_beam": "CONTACT",
+      "roof_mesh_relation_to_original_lower": "SEPARATED",
+      "roof_entire_continuous_vertical_approach": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "older_roof_neighbor_checks": [
+        {
+          "already_installed": "roof-000338",
+          "final_mesh_relation": "CONTACT",
+          "xy_projected_sweep_clear_for_all_t": true
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "roof-000339",
+      "ldraw_ref": "30363.dat",
+      "source_ldraw_xyz": [
+        970,
+        -888,
+        660
+      ],
+      "roof_underside_candidates_ldu": [
+        [
+          970.0,
+          -864.0,
+          650.0
+        ],
+        [
+          970.0,
+          -864.0,
+          670.0
+        ]
+      ],
+      "matched_3006_studs_ldu": [
+        [
+          970.0,
+          -864.0,
+          650.0
+        ],
+        [
+          970.0,
+          -864.0,
+          670.0
+        ]
+      ],
+      "roof_mesh_relation_to_shared_beam": "CONTACT",
+      "roof_mesh_relation_to_original_lower": "SEPARATED",
+      "roof_entire_continuous_vertical_approach": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "older_roof_neighbor_checks": [
+        {
+          "already_installed": "roof-000338",
+          "final_mesh_relation": "CONTACT",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000337",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "roof-000336",
+      "ldraw_ref": "30363.dat",
+      "source_ldraw_xyz": [
+        970,
+        -888,
+        540
+      ],
+      "roof_underside_candidates_ldu": [
+        [
+          970.0,
+          -864.0,
+          530.0
+        ],
+        [
+          970.0,
+          -864.0,
+          550.0
+        ]
+      ],
+      "matched_3006_studs_ldu": [
+        [
+          970.0,
+          -864.0,
+          530.0
+        ],
+        [
+          970.0,
+          -864.0,
+          550.0
+        ]
+      ],
+      "roof_mesh_relation_to_shared_beam": "CONTACT",
+      "roof_mesh_relation_to_original_lower": "SEPARATED",
+      "roof_entire_continuous_vertical_approach": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "older_roof_neighbor_checks": [
+        {
+          "already_installed": "roof-000338",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000337",
+          "final_mesh_relation": "CONTACT",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000339",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "id": "roof-000340",
+      "ldraw_ref": "30363.dat",
+      "source_ldraw_xyz": [
+        970,
+        -888,
+        700
+      ],
+      "roof_underside_candidates_ldu": [
+        [
+          970.0,
+          -864.0,
+          690.0
+        ],
+        [
+          970.0,
+          -864.0,
+          710.0
+        ]
+      ],
+      "matched_3006_studs_ldu": [
+        [
+          970.0,
+          -864.0,
+          690.0
+        ],
+        [
+          970.0,
+          -864.0,
+          710.0
+        ]
+      ],
+      "roof_mesh_relation_to_shared_beam": "CONTACT",
+      "roof_mesh_relation_to_original_lower": "SEPARATED",
+      "roof_entire_continuous_vertical_approach": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "older_roof_neighbor_checks": [
+        {
+          "already_installed": "roof-000338",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000337",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000339",
+          "final_mesh_relation": "CONTACT",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000336",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "original_three_rows_inventoried": [
+    {
+      "row_number": 1,
+      "original_roof_ids": [
+        "roof-000313",
+        "roof-000314",
+        "roof-000315",
+        "roof-000316",
+        "roof-000317"
+      ],
+      "positions_ldu": [
+        [
+          1030,
+          -864,
+          540
+        ],
+        [
+          1030,
+          -864,
+          580
+        ],
+        [
+          1030,
+          -864,
+          620
+        ],
+        [
+          1030,
+          -864,
+          660
+        ],
+        [
+          1030,
+          -864,
+          700
+        ]
+      ],
+      "classification": "ORIGINAL_B3_NEIGHBOR_ONLY; no load-bearing support outside chimney proved"
+    },
+    {
+      "row_number": 2,
+      "original_roof_ids": [
+        "roof-000336",
+        "roof-000337",
+        "roof-000338",
+        "roof-000339",
+        "roof-000340"
+      ],
+      "positions_ldu": [
+        [
+          970,
+          -888,
+          540
+        ],
+        [
+          970,
+          -888,
+          580
+        ],
+        [
+          970,
+          -888,
+          620
+        ],
+        [
+          970,
+          -888,
+          660
+        ],
+        [
+          970,
+          -888,
+          700
+        ]
+      ],
+      "classification": "FIVE_INTEGRATED"
+    },
+    {
+      "row_number": 3,
+      "original_roof_ids": [
+        "roof-000359",
+        "roof-000360",
+        "roof-000361",
+        "roof-000362",
+        "roof-000363"
+      ],
+      "positions_ldu": [
+        [
+          910,
+          -912,
+          540
+        ],
+        [
+          910,
+          -912,
+          580
+        ],
+        [
+          910,
+          -912,
+          620
+        ],
+        [
+          910,
+          -912,
+          660
+        ],
+        [
+          910,
+          -912,
+          700
+        ]
+      ],
+      "classification": "ORIGINAL_B3_NEIGHBOR_ONLY; no load-bearing support outside chimney proved"
+    }
+  ],
+  "status": "PASS"
+}

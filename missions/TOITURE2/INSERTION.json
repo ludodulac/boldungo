@@ -1,0 +1,182 @@
+{
+  "coordinate": "LDraw, +Y down",
+  "parametric_trajectory_for_each_moving_part": "xyz(t)=(final_x,final_y-48+48*t,final_z), t in [0,1]",
+  "method": "Entire triangle-to-cylinder projection + exact entire path body-plane separation, not sampling",
+  "steps": [
+    {
+      "piece": "scene-chimney:house-chimney-antenna:00043:solution",
+      "role": "local foundation/root only",
+      "start": [
+        950,
+        -888,
+        630
+      ],
+      "end": [
+        950,
+        -840,
+        630
+      ],
+      "status": "PASS",
+      "absolute_house_foundation": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "TOITURE2-VARIANT-3002",
+      "start": [
+        960,
+        -912,
+        630
+      ],
+      "end": [
+        960,
+        -864,
+        630
+      ],
+      "pair_with_existing_lower": {
+        "role": "3622 existing lower to 3002 variant",
+        "final_moving_body_bottom_y": -840.0,
+        "stationary_body_top_y": -840.0,
+        "continuously_separated_solid_bodies": true,
+        "start_upper_mesh_max_y": -888.0,
+        "stationary_mesh_min_y": -844.0,
+        "start_disjoint": true,
+        "fixed_studs_checked": 3,
+        "all_studs_clear_for_entire_continuous_sweep": true,
+        "stud_sweep_details": [
+          {
+            "fixed_stud_center_ldu": [
+              950.0,
+              -840.0,
+              610.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 20,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          },
+          {
+            "fixed_stud_center_ldu": [
+              950.0,
+              -840.0,
+              630.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 28,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          },
+          {
+            "fixed_stud_center_ldu": [
+              950.0,
+              -840.0,
+              650.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 20,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          }
+        ],
+        "threats": [],
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000338",
+      "start": [
+        970,
+        -936,
+        620
+      ],
+      "end": [
+        970,
+        -888,
+        620
+      ],
+      "pair_with_existing_bridge": {
+        "role": "3002 variant to 30363 unchanged slope",
+        "final_moving_body_bottom_y": -864.0,
+        "stationary_body_top_y": -864.0,
+        "continuously_separated_solid_bodies": true,
+        "start_upper_mesh_max_y": -912.0,
+        "stationary_mesh_min_y": -868.0,
+        "start_disjoint": true,
+        "fixed_studs_checked": 6,
+        "all_studs_clear_for_entire_continuous_sweep": true,
+        "stud_sweep_details": [
+          {
+            "fixed_stud_center_ldu": [
+              970.0,
+              -864.0,
+              610.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 21,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          },
+          {
+            "fixed_stud_center_ldu": [
+              950.0,
+              -864.0,
+              610.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 0,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          },
+          {
+            "fixed_stud_center_ldu": [
+              970.0,
+              -864.0,
+              630.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 22,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          },
+          {
+            "fixed_stud_center_ldu": [
+              950.0,
+              -864.0,
+              630.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 0,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          },
+          {
+            "fixed_stud_center_ldu": [
+              970.0,
+              -864.0,
+              650.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 0,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          },
+          {
+            "fixed_stud_center_ldu": [
+              950.0,
+              -864.0,
+              650.0
+            ],
+            "stud_cylindrical_body_checked": true,
+            "candidate_triangles": 0,
+            "swept_surface_interference": null,
+            "continuous_sweep_clear": true
+          }
+        ],
+        "threats": [],
+        "status": "PASS"
+      },
+      "pair_with_existing_lower": "SEPARATED",
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS"
+}

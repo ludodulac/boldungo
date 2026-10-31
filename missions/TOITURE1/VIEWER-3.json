@@ -1,0 +1,184 @@
+{
+  "schema_version": "0.1",
+  "building_id": "TOITURE1-B3-original-roof338-chimney-support",
+  "volume_id": "local-roof-joint",
+  "metadata": {
+    "experiment": "TOITURE1",
+    "source": "PR931 missions/B3/generated/GUIDED004-B3-1904.ldr",
+    "source_commit": "3c8c5f19f5d7c5ee6d81383bbd24dc3ea38a8003",
+    "original_ldraw_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+    "note": "Viewer shows schematic proxy geometry; canonical XYZ/transforms are retained in every part and in separate LDraw file. Mechanical proof in TOITURE1/RESULTAT.json.",
+    "sampling": "one roof and two support course elements only",
+    "additional_parts": 0
+  },
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "TOITURE1-B3-original-roof338-chimney-support",
+    "volume_id": "local-roof-joint",
+    "width_studs": 10,
+    "depth_studs": 10,
+    "height_plates": 12,
+    "parts": [
+      {
+        "placement_id": "scene-chimney:house-chimney-antenna:00043:solution",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "roof_support",
+        "x_studs": 1,
+        "y_studs": 3,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "width_studs": 3,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3622.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          950,
+          -840,
+          630
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true
+      },
+      {
+        "placement_id": "scene-chimney:house-chimney-antenna:00052:solution",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "roof_support",
+        "x_studs": 1,
+        "y_studs": 3,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "width_studs": 3,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3622.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          950,
+          -864,
+          630
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true
+      },
+      {
+        "placement_id": "roof-000338",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 3,
+        "y_studs": 2,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true
+      }
+    ]
+  },
+  "bom": {
+    "schema_version": "0.1",
+    "total_parts": 3,
+    "unique_part_types": 2,
+    "lines": [
+      {
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "ldraw_ref": "3622.dat",
+        "quantity": 2
+      },
+      {
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "ldraw_ref": "30363.dat",
+        "quantity": 1
+      }
+    ]
+  },
+  "fidelity_issues": [
+    {
+      "severity": "warning",
+      "message": "TOITURE-1 : représentation 3D indicative. LDraw exact utilisé pour la certification géométrique, non celui de la visionneuse. Aucun test de résistance physique."
+    },
+    {
+      "severity": "warning",
+      "message": "Le support est un segment de cheminée B-3 ; sa liaison jusqu'aux fondations de la maison n'est pas démontrée."
+    }
+  ],
+  "assembly_plan": {
+    "schema_version": "0.1",
+    "total_steps": 3,
+    "total_parts": 3,
+    "steps": [
+      {
+        "sequence": 1,
+        "step_id": "toiture1-1",
+        "title": "Installer le support existant 1",
+        "placement_ids": [
+          "scene-chimney:house-chimney-antenna:00043:solution"
+        ]
+      },
+      {
+        "sequence": 2,
+        "step_id": "toiture1-2",
+        "title": "Installer le support existant 2",
+        "placement_ids": [
+          "scene-chimney:house-chimney-antenna:00052:solution"
+        ]
+      },
+      {
+        "sequence": 3,
+        "step_id": "toiture1-3",
+        "title": "Poser la brique inclinée 30363 sur le support B-3",
+        "placement_ids": [
+          "roof-000338"
+        ]
+      }
+    ]
+  }
+}
