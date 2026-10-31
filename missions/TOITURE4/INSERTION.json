@@ -1,5 +1,4 @@
 {
-  "status": "NON DÉMONTRÉ — targeted proof not yet run",
   "order": [
     "wall-000707",
     "gable-000026",
@@ -14,5 +13,249 @@
     "roof-000339",
     "roof-000336",
     "roof-000340"
-  ]
+  ],
+  "method": "Whole 48 LDU analytic swept AABB nonmating; stud primitive triangle projection for mating",
+  "upward_bridge_relative_motion_equivalence": true,
+  "steps": [
+    {
+      "piece": "wall-000707",
+      "role": "existing B3 wall is the local assembly root",
+      "start_xyz_ldu": [
+        880.0,
+        -744.0,
+        870.0
+      ],
+      "status": "PASS",
+      "foundation": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "gable-000026",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        960.0,
+        -816.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        960.0,
+        -768.0,
+        870.0
+      ],
+      "parent": "wall-000707",
+      "checked_all_previous": 1,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "gable-000031",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        900.0,
+        -840.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        900.0,
+        -792.0,
+        870.0
+      ],
+      "parent": "gable-000026",
+      "checked_all_previous": 2,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "gable-000035",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        920.0,
+        -864.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        920.0,
+        -816.0,
+        870.0
+      ],
+      "parent": "gable-000031",
+      "checked_all_previous": 3,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "gable-000039",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        940.0,
+        -888.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        940.0,
+        -840.0,
+        870.0
+      ],
+      "parent": "gable-000035",
+      "checked_all_previous": 4,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -912.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -864.0,
+        870.0
+      ],
+      "parent": "gable-000039",
+      "checked_all_previous": 5,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "UP",
+      "start_xyz_ldu": [
+        960.0,
+        -792.0,
+        760.0
+      ],
+      "final_xyz_ldu": [
+        960.0,
+        -840.0,
+        760.0
+      ],
+      "parent": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "checked_all_previous": 6,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "TOITURE3-VARIANT-3006-ROW336-340",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        960.0,
+        -912.0,
+        620.0
+      ],
+      "final_xyz_ldu": [
+        960.0,
+        -864.0,
+        620.0
+      ],
+      "parent": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "checked_all_previous": 7,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000338",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        620.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        620.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 8,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000337",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        580.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        580.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 9,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000339",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        660.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        660.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 10,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000336",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        540.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        540.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 11,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000340",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        700.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        700.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 12,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS"
 }

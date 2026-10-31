@@ -1,13 +1,40 @@
 {
-  "roof_parts_retained": 5,
-  "wall": "wall-000707",
+  "roof_count_preserved": 5,
+  "original_positions_changed": 0,
+  "wall_root": "wall-000707",
+  "real_gables_used": [
+    "gable-000026",
+    "gable-000031",
+    "gable-000035",
+    "gable-000039"
+  ],
   "new_parts": 2,
-  "connections": "NON DÉMONTRÉ",
-  "collisions": "NON DÉMONTRÉ",
-  "support_to_wall": "NON DÉMONTRÉ",
-  "insertion": "NON DÉMONTRÉ",
-  "mechanical_stability": "NON DÉMONTRÉ",
-  "visualization": "NON DÉMONTRÉ",
-  "first_blocker": "Awaiting targeted CI",
-  "status": "NON DÉMONTRÉ"
+  "new_part_refs": [
+    "3006.dat",
+    "3622.dat"
+  ],
+  "connections": "PASS",
+  "collisions": "PASS",
+  "supports_to_wall": "PASS",
+  "continuous_insertion": "PASS",
+  "stability_mechanical": "NON DÉMONTRÉ",
+  "load_to_foundations": "NON DÉMONTRÉ",
+  "visualization": "PASS — 13-step existing BOLDÜNGO viewer, five original roof slopes, original B3 gables and one wall, real Chromium mobile",
+  "first_blocker": null,
+  "status": "PASS_LOCAL_WALL_LINK",
+  "structural_warning": "Wall-connected stud/cavity graph is NOT a test of strength or beam deflection, and the wall to foundation path remains unverified.",
+  "environment": {
+    "B3_reference_count": 1904,
+    "window": [
+      710,
+      1210,
+      -1100,
+      -650,
+      360,
+      1050
+    ],
+    "neighbors_checked": 201,
+    "mesh_potential_contacts_checked": 25,
+    "external_forbidden_collisions": 0
+  }
 }

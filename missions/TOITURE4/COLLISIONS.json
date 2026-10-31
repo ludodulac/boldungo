@@ -1,3 +1,17 @@
 {
-  "status": "NON DÉMONTRÉ — targeted proof not yet run"
+  "full_source_B3_record_count": 1904,
+  "neighbor_window": [
+    710,
+    1210,
+    -1100,
+    -650,
+    360,
+    1050
+  ],
+  "original_upper_chimney_excluded_in_variant_only": "scene-chimney:house-chimney-antenna:00052:solution",
+  "neighbors_considered": 201,
+  "actual_mesh_interactions_checked": 25,
+  "forbidden_external_pairs": [],
+  "forbidden_internal_pairs": [],
+  "status": "PASS"
 }
