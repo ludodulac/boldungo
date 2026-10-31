@@ -1,0 +1,635 @@
+{
+  "schema_version": "0.1",
+  "building_id": "TOITURE4-FIVE-SLOPES-GABLE-AND-WALL",
+  "volume_id": "roof-slope-to-original-wall",
+  "metadata": {
+    "experiment": "TOITURE4",
+    "source_b3_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+    "previous_toiture3_head": "2111697cf346f2641b98b924288e79cb37e0ab0d",
+    "roof_original_positions_unchanged": true,
+    "experimental_support_parts": [
+      "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "TOITURE4-VARIANT-3622-GABLE-CONNECTOR"
+    ],
+    "selected_wall": "wall-000707",
+    "selected_gables": [
+      "gable-000026",
+      "gable-000031",
+      "gable-000035",
+      "gable-000039"
+    ],
+    "summary": "Five TOITURE-3 roof slopes connected to original B-3 gable and original wall through two real LEGO bridge parts. Actual LDraw geometry must pass targeted test.",
+    "visual_proxy_only": true,
+    "full_foundation_certified": false
+  },
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "TOITURE4-FIVE-SLOPES-GABLE-AND-WALL",
+    "volume_id": "roof-slope-to-original-wall",
+    "width_studs": 31,
+    "depth_studs": 30,
+    "height_plates": 26,
+    "parts": [
+      {
+        "placement_id": "wall-000707",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "load_bearing_wall",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 0,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -744,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "gable-000026",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "gable",
+        "x_studs": 12,
+        "y_studs": 11,
+        "z_plates": 3,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          960,
+          -768,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "gable-000031",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "gable",
+        "x_studs": 9,
+        "y_studs": 11,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          900,
+          -792,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "gable-000035",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "gable",
+        "x_studs": 10,
+        "y_studs": 11,
+        "z_plates": 9,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          920,
+          -816,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "gable-000039",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "gable",
+        "x_studs": 11,
+        "y_studs": 11,
+        "z_plates": 12,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          940,
+          -840,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "structural_link",
+        "x_studs": 12.5,
+        "y_studs": 11,
+        "z_plates": 15,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 3,
+        "height_plates": 3,
+        "ldraw_ref": "3622.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          970,
+          -864,
+          870
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#edaa55",
+        "visual_proxy": true,
+        "source_annotation": "TOITURE4-NEW-EXPERIMENTAL-REAL-LEGO"
+      },
+      {
+        "placement_id": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+        "part_id": "BRICK_2X10",
+        "category": "brick",
+        "component": "structural_link",
+        "x_studs": 12,
+        "y_studs": 5.5,
+        "z_plates": 12,
+        "rotation_quarter_turns": 1,
+        "width_studs": 2,
+        "length_studs": 10,
+        "height_plates": 3,
+        "ldraw_ref": "3006.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          960,
+          -840,
+          760
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#d9773e",
+        "visual_proxy": true,
+        "source_annotation": "TOITURE4-NEW-EXPERIMENTAL-REAL-LEGO"
+      },
+      {
+        "placement_id": "TOITURE3-VARIANT-3006-ROW336-340",
+        "part_id": "BRICK_2X10",
+        "category": "brick",
+        "component": "roof_support",
+        "x_studs": 2,
+        "y_studs": 1,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "width_studs": 2,
+        "length_studs": 10,
+        "height_plates": 3,
+        "ldraw_ref": "3006.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          960,
+          -864,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#c88b4e",
+        "visual_proxy": true,
+        "source_annotation": "TOITURE3-EXPERIMENTAL-SUBSTITUTION-ONLY"
+      },
+      {
+        "placement_id": "roof-000338",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 6,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000337",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 4,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          580
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000339",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 8,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          660
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000336",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 2,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          540
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000340",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 10,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          700
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      }
+    ]
+  },
+  "bom": {
+    "total_parts": 13,
+    "unique_part_types": 4,
+    "lines": [
+      {
+        "ldraw_ref": "3008.dat",
+        "quantity": 5,
+        "category": "brick"
+      },
+      {
+        "ldraw_ref": "3622.dat",
+        "quantity": 1,
+        "category": "brick"
+      },
+      {
+        "ldraw_ref": "3006.dat",
+        "quantity": 2,
+        "category": "brick"
+      },
+      {
+        "ldraw_ref": "30363.dat",
+        "quantity": 5,
+        "category": "roof"
+      }
+    ],
+    "new_experimental_pieces": 2,
+    "new_references": [
+      "3006.dat",
+      "3622.dat"
+    ],
+    "original_piece_positions_retained": 10
+  },
+  "fidelity_issues": [
+    {
+      "severity": "warning",
+      "message": "TOITURE-4 : 5 toitures originales + 2 vraies pièces expérimentales + mur et pignons B-3. Géométrie officielle validée séparément dans RESULTAT.json."
+    },
+    {
+      "severity": "warning",
+      "message": "Modèle visuel schématique ; ne correspond pas aux vrais maillages LDraw des pièces. Résistance mécanique et fondations NON DÉMONTRÉES."
+    }
+  ],
+  "assembly_plan": {
+    "schema_version": "0.1",
+    "total_parts": 13,
+    "total_steps": 13,
+    "steps": [
+      {
+        "sequence": 1,
+        "step_id": "TOITURE4-01",
+        "title": "Mur B-3, référence de la structure",
+        "placement_ids": [
+          "wall-000707"
+        ]
+      },
+      {
+        "sequence": 2,
+        "step_id": "TOITURE4-02",
+        "title": "Pignon existant gable-000026",
+        "placement_ids": [
+          "gable-000026"
+        ]
+      },
+      {
+        "sequence": 3,
+        "step_id": "TOITURE4-03",
+        "title": "Pignon existant gable-000031",
+        "placement_ids": [
+          "gable-000031"
+        ]
+      },
+      {
+        "sequence": 4,
+        "step_id": "TOITURE4-04",
+        "title": "Pignon existant gable-000035",
+        "placement_ids": [
+          "gable-000035"
+        ]
+      },
+      {
+        "sequence": 5,
+        "step_id": "TOITURE4-05",
+        "title": "Pignon existant gable-000039",
+        "placement_ids": [
+          "gable-000039"
+        ]
+      },
+      {
+        "sequence": 6,
+        "step_id": "TOITURE4-06",
+        "title": "Connecteur 3622 sur pignon",
+        "placement_ids": [
+          "TOITURE4-VARIANT-3622-GABLE-CONNECTOR"
+        ]
+      },
+      {
+        "sequence": 7,
+        "step_id": "TOITURE4-07",
+        "title": "Insérer le pont porteur 3006 par-dessous",
+        "placement_ids": [
+          "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE"
+        ]
+      },
+      {
+        "sequence": 8,
+        "step_id": "TOITURE4-08",
+        "title": "Poser la poutre commune TOITURE-3",
+        "placement_ids": [
+          "TOITURE3-VARIANT-3006-ROW336-340"
+        ]
+      },
+      {
+        "sequence": 9,
+        "step_id": "TOITURE4-09",
+        "title": "Installer la toiture roof-000338",
+        "placement_ids": [
+          "roof-000338"
+        ]
+      },
+      {
+        "sequence": 10,
+        "step_id": "TOITURE4-10",
+        "title": "Installer la toiture roof-000337",
+        "placement_ids": [
+          "roof-000337"
+        ]
+      },
+      {
+        "sequence": 11,
+        "step_id": "TOITURE4-11",
+        "title": "Installer la toiture roof-000339",
+        "placement_ids": [
+          "roof-000339"
+        ]
+      },
+      {
+        "sequence": 12,
+        "step_id": "TOITURE4-12",
+        "title": "Installer la toiture roof-000336",
+        "placement_ids": [
+          "roof-000336"
+        ]
+      },
+      {
+        "sequence": 13,
+        "step_id": "TOITURE4-13",
+        "title": "Installer la toiture roof-000340",
+        "placement_ids": [
+          "roof-000340"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "roof_parts_retained": 5,
+  "wall": "wall-000707",
+  "new_parts": 2,
+  "connections": "NON DÉMONTRÉ",
+  "collisions": "NON DÉMONTRÉ",
+  "support_to_wall": "NON DÉMONTRÉ",
+  "insertion": "NON DÉMONTRÉ",
+  "mechanical_stability": "NON DÉMONTRÉ",
+  "visualization": "NON DÉMONTRÉ",
+  "first_blocker": "Awaiting targeted CI",
+  "status": "NON DÉMONTRÉ"
+}
