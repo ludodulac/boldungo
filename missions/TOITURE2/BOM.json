@@ -1,0 +1,27 @@
+{
+  "total_parts": 3,
+  "net_change_from_original_B3": 0,
+  "new_reference": "3002.dat",
+  "added_variant_pieces": 1,
+  "replaced_original_but_not_modified": "scene-chimney:house-chimney-antenna:00052:solution 3622.dat",
+  "lines": [
+    {
+      "part_id": "BRICK_1X3",
+      "category": "brick",
+      "ldraw_ref": "3622.dat",
+      "quantity": 1
+    },
+    {
+      "part_id": "BRICK_2X3",
+      "category": "brick",
+      "ldraw_ref": "3002.dat",
+      "quantity": 1
+    },
+    {
+      "part_id": "BRICK_SLOPED_18_4X2",
+      "category": "roof",
+      "ldraw_ref": "30363.dat",
+      "quantity": 1
+    }
+  ]
+}
