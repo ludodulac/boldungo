@@ -1,5 +1,151 @@
 {
-  "status": "NON DÉMONTRÉ",
-  "target_roof_count": 15,
-  "retained_roof_count": 5
+  "tested_source_roofs": 15,
+  "retained_roof_ids": [
+    "roof-000336",
+    "roof-000337",
+    "roof-000338",
+    "roof-000339",
+    "roof-000340"
+  ],
+  "new_roof_candidates": [
+    {
+      "id": "roof-000313",
+      "ref": "30363.dat",
+      "original_xyz": [
+        1030.0,
+        -864.0,
+        540.0
+      ],
+      "lower_cavity_candidate_y": -840.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000314",
+      "ref": "30363.dat",
+      "original_xyz": [
+        1030.0,
+        -864.0,
+        580.0
+      ],
+      "lower_cavity_candidate_y": -840.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000315",
+      "ref": "30363.dat",
+      "original_xyz": [
+        1030.0,
+        -864.0,
+        620.0
+      ],
+      "lower_cavity_candidate_y": -840.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000316",
+      "ref": "30363.dat",
+      "original_xyz": [
+        1030.0,
+        -864.0,
+        660.0
+      ],
+      "lower_cavity_candidate_y": -840.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000317",
+      "ref": "30363.dat",
+      "original_xyz": [
+        1030.0,
+        -864.0,
+        700.0
+      ],
+      "lower_cavity_candidate_y": -840.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000359",
+      "ref": "30363.dat",
+      "original_xyz": [
+        910.0,
+        -912.0,
+        540.0
+      ],
+      "lower_cavity_candidate_y": -888.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000360",
+      "ref": "30363.dat",
+      "original_xyz": [
+        910.0,
+        -912.0,
+        580.0
+      ],
+      "lower_cavity_candidate_y": -888.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000361",
+      "ref": "30363.dat",
+      "original_xyz": [
+        910.0,
+        -912.0,
+        620.0
+      ],
+      "lower_cavity_candidate_y": -888.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000362",
+      "ref": "30363.dat",
+      "original_xyz": [
+        910.0,
+        -912.0,
+        660.0
+      ],
+      "lower_cavity_candidate_y": -888.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    },
+    {
+      "id": "roof-000363",
+      "ref": "30363.dat",
+      "original_xyz": [
+        910.0,
+        -912.0,
+        700.0
+      ],
+      "lower_cavity_candidate_y": -888.0,
+      "existing_shared_3006_mating_y": -864.0,
+      "same_shared_beam_mating_plane": false,
+      "status": "NOT_INTEGRATED — independent load-bearing support unproved"
+    }
+  ],
+  "new_integrated": 0,
+  "second_support": {
+    "status": "NON DÉMONTRÉ",
+    "candidate_other_wall": "wall-000706",
+    "candidate_other_gable": "gable-000036",
+    "reason": "Original TOITURE4 graph has only one wall endpoint (wall-000707). No second actual connector/continuous insertion and load path demonstrated.",
+    "physical_stability": "NON DÉMONTRÉ"
+  },
+  "notes": "Row 313..317 cavity y=-840, row 359..363 cavity y=-888, while shared beam top y=-864. Candidate rows need independently verified LEGO supports, not arbitrary contact."
 }

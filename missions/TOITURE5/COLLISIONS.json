@@ -1,3 +1,8 @@
 {
-  "status": "NON DÉMONTRÉ"
+  "only_new_original_wall_column": true,
+  "prior_roof4_collisions": "PASS retained, unchanged",
+  "candidate_source_B3_neighbors": 64,
+  "source_B3_original_wall_mesh_pairs_checked": 62,
+  "forbidden_neighbors": [],
+  "status": "PASS"
 }
