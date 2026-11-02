@@ -1,0 +1,63 @@
+name: TOITURE-7 — original roof223-wall719 and two bounded under-roof supports
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/toiture7_probe.py'
+      - 'scripts/toiture7_browser.py'
+      - 'missions/TOITURE7/VARIANTE-A.ldr'
+      - 'missions/TOITURE7/VARIANTE-B.ldr'
+      - 'missions/TOITURE7/MODULE-RETENU.ldr'
+      - 'missions/TOITURE7/VIEWER-RETENU.json'
+      - '.github/workflows/toiture7-targeted.yml'
+permissions:
+  contents: write
+concurrency:
+  group: toiture7-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  one_targeted_two_alternatives_and_real_retained_mobile:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Existing pinned LDraw engine and Chromium mobile
+        run: |
+          python -m pip install -e "./lego_geometry_engine"
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Official pinned part closure, exact REAL 30363 and 3001 geometry
+        run: python scripts/download_ldraw_probe_066.py /tmp/toiture7-ldraw --max-files 240 --parts 3811 3008 3009 3006 3622 30363 3001
+      - name: One bounded local roof223 test and two 2x4 below-roof branches
+        run: python scripts/toiture7_probe.py --ldraw-root /tmp/toiture7-ldraw
+      - name: One full real mobile Chromium of the ACTUAL retained 75
+        run: python scripts/toiture7_browser.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOITURE7-ROOF223-WALL719-75-RETAINED-REAL-MOBILE
+          path: |
+            missions/TOITURE7/*.json
+            missions/TOITURE7/*.ldr
+            missions/TOITURE7/*.png
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Commit ONLY measured reports and actual retained 75 mobile screenshot
+        if: success()
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add missions/TOITURE7/ROOF223-WALL719.json missions/TOITURE7/DEUX-CHEMINS.json missions/TOITURE7/COLLISIONS.json missions/TOITURE7/INSERTION.json missions/TOITURE7/BOM.json missions/TOITURE7/RESULTAT.json missions/TOITURE7/toiture7-retained-mobile.png
+          if ! git diff --cached --quiet; then
+            git commit -m "TOITURE-7: measured actual roof223 wall and two bounded variants, retained 75 viewer"
+            git push origin "HEAD:refs/heads/${BRANCH}"
+          fi
