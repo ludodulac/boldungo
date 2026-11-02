@@ -1,0 +1,27 @@
+{
+  "retained_75": "PASS from TOITURE6, prior source",
+  "experiments_A_B": "NON DÉMONTRÉ — LDraw source part 3004.dat missing during scoped geometry engine candidate sweep",
+  "full_retained_75_mobile": "NON TESTÉ — CI blocked before Playwright step",
+  "technical_stop": {
+    "name": "TOITURE-7",
+    "state": "STOP_TECHNICAL_CI_LIMIT_REACHED",
+    "source_head": "710f7c70dc891641741f42d9ba93e20cba449d17",
+    "first_specialized_ci": {
+      "run": 41467844665,
+      "result": "FAIL",
+      "error": "FileNotFoundError: LDraw part not found: 3002.dat"
+    },
+    "one_corrective_ci": {
+      "run": 41468142253,
+      "result": "FAIL",
+      "error": "FileNotFoundError: LDraw part not found: 3004.dat"
+    },
+    "ci_attempts": 2,
+    "allowed_extra_ci_attempts": 0,
+    "note": "The roof223-wall719 local analysis ran before the error but its measured value was not written or printed; it must not be reported PASS. Both bounded alternative meshes could not be fully checked.",
+    "original_B3_untouched": true,
+    "original_maison4_untouched": true,
+    "original_visual019_untouched": true,
+    "TOITURE6_retained_75_unchanged": true
+  }
+}

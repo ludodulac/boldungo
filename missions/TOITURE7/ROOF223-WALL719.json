@@ -1,0 +1,37 @@
+{
+  "original_roof": "roof-000223",
+  "roof_ref": "30363.dat",
+  "roof_xyz_ldu": [
+    1270,
+    -768,
+    620
+  ],
+  "original_wall": "wall-000719",
+  "wall_ref": "3008.dat",
+  "wall_xyz_ldu": [
+    1270,
+    -744,
+    620
+  ],
+  "nominal_wall_top_y": -744,
+  "nominal_roof_cavity_y": -744,
+  "expected_candidate_cavity_centers": [
+    [
+      1270,
+      -744,
+      610
+    ],
+    [
+      1270,
+      -744,
+      630
+    ]
+  ],
+  "candidate_connector_count": 2,
+  "candidate_center_alignment": "HYPOTHÈSE GÉOMÉTRIQUE, sans PASS conservé",
+  "true_official_mesh_contact": "NON DÉMONTRÉ — run crashed before measured report persisted",
+  "full_continuous_insertion": "NON DÉMONTRÉ — run crashed before measured report persisted",
+  "adjacent_B3_collisions": "NON DÉMONTRÉ",
+  "status": "NON DÉMONTRÉ",
+  "technical_blocker": "FileNotFoundError: LDraw part not found: 3004.dat"
+}

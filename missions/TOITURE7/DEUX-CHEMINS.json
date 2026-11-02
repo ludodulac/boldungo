@@ -1,0 +1,31 @@
+{
+  "first_path": {
+    "status": "PASS — established TOITURE5 and retained TOITURE6",
+    "from_roof": "roof-000338",
+    "through": [
+      "TOITURE3-VARIANT-3006-ROW336-340",
+      "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "gable-000039",
+      "gable-000035",
+      "gable-000031",
+      "gable-000026",
+      "wall-000707",
+      "wall-000009"
+    ],
+    "to": "TOITURE6-FOUNDATION-3811"
+  },
+  "second_wall": {
+    "status": "PASS — 30/30 original wall joints established TOITURE6",
+    "from": "wall-000719",
+    "to": "wall-000021",
+    "base": "TOITURE6-FOUNDATION-3811"
+  },
+  "second_roof_to_second_wall": {
+    "status": "NON DÉMONTRÉ",
+    "connecting_gap": "TOITURE3-VARIANT-3006-ROW336-340 to wall-000719",
+    "reason": "Both experiment 3001 routes could not finish tests after two CI campaigns."
+  },
+  "two_roof_paths_distinct_above_shared_foundation": "NON DÉMONTRÉ",
+  "mechanical_loads": "NON DÉMONTRÉ"
+}

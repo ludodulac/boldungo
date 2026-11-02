@@ -1,0 +1,39 @@
+{
+  "retained_75": "PASS according to retained TOITURE6 result, not reaudited",
+  "experiment_A": {
+    "status": "NON DÉMONTRÉ",
+    "model": "VARIANTE-A.ldr",
+    "official_part": "3001.dat",
+    "real_LDraw_environment_missing": "3004.dat"
+  },
+  "experiment_B": {
+    "status": "NON DÉMONTRÉ",
+    "model": "VARIANTE-B.ldr",
+    "official_part": "3001.dat",
+    "real_LDraw_environment_missing": "3004.dat"
+  },
+  "known_from_previous_TOITURE6": "Four 3006 beams rejected after forbidden collision with original B3 roofs; these are not retained or reused.",
+  "first_new_forbidden_collision": "NOT MEASURED — no claim of PASS or FAIL",
+  "technical_stop": {
+    "name": "TOITURE-7",
+    "state": "STOP_TECHNICAL_CI_LIMIT_REACHED",
+    "source_head": "710f7c70dc891641741f42d9ba93e20cba449d17",
+    "first_specialized_ci": {
+      "run": 41467844665,
+      "result": "FAIL",
+      "error": "FileNotFoundError: LDraw part not found: 3002.dat"
+    },
+    "one_corrective_ci": {
+      "run": 41468142253,
+      "result": "FAIL",
+      "error": "FileNotFoundError: LDraw part not found: 3004.dat"
+    },
+    "ci_attempts": 2,
+    "allowed_extra_ci_attempts": 0,
+    "note": "The roof223-wall719 local analysis ran before the error but its measured value was not written or printed; it must not be reported PASS. Both bounded alternative meshes could not be fully checked.",
+    "original_B3_untouched": true,
+    "original_maison4_untouched": true,
+    "original_visual019_untouched": true,
+    "TOITURE6_retained_75_unchanged": true
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "model": "MODULE-RETENU.ldr",
+  "total_retained_pieces": 75,
+  "new_certified_pieces": 0,
+  "roof_slope_30363_certified": 5,
+  "inherited_original_43": "TOITURE5",
+  "inherited_second_wall_31": "TOITURE6",
+  "retained_local_baseplate_3811": 1,
+  "experimental_A_3001": {
+    "count": 6,
+    "retained": false,
+    "certification": "NON DÉMONTRÉ"
+  },
+  "experimental_B_3001": {
+    "count": 6,
+    "retained": false,
+    "certification": "NON DÉMONTRÉ"
+  },
+  "statement": "Alternative A and B are two separate test designs; 12 experimental 3001 are not part of the retained BOM."
+}
