@@ -3425,49 +3425,49 @@
       {
         "step_id": "TOITURE6-075",
         "sequence": 75,
+        "title": "Toiture supplémentaire originale 30363 (à confirmer)",
+        "placement_ids": [
+          "roof-000315"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-076",
+        "sequence": 76,
         "title": "Installer roof-000338",
         "placement_ids": [
           "roof-000338"
         ]
       },
       {
-        "step_id": "TOITURE6-076",
-        "sequence": 76,
+        "step_id": "TOITURE6-077",
+        "sequence": 77,
         "title": "Installer roof-000337",
         "placement_ids": [
           "roof-000337"
         ]
       },
       {
-        "step_id": "TOITURE6-077",
-        "sequence": 77,
+        "step_id": "TOITURE6-078",
+        "sequence": 78,
         "title": "Installer roof-000339",
         "placement_ids": [
           "roof-000339"
         ]
       },
       {
-        "step_id": "TOITURE6-078",
-        "sequence": 78,
+        "step_id": "TOITURE6-079",
+        "sequence": 79,
         "title": "Installer roof-000336",
         "placement_ids": [
           "roof-000336"
         ]
       },
       {
-        "step_id": "TOITURE6-079",
-        "sequence": 79,
+        "step_id": "TOITURE6-080",
+        "sequence": 80,
         "title": "Installer roof-000340",
         "placement_ids": [
           "roof-000340"
-        ]
-      },
-      {
-        "step_id": "TOITURE6-080",
-        "sequence": 80,
-        "title": "Toiture supplémentaire originale 30363 (à confirmer)",
-        "placement_ids": [
-          "roof-000315"
         ]
       }
     ]
