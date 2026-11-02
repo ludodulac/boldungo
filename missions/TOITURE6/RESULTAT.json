@@ -1,0 +1,41 @@
+{
+  "pieces_in_experimental_module": 80,
+  "parts_from_TOITURE5_preserved": 43,
+  "original_second_wall_pieces": 31,
+  "new_experimental_pieces": 5,
+  "new_experimental_refs": {
+    "3811.dat": 1,
+    "3006.dat": 4
+  },
+  "roof_count_preserved": 5,
+  "sixth_original_roof_candidate": "roof-000315",
+  "new_roofs_geometrically_certified": 0,
+  "total_roofs_certified": 5,
+  "baseplate_3811_geometry": "PASS",
+  "wall000009_on_base": "PASS",
+  "wall000021_on_base": "PASS",
+  "local_foundation": "PASS",
+  "second_original_wall_chain": "30/30",
+  "second_independent_roof_to_wall_path": "NON DÉMONTRÉ",
+  "two_wall_paths_distinct_above_base": true,
+  "shared_single_local_baseplate": true,
+  "full_house_foundation": "NON DÉMONTRÉ",
+  "mechanical_stability": "NON DÉMONTRÉ",
+  "collisions": "FAIL",
+  "insertion": "NON DÉMONTRÉ",
+  "viewer": "PASS — 80 real LEGO refs, 80 steps, mobile Chromium 390x844 using existing unmodified BOLDÜNGO viewer; visual proxies only",
+  "roof_sixth_insertion": "NON DÉMONTRÉ",
+  "first_obstacle": {
+    "piece": "TOITURE6-BRIDGE-D-3006",
+    "original_B3_neighbor": "roof-000223",
+    "reference": "30363.dat",
+    "relation": "COLLISION"
+  },
+  "overall": "NON DÉMONTRÉ",
+  "limitations": [
+    "One 3811 baseplate does NOT certify anchoring, whole-house foundation or force capacity",
+    "Two graph paths end in different genuine B3 walls and share one local 3811",
+    "No plastic fit friction, bending, fatigue or buckling test",
+    "Any sixth-slope ambiguity is not claimed as an extra certified roof."
+  ]
+}
