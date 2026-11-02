@@ -1,0 +1,68 @@
+{
+  "mission": "TOITURE6",
+  "original_source_PR": 931,
+  "original_B3_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+  "prior_MODULE": "missions/TOITURE5/MODULE-TOIT-AU-PIED.ldr",
+  "prior_43_unchanged": true,
+  "second_wall_original_ids": [
+    "wall-000021",
+    "wall-000045",
+    "wall-000069",
+    "wall-000092",
+    "wall-000116",
+    "wall-000139",
+    "wall-000163",
+    "wall-000186",
+    "wall-000210",
+    "wall-000233",
+    "wall-000256",
+    "wall-000279",
+    "wall-000301",
+    "wall-000323",
+    "wall-000346",
+    "wall-000368",
+    "wall-000391",
+    "wall-000413",
+    "wall-000435",
+    "wall-000458",
+    "wall-000480",
+    "wall-000503",
+    "wall-000527",
+    "wall-000552",
+    "wall-000576",
+    "wall-000601",
+    "wall-000625",
+    "wall-000649",
+    "wall-000673",
+    "wall-000696",
+    "wall-000719"
+  ],
+  "local_baseplate": {
+    "id": "TOITURE6-FOUNDATION-3811",
+    "record": "1 2 960 0 760 1 0 0 0 1 0 0 0 1 3811.dat"
+  },
+  "connecting_braces": [
+    {
+      "id": "TOITURE6-BRIDGE-D-3006",
+      "record": "1 19 1180 -768 620 1 0 0 0 1 0 0 0 1 3006.dat"
+    },
+    {
+      "id": "TOITURE6-BRIDGE-C-3006",
+      "record": "1 19 1180 -792 620 1 0 0 0 1 0 0 0 1 3006.dat"
+    },
+    {
+      "id": "TOITURE6-BRIDGE-B-3006",
+      "record": "1 19 1180 -816 620 1 0 0 0 1 0 0 0 1 3006.dat"
+    },
+    {
+      "id": "TOITURE6-BRIDGE-A-3006",
+      "record": "1 19 1060 -840 620 1 0 0 0 1 0 0 0 1 3006.dat"
+    }
+  ],
+  "sixth_roof_original": {
+    "id": "roof-000315",
+    "record": "1 1 1030 -864 620 0 0 -1 0 1 0 1 0 0 30363.dat",
+    "pending_proof": true
+  },
+  "B3_408_roof_originals_unchanged": true
+}
