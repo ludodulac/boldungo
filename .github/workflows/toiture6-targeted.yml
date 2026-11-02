@@ -32,7 +32,7 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
       - name: Real official pinned 3811 3008 3009 3006 3622 30363
-        run: python scripts/download_ldraw_probe_066.py /tmp/toiture6-ldraw --max-files 240 --parts 3811 3008 3009 3006 3622 30363
+        run: python scripts/download_ldraw_probe_066.py /tmp/toiture6-ldraw --max-files 240 --parts 3811 3008 3009 3006 3622 30363 3002
       - name: ONE targeted analytical foundation and second support test
         run: python scripts/toiture6_probe.py --ldraw-root /tmp/toiture6-ldraw
       - name: ONE existing BOLDÜNGO mobile 80-part 80-step viewer test
