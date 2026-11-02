@@ -34,7 +34,7 @@ jobs:
           python -m pip install playwright
           python -m playwright install --with-deps chromium
       - name: Official pinned part closure, exact REAL 30363 and 3001 geometry
-        run: python scripts/download_ldraw_probe_066.py /tmp/toiture7-ldraw --max-files 240 --parts 3811 3008 3009 3006 3622 30363 3001
+        run: python scripts/download_ldraw_probe_066.py /tmp/toiture7-ldraw --max-files 240 --parts 3811 3008 3009 3006 3622 30363 3001 3002 3010
       - name: One bounded local roof223 test and two 2x4 below-roof branches
         run: python scripts/toiture7_probe.py --ldraw-root /tmp/toiture7-ldraw
       - name: One full real mobile Chromium of the ACTUAL retained 75
