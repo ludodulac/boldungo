@@ -1,34 +1,76 @@
 {
-  "mission": "TOITURE7",
-  "baseline_head": "710f7c70dc891641741f42d9ba93e20cba449d17",
-  "retained_model": "missions/TOITURE7/MODULE-RETENU.ldr",
-  "retained_viewer_export": "missions/TOITURE7/VIEWER-RETENU.json",
-  "retained_pieces": 75,
-  "new_certified_pieces": 0,
-  "certified_roof_slopes": 5,
-  "local_foundation": "PASS (TOITURE6)",
-  "complete_house_foundation": "NON DÉMONTRÉ",
-  "first_roof_to_west_wall": "PASS (TOITURE5)",
-  "second_original_east_wall_column": "PASS (TOITURE6, 30/30 joints)",
-  "roof223_wall719": "NON DÉMONTRÉ (technical CI interruption before result persisted)",
-  "independent_second_roof_support": "NON DÉMONTRÉ",
-  "candidate_A_connections": "NON DÉMONTRÉ",
-  "candidate_A_collisions": "NON DÉMONTRÉ",
-  "candidate_B_connections": "NON DÉMONTRÉ",
-  "candidate_B_collisions": "NON DÉMONTRÉ",
-  "insertion_new_support": "NON DÉMONTRÉ",
-  "collisions_retained": "PASS (TOITURE6)",
-  "mechanical_stability": "NON DÉMONTRÉ",
-  "mobile_actual_retained_75": "NON TESTÉ — no Chromium step reached",
-  "visualization_export_present": true,
-  "first_blocker": {
-    "type": "CI_TECHNICAL",
-    "reference": "3004.dat",
-    "details": "Actual official B3 nearby part omitted from pinned dependency list",
-    "run": 41468142253
+  "retained_parts": 75,
+  "new_certified_parts": 0,
+  "roof_slopes_certified": 5,
+  "roof223_wall719_local_interface": "PASS",
+  "roof223_proves_second_path": false,
+  "second_roof_support_independent": "NON DÉMONTRÉ",
+  "two_local_variants_evaluated": 2,
+  "variant_results": {
+    "A": {
+      "links": "PASS",
+      "collisions": "FAIL",
+      "insertion": "NON DÉMONTRÉ",
+      "first_obstacle": {
+        "new": "TOITURE7-A-3001-06",
+        "existing": "wall-000696",
+        "ldraw_ref": "3008.dat",
+        "official_mesh_relation": "COLLISION",
+        "part_position": [
+          1240.0,
+          -720.0,
+          620.0
+        ],
+        "original_position": [
+          1270.0,
+          -720.0,
+          600.0
+        ]
+      }
+    },
+    "B": {
+      "links": "PASS",
+      "collisions": "FAIL",
+      "insertion": "NON DÉMONTRÉ",
+      "first_obstacle": {
+        "new": "TOITURE7-B-3001-01",
+        "existing": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+        "ldraw_ref": "3006.dat",
+        "official_mesh_relation": "COLLISION",
+        "part_position": [
+          1000.0,
+          -840.0,
+          700.0
+        ],
+        "original_position": [
+          960.0,
+          -840.0,
+          760.0
+        ]
+      }
+    }
   },
-  "targeted_ci_initial": "FAIL",
-  "targeted_ci_single_corrective": "FAIL",
-  "stop_rule": "Applied: two CI campaigns already consumed. No further rerun, no new roof support claims.",
-  "overall": "PARTIAL: 75 unchanged, code and variants supplied, second route not validated"
+  "retained_75_collisions": "PASS (reference TOITURE6)",
+  "retained_75_insertion": "PASS (reference TOITURE6)",
+  "local_3811_foundation": "PASS (reference TOITURE6)",
+  "full_house_foundation": "NON DÉMONTRÉ",
+  "mechanical_stability": "NON DÉMONTRÉ",
+  "mobile_retained_75": "PASS: actual mobile Chromium 390x844, EXACT retained 75 pieces, 75 verified assembly UI steps, original BOLDUNGO viewer",
+  "first_obstacle": {
+    "new": "TOITURE7-A-3001-06",
+    "existing": "wall-000696",
+    "ldraw_ref": "3008.dat",
+    "official_mesh_relation": "COLLISION",
+    "part_position": [
+      1240.0,
+      -720.0,
+      620.0
+    ],
+    "original_position": [
+      1270.0,
+      -720.0,
+      600.0
+    ]
+  },
+  "overall": "STOP: preserve 75 actual pieces; neither short under-roof path proved"
 }

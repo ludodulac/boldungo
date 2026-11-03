@@ -1,39 +1,71 @@
 {
-  "retained_75": "PASS according to retained TOITURE6 result, not reaudited",
-  "experiment_A": {
-    "status": "NON DÉMONTRÉ",
-    "model": "VARIANTE-A.ldr",
-    "official_part": "3001.dat",
-    "real_LDraw_environment_missing": "3004.dat"
-  },
-  "experiment_B": {
-    "status": "NON DÉMONTRÉ",
-    "model": "VARIANTE-B.ldr",
-    "official_part": "3001.dat",
-    "real_LDraw_environment_missing": "3004.dat"
-  },
-  "known_from_previous_TOITURE6": "Four 3006 beams rejected after forbidden collision with original B3 roofs; these are not retained or reused.",
-  "first_new_forbidden_collision": "NOT MEASURED — no claim of PASS or FAIL",
-  "technical_stop": {
-    "name": "TOITURE-7",
-    "state": "STOP_TECHNICAL_CI_LIMIT_REACHED",
-    "source_head": "710f7c70dc891641741f42d9ba93e20cba449d17",
-    "first_specialized_ci": {
-      "run": 41467844665,
-      "result": "FAIL",
-      "error": "FileNotFoundError: LDraw part not found: 3002.dat"
+  "original_75_unchanged": true,
+  "two_bounded_routes_real_B3_and_75_mesh_probed": true,
+  "attempts": [
+    {
+      "route": "A",
+      "forbidden": [
+        {
+          "new": "TOITURE7-A-3001-06",
+          "existing": "wall-000696",
+          "ldraw_ref": "3008.dat",
+          "official_mesh_relation": "COLLISION",
+          "part_position": [
+            1240.0,
+            -720.0,
+            620.0
+          ],
+          "original_position": [
+            1270.0,
+            -720.0,
+            600.0
+          ]
+        }
+      ],
+      "screened": 8,
+      "status": "FAIL"
     },
-    "one_corrective_ci": {
-      "run": 41468142253,
-      "result": "FAIL",
-      "error": "FileNotFoundError: LDraw part not found: 3004.dat"
-    },
-    "ci_attempts": 2,
-    "allowed_extra_ci_attempts": 0,
-    "note": "The roof223-wall719 local analysis ran before the error but its measured value was not written or printed; it must not be reported PASS. Both bounded alternative meshes could not be fully checked.",
-    "original_B3_untouched": true,
-    "original_maison4_untouched": true,
-    "original_visual019_untouched": true,
-    "TOITURE6_retained_75_unchanged": true
-  }
+    {
+      "route": "B",
+      "forbidden": [
+        {
+          "new": "TOITURE7-B-3001-01",
+          "existing": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+          "ldraw_ref": "3006.dat",
+          "official_mesh_relation": "COLLISION",
+          "part_position": [
+            1000.0,
+            -840.0,
+            700.0
+          ],
+          "original_position": [
+            960.0,
+            -840.0,
+            760.0
+          ]
+        },
+        {
+          "new": "TOITURE7-B-3001-06",
+          "existing": "wall-000697",
+          "ldraw_ref": "3008.dat",
+          "official_mesh_relation": "COLLISION",
+          "part_position": [
+            1240.0,
+            -720.0,
+            700.0
+          ],
+          "original_position": [
+            1270.0,
+            -720.0,
+            760.0
+          ]
+        }
+      ],
+      "screened": 11,
+      "status": "FAIL"
+    }
+  ],
+  "retained_75_original_TOITURE6_validated_collisions": "PASS, not reaudited",
+  "whole_expanded_variant": "FAIL",
+  "retained_module": "PASS"
 }
