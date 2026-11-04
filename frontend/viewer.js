@@ -16,6 +16,10 @@ function updateModelKind(b){
     banner.dataset.kind='visual';
     title.textContent='Maison complète — modèle visuel approximatif';
     detail.textContent='Non certifié LEGO · chevauchements possibles (toiture, murs, terrasses).';
+  }else if(b.building_id==='GUIDED-004-MAISON-COMPLETE-1792'&&count===1792){
+    banner.dataset.kind='lego';
+    title.textContent='Maison LEGO complète — prototype 1 792 pièces';
+    detail.textContent='Nouvelle toiture en escalier · pièces LEGO réelles · assemblage physique et solidité non certifiés.';
   }else if(b.building_id==='GUIDED-004-MAISON4-356'&&count===356){
     banner.dataset.kind='lego';
     title.textContent='Construction LEGO — 356 pièces';
