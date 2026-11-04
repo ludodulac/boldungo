@@ -1,0 +1,790 @@
+{
+  "audit": "MAISON_COMPLETE1_NOMINAL_SCREENING_NOT_PHYSICAL_CERTIFICATE",
+  "input": "missions/B3/generated/GUIDED004-B3-1904.ldr",
+  "source_commit": "3c8c5f19f5d7c5ee6d81383bbd24dc3ea38a8003",
+  "rules": "Only upright orthogonal brick/plate nominal stud footprint overlap; roofing 30363 excluded. No LDraw mesh, insertion, friction, structural load, or plastic tolerances. Missing vertical mate does not prove a part floats.",
+  "part_count": 1904,
+  "orthogonal_bricks_and_plates": 1496,
+  "slopes_30363_unassessed": 408,
+  "possible_vertical_part_links": 2211,
+  "matched_stud_centres": 7148,
+  "nominal_orthogonal_components": 55,
+  "largest_groups": [
+    {
+      "size": 1144,
+      "by_family": {
+        "windows": 376,
+        "gables": 44,
+        "walls": 719,
+        "other": 5
+      },
+      "examples": [
+        "window-000001",
+        "window-000002",
+        "window-000003",
+        "window-000004"
+      ]
+    },
+    {
+      "size": 181,
+      "by_family": {
+        "terraces": 74,
+        "stairs": 98,
+        "other": 6,
+        "experiments": 3
+      },
+      "examples": [
+        "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0000:00001",
+        "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0003:00002",
+        "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0006:00003",
+        "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0009:00004"
+      ]
+    },
+    {
+      "size": 50,
+      "by_family": {
+        "chimneys": 48,
+        "other": 2
+      },
+      "examples": [
+        "scene-chimney:west-metal-chimney-volume:00001:solution",
+        "scene-chimney:west-metal-chimney-volume:00049:solution",
+        "scene-chimney:west-metal-chimney-volume:00073:solution",
+        "scene-chimney:west-metal-chimney-volume:00097:solution"
+      ]
+    },
+    {
+      "size": 17,
+      "by_family": {
+        "terraces": 17
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-west-return:board:00001",
+        "scene-platform:south-timber-deck-west-return:x_min:rail-top-solution:00012",
+        "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0000:00035",
+        "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0012:00039"
+      ]
+    },
+    {
+      "size": 15,
+      "by_family": {
+        "terraces": 15
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-main:board:00003",
+        "scene-platform:south-timber-deck-main:x_min:rail-top-solution:00006",
+        "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0000:00023",
+        "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0012:00027"
+      ]
+    },
+    {
+      "size": 14,
+      "by_family": {
+        "chimneys": 12,
+        "other": 2
+      },
+      "examples": [
+        "scene-chimney:house-chimney-antenna:00001:solution",
+        "scene-chimney:house-chimney-antenna:00019:solution",
+        "scene-chimney:house-chimney-antenna:00028:solution",
+        "scene-chimney:house-chimney-antenna:00037:solution"
+      ]
+    },
+    {
+      "size": 7,
+      "by_family": {
+        "terraces": 4,
+        "other": 3
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-west-return:board:00007",
+        "scene-platform:south-timber-deck-west-return:x_max:rail-post:00018",
+        "scene-platform:south-timber-deck-west-return:x_max:rail-post:00022",
+        "scene-platform:south-timber-deck-west-return:x_max:rail-post:00025"
+      ]
+    },
+    {
+      "size": 5,
+      "by_family": {
+        "terraces": 5
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-main:board:00009",
+        "scene-platform:south-timber-deck-main:board:00021",
+        "scene-platform:south-timber-deck-main:y_max:rail-top-solution:00007",
+        "scene-platform:south-timber-deck-main:y_max:rail-post:00101"
+      ]
+    },
+    {
+      "size": 5,
+      "by_family": {
+        "terraces": 5
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-main:board:00027",
+        "scene-platform:south-timber-deck-main:board:00033",
+        "scene-platform:south-timber-deck-main:y_max:rail-post:00109",
+        "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00003"
+      ]
+    },
+    {
+      "size": 5,
+      "by_family": {
+        "terraces": 5
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-main:board:00002",
+        "scene-platform:south-timber-deck-main:x_min:rail-top-solution:00005",
+        "scene-platform:south-timber-deck-main:x_min:rail-post:00047",
+        "scene-platform:south-timber-deck-main:x_min:rail-post:00051"
+      ]
+    },
+    {
+      "size": 5,
+      "by_family": {
+        "terraces": 5
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-main:board:00032",
+        "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00002",
+        "scene-platform:south-timber-deck-main:x_max:rail-post:00073",
+        "scene-platform:south-timber-deck-main:x_max:rail-post:00077"
+      ]
+    },
+    {
+      "size": 5,
+      "by_family": {
+        "terraces": 5
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-west-return:board:00003",
+        "scene-platform:south-timber-deck-west-return:y_min:rail-top-solution:00015",
+        "scene-platform:south-timber-deck-west-return:y_max:rail-top-solution:00013",
+        "scene-platform:south-timber-deck-west-return:y_min:rail-post:00029"
+      ]
+    },
+    {
+      "size": 1,
+      "by_family": {
+        "terraces": 1
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-main:board:00015"
+      ]
+    },
+    {
+      "size": 1,
+      "by_family": {
+        "terraces": 1
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-main:board:00008"
+      ]
+    },
+    {
+      "size": 1,
+      "by_family": {
+        "terraces": 1
+      },
+      "examples": [
+        "scene-platform:south-timber-deck-main:board:00014"
+      ]
+    }
+  ],
+  "group_size_distribution": {
+    "1": 43,
+    "100+": 2,
+    "10-99": 4,
+    "2-9": 6
+  },
+  "without_nominal_vertical_mate": 96,
+  "without_nominal_vertical_mate_at_local_lowest_course": 35,
+  "without_nominal_vertical_mate_above_local_lowest_course": 61,
+  "without_nominal_mate_by_family": {
+    "chimneys": 4,
+    "terraces": 29,
+    "stairs": 9,
+    "walls": 23,
+    "other": 4,
+    "experiments": 27
+  },
+  "all_parts_without_nominal_mate": [
+    {
+      "id": "scene-chimney:house-chimney-antenna:00001:solution",
+      "reference": "3002",
+      "y_ldu": -744,
+      "family": "chimneys"
+    },
+    {
+      "id": "scene-chimney:west-metal-chimney-volume:00001:solution",
+      "reference": "3007",
+      "y_ldu": -264,
+      "family": "chimneys"
+    },
+    {
+      "id": "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0000:00001",
+      "reference": "3003",
+      "y_ldu": -24,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-stair:south-stair-run-7:body:solution:0000:00001",
+      "reference": "2456",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "scene-stair:south-stair-run-7:body:solution:0000:00002",
+      "reference": "2456",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "scene-stair:south-stair-run-9:body:solution:0000:00013",
+      "reference": "3006",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "scene-chimney:house-chimney-antenna:00007:solution",
+      "reference": "3622",
+      "y_ldu": -744,
+      "family": "chimneys"
+    },
+    {
+      "id": "scene-chimney:west-metal-chimney-volume:00003:solution",
+      "reference": "3008",
+      "y_ldu": -264,
+      "family": "chimneys"
+    },
+    {
+      "id": "scene-platform:south-concrete-platform:deck:00001",
+      "reference": "3007",
+      "y_ldu": -264,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-concrete-platform:deck:00011",
+      "reference": "3007",
+      "y_ldu": -264,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00009",
+      "reference": "3002",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00015",
+      "reference": "3002",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00021",
+      "reference": "3002",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00027",
+      "reference": "3002",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00033",
+      "reference": "3622",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00002",
+      "reference": "3007",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00008",
+      "reference": "3007",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00014",
+      "reference": "3007",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00020",
+      "reference": "3007",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00026",
+      "reference": "3007",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:board:00032",
+      "reference": "3008",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:board:00003",
+      "reference": "2456",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:board:00005",
+      "reference": "2456",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:board:00007",
+      "reference": "3009",
+      "y_ldu": -312,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-stair:south-stair-run-7:body:solution:0000:00003",
+      "reference": "3009",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "scene-stair:south-stair-run-7:tread:solution:00001",
+      "reference": "3009",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "scene-stair:south-stair-run-9:body:solution:0000:00010:repair:0012",
+      "reference": "3010",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "scene-stair:south-stair-run-9:body:solution:0000:00011",
+      "reference": "3009",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "scene-stair:south-stair-run-9:body:solution:0000:00010:repair:0000",
+      "reference": "2456",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "scene-stair:south-stair-run-9:body:solution:0000:00012:repair:0000",
+      "reference": "2456",
+      "y_ldu": -24,
+      "family": "stairs"
+    },
+    {
+      "id": "wall-000001",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000002",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000003",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000004",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000005",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000006",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000007",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000008",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000009",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000010",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000011",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000012",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000013",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000014",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000015",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000016",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000017",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000018",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000019",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000020",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000021",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000022",
+      "reference": "3008",
+      "y_ldu": -24,
+      "family": "walls"
+    },
+    {
+      "id": "wall-000296",
+      "reference": "3009",
+      "y_ldu": -312,
+      "family": "walls"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0000:00011",
+      "reference": "3005",
+      "y_ldu": -24,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0000:00023",
+      "reference": "3005",
+      "y_ldu": -24,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0000:00035",
+      "reference": "3005",
+      "y_ldu": -24,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013",
+      "reference": "3666",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:01",
+      "reference": "3460",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:02",
+      "reference": "3460",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:03",
+      "reference": "3666",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:05",
+      "reference": "3460",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:06",
+      "reference": "3623",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:07",
+      "reference": "3623",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:08",
+      "reference": "3623",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "guided004-031:concrete-timber-cross-joint:07",
+      "reference": "3023b",
+      "y_ldu": -288,
+      "family": "other"
+    },
+    {
+      "id": "guided004-031:concrete-timber-cross-joint:08",
+      "reference": "3023b",
+      "y_ldu": -288,
+      "family": "other"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:04",
+      "reference": "3460",
+      "y_ldu": -288,
+      "family": "terraces"
+    },
+    {
+      "id": "guided004-031:concrete-timber-cross-joint:09",
+      "reference": "3023b",
+      "y_ldu": -288,
+      "family": "other"
+    },
+    {
+      "id": "guided004-031:house-timber:wall-retile:01",
+      "reference": "3460",
+      "y_ldu": -272,
+      "family": "other"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-0-roof-000185-roof-000392",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-2-roof-000186-roof-000393",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-4-roof-000187-roof-000394",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-6-roof-000188-roof-000395",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-8-roof-000189-roof-000396",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-10-roof-000190-roof-000397",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-12-roof-000191-roof-000398",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-14-roof-000192-roof-000399",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-16-roof-000193-roof-000400",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-18-roof-000194-roof-000401",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-20-roof-000195-roof-000402",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-22-roof-000196-roof-000403",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-24-roof-000197-roof-000404",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-26-roof-000198-roof-000405",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-28-roof-000199-roof-000406",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-30-roof-000200-roof-000407",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-32-roof-000201-roof-000408",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-34-roof-000202-roof-000409",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-36-roof-000203-roof-000410",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-38-roof-000204-roof-000411",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-40-roof-000205-roof-000412",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-42-roof-000206-roof-000413",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-088-JOINT-x-120-39-44-roof-000207-roof-000414",
+      "reference": "3002",
+      "y_ldu": -984,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-B2-DECK-BRACE-1",
+      "reference": "3008",
+      "y_ldu": -288,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-B2-DECK-BRACE-2",
+      "reference": "3008",
+      "y_ldu": -288,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-B2-DECK-SEAM-1",
+      "reference": "3623",
+      "y_ldu": -288,
+      "family": "experiments"
+    },
+    {
+      "id": "EXPERIMENT-B2-DECK-SEAM-2",
+      "reference": "3623",
+      "y_ldu": -288,
+      "family": "experiments"
+    }
+  ],
+  "verdict": "INITIAL_DIAGNOSTIC_ONLY"
+}
