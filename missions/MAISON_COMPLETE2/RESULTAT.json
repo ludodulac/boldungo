@@ -1,0 +1,1629 @@
+{
+  "metric": {
+    "status": "FULL_HOUSE_ROOF_VARIANT_NOMINALLY_CONNECTED_NOT_PHYSICALLY_CERTIFIED",
+    "B3_original_pieces": 1904,
+    "B3_original_nonroof_preserved": 1496,
+    "removed_old_sloped_30363_in_variant": 408,
+    "new_roof_bricks": 296,
+    "variant_total_pieces": 1792,
+    "new_roof_parts_with_2_or_more_nominal_support_studs": 296,
+    "eave_parts_directly_on_original_wall_studs": 40,
+    "ridge_parts": 21,
+    "ridge_parts_on_both_slopes": 20,
+    "new_roof_total_stud_mates": 1663,
+    "projected_roof_grid_cells": 3600,
+    "uncovered_grid_cells": 172,
+    "uncovered_due_to_nominal_obstacles": 63,
+    "uncovered_due_to_tiling_or_support": 109,
+    "nominal_3D_body_overlap_new_vs_old": 0,
+    "nominal_3D_body_overlap_new_vs_new": 0,
+    "original_gables_preserved": 44,
+    "original_chimney_parts_preserved": 60,
+    "pitch": "7 brick courses, rise 24 LDU per 60 LDU horizontal; ridge at course 7",
+    "disclaimer": [
+      "AABB nominal solid body only (orthogonal upright official LDraw standard dimensions); not mesh verification",
+      "No full LDraw mesh collision audit.",
+      "No full insertion path, load/torque or real LEGO build test.",
+      "Openings around pre-existing chimneys; original external-platform issues remain."
+    ]
+  },
+  "courses": [
+    {
+      "course": 0,
+      "side": "L",
+      "roof_bricks": 20,
+      "uncovered_cells": 12
+    },
+    {
+      "course": 0,
+      "side": "R",
+      "roof_bricks": 20,
+      "uncovered_cells": 0
+    },
+    {
+      "course": 1,
+      "side": "L",
+      "roof_bricks": 19,
+      "uncovered_cells": 24
+    },
+    {
+      "course": 1,
+      "side": "R",
+      "roof_bricks": 21,
+      "uncovered_cells": 0
+    },
+    {
+      "course": 2,
+      "side": "L",
+      "roof_bricks": 18,
+      "uncovered_cells": 24
+    },
+    {
+      "course": 2,
+      "side": "R",
+      "roof_bricks": 20,
+      "uncovered_cells": 0
+    },
+    {
+      "course": 3,
+      "side": "L",
+      "roof_bricks": 19,
+      "uncovered_cells": 24
+    },
+    {
+      "course": 3,
+      "side": "R",
+      "roof_bricks": 21,
+      "uncovered_cells": 0
+    },
+    {
+      "course": 4,
+      "side": "L",
+      "roof_bricks": 18,
+      "uncovered_cells": 24
+    },
+    {
+      "course": 4,
+      "side": "R",
+      "roof_bricks": 21,
+      "uncovered_cells": 6
+    },
+    {
+      "course": 5,
+      "side": "L",
+      "roof_bricks": 19,
+      "uncovered_cells": 18
+    },
+    {
+      "course": 5,
+      "side": "R",
+      "roof_bricks": 21,
+      "uncovered_cells": 16
+    },
+    {
+      "course": 6,
+      "side": "L",
+      "roof_bricks": 19,
+      "uncovered_cells": 12
+    },
+    {
+      "course": 6,
+      "side": "R",
+      "roof_bricks": 19,
+      "uncovered_cells": 12
+    },
+    {
+      "course": 7,
+      "side": "RIDGE",
+      "roof_bricks": 21,
+      "uncovered_cells": 0
+    }
+  ],
+  "holes": [
+    {
+      "side": "L",
+      "course": 0,
+      "x": 390,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00505:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 410,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00505:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 430,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00505:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 390,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00505:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 410,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00505:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 430,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00505:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 390,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00507:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 410,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00507:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 430,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00507:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 390,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 410,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 0,
+      "x": 430,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 390,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 410,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 430,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 450,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 470,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 490,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 390,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 410,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 430,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 450,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 470,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 490,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00529:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 390,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00531:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 410,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00531:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 430,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00531:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 450,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00531:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 470,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00531:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 490,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00531:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 390,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 410,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 430,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 450,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 470,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 1,
+      "x": 490,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 450,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 470,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 490,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 510,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 530,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 550,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 450,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 470,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 490,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 510,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 530,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00553:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 550,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 450,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00555:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 470,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00555:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 490,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00555:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 510,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00555:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 530,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00555:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 550,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 450,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 470,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 490,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 510,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 530,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 2,
+      "x": 550,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 510,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00577:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 530,
+      "z": 790,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00577:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 550,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 570,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 590,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 610,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 510,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00577:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 530,
+      "z": 810,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00577:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 550,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 570,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 590,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 610,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 510,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00579:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 530,
+      "z": 830,
+      "blocked_by": [
+        "scene-chimney:west-metal-chimney-volume:00579:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 550,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 570,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 590,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 610,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 510,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 530,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 550,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 570,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 590,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 3,
+      "x": 610,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 570,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 590,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 610,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 630,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 650,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 670,
+      "z": 790,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 570,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 590,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 610,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 630,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 650,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 670,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 570,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 590,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 610,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 630,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 650,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 670,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 570,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 590,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 610,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 630,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 650,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 4,
+      "x": 670,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 4,
+      "x": 930,
+      "z": 610,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00046:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 4,
+      "x": 950,
+      "z": 610,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00052:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 4,
+      "x": 930,
+      "z": 630,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00046:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 4,
+      "x": 950,
+      "z": 630,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00052:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 4,
+      "x": 930,
+      "z": 650,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00046:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 4,
+      "x": 950,
+      "z": 650,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00052:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 630,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 650,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 670,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 690,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 710,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 730,
+      "z": 810,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 630,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 650,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 670,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 690,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 710,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 730,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 630,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 650,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 670,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 690,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 710,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 5,
+      "x": 730,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 870,
+      "z": 610,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 890,
+      "z": 610,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 910,
+      "z": 610,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00055:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 930,
+      "z": 610,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00055:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 950,
+      "z": 610,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00061:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 870,
+      "z": 630,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 890,
+      "z": 630,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 910,
+      "z": 630,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00055:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 930,
+      "z": 630,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00055:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 950,
+      "z": 630,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00061:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 870,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 890,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 910,
+      "z": 650,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00055:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 930,
+      "z": 650,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00055:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 950,
+      "z": 650,
+      "blocked_by": [
+        "scene-chimney:house-chimney-antenna:00061:solution"
+      ],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 5,
+      "x": 970,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": true
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 690,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 710,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 730,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 750,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 770,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 790,
+      "z": 830,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 690,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 710,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 730,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 750,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 770,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "L",
+      "course": 6,
+      "x": 790,
+      "z": 850,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 810,
+      "z": 630,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 830,
+      "z": 630,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 850,
+      "z": 630,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 870,
+      "z": 630,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 890,
+      "z": 630,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 910,
+      "z": 630,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 810,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 830,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 850,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 870,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 890,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": false
+    },
+    {
+      "side": "R",
+      "course": 6,
+      "x": 910,
+      "z": 650,
+      "blocked_by": [],
+      "had_support": false
+    }
+  ],
+  "blockedReasons": {
+    "chimney": 63
+  }
+}
