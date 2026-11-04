@@ -102,3 +102,12 @@ body.construction-mode .construction-navigation button{min-height:54px;padding:0
 body.construction-mode .construction-navigation strong{text-align:center;font-size:17px;font-variant-numeric:tabular-nums}
 body.construction-mode #viewer{position:absolute;inset:96px 0 70px;width:100%;height:calc(100% - 166px);touch-action:none}
 @media(max-width:760px){body.construction-mode .viewer-wrap{height:100dvh;min-height:100dvh}.construction-part-preview{width:68px;height:42px}body.construction-mode .construction-parts{min-height:88px}body.construction-mode #viewer{inset:88px 0 70px;height:calc(100% - 158px)}}
+
+/* VISIONNEUSE-2: never cover the canvas with status/help; classification stays in the side panel. */
+.model-kind-status{display:grid;gap:5px;padding:13px 14px;border-radius:12px;border:2px solid #b9c9df;background:#202f49;color:#fff;line-height:1.35}
+.model-kind-status[hidden]{display:none}
+.model-kind-status strong{font-size:clamp(15px,1.2vw,18px);font-weight:800}
+.model-kind-status span{font-size:13px;line-height:1.4}
+.model-kind-status[data-kind="visual"]{background:#3d2917;border-color:#f6bd60;color:#fff0ce}
+.model-kind-status[data-kind="lego"]{background:#132d40;border-color:#74d5fa;color:#e6f7ff}
+.model-kind-status[data-kind="other"]{background:#292d3a;border-color:#9da8c0}
