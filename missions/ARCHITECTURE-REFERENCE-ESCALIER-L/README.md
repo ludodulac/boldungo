@@ -20,3 +20,10 @@ Le fichier de scène, les 1 904 pièces, la variante 1 792, les photos déjà ve
 
 ## Prochain chantier
 Conception/validation géométrique du **seul escalier en L** avec le prompt compagnon, puis une décision explicite sur sa forme et son débord arrière **avant de créer des briques**.
+
+
+## Nouvelle avancée : inventaire et examen des photos Drive (5 novembre 2026)
+- [ANALYSE-PHOTOS-109.md](ANALYSE-PHOTOS-109.md) : audit multivue réalisé (109 fichiers) et erreurs architecturales localisées.
+- [ESCALIER-L-TOPOLOGIE-V1.md](ESCALIER-L-TOPOLOGIE-V1.md) : trajet correct en descendant, repère, paramètres validés/inconnus.
+- [INDEX-DRIVE-109.json](INDEX-DRIVE-109.json) : inventaire des fichiers (sans recopier les photos privées ni les identifiants Drive).
+- **Nouveau point clé :** les photographies permettent maintenant de suivre l'escalier jusqu'à son palier, et de distinguer le béton de la terrasse en bois par un ressaut. La métrique du débord arrière est encore à établir.
