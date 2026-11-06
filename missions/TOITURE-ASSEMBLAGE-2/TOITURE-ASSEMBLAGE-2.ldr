@@ -1,0 +1,29 @@
+0 FILE TOITURE-ASSEMBLAGE-2.ldr
+0 BOLDUNGO - MISSION 007 - ONE-STUD TILE SHIFT TO CLEAR FIXED HINGE
+0 !CATEGORY Model
+0 // Pieces: 3x genuine LEGO 3004 brick 1x2, 1x 4275b hinge plate 1x2 3 fingers, 1x 4276b hinge plate 1x2 2 fingers, 1x 87079 tile 2x4.
+0 // Hinge reference: official LDraw 4275b.dat + 4276b.dat; their nominal hinge centres are local (20,4,0) in both definitions.
+0 // Pair: fixed 4275b at origin; 4276b rotates by 180 deg around vertical Y (to face outward) then 22 deg around hinge axis world Z.
+0 // Hinge pivot world = (20,4,0), centres coincide numerically, nominal rotation 22 deg.
+0 // Fixed hinge studs onto 3004 top at Y=8; sloped hinge studs onto 87079 underside; idealized stud-grid alignment.
+0 // This demonstrates a NOMINAL mating hinge pair; real clearance, pin engagement, roof load and LEGO clutch strength are NOT verified.
+0 STEP
+0 // Wall section: 3 stacked original LEGO bricks 1x2.
+1 7 0 56.000000 0 1.000000 0 0 0 1.000000 0 0 0 1.000000 3004.dat
+1 7 0 32.000000 0 1.000000 0 0 0 1.000000 0 0 0 1.000000 3004.dat
+1 7 0 8.000000 0 1.000000 0 0 0 1.000000 0 0 0 1.000000 3004.dat
+0 STEP
+0 // Fixed 3-finger hinge plate attached to two wall studs.
+1 71 0 0 0 1.000000 0 0 0 1.000000 0 0 0 1.000000 4275b.dat
+0 STEP
+0 // Moving 2-finger hinge plate: nominal mating pivot + 22 deg.
+1 71 37.045251 -7.200867 0 -0.927184 0.374607 0 0.374607 0.927184 0 0 0 -1.000000 4276b.dat
+0 STEP
+0 // Repositioned 87079 on the moving hinge in local coordinates: X=-40, Y=-8, Z=+10 LDU.
+0 // Nominally ONE 4276b stud at tile-local (X=30,Z=-10) fits ordinary 2x4 underside grid. Other stud is OUTSIDE.
+0 // Fixed 4275b maximum X approximately 24-25 LDU, tile minimum world X >34 LDU by conservative bounds.
+0 // No tile/fixed-hinge bounding overlap; single-stud retention/strength and complete mesh clearance NOT physically certified.
+1 71 71.135758 -29.602618 -10.000000 -0.927184 0.374607 0 0.374607 0.927184 0 0 0 -1.000000 87079.dat
+0 // Rotation matrices unchanged: 22 deg. Hinge axes unchanged. One-stud mating remains plausible, NOT mechanically certified.
+0 // CAUTION: no full mesh collision, no physical insertion or mechanical strength tested.
+0 NOFILE

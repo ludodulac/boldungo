@@ -1,0 +1,30 @@
+{
+  "b2_parts": 1905,
+  "b3_parts": 1904,
+  "added_ids": [
+    "EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE"
+  ],
+  "removed_ids": [
+    "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0027:00020",
+    "scene-platform:south-concrete-platform:support-solution:concrete-support-west:0027:00010"
+  ],
+  "moved_ids": [],
+  "floor_original_positions_preserved": true,
+  "b2_sha256": "61738c0945a4bc27d9c1a877484c009565b223a6748aafdd05b811b547e7582d",
+  "b2_bytes_unchanged": true,
+  "b2_orthogonal_unsupported": 45,
+  "b3_orthogonal_unsupported": 45,
+  "b2_orthogonal_components": 26,
+  "b3_orthogonal_components": 26,
+  "b2_orthogonal_collisions": 0,
+  "b3_orthogonal_collisions": 0,
+  "b2_roof_unverified": 408,
+  "b3_roof_unverified": 408,
+  "chain_established": false,
+  "local_bridge_to_concrete_support_verified": true,
+  "old_mesh_collision_signals_unresolved": 2,
+  "chain_to_z0": true,
+  "chain_to_primary_house": "NOT_PROVEN",
+  "full_house_mesh_collision_exhaustive": "NOT_TESTED",
+  "physical_strength": "NOT_CERTIFIED"
+}

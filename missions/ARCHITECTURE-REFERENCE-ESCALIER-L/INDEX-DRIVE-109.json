@@ -1,0 +1,868 @@
+{
+  "schema_version": "boldungo.photo-inventory.v1",
+  "drive_path": "Boldüngo / Photos boldungo",
+  "observed_items": 109,
+  "format_counts": {
+    "image/jpeg": 109
+  },
+  "review_method": "Visual inspection of original-five and contact sheets of 96 date-stamped photos, plus detailed inspection of key staircase photos; duplicated originals do not represent additional viewpoints.",
+  "groups": [
+    {
+      "group": "20260915",
+      "count": 5,
+      "bytes": 20635258
+    },
+    {
+      "group": "20260919",
+      "count": 17,
+      "bytes": 25873360
+    },
+    {
+      "group": "20260928",
+      "count": 7,
+      "bytes": 17782938
+    },
+    {
+      "group": "20260930",
+      "count": 13,
+      "bytes": 32368556
+    },
+    {
+      "group": "20261007",
+      "count": 54,
+      "bytes": 89737442
+    },
+    {
+      "group": "original-reference",
+      "count": 10,
+      "bytes": 1668346
+    },
+    {
+      "group": "reference-compression",
+      "count": 3,
+      "bytes": 507873
+    }
+  ],
+  "files": [
+    {
+      "name": "IMG_20260915_175136.jpg",
+      "size_bytes": 2739173,
+      "created_utc": "2026-11-05T04:46:28.139Z",
+      "group": "20260915",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue plongeante de la volée et du palier : parapet entre maison et extérieur."
+    },
+    {
+      "name": "IMG_20260915_175141.jpg",
+      "size_bytes": 1998789,
+      "created_utc": "2026-11-05T04:46:28.388Z",
+      "group": "20260915",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260915_175143.jpg",
+      "size_bytes": 3163304,
+      "created_utc": "2026-11-05T04:46:27.843Z",
+      "group": "20260915",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260915_175147.jpg",
+      "size_bytes": 4925886,
+      "created_utc": "2026-11-05T04:46:27.953Z",
+      "group": "20260915",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260915_175152.jpg",
+      "size_bytes": 7808106,
+      "created_utc": "2026-11-05T04:46:27.606Z",
+      "group": "20260915",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_165533.jpg",
+      "size_bytes": 2734157,
+      "created_utc": "2026-11-05T04:46:26.896Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_165542.jpg",
+      "size_bytes": 2358108,
+      "created_utc": "2026-11-05T04:46:26.529Z",
+      "group": "20260919",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue haute vers le bas de l'escalier, confirme la liaison palier/volée."
+    },
+    {
+      "name": "IMG_20260919_165552.jpg",
+      "size_bytes": 848775,
+      "created_utc": "2026-11-05T04:46:26.741Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_165601.jpg",
+      "size_bytes": 977577,
+      "created_utc": "2026-11-05T04:46:26.240Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_165622.jpg",
+      "size_bytes": 1923812,
+      "created_utc": "2026-11-05T04:46:26.419Z",
+      "group": "20260919",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue de la zone du coude au-dessus des parapets et de la cour."
+    },
+    {
+      "name": "IMG_20260919_165639.jpg",
+      "size_bytes": 1298451,
+      "created_utc": "2026-11-05T04:46:25.886Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_165648.jpg",
+      "size_bytes": 1418050,
+      "created_utc": "2026-11-05T04:46:26.066Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_165701.jpg",
+      "size_bytes": 1483504,
+      "created_utc": "2026-11-05T04:46:25.530Z",
+      "group": "20260919",
+      "duplicate_name_count": 1,
+      "observation_focus": "Escalier maçonné vu du bas, volée extérieure et son arrivée."
+    },
+    {
+      "name": "IMG_20260919_165715.jpg",
+      "size_bytes": 1096212,
+      "created_utc": "2026-11-05T04:46:25.708Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_165731.jpg",
+      "size_bytes": 1462223,
+      "created_utc": "2026-11-05T04:46:25.083Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_165740.jpg",
+      "size_bytes": 1159378,
+      "created_utc": "2026-11-05T04:46:25.314Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_170000.jpg",
+      "size_bytes": 1827504,
+      "created_utc": "2026-11-05T04:46:24.796Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_170006.jpg",
+      "size_bytes": 1386643,
+      "created_utc": "2026-11-05T04:46:24.933Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_170019.jpg",
+      "size_bytes": 2318650,
+      "created_utc": "2026-11-05T04:46:24.293Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260919_170032.jpg",
+      "size_bytes": 1158171,
+      "created_utc": "2026-11-05T04:46:24.449Z",
+      "group": "20260919",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue de la cour : volée extérieure basse, parapets maçonnés, grand vide sous la plateforme."
+    },
+    {
+      "name": "IMG_20260919_170046.jpg",
+      "size_bytes": 1437303,
+      "created_utc": "2026-11-05T04:46:24.008Z",
+      "group": "20260919",
+      "duplicate_name_count": 1,
+      "observation_focus": "Volée basse en vue frontale, garde-corps pleins."
+    },
+    {
+      "name": "IMG_20260919_170110.jpg",
+      "size_bytes": 984842,
+      "created_utc": "2026-11-05T04:46:24.158Z",
+      "group": "20260919",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260928_113225.jpg",
+      "size_bytes": 2647778,
+      "created_utc": "2026-11-05T04:46:22.881Z",
+      "group": "20260928",
+      "duplicate_name_count": 1,
+      "observation_focus": "Depuis la partie supérieure vers le palier, direction de circulation."
+    },
+    {
+      "name": "IMG_20260928_113243.jpg",
+      "size_bytes": 2840306,
+      "created_utc": "2026-11-05T04:46:22.634Z",
+      "group": "20260928",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260928_113246.jpg",
+      "size_bytes": 2687383,
+      "created_utc": "2026-11-05T04:46:22.292Z",
+      "group": "20260928",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260928_113255.jpg",
+      "size_bytes": 2357393,
+      "created_utc": "2026-11-05T04:46:22.447Z",
+      "group": "20260928",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue latérale des parapets et de la jonction au volume bâti."
+    },
+    {
+      "name": "IMG_20260928_113303.jpg",
+      "size_bytes": 2011337,
+      "created_utc": "2026-11-05T04:46:21.904Z",
+      "group": "20260928",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260928_113308.jpg",
+      "size_bytes": 2823131,
+      "created_utc": "2026-11-05T04:46:22.095Z",
+      "group": "20260928",
+      "duplicate_name_count": 1,
+      "observation_focus": "Escalier extérieur bas en totalité sur la photographie."
+    },
+    {
+      "name": "IMG_20260928_113311.jpg",
+      "size_bytes": 2415610,
+      "created_utc": "2026-11-05T04:46:21.660Z",
+      "group": "20260928",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155205.jpg",
+      "size_bytes": 2794497,
+      "created_utc": "2026-11-05T04:46:21.306Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155214.jpg",
+      "size_bytes": 2470066,
+      "created_utc": "2026-11-05T04:46:21.460Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155224.jpg",
+      "size_bytes": 2472324,
+      "created_utc": "2026-11-05T04:46:20.956Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155232.jpg",
+      "size_bytes": 2640578,
+      "created_utc": "2026-11-05T04:46:21.124Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155245.jpg",
+      "size_bytes": 2728921,
+      "created_utc": "2026-11-05T04:46:20.641Z",
+      "group": "20260930",
+      "duplicate_name_count": 1,
+      "observation_focus": "Volée haute photographiée en montée, murs d'encadrement."
+    },
+    {
+      "name": "IMG_20260930_155255.jpg",
+      "size_bytes": 2714909,
+      "created_utc": "2026-11-05T04:46:20.820Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155302.jpg",
+      "size_bytes": 2445620,
+      "created_utc": "2026-11-05T04:46:20.301Z",
+      "group": "20260930",
+      "duplicate_name_count": 1,
+      "observation_focus": "Terrasse bois et plateforme maçonnée distinctes en vue de dessus."
+    },
+    {
+      "name": "IMG_20260930_155309.jpg",
+      "size_bytes": 1896197,
+      "created_utc": "2026-11-05T04:46:20.466Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155315.jpg",
+      "size_bytes": 2055638,
+      "created_utc": "2026-11-05T04:46:19.816Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155344.jpg",
+      "size_bytes": 2597429,
+      "created_utc": "2026-11-05T04:46:20.107Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155415.jpg",
+      "size_bytes": 2815498,
+      "created_utc": "2026-11-05T04:46:19.620Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155431.jpg",
+      "size_bytes": 2834234,
+      "created_utc": "2026-11-05T04:46:19.728Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20260930_155440.jpg",
+      "size_bytes": 1902645,
+      "created_utc": "2026-11-05T04:46:19.428Z",
+      "group": "20260930",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_090859.jpg",
+      "size_bytes": 3481288,
+      "created_utc": "2026-11-05T04:46:19.289Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Façade Est de face, 6 ouvertures, deux rampants de toiture."
+    },
+    {
+      "name": "IMG_20261007_090915.jpg",
+      "size_bytes": 2200031,
+      "created_utc": "2026-11-05T04:46:19.045Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_090933.jpg",
+      "size_bytes": 2741127,
+      "created_utc": "2026-11-05T04:46:18.705Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_090941.jpg",
+      "size_bytes": 2743791,
+      "created_utc": "2026-11-05T04:46:18.868Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_090946.jpg",
+      "size_bytes": 2177440,
+      "created_utc": "2026-11-05T04:46:18.449Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_090953.jpg",
+      "size_bytes": 2611363,
+      "created_utc": "2026-11-05T04:46:18.596Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_090957.jpg",
+      "size_bytes": 2052048,
+      "created_utc": "2026-11-05T04:46:18.266Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091006.jpg",
+      "size_bytes": 2684968,
+      "created_utc": "2026-11-05T04:46:18.133Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091329.jpg",
+      "size_bytes": 1980285,
+      "created_utc": "2026-11-05T04:46:17.874Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091343.jpg",
+      "size_bytes": 2712385,
+      "created_utc": "2026-11-05T04:46:17.964Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Nord : pavés de verre bas, sol en pente et voisinages."
+    },
+    {
+      "name": "IMG_20261007_091346.jpg",
+      "size_bytes": 1890643,
+      "created_utc": "2026-11-05T04:46:17.630Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091354.jpg",
+      "size_bytes": 2760707,
+      "created_utc": "2026-11-05T04:46:17.757Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091403.jpg",
+      "size_bytes": 2817825,
+      "created_utc": "2026-11-05T04:46:17.267Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091426.jpg",
+      "size_bytes": 1857839,
+      "created_utc": "2026-11-05T04:46:17.489Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091435.jpg",
+      "size_bytes": 3086106,
+      "created_utc": "2026-11-05T04:46:17.036Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091448.jpg",
+      "size_bytes": 2972847,
+      "created_utc": "2026-11-05T04:46:17.156Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_091624.jpg",
+      "size_bytes": 2442847,
+      "created_utc": "2026-11-05T04:46:16.598Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092051.jpg",
+      "size_bytes": 2537292,
+      "created_utc": "2026-11-05T04:46:16.813Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092105.jpg",
+      "size_bytes": 1066175,
+      "created_utc": "2026-11-05T04:46:16.311Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092117.jpg",
+      "size_bytes": 1076545,
+      "created_utc": "2026-11-05T04:46:16.429Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue large maison, escalier et terrasse bois : orientation générale."
+    },
+    {
+      "name": "IMG_20261007_092134.jpg",
+      "size_bytes": 1141148,
+      "created_utc": "2026-11-05T04:46:15.964Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092141.jpg",
+      "size_bytes": 1803748,
+      "created_utc": "2026-11-05T04:46:16.159Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092533.jpg",
+      "size_bytes": 1627681,
+      "created_utc": "2026-11-05T04:46:15.431Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Volée basse de face, position côté Sud/Ouest à contrôler métriquement."
+    },
+    {
+      "name": "IMG_20261007_092550.jpg",
+      "size_bytes": 1277871,
+      "created_utc": "2026-11-05T04:46:15.822Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092607.jpg",
+      "size_bytes": 1144005,
+      "created_utc": "2026-11-05T04:46:15.163Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092615.jpg",
+      "size_bytes": 1159937,
+      "created_utc": "2026-11-05T04:46:15.338Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092647.jpg",
+      "size_bytes": 1163161,
+      "created_utc": "2026-11-05T04:46:14.749Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue des façades latérales Sud et arrière, toiture et terrasses."
+    },
+    {
+      "name": "IMG_20261007_092650.jpg",
+      "size_bytes": 1060681,
+      "created_utc": "2026-11-05T04:46:15.009Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092703.jpg",
+      "size_bytes": 1257645,
+      "created_utc": "2026-11-05T04:46:14.367Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092711.jpg",
+      "size_bytes": 1486629,
+      "created_utc": "2026-11-05T04:46:14.595Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092715.jpg",
+      "size_bytes": 1314989,
+      "created_utc": "2026-11-05T04:46:13.883Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Sous-face terrasse bois et ses vrais appuis verticaux."
+    },
+    {
+      "name": "IMG_20261007_092729.jpg",
+      "size_bytes": 702865,
+      "created_utc": "2026-11-05T04:46:14.083Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092734.jpg",
+      "size_bytes": 1371112,
+      "created_utc": "2026-11-05T04:46:13.475Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vide sous la terrasse bois / passage."
+    },
+    {
+      "name": "IMG_20261007_092739.jpg",
+      "size_bytes": 1707993,
+      "created_utc": "2026-11-05T04:46:13.650Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092745.jpg",
+      "size_bytes": 1133578,
+      "created_utc": "2026-11-05T04:46:12.477Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092751.jpg",
+      "size_bytes": 1007739,
+      "created_utc": "2026-11-05T04:46:13.241Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092759.jpg",
+      "size_bytes": 875795,
+      "created_utc": "2026-11-05T04:46:11.969Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092802.jpg",
+      "size_bytes": 1244814,
+      "created_utc": "2026-11-05T04:46:12.314Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092813.jpg",
+      "size_bytes": 1167434,
+      "created_utc": "2026-11-05T04:46:11.778Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Volée montante contre la façade, garde-corps et accès haut."
+    },
+    {
+      "name": "IMG_20261007_092818.jpg",
+      "size_bytes": 853660,
+      "created_utc": "2026-11-05T04:46:11.592Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Arrivée haute sur dalle maçonnée puis transition vers la terrasse bois, ressaut visible."
+    },
+    {
+      "name": "IMG_20261007_092824.jpg",
+      "size_bytes": 1262681,
+      "created_utc": "2026-11-05T04:46:11.270Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092831.jpg",
+      "size_bytes": 895584,
+      "created_utc": "2026-11-05T04:46:11.091Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092834.jpg",
+      "size_bytes": 844986,
+      "created_utc": "2026-11-05T04:46:10.943Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092836.jpg",
+      "size_bytes": 881062,
+      "created_utc": "2026-11-05T04:46:10.693Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092841.jpg",
+      "size_bytes": 1533102,
+      "created_utc": "2026-11-05T04:46:10.198Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092846.jpg",
+      "size_bytes": 1052956,
+      "created_utc": "2026-11-05T04:46:10.411Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_092854.jpg",
+      "size_bytes": 1342097,
+      "created_utc": "2026-11-05T04:46:10.061Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Descente haute au contact du mur de maison jusqu'au palier de rotation."
+    },
+    {
+      "name": "IMG_20261007_092858.jpg",
+      "size_bytes": 1436670,
+      "created_utc": "2026-11-05T04:46:09.790Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Même descente plus largement cadrée, palier + départ tournant dans la cour."
+    },
+    {
+      "name": "IMG_20261007_092901.jpg",
+      "size_bytes": 1989924,
+      "created_utc": "2026-11-05T04:46:09.132Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue verticale au-dessus du coude/partie basse et de la zone de cour."
+    },
+    {
+      "name": "IMG_20261007_092913.jpg",
+      "size_bytes": 1762470,
+      "created_utc": "2026-11-05T04:46:09.639Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_094314.jpg",
+      "size_bytes": 1148648,
+      "created_utc": "2026-11-05T04:46:08.974Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_094329.jpg",
+      "size_bytes": 1165085,
+      "created_utc": "2026-11-05T04:46:08.817Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_094334.jpg",
+      "size_bytes": 1061395,
+      "created_utc": "2026-11-05T04:46:08.585Z",
+      "group": "20261007",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "IMG_20261007_094358.jpg",
+      "size_bytes": 964745,
+      "created_utc": "2026-11-05T04:46:08.400Z",
+      "group": "20261007",
+      "duplicate_name_count": 1,
+      "observation_focus": "Vue de contexte : mur voisin, parapet des volées, maison et ouvrage arrière."
+    },
+    {
+      "name": "01-original.jpg",
+      "size_bytes": 145666,
+      "created_utc": "2026-11-05T04:46:23.807Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "01-original.jpg",
+      "size_bytes": 145666,
+      "created_utc": "2026-11-05T04:46:29.172Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "02-original.jpg",
+      "size_bytes": 181056,
+      "created_utc": "2026-11-05T04:46:23.183Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "02-original.jpg",
+      "size_bytes": 181056,
+      "created_utc": "2026-11-05T04:46:29.321Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "03-original.jpg",
+      "size_bytes": 149924,
+      "created_utc": "2026-11-05T04:46:23.024Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "03-original.jpg",
+      "size_bytes": 149924,
+      "created_utc": "2026-11-05T04:46:28.852Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "04-original.jpg",
+      "size_bytes": 180586,
+      "created_utc": "2026-11-05T04:46:23.351Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "04-original.jpg",
+      "size_bytes": 180586,
+      "created_utc": "2026-11-05T04:46:29.042Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "05-original.jpg",
+      "size_bytes": 176941,
+      "created_utc": "2026-11-05T04:46:23.663Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "05-original.jpg",
+      "size_bytes": 176941,
+      "created_utc": "2026-11-05T04:46:28.659Z",
+      "group": "original-reference",
+      "duplicate_name_count": 2
+    },
+    {
+      "name": "file_0000000030608210ba03c7edb2084e1f.jpg",
+      "size_bytes": 149977,
+      "created_utc": "2026-11-05T04:46:27.506Z",
+      "group": "reference-compression",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "file_00000000417481f495b36b3fbd75e980.jpg",
+      "size_bytes": 180809,
+      "created_utc": "2026-11-05T04:46:27.363Z",
+      "group": "reference-compression",
+      "duplicate_name_count": 1
+    },
+    {
+      "name": "file_000000007c948210a4faecd9f8cc4b4d.jpg",
+      "size_bytes": 177087,
+      "created_utc": "2026-11-05T04:46:27.210Z",
+      "group": "reference-compression",
+      "duplicate_name_count": 1
+    }
+  ],
+  "known_duplicate_groups": [
+    {
+      "kind": "same_name_and_size",
+      "filenames": [
+        "01-original.jpg",
+        "02-original.jpg",
+        "03-original.jpg",
+        "04-original.jpg",
+        "05-original.jpg"
+      ],
+      "two_drive_entries_per_name": true,
+      "duplicates": 5
+    },
+    {
+      "kind": "visually_identical_compressed_variants",
+      "matches": [
+        [
+          "file_0000000030608210ba03c7edb2084e1f.jpg",
+          "03-original.jpg"
+        ],
+        [
+          "file_00000000417481f495b36b3fbd75e980.jpg",
+          "04-original.jpg"
+        ],
+        [
+          "file_000000007c948210a4faecd9f8cc4b4d.jpg",
+          "05-original.jpg"
+        ]
+      ],
+      "duplicates": 3,
+      "note": "Same viewpoint visually; JPEG bytes differ, not pixel-identical."
+    }
+  ]
+}

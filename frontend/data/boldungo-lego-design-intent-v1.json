@@ -1,0 +1,225 @@
+{
+  "schema_version": "boldungo.lego-design-intent.v1",
+  "goal": "Créer des maisons LEGO reconnaissables, aux bonnes formes et proportions, avec leurs détails architecturaux caractéristiques ; ne pas chercher la mesure exacte quand elle ne change pas la reconnaissance.",
+  "general_rules": {
+    "priority_order": [
+      "silhouette_and_shape",
+      "relative_proportions",
+      "signature_architecture",
+      "character_details",
+      "precise_metric_values"
+    ],
+    "scale_policy": "Le détail peut être légèrement accentué à l'échelle LEGO pour rester lisible, sans altérer la silhouette.",
+    "material_reasoning": "Compléter visuellement les détails de fabrication usuels lorsqu'ils sont plausibles : bandes de zinc, joints, lames de bois, gouttières. Toujours marquer les détails non vus comme propositions inférées, jamais comme observations certaines.",
+    "lego_translation": "Privilégier les briques visibles et pièces LEGO réelles ; SNOT et tiles verticaux quand ils préservent les formes ; ne pas transformer un toit à deux pentes en terrasse ou en escalier apparent pour un assemblage plus commode.",
+    "validation_order": [
+      "analyse_multivue",
+      "silhouette_desiree",
+      "proportions_et_relations",
+      "correction_proprietaire",
+      "details_visuels",
+      "recherche_de_pieces_lego",
+      "tests_de_connexion_collision_stabilite_et_insertion",
+      "notice"
+    ],
+    "unknown_handling": "Une distance, un nombre de bandes ou un détail caché non vérifiable peut être null ou un intervalle ; jamais déclarer exact."
+  },
+  "material_design_hints": [
+    {
+      "material": "zinc",
+      "proposal": "Plusieurs bandes métalliques sur chaque pan, éventuellement joints debout fins ; nombre libre et harmonieux, sans inventer qu'il est mesuré.",
+      "evidence_status": "generic_material_inference"
+    },
+    {
+      "material": "bois",
+      "proposal": "Terrasse en lames et contrefiches visibles lorsqu'elles sont pertinentes ; espacement stylisable.",
+      "evidence_status": "generic_material_inference"
+    },
+    {
+      "material": "maconnerie",
+      "proposal": "Distinguer surfaces pleines, parapets et vides portés ; ne pas boucher l'espace ouvert sous la plateforme.",
+      "evidence_status": "generic_material_inference"
+    },
+    {
+      "material": "bords_et_ornements",
+      "proposal": "Gouttières, rives, bordures de poutres, encadrements de fenêtres et ruptures de couleur : traiter comme des éléments à considérer, non comme du bruit photographique.",
+      "evidence_status": "generic_material_inference"
+    }
+  ],
+  "example_house": "BOLDÜNGO — maison du propriétaire",
+  "evidence_classes": [
+    "owner_confirmed",
+    "photo_observed",
+    "material_inferred"
+  ],
+  "features": [
+    {
+      "id": "silhouette-three-levels",
+      "label": "Silhouette et trois niveaux",
+      "importance": "signature",
+      "status": "owner_confirmed",
+      "treatment": "Conserver la composition générale, même à une échelle LEGO simplifiée.",
+      "photo_examples": [
+        "IMG_20261007_090859.jpg"
+      ]
+    },
+    {
+      "id": "zinc-two-pitched-roof",
+      "label": "Couverture en zinc à deux pans réellement inclinés",
+      "importance": "signature",
+      "status": "photo_observed",
+      "treatment": "Deux surfaces inclinées lisses ; pas de marches visibles faisant office de toiture.",
+      "photo_examples": [
+        "IMG_20261007_090859.jpg",
+        "01-original.jpg"
+      ]
+    },
+    {
+      "id": "zinc-seams",
+      "label": "Bandes et joints du zinc",
+      "importance": "character",
+      "status": "material_inferred",
+      "treatment": "Suggérer plusieurs bandes ou joints fins avec des pièces LEGO ; le nombre est libre.",
+      "inference_reason": "Une couverture en zinc est fabriquée à partir de plusieurs éléments assemblés ; les joints peuvent être invisibles sur les clichés."
+    },
+    {
+      "id": "six-front-openings",
+      "label": "Six ouvertures de la façade Est",
+      "importance": "signature",
+      "status": "photo_observed",
+      "treatment": "Conserver nombre, distribution sur 3 niveaux et formes différentes.",
+      "photo_examples": [
+        "IMG_20261007_090859.jpg"
+      ]
+    },
+    {
+      "id": "rose-window-surrounds",
+      "label": "Contours rosés et reliefs des fenêtres",
+      "importance": "signature",
+      "status": "photo_observed",
+      "treatment": "Couleur rose/beige nuancée, rebords et reliefs visibles et légèrement amplifiables.",
+      "photo_examples": [
+        "01-original.jpg",
+        "IMG_20261007_090915.jpg"
+      ]
+    },
+    {
+      "id": "visible-roof-beams",
+      "label": "Extrémités des poutres sous débord de toit",
+      "importance": "character",
+      "status": "photo_observed",
+      "treatment": "Préserver les petits bouts de poutres visibles sous la rive en LEGO, même légèrement grossis.",
+      "photo_examples": [
+        "IMG_20261007_090953.jpg"
+      ]
+    },
+    {
+      "id": "gutters",
+      "label": "Gouttières et descentes d'eau",
+      "importance": "character",
+      "status": "material_inferred",
+      "treatment": "Ajouter si cohérent avec les vues, couleurs et attaches plausibles ; ne pas inventer leur parcours comme s'il était observé.",
+      "inference_reason": "Accessoires courants des couvertures et des bords de toit."
+    },
+    {
+      "id": "stair-l",
+      "label": "Escalier maçonné en L dépassant vers l'Ouest",
+      "importance": "signature",
+      "status": "owner_confirmed",
+      "treatment": "Deux volées et palier, contact maison sans jour, parapets maçonnés, sens de circulation conservé.",
+      "photo_examples": [
+        "IMG_20261007_092854.jpg",
+        "IMG_20261007_092858.jpg",
+        "IMG_20261007_092901.jpg"
+      ]
+    },
+    {
+      "id": "tbe",
+      "label": "Terrasse béton (TBé)",
+      "importance": "signature",
+      "status": "owner_confirmed",
+      "treatment": "Accès haut de l'escalier, collée à la façade ; support et vide inférieur à conserver.",
+      "photo_examples": [
+        "IMG_20261007_092818.jpg"
+      ]
+    },
+    {
+      "id": "tbo",
+      "label": "Terrasse bois (TBO)",
+      "importance": "signature",
+      "status": "owner_confirmed",
+      "treatment": "Collée à la façade et contiguë à TBé ; planches, poteaux, diagonales et ressaut visibles.",
+      "photo_examples": [
+        "IMG_20261007_092715.jpg",
+        "IMG_20261007_092734.jpg"
+      ]
+    },
+    {
+      "id": "north-glass-blocks",
+      "label": "Pavés de verre 6 × 5 côté Nord",
+      "importance": "character",
+      "status": "owner_confirmed",
+      "treatment": "Représenter une grille identifiable, même si dimensions simplifiées.",
+      "photo_examples": [
+        "IMG_20261007_091343.jpg"
+      ]
+    },
+    {
+      "id": "west-rear-simple",
+      "label": "Dos Ouest simplifié",
+      "importance": "character",
+      "status": "owner_confirmed",
+      "treatment": "Omettre les grands volumes arrière de cheminées conformément à la décision du propriétaire, sans modifier l'implantation de l'escalier."
+    }
+  ],
+  "contacts": [
+    {
+      "a": "house-south",
+      "b": "stair-upper",
+      "relation": "touch_no_gap",
+      "status": "owner_confirmed"
+    },
+    {
+      "a": "house-south",
+      "b": "tbe",
+      "relation": "touch_no_gap",
+      "status": "owner_confirmed"
+    },
+    {
+      "a": "house-south",
+      "b": "tbo",
+      "relation": "touch_no_gap",
+      "status": "owner_confirmed"
+    },
+    {
+      "a": "stair-upper",
+      "b": "tbe",
+      "relation": "touch_no_gap",
+      "status": "owner_confirmed"
+    },
+    {
+      "a": "tbe",
+      "b": "tbo",
+      "relation": "touch_with_height_step",
+      "status": "owner_confirmed"
+    }
+  ],
+  "visual_prohibitions": [
+    "roof_as_visible_steps",
+    "open_gap_house_to_stair",
+    "open_gap_house_to_tbe",
+    "open_gap_house_to_tbo",
+    "solid_fill_under_terraces",
+    "wrong_l_stair_turn"
+  ],
+  "metric_anchors": {
+    "east_facade_width_m": 9.3,
+    "south_facade_depth_m_approx": 8.2,
+    "stair_width_m": 1.12,
+    "stair_step_counts_unassigned": [
+      7,
+      9
+    ],
+    "roof_pitch_degrees": null
+  }
+}
