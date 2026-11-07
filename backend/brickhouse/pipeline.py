@@ -54,6 +54,19 @@ _SCENE_LOSSES_RECOVERED_AFTER_PROJECTION = {
 }
 
 
+def _plan_for_supported_orthogonal_parts(model: BrickModel):
+    """Use the existing physical gate for wholly supported rectangular models.
+
+    Legacy mixed/architectural models remain VISUAL-ONLY and are not certified:
+    the gate has no verified semantics for their roof/window/special pieces.
+    """
+    from brickhouse.bricks.physical_placement_gate import CATALOG
+    if model.parts and all(part.part_id in CATALOG for part in model.parts):
+        from brickhouse.bricks.physical_assembly import generate_physically_screened_assembly_plan
+        return generate_physically_screened_assembly_plan(model)
+    return generate_assembly_plan(model)
+
+
 def _validate_generated_model(model: BrickModel) -> None:
     validate_model_part_capabilities(model, create_current_engine_capability_registry())
 
@@ -213,7 +226,7 @@ def _single_volume_bundle(building: BuildingModel, geometry, front_width_studs: 
     brick_model = _restore_opening_provenance(brick_model, opening_parts)
     _validate_generated_model(brick_model)
     bom = generate_bom(brick_model)
-    assembly_plan = generate_assembly_plan(brick_model)
+    assembly_plan = _plan_for_supported_orthogonal_parts(brick_model)
     quality = [shell.discretization_quality] if shell.discretization_quality is not None else []
     return create_export_bundle(brick_model,bom,assembly_plan,appearance=building.appearance,discretization_quality=quality,scale_recommendation=scale_recommendation,fidelity_issues=[*anchor_issues,*_opening_representation_issues(opening_plan, opening_statuses),*roof_issues,*_geometry_fidelity_issues(brick_model, ldraw_root)])
 
@@ -233,7 +246,7 @@ def run_m0_pipeline_model(building: BuildingModel, *, front_width_studs: int = D
         spatial_shell=generate_spatial_brick_shell(shell); opening_parts,represented_opening_ids,opening_statuses=generate_planned_opening_parts(local_building,shell,opening_plan); fidelity_issues.extend(_opening_representation_issues(opening_plan,opening_statuses)); facade_details=generate_window_surrounds(local_building,shell,skip_opening_ids=represented_opening_ids); roof=local_building.roofs[0] if local_building.roofs else None; fidelity_issues.extend(_roof_raster_issues(subgeometry,shell,roof)); local_model=_build_local_model(local_building,subgeometry,shell,spatial_shell,roof,facade_details,opening_parts); local_model=_restore_opening_provenance(local_model,opening_parts)
         x=round((volume.position.x-min_x)*studs_per_meter); y=round((volume.position.y-min_y)*studs_per_meter); z=round((volume.position.z-min_z)*plates_per_meter); all_parts.extend(_translate_model(local_model,prefix=volume.id,x=x,y=y,z=z)); max_x=max(max_x,x+local_model.width_studs); max_y=max(max_y,y+local_model.depth_studs); max_z=max(max_z,z+local_model.height_plates)
     primary_x=round((primary.position.x-min_x)*studs_per_meter); primary_y=round((primary.position.y-min_y)*studs_per_meter); primary_depth=max(1,round(primary.depth*studs_per_meter))
-    brick_model=BrickModel(building_id=building.id,volume_id="composite",width_studs=front_width_studs,depth_studs=primary_depth,height_plates=max_z,canvas_width_studs=max_x,canvas_depth_studs=max_y,origin_x_studs=primary_x,origin_y_studs=primary_y,parts=all_parts); _validate_generated_model(brick_model); bom=generate_bom(brick_model); assembly_plan=generate_assembly_plan(brick_model); fidelity_issues.extend(_geometry_fidelity_issues(brick_model,ldraw_root)); return create_export_bundle(brick_model,bom,assembly_plan,appearance=building.appearance,discretization_quality=quality_reports,scale_recommendation=scale_recommendation,fidelity_issues=fidelity_issues)
+    brick_model=BrickModel(building_id=building.id,volume_id="composite",width_studs=front_width_studs,depth_studs=primary_depth,height_plates=max_z,canvas_width_studs=max_x,canvas_depth_studs=max_y,origin_x_studs=primary_x,origin_y_studs=primary_y,parts=all_parts); _validate_generated_model(brick_model); bom=generate_bom(brick_model); assembly_plan=_plan_for_supported_orthogonal_parts(brick_model); fidelity_issues.extend(_geometry_fidelity_issues(brick_model,ldraw_root)); return create_export_bundle(brick_model,bom,assembly_plan,appearance=building.appearance,discretization_quality=quality_reports,scale_recommendation=scale_recommendation,fidelity_issues=fidelity_issues)
 
 
 def _source_confidence_issue(kind: str, obj) -> BrickExportFidelityIssue | None:
