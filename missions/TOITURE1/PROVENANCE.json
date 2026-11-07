@@ -1,0 +1,29 @@
+{
+  "source_repository": "ludodulac/boldungo",
+  "source_ref": "3c8c5f19f5d7c5ee6d81383bbd24dc3ea38a8003",
+  "source_pr": 931,
+  "source_file": "missions/B3/generated/GUIDED004-B3-1904.ldr",
+  "source_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+  "selection_why": "The first found existing B-3 aligned roof underside candidate matching a real chimney stud in three-dimensional LDraw grid: roof-000338 ↔ chimney:00052, with one underlying B-3 chimney course 00043. No edits to any original 408 roof pieces. Local root is lower chimney course, NOT a demonstrated house foundation.",
+  "original_placements": [
+    {
+      "comment": "0 // scene-chimney:house-chimney-antenna:00043:solution",
+      "line": "1 19 950 -840 630 0 0 -1 0 1 0 1 0 0 3622.dat",
+      "original_id": "scene-chimney:house-chimney-antenna:00043:solution"
+    },
+    {
+      "comment": "0 // scene-chimney:house-chimney-antenna:00052:solution",
+      "line": "1 19 950 -864 630 0 0 -1 0 1 0 1 0 0 3622.dat",
+      "original_id": "scene-chimney:house-chimney-antenna:00052:solution"
+    },
+    {
+      "comment": "0 // roof-000338",
+      "line": "1 1 970 -888 620 0 0 -1 0 1 0 1 0 0 30363.dat",
+      "original_id": "roof-000338"
+    }
+  ],
+  "source_30363_connector_observation": "Official s/30363s01.dat contains top studs at local (+/-10,0,0), and underside cavity geometry at local underside Y=24. Matching anti-stud center at (+10,24,0) is a geometric candidate only, verified further by test; this is not a fictional nominal connector accepted in source engine.",
+  "nominal_30363_ramp_degrees": 18,
+  "architectural_pitch_reference_approx": 22,
+  "additional_pieces": 0
+}

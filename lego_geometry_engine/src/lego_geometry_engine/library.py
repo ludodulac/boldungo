@@ -15,13 +15,15 @@ class LDrawLibrary(_GeometryLDrawLibrary):
     """LDraw loader with conservative standard Brick/Plate connector inference."""
 
     def _infer_basic_connectors(self, description: str, bbox: AABB) -> Iterable[Connector]:
-        match = re.search(r"\b(Brick|Plate)\s+(\d+)\s*x\s*(\d+)\b", description, re.I)
+        match = re.search(r"\b(Brick|Plate|Baseplate)\s+(\d+)\s*x\s*(\d+)\b", description, re.I)
         if not match:
             return ()
 
         family = match.group(1).lower()
         width, length = int(match.group(2)), int(match.group(3))
-        body_height = 24.0 if family == "brick" else 8.0
+        # Original LDraw 3811.dat has stud roots at y=0 and its base underside at y=4.
+        # A Baseplate is not a regular Plate: it has no anti-stud underside.
+        body_height = {"brick": 24.0, "plate": 8.0, "baseplate": 4.0}[family]
 
         # Canonical LDraw Brick/Plate orientation has the underside at the
         # largest Y coordinate. Studs extend above the body toward negative Y,
@@ -47,13 +49,14 @@ class LDrawLibrary(_GeometryLDrawLibrary):
                         0.25,
                     )
                 )
-                connectors.append(
-                    Connector(
-                        "anti_stud",
-                        (x, body_bottom_y, z),
-                        (0, 1, 0),
-                        ("stud",),
-                        0.25,
+                if family != "baseplate":
+                    connectors.append(
+                        Connector(
+                            "anti_stud",
+                            (x, body_bottom_y, z),
+                            (0, 1, 0),
+                            ("stud",),
+                            0.25,
+                        )
                     )
-                )
         return connectors

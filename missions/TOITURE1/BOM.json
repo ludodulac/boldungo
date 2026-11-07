@@ -1,0 +1,18 @@
+{
+  "total_parts": 3,
+  "additional_pieces": 0,
+  "lines": [
+    {
+      "part_id": "BRICK_1X3",
+      "category": "brick",
+      "ldraw_ref": "3622.dat",
+      "quantity": 2
+    },
+    {
+      "part_id": "BRICK_SLOPED_18_4X2",
+      "category": "roof",
+      "ldraw_ref": "30363.dat",
+      "quantity": 1
+    }
+  ]
+}

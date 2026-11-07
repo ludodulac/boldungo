@@ -29,7 +29,7 @@ from brickhouse.bricks.scene_physical_support_gate import evaluate_scene_physica
 from brickhouse.bricks.scene_platform_connectivity import augment_brick_model_with_scene_platform_connectivity
 from brickhouse.bricks.scene_shutters import augment_brick_model_with_scene_shutters
 from brickhouse.bricks.wall_depth import MIN_GEOMETRY_CONFIDENCE, augment_brick_model_with_wall_depth
-from brickhouse.pipeline import DEFAULT_FRONT_WIDTH_STUDS, run_m0_pipeline_model
+from brickhouse.pipeline import DEFAULT_FRONT_WIDTH_STUDS, run_m0_pipeline_model, _plan_for_supported_orthogonal_parts
 from brickhouse.scene import ArchitecturalScene, SceneRoofType
 from brickhouse.scene.physical_support import analyze_physical_support
 from brickhouse.scene.topology_projection import project_scene_to_building
@@ -281,12 +281,12 @@ def run_partial_scene_pipeline(scene: ArchitecturalScene, *, front_width_studs: 
     if optimize_scale and recommendation.improvement_fraction >= AUTO_SCALE_MIN_IMPROVEMENT:
         selected_width = recommendation.recommended_front_width_studs
     try:
-        bundle = run_m0_pipeline_model(building, front_width_studs=selected_width)
+        bundle = run_m0_pipeline_model(building, front_width_studs=selected_width, allow_disconnected_preview=True)
     except ValueError:
         if selected_width == front_width_studs:
             raise
         selected_width = front_width_studs
-        bundle = run_m0_pipeline_model(building, front_width_studs=selected_width)
+        bundle = run_m0_pipeline_model(building, front_width_studs=selected_width, allow_disconnected_preview=True)
     enriched = augment_brick_model_with_wall_depth(bundle.brick_model, scene, front_width_studs=selected_width)
     exterior_scene, _ = _partial_exterior_selection(scene)
     enriched = augment_brick_model_with_scene_platform_connectivity(enriched, exterior_scene, front_width_studs=selected_width)
@@ -297,10 +297,15 @@ def run_partial_scene_pipeline(scene: ArchitecturalScene, *, front_width_studs: 
     if enriched.width_studs != selected_width:
         enriched = enriched.model_copy(update={"width_studs": selected_width})
     if enriched is not bundle.brick_model:
-        assembly_plan = generate_assembly_plan(enriched)
+        assembly_plan = _plan_for_supported_orthogonal_parts(enriched, allow_disconnected_preview=True)
         bundle = bundle.model_copy(update={"brick_model": enriched, "bom": generate_bom(enriched), "assembly_plan": assembly_plan, "instruction_plan": generate_instruction_plan(assembly_plan), "bag_plan": generate_bag_plan(assembly_plan)})
     quality = build_discretization_quality(building, front_width_studs=selected_width)
     metadata = bundle.metadata.model_copy(update={"discretization_quality": quality, "scale_recommendation": recommendation})
     fidelity_issues = _partial_fidelity_issues(scene)
+    fidelity_issues.append(BrickExportFidelityIssue(
+        code="partial_preview_not_physically_certified", severity="warning",
+        message="Visual-only partial preview: disconnected subassemblies are permitted; "
+                "no mechanically certified construction notice, no proof for unsupported geometries.",
+    ))
     capability_summary = derive_export_capability_summary(assembly_plan=bundle.assembly_plan, instruction_plan=bundle.instruction_plan, bag_plan=bundle.bag_plan, fidelity_issues=fidelity_issues, mechanical_verification=(bundle.capability_summary.mechanical_verification if bundle.capability_summary is not None else None))
     return bundle.model_copy(update={"metadata": metadata, "fidelity_issues": fidelity_issues, "capability_summary": capability_summary})

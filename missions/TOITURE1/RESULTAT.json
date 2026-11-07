@@ -1,0 +1,25 @@
+{
+  "original_roof_id": "roof-000338",
+  "original_roof_ref": "30363.dat",
+  "original_support_id": "scene-chimney:house-chimney-antenna:00052:solution",
+  "base_support_id": "scene-chimney:house-chimney-antenna:00043:solution",
+  "original_roof_connection": "NON DÉMONTRÉ",
+  "variant_necessary": "NON DÉMONTRÉ",
+  "additional_pieces": 0,
+  "additional_refs": [],
+  "collisions": "PASS",
+  "local_support_chain": "NON DÉMONTRÉ",
+  "support_to_house_foundations": "NON DÉMONTRÉ",
+  "insertion": "NON DÉMONTRÉ",
+  "visualization": "PASS — original 30363 and two 3622 real LDraw references shown in existing BOLDÜNGO viewer, three steps mobile Chromium",
+  "whole_roof_408_parts": "NOT_TESTED",
+  "overall": "NON DÉMONTRÉ",
+  "first_blocker": null,
+  "physical_mechanical_stability": "NON DÉMONTRÉ",
+  "source_fidelity": "3 original placement records exact, source PR931 read only",
+  "limits": [
+    "Slope geometry 18° only; 22° architectural pitch not certified.",
+    "Viewer is simplified visual proxy; proof uses official pinned triangulated LDraw shape.",
+    "No full-house support to foundations, no strength/force/tolerances, no neighboring roof pieces validated."
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "stud_cavity_source": {
+    "mirror": "pybricks/ldraw pinned at c43ed06a128a10ed65675166bf42eb6fd608b9b0",
+    "real_slope": "30363.dat / s/30363s01.dat",
+    "physical_slope_top_studs": [
+      [
+        -10,
+        0,
+        0
+      ],
+      [
+        10,
+        0,
+        0
+      ]
+    ],
+    "cavity_lower_face_ldraw_y": 24,
+    "slope_interior": "Hollow geometry (box2-5 / box2-7) is triangulated and checked in the sweep",
+    "stud_radius_ldu": 6,
+    "stud_height_ldu": 4
+  },
+  "candidate_underside_centers_from_slope_lower_face": [
+    [
+      970.0,
+      -864.0,
+      610.0
+    ],
+    [
+      970.0,
+      -864.0,
+      630.0
+    ]
+  ],
+  "chimney_studs_from_official_3622": [
+    [
+      950.0,
+      -864.0,
+      610.0
+    ],
+    [
+      950.0,
+      -864.0,
+      630.0
+    ],
+    [
+      950.0,
+      -864.0,
+      650.0
+    ]
+  ],
+  "precisely_coincident_mating_centers": [],
+  "original_roof_pair": "roof-000338 ↔ scene-chimney:house-chimney-antenna:00052:solution",
+  "original_roof_pair_nominal_match_count": 0,
+  "roof_30363_not_whitelisted_globally": true,
+  "support_pair": "scene-chimney:house-chimney-antenna:00052:solution ↔ scene-chimney:house-chimney-antenna:00043:solution",
+  "support_pair_standard_stud_matches": 3,
+  "support_pair_engine_verdict": "COMPATIBLE_MATING",
+  "status": "NON DÉMONTRÉ",
+  "limitation": "Slope underside candidate centers require explicit clearance from actual full LDraw triangles; a center match alone does NOT demonstrate mating."
+}

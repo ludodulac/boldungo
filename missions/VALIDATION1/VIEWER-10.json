@@ -1,0 +1,430 @@
+{
+  "schema_version": "0.1",
+  "building_id": "GUIDED004-VALIDATION1-10",
+  "volume_id": "house-main-rdc-corner",
+  "metadata": {
+    "purpose": "VALIDATION-1 isolated East (FRONT) South (LEFT) existing corner fragment",
+    "original_model": "frontend/data/guided004-maison4-356-brickhouse.json",
+    "original_ldraw": "missions/MAISON1/generated/MAISON1-EST-SUD-FRAGMENT.ldr",
+    "reference_branch_sha": "f3c596aa03a5159953ad548bc5c6d4a8cdb6066c",
+    "parts_source_count": 356,
+    "selected_count": 10,
+    "geometry_untouched": true,
+    "foundation_support": "NOT_DEMONSTRATED; 3811 connector metadata previously absent",
+    "strength": "NOT_CERTIFIED",
+    "isolation_note": "Other 346 pieces excluded only for targeted examination. Nothing is modified in source model."
+  },
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "GUIDED004-VALIDATION1-10",
+    "volume_id": "house-main-rdc-corner",
+    "width_studs": 51,
+    "depth_studs": 42,
+    "height_plates": 44,
+    "origin_x_studs": 13,
+    "origin_y_studs": 2,
+    "canvas_width_studs": 64,
+    "canvas_depth_studs": 44,
+    "parts": [
+      {
+        "placement_id": "M1-EXPERIMENTAL-BASE-3811",
+        "part_id": "BASEPLATE_32X32",
+        "category": "plate",
+        "component": "roof_support",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": -1,
+        "rotation_quarter_turns": 1,
+        "width_studs": 32,
+        "length_studs": 32,
+        "height_plates": 1,
+        "ldraw_ref": "3811.dat",
+        "ldraw_color": 2,
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "ldraw_xyz_ldu": [
+          640,
+          0,
+          360
+        ],
+        "source_annotation": "EXPERIMENTAL-ADDED",
+        "source_role": "base",
+        "visual_proxy_not_actual_glazing": false,
+        "semantic_color": "#3e9256"
+      },
+      {
+        "placement_id": "wall-000001",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": 0,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "ldraw_xyz_ldu": [
+          400,
+          -24,
+          50
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000017",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 3,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "ldraw_xyz_ldu": [
+          330,
+          -24,
+          140
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000041",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "width_studs": 1,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "3004.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "ldraw_xyz_ldu": [
+          330,
+          -48,
+          60
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000040",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 4,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "width_studs": 1,
+        "length_studs": 3,
+        "height_plates": 3,
+        "ldraw_ref": "3622.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "ldraw_xyz_ldu": [
+          330,
+          -48,
+          110
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000023",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 17,
+        "y_studs": 2,
+        "z_plates": 3,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "ldraw_xyz_ldu": [
+          420,
+          -48,
+          50
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000048",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "ldraw_xyz_ldu": [
+          400,
+          -72,
+          50
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000065",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 3,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 1,
+        "length_studs": 6,
+        "height_plates": 3,
+        "ldraw_ref": "3009.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "ldraw_xyz_ldu": [
+          330,
+          -72,
+          120
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "left"
+      },
+      {
+        "placement_id": "wall-000071",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 17,
+        "y_studs": 2,
+        "z_plates": 9,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 6,
+        "height_plates": 3,
+        "ldraw_ref": "3009.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "ldraw_xyz_ldu": [
+          400,
+          -96,
+          50
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "front"
+      },
+      {
+        "placement_id": "wall-000088",
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "component": "wall",
+        "x_studs": 16,
+        "y_studs": 2,
+        "z_plates": 9,
+        "rotation_quarter_turns": 0,
+        "width_studs": 1,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "3004.dat",
+        "ldraw_color": 19,
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "ldraw_xyz_ldu": [
+          330,
+          -96,
+          60
+        ],
+        "source_annotation": "CANONICAL-UNCHANGED",
+        "source_role": null,
+        "visual_proxy_not_actual_glazing": false,
+        "facade": "left"
+      }
+    ]
+  },
+  "bom": {
+    "schema_version": "0.1",
+    "building_id": "GUIDED004-VALIDATION1-10",
+    "volume_id": "house-main-rdc-corner",
+    "total_parts": 10,
+    "unique_part_types": 5,
+    "lines": [
+      {
+        "part_id": "BASEPLATE_32X32",
+        "category": "plate",
+        "quantity": 1,
+        "ldraw_ref": "3811.dat"
+      },
+      {
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "quantity": 4,
+        "ldraw_ref": "3008.dat"
+      },
+      {
+        "part_id": "BRICK_1X2",
+        "category": "brick",
+        "quantity": 2,
+        "ldraw_ref": "3004.dat"
+      },
+      {
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "quantity": 1,
+        "ldraw_ref": "3622.dat"
+      },
+      {
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "quantity": 2,
+        "ldraw_ref": "3009.dat"
+      }
+    ]
+  },
+  "fidelity_issues": [
+    {
+      "severity": "warning",
+      "message": "Sous-ensemble de seulement 10 pièces ; la baseplate 3811 ne présente pas de raccord tenon/cavité officiellement démontré par les anciens contrôles."
+    },
+    {
+      "severity": "warning",
+      "message": "Le contact nominal sur la grille n'est pas une preuve mécanique. Validation des maillages et insertion documentée séparément ; stabilité physique NON CERTIFIÉE."
+    }
+  ]
+}

@@ -1,0 +1,371 @@
+{
+  "schema_version": "0.1",
+  "building_id": "TOITURE3-B3-5-30363-CONTIGUOUS-ONE-BEAM",
+  "volume_id": "roof-5-shared-support",
+  "metadata": {
+    "experiment": "TOITURE3",
+    "source_original": "missions/B3/generated/GUIDED004-B3-1904.ldr",
+    "reference_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+    "original_positions_unchanged": true,
+    "roof_30363_integrated": 5,
+    "roof_30363_studied": 15,
+    "experimental_support": "TOITURE3-VARIANT-3006-ROW336-340",
+    "architecture": "Approximate B3 18° slope LEGO 30363; roof overall 22° not proved",
+    "viewer_notice": "3D schematic display. Physical geometry tests use real pinned LDraw triangles and 1904 B-3 original placement records.",
+    "actual_house_foundation_connection": "NON DÉMONTRÉ"
+  },
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "TOITURE3-B3-5-30363-CONTIGUOUS-ONE-BEAM",
+    "volume_id": "roof-5-shared-support",
+    "width_studs": 8,
+    "depth_studs": 15,
+    "height_plates": 11,
+    "parts": [
+      {
+        "placement_id": "scene-chimney:house-chimney-antenna:00043:solution",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "roof_support",
+        "x_studs": 1,
+        "y_studs": 5,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "width_studs": 1,
+        "length_studs": 3,
+        "height_plates": 3,
+        "ldraw_ref": "3622.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          950,
+          -840,
+          630
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true
+      },
+      {
+        "placement_id": "TOITURE3-VARIANT-3006-ROW336-340",
+        "part_id": "BRICK_2X10",
+        "category": "brick",
+        "component": "roof_support",
+        "x_studs": 2,
+        "y_studs": 1,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "width_studs": 2,
+        "length_studs": 10,
+        "height_plates": 3,
+        "ldraw_ref": "3006.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          960,
+          -864,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#c88b4e",
+        "visual_proxy": true,
+        "source_annotation": "TOITURE3-EXPERIMENTAL-SUBSTITUTION-ONLY"
+      },
+      {
+        "placement_id": "roof-000336",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 2,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          540
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000337",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 4,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          580
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000338",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 6,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000339",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 8,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          660
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000340",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 10,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          700
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      }
+    ]
+  },
+  "bom": {
+    "schema_version": "0.1",
+    "total_parts": 7,
+    "unique_part_types": 3,
+    "lines": [
+      {
+        "part_id": "BRICK_1X3",
+        "ldraw_ref": "3622.dat",
+        "category": "brick",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_2X10",
+        "ldraw_ref": "3006.dat",
+        "category": "brick",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "ldraw_ref": "30363.dat",
+        "category": "roof",
+        "quantity": 5
+      }
+    ]
+  },
+  "fidelity_issues": [
+    {
+      "severity": "warning",
+      "message": "TOITURE-3 : 5 pièces de toiture originales B-3, support 3006 expérimental partagé, test géométrique détaillé dans RESULTAT.json."
+    },
+    {
+      "severity": "warning",
+      "message": "Liaison de ce module à la vraie charpente / fondations NON DÉMONTRÉE. La cheminée ne constitue pas à elle seule une preuve structurelle."
+    },
+    {
+      "severity": "warning",
+      "message": "Les pièces sont des proxies d'affichage, pas des maillages officiels. Aucune modification des 408 positions originales B-3."
+    }
+  ],
+  "assembly_plan": {
+    "schema_version": "0.1",
+    "total_parts": 7,
+    "total_steps": 7,
+    "steps": [
+      {
+        "sequence": 1,
+        "step_id": "TOITURE3-01",
+        "title": "Support inférieur original 3622",
+        "placement_ids": [
+          "scene-chimney:house-chimney-antenna:00043:solution"
+        ]
+      },
+      {
+        "sequence": 2,
+        "step_id": "TOITURE3-02",
+        "title": "Poutre de toiture LEGO 3006 — support commun",
+        "placement_ids": [
+          "TOITURE3-VARIANT-3006-ROW336-340"
+        ]
+      },
+      {
+        "sequence": 3,
+        "step_id": "TOITURE3-03",
+        "title": "Fixer la pente originale roof-000338 (30363)",
+        "placement_ids": [
+          "roof-000338"
+        ]
+      },
+      {
+        "sequence": 4,
+        "step_id": "TOITURE3-04",
+        "title": "Fixer la pente originale roof-000337 (30363)",
+        "placement_ids": [
+          "roof-000337"
+        ]
+      },
+      {
+        "sequence": 5,
+        "step_id": "TOITURE3-05",
+        "title": "Fixer la pente originale roof-000339 (30363)",
+        "placement_ids": [
+          "roof-000339"
+        ]
+      },
+      {
+        "sequence": 6,
+        "step_id": "TOITURE3-06",
+        "title": "Fixer la pente originale roof-000336 (30363)",
+        "placement_ids": [
+          "roof-000336"
+        ]
+      },
+      {
+        "sequence": 7,
+        "step_id": "TOITURE3-07",
+        "title": "Fixer la pente originale roof-000340 (30363)",
+        "placement_ids": [
+          "roof-000340"
+        ]
+      }
+    ]
+  }
+}

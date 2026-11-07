@@ -1,0 +1,1100 @@
+{
+  "order": [
+    "wall-000009",
+    "wall-000031",
+    "wall-000057",
+    "wall-000078",
+    "wall-000104",
+    "wall-000125",
+    "wall-000151",
+    "wall-000172",
+    "wall-000198",
+    "wall-000220",
+    "wall-000244",
+    "wall-000266",
+    "wall-000290",
+    "wall-000310",
+    "wall-000335",
+    "wall-000355",
+    "wall-000380",
+    "wall-000400",
+    "wall-000424",
+    "wall-000445",
+    "wall-000469",
+    "wall-000490",
+    "wall-000515",
+    "wall-000537",
+    "wall-000564",
+    "wall-000586",
+    "wall-000613",
+    "wall-000635",
+    "wall-000660",
+    "wall-000683",
+    "wall-000707",
+    "gable-000026",
+    "gable-000031",
+    "gable-000035",
+    "gable-000039",
+    "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+    "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+    "TOITURE3-VARIANT-3006-ROW336-340",
+    "roof-000338",
+    "roof-000337",
+    "roof-000339",
+    "roof-000336",
+    "roof-000340"
+  ],
+  "wall_new_steps": [
+    {
+      "sequence": 1,
+      "id": "wall-000009",
+      "root": "existing B3 wall at y=-24",
+      "approach": "original bottom course is local anchor; no LEGO foundation",
+      "status": "PASS_AS_LOCAL_ROOT"
+    },
+    {
+      "sequence": 2,
+      "id": "wall-000031",
+      "start_ldraw_xyz": [
+        860.0,
+        -96.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -48.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000009",
+      "all_earlier_nonmating_parts_considered": 0,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 3,
+      "id": "wall-000057",
+      "start_ldraw_xyz": [
+        880.0,
+        -120.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -72.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000031",
+      "all_earlier_nonmating_parts_considered": 1,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 4,
+      "id": "wall-000078",
+      "start_ldraw_xyz": [
+        860.0,
+        -144.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -96.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000057",
+      "all_earlier_nonmating_parts_considered": 2,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 5,
+      "id": "wall-000104",
+      "start_ldraw_xyz": [
+        880.0,
+        -168.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -120.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000078",
+      "all_earlier_nonmating_parts_considered": 3,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 6,
+      "id": "wall-000125",
+      "start_ldraw_xyz": [
+        860.0,
+        -192.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -144.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000104",
+      "all_earlier_nonmating_parts_considered": 4,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 7,
+      "id": "wall-000151",
+      "start_ldraw_xyz": [
+        880.0,
+        -216.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -168.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000125",
+      "all_earlier_nonmating_parts_considered": 5,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 8,
+      "id": "wall-000172",
+      "start_ldraw_xyz": [
+        860.0,
+        -240.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -192.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000151",
+      "all_earlier_nonmating_parts_considered": 6,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 9,
+      "id": "wall-000198",
+      "start_ldraw_xyz": [
+        880.0,
+        -264.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -216.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000172",
+      "all_earlier_nonmating_parts_considered": 7,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 10,
+      "id": "wall-000220",
+      "start_ldraw_xyz": [
+        860.0,
+        -288.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -240.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000198",
+      "all_earlier_nonmating_parts_considered": 8,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 11,
+      "id": "wall-000244",
+      "start_ldraw_xyz": [
+        880.0,
+        -312.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -264.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000220",
+      "all_earlier_nonmating_parts_considered": 9,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 12,
+      "id": "wall-000266",
+      "start_ldraw_xyz": [
+        860.0,
+        -336.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -288.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000244",
+      "all_earlier_nonmating_parts_considered": 10,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 13,
+      "id": "wall-000290",
+      "start_ldraw_xyz": [
+        880.0,
+        -360.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -312.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000266",
+      "all_earlier_nonmating_parts_considered": 11,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 14,
+      "id": "wall-000310",
+      "start_ldraw_xyz": [
+        860.0,
+        -384.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -336.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000290",
+      "all_earlier_nonmating_parts_considered": 12,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 15,
+      "id": "wall-000335",
+      "start_ldraw_xyz": [
+        880.0,
+        -408.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -360.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000310",
+      "all_earlier_nonmating_parts_considered": 13,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 16,
+      "id": "wall-000355",
+      "start_ldraw_xyz": [
+        860.0,
+        -432.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -384.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000335",
+      "all_earlier_nonmating_parts_considered": 14,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 17,
+      "id": "wall-000380",
+      "start_ldraw_xyz": [
+        880.0,
+        -456.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -408.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000355",
+      "all_earlier_nonmating_parts_considered": 15,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 18,
+      "id": "wall-000400",
+      "start_ldraw_xyz": [
+        860.0,
+        -480.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -432.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000380",
+      "all_earlier_nonmating_parts_considered": 16,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 19,
+      "id": "wall-000424",
+      "start_ldraw_xyz": [
+        880.0,
+        -504.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -456.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000400",
+      "all_earlier_nonmating_parts_considered": 17,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 20,
+      "id": "wall-000445",
+      "start_ldraw_xyz": [
+        860.0,
+        -528.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -480.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000424",
+      "all_earlier_nonmating_parts_considered": 18,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 21,
+      "id": "wall-000469",
+      "start_ldraw_xyz": [
+        880.0,
+        -552.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -504.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000445",
+      "all_earlier_nonmating_parts_considered": 19,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 22,
+      "id": "wall-000490",
+      "start_ldraw_xyz": [
+        860.0,
+        -576.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -528.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000469",
+      "all_earlier_nonmating_parts_considered": 20,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 23,
+      "id": "wall-000515",
+      "start_ldraw_xyz": [
+        880.0,
+        -600.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -552.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000490",
+      "all_earlier_nonmating_parts_considered": 21,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 24,
+      "id": "wall-000537",
+      "start_ldraw_xyz": [
+        860.0,
+        -624.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -576.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000515",
+      "all_earlier_nonmating_parts_considered": 22,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 25,
+      "id": "wall-000564",
+      "start_ldraw_xyz": [
+        880.0,
+        -648.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -600.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000537",
+      "all_earlier_nonmating_parts_considered": 23,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 26,
+      "id": "wall-000586",
+      "start_ldraw_xyz": [
+        860.0,
+        -672.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -624.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000564",
+      "all_earlier_nonmating_parts_considered": 24,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 27,
+      "id": "wall-000613",
+      "start_ldraw_xyz": [
+        880.0,
+        -696.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -648.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000586",
+      "all_earlier_nonmating_parts_considered": 25,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 28,
+      "id": "wall-000635",
+      "start_ldraw_xyz": [
+        860.0,
+        -720.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -672.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000613",
+      "all_earlier_nonmating_parts_considered": 26,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 29,
+      "id": "wall-000660",
+      "start_ldraw_xyz": [
+        880.0,
+        -744.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -696.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000635",
+      "all_earlier_nonmating_parts_considered": 27,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 30,
+      "id": "wall-000683",
+      "start_ldraw_xyz": [
+        860.0,
+        -768.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        860.0,
+        -720.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000660",
+      "all_earlier_nonmating_parts_considered": 28,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 31,
+      "id": "wall-000707",
+      "start_ldraw_xyz": [
+        880.0,
+        -792.0,
+        870.0
+      ],
+      "end_ldraw_xyz": [
+        880.0,
+        -744.0,
+        870.0
+      ],
+      "motion": "XYZ(t)=(x,y-48+48*t,z) for all t ∈ [0,1], fixed rotation",
+      "mating_below": "wall-000683",
+      "all_earlier_nonmating_parts_considered": 29,
+      "full_continuous_stud_sweep": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    }
+  ],
+  "top_12_unchanged_steps": [
+    {
+      "piece": "gable-000026",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        960.0,
+        -816.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        960.0,
+        -768.0,
+        870.0
+      ],
+      "parent": "wall-000707",
+      "checked_all_previous": 1,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "gable-000031",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        900.0,
+        -840.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        900.0,
+        -792.0,
+        870.0
+      ],
+      "parent": "gable-000026",
+      "checked_all_previous": 2,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "gable-000035",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        920.0,
+        -864.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        920.0,
+        -816.0,
+        870.0
+      ],
+      "parent": "gable-000031",
+      "checked_all_previous": 3,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "gable-000039",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        940.0,
+        -888.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        940.0,
+        -840.0,
+        870.0
+      ],
+      "parent": "gable-000035",
+      "checked_all_previous": 4,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -912.0,
+        870.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -864.0,
+        870.0
+      ],
+      "parent": "gable-000039",
+      "checked_all_previous": 5,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "UP",
+      "start_xyz_ldu": [
+        960.0,
+        -792.0,
+        760.0
+      ],
+      "final_xyz_ldu": [
+        960.0,
+        -840.0,
+        760.0
+      ],
+      "parent": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "checked_all_previous": 6,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "TOITURE3-VARIANT-3006-ROW336-340",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        960.0,
+        -912.0,
+        620.0
+      ],
+      "final_xyz_ldu": [
+        960.0,
+        -864.0,
+        620.0
+      ],
+      "parent": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "checked_all_previous": 7,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000338",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        620.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        620.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 8,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000337",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        580.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        580.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 9,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000339",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        660.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        660.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 10,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000336",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        540.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        540.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 11,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    },
+    {
+      "piece": "roof-000340",
+      "full_path": "p(t)=start+(final-start)*t, t∈[0,1], orientation constant",
+      "direction": "DOWN",
+      "start_xyz_ldu": [
+        970.0,
+        -936.0,
+        700.0
+      ],
+      "final_xyz_ldu": [
+        970.0,
+        -888.0,
+        700.0
+      ],
+      "parent": "TOITURE3-VARIANT-3006-ROW336-340",
+      "checked_all_previous": 12,
+      "possible_nonmating_swept_body_obstructions": [],
+      "status": "PASS"
+    }
+  ],
+  "new_wall_30_continuous_stud_sweep_proven": true,
+  "relative_translation": "XYZ(t)=(final_x,final_y-48+48*t,final_z), t∈[0,1]; never sampled waypoints",
+  "previous_roof4_insertion": "PASS retained unchanged",
+  "status": "PASS"
+}

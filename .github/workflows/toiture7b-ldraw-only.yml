@@ -1,0 +1,76 @@
+name: "TOITURE-7B — one LDraw 3002 and 3004 dependency load"
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/toiture7b-ldraw-only.yml"
+permissions:
+  contents: read
+jobs:
+  exactly_one_dependency_check:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - name: One bounded download and dependency closure (no geometry)
+        shell: bash
+        run: |
+          mkdir -p missions/TOITURE7B
+          printf '{"3002.dat":"FAIL","3004.dat":"FAIL","dependencies":"FAIL","test":"NOT_COMPLETED"}\n' > missions/TOITURE7B/RESULTAT.json
+          timeout --signal=TERM --kill-after=2s 95s python3 - <<'PY'
+          import json
+          import runpy
+          import time
+          from pathlib import Path
+
+          started=time.monotonic()
+          output=Path("missions/TOITURE7B/RESULTAT.json")
+          result={"mission":"TOITURE-7B","environment":"GitHub Actions",
+                  "single_attempt":True,"source":"pybricks/ldraw c43ed06a128a10ed65675166bf42eb6fd608b9b0",
+                  "3002.dat":"FAIL","3004.dat":"FAIL","dependencies":"FAIL"}
+          try:
+              downloader=runpy.run_path("scripts/download_ldraw_probe_066.py")
+              root=Path("/tmp/toiture7b-ldraw-one-shot")
+              loaded=downloader["download_ldraw_subset"](
+                  root,initial=("3002.dat","3004.dat"),max_files=140)
+              dependency_pattern=downloader["TYPE1"]
+              references=[]
+              for key,path in loaded.items():
+                  if not path.is_file() or not path.read_text(encoding="utf-8"):
+                      raise RuntimeError("Empty or missing LDraw dependency: "+key)
+                  for line in path.read_text(encoding="utf-8").splitlines():
+                      m=dependency_pattern.match(line.strip())
+                      if m:
+                          dep=m.group(1).strip().replace(chr(92),"/").lower()
+                          references.append(dep)
+                          if dep not in loaded or not loaded[dep].is_file():
+                              raise RuntimeError("Unresolved transitive LDraw dependency: "+dep)
+              result["3002.dat"]="PASS" if "3002.dat" in loaded and loaded["3002.dat"].is_file() else "FAIL"
+              result["3004.dat"]="PASS" if "3004.dat" in loaded and loaded["3004.dat"].is_file() else "FAIL"
+              result["dependencies"]="PASS" if result["3002.dat"]==result["3004.dat"]=="PASS" else "FAIL"
+              result["dependency_file_count"]=len(loaded)
+              result["references_checked"]=len(references)
+          except Exception as exc:
+              result["error"]=type(exc).__name__+": "+str(exc)
+          finally:
+              result["test_duration_seconds"]=round(time.monotonic()-started,3)
+              output.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+              print("TOITURE7B_RESULT="+json.dumps(result,ensure_ascii=False),flush=True)
+              with open(__import__("os").environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf-8") as f:
+                  f.write("### TOITURE-7B — One dependency-only check\n\n")
+                  f.write("| Status | Result |\n| --- | --- |\n")
+                  for k in ("3002.dat","3004.dat","dependencies"):
+                      f.write("| "+k+" | "+result[k]+" |\n")
+                  f.write("\nDuration of single download/test: "+str(result["test_duration_seconds"])+" s\n")
+          if result["dependencies"]!="PASS":
+              raise SystemExit(1)
+          PY
+      - name: Record single test result as GitHub Actions artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOITURE7B-LDRAW-DEPENDENCIES-SINGLE-ATTEMPT
+          path: missions/TOITURE7B/RESULTAT.json
+          if-no-files-found: error
+          retention-days: 30

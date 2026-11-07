@@ -1,0 +1,11 @@
+0 FILE TOITURE1-RACCORD-ORIGINAL-B3.ldr
+0 3 ORIGINAL existing B3 LDraw placements (all exact, readonly source PR931)
+0 PITCH 18 DEG NOMINAL LEGO SLOPE; 22 DEG GENERAL ARCHITECTURE NOT CERTIFIED
+0 Physical strength, weather sealing, and support to house foundations NOT CERTIFIED.
+0 // scene-chimney:house-chimney-antenna:00043:solution
+1 19 950 -840 630 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // scene-chimney:house-chimney-antenna:00052:solution
+1 19 950 -864 630 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // roof-000338
+1 1 970 -888 620 0 0 -1 0 1 0 1 0 0 30363.dat
+0 NOFILE

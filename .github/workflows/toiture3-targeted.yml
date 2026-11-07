@@ -1,0 +1,61 @@
+name: TOITURE-3 — one shared LEGO 3006 beam and five original 30363 slopes
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/toiture3_probe.py'
+      - 'scripts/toiture3_browser.py'
+      - 'missions/TOITURE3/MODULE-CONTIGU-5.ldr'
+      - 'missions/TOITURE3/VIEWER-7.json'
+      - '.github/workflows/toiture3-targeted.yml'
+permissions:
+  contents: write
+concurrency:
+  group: toiture3-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  one-module-one-campaign:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing official LDraw geometry engine and one mobile Chromium
+        run: |
+          python -m pip install -e "./lego_geometry_engine"
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Pinned actual official B3 neighbor refs and 3006 support
+        run: python scripts/download_ldraw_probe_066.py /tmp/toiture3-ldraw --max-files 180 --parts 30363 3622 3002 3006
+      - name: ONE complete targeted official LDraw proof with B3 surrounding 1904 placements
+        run: python scripts/toiture3_probe.py --ldraw-root /tmp/toiture3-ldraw
+      - name: ONE actual mobile viewer seven-step proof
+        run: python scripts/toiture3_browser.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOITURE3-FIVE-ORIGINAL-30363-SHARED-3006-ENVIRONMENT
+          path: |
+            missions/TOITURE3/*.json
+            missions/TOITURE3/MODULE-CONTIGU-5.ldr
+            missions/TOITURE3/*.png
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Record measured geometry and browser results in DRAFT branch only
+        if: success()
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add missions/TOITURE3/CONNEXIONS.json missions/TOITURE3/COLLISIONS.json missions/TOITURE3/INSERTION.json missions/TOITURE3/RESULTAT.json missions/TOITURE3/toiture3-mobile.png
+          if ! git diff --cached --quiet; then
+            git commit -m "TOITURE-3: measured five original roofs, B3 environment and actual mobile sequence"
+            git push origin "HEAD:refs/heads/${BRANCH}"
+          fi

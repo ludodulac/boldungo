@@ -1,0 +1,71 @@
+{
+  "original_75_unchanged": true,
+  "two_bounded_routes_real_B3_and_75_mesh_probed": true,
+  "attempts": [
+    {
+      "route": "A",
+      "forbidden": [
+        {
+          "new": "TOITURE7-A-3001-06",
+          "existing": "wall-000696",
+          "ldraw_ref": "3008.dat",
+          "official_mesh_relation": "COLLISION",
+          "part_position": [
+            1240.0,
+            -720.0,
+            620.0
+          ],
+          "original_position": [
+            1270.0,
+            -720.0,
+            600.0
+          ]
+        }
+      ],
+      "screened": 8,
+      "status": "FAIL"
+    },
+    {
+      "route": "B",
+      "forbidden": [
+        {
+          "new": "TOITURE7-B-3001-01",
+          "existing": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+          "ldraw_ref": "3006.dat",
+          "official_mesh_relation": "COLLISION",
+          "part_position": [
+            1000.0,
+            -840.0,
+            700.0
+          ],
+          "original_position": [
+            960.0,
+            -840.0,
+            760.0
+          ]
+        },
+        {
+          "new": "TOITURE7-B-3001-06",
+          "existing": "wall-000697",
+          "ldraw_ref": "3008.dat",
+          "official_mesh_relation": "COLLISION",
+          "part_position": [
+            1240.0,
+            -720.0,
+            700.0
+          ],
+          "original_position": [
+            1270.0,
+            -720.0,
+            760.0
+          ]
+        }
+      ],
+      "screened": 11,
+      "status": "FAIL"
+    }
+  ],
+  "retained_75_original_TOITURE6_validated_collisions": "PASS, not reaudited",
+  "whole_expanded_variant": "FAIL",
+  "retained_module": "PASS"
+}

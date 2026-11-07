@@ -1,0 +1,28 @@
+{
+  "original_wall_chain_31_bricks": 31,
+  "new_wall_interfaces_measured": 30,
+  "roof_preserved": 5,
+  "additional_roof_integrated": 0,
+  "continuity_to_wall_foot": "PASS",
+  "wall_foot_id": "wall-000009",
+  "wall_top_id": "wall-000707",
+  "foundation_LEGO_identified": "NON",
+  "foundation_connection": "NON DÉMONTRÉ",
+  "second_independent_support": "NON DÉMONTRÉ",
+  "collisions": "PASS",
+  "insertion": "PASS",
+  "stability_physical": "NON DÉMONTRÉ",
+  "visualization": "PASS: real mobile Chromium, 43 pieces, 31 B3 wall courses, five original roof slopes, 43 assembly steps",
+  "first_blocker": "Aucune fondation LEGO à y=0 ; deuxième appui indépendant non démontré",
+  "B3_original_1904_preserved": true,
+  "TOITURE4_13_preserved": true,
+  "new_physical_bricks": 0,
+  "structure_to_ground": "wall foot at y=-24 ends body at y=0; not a fixed LEGO foundation",
+  "extension_15": "5/15 integrated; remaining 10 not certified",
+  "environment": {
+    "nearby_B3_bricks_considered": 64,
+    "potential_material_overlap_mesh_checked": 62,
+    "forbidden": []
+  },
+  "scope": "Full 31-level B3 west/back wall column + unchanged prior TOITURE4 roof/gable. No true baseplate or second load path. Viewer uses schematic geometry."
+}

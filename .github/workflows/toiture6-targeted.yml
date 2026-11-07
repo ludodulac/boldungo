@@ -1,0 +1,61 @@
+name: TOITURE-6 — official 3811 base and two independent B3 wall paths
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/toiture6_probe.py'
+      - 'scripts/toiture6_browser.py'
+      - 'missions/TOITURE6/MODULE-VARIANTE.ldr'
+      - 'missions/TOITURE6/VIEWER-80.json'
+      - '.github/workflows/toiture6-targeted.yml'
+permissions:
+  contents: write
+concurrency:
+  group: toiture6-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  one-local-foundation-and-two-walls:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Existing LDraw geometry engine and existing mobile browser
+        run: |
+          python -m pip install -e "./lego_geometry_engine"
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Real official pinned 3811 3008 3009 3006 3622 30363
+        run: python scripts/download_ldraw_probe_066.py /tmp/toiture6-ldraw --max-files 240 --parts 3811 3008 3009 3006 3622 30363 3002
+      - name: ONE targeted analytical foundation and second support test
+        run: python scripts/toiture6_probe.py --ldraw-root /tmp/toiture6-ldraw
+      - name: ONE existing BOLDÜNGO mobile 80-part 80-step viewer test
+        run: python scripts/toiture6_browser.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOITURE6-3811-TWO-ORIGINAL-WALLS-REAL-LDRAW
+          path: |
+            missions/TOITURE6/*.json
+            missions/TOITURE6/MODULE-VARIANTE.ldr
+            missions/TOITURE6/*.png
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Persist measured reports ONLY in DRAFT branch
+        if: success()
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add missions/TOITURE6/FONDATION.json missions/TOITURE6/DEUXIEME-APPUI.json missions/TOITURE6/COLLISIONS.json missions/TOITURE6/INSERTION.json missions/TOITURE6/RESULTAT.json missions/TOITURE6/toiture6-mobile.png
+          if ! git diff --cached --quiet; then
+            git commit -m "TOITURE-6: measured real 3811 foundation, dual B3 wall paths and existing mobile viewer"
+            git push origin "HEAD:refs/heads/${BRANCH}"
+          fi

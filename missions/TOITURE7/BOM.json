@@ -1,0 +1,9 @@
+{
+  "total_retained_parts": 75,
+  "retained_new_parts": 0,
+  "retained_roof_slopes_30363": 5,
+  "original_retained_TOITURE6": "missions/TOITURE6/MODULE-RETENU-75.ldr",
+  "attempts_each_official_3001": 6,
+  "experimental_real_bricks_not_in_retained": 12,
+  "note": "Experiments A/B are separate; no 3001 counts in the retained model."
+}

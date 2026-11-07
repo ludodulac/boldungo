@@ -1,0 +1,362 @@
+{
+  "old_retained_75_original_TOITURE6": "PASS, not reaudited",
+  "attempts": [
+    {
+      "route": "A",
+      "edges": [
+        {
+          "under": "TOITURE7-A-3001-01",
+          "above": "TOITURE3-VARIANT-3006-ROW336-340",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-A-3001-02",
+          "above": "TOITURE7-A-3001-01",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-A-3001-03",
+          "above": "TOITURE7-A-3001-02",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-A-3001-04",
+          "above": "TOITURE7-A-3001-03",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-A-3001-05",
+          "above": "TOITURE7-A-3001-04",
+          "genuine_connectors": 6,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-A-3001-06",
+          "above": "TOITURE7-A-3001-05",
+          "genuine_connectors": 4,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-A-3001-06",
+          "above": "wall-000719",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        }
+      ],
+      "sweeps": [
+        {
+          "piece": "TOITURE7-A-3001-01",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "roof-000315"
+          ],
+          "status": "NON DÉMONTRÉ"
+        },
+        {
+          "piece": "TOITURE7-A-3001-02",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "roof-000292"
+          ],
+          "status": "NON DÉMONTRÉ"
+        },
+        {
+          "piece": "TOITURE7-A-3001-03",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "roof-000269"
+          ],
+          "status": "NON DÉMONTRÉ"
+        },
+        {
+          "piece": "TOITURE7-A-3001-04",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "roof-000246"
+          ],
+          "status": "NON DÉMONTRÉ"
+        },
+        {
+          "piece": "TOITURE7-A-3001-05",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [],
+          "status": "PASS"
+        },
+        {
+          "piece": "TOITURE7-A-3001-06",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "wall-000625",
+            "wall-000649",
+            "wall-000673",
+            "wall-000696",
+            "wall-000719"
+          ],
+          "status": "NON DÉMONTRÉ"
+        }
+      ],
+      "status": "NON DÉMONTRÉ"
+    },
+    {
+      "route": "B",
+      "edges": [
+        {
+          "under": "TOITURE7-B-3001-01",
+          "above": "TOITURE3-VARIANT-3006-ROW336-340",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-B-3001-02",
+          "above": "TOITURE7-B-3001-01",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-B-3001-03",
+          "above": "TOITURE7-B-3001-02",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-B-3001-04",
+          "above": "TOITURE7-B-3001-03",
+          "genuine_connectors": 2,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-B-3001-05",
+          "above": "TOITURE7-B-3001-04",
+          "genuine_connectors": 6,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-B-3001-06",
+          "above": "TOITURE7-B-3001-05",
+          "genuine_connectors": 4,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        },
+        {
+          "under": "TOITURE7-B-3001-06",
+          "above": "wall-000719",
+          "genuine_connectors": 1,
+          "official_LDraw_relation": "CONTACT",
+          "continuous_from_below": {
+            "direction": "UP from below",
+            "full_continuous_stud_sweep_not_discrete_samples": true,
+            "body_planes_separate": true,
+            "initial_position_outside_neighbor": true,
+            "studs_checked": 8,
+            "first_interference": null,
+            "status": "PASS"
+          },
+          "status": "PASS"
+        }
+      ],
+      "sweeps": [
+        {
+          "piece": "TOITURE7-B-3001-01",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+            "roof-000317"
+          ],
+          "status": "NON DÉMONTRÉ"
+        },
+        {
+          "piece": "TOITURE7-B-3001-02",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "roof-000294"
+          ],
+          "status": "NON DÉMONTRÉ"
+        },
+        {
+          "piece": "TOITURE7-B-3001-03",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "roof-000271"
+          ],
+          "status": "NON DÉMONTRÉ"
+        },
+        {
+          "piece": "TOITURE7-B-3001-04",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "roof-000248"
+          ],
+          "status": "NON DÉMONTRÉ"
+        },
+        {
+          "piece": "TOITURE7-B-3001-05",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [],
+          "status": "PASS"
+        },
+        {
+          "piece": "TOITURE7-B-3001-06",
+          "up_from_below": true,
+          "full_48_LDU_continuous_sweep": true,
+          "ambiguous_obstacles": [
+            "wall-000625",
+            "wall-000673",
+            "wall-000719",
+            "wall-000650",
+            "wall-000674",
+            "wall-000697",
+            "wall-000720"
+          ],
+          "status": "NON DÉMONTRÉ"
+        }
+      ],
+      "status": "NON DÉMONTRÉ"
+    }
+  ],
+  "selected_module_additions": 0,
+  "status": "PASS for unchanged retained 75; NON DÉMONTRÉ for both additions"
+}

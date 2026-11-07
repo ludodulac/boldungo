@@ -1,0 +1,32 @@
+0 FILE TOITURE4-GABLE-LINK-B3.ldr
+0 Variant: five original B3 roof positions unchanged; support beam TOITURE3 unchanged.
+0 NEW two real parts 3622 and 3006 connect 3006 beam to original gable 3008 and original wall 3008.
+0 No original B3 placements moved. Source replacement upper chimney 3622 still excluded locally.
+0 B3 external pieces must be checked before ANY claim of physical compatibility.
+0 // wall-000707
+1 19 880 -744 870 1 0 0 0 1 0 0 0 1 3008.dat
+0 // gable-000026
+1 19 960 -768 870 1 0 0 0 1 0 0 0 1 3008.dat
+0 // gable-000031
+1 19 900 -792 870 1 0 0 0 1 0 0 0 1 3008.dat
+0 // gable-000035
+1 19 920 -816 870 1 0 0 0 1 0 0 0 1 3008.dat
+0 // gable-000039
+1 19 940 -840 870 1 0 0 0 1 0 0 0 1 3008.dat
+0 // TOITURE4-VARIANT-3622-GABLE-CONNECTOR
+1 19 970 -864 870 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE
+1 19 960 -840 760 0 0 -1 0 1 0 1 0 0 3006.dat
+0 // TOITURE3-VARIANT-3006-ROW336-340
+1 19 960 -864 620 0 0 -1 0 1 0 1 0 0 3006.dat
+0 // roof-000338
+1 1 970 -888 620 0 0 -1 0 1 0 1 0 0 30363.dat
+0 // roof-000337
+1 1 970 -888 580 0 0 -1 0 1 0 1 0 0 30363.dat
+0 // roof-000339
+1 1 970 -888 660 0 0 -1 0 1 0 1 0 0 30363.dat
+0 // roof-000336
+1 1 970 -888 540 0 0 -1 0 1 0 1 0 0 30363.dat
+0 // roof-000340
+1 1 970 -888 700 0 0 -1 0 1 0 1 0 0 30363.dat
+0 NOFILE

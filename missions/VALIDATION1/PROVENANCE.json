@@ -1,0 +1,323 @@
+{
+  "source_main_head": "385f3a180b0ddb00e2e300344ec9ec8331e3d4e5",
+  "source_maison1_head": "f3c596aa03a5159953ad548bc5c6d4a8cdb6066c",
+  "original_model_blob": "024c51175fea4b7587b9fd221a95e1f78290f84c",
+  "original_maison1_ldr_blob": "f415e4e630f55549dc7ba2ade6dac677f5611432",
+  "scope": "TEN existing physical LDraw placements on original coordinates (see full per-part exact data)",
+  "selection_reason": "Original 32×32 baseplate plus front-east and left-south real orthogonal bricks at z0,3,6,9. Corner-crossing top brick wall-000041 touches both ground-course facades. Independent inside posts excluded because they need tall beams to link to walls.",
+  "ids_order": [
+    "M1-EXPERIMENTAL-BASE-3811",
+    "wall-000001",
+    "wall-000017",
+    "wall-000041",
+    "wall-000040",
+    "wall-000023",
+    "wall-000048",
+    "wall-000065",
+    "wall-000071",
+    "wall-000088"
+  ],
+  "parts": [
+    {
+      "id": "M1-EXPERIMENTAL-BASE-3811",
+      "ldraw_ref": "3811.dat",
+      "origin_xyz_ldu": [
+        640,
+        0,
+        360
+      ],
+      "rotation": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "color": 2,
+      "grid_bbox": [
+        16,
+        2,
+        -1,
+        48,
+        34,
+        0
+      ],
+      "justification": "Experimental real 32×32 baseplate physically located beneath both wall runs"
+    },
+    {
+      "id": "wall-000001",
+      "ldraw_ref": "3008.dat",
+      "origin_xyz_ldu": [
+        400,
+        -24,
+        50
+      ],
+      "rotation": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "color": 19,
+      "grid_bbox": [
+        16,
+        2,
+        0,
+        24,
+        3,
+        3
+      ],
+      "justification": "Original front-east wall brick in tied first four courses"
+    },
+    {
+      "id": "wall-000017",
+      "ldraw_ref": "3008.dat",
+      "origin_xyz_ldu": [
+        330,
+        -24,
+        140
+      ],
+      "rotation": [
+        0,
+        0,
+        -1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "color": 19,
+      "grid_bbox": [
+        16,
+        3,
+        0,
+        17,
+        11,
+        3
+      ],
+      "justification": "Original left-south return wall brick forming interleaved corner courses"
+    },
+    {
+      "id": "wall-000041",
+      "ldraw_ref": "3004.dat",
+      "origin_xyz_ldu": [
+        330,
+        -48,
+        60
+      ],
+      "rotation": [
+        0,
+        0,
+        -1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "color": 19,
+      "grid_bbox": [
+        16,
+        2,
+        3,
+        17,
+        4,
+        6
+      ],
+      "justification": "Original left-south return wall brick forming interleaved corner courses"
+    },
+    {
+      "id": "wall-000040",
+      "ldraw_ref": "3622.dat",
+      "origin_xyz_ldu": [
+        330,
+        -48,
+        110
+      ],
+      "rotation": [
+        0,
+        0,
+        -1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "color": 19,
+      "grid_bbox": [
+        16,
+        4,
+        3,
+        17,
+        7,
+        6
+      ],
+      "justification": "Original left-south return wall brick forming interleaved corner courses"
+    },
+    {
+      "id": "wall-000023",
+      "ldraw_ref": "3008.dat",
+      "origin_xyz_ldu": [
+        420,
+        -48,
+        50
+      ],
+      "rotation": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "color": 19,
+      "grid_bbox": [
+        17,
+        2,
+        3,
+        25,
+        3,
+        6
+      ],
+      "justification": "Original front-east wall brick in tied first four courses"
+    },
+    {
+      "id": "wall-000048",
+      "ldraw_ref": "3008.dat",
+      "origin_xyz_ldu": [
+        400,
+        -72,
+        50
+      ],
+      "rotation": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "color": 19,
+      "grid_bbox": [
+        16,
+        2,
+        6,
+        24,
+        3,
+        9
+      ],
+      "justification": "Original front-east wall brick in tied first four courses"
+    },
+    {
+      "id": "wall-000065",
+      "ldraw_ref": "3009.dat",
+      "origin_xyz_ldu": [
+        330,
+        -72,
+        120
+      ],
+      "rotation": [
+        0,
+        0,
+        -1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "color": 19,
+      "grid_bbox": [
+        16,
+        3,
+        6,
+        17,
+        9,
+        9
+      ],
+      "justification": "Original left-south return wall brick forming interleaved corner courses"
+    },
+    {
+      "id": "wall-000071",
+      "ldraw_ref": "3009.dat",
+      "origin_xyz_ldu": [
+        400,
+        -96,
+        50
+      ],
+      "rotation": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "color": 19,
+      "grid_bbox": [
+        17,
+        2,
+        9,
+        23,
+        3,
+        12
+      ],
+      "justification": "Original front-east wall brick in tied first four courses"
+    },
+    {
+      "id": "wall-000088",
+      "ldraw_ref": "3004.dat",
+      "origin_xyz_ldu": [
+        330,
+        -96,
+        60
+      ],
+      "rotation": [
+        0,
+        0,
+        -1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "color": 19,
+      "grid_bbox": [
+        16,
+        2,
+        9,
+        17,
+        4,
+        12
+      ],
+      "justification": "Original left-south return wall brick forming interleaved corner courses"
+    }
+  ],
+  "physical_certification": "NOT_DEMONSTRATED"
+}

@@ -1,0 +1,74 @@
+{
+  "source_pr": 931,
+  "source_ref": "3c8c5f19f5d7c5ee6d81383bbd24dc3ea38a8003",
+  "source_path": "missions/B3/generated/GUIDED004-B3-1904.ldr",
+  "immutable_B3_snapshot_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+  "original_parts": [
+    {
+      "id": "wall-000707",
+      "original_LDraw_line": "1 19 880 -744 870 1 0 0 0 1 0 0 0 1 3008.dat"
+    },
+    {
+      "id": "gable-000026",
+      "original_LDraw_line": "1 19 960 -768 870 1 0 0 0 1 0 0 0 1 3008.dat"
+    },
+    {
+      "id": "gable-000031",
+      "original_LDraw_line": "1 19 900 -792 870 1 0 0 0 1 0 0 0 1 3008.dat"
+    },
+    {
+      "id": "gable-000035",
+      "original_LDraw_line": "1 19 920 -816 870 1 0 0 0 1 0 0 0 1 3008.dat"
+    },
+    {
+      "id": "gable-000039",
+      "original_LDraw_line": "1 19 940 -840 870 1 0 0 0 1 0 0 0 1 3008.dat"
+    },
+    {
+      "id": "roof-000336",
+      "original_LDraw_line": "1 1 970 -888 540 0 0 -1 0 1 0 1 0 0 30363.dat"
+    },
+    {
+      "id": "roof-000337",
+      "original_LDraw_line": "1 1 970 -888 580 0 0 -1 0 1 0 1 0 0 30363.dat"
+    },
+    {
+      "id": "roof-000338",
+      "original_LDraw_line": "1 1 970 -888 620 0 0 -1 0 1 0 1 0 0 30363.dat"
+    },
+    {
+      "id": "roof-000339",
+      "original_LDraw_line": "1 1 970 -888 660 0 0 -1 0 1 0 1 0 0 30363.dat"
+    },
+    {
+      "id": "roof-000340",
+      "original_LDraw_line": "1 1 970 -888 700 0 0 -1 0 1 0 1 0 0 30363.dat"
+    }
+  ],
+  "reuse_toiture3_common_beam": {
+    "id": "TOITURE3-VARIANT-3006-ROW336-340",
+    "original_experiment_line": "1 19 960 -864 620 0 0 -1 0 1 0 1 0 0 3006.dat"
+  },
+  "experimental_new_parts": [
+    {
+      "id": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "reference": "3622.dat",
+      "line": "1 19 970 -864 870 0 0 -1 0 1 0 1 0 0 3622.dat",
+      "intent": "Upper connector to gable-000039 original y=-840"
+    },
+    {
+      "id": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "reference": "3006.dat",
+      "line": "1 19 960 -840 760 0 0 -1 0 1 0 1 0 0 3006.dat",
+      "intent": "Single under-deck beam links roof beam to gable connector (inserted from below)"
+    }
+  ],
+  "other_gables_as_b3_neighbors": [
+    "gable-000041",
+    "gable-000036"
+  ],
+  "original_toiture3_lower_chimney": "scene-chimney:house-chimney-antenna:00043:solution left in B3 environment, not required for link to wall",
+  "excluded_upper_chimney_from_local_variant": "scene-chimney:house-chimney-antenna:00052:solution",
+  "structural_root": "wall-000707",
+  "wall_to_foundations": "NON DÉMONTRÉ"
+}

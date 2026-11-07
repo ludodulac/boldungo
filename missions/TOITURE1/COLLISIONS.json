@@ -1,0 +1,49 @@
+{
+  "roof_vs_upper_support_mesh": "CONTACT",
+  "roof_vs_lower_support_mesh": "SEPARATED",
+  "upper_vs_lower_support_mesh": "CONTACT",
+  "roof_upper_strict_mesh_crossing": {
+    "kind": "NO_RAW_MESH_COLLISION",
+    "relation": "CONTACT"
+  },
+  "full_continuous_slope_vs_support_stud_cylinder_sweep": [
+    {
+      "fixed_stud_center_ldu": [
+        950.0,
+        -864.0,
+        610.0
+      ],
+      "stud_cylindrical_body_checked": true,
+      "candidate_triangles": 0,
+      "swept_surface_interference": null,
+      "continuous_sweep_clear": true
+    },
+    {
+      "fixed_stud_center_ldu": [
+        950.0,
+        -864.0,
+        630.0
+      ],
+      "stud_cylindrical_body_checked": true,
+      "candidate_triangles": 0,
+      "swept_surface_interference": null,
+      "continuous_sweep_clear": true
+    },
+    {
+      "fixed_stud_center_ldu": [
+        950.0,
+        -864.0,
+        650.0
+      ],
+      "stud_cylindrical_body_checked": true,
+      "candidate_triangles": 0,
+      "swept_surface_interference": null,
+      "continuous_sweep_clear": true
+    }
+  ],
+  "nonstud_body_max_roof_world_y": -864.0,
+  "upper_support_nominal_body_top_world_y": -864.0,
+  "roof_body_always_above_nominal_support_body": true,
+  "forbidden_intersection_evidence": [],
+  "status": "PASS"
+}

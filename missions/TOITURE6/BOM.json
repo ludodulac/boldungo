@@ -1,0 +1,39 @@
+{
+  "total_parts": 80,
+  "original_toiture5": 43,
+  "original_second_wall": 31,
+  "experimental_new_parts": 5,
+  "original_extra_roof_candidate": 1,
+  "lines": [
+    {
+      "ldraw_ref": "3008.dat",
+      "quantity": 62,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "3622.dat",
+      "quantity": 1,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "3006.dat",
+      "quantity": 6,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "30363.dat",
+      "quantity": 6,
+      "category": "roof"
+    },
+    {
+      "ldraw_ref": "3811.dat",
+      "quantity": 1,
+      "category": "plate"
+    },
+    {
+      "ldraw_ref": "3009.dat",
+      "quantity": 4,
+      "category": "brick"
+    }
+  ]
+}

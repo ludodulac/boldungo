@@ -1,0 +1,61 @@
+name: TOITURE-4 — wall linked five original roofs (only new joints)
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/toiture4_probe.py'
+      - 'scripts/toiture4_browser.py'
+      - 'missions/TOITURE4/MODULE-VARIANTE-PIGNON.ldr'
+      - 'missions/TOITURE4/VIEWER-12.json'
+      - '.github/workflows/toiture4-targeted.yml'
+permissions:
+  contents: write
+concurrency:
+  group: toiture4-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  wall-connection-targeted:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Existing official LDraw geometry engine and mobile Chromium
+        run: |
+          python -m pip install -e "./lego_geometry_engine"
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Pinned authentic B3 wall, gable, roof and bridge geometries
+        run: python scripts/download_ldraw_probe_066.py /tmp/toiture4-ldraw --max-files 170 --parts 30363 3006 3008 3622 3002 3010 3004
+      - name: ONE wall/gable anchored module official mesh and continuous insertion check
+        run: python scripts/toiture4_probe.py --ldraw-root /tmp/toiture4-ldraw
+      - name: ONE existing BOLDUNGO viewer, mobile 13-step proof
+        run: python scripts/toiture4_browser.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOITURE4-FIVE-30363-REAL-GABLE-WALL-LINK
+          path: |
+            missions/TOITURE4/*.json
+            missions/TOITURE4/*.ldr
+            missions/TOITURE4/*.png
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Persist exact measured facts only in unmerged DRAFT PR
+        if: success()
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add missions/TOITURE4/CONNEXIONS.json missions/TOITURE4/COLLISIONS.json missions/TOITURE4/INSERTION.json missions/TOITURE4/RESULTAT.json missions/TOITURE4/toiture4-mobile.png
+          if ! git diff --cached --quiet; then
+            git commit -m "TOITURE-4: measured real B3 gable-to-wall roof support and mobile viewer proof"
+            git push origin "HEAD:refs/heads/${BRANCH}"
+          fi
