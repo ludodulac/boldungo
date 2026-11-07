@@ -41,6 +41,11 @@ jobs:
           python -m pip install -e "./lego_geometry_engine[dev]"
           python -m pip install playwright
           python -m playwright install --with-deps chromium
+      - name: Mission 013 — exactly two LEGO 3005 regression tests
+        run: |
+          python -m pytest -q \
+            lego_geometry_engine/tests/test_validation1_10_regression.py::test_injected_real_brick_solid_overlap_is_forbidden \
+            lego_geometry_engine/tests/test_validation1_10_regression.py::test_real_stud_cavity_connection_passes_nominal_geometry
       - name: Targeted positive and negative joint rules, plus original connector-axis regression
         run: python -m pytest -q lego_geometry_engine/tests/test_strict_containment.py lego_geometry_engine/tests/test_joint_validation.py lego_geometry_engine/tests/test_connector_axes.py lego_geometry_engine/tests/test_engine.py
       - name: Fetch only selected official real LDraw part families at pinned revision
