@@ -45,3 +45,26 @@ def test_unknown_geometry_not_claimed_as_physically_verified(monkeypatch):
     monkeypatch.setattr(pipeline, "generate_assembly_plan", lambda m: marker)
     assert pipeline._plan_for_supported_orthogonal_parts(model) is marker
     # This is the legacy VISUAL-ONLY path, never a physical-gate certificate.
+
+
+def test_partial_preview_accepts_separate_valid_ground_groups_without_certification(monkeypatch):
+    model = SimpleNamespace(parts=[
+        make_part("island-a", 0, 0), make_part("island-b", 8, 0),
+    ])
+    expected = SimpleNamespace(steps=[])
+    monkeypatch.setattr(physical_assembly, "generate_assembly_plan", lambda m: expected)
+    assert pipeline._plan_for_supported_orthogonal_parts(
+        model, allow_disconnected_preview=True
+    ) is expected
+    with pytest.raises(ValueError, match="PHYSICAL_GATE_FAIL:DISCONNECTED_ASSEMBLY"):
+        pipeline._plan_for_supported_orthogonal_parts(model)
+
+
+def test_partial_preview_still_refuses_real_solid_overlap(monkeypatch):
+    model = SimpleNamespace(parts=[
+        make_part("base", 0, 0), make_part("collision", 1, 0),
+    ])
+    monkeypatch.setattr(physical_assembly, "generate_assembly_plan",
+                        lambda m: pytest.fail("Preview plan emitted despite collision"))
+    with pytest.raises(ValueError, match="PHYSICAL_GATE_FAIL:collision:SOLID_COLLISION"):
+        pipeline._plan_for_supported_orthogonal_parts(model, allow_disconnected_preview=True)
