@@ -19,11 +19,11 @@ on:
         required: true
         default: B1
         type: choice
-        options: [B1, M020]
+        options: [B1, M020, M024]
 
 jobs:
   audit-guided004-b3-roof-020:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M020')
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M020'
     strategy:
       fail-fast: false
       max-parallel: 4
@@ -55,7 +55,7 @@ jobs:
           if-no-files-found: warn
 
   consolidate-guided004-b3-roof-023:
-    if: always() && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M020'))
+    if: always() && github.event_name == 'workflow_dispatch' && inputs.mission == 'M020'
     needs: [audit-guided004-b3-roof-020]
     runs-on: ubuntu-latest
     timeout-minutes: 6
@@ -84,8 +84,36 @@ jobs:
           retention-days: 30
           if-no-files-found: warn
 
+  diagnose-guided004-b3-roof-024:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M024')
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing real LDraw geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download only actual LDraw mesh families needed by three cases
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m024-ldraw --max-files 180 --parts 30363 3010
+      - name: Diagnose three exact 30363-to-roof-or-gable interfaces
+        run: |
+          python scripts/diagnose_guided004_roof_024.py --ldraw-root /tmp/lego2-m024-ldraw --out missions/MAISON_COMPLETE2/DIAGNOSTIC-INTERSECTIONS-M024.md --json-out artifacts/lego2-m024/DIAGNOSTIC-TRIANGLES-M024.json
+      - name: Save real geometry diagnostics even if the job fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M024-THREE-ROOF-INTERFACES-NOT-CERTIFIED
+          path: |
+            missions/MAISON_COMPLETE2/DIAGNOSTIC-INTERSECTIONS-M024.md
+            artifacts/lego2-m024/
+          retention-days: 30
+          if-no-files-found: warn
+
   build-complete-experimental-house:
-    if: github.event_name != 'push' && (github.event_name != 'workflow_dispatch' || inputs.mission != 'M020')
+    if: github.event_name != 'push' && github.head_ref != 'feat/lego2-b1-guided004-full-house-experiment' && (github.event_name != 'workflow_dispatch' || inputs.mission == 'B1')
     runs-on: ubuntu-latest
     timeout-minutes: 18
     steps:
