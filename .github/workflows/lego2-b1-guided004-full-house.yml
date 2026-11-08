@@ -1,5 +1,10 @@
 name: LEGO2 B-1 GUIDED-004 complete 1901-piece experimental house
 on:
+  push:
+    branches:
+      - feat/lego2-b1-guided004-full-house-experiment
+    paths:
+      - ".github/workflows/lego2-b1-guided004-full-house.yml"
   pull_request:
     branches: [feat/lego2-existing-house-021]
     paths:
@@ -18,7 +23,7 @@ on:
 
 jobs:
   audit-guided004-b3-roof-020:
-    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M020'
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M020')
     runs-on: ubuntu-latest
     timeout-minutes: 16
     steps:
@@ -45,7 +50,7 @@ jobs:
           if-no-files-found: warn
 
   build-complete-experimental-house:
-    if: github.event_name != 'workflow_dispatch' || inputs.mission != 'M020'
+    if: github.event_name != 'push' && (github.event_name != 'workflow_dispatch' || inputs.mission != 'M020')
     runs-on: ubuntu-latest
     timeout-minutes: 18
     steps:
