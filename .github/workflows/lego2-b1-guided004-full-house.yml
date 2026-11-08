@@ -8,9 +8,44 @@ on:
       - "missions/B1/**"
       - ".github/workflows/lego2-b1-guided004-full-house.yml"
   workflow_dispatch:
+    inputs:
+      mission:
+        description: "Choose existing B1 build or bounded B3 roof audit (M020)"
+        required: true
+        default: B1
+        type: choice
+        options: [B1, M020]
 
 jobs:
+  audit-guided004-b3-roof-020:
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M020'
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing real LDraw geometry engine
+        run: |
+          python -m pip install -e ./lego_geometry_engine
+      - name: Download pinned LDraw dependency closure for ALL B3 part families
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m020-ldraw --max-files 800 --parts $(awk '$1=="1" {print $15}' missions/B3/generated/GUIDED004-B3-1904.ldr | sort -u)
+      - name: One bounded physical mesh audit of B3 roof
+        run: |
+          python scripts/audit_guided004_b3_roof_020.py --ldraw-root /tmp/lego2-m020-ldraw --out artifacts/lego2-m020-b3-roof --max-pairs 60 --max-seconds 540
+      - name: Save evidence without altering the model or committing third-party meshes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M020-B3-408-REAL-LDRAW-ROOF-NOT-CERTIFIED
+          path: artifacts/lego2-m020-b3-roof/
+          retention-days: 30
+          if-no-files-found: warn
+
   build-complete-experimental-house:
+    if: github.event_name != 'workflow_dispatch' || inputs.mission != 'M020'
     runs-on: ubuntu-latest
     timeout-minutes: 18
     steps:
