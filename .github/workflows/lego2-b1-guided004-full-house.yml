@@ -24,8 +24,13 @@ on:
 jobs:
   audit-guided004-b3-roof-020:
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M020')
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        group: [0, 1, 2, 3, 4, 5, 6, 7]
     runs-on: ubuntu-latest
-    timeout-minutes: 16
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -39,13 +44,43 @@ jobs:
           python scripts/download_ldraw_probe_066.py /tmp/lego2-m020-ldraw --max-files 800 --parts $(awk '$1=="1" {print $15}' missions/B3/generated/GUIDED004-B3-1904.ldr | sort -u)
       - name: One bounded physical mesh audit of B3 roof
         run: |
-          python scripts/audit_guided004_b3_roof_020.py --ldraw-root /tmp/lego2-m020-ldraw --out artifacts/lego2-m020-b3-roof --max-pairs 60 --max-seconds 540
+          python scripts/audit_guided004_b3_roof_020.py --ldraw-root /tmp/lego2-m020-ldraw --out artifacts/lego2-m023-b3-roof-group-${{ matrix.group }} --group-index ${{ matrix.group }} --group-count 8 --max-pairs 0 --max-seconds 960
       - name: Save evidence without altering the model or committing third-party meshes
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: BOLDUNGO-M020-B3-408-REAL-LDRAW-ROOF-NOT-CERTIFIED
-          path: artifacts/lego2-m020-b3-roof/
+          name: BOLDUNGO-M023-B3-ROOF-GROUP-${{ matrix.group }}
+          path: artifacts/lego2-m023-b3-roof-group-${{ matrix.group }}/
+          retention-days: 30
+          if-no-files-found: warn
+
+  consolidate-guided004-b3-roof-023:
+    if: always() && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M020'))
+    needs: [audit-guided004-b3-roof-020]
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing LDraw geometry engine for importing the reused script
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download all available group results, including partial reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: BOLDUNGO-M023-B3-ROOF-GROUP-*
+          path: artifacts/lego2-m023-group-reports
+          merge-multiple: false
+      - name: Consolidate exact pair identities, detect missing and duplicates
+        run: |
+          python scripts/audit_guided004_b3_roof_020.py --aggregate-dir artifacts/lego2-m023-group-reports --out artifacts/lego2-m023-global --group-count 8
+      - name: Save consolidated geometry report even when incomplete
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M023-B3-ROOF-GLOBAL-REPORT-NOT-CERTIFIED
+          path: artifacts/lego2-m023-global/
           retention-days: 30
           if-no-files-found: warn
 
