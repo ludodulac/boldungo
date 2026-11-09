@@ -19,7 +19,7 @@ on:
         required: true
         default: B1
         type: choice
-        options: [B1, M020, M024]
+        options: [B1, M020, M024, M025]
 
 jobs:
   audit-guided004-b3-roof-020:
@@ -85,7 +85,7 @@ jobs:
           if-no-files-found: warn
 
   diagnose-guided004-b3-roof-024:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M024')
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M024'
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
@@ -109,6 +109,35 @@ jobs:
           path: |
             missions/MAISON_COMPLETE2/DIAGNOSTIC-INTERSECTIONS-M024.md
             artifacts/lego2-m024/
+          retention-days: 30
+          if-no-files-found: warn
+
+  diagnose-guided004-b3-ridge-material-025:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M025')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing BrickHouse and real LDraw geometry engine
+        run: |
+          python -m pip install -e .
+          python -m pip install -e ./lego_geometry_engine
+      - name: Download only 30363 and its pinned true LDraw dependency closure
+        run: python scripts/download_ldraw_probe_066.py /tmp/lego2-m025-ldraw --max-files 180 --parts 30363
+      - name: Recheck four original witnesses and material volumes, one ridge pair only
+        run: |
+          python scripts/diagnose_guided004_ridge_material_025.py --ldraw-root /tmp/lego2-m025-ldraw --out missions/MAISON_COMPLETE2/DIAGNOSTIC-FAITAGE-M025.md --json-out artifacts/lego2-m025/PREUVES-FAITAGE-M025.json
+      - name: Save numerical evidence and detailed report even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M025-FAITAGE-MATERIAL-PROOF-NOT-CERTIFIED
+          path: |
+            missions/MAISON_COMPLETE2/DIAGNOSTIC-FAITAGE-M025.md
+            artifacts/lego2-m025/
           retention-days: 30
           if-no-files-found: warn
 
