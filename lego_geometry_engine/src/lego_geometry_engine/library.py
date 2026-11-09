@@ -6,6 +6,7 @@ not be inferred directly from the full mesh AABB extrema.
 from __future__ import annotations
 
 from typing import Iterable
+from dataclasses import replace
 import re
 
 from .core import AABB, Connector, LDrawLibrary as _GeometryLDrawLibrary
@@ -13,6 +14,52 @@ from .core import AABB, Connector, LDrawLibrary as _GeometryLDrawLibrary
 
 class LDrawLibrary(_GeometryLDrawLibrary):
     """LDraw loader with conservative standard Brick/Plate connector inference."""
+
+    def load_part(self, part_id: str):
+        definition = super().load_part(part_id)
+        if definition.part_id != "30363.dat" or definition.connectors:
+            return definition
+
+        # M026: two genuine top studs explicitly present in the pinned
+        # 30363 -> s/30363s01 -> stud.dat hierarchy. No underside socket
+        # is inferred: the varying slope has open stud tubes but LDraw
+        # does not document a universally valid anti-stud mating plane.
+        #
+        # Fail closed on another library revision or an incomplete source:
+        # the mesh AABB is NEVER used to invent connector coordinates.
+        top = self._resolve("30363.dat")
+        sub = self._resolve("s/30363s01.dat")
+        stud_primitive = self._resolve("stud.dat")
+        if top is None or sub is None or stud_primitive is None:
+            return definition
+        if not re.fullmatch(r"Slope Brick\s+18\s+4\s*x\s*2",
+                            definition.description):
+            return definition
+        main_lines = {" ".join(line.lower().split())
+                      for line in top.read_text(encoding="utf-8").splitlines()}
+        sub_lines = {" ".join(line.lower().split())
+                     for line in sub.read_text(encoding="utf-8").splitlines()}
+        if ("1 16 0 0 0 1 0 0 0 1 0 0 0 1 s\\30363s01.dat"
+                not in main_lines):
+            return definition
+        if not stud_primitive.read_text(encoding="utf-8").splitlines()[0].strip().lower() == "0 stud":
+            return definition
+        # Exact, source-proven studs: subpart lines 61 and 62 at x=-10,+10,
+        # y=0,z=0, in matrices that keep the stud's vertical axis unchanged.
+        expected = (
+            "1 16 -10 0 0 0 0 1 0 1 0 -1 0 0 stud.dat",
+            "1 16 10 0 0 0 0 1 0 1 0 -1 0 0 stud.dat",
+        )
+        if any(line not in sub_lines for line in expected):
+            return definition
+        studs = tuple(
+            Connector("stud", (x, 0.0, 0.0), (0, -1, 0),
+                      ("anti_stud",), 0.25)
+            for x in (-10.0, 10.0)
+        )
+        enriched = replace(definition, connectors=studs)
+        self._cache[definition.part_id] = enriched
+        return enriched
 
     def _infer_basic_connectors(self, description: str, bbox: AABB) -> Iterable[Connector]:
         match = re.search(r"\b(Brick|Plate)\s+(\d+)\s*x\s*(\d+)\b", description, re.I)

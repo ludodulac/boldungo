@@ -19,7 +19,7 @@ on:
         required: true
         default: B1
         type: choice
-        options: [B1, M020, M024, M025]
+        options: [B1, M020, M024, M025, M026]
 
 jobs:
   audit-guided004-b3-roof-020:
@@ -113,7 +113,7 @@ jobs:
           if-no-files-found: warn
 
   diagnose-guided004-b3-ridge-material-025:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M025')
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M025'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -138,6 +138,36 @@ jobs:
           path: |
             missions/MAISON_COMPLETE2/DIAGNOSTIC-FAITAGE-M025.md
             artifacts/lego2-m025/
+          retention-days: 30
+          if-no-files-found: warn
+
+  verify-slope-30363-connector-026:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M026')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install only the existing LDraw geometry engine and pytest
+        run: |
+          python -m pip install -e ./lego_geometry_engine pytest
+      - name: Fetch genuine pinned 30363 and standard 3004/3005 geometry
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m026-ldraw --max-files 180 --parts 30363 3004 3005
+      - name: One focused campaign for proven slope studs and legacy behavior
+        env:
+          LDRAW_ROOT: /tmp/lego2-m026-ldraw
+        run: |
+          mkdir -p artifacts/lego2-m026
+          python -m pytest -q lego_geometry_engine/tests/test_slope_30363_connectors_m026.py lego_geometry_engine/tests/test_connector_axes.py lego_geometry_engine/tests/test_engine.py 2>&1 | tee artifacts/lego2-m026/pytest-output.txt
+      - name: Save targeted test results even if tests fail
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M026-30363-TOP-STUD-TESTS-NOT-CERTIFIED
+          path: artifacts/lego2-m026/
           retention-days: 30
           if-no-files-found: warn
 
