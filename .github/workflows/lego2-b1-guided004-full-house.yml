@@ -19,7 +19,7 @@ on:
         required: true
         default: B1
         type: choice
-        options: [B1, M020, M024, M025, M026, M027, M028]
+        options: [B1, M020, M024, M025, M026, M027, M028, M029]
 
 jobs:
   audit-guided004-b3-roof-020:
@@ -200,7 +200,7 @@ jobs:
           if-no-files-found: warn
 
   verify-guided004-roof-to-gable-028:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M028')
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M028'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -224,6 +224,34 @@ jobs:
           path: |
             missions/MAISON_COMPLETE2/JONCTION-SOUS-TOIT-M028.md
             artifacts/lego2-m028/
+          retention-days: 30
+          if-no-files-found: warn
+
+  check-guided004-roof-pocket-029:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M029')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing LDraw geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download pinned 30363 and 3004 parts and primitive dependencies
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m029-ldraw --max-files 180 --parts 30363 3004
+      - name: Measure one documented 30363 underside stud pocket and insertion path
+        run: |
+          python scripts/measure_guided004_roof_pocket_029.py --ldraw-root /tmp/lego2-m029-ldraw --out missions/MAISON_COMPLETE2/LOGEMENT-SOUS-PENTE-M029.md --json-out artifacts/lego2-m029/MESURES-LOGEMENT-M029.json
+      - name: Preserve exact measurements even if the job fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M029-ONE-UNDERSIDE-POCKET-NOT-CERTIFIED
+          path: |
+            missions/MAISON_COMPLETE2/LOGEMENT-SOUS-PENTE-M029.md
+            artifacts/lego2-m029/
           retention-days: 30
           if-no-files-found: warn
 
