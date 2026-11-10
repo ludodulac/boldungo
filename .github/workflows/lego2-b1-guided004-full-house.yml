@@ -19,7 +19,7 @@ on:
         required: true
         default: B1
         type: choice
-        options: [B1, M020, M024, M025, M026, M027]
+        options: [B1, M020, M024, M025, M026, M027, M028]
 
 jobs:
   audit-guided004-b3-roof-020:
@@ -172,7 +172,7 @@ jobs:
           if-no-files-found: warn
 
   map-guided004-b3-roof-supports-027:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M027')
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M027'
     runs-on: ubuntu-latest
     timeout-minutes: 9
     steps:
@@ -196,6 +196,34 @@ jobs:
           path: |
             missions/MAISON_COMPLETE2/CARTOGRAPHIE-APPUIS-M027.md
             artifacts/lego2-m027/
+          retention-days: 30
+          if-no-files-found: warn
+
+  verify-guided004-roof-to-gable-028:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M028')
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing real LDraw geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download only genuine 30363 and 3004 LDraw parts and dependencies
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m028-ldraw --max-files 180 --parts 30363 3004
+      - name: Measure one existing slope-and-gable connection without changing model
+        run: |
+          python scripts/verify_guided004_roof_to_gable_028.py --ldraw-root /tmp/lego2-m028-ldraw --out missions/MAISON_COMPLETE2/JONCTION-SOUS-TOIT-M028.md --json-out artifacts/lego2-m028/PREUVES-JONCTION-M028.json
+      - name: Preserve precise measurements and verdict for one pair
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M028-SINGLE-SLOPE-TO-GABLE-UNPROVEN
+          path: |
+            missions/MAISON_COMPLETE2/JONCTION-SOUS-TOIT-M028.md
+            artifacts/lego2-m028/
           retention-days: 30
           if-no-files-found: warn
 
