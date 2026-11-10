@@ -91,6 +91,8 @@ class Connector:
     compatibility: tuple[str, ...]
     tolerance: float
     owner_part: str | None = None
+    snap_depth_ldu: float | None = None  # LDCad F-section nominal depth, NEVER physical certificate
+    metadata_origin: str | None = None  # optional third-party source, not a solid-body proof
 
 
 @dataclass(frozen=True)
@@ -476,14 +478,28 @@ def find_connections(a: PartInstance, b: PartInstance):
             orientation_b = _normalized(b.transform.vector(connector_b.orientation))
             if orientation_b is None or _dot(orientation_a, orientation_b) > CONNECTOR_ALIGNMENT_COS:
                 continue
-            output.append(
-                {
-                    "part_a": a.instance_id,
-                    "part_b": b.instance_id,
-                    "type": f"{connector_a.type}:{connector_b.type}",
-                    "position": position_a,
-                }
-            )
+            entry = {
+                "part_a": a.instance_id,
+                "part_b": b.instance_id,
+                "type": f"{connector_a.type}:{connector_b.type}",
+                "position": position_a,
+            }
+            if connector_a.metadata_origin or connector_b.metadata_origin:
+                # LDCad snapping is a nominal editor connection only.
+                entry.update({
+                    "nominal_connection_recognized": True,
+                    "absence_of_collision_validated": False,
+                    "insertion_validated": False,
+                    "stability_validated": False,
+                    "metadata_origin": (connector_a.metadata_origin
+                                        or connector_b.metadata_origin),
+                    "female_depth_ldu": (
+                        connector_a.snap_depth_ldu
+                        if connector_a.type == "anti_stud"
+                        else connector_b.snap_depth_ldu
+                    ),
+                })
+            output.append(entry)
     return output
 
 

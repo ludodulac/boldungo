@@ -19,7 +19,7 @@ on:
         required: true
         default: B1
         type: choice
-        options: [B1, M020, M024, M025, M026, M027, M028, M029]
+        options: [B1, M020, M024, M025, M026, M027, M028, M029, M031]
 
 jobs:
   audit-guided004-b3-roof-020:
@@ -228,7 +228,7 @@ jobs:
           if-no-files-found: warn
 
   check-guided004-roof-pocket-029:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M029')
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M029'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -252,6 +252,56 @@ jobs:
           path: |
             missions/MAISON_COMPLETE2/LOGEMENT-SOUS-PENTE-M029.md
             artifacts/lego2-m029/
+          retention-days: 30
+          if-no-files-found: warn
+
+  recognize-ldcad-30363-031:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M031')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing geometry engine and targeted test framework
+        run: python -m pip install -e ./lego_geometry_engine pytest
+      - name: Download pinned genuine geometry for 30363, 3004 and 3005
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m031-ldraw --max-files 180 --parts 30363 3004 3005
+      - name: Download only four pinned external LDCad shadow files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen
+          rev = "9b1131fb1991f8c0bfc072325e4e12f6271aba35"
+          base = f"https://raw.githubusercontent.com/RolandMelkert/LDCadShadowLibrary/{rev}/"
+          root = Path("/tmp/lego2-m031-shadows")
+          for rel in ("parts/s/30363s01.dat", "parts/3004.dat", "parts/s/3004s01.dat", "p/stud.dat"):
+              target=root/rel
+              target.parent.mkdir(parents=True,exist_ok=True)
+              with urlopen(base+rel,timeout=25) as response:
+                  body=response.read()
+              if not body or b"CC BY-SA 4.0" not in body:
+                  raise RuntimeError("Missing licensed pinned LDCad shadow: "+rel)
+              target.write_bytes(body)
+              print("M031_EXTERNAL_SHADOW_LOADED="+rel,flush=True)
+          print("M031_SHADOW_REVISION="+rev,flush=True)
+          PY
+      - name: One targeted test campaign for eight sockets and one real B3 pair
+        env:
+          LDRAW_ROOT: /tmp/lego2-m031-ldraw
+          LDCAD_SHADOW_ROOT: /tmp/lego2-m031-shadows
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/lego2-m031
+          python -m pytest -q lego_geometry_engine/tests/test_ldcad_30363_m031.py lego_geometry_engine/tests/test_slope_30363_connectors_m026.py lego_geometry_engine/tests/test_connector_axes.py lego_geometry_engine/tests/test_engine.py 2>&1 | tee artifacts/lego2-m031/pytest-output.txt
+      - name: Preserve test results and attribution status on failure too
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M031-LDCAD-30363-NOMINAL-ONLY
+          path: artifacts/lego2-m031/
           retention-days: 30
           if-no-files-found: warn
 
