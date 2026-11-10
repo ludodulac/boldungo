@@ -1,0 +1,14 @@
+0 BOLDUNGO M030 - EXEMPLE INDEPENDANT D'UNE PENTE 30363 SUR PLAQUE 3035
+0 Name: PROTOTYPE-LEGO-60249-30363-3035-M030.ldr
+0 Author: BOLDUNGO CONSTRUCTION
+0 !LDRAW_ORG Model
+0 // SCHEMA ILLUSTRATIF, PAS REPRODUCTION NUMERIQUE EXACTE DE L'ETAPE 9 LEGO 60249.
+0 // Source: LEGO set 60249, livret officiel 6305218.pdf, pages 13 / 16, etape 6 / 9.
+0 // Support 3035 Plate 4 x 8, pente 30363 Slope 18 4 x 2.
+0 // LA COMPATIBILITE MATERIELLE / INSERTION / STABILITE N'EST PAS CERTIFIEE.
+0 // Ne pas copier ces placements dans le modele B3 sans validation specifique.
+0 // Panneau 4x8 vert (3035) : source LDraw authentique.
+1 2 0 0 0 1 0 0 0 1 0 0 0 1 3035.dat
+0 // Pente 18 degre (30363) : orientation et distance nominales, demonstration de grille.
+0 // Site local (10,24,0) sur la pente -> monde (-10,0,10), tenon 3035 documente.
+1 7 -10 -24 20 0 0 1 0 1 0 -1 0 0 30363.dat
