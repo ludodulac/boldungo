@@ -26,7 +26,22 @@
 3. **INSERTION VALIDÉE :** **NON CERTIFIÉE** (aucune trajectoire complète de pièces).
 4. **STABILITÉ VALIDÉE :** **NON CERTIFIÉE** (aucune preuve mécanique).
 
+## Résultats mesurés — CAMPAGNE UNIQUE GITHUB ACTIONS
+
+**SUCCESS — 32 tests réussis en 0,32 seconde**, un seul job actif `recognize-ldcad-30363-031`.
+
+- Exécution : https://github.com/ludodulac/boldungo/actions/runs/42834410081
+- Artefact : `BOLDUNGO-M031-LDCAD-30363-NOMINAL-ONLY` (journal de tests).
+- **23 fichiers de géométrie LDraw** réellement téléchargés dans le runner. **4 fichiers shadow LDCad** distincts effectivement lus depuis les URL figées : `parts/s/30363s01.dat`, `parts/3004.dat`, `parts/s/3004s01.dat`, `p/stud.dat`. Ces fichiers ne sont pas ajoutés au dépôt.
+- **8/8 logements inférieurs `30363` reconnus** ; quatre profondeurs **20, 14, 8, 4** préservées, 2 points par rangée ; les **2 tenons supérieurs M026** conservés.
+- **Paire B3 : 1 connexion nominale reconnue**, `anti_stud:stud`, position mondiale **(470,−792,50)** ; le deuxième tenon à (490,−792,50) ne correspond à aucun site. Le test instancie **seulement deux pièces** à leurs transformations B3 déjà vérifiées, sans modifier le fichier B3 ni instancier le reste de la maison.
+- **Position incorrecte : rejetée** (translation erronée et rotation de l'axe). Sources shadow manquantes, méta incorrecte, grille incohérente, profil de profondeur incorrect, orientation non orthonormale : **échec fermé** sans logement inférieur fictif.
+- **Collision bloquante : PASS** — test avec moteur renvoyant `COLLISION` : la présence du snap LDCad laisse l'assemblage **invalide**, collision `slope_30363_mesh_intersection_review_required` maintenue. Il s'agit d'un garde-fou logiciel, **pas** d'une certification de pénétration matérielle réelle.
+- **3004/3005 et tests M026 existants : PASS**. Anciens audits globaux M020–M029 **non relancés**.
+
+Les correspondances retournées avec origine LDCad sont explicitement marquées `nominal_connection_recognized=True`, `absence_of_collision_validated=False`, `insertion_validated=False`, `stability_validated=False`. L'absence d'alertes du seul petit test de connexion **ne constitue pas** une certification physique.
+
 ## 5. Tests et absence de contournement
-- Une campagne GitHub Actions ciblée : tests M031 positifs/négatifs, huit sites et profondeurs, transformations, origine externe manquante/invalide, collisions bloquantes, tests M026 et régressions 3004/3005 existantes.
-- Une exécution de workflow n'est pas une approbation matérielle : les résultats PASS/FAIL sont à inscrire **après** lecture des journaux GitHub.
+- Une campagne GitHub Actions ciblée **exécutée et terminée : 32 PASS**, regroupant tests M031 positifs/négatifs, huit sites et profondeurs, transformations, origine externe manquante/invalide, collisions bloquantes, tests M026 et régressions 3004/3005 existantes.
+- Les journaux GitHub ont été consultés. **32 PASS** valident les comportements logiciels ciblés, **sans** preuve de compatibilité matérielle complète.
 - PR #931 reste en DRAFT, PR #941 inchangée ; aucune modification du fichier B3, ni du site, ni des photographies.
