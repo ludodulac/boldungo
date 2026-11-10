@@ -1,0 +1,31 @@
+0 FILE TOITURE-LISSE-1.ldr
+0 BOLDUNGO - TOITURE ZINC A DEUX PANS - PROTOTYPE INDEPENDANT
+0 !CATEGORY Model
+0 // VISUAL STUDY ONLY. 22-degree continuous planes using genuine LEGO flat tiles.
+0 // Geometry: local long axis Z of 87079 (Tile 2 x 4) yawed 90 degrees, then pitched around world Z.
+0 // Ridge axis: world Z; plane pitch: 22 degrees; units: LDraw; color 71 = light bluish gray.
+0 // Not a mechanically verified hinge, seam, stud connection, ridge fit, or roof-wall assembly.
+0 STEP
+0 // LEFT SLOPE, pitch -22 deg (12 tiles total over both sides)
+1 71 -37.087354 14.984264 -40.000000 0 0.374607 0.927184 0 0.927184 -0.374607 -1 0 0 87079.dat
+1 71 -37.087354 14.984264 0.000000 0 0.374607 0.927184 0 0.927184 -0.374607 -1 0 0 87079.dat
+1 71 -37.087354 14.984264 40.000000 0 0.374607 0.927184 0 0.927184 -0.374607 -1 0 0 87079.dat
+1 71 -111.262063 44.952791 -40.000000 0 0.374607 0.927184 0 0.927184 -0.374607 -1 0 0 87079.dat
+1 71 -111.262063 44.952791 0.000000 0 0.374607 0.927184 0 0.927184 -0.374607 -1 0 0 87079.dat
+1 71 -111.262063 44.952791 40.000000 0 0.374607 0.927184 0 0.927184 -0.374607 -1 0 0 87079.dat
+0 STEP
+0 // RIGHT SLOPE, pitch +22 deg (12 tiles total over both sides)
+1 71 37.087354 14.984264 -40.000000 0 -0.374607 0.927184 0 0.927184 0.374607 -1 0 0 87079.dat
+1 71 37.087354 14.984264 0.000000 0 -0.374607 0.927184 0 0.927184 0.374607 -1 0 0 87079.dat
+1 71 37.087354 14.984264 40.000000 0 -0.374607 0.927184 0 0.927184 0.374607 -1 0 0 87079.dat
+1 71 111.262063 44.952791 -40.000000 0 -0.374607 0.927184 0 0.927184 0.374607 -1 0 0 87079.dat
+1 71 111.262063 44.952791 0.000000 0 -0.374607 0.927184 0 0.927184 0.374607 -1 0 0 87079.dat
+1 71 111.262063 44.952791 40.000000 0 -0.374607 0.927184 0 0.927184 0.374607 -1 0 0 87079.dat
+0 STEP
+0 // Decorative ridge cap: 1 x 2 tiles laid along Z; approximate visual overlap only.
+1 71 0 -14 -40 1 0 0 0 1 0 0 0 1 3069b.dat
+1 71 0 -14 0 1 0 0 0 1 0 0 0 1 3069b.dat
+1 71 0 -14 40 1 0 0 0 1 0 0 0 1 3069b.dat
+0 // Total: 12 x LEGO 87079, 3 x LEGO 3069b. Pitch computed with sin/cos 22 deg.
+0 // Extent approx: 240 LDU along X (projected); 120 along Z; ridge to eave height difference 60 LDU.
+0 NOFILE

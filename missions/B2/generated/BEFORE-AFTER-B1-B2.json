@@ -1,0 +1,401 @@
+{
+  "from_count": 1901,
+  "to_count": 1905,
+  "added": 4,
+  "removed": 0,
+  "moved": 0,
+  "added_piece_ids": [
+    "EXPERIMENT-B2-DECK-BRACE-1",
+    "EXPERIMENT-B2-DECK-BRACE-2",
+    "EXPERIMENT-B2-DECK-SEAM-1",
+    "EXPERIMENT-B2-DECK-SEAM-2"
+  ],
+  "original_42": [
+    {
+      "placement_id": "scene-chimney:house-chimney-antenna:00001:solution",
+      "part_id": "BRICK_2X3",
+      "status": "A_AUCUN_APPUI_VERTICAL_ORTHOGONAL_IMMEDIAT_IDENTIFIE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-chimney:west-metal-chimney-volume:00001:solution",
+      "part_id": "BRICK_2X8",
+      "status": "A_AUCUN_APPUI_VERTICAL_ORTHOGONAL_IMMEDIAT_IDENTIFIE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-chimney:house-chimney-antenna:00007:solution",
+      "part_id": "BRICK_1X3",
+      "status": "A_AUCUN_APPUI_VERTICAL_ORTHOGONAL_IMMEDIAT_IDENTIFIE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-chimney:west-metal-chimney-volume:00003:solution",
+      "part_id": "BRICK_1X8",
+      "status": "A_AUCUN_APPUI_VERTICAL_ORTHOGONAL_IMMEDIAT_IDENTIFIE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-concrete-platform:deck:00001",
+      "part_id": "BRICK_2X8",
+      "status": "D_APPUI_VERTICAL_INDETERMINE_DANS_AUDIT_LIMITÉ",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-concrete-platform:deck:00011",
+      "part_id": "BRICK_2X8",
+      "status": "D_APPUI_VERTICAL_INDETERMINE_DANS_AUDIT_LIMITÉ",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:board:00033",
+      "part_id": "BRICK_1X3",
+      "status": "A_PLANCHE_SANS_APPUI_VERTICAL_DIRECT_REPARABLE_PAR_COUTURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013",
+      "part_id": "PLATE_1X6",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:01",
+      "part_id": "PLATE_1X8",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:02",
+      "part_id": "PLATE_1X8",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:03",
+      "part_id": "PLATE_1X6",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:05",
+      "part_id": "PLATE_1X8",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:06",
+      "part_id": "PLATE_1X3",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:07",
+      "part_id": "PLATE_1X3",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:08",
+      "part_id": "PLATE_1X3",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "guided004-031:concrete-timber-cross-joint:07",
+      "part_id": "PLATE_1X2",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "guided004-031:concrete-timber-cross-joint:08",
+      "part_id": "PLATE_1X2",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:04",
+      "part_id": "PLATE_1X8",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "guided004-031:concrete-timber-cross-joint:09",
+      "part_id": "PLATE_1X2",
+      "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-0-roof-000185-roof-000392",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-2-roof-000186-roof-000393",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-4-roof-000187-roof-000394",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-6-roof-000188-roof-000395",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-8-roof-000189-roof-000396",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-10-roof-000190-roof-000397",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-12-roof-000191-roof-000398",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-14-roof-000192-roof-000399",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-16-roof-000193-roof-000400",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-18-roof-000194-roof-000401",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-20-roof-000195-roof-000402",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-22-roof-000196-roof-000403",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-24-roof-000197-roof-000404",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-26-roof-000198-roof-000405",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-28-roof-000199-roof-000406",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-30-roof-000200-roof-000407",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-32-roof-000201-roof-000408",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-34-roof-000202-roof-000409",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-36-roof-000203-roof-000410",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-38-roof-000204-roof-000411",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-40-roof-000205-roof-000412",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-42-roof-000206-roof-000413",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    },
+    {
+      "placement_id": "EXPERIMENT-088-JOINT-x-120-39-44-roof-000207-roof-000414",
+      "part_id": "BRICK_2X3",
+      "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+      "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+    }
+  ],
+  "repaired_original_non_orphan_board_count": 1,
+  "original_42_still_outside_auditor_not_floating_proof": 37,
+  "b1_orthogonal_unsupported": 42,
+  "b2_orthogonal_unsupported": 45,
+  "b1_orthogonal_components": 26,
+  "b2_orthogonal_components": 26,
+  "b1_orthogonal_collision_cells": 0,
+  "b2_orthogonal_collision_cells": 0,
+  "b1_unverified_slopes": 408,
+  "b2_unverified_slopes": 408,
+  "floor_repair": {
+    "b1_floor_components": [
+      29,
+      1
+    ],
+    "b2_floor_components": [
+      34
+    ],
+    "b1_orphan_board": "scene-platform:south-timber-deck-main:board:00033",
+    "neighbor": "scene-platform:south-timber-deck-main:board:00027",
+    "orphan_connected_to_neighbor_by_plate_count": 2,
+    "nominal_plate_host_interfaces": 4,
+    "matings": {
+      "EXPERIMENT-B2-DECK-SEAM-1": {
+        "interface": "stud_into_underside_2X3_and_1X3",
+        "checked_stud_cells": 3,
+        "margins": [
+          {
+            "host": "scene-platform:south-timber-deck-main:board:00027",
+            "grid": [
+              11,
+              34
+            ],
+            "side_gap_ldu": 0,
+            "end_gap_ldu": 20,
+            "tube_clearance_ldu": 0.142135623730951
+          },
+          {
+            "host": "scene-platform:south-timber-deck-main:board:00027",
+            "grid": [
+              12,
+              34
+            ],
+            "side_gap_ldu": 0,
+            "end_gap_ldu": 20,
+            "tube_clearance_ldu": 0.142135623730951
+          },
+          {
+            "host": "scene-platform:south-timber-deck-main:board:00033",
+            "grid": [
+              13,
+              34
+            ],
+            "side_gap_ldu": 0,
+            "end_gap_ldu": 20,
+            "anti_stud3_gap_ldu": 0
+          }
+        ],
+        "clearance_status": "POSITIONS_COMPATIBLE_IN_TARGETED_OFFICIAL_DAT_CROSS_SECTION",
+        "full_mesh_clutch_and_insertion": "NOT_PROVEN"
+      },
+      "EXPERIMENT-B2-DECK-SEAM-2": {
+        "interface": "stud_into_underside_2X3_and_1X3",
+        "checked_stud_cells": 3,
+        "margins": [
+          {
+            "host": "scene-platform:south-timber-deck-main:board:00027",
+            "grid": [
+              11,
+              35
+            ],
+            "side_gap_ldu": 0,
+            "end_gap_ldu": 0,
+            "tube_clearance_ldu": 0.142135623730951
+          },
+          {
+            "host": "scene-platform:south-timber-deck-main:board:00027",
+            "grid": [
+              12,
+              35
+            ],
+            "side_gap_ldu": 0,
+            "end_gap_ldu": 0,
+            "tube_clearance_ldu": 0.142135623730951
+          },
+          {
+            "host": "scene-platform:south-timber-deck-main:board:00033",
+            "grid": [
+              13,
+              35
+            ],
+            "side_gap_ldu": 0,
+            "end_gap_ldu": 0,
+            "anti_stud3_gap_ldu": 0
+          }
+        ],
+        "clearance_status": "POSITIONS_COMPATIBLE_IN_TARGETED_OFFICIAL_DAT_CROSS_SECTION",
+        "full_mesh_clutch_and_insertion": "NOT_PROVEN"
+      },
+      "EXPERIMENT-B2-DECK-BRACE-1": {
+        "above_board_studs": {
+          "scene-platform:south-timber-deck-main:board:00007": 1,
+          "scene-platform:south-timber-deck-main:board:00013": 2,
+          "scene-platform:south-timber-deck-main:board:00019": 2,
+          "scene-platform:south-timber-deck-main:board:00031": 1
+        },
+        "stud_grid_aligned": true,
+        "underbeam_foundation_and_clutch": "NOT_PROVEN"
+      },
+      "EXPERIMENT-B2-DECK-BRACE-2": {
+        "above_board_studs": {
+          "scene-platform:south-timber-deck-main:board:00007": 1,
+          "scene-platform:south-timber-deck-main:board:00013": 2,
+          "scene-platform:south-timber-deck-main:board:00019": 2,
+          "scene-platform:south-timber-deck-main:board:00031": 1
+        },
+        "stud_grid_aligned": true,
+        "underbeam_foundation_and_clutch": "NOT_PROVEN"
+      }
+    },
+    "real_clutch_strength": "NOT_CERTIFIED"
+  },
+  "positive_clutch_proven": "NO",
+  "local_stud_and_cavity_cross_section_compatible": 4,
+  "entire_house_mechanical_support_unproven": 1905,
+  "entire_house_mechanically_connected_component_count": "NOT_ESTABLISHED",
+  "full_mesh_collision_count": "NOT_AUDITED",
+  "old_B1_SHA256": "6bdaab3061e0e2e88a30d281dca6d3a3e4c0880d88d2b0e839022c7548c7550c",
+  "new_B2_SHA256": "61738c0945a4bc27d9c1a877484c009565b223a6748aafdd05b811b547e7582d",
+  "old_B1_files_unchanged": true,
+  "assembly_step_count_before": 271,
+  "assembly_step_count_after": 272,
+  "preview_faces": 5715,
+  "mating_clearance_is_not_full_physical_validation": true
+}

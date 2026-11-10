@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BOLDÜNGO — plan de principe de l’escalier en L</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#edf2f5;color:#203047;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:850px;margin:0 auto;padding:17px 12px 30px}.intro{background:white;border:1px solid #e0e8ed;border-radius:14px;padding:16px 18px;margin-bottom:14px;box-shadow:0 2px 9px #1528420b}
+h1{font-size:1.36rem;margin:0 0 6px}p{margin:7px 0;line-height:1.48}.tag{font-weight:700;font-size:.83rem;color:#a34c00}.sheet{background:white;border:1px solid #dce5e9;border-radius:14px;padding:8px 4px}
+svg{width:100%;height:auto;display:block;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.note{padding:13px 15px;margin-top:12px;background:white;border-radius:12px;border:1px solid #dce5e9;font-size:.94rem;line-height:1.5}
+strong{color:#18395a}.warn{color:#8b3e0a;font-weight:700}
+</style></head>
+<body><main><section class="intro"><div class="tag">ÉTAPE 1 — SCHÉMA DE TOPOLOGIE, PAS UN PLAN COTÉ</div>
+<h1>🪜 Escalier en L — vue de dessus</h1>
+<p>Voici <strong>le parcours que nous devons reproduire</strong>. Il ne fixe ni la longueur exacte des volées, ni la position métrique du palier.</p></section>
+<div class="sheet">
+<svg viewBox="0 0 870 980" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Plan schématique : maison, terrasse bois et plateforme béton sur le côté Sud ; volée haute descendant vers l'Ouest, palier en arrière, volée basse descendant vers le Sud dans la cour.">
+<defs><pattern id="wood" width="17" height="17" patternUnits="userSpaceOnUse"><rect width="17" height="17" fill="#e9b879"/><path d="M1 0V17" stroke="#bd8355" stroke-width="2"/></pattern>
+<pattern id="treads" width="20" height="12" patternUnits="userSpaceOnUse"><rect width="20" height="12" fill="#c1deef"/><path d="M0 0H20" stroke="#7daccb" stroke-width="2"/></pattern>
+<marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0 0L9 4L0 8Z" fill="#144e88"/></marker>
+</defs>
+<rect width="870" height="980" fill="#ffffff"/>
+<text x="20" y="43" font-size="25" font-weight="750" fill="#263c53">PLAN DE PRINCIPE — NON À L'ÉCHELLE</text>
+<g transform="translate(742 60)"><rect x="-23" y="-15" width="105" height="102" rx="12" fill="#f2f6f8" stroke="#cddde5"/>
+<text x="26" y="10" text-anchor="middle" font-size="19" font-weight="700">N ↑</text><text x="26" y="36" text-anchor="middle" font-size="16">O ← → E</text>
+<text x="26" y="62" text-anchor="middle" font-size="19" font-weight="700">S ↓</text></g>
+<!-- House: geometry only, does not imply the stair is to scale -->
+<rect x="320" y="135" width="440" height="490" rx="4" fill="#e4e7e9" stroke="#667886" stroke-width="4"/>
+<text x="537" y="320" font-size="36" font-weight="750" text-anchor="middle" fill="#526474">MAISON</text>
+<text x="537" y="358" font-size="21" text-anchor="middle" fill="#526474">volume principal</text>
+<text x="537" y="405" font-size="19" text-anchor="middle" fill="#526474">dos Ouest volontairement nu</text>
+<!-- rear wall definition -->
+<path d="M320 105V915" stroke="#b94636" stroke-width="4" stroke-dasharray="10 9"/>
+<text x="38" y="175" font-size="20" font-weight="750" fill="#a9412f">PLAN ARRIÈRE</text>
+<text x="38" y="204" font-size="19" fill="#a9412f">OUEST</text>
+<path d="M218 210H316" stroke="#b94636" stroke-width="2" stroke-dasharray="5 5"/>
+<text x="333" y="592" font-size="20" font-weight="700" fill="#4b5d6c">Façade Sud</text>
+<!-- concrete upper platform -->
+<rect x="530" y="625" width="96" height="79" rx="4" fill="#d4e4dc" stroke="#547e6a" stroke-width="4"/>
+<text x="578" y="655" text-anchor="middle" font-size="15" font-weight="700" fill="#25553b">PLATEFORME</text>
+<text x="578" y="676" text-anchor="middle" font-size="15" font-weight="700" fill="#25553b">MAÇONNÉE</text>
+<text x="578" y="696" text-anchor="middle" font-size="12" fill="#25553b">(arrivée haute)</text>
+<!-- wood: different entity -->
+<rect x="642" y="625" width="119" height="137" rx="3" fill="url(#wood)" stroke="#995b28" stroke-width="4"/>
+<text x="701" y="670" text-anchor="middle" font-size="17" font-weight="700" fill="#6c3b17">TERRASSE</text>
+<text x="701" y="692" text-anchor="middle" font-size="17" font-weight="700" fill="#6c3b17">BOIS</text>
+<text x="701" y="715" text-anchor="middle" font-size="13" fill="#6c3b17">distincte</text>
+<path d="M627 657h14" stroke="#ca6928" stroke-width="6"/>
+<text x="632" y="610" text-anchor="middle" font-size="17" fill="#8d4b20">ressaut</text>
+<!-- upper flight -->
+<rect x="240" y="640" width="290" height="66" rx="3" fill="url(#treads)" stroke="#2a668e" stroke-width="4"/>
+<path d="M498 673H285" stroke="#144e88" stroke-width="5" marker-end="url(#arrowBlue)"/>
+<text x="379" y="744" text-anchor="middle" font-size="19" font-weight="750" fill="#174767">VOLÉE HAUTE</text>
+<text x="380" y="772" text-anchor="middle" font-size="17" fill="#174767">descente vers l'Ouest ←</text>
+<!-- landing -->
+<rect x="153" y="640" width="87" height="79" rx="3" fill="#ffd97e" stroke="#af7417" stroke-width="4"/>
+<text x="195" y="669" font-size="15" text-anchor="middle" font-weight="800" fill="#714600">PALIER</text>
+<text x="195" y="690" font-size="15" text-anchor="middle" font-weight="800" fill="#714600">DU L</text>
+<!-- lower flight -->
+<rect x="153" y="719" width="87" height="173" rx="3" fill="url(#treads)" stroke="#2a668e" stroke-width="4"/>
+<path d="M196 747V860" stroke="#144e88" stroke-width="5" marker-end="url(#arrowBlue)"/>
+<text x="260" y="821" font-size="19" font-weight="750" fill="#174767">VOLÉE</text>
+<text x="260" y="844" font-size="19" font-weight="750" fill="#174767">BASSE</text>
+<text x="260" y="868" font-size="16" fill="#174767">vers Sud ↓</text>
+<text x="196" y="929" text-anchor="middle" font-size="23" font-weight="800" fill="#345b4e">COUR</text>
+<!-- rear overrun -->
+<path d="M153 549H315" stroke="#b94636" stroke-width="2" stroke-dasharray="6 6"/>
+<text x="45" y="507" font-size="20" font-weight="750" fill="#a9412f">DÉBORD ARRIÈRE</text>
+<text x="45" y="535" font-size="17" fill="#a9412f">présent, mais non mesuré</text>
+<path d="M230 545L230 625" stroke="#b94636" stroke-width="2" marker-end="url(#arrowBlue)"/>
+</svg>
+</div>
+<div class="note"><strong>Ce qui est verrouillé :</strong> un escalier extérieur en L, deux volées et un palier, largeur annoncée de 1,12 m, <strong>7 et 9 marches au total</strong>, raccord en haut à la plateforme maçonnée ; la terrasse bois est séparée. Une partie de l'escalier dépasse le plan arrière.</div>
+<div class="note"><span class="warn">Ce qui n'est PAS verrouillé :</span> quelle volée porte les 7 marches, la longueur exacte de chacune, l'emplacement et la dimension du palier, la profondeur du débord, les altitudes, les garde-corps et les assemblages LEGO. Les proportions ci-dessus sont illustratives.</div>
+<div class="note"><strong>Étape suivante, distincte :</strong> fixer la position et les dimensions du L par confrontation aux photos et aux cotes déjà validées. <strong>Aucune brique ni aucun modèle 3D modifié.</strong></div>
+</main></body></html>

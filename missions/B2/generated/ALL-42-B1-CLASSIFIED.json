@@ -1,0 +1,254 @@
+[
+  {
+    "placement_id": "scene-chimney:house-chimney-antenna:00001:solution",
+    "part_id": "BRICK_2X3",
+    "status": "A_AUCUN_APPUI_VERTICAL_ORTHOGONAL_IMMEDIAT_IDENTIFIE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-chimney:west-metal-chimney-volume:00001:solution",
+    "part_id": "BRICK_2X8",
+    "status": "A_AUCUN_APPUI_VERTICAL_ORTHOGONAL_IMMEDIAT_IDENTIFIE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-chimney:house-chimney-antenna:00007:solution",
+    "part_id": "BRICK_1X3",
+    "status": "A_AUCUN_APPUI_VERTICAL_ORTHOGONAL_IMMEDIAT_IDENTIFIE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-chimney:west-metal-chimney-volume:00003:solution",
+    "part_id": "BRICK_1X8",
+    "status": "A_AUCUN_APPUI_VERTICAL_ORTHOGONAL_IMMEDIAT_IDENTIFIE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-concrete-platform:deck:00001",
+    "part_id": "BRICK_2X8",
+    "status": "D_APPUI_VERTICAL_INDETERMINE_DANS_AUDIT_LIMITÉ",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-concrete-platform:deck:00011",
+    "part_id": "BRICK_2X8",
+    "status": "D_APPUI_VERTICAL_INDETERMINE_DANS_AUDIT_LIMITÉ",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:board:00033",
+    "part_id": "BRICK_1X3",
+    "status": "A_PLANCHE_SANS_APPUI_VERTICAL_DIRECT_REPARABLE_PAR_COUTURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013",
+    "part_id": "PLATE_1X6",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:01",
+    "part_id": "PLATE_1X8",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:02",
+    "part_id": "PLATE_1X8",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:03",
+    "part_id": "PLATE_1X6",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:05",
+    "part_id": "PLATE_1X8",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:06",
+    "part_id": "PLATE_1X3",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:07",
+    "part_id": "PLATE_1X3",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:08",
+    "part_id": "PLATE_1X3",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "guided004-031:concrete-timber-cross-joint:07",
+    "part_id": "PLATE_1X2",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "guided004-031:concrete-timber-cross-joint:08",
+    "part_id": "PLATE_1X2",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:04",
+    "part_id": "PLATE_1X8",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "guided004-031:concrete-timber-cross-joint:09",
+    "part_id": "PLATE_1X2",
+    "status": "B_PLAQUE_SOUS_PLANCHER_POTENTIELLEMENT_CLUTCHEE_PAR_LA_PIECE_SUPERIEURE",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-0-roof-000185-roof-000392",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-2-roof-000186-roof-000393",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-4-roof-000187-roof-000394",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-6-roof-000188-roof-000395",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-8-roof-000189-roof-000396",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-10-roof-000190-roof-000397",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-12-roof-000191-roof-000398",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-14-roof-000192-roof-000399",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-16-roof-000193-roof-000400",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-18-roof-000194-roof-000401",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-20-roof-000195-roof-000402",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-22-roof-000196-roof-000403",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-24-roof-000197-roof-000404",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-26-roof-000198-roof-000405",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-28-roof-000199-roof-000406",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-30-roof-000200-roof-000407",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-32-roof-000201-roof-000408",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-34-roof-000202-roof-000409",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-36-roof-000203-roof-000410",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-38-roof-000204-roof-000411",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-40-roof-000205-roof-000412",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-42-roof-000206-roof-000413",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  },
+  {
+    "placement_id": "EXPERIMENT-088-JOINT-x-120-39-44-roof-000207-roof-000414",
+    "part_id": "BRICK_2X3",
+    "status": "B_OR_D_VERIFIER_30363_UNDERSIDE_HORS_AUDIT_ORTHOGONAL",
+    "source_audit": "ORTHOGONAL_DIRECT_ONLY"
+  }
+]

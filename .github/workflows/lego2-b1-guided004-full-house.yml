@@ -1,0 +1,365 @@
+name: LEGO2 B-1 GUIDED-004 complete 1901-piece experimental house
+on:
+  push:
+    branches:
+      - feat/lego2-b1-guided004-full-house-experiment
+    paths:
+      - ".github/workflows/lego2-b1-guided004-full-house.yml"
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - "scripts/build_guided004_full_house_b1.py"
+      - "tests/bricks/test_guided004_full_house_b1.py"
+      - "missions/B1/**"
+      - ".github/workflows/lego2-b1-guided004-full-house.yml"
+  workflow_dispatch:
+    inputs:
+      mission:
+        description: "Choose existing B1 build or bounded B3 roof audit (M020)"
+        required: true
+        default: B1
+        type: choice
+        options: [B1, M020, M024, M025, M026, M027, M028, M029, M031]
+
+jobs:
+  audit-guided004-b3-roof-020:
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M020'
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        group: [0, 1, 2, 3, 4, 5, 6, 7]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing real LDraw geometry engine
+        run: |
+          python -m pip install -e ./lego_geometry_engine
+      - name: Download pinned LDraw dependency closure for ALL B3 part families
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m020-ldraw --max-files 800 --parts $(awk '$1=="1" {print $15}' missions/B3/generated/GUIDED004-B3-1904.ldr | sort -u)
+      - name: One bounded physical mesh audit of B3 roof
+        run: |
+          python scripts/audit_guided004_b3_roof_020.py --ldraw-root /tmp/lego2-m020-ldraw --out artifacts/lego2-m023-b3-roof-group-${{ matrix.group }} --group-index ${{ matrix.group }} --group-count 8 --max-pairs 0 --max-seconds 960
+      - name: Save evidence without altering the model or committing third-party meshes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M023-B3-ROOF-GROUP-${{ matrix.group }}
+          path: artifacts/lego2-m023-b3-roof-group-${{ matrix.group }}/
+          retention-days: 30
+          if-no-files-found: warn
+
+  consolidate-guided004-b3-roof-023:
+    if: always() && github.event_name == 'workflow_dispatch' && inputs.mission == 'M020'
+    needs: [audit-guided004-b3-roof-020]
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing LDraw geometry engine for importing the reused script
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download all available group results, including partial reports
+        uses: actions/download-artifact@v4
+        with:
+          pattern: BOLDUNGO-M023-B3-ROOF-GROUP-*
+          path: artifacts/lego2-m023-group-reports
+          merge-multiple: false
+      - name: Consolidate exact pair identities, detect missing and duplicates
+        run: |
+          python scripts/audit_guided004_b3_roof_020.py --aggregate-dir artifacts/lego2-m023-group-reports --out artifacts/lego2-m023-global --group-count 8
+      - name: Save consolidated geometry report even when incomplete
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M023-B3-ROOF-GLOBAL-REPORT-NOT-CERTIFIED
+          path: artifacts/lego2-m023-global/
+          retention-days: 30
+          if-no-files-found: warn
+
+  diagnose-guided004-b3-roof-024:
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M024'
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing real LDraw geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download only actual LDraw mesh families needed by three cases
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m024-ldraw --max-files 180 --parts 30363 3010
+      - name: Diagnose three exact 30363-to-roof-or-gable interfaces
+        run: |
+          python scripts/diagnose_guided004_roof_024.py --ldraw-root /tmp/lego2-m024-ldraw --out missions/MAISON_COMPLETE2/DIAGNOSTIC-INTERSECTIONS-M024.md --json-out artifacts/lego2-m024/DIAGNOSTIC-TRIANGLES-M024.json
+      - name: Save real geometry diagnostics even if the job fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M024-THREE-ROOF-INTERFACES-NOT-CERTIFIED
+          path: |
+            missions/MAISON_COMPLETE2/DIAGNOSTIC-INTERSECTIONS-M024.md
+            artifacts/lego2-m024/
+          retention-days: 30
+          if-no-files-found: warn
+
+  diagnose-guided004-b3-ridge-material-025:
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M025'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing BrickHouse and real LDraw geometry engine
+        run: |
+          python -m pip install -e .
+          python -m pip install -e ./lego_geometry_engine
+      - name: Download only 30363 and its pinned true LDraw dependency closure
+        run: python scripts/download_ldraw_probe_066.py /tmp/lego2-m025-ldraw --max-files 180 --parts 30363
+      - name: Recheck four original witnesses and material volumes, one ridge pair only
+        run: |
+          python scripts/diagnose_guided004_ridge_material_025.py --ldraw-root /tmp/lego2-m025-ldraw --out missions/MAISON_COMPLETE2/DIAGNOSTIC-FAITAGE-M025.md --json-out artifacts/lego2-m025/PREUVES-FAITAGE-M025.json
+      - name: Save numerical evidence and detailed report even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M025-FAITAGE-MATERIAL-PROOF-NOT-CERTIFIED
+          path: |
+            missions/MAISON_COMPLETE2/DIAGNOSTIC-FAITAGE-M025.md
+            artifacts/lego2-m025/
+          retention-days: 30
+          if-no-files-found: warn
+
+  verify-slope-30363-connector-026:
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M026'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install only the existing LDraw geometry engine and pytest
+        run: |
+          python -m pip install -e ./lego_geometry_engine pytest
+      - name: Fetch genuine pinned 30363 and standard 3004/3005 geometry
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m026-ldraw --max-files 180 --parts 30363 3004 3005
+      - name: One focused campaign for proven slope studs and legacy behavior
+        env:
+          LDRAW_ROOT: /tmp/lego2-m026-ldraw
+        run: |
+          mkdir -p artifacts/lego2-m026
+          python -m pytest -q lego_geometry_engine/tests/test_slope_30363_connectors_m026.py lego_geometry_engine/tests/test_connector_axes.py lego_geometry_engine/tests/test_engine.py 2>&1 | tee artifacts/lego2-m026/pytest-output.txt
+      - name: Save targeted test results even if tests fail
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M026-30363-TOP-STUD-TESTS-NOT-CERTIFIED
+          path: artifacts/lego2-m026/
+          retention-days: 30
+          if-no-files-found: warn
+
+  map-guided004-b3-roof-supports-027:
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M027'
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing enhanced LDraw geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download only pinned real B3 piece families
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m027-ldraw --max-files 800 --parts $(awk '$1=="1" {print $15}' missions/B3/generated/GUIDED004-B3-1904.ldr | sort -u)
+      - name: Map all 408 roof support candidates without rerunning collision checks
+        run: |
+          python scripts/map_guided004_b3_roof_supports_027.py --ldraw-root /tmp/lego2-m027-ldraw --out missions/MAISON_COMPLETE2/CARTOGRAPHIE-APPUIS-M027.md --json-out artifacts/lego2-m027/CARTOGRAPHIE-APPUIS-M027.json
+      - name: Save all 408 roof map rows and numeric evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M027-B3-408-ROOF-SUPPORT-MAP-NOT-CERTIFIED
+          path: |
+            missions/MAISON_COMPLETE2/CARTOGRAPHIE-APPUIS-M027.md
+            artifacts/lego2-m027/
+          retention-days: 30
+          if-no-files-found: warn
+
+  verify-guided004-roof-to-gable-028:
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M028'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing real LDraw geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download only genuine 30363 and 3004 LDraw parts and dependencies
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m028-ldraw --max-files 180 --parts 30363 3004
+      - name: Measure one existing slope-and-gable connection without changing model
+        run: |
+          python scripts/verify_guided004_roof_to_gable_028.py --ldraw-root /tmp/lego2-m028-ldraw --out missions/MAISON_COMPLETE2/JONCTION-SOUS-TOIT-M028.md --json-out artifacts/lego2-m028/PREUVES-JONCTION-M028.json
+      - name: Preserve precise measurements and verdict for one pair
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M028-SINGLE-SLOPE-TO-GABLE-UNPROVEN
+          path: |
+            missions/MAISON_COMPLETE2/JONCTION-SOUS-TOIT-M028.md
+            artifacts/lego2-m028/
+          retention-days: 30
+          if-no-files-found: warn
+
+  check-guided004-roof-pocket-029:
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M029'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing LDraw geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download pinned 30363 and 3004 parts and primitive dependencies
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m029-ldraw --max-files 180 --parts 30363 3004
+      - name: Measure one documented 30363 underside stud pocket and insertion path
+        run: |
+          python scripts/measure_guided004_roof_pocket_029.py --ldraw-root /tmp/lego2-m029-ldraw --out missions/MAISON_COMPLETE2/LOGEMENT-SOUS-PENTE-M029.md --json-out artifacts/lego2-m029/MESURES-LOGEMENT-M029.json
+      - name: Preserve exact measurements even if the job fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M029-ONE-UNDERSIDE-POCKET-NOT-CERTIFIED
+          path: |
+            missions/MAISON_COMPLETE2/LOGEMENT-SOUS-PENTE-M029.md
+            artifacts/lego2-m029/
+          retention-days: 30
+          if-no-files-found: warn
+
+  recognize-ldcad-30363-031:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M031')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing geometry engine and targeted test framework
+        run: python -m pip install -e ./lego_geometry_engine pytest
+      - name: Download pinned genuine geometry for 30363, 3004 and 3005
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m031-ldraw --max-files 180 --parts 30363 3004 3005
+      - name: Download only four pinned external LDCad shadow files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen
+          rev = "9b1131fb1991f8c0bfc072325e4e12f6271aba35"
+          base = f"https://raw.githubusercontent.com/RolandMelkert/LDCadShadowLibrary/{rev}/"
+          root = Path("/tmp/lego2-m031-shadows")
+          for rel in ("parts/s/30363s01.dat", "parts/3004.dat", "parts/s/3004s01.dat", "p/stud.dat"):
+              target=root/rel
+              target.parent.mkdir(parents=True,exist_ok=True)
+              with urlopen(base+rel,timeout=25) as response:
+                  body=response.read()
+              if not body or b"CC BY-SA 4.0" not in body:
+                  raise RuntimeError("Missing licensed pinned LDCad shadow: "+rel)
+              target.write_bytes(body)
+              print("M031_EXTERNAL_SHADOW_LOADED="+rel,flush=True)
+          print("M031_SHADOW_REVISION="+rev,flush=True)
+          PY
+      - name: One targeted test campaign for eight sockets and one real B3 pair
+        env:
+          LDRAW_ROOT: /tmp/lego2-m031-ldraw
+          LDCAD_SHADOW_ROOT: /tmp/lego2-m031-shadows
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/lego2-m031
+          python -m pytest -q lego_geometry_engine/tests/test_ldcad_30363_m031.py lego_geometry_engine/tests/test_slope_30363_connectors_m026.py lego_geometry_engine/tests/test_connector_axes.py lego_geometry_engine/tests/test_engine.py 2>&1 | tee artifacts/lego2-m031/pytest-output.txt
+      - name: Preserve test results and attribution status on failure too
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M031-LDCAD-30363-NOMINAL-ONLY
+          path: artifacts/lego2-m031/
+          retention-days: 30
+          if-no-files-found: warn
+
+  build-complete-experimental-house:
+    if: github.event_name != 'push' && github.head_ref != 'feat/lego2-b1-guided004-full-house-experiment' && (github.event_name != 'workflow_dispatch' || inputs.mission == 'B1')
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install already-existing BrickHouse code and geometry engine
+        run: |
+          python -m pip install -e .
+          python -m pip install -e ./lego_geometry_engine
+          python -m pip install pytest
+      - name: Fast targeted guards — source nonmutation and 22degree official part family
+        run: python -m pytest -q tests/bricks/test_guided004_full_house_b1.py
+      - name: Obtain narrow pinned official LDraw mesh closure for slope 30363
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-b1-real-30363 --max-files 150 --parts 30363
+      - name: Generate complete experimental GUIDED-004, LDraw, whole-house preview and inventory
+        run: |
+          python scripts/build_guided004_full_house_b1.py --ldraw-root /tmp/lego2-b1-real-30363 --output artifacts/lego2-b1-guided004
+      - name: Fail closed on fabricated whole-house metadata or missing real LDraw pieces
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path("artifacts/lego2-b1-guided004/EXPERIMENTAL-1901-FULL-HOUSE")
+          cmp=json.loads((base/"COMPARISON-WITH-1890-CANONICAL.json").read_text())
+          audit=json.loads((base/"CONNECTIONS-AND-COLLISIONS.json").read_text())
+          bom=json.loads((base/"BOM.json").read_text())
+          model=(base/"GUIDED004-B1-FULL-HOUSE-22DEG.ldr").read_text()
+          assert cmp["canonical_count"]==1890
+          assert cmp["experimental_count"]==1901
+          assert cmp["all_original_nonridge_parts_unchanged"] and cmp["net_delta"]==11
+          assert cmp["added_new_ridge_connector_bricks"] > 0
+          assert cmp["slope_30363_original"]==cmp["slope_30363_experiment"]==408
+          assert cmp["ldraw"]["complete_file"], cmp["ldraw"]["unmapped"][:8]
+          assert cmp["ldraw"]["ldraw_type1_count"]==1901
+          assert sum(line.startswith("1 ") for line in model.splitlines())==1901
+          assert sum(bom["by_ldraw_id"].values())==1901
+          assert audit["full_1901_connected_components_physical"]=="NOT_ESTABLISHED"
+          assert audit["parts_without_fully_demonstrated_support_chain"]==1901
+          assert cmp["source_scene_file_unchanged"] and cmp["original_export_unchanged"]
+          assert (base/"GUIDED004-B1-FULL-HOUSE-ISOMETRIC.svg").stat().st_size>20000
+          print("B1_FULL_1901_REAL_LDRAW_PARTS_PASS")
+          print("B1_ALL_NON_RIDGE_ARCHITECTURE_IDENTICAL_PASS")
+          print("B1_408_SLOPE_PARTS_PRESERVED_NO_45DEG_PASS")
+          print("B1_1890_SOURCE_ISOLATED_AND_HASHED_PASS")
+          PY
+      - name: Save complete house files / BOM / plan / visible SVG / audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-B1-GUIDED004-1901-FULL-HOUSE-EXPERIMENTAL-NOT-CERTIFIED
+          path: artifacts/lego2-b1-guided004/
+          retention-days: 30
+          if-no-files-found: warn

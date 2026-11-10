@@ -1,0 +1,3818 @@
+{
+  "source": "B3 1904-piece exact LDraw",
+  "ldraw_mirror_pin": "pybricks/ldraw c43ed06a128a10ed65675166bf42eb6fd608b9b0, parts/s/30363s01.dat",
+  "method": "30363 local stud centers x=±10,y=0,z=0; underside nominal cavity centers x=±10,y=24,z=0. Transform by actual LDraw matrices and compare to brick studs. Nominal-only, not mesh collision or assembly proof.",
+  "parts": 1904,
+  "roof_count": 408,
+  "with_both_cavities": 22,
+  "with_one_cavity": 17,
+  "without_cavity_stud_match": 369,
+  "roof_to_roof_direct_stud_matches": 0,
+  "known_positive": "roof-000223 matches wall-000719",
+  "by_level": {
+    "-768": {
+      "total": 46,
+      "with_match": 23,
+      "none": 23
+    },
+    "-792": {
+      "total": 44,
+      "with_match": 2,
+      "none": 42
+    },
+    "-816": {
+      "total": 44,
+      "with_match": 2,
+      "none": 42
+    },
+    "-840": {
+      "total": 44,
+      "with_match": 2,
+      "none": 42
+    },
+    "-864": {
+      "total": 46,
+      "with_match": 2,
+      "none": 44
+    },
+    "-888": {
+      "total": 46,
+      "with_match": 2,
+      "none": 44
+    },
+    "-912": {
+      "total": 46,
+      "with_match": 4,
+      "none": 42
+    },
+    "-936": {
+      "total": 46,
+      "with_match": 2,
+      "none": 44
+    },
+    "-960": {
+      "total": 46,
+      "with_match": 0,
+      "none": 46
+    }
+  },
+  "all_roofs": [
+    {
+      "id": "roof-000001",
+      "x": 350,
+      "y": -768,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000002",
+      "x": 350,
+      "y": -768,
+      "z": 60,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "wall-000699"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000003",
+      "x": 350,
+      "y": -768,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000004",
+      "x": 350,
+      "y": -768,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000005",
+      "x": 350,
+      "y": -768,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000006",
+      "x": 350,
+      "y": -768,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000007",
+      "x": 350,
+      "y": -768,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000008",
+      "x": 350,
+      "y": -768,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000009",
+      "x": 350,
+      "y": -768,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000010",
+      "x": 350,
+      "y": -768,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000011",
+      "x": 350,
+      "y": -768,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000012",
+      "x": 350,
+      "y": -768,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000013",
+      "x": 350,
+      "y": -768,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000014",
+      "x": 350,
+      "y": -768,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000015",
+      "x": 350,
+      "y": -768,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000016",
+      "x": 350,
+      "y": -768,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000017",
+      "x": 350,
+      "y": -768,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000018",
+      "x": 350,
+      "y": -768,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000019",
+      "x": 350,
+      "y": -768,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000020",
+      "x": 350,
+      "y": -768,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000021",
+      "x": 350,
+      "y": -768,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000022",
+      "x": 350,
+      "y": -768,
+      "z": 860,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "wall-000710"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000023",
+      "x": 350,
+      "y": -768,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000024",
+      "x": 410,
+      "y": -792,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000025",
+      "x": 410,
+      "y": -792,
+      "z": 60,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000001"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000026",
+      "x": 410,
+      "y": -792,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000027",
+      "x": 410,
+      "y": -792,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000028",
+      "x": 410,
+      "y": -792,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000029",
+      "x": 410,
+      "y": -792,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000030",
+      "x": 410,
+      "y": -792,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000031",
+      "x": 410,
+      "y": -792,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000032",
+      "x": 410,
+      "y": -792,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000033",
+      "x": 410,
+      "y": -792,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000034",
+      "x": 410,
+      "y": -792,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000035",
+      "x": 410,
+      "y": -792,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000036",
+      "x": 410,
+      "y": -792,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000037",
+      "x": 410,
+      "y": -792,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000038",
+      "x": 410,
+      "y": -792,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000039",
+      "x": 410,
+      "y": -792,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000040",
+      "x": 410,
+      "y": -792,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000041",
+      "x": 410,
+      "y": -792,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000042",
+      "x": 410,
+      "y": -792,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000045",
+      "x": 410,
+      "y": -792,
+      "z": 860,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000023"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000046",
+      "x": 410,
+      "y": -792,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000047",
+      "x": 470,
+      "y": -816,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000048",
+      "x": 470,
+      "y": -816,
+      "z": 60,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000006"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000049",
+      "x": 470,
+      "y": -816,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000050",
+      "x": 470,
+      "y": -816,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000051",
+      "x": 470,
+      "y": -816,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000052",
+      "x": 470,
+      "y": -816,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000053",
+      "x": 470,
+      "y": -816,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000054",
+      "x": 470,
+      "y": -816,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000055",
+      "x": 470,
+      "y": -816,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000056",
+      "x": 470,
+      "y": -816,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000057",
+      "x": 470,
+      "y": -816,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000058",
+      "x": 470,
+      "y": -816,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000059",
+      "x": 470,
+      "y": -816,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000060",
+      "x": 470,
+      "y": -816,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000061",
+      "x": 470,
+      "y": -816,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000062",
+      "x": 470,
+      "y": -816,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000063",
+      "x": 470,
+      "y": -816,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000064",
+      "x": 470,
+      "y": -816,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000065",
+      "x": 470,
+      "y": -816,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000068",
+      "x": 470,
+      "y": -816,
+      "z": 860,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000028"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000069",
+      "x": 470,
+      "y": -816,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000070",
+      "x": 530,
+      "y": -840,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000071",
+      "x": 530,
+      "y": -840,
+      "z": 60,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000011"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000072",
+      "x": 530,
+      "y": -840,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000073",
+      "x": 530,
+      "y": -840,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000074",
+      "x": 530,
+      "y": -840,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000075",
+      "x": 530,
+      "y": -840,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000076",
+      "x": 530,
+      "y": -840,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000077",
+      "x": 530,
+      "y": -840,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000078",
+      "x": 530,
+      "y": -840,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000079",
+      "x": 530,
+      "y": -840,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000080",
+      "x": 530,
+      "y": -840,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000081",
+      "x": 530,
+      "y": -840,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000082",
+      "x": 530,
+      "y": -840,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000083",
+      "x": 530,
+      "y": -840,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000084",
+      "x": 530,
+      "y": -840,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000085",
+      "x": 530,
+      "y": -840,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000086",
+      "x": 530,
+      "y": -840,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000087",
+      "x": 530,
+      "y": -840,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000088",
+      "x": 530,
+      "y": -840,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000091",
+      "x": 530,
+      "y": -840,
+      "z": 860,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000033"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000092",
+      "x": 530,
+      "y": -840,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000093",
+      "x": 590,
+      "y": -864,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000094",
+      "x": 590,
+      "y": -864,
+      "z": 60,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000015"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000095",
+      "x": 590,
+      "y": -864,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000096",
+      "x": 590,
+      "y": -864,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000097",
+      "x": 590,
+      "y": -864,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000098",
+      "x": 590,
+      "y": -864,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000099",
+      "x": 590,
+      "y": -864,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000100",
+      "x": 590,
+      "y": -864,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000101",
+      "x": 590,
+      "y": -864,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000102",
+      "x": 590,
+      "y": -864,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000103",
+      "x": 590,
+      "y": -864,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000104",
+      "x": 590,
+      "y": -864,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000105",
+      "x": 590,
+      "y": -864,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000106",
+      "x": 590,
+      "y": -864,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000107",
+      "x": 590,
+      "y": -864,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000108",
+      "x": 590,
+      "y": -864,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000109",
+      "x": 590,
+      "y": -864,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000110",
+      "x": 590,
+      "y": -864,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000111",
+      "x": 590,
+      "y": -864,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000112",
+      "x": 590,
+      "y": -864,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000113",
+      "x": 590,
+      "y": -864,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000114",
+      "x": 590,
+      "y": -864,
+      "z": 860,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000037"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000115",
+      "x": 590,
+      "y": -864,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000116",
+      "x": 650,
+      "y": -888,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000117",
+      "x": 650,
+      "y": -888,
+      "z": 60,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000018"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000118",
+      "x": 650,
+      "y": -888,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000119",
+      "x": 650,
+      "y": -888,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000120",
+      "x": 650,
+      "y": -888,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000121",
+      "x": 650,
+      "y": -888,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000122",
+      "x": 650,
+      "y": -888,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000123",
+      "x": 650,
+      "y": -888,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000124",
+      "x": 650,
+      "y": -888,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000125",
+      "x": 650,
+      "y": -888,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000126",
+      "x": 650,
+      "y": -888,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000127",
+      "x": 650,
+      "y": -888,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000128",
+      "x": 650,
+      "y": -888,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000129",
+      "x": 650,
+      "y": -888,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000130",
+      "x": 650,
+      "y": -888,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000131",
+      "x": 650,
+      "y": -888,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000132",
+      "x": 650,
+      "y": -888,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000133",
+      "x": 650,
+      "y": -888,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000134",
+      "x": 650,
+      "y": -888,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000135",
+      "x": 650,
+      "y": -888,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000136",
+      "x": 650,
+      "y": -888,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000137",
+      "x": 650,
+      "y": -888,
+      "z": 860,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000040"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000138",
+      "x": 650,
+      "y": -888,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000139",
+      "x": 710,
+      "y": -912,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000140",
+      "x": 710,
+      "y": -912,
+      "z": 60,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000020"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000141",
+      "x": 710,
+      "y": -912,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000142",
+      "x": 710,
+      "y": -912,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000143",
+      "x": 710,
+      "y": -912,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000144",
+      "x": 710,
+      "y": -912,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000145",
+      "x": 710,
+      "y": -912,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000146",
+      "x": 710,
+      "y": -912,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000147",
+      "x": 710,
+      "y": -912,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000148",
+      "x": 710,
+      "y": -912,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000149",
+      "x": 710,
+      "y": -912,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000150",
+      "x": 710,
+      "y": -912,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000151",
+      "x": 710,
+      "y": -912,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000152",
+      "x": 710,
+      "y": -912,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000153",
+      "x": 710,
+      "y": -912,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000154",
+      "x": 710,
+      "y": -912,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000155",
+      "x": 710,
+      "y": -912,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000156",
+      "x": 710,
+      "y": -912,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000157",
+      "x": 710,
+      "y": -912,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000158",
+      "x": 710,
+      "y": -912,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000159",
+      "x": 710,
+      "y": -912,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000160",
+      "x": 710,
+      "y": -912,
+      "z": 860,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000042"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000161",
+      "x": 710,
+      "y": -912,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000162",
+      "x": 770,
+      "y": -936,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000163",
+      "x": 770,
+      "y": -936,
+      "z": 60,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000022"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000164",
+      "x": 770,
+      "y": -936,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000165",
+      "x": 770,
+      "y": -936,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000166",
+      "x": 770,
+      "y": -936,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000167",
+      "x": 770,
+      "y": -936,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000168",
+      "x": 770,
+      "y": -936,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000169",
+      "x": 770,
+      "y": -936,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000170",
+      "x": 770,
+      "y": -936,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000171",
+      "x": 770,
+      "y": -936,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000172",
+      "x": 770,
+      "y": -936,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000173",
+      "x": 770,
+      "y": -936,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000174",
+      "x": 770,
+      "y": -936,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000175",
+      "x": 770,
+      "y": -936,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000176",
+      "x": 770,
+      "y": -936,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000177",
+      "x": 770,
+      "y": -936,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000178",
+      "x": 770,
+      "y": -936,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000179",
+      "x": 770,
+      "y": -936,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000180",
+      "x": 770,
+      "y": -936,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000181",
+      "x": 770,
+      "y": -936,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000182",
+      "x": 770,
+      "y": -936,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000183",
+      "x": 770,
+      "y": -936,
+      "z": 860,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "gable-000044"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000184",
+      "x": 770,
+      "y": -936,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000185",
+      "x": 830,
+      "y": -960,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000186",
+      "x": 830,
+      "y": -960,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000187",
+      "x": 830,
+      "y": -960,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000188",
+      "x": 830,
+      "y": -960,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000189",
+      "x": 830,
+      "y": -960,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000190",
+      "x": 830,
+      "y": -960,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000191",
+      "x": 830,
+      "y": -960,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000192",
+      "x": 830,
+      "y": -960,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000193",
+      "x": 830,
+      "y": -960,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000194",
+      "x": 830,
+      "y": -960,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000195",
+      "x": 830,
+      "y": -960,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000196",
+      "x": 830,
+      "y": -960,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000197",
+      "x": 830,
+      "y": -960,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000198",
+      "x": 830,
+      "y": -960,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000199",
+      "x": 830,
+      "y": -960,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000200",
+      "x": 830,
+      "y": -960,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000201",
+      "x": 830,
+      "y": -960,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000202",
+      "x": 830,
+      "y": -960,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000203",
+      "x": 830,
+      "y": -960,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000204",
+      "x": 830,
+      "y": -960,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000205",
+      "x": 830,
+      "y": -960,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000206",
+      "x": 830,
+      "y": -960,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000207",
+      "x": 830,
+      "y": -960,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000208",
+      "x": 1270,
+      "y": -768,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000209",
+      "x": 1270,
+      "y": -768,
+      "z": 60,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000704",
+        "wall-000716"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000210",
+      "x": 1270,
+      "y": -768,
+      "z": 100,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000716"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000211",
+      "x": 1270,
+      "y": -768,
+      "z": 140,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000716"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000212",
+      "x": 1270,
+      "y": -768,
+      "z": 180,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000716"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000213",
+      "x": 1270,
+      "y": -768,
+      "z": 220,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000716",
+        "wall-000717"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000214",
+      "x": 1270,
+      "y": -768,
+      "z": 260,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000717"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000215",
+      "x": 1270,
+      "y": -768,
+      "z": 300,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000717"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000216",
+      "x": 1270,
+      "y": -768,
+      "z": 340,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000717"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000217",
+      "x": 1270,
+      "y": -768,
+      "z": 380,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000717",
+        "wall-000718"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000218",
+      "x": 1270,
+      "y": -768,
+      "z": 420,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000718"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000219",
+      "x": 1270,
+      "y": -768,
+      "z": 460,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000718"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000220",
+      "x": 1270,
+      "y": -768,
+      "z": 500,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000718"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000221",
+      "x": 1270,
+      "y": -768,
+      "z": 540,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000718",
+        "wall-000719"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000222",
+      "x": 1270,
+      "y": -768,
+      "z": 580,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000719"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000223",
+      "x": 1270,
+      "y": -768,
+      "z": 620,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000719"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000224",
+      "x": 1270,
+      "y": -768,
+      "z": 660,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000719"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000225",
+      "x": 1270,
+      "y": -768,
+      "z": 700,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000719",
+        "wall-000720"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000226",
+      "x": 1270,
+      "y": -768,
+      "z": 740,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000720"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000227",
+      "x": 1270,
+      "y": -768,
+      "z": 780,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000720"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000228",
+      "x": 1270,
+      "y": -768,
+      "z": 820,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000720"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000229",
+      "x": 1270,
+      "y": -768,
+      "z": 860,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "wall-000720",
+        "wall-000705"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000230",
+      "x": 1270,
+      "y": -768,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000231",
+      "x": 1210,
+      "y": -792,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000232",
+      "x": 1210,
+      "y": -792,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000233",
+      "x": 1210,
+      "y": -792,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000234",
+      "x": 1210,
+      "y": -792,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000235",
+      "x": 1210,
+      "y": -792,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000236",
+      "x": 1210,
+      "y": -792,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000237",
+      "x": 1210,
+      "y": -792,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000238",
+      "x": 1210,
+      "y": -792,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000239",
+      "x": 1210,
+      "y": -792,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000240",
+      "x": 1210,
+      "y": -792,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000241",
+      "x": 1210,
+      "y": -792,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000242",
+      "x": 1210,
+      "y": -792,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000243",
+      "x": 1210,
+      "y": -792,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000244",
+      "x": 1210,
+      "y": -792,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000245",
+      "x": 1210,
+      "y": -792,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000246",
+      "x": 1210,
+      "y": -792,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000247",
+      "x": 1210,
+      "y": -792,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000248",
+      "x": 1210,
+      "y": -792,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000249",
+      "x": 1210,
+      "y": -792,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000250",
+      "x": 1210,
+      "y": -792,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000251",
+      "x": 1210,
+      "y": -792,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000252",
+      "x": 1210,
+      "y": -792,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000253",
+      "x": 1210,
+      "y": -792,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000254",
+      "x": 1150,
+      "y": -816,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000255",
+      "x": 1150,
+      "y": -816,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000256",
+      "x": 1150,
+      "y": -816,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000257",
+      "x": 1150,
+      "y": -816,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000258",
+      "x": 1150,
+      "y": -816,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000259",
+      "x": 1150,
+      "y": -816,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000260",
+      "x": 1150,
+      "y": -816,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000261",
+      "x": 1150,
+      "y": -816,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000262",
+      "x": 1150,
+      "y": -816,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000263",
+      "x": 1150,
+      "y": -816,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000264",
+      "x": 1150,
+      "y": -816,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000265",
+      "x": 1150,
+      "y": -816,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000266",
+      "x": 1150,
+      "y": -816,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000267",
+      "x": 1150,
+      "y": -816,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000268",
+      "x": 1150,
+      "y": -816,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000269",
+      "x": 1150,
+      "y": -816,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000270",
+      "x": 1150,
+      "y": -816,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000271",
+      "x": 1150,
+      "y": -816,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000272",
+      "x": 1150,
+      "y": -816,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000273",
+      "x": 1150,
+      "y": -816,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000274",
+      "x": 1150,
+      "y": -816,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000275",
+      "x": 1150,
+      "y": -816,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000276",
+      "x": 1150,
+      "y": -816,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000277",
+      "x": 1090,
+      "y": -840,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000278",
+      "x": 1090,
+      "y": -840,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000279",
+      "x": 1090,
+      "y": -840,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000280",
+      "x": 1090,
+      "y": -840,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000281",
+      "x": 1090,
+      "y": -840,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000282",
+      "x": 1090,
+      "y": -840,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000283",
+      "x": 1090,
+      "y": -840,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000284",
+      "x": 1090,
+      "y": -840,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000285",
+      "x": 1090,
+      "y": -840,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000286",
+      "x": 1090,
+      "y": -840,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000287",
+      "x": 1090,
+      "y": -840,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000288",
+      "x": 1090,
+      "y": -840,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000289",
+      "x": 1090,
+      "y": -840,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000290",
+      "x": 1090,
+      "y": -840,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000291",
+      "x": 1090,
+      "y": -840,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000292",
+      "x": 1090,
+      "y": -840,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000293",
+      "x": 1090,
+      "y": -840,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000294",
+      "x": 1090,
+      "y": -840,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000295",
+      "x": 1090,
+      "y": -840,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000296",
+      "x": 1090,
+      "y": -840,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000297",
+      "x": 1090,
+      "y": -840,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000298",
+      "x": 1090,
+      "y": -840,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000299",
+      "x": 1090,
+      "y": -840,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000300",
+      "x": 1030,
+      "y": -864,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000301",
+      "x": 1030,
+      "y": -864,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000302",
+      "x": 1030,
+      "y": -864,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000303",
+      "x": 1030,
+      "y": -864,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000304",
+      "x": 1030,
+      "y": -864,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000305",
+      "x": 1030,
+      "y": -864,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000306",
+      "x": 1030,
+      "y": -864,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000307",
+      "x": 1030,
+      "y": -864,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000308",
+      "x": 1030,
+      "y": -864,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000309",
+      "x": 1030,
+      "y": -864,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000310",
+      "x": 1030,
+      "y": -864,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000311",
+      "x": 1030,
+      "y": -864,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000312",
+      "x": 1030,
+      "y": -864,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000313",
+      "x": 1030,
+      "y": -864,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000314",
+      "x": 1030,
+      "y": -864,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000315",
+      "x": 1030,
+      "y": -864,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000316",
+      "x": 1030,
+      "y": -864,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000317",
+      "x": 1030,
+      "y": -864,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000318",
+      "x": 1030,
+      "y": -864,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000319",
+      "x": 1030,
+      "y": -864,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000320",
+      "x": 1030,
+      "y": -864,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000321",
+      "x": 1030,
+      "y": -864,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000322",
+      "x": 1030,
+      "y": -864,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000323",
+      "x": 970,
+      "y": -888,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000324",
+      "x": 970,
+      "y": -888,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000325",
+      "x": 970,
+      "y": -888,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000326",
+      "x": 970,
+      "y": -888,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000327",
+      "x": 970,
+      "y": -888,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000328",
+      "x": 970,
+      "y": -888,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000329",
+      "x": 970,
+      "y": -888,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000330",
+      "x": 970,
+      "y": -888,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000331",
+      "x": 970,
+      "y": -888,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000332",
+      "x": 970,
+      "y": -888,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000333",
+      "x": 970,
+      "y": -888,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000334",
+      "x": 970,
+      "y": -888,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000335",
+      "x": 970,
+      "y": -888,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000336",
+      "x": 970,
+      "y": -888,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000337",
+      "x": 970,
+      "y": -888,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000338",
+      "x": 970,
+      "y": -888,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000339",
+      "x": 970,
+      "y": -888,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000340",
+      "x": 970,
+      "y": -888,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000341",
+      "x": 970,
+      "y": -888,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000342",
+      "x": 970,
+      "y": -888,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000343",
+      "x": 970,
+      "y": -888,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000344",
+      "x": 970,
+      "y": -888,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000345",
+      "x": 970,
+      "y": -888,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000346",
+      "x": 910,
+      "y": -912,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000347",
+      "x": 910,
+      "y": -912,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000348",
+      "x": 910,
+      "y": -912,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000349",
+      "x": 910,
+      "y": -912,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000350",
+      "x": 910,
+      "y": -912,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000351",
+      "x": 910,
+      "y": -912,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000352",
+      "x": 910,
+      "y": -912,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000353",
+      "x": 910,
+      "y": -912,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000354",
+      "x": 910,
+      "y": -912,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000355",
+      "x": 910,
+      "y": -912,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000356",
+      "x": 910,
+      "y": -912,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000357",
+      "x": 910,
+      "y": -912,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000358",
+      "x": 910,
+      "y": -912,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000359",
+      "x": 910,
+      "y": -912,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000360",
+      "x": 910,
+      "y": -912,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000361",
+      "x": 910,
+      "y": -912,
+      "z": 620,
+      "matched_cavity_count": 2,
+      "matched_ids": [
+        "scene-chimney:house-chimney-antenna:00055:solution"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000362",
+      "x": 910,
+      "y": -912,
+      "z": 660,
+      "matched_cavity_count": 1,
+      "matched_ids": [
+        "scene-chimney:house-chimney-antenna:00055:solution"
+      ],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000363",
+      "x": 910,
+      "y": -912,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000364",
+      "x": 910,
+      "y": -912,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000365",
+      "x": 910,
+      "y": -912,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000366",
+      "x": 910,
+      "y": -912,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000367",
+      "x": 910,
+      "y": -912,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000368",
+      "x": 910,
+      "y": -912,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000369",
+      "x": 850,
+      "y": -936,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000370",
+      "x": 850,
+      "y": -936,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000371",
+      "x": 850,
+      "y": -936,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000372",
+      "x": 850,
+      "y": -936,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000373",
+      "x": 850,
+      "y": -936,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000374",
+      "x": 850,
+      "y": -936,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000375",
+      "x": 850,
+      "y": -936,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000376",
+      "x": 850,
+      "y": -936,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000377",
+      "x": 850,
+      "y": -936,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000378",
+      "x": 850,
+      "y": -936,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000379",
+      "x": 850,
+      "y": -936,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000380",
+      "x": 850,
+      "y": -936,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000381",
+      "x": 850,
+      "y": -936,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000382",
+      "x": 850,
+      "y": -936,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000383",
+      "x": 850,
+      "y": -936,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000384",
+      "x": 850,
+      "y": -936,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000385",
+      "x": 850,
+      "y": -936,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000386",
+      "x": 850,
+      "y": -936,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000387",
+      "x": 850,
+      "y": -936,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000388",
+      "x": 850,
+      "y": -936,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000389",
+      "x": 850,
+      "y": -936,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000390",
+      "x": 850,
+      "y": -936,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000391",
+      "x": 850,
+      "y": -936,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000392",
+      "x": 790,
+      "y": -960,
+      "z": 20,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000393",
+      "x": 790,
+      "y": -960,
+      "z": 60,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000394",
+      "x": 790,
+      "y": -960,
+      "z": 100,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000395",
+      "x": 790,
+      "y": -960,
+      "z": 140,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000396",
+      "x": 790,
+      "y": -960,
+      "z": 180,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000397",
+      "x": 790,
+      "y": -960,
+      "z": 220,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000398",
+      "x": 790,
+      "y": -960,
+      "z": 260,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000399",
+      "x": 790,
+      "y": -960,
+      "z": 300,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000400",
+      "x": 790,
+      "y": -960,
+      "z": 340,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000401",
+      "x": 790,
+      "y": -960,
+      "z": 380,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000402",
+      "x": 790,
+      "y": -960,
+      "z": 420,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000403",
+      "x": 790,
+      "y": -960,
+      "z": 460,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000404",
+      "x": 790,
+      "y": -960,
+      "z": 500,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000405",
+      "x": 790,
+      "y": -960,
+      "z": 540,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000406",
+      "x": 790,
+      "y": -960,
+      "z": 580,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000407",
+      "x": 790,
+      "y": -960,
+      "z": 620,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000408",
+      "x": 790,
+      "y": -960,
+      "z": 660,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000409",
+      "x": 790,
+      "y": -960,
+      "z": 700,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000410",
+      "x": 790,
+      "y": -960,
+      "z": 740,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000411",
+      "x": 790,
+      "y": -960,
+      "z": 780,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000412",
+      "x": 790,
+      "y": -960,
+      "z": 820,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000413",
+      "x": 790,
+      "y": -960,
+      "z": 860,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    },
+    {
+      "id": "roof-000414",
+      "x": 790,
+      "y": -960,
+      "z": 900,
+      "matched_cavity_count": 0,
+      "matched_ids": [],
+      "matches_other_roof": false
+    }
+  ],
+  "verdict": "BUILDABILITY_NOT_DEMONSTRATED"
+}

@@ -30,11 +30,11 @@ def _validate_instance_ids(parts: Sequence[PartInstance]) -> None:
 def analyze_assembly(parts: Sequence[PartInstance]) -> AssemblyReport:
     """Analyze collisions, contacts, connections, and support topology.
 
-    LDraw meshes include studs and anti-stud cavities. At an exact legal mating
-    transform those surfaces can numerically look like a narrow solid
-    intersection after a rigid rotation even though the connector model proves
-    the parts are on the same nominal mating plane. Only that specific
-    COLLISION-plus-exact-connector case is reclassified as assembly contact.
+    LDraw meshes include studs and anti-stud cavities. Ordinary rectangular
+    parts preserve the existing nominal connector behavior. The 30363 slope
+    has only source-proven top studs and NO certified rigid-body clearance:
+    a mesh collision involving it must NEVER be automatically turned into
+    a permitted connector contact.
     Connector-only pairs that remain geometrically separated stay connections
     without becoming surface contacts.
     """
@@ -50,7 +50,14 @@ def analyze_assembly(parts: Sequence[PartInstance]) -> AssemblyReport:
         relation = check_collision(a, b)
 
         if relation is Relation.COLLISION:
-            if pair_connections:
+            # A nominal 30363 stud match cannot prove that its sloping
+            # body does not cut through the neighboring rigid material.
+            # Keep the collision visible and fail closed for such pairs.
+            slope_30363 = (
+                a.definition.part_id == "30363.dat"
+                or b.definition.part_id == "30363.dat"
+            )
+            if pair_connections and not slope_30363:
                 contacts.append(
                     {
                         "part_a": a.instance_id,
@@ -65,7 +72,8 @@ def analyze_assembly(parts: Sequence[PartInstance]) -> AssemblyReport:
                     {
                         "part_a": a.instance_id,
                         "part_b": b.instance_id,
-                        "type": "solid_intersection",
+                        "type": ("slope_30363_mesh_intersection_review_required"
+                                 if slope_30363 else "solid_intersection"),
                     }
                 )
         elif relation is Relation.CONTACT:
