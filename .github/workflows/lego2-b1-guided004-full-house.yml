@@ -19,7 +19,7 @@ on:
         required: true
         default: B1
         type: choice
-        options: [B1, M020, M024, M025, M026]
+        options: [B1, M020, M024, M025, M026, M027]
 
 jobs:
   audit-guided004-b3-roof-020:
@@ -142,7 +142,7 @@ jobs:
           if-no-files-found: warn
 
   verify-slope-30363-connector-026:
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M026')
+    if: github.event_name == 'workflow_dispatch' && inputs.mission == 'M026'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -168,6 +168,34 @@ jobs:
         with:
           name: BOLDUNGO-M026-30363-TOP-STUD-TESTS-NOT-CERTIFIED
           path: artifacts/lego2-m026/
+          retention-days: 30
+          if-no-files-found: warn
+
+  map-guided004-b3-roof-supports-027:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.mission == 'M027')
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install existing enhanced LDraw geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Download only pinned real B3 piece families
+        run: |
+          python scripts/download_ldraw_probe_066.py /tmp/lego2-m027-ldraw --max-files 800 --parts $(awk '$1=="1" {print $15}' missions/B3/generated/GUIDED004-B3-1904.ldr | sort -u)
+      - name: Map all 408 roof support candidates without rerunning collision checks
+        run: |
+          python scripts/map_guided004_b3_roof_supports_027.py --ldraw-root /tmp/lego2-m027-ldraw --out missions/MAISON_COMPLETE2/CARTOGRAPHIE-APPUIS-M027.md --json-out artifacts/lego2-m027/CARTOGRAPHIE-APPUIS-M027.json
+      - name: Save all 408 roof map rows and numeric evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M027-B3-408-ROOF-SUPPORT-MAP-NOT-CERTIFIED
+          path: |
+            missions/MAISON_COMPLETE2/CARTOGRAPHIE-APPUIS-M027.md
+            artifacts/lego2-m027/
           retention-days: 30
           if-no-files-found: warn
 
