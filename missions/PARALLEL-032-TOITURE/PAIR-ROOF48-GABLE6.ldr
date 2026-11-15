@@ -1,0 +1,9 @@
+0 FILE M032-PAIR-ROOF48-GABLE6.ldr
+0 Mission 032 - two ORIGINAL GUIDED004 placements (no piece relocated)
+0 Exact LDCad nominal stud/receiver at (470,-792,50); single engaged stud
+0 WARNING: mesh collision, insertion, load are NOT certified
+0 // gable-000006
+1 19 480 -792 50 1 0 0 0 1 0 0 0 1 3004.dat
+0 // roof-000048
+1 1 470 -816 60 0 0 1 0 1 0 -1 0 0 30363.dat
+0 NOFILE
