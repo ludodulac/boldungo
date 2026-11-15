@@ -2,13 +2,13 @@
 export function buildM038(b3){
  const C=[],P=[],part={1:"3024.dat",2:"3023.dat",3:"3623.dat",4:"3710.dat"};
  const put=(x,z,H,g,s)=>C.push({x,z,H,g,s});
- for(let s=0;s<9;s++)for(let x=0;x<5;x++)for(let z=2*s;z<2*s+2;z++)put(x,z,34-2*s,"high",9-s);
+ for(let s=0;s<9;s++)for(let x=0;x<5;x++)for(let z=2*s;z<2*s+2;z++)put(x,z,35-2*s,"high",9-s);
  for(let x=0;x<5;x++)for(let z=18;z<23;z++)put(x,z,16,"landing",0);
- for(let s=0;s<7;s++)for(let x=-2-2*s;x<-2*s;x++)for(let z=18;z<23;z++)put(x,z,14-2*s,"low",7-s);
+ for(let s=0;s<7;s++)for(let x=-2-2*s;x<-2*s;x++)for(let z=18;z<23;z++)put(x,z,15-2*s,"low",7-s);
  if(new Set(C.map(c=>c.x+","+c.z)).size!==C.length)throw Error("DUPLICATE_PLANE");
  const add=(kind,x,z,X,Z,h,ref,g,s)=>P.push({kind,x,z,X,Z,h,ref,g,s,id:"M038-"+String(P.length+1).padStart(5,"0")});
  // Orthogonal 1xN plate courses, staggered, complete interior without overlap.
- for(let h=0;h<34;h++){
+ for(let h=0;h<35;h++){
   const axis=h%2?"z":"x",other=axis==="x"?"z":"x",rows=new Map();
   for(const c of C){if(h>=(c.g==="landing"?c.H:c.H-2))continue;
    if(!rows.has(c[other]))rows.set(c[other],[]);rows.get(c[other]).push(c);}
@@ -21,7 +21,7 @@ export function buildM038(b3){
  }
  // 3794b official 1x2 jumper: ONE centre stud, standard underside cavities.
  // Upper cap shifts +0.5 stud toward house; lower cap shifts -0.5 toward front.
- for(let s=0;s<9;s++){const h=34-2*s;
+ for(let s=0;s<9;s++){const h=35-2*s;
   for(let z=2*s;z<2*s+2;z++){
    add("jumper",0,z,2,z+1,h-2,"3794b.dat","high",9-s);
    add("jumper",3,z,5,z+1,h-2,"3794b.dat","high",9-s);
@@ -29,7 +29,7 @@ export function buildM038(b3){
    add("cap",3.5,z,5.5,z+1,h-1,"3023.dat","high",9-s);
   }
  }
- for(let s=0;s<7;s++){const h=14-2*s;
+ for(let s=0;s<7;s++){const h=15-2*s;
   for(let x=-2-2*s;x<-2*s;x++){
    add("jumper",x,18,x+1,20,h-2,"3794b.dat","low",7-s);
    add("jumper",x,20,x+1,22,h-2,"3794b.dat","low",7-s);
@@ -37,7 +37,7 @@ export function buildM038(b3){
    add("cap",x,19.5,x+1,22.5,h-1,"3623.dat","low",7-s);
   }
  }
- const box=p=>[210+20*p.x,-8*(p.h+1),340+20*p.z,210+20*p.X,-8*p.h,340+20*p.Z];
+ const box=p=>[140+20*p.x,-8*(p.h+1),340+20*p.z,140+20*p.X,-8*p.h,340+20*p.Z];
  const boxes=P.map(box);
  const hit=(a,b)=>a[0]<b[3]&&b[0]<a[3]&&a[1]<b[4]&&b[1]<a[4]&&a[2]<b[5]&&b[2]<a[5];
  let collision=0;
@@ -89,8 +89,8 @@ export function buildM038(b3){
   orthogonal_original_parts_checked:ortho,prototype_parts:P.length,inventory,upper_steps:9,lower_steps:7,
   width_studs:5.5,width_m:1.1,target_approx_m:1.12,width_delta_m:-0.02,
   upper_flight_Z_LDU:[340,700],landing_Z_LDU:[700,800],wall_south_surface_X_LDU:320,
-  upper_cap_X_LDU:[220,320],concrete_edge_Z_LDU_approx:340,
-  highest_tread_height_m_assumed:2.72,going_m_assumed:0.40,riser_m_assumed:0.16,
+  upper_cap_X_LDU:[150,250],concrete_edge_Z_LDU_approx:340,
+  highest_tread_height_m_assumed:2.80,going_m_assumed:0.40,riser_m_assumed:0.16,
   original_vs_new_volume_collisions:against,new_volume_collisions:collision,
   nominal_stud_cavity_sites:site,nominal_piece_to_piece_edges:edge,nominal_components:components,component_info:compInfo,
   nominal_unsupported_pieces:unsupported,offical_jumper_3794b_cap_sites:cap,jumper_3794b_core_sites:jump,
