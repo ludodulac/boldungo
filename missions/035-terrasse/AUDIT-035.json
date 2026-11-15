@@ -17,7 +17,8 @@
     "new_y_LDU_max": 24,
     "internal_top_stud_to_bottom_overlap_pairs": 15,
     "nominal_stud_contacts_to_existing_boards": 2,
-    "nominal_stud_contact_sites_on_existing_boards": 4
+    "nominal_stud_contact_sites_on_existing_boards": 4,
+    "stud_centers_exactly_coincident_for_all_reported_contacts": true
   },
   "host_contacts": [
     {
@@ -112,7 +113,8 @@
     "All rectangular standard brick/plate dimensions are used as orthogonal nominal AABBs (20 LDU/stud, 24 LDU/brick, 8 LDU/plate).",
     "The 408 sloped roof parts are outside the vertical search envelope of the Y; they are not subjected to a mesh-level collision test.",
     "Nominal contacts are coplanar top studs/underside on common stud grid, not verified coupling force or tubes clearance.",
-    "Concrete level and timber level are taken from the selected GUIDED004 B3 LDraw even though owner topology states timber is below masonry; unresolved mismatch."
+    "Concrete level and timber level are taken from the selected GUIDED004 B3 LDraw even though owner topology states timber is below masonry; unresolved mismatch.",
+    "Stud centers, not only overlapping AABBs, coincide on the 20-LDU grid for all reported nominal interfaces."
   ],
   "not_verified": [
     "actual photographs inspected visually in this session",

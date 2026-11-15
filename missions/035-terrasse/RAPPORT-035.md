@@ -13,7 +13,7 @@
 
 LDraw livré : [PROTO-035-GUIDED004-Y.ldr](PROTO-035-GUIDED004-Y.ldr). Il reprend **sans réécriture de ligne de pièce** les **150 pièces des plateformes** et les **5 pièces expérimentales B2/B3** déjà présentes dans GUIDED004, puis ajoute un **Y en gradins** de **16 pièces LEGO réelles** : une 3001 (brique 2×4) de base, huit 3005 (briques 1×1) pour le fût, et sept 3004 (briques 1×2) pour la ramification. Les bras ne sont **pas des poutres en diagonale** : le Y est une interprétation en tenons, un premier essai de construction réalisable avec des références connues. Les couleurs restent indicatives.
 
-Implantation **proposée seulement**, dans le repère LDraw de la maison : pied `(190,0,550)` LDU, sommet du fût sous la terrasse à `(200,-216,550)`, bras terminés `(160,-288,550)` et `(240,-288,550)`. Les deux terminaisons ont respectivement un recouvrement nominal de **2 tenons** avec les vrais planchers `board:00014` et `board:00026` déjà présents (briques 3007). Ce Y ajouté n'est **ni relevé par mesure photographique**, ni validé comme emplacement définitif.
+Implantation **proposée seulement**, dans le repère LDraw de la maison : pied `(200,0,560)` LDU, sommet du fût sous la terrasse à `(200,-216,550)`, bras terminés `(160,-288,550)` et `(240,-288,550)`. Les deux terminaisons ont respectivement un recouvrement nominal de **2 tenons** avec les vrais planchers `board:00014` et `board:00026` déjà présents (briques 3007). Ce Y ajouté n'est **ni relevé par mesure photographique**, ni validé comme emplacement définitif.
 
 ## Vérifications réelles et non-vérifications
 
@@ -26,7 +26,7 @@ Le contrôle a utilisé la géométrie nominale AABB des pièces droites : coord
 | Nouveau Y | 16 pièces : 1 base + 8 fût + 7 branches |
 | Nouveaux recouvrements AABB avec la maison | **0**, sur les pièces droites du catalogue |
 | Nouveaux recouvrements internes au Y | **0** |
-| Paires de faces avec tenons nominaux du Y | **15**, réseau connecté |
+| Paires de faces avec tenons nominaux du Y | **15**, réseau connecté (centres de tenons coïncidents) |
 | Interfaces nominales Y/plancher | **2**, planches `00014` et `00026` |
 | Test de stabilité, tenue, assemblage manuel | **NON RÉALISÉ / NON CERTIFIÉ** |
 

@@ -41,8 +41,11 @@ def overlap(a,b):
 def stud_contact(a,b):
     A,B=a["box"],b["box"]
     if A[2]!=B[3]: return 0
-    dx=min(A[1],B[1])-max(A[0],B[0]);dz=min(A[5],B[5])-max(A[4],B[4])
-    return max(0,dx//20)*max(0,dz//20)
+    # Orthogonal AABB overlap alone can invent a joint at half-stud offset.
+    # Count exactly matching top-stud centres in both rectangular footprints.
+    ax=set(range(A[0]+10,A[1],20)); bx=set(range(B[0]+10,B[1],20))
+    az=set(range(A[4]+10,A[5],20)); bz=set(range(B[4]+10,B[5],20))
+    return len(ax & bx)*len(az & bz)
 def run():
     source=read(SOURCE);proto=read(PROTOTYPE)
     originals=[p for p in source if p["id"].startswith("scene-platform:") or p["id"].startswith(("EXPERIMENT-B2-DECK","EXPERIMENT-B3-CONCRETE"))]

@@ -55,9 +55,9 @@
       "id": "M035:Y:footing",
       "part": "3001.dat",
       "color": 7,
-      "x_ldu": 190,
+      "x_ldu": 200,
       "y_ldu": 0,
-      "z_ldu": 550,
+      "z_ldu": 560,
       "rotation_90deg": true
     },
     {
