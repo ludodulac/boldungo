@@ -1,0 +1,18 @@
+{
+  "mission": 36,
+  "source_b3_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+  "total_instances": 6,
+  "by_reference_color": [
+    {
+      "part": "30363.dat",
+      "color": 1,
+      "count": 4
+    },
+    {
+      "part": "3008.dat",
+      "color": 19,
+      "count": 2
+    }
+  ],
+  "purchase_authorized": false
+}

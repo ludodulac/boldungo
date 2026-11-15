@@ -1,0 +1,53 @@
+name: BOLDUNGO M036 toiture — ciblage 4 pentes
+on:
+  push:
+    branches:
+      - feat/boldungo-parallel-032-toiture
+    paths:
+      - 'missions/PARALLEL-036-TOITURE/**'
+      - '.github/workflows/lego2-m036-toiture.yml'
+  workflow_dispatch:
+
+jobs:
+  verify-m036-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing geometry engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Re-execute ORIGINAL M032 census on frozen B3 model
+        run: |
+          mkdir -p artifacts/lego2-m036
+          python missions/PARALLEL-032-TOITURE/audit_032.py | tee artifacts/lego2-m036/AUDIT-032-REPRODUIT.json
+      - name: Fetch pinned LDraw meshes for 30363 and 3008 ONLY
+        run: python scripts/download_ldraw_probe_066.py /tmp/lego2-m036-ldraw --max-files 160 --parts 30363 3008
+      - name: Fetch pinned LDCad metadata, external CC BY-SA 4.0 only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen
+          root=Path('/tmp/lego2-m036-shadows')
+          rev='9b1131fb1991f8c0bfc072325e4e12f6271aba35'
+          for rel in ('parts/s/30363s01.dat','parts/3004.dat','parts/s/3004s01.dat','p/stud.dat'):
+              path=root/rel
+              path.parent.mkdir(parents=True,exist_ok=True)
+              with urlopen(f'https://raw.githubusercontent.com/RolandMelkert/LDCadShadowLibrary/{rev}/{rel}',timeout=25) as response:
+                  body=response.read()
+              assert b'CC BY-SA 4.0' in body
+              path.write_bytes(body)
+          PY
+      - name: Check 9 snaps, 15 real mesh relations, immutability
+        run: |
+          python missions/PARALLEL-036-TOITURE/verify_m036.py --ldraw-root /tmp/lego2-m036-ldraw --ldcad-shadow-root /tmp/lego2-m036-shadows --out artifacts/lego2-m036/RESULTATS-036-ENGINE.json 2>&1 | tee artifacts/lego2-m036/pytest-output.txt
+      - name: Keep bounded evidence without copying licensed meshes to repository
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M036-TOITURE-4-PENTES-NOMINAL-NOT-CERTIFIED
+          path: artifacts/lego2-m036/
+          if-no-files-found: warn
+          retention-days: 30
