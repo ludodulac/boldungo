@@ -66,7 +66,7 @@ export function buildM038(b3){
  const D={"3005.dat":[1,1,3],"3004.dat":[1,2,3],"3622.dat":[1,3,3],"3010.dat":[1,4,3],"3009.dat":[1,6,3],"3008.dat":[1,8,3],
   "3003.dat":[2,2,3],"3002.dat":[2,3,3],"3001.dat":[2,4,3],"2456.dat":[2,6,3],"3007.dat":[2,8,3],"3006.dat":[2,10,3],
   "3666.dat":[1,6,1],"3460.dat":[1,8,1],"3623.dat":[1,3,1],"3023b.dat":[1,2,1],"3710.dat":[1,4,1]};
- let cnt=0,slopes=0,ortho=0,against=0,group="",examples=[],concrete=[],timber=[];
+ let cnt=0,slopes=0,ortho=0,against=0,group="",examples=[],concrete=[],timber=[],southWalls=[];
  for(const l of b3.split(/\n/)){if(l.startsWith("0 // "))group=l.slice(5);if(!l.startsWith("1 "))continue;cnt++;
   let t=l.trim().split(/\s+/),ref=t[14].toLowerCase();
   if(ref==="30363.dat"){slopes++;continue;}
@@ -74,6 +74,7 @@ export function buildM038(b3){
   const X=+t[2],Y=+t[3],Z=+t[4],w=Math.abs(+t[5])*d[0]+Math.abs(+t[7])*d[1],dep=Math.abs(+t[11])*d[0]+Math.abs(+t[13])*d[1];
   const b=[X-10*w,Y,Z-10*dep,X+10*w,Y+8*d[2],Z+10*dep];
   if(group.startsWith("scene-platform:south-concrete-platform:deck"))concrete.push(b);
+  if(group.startsWith("wall-")&&X===330)southWalls.push(b);
   if(group.startsWith("scene-platform:south-timber-deck")&&group.includes("board"))timber.push(b);
   for(let j=0;j<boxes.length;j++)if(hit(boxes[j],b)){against++;if(examples.length<8)examples.push({source:group,ref,prototype:P[j].id});}
  }
@@ -86,17 +87,19 @@ export function buildM038(b3){
   }),"0 NOFILE",""].join("\n");
  const bom=["# M038 — pièces LEGO réelles","", "5,5 tenons ≈ 1,10 m ; jumpers 3794b à tenon central (officiels LDraw).","",
   "| Pièce LDraw | Quantité |","|---|---:|",...Object.entries(inventory).sort().map(([k,v])=>"| "+k+" | "+v+" |"),"| **TOTAL** | **"+P.length+"** |",""].join("\n");
- const qa={source_head:"20fc51c988e1f478fecadd4d32c2a19ce378e332",b3_parts:cnt,slopes_not_mesh_checked:slopes,
+ const qa={parent_m034_commit:"20fc51c988e1f478fecadd4d32c2a19ce378e332",b3_parts:cnt,slopes_not_mesh_checked:slopes,
   orthogonal_original_parts_checked:ortho,prototype_parts:P.length,inventory,upper_steps:9,lower_steps:7,
   width_studs:5.5,width_m:1.1,target_approx_m:1.12,width_delta_m:-0.02,
-  upper_flight_Z_LDU:[340,700],landing_Z_LDU:[700,800],wall_south_surface_X_LDU:320,
+  upper_flight_Z_LDU:[340,700],landing_Z_LDU:[700,800],lower_courtyard_X_min_LDU:-140,
+  concrete_deck_original_z_max_ldu:Math.max(...concrete.map(p=>p[5])),
+  source_wall_boxes_count:southWalls.length,house_south_nominal_wall_center_x_ldu:330,
   upper_cap_X_LDU:[150,250],concrete_edge_Z_LDU_approx:340,
   highest_tread_height_m_assumed:2.64,going_m_assumed:0.40,riser_m_assumed:0.16,
   original_vs_new_volume_collisions:against,new_volume_collisions:collision,
   nominal_stud_cavity_sites:site,nominal_piece_to_piece_edges:edge,nominal_components:components,component_info:compInfo,
   nominal_unsupported_pieces:unsupported,offical_jumper_3794b_cap_sites:cap,jumper_3794b_core_sites:jump,
   bbox_collision_examples:examples,full_mesh_check:false,load_bearing_verified:false,continuous_insertion:false,
-  actual_house_attachment:"NONE_PROVEN",rear_overrun_not_retained:"Unresolved contradiction with original B3 concrete platform location",
+  actual_house_attachment:"NONE_PROVEN",rear_overrun_not_retained:"B3 west timber-return post at x170, z810 interferes with relocating the L farther west without altering other construction; real photo rear overrun remains to resolve.",
   photos_directly_viewed:["IMG_20261007_092854.jpg","IMG_20261007_092818.jpg","IMG_20261007_092901.jpg","IMG_20260919_170032.jpg"]};
  const X=x=>140+(320-x)*.5,Z=z=>115+(z-40)*.5;
  const draw=(b,fill,opacity)=>'<rect x="'+X(b[3])+'" y="'+Z(b[2])+'" width="'+((b[3]-b[0])*.5)+'" height="'+((b[5]-b[2])*.5)+'" fill="'+fill+'" opacity="'+opacity+'"/>';
@@ -106,7 +109,7 @@ export function buildM038(b3){
   '<text x="30" y="68" font-family="Arial" font-size="15" fill="#567187">Schéma projeté des pièces existantes / nouvelle variante isolée</text>',
   '<rect x="24" y="88" width="700" height="675" rx="12" fill="white" stroke="#dbe5ed"/>',
   '<rect x="'+X(340)+'" y="'+Z(40)+'" width="10" height="'+(Z(900)-Z(40))+'" fill="#546b7c"/>',
-  ...timber.map(b=>draw(b,"#d9a26f",.25)),...concrete.map(b=>draw(b,"#92a6b7",.42)),
+  ...southWalls.map(b=>draw(b,"#546b7c",.12)),...timber.map(b=>draw(b,"#d9a26f",.25)),...concrete.map(b=>draw(b,"#92a6b7",.42)),
   ...P.filter(p=>p.kind==="cap"||p.g==="landing"&&p.h===15).map(p=>draw(box(p),p.g==="high"?"#367ca7":p.g==="low"?"#3b987d":"#d7a04e",1)),
   '<line x1="40" y1="'+Z(870)+'" x2="715" y2="'+Z(870)+'" stroke="#8069a2" stroke-dasharray="7 5" stroke-width="2"/>',
   '<text x="50" y="'+(Z(870)-10)+'" font-family="Arial" font-size="13" fill="#765d93">Limite Ouest maison (estimation B3)</text>',
@@ -124,7 +127,7 @@ export function buildM038(b3){
   '</svg>'].join("\n");
  return {P,ldraw,bom,qa,svg};
 }
-if(import.meta.url===new URL(process.argv[1],"file://").href){
+if(typeof process!=="undefined"&&process.argv[1]&&process.argv[1].endsWith("build-stair-m038.mjs")){
  const fs=await import("node:fs"),base=new URL(".",import.meta.url);
  const b3=fs.readFileSync(new URL("../B3/generated/GUIDED004-B3-1904.ldr",base),"utf8"),r=buildM038(b3);
  if(r.qa.nominal_components!==1||r.qa.nominal_unsupported_pieces||r.qa.original_vs_new_volume_collisions)throw Error("M038_QUALITY_GATE_FAIL");
