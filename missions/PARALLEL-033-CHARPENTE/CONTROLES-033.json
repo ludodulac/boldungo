@@ -1,0 +1,184 @@
+{
+  "mission": 33,
+  "source_base_sha": "0f5bfe1836598f7050089c54a415123f06d33945",
+  "fixture_not_installed_in_guided004": true,
+  "wall_appuis": [
+    {
+      "pieces": [
+        "wall-A-course-1",
+        "wall-A-course-2"
+      ],
+      "anchoring": "2x2 stud grid"
+    },
+    {
+      "pieces": [
+        "wall-B-course-1",
+        "wall-B-course-2"
+      ],
+      "anchoring": "2x2 stud grid"
+    }
+  ],
+  "standard_pieces": [
+    {
+      "id": "wall-A-course-1",
+      "part": "3003",
+      "box": [
+        0,
+        0,
+        0,
+        2,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "wall-A-course-2",
+      "part": "3003",
+      "box": [
+        0,
+        0,
+        3,
+        2,
+        2,
+        6
+      ]
+    },
+    {
+      "id": "wall-B-course-1",
+      "part": "3003",
+      "box": [
+        6,
+        0,
+        0,
+        8,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "wall-B-course-2",
+      "part": "3003",
+      "box": [
+        6,
+        0,
+        3,
+        8,
+        2,
+        6
+      ]
+    },
+    {
+      "id": "real-crossbeam-2x8",
+      "part": "3007",
+      "box": [
+        0,
+        0,
+        6,
+        8,
+        2,
+        9
+      ]
+    }
+  ],
+  "undercarriage_contacts": [
+    {
+      "a": "wall-A-course-1",
+      "b": "wall-A-course-2",
+      "studs": 4
+    },
+    {
+      "a": "wall-A-course-2",
+      "b": "real-crossbeam-2x8",
+      "studs": 4
+    },
+    {
+      "a": "wall-B-course-1",
+      "b": "wall-B-course-2",
+      "studs": 4
+    },
+    {
+      "a": "wall-B-course-2",
+      "b": "real-crossbeam-2x8",
+      "studs": 4
+    }
+  ],
+  "slope": {
+    "reference": "30363.dat",
+    "origin": [
+      110,
+      -96,
+      20
+    ],
+    "rotation": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      -1,
+      0,
+      0
+    ],
+    "eight_socket_to_beam_studs": [
+      [
+        110,
+        -72,
+        30
+      ],
+      [
+        110,
+        -72,
+        10
+      ],
+      [
+        90,
+        -72,
+        30
+      ],
+      [
+        90,
+        -72,
+        10
+      ],
+      [
+        70,
+        -72,
+        30
+      ],
+      [
+        70,
+        -72,
+        10
+      ],
+      [
+        50,
+        -72,
+        30
+      ],
+      [
+        50,
+        -72,
+        10
+      ]
+    ],
+    "proof": "nominal shadow LDCad M031 only"
+  },
+  "checks": {
+    "rectangular_body_overlap_count": 0,
+    "stud_interfaces_found": 4,
+    "slope_sites_mathematically_matched": 8,
+    "rectangular_brick_components": 1,
+    "real_mesh_collision_test": "NOT_RUN",
+    "full_B3_installation": "NOT_PROVEN",
+    "stability": "NOT_PROVEN",
+    "pitch_22deg": "NOT_MODELED_IN_THIS_FIXTURE"
+  },
+  "architectural_limits": {
+    "main_roof_22_deg": true,
+    "span_test_studs": 8,
+    "full_span_supported": false,
+    "supports_from_actual_guided004": "wall-000699/wall-000704 proven ordinary stud-bearing locations but original gable pieces already occupy the target upper courses",
+    "no_B3_piece_moved": true
+  }
+}
