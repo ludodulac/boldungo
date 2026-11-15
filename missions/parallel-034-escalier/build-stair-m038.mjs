@@ -1,10 +1,11 @@
 // BOLDUNGO M038: photo-guided, isolated L stair. Run: node missions/parallel-034-escalier/build-stair-m038.mjs
 export function buildM038(b3){
+ const lowH=[13,11,9,8,6,5,3];
  const C=[],P=[],part={1:"3024.dat",2:"3023.dat",3:"3623.dat",4:"3710.dat"};
  const put=(x,z,H,g,s)=>C.push({x,z,H,g,s});
- for(let s=0;s<9;s++)for(let x=0;x<5;x++)for(let z=2*s;z<2*s+2;z++)put(x,z,35-2*s,"high",9-s);
+ for(let s=0;s<9;s++)for(let x=0;x<5;x++)for(let z=2*s;z<2*s+2;z++)put(x,z,33-2*s,"high",9-s);
  for(let x=0;x<5;x++)for(let z=18;z<23;z++)put(x,z,16,"landing",0);
- for(let s=0;s<7;s++)for(let x=-2-2*s;x<-2*s;x++)for(let z=18;z<23;z++)put(x,z,15-2*s,"low",7-s);
+ for(let s=0;s<7;s++)for(let x=-2-2*s;x<-2*s;x++)for(let z=19;z<24;z++)put(x,z,lowH[s],"low",7-s);
  if(new Set(C.map(c=>c.x+","+c.z)).size!==C.length)throw Error("DUPLICATE_PLANE");
  const add=(kind,x,z,X,Z,h,ref,g,s)=>P.push({kind,x,z,X,Z,h,ref,g,s,id:"M038-"+String(P.length+1).padStart(5,"0")});
  // Orthogonal 1xN plate courses, staggered, complete interior without overlap.
@@ -21,7 +22,7 @@ export function buildM038(b3){
  }
  // 3794b official 1x2 jumper: ONE centre stud, standard underside cavities.
  // Upper cap shifts +0.5 stud toward house; lower cap shifts -0.5 toward front.
- for(let s=0;s<9;s++){const h=35-2*s;
+ for(let s=0;s<9;s++){const h=33-2*s;
   for(let z=2*s;z<2*s+2;z++){
    add("jumper",0,z,2,z+1,h-2,"3794b.dat","high",9-s);
    add("jumper",3,z,5,z+1,h-2,"3794b.dat","high",9-s);
@@ -29,12 +30,12 @@ export function buildM038(b3){
    add("cap",3.5,z,5.5,z+1,h-1,"3023.dat","high",9-s);
   }
  }
- for(let s=0;s<7;s++){const h=15-2*s;
+ for(let s=0;s<7;s++){const h=lowH[s];
   for(let x=-2-2*s;x<-2*s;x++){
-   add("jumper",x,18,x+1,20,h-2,"3794b.dat","low",7-s);
-   add("jumper",x,20,x+1,22,h-2,"3794b.dat","low",7-s);
-   add("cap",x,17.5,x+1,19.5,h-1,"3023.dat","low",7-s);
-   add("cap",x,19.5,x+1,22.5,h-1,"3623.dat","low",7-s);
+   add("jumper",x,19,x+1,21,h-2,"3794b.dat","low",7-s);
+   add("jumper",x,21,x+1,23,h-2,"3794b.dat","low",7-s);
+   add("cap",x,18.5,x+1,20.5,h-1,"3023.dat","low",7-s);
+   add("cap",x,20.5,x+1,23.5,h-1,"3623.dat","low",7-s);
   }
  }
  const box=p=>[140+20*p.x,-8*(p.h+1),340+20*p.z,140+20*p.X,-8*p.h,340+20*p.Z];
@@ -90,7 +91,7 @@ export function buildM038(b3){
   width_studs:5.5,width_m:1.1,target_approx_m:1.12,width_delta_m:-0.02,
   upper_flight_Z_LDU:[340,700],landing_Z_LDU:[700,800],wall_south_surface_X_LDU:320,
   upper_cap_X_LDU:[150,250],concrete_edge_Z_LDU_approx:340,
-  highest_tread_height_m_assumed:2.80,going_m_assumed:0.40,riser_m_assumed:0.16,
+  highest_tread_height_m_assumed:2.64,going_m_assumed:0.40,riser_m_assumed:0.16,
   original_vs_new_volume_collisions:against,new_volume_collisions:collision,
   nominal_stud_cavity_sites:site,nominal_piece_to_piece_edges:edge,nominal_components:components,component_info:compInfo,
   nominal_unsupported_pieces:unsupported,offical_jumper_3794b_cap_sites:cap,jumper_3794b_core_sites:jump,
