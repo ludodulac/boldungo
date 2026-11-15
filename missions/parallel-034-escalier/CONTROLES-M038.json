@@ -1,0 +1,76 @@
+{
+  "parent_m034_commit": "20fc51c988e1f478fecadd4d32c2a19ce378e332",
+  "b3_parts": 1904,
+  "slopes_not_mesh_checked": 408,
+  "orthogonal_original_parts_checked": 1496,
+  "prototype_parts": 1126,
+  "inventory": {
+    "3024.dat": 183,
+    "3710.dat": 444,
+    "3023.dat": 224,
+    "3623.dat": 211,
+    "3794b.dat": 64
+  },
+  "upper_steps": 9,
+  "lower_steps": 7,
+  "width_studs": 5.5,
+  "width_m": 1.1,
+  "target_approx_m": 1.12,
+  "width_delta_m": -0.02,
+  "upper_flight_Z_LDU": [
+    340,
+    700
+  ],
+  "landing_Z_LDU": [
+    700,
+    800
+  ],
+  "lower_courtyard_X_min_LDU": -140,
+  "concrete_deck_original_z_max_ldu": 400,
+  "source_wall_boxes_count": 172,
+  "house_south_nominal_wall_center_x_ldu": 330,
+  "upper_cap_X_LDU": [
+    150,
+    250
+  ],
+  "concrete_edge_Z_LDU_approx": 340,
+  "highest_tread_height_m_assumed": 2.64,
+  "going_m_assumed": 0.4,
+  "riser_m_assumed": 0.16,
+  "original_vs_new_volume_collisions": 0,
+  "new_volume_collisions": 0,
+  "nominal_stud_cavity_sites": 2887,
+  "nominal_piece_to_piece_edges": 2854,
+  "nominal_components": 1,
+  "component_info": [
+    {
+      "n": 1126,
+      "kind": [
+        "high",
+        "landing",
+        "low"
+      ],
+      "box": [
+        -140,
+        250,
+        340,
+        820
+      ]
+    }
+  ],
+  "nominal_unsupported_pieces": 0,
+  "offical_jumper_3794b_cap_sites": 64,
+  "jumper_3794b_core_sites": 128,
+  "bbox_collision_examples": [],
+  "full_mesh_check": false,
+  "load_bearing_verified": false,
+  "continuous_insertion": false,
+  "actual_house_attachment": "NONE_PROVEN",
+  "rear_overrun_not_retained": "B3 west timber-return post at x170, z810 interferes with relocating the L farther west without altering other construction; real photo rear overrun remains to resolve.",
+  "photos_directly_viewed": [
+    "IMG_20261007_092854.jpg",
+    "IMG_20261007_092818.jpg",
+    "IMG_20261007_092901.jpg",
+    "IMG_20260919_170032.jpg"
+  ]
+}

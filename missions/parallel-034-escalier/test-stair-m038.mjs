@@ -1,0 +1,28 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import {buildM038} from "./build-stair-m038.mjs";
+const base=new URL(".",import.meta.url);
+const source=fs.readFileSync(new URL("../B3/generated/GUIDED004-B3-1904.ldr",base),"utf8");
+const prior=fs.readFileSync(new URL("ESCALIER-M034-PROTOTYPE.ldr",base),"utf8");
+const r=buildM038(source);
+const {qa}=r,checks=[];
+const check=(name,predicate)=>{checks.push({name,pass:!!predicate});assert.ok(predicate,name);};
+check("B3 canonical 1904/408",qa.b3_parts===1904&&qa.slopes_not_mesh_checked===408);
+check("M034 485 preserved",prior.split(/\r?\n/).filter(s=>s.startsWith("1 ")).length===485);
+check("real 7 lower + 9 upper",qa.lower_steps===7&&qa.upper_steps===9);
+check("5.5 studs 1.10m vs target 1.12",qa.width_studs===5.5&&qa.width_delta_m===-0.02);
+check("authentic jumper site matches",qa.offical_jumper_3794b_cap_sites===64&&qa.jumper_3794b_core_sites===128);
+check("nominally connected, no unsupported",qa.nominal_components===1&&qa.nominal_unsupported_pieces===0);
+check("zero AABB prototype collisions",qa.new_volume_collisions===0);
+check("zero AABB collisions with 1496 B3 orthogonal pieces",qa.original_vs_new_volume_collisions===0);
+check("reference concrete deck boundary",qa.concrete_deck_original_z_max_ldu===400);
+check("reference wall geometry present",qa.source_wall_boxes_count>100);
+check("LOD original remains immutable",source===fs.readFileSync(new URL("../B3/generated/GUIDED004-B3-1904.ldr",base),"utf8"));
+const oldPiece="1 15 470 -96 50 1 0 0 0 1 0 0 0 1 3005.dat";
+const injected=source.replace(oldPiece,"1 15 190 -24 500 1 0 0 0 1 0 0 0 1 3005.dat");
+check("negative injected collision",injected!==source&&buildM038(injected).qa.original_vs_new_volume_collisions>0);
+const short=source.replace(oldPiece,"");
+let missingFails=false;
+try {buildM038(short);} catch(e){missingFails=String(e).includes("B3_SIZE_MISMATCH");}
+check("negative missing original piece",missingFails);
+console.log(JSON.stringify({mission:"M038",checked:checks.length,passed:checks.filter(c=>c.pass).length,checks},null,2));

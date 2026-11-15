@@ -1,0 +1,67 @@
+{
+  "mission": "M038",
+  "generator_HEAD": "3d0f292a92831cd6fb39dbfd1916f08eb896a0ce",
+  "mode": "JS targeted runtime assertions executed in ChatGPT; not GitHub Actions",
+  "cases": [
+    {
+      "name": "B3 canonical 1904/408",
+      "pass": true
+    },
+    {
+      "name": "M034 485 preserved",
+      "pass": true
+    },
+    {
+      "name": "real 7 lower + 9 upper",
+      "pass": true
+    },
+    {
+      "name": "5.5 studs 1.10m vs target 1.12",
+      "pass": true
+    },
+    {
+      "name": "authentic jumper site matches",
+      "pass": true
+    },
+    {
+      "name": "nominally connected, no unsupported",
+      "pass": true
+    },
+    {
+      "name": "zero AABB prototype collisions",
+      "pass": true
+    },
+    {
+      "name": "zero AABB collisions with 1496 B3 orthogonal pieces",
+      "pass": true
+    },
+    {
+      "name": "reference concrete deck boundary",
+      "pass": true
+    },
+    {
+      "name": "reference wall geometry present",
+      "pass": true
+    },
+    {
+      "name": "LOD original remains immutable",
+      "pass": true
+    },
+    {
+      "name": "negative injected collision",
+      "pass": true
+    },
+    {
+      "name": "negative missing original piece",
+      "pass": true
+    }
+  ],
+  "passing": 13,
+  "total": 13,
+  "negative_extra": "west +20 LDU simulated separately, 16 AABB collisions with unmodified west-return post; no unsafe move committed",
+  "limits": [
+    "AABB is a conservative orthogonal preflight, not LDraw mesh intersection certification",
+    "roof 30363 not meshed",
+    "no insertion or physical load tests"
+  ]
+}
