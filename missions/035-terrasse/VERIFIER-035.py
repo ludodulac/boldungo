@@ -18,6 +18,7 @@ DIM={
 }
 IDENT=(1,0,0,0,1,0,0,0,1)
 TURN=(0,0,-1,0,1,0,1,0,0)
+BACK_TURN=(0,0,1,0,1,0,-1,0,0)
 def read(path):
     parts=[]; identifier=None
     for ln in path.read_text(encoding="utf8").splitlines():
@@ -26,7 +27,7 @@ def read(path):
         elif ln.startswith("1 "):
             s=ln.split()
             matrix=tuple(map(int,s[5:14]))
-            assert matrix in (IDENT,TURN), (identifier,"NON_ORTHOGONAL_PART")
+            assert matrix in (IDENT,TURN,BACK_TURN), (identifier,"NON_ORTHOGONAL_PART")
             item={"id":identifier,"line":ln,"part":s[-1],"x":int(s[2]),"y":int(s[3]),"z":int(s[4]),"matrix":matrix}
             if item["part"] in DIM:
                 w,l,h=DIM[item["part"]];wx,wz=(l,w) if matrix==IDENT else (w,l)
