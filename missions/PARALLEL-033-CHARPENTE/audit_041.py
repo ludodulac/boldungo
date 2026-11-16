@@ -52,7 +52,7 @@ def parse_parts(path):
     return parts
 
 def git_blob(data):
-    return hashlib.sha1(b"blob "+str(len(data)).encode()+b"\\0"+data).hexdigest()
+    return hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()
 
 @lru_cache(maxsize=None)
 def read_dat(path):
@@ -73,7 +73,7 @@ def read_dat(path):
 
 @lru_cache(maxsize=None)
 def resolve_ref(name):
-    name=name.replace("\\\\","/").lower()
+    name=name.replace("\\","/").lower()
     candidates=(["parts/"+name] if name.startswith("s/") else
                 ["p/"+name,"parts/"+name])
     for cand in candidates:
@@ -277,7 +277,7 @@ def main():
     data["next_gate"]="Continuous swept mesh and full surrounding roof insertion; structural load path and 22deg slope verified separately"
     OUT.mkdir(parents=True,exist_ok=True)
     (OUT/"RESULTATS-041.json").write_text(
-        json.dumps(data,ensure_ascii=False,indent=2)+"\\n",encoding="utf8")
+        json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
     print("M041 MESH AUDIT:",len(newmesh),"support triangles;",
           len(by_approx),"local original parts;",len(near),"neighbor AABB candidates")
     print("M041 FINAL CROSSING CANDIDATES:",{k:v["crossings"] for k,v in contact.items()})
