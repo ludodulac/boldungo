@@ -1,0 +1,23 @@
+0 FILE M041-GUIDED004-APPUI-ORDONNE.ldr
+0 M041 original B3 1904-piece model is unchanged. Six-piece local inspection.
+0 Linked original B3 part transformations copied exactly. Only NEW 3004 is added.
+0 Building order proposal: wall -> gable -> support -> roof, not certified.
+0 For full geometric evidence run audit_041.py (LDraw triangulated DAT).
+0 // existing wall-000699
+1 19 400 -744 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 STEP
+0 // existing gable-000001
+1 19 480 -768 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // existing gable-000006
+1 19 480 -792 50 1 0 0 0 1 0 0 0 1 3004.dat
+0 STEP
+0 // NEW M041-3004 under roof-000048 (M037 position retained)
+1 7 440 -792 50 1 0 0 0 1 0 0 0 1 3004.dat
+0 STEP
+0 // existing roof-000025
+1 1 410 -792 60 0 0 1 0 1 0 -1 0 0 30363.dat
+0 // existing roof-000048
+1 1 470 -816 60 0 0 1 0 1 0 -1 0 0 30363.dat
+0 STEP
+0 Whole-window insertability/stability remains NON CERTIFIED.
+0 NOFILE
