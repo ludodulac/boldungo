@@ -5,6 +5,7 @@ import { LDrawConditionalLineMaterial } from 'three/addons/materials/LDrawCondit
 
 const PARTS_LIBRARY = 'https://raw.githubusercontent.com/pybricks/ldraw/c43ed06a128a10ed65675166bf42eb6fd608b9b0/';
 const MODELS = Object.freeze({
+  maison: {file:'maison-b3-1904.ldr',count:1904,detail:'MAISON ENTIÈRE B3 · 1 904 vraies pièces LDraw aux emplacements du modèle original. Ce n’est pas la version corrigée : les raccords du pignon et de la terrasse restent contestés et les prototypes des quatre équipes ne sont pas encore intégrés.'},
   toiture: {file:'toiture.ldr',count:10,detail:'TOITURE M040 · 8 vraies pentes 30363 et 2 briques d’appui 3008, en deux rangées. Les raccords au pignon restent non validés.'},
   terrasse: {file:'terrasse.ldr',count:116,detail:'TERRASSE M045 · 116 véritables références de pièces LDraw. 48 pièces provisoires ont été retirées du prototype, garde-corps à reconstruire.'},
   charpente: {file:'charpente.ldr',count:6,detail:'CHARPENTE M041 · 6 pièces, dont le support expérimental sous la pente. Séquence de montage à vérifier.'},
@@ -99,4 +100,4 @@ async function loadMode(mode){
 }
 buttons.forEach(b=>b.addEventListener('click',()=>loadMode(b.dataset.preview)));
 const requested=new URLSearchParams(location.search).get('mode');
-loadMode(MODELS[requested]?requested:'toiture');
+loadMode(MODELS[requested]?requested:'maison');
