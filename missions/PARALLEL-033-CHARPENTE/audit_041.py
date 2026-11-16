@@ -273,6 +273,18 @@ def main():
                 {k:v["crossings"] for k,v in touched.items() if v["crossings"]},
                "mesh_aabb_contacts":sorted(touched)})
     stage["roof_048_after_wall_gable_support_no_other_roof"]=roof_path
+    # Targeted M041 regression gates: a complete roof-at-once insertion
+    # must fail, whereas the documented staged 8-LDU sample paths must
+    # remain clear of strict triangle crossings. This does NOT prove that
+    # intermediate continuous motions and tolerances are physically clear.
+    assert all(not x["crossing_candidates"] for x in stage[
+        "wall_gable_then_support_no_roof"]), "STAGED_SUPPORT_BLOCKED"
+    assert all(not x["crossing_candidates"] for x in stage[
+        "roof_048_after_wall_gable_support_no_other_roof"]), "STAGED_ROOF_BLOCKED"
+    assert any(x["crossing_candidates"].get("roof-000048",0)>0 for x in stage[
+        "support_with_preexisting_roof"]), "PREINSTALLED_ROOF_OBSTACLE_MISSING"
+    assert all(v["crossings"]==0 for v in contact.values()), "STATIC_MESH_CROSSING"
+    data["targeted_regression_gates"]="PASS: 4 mesh and staged-order gates"
     data["staged_vertical_paths_8_ldu_samples"]=stage
     data["staged_path_certified"]=False
     data["full_physical_collision_free_certified"]=False
