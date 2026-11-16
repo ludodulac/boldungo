@@ -1,0 +1,25 @@
+{
+  "mission": "M042",
+  "mode": "22 targeted runtime assertions executed in isolated JavaScript evaluation (not GitHub Actions)",
+  "checks": 22,
+  "passed": 22,
+  "positive": [
+    "B3/M034/M038 immutable source piece counts",
+    "M038 7+9 and 1.10m retained",
+    "7 authentic LDraw pieces",
+    "whole-house 3037 type1 lines; B3 and M038 type1 order unchanged",
+    "real concrete deck interface exact id",
+    "2 caps with 4 nominal socket matches",
+    "2 concrete stud matches",
+    "6 adapter internal edges",
+    "three collision classes zero",
+    "collision alternative x190 rejected",
+    "review diagram contains true wall & concrete"
+  ],
+  "negative": [
+    "new collider injected at interface rejected",
+    "B3 source missing part rejected",
+    "M038 source missing part rejected"
+  ],
+  "limitation": "Orthogonal AABB and nominal tenon/cavity lattice only; no full LDraw mesh or mechanical tests."
+}

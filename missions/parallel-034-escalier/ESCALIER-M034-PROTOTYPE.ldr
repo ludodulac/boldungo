@@ -1,0 +1,978 @@
+0 FILE BOLDUNGO-M034-ESCALIER-PROTOTYPE.ldr
+0 BOLDUNGO / M034 / CONSTRUCTION 3 / two-flight L staircase
+0 !CATEGORY Model
+0 // PROVISIONAL placement relative to GUIDED004 B3, no house attachment
+0 // Two flights: courtyard 7, upper along south facade 9; 6 studs wide
+0 // Pieces are standard 2x2, 2x4, 2x6 plates, all real LDraw refs
+0 // WARNING: nominal LEGO bonds, not verified force/insertion or house attachment
+0 // M034-0001 upper level_plate=1
+1 7 -60 -8 620 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0002 upper level_plate=1
+1 7 -100 -8 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0003 upper level_plate=1
+1 7 -40 -8 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0004 upper level_plate=1
+1 7 -80 -8 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0005 upper level_plate=1
+1 7 -20 -8 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0006 upper level_plate=1
+1 7 -60 -8 740 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0007 upper level_plate=1
+1 7 -100 -8 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0008 upper level_plate=1
+1 7 -40 -8 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0009 upper level_plate=1
+1 7 -80 -8 820 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0010 upper level_plate=1
+1 7 -20 -8 820 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0011 upper level_plate=1
+1 7 -60 -8 860 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0012 upper level_plate=1
+1 7 -100 -8 900 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0013 upper level_plate=1
+1 7 -40 -8 900 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0014 upper level_plate=1
+1 7 -80 -8 940 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0015 upper level_plate=1
+1 7 -20 -8 940 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0016 lower level_plate=1
+1 7 -340 -8 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0017 lower level_plate=1
+1 7 -220 -8 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0018 lower level_plate=1
+1 7 -100 -8 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0019 landing level_plate=1
+1 7 -20 -8 980 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0020 lower level_plate=1
+1 7 -380 -8 1020 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0021 lower level_plate=1
+1 7 -300 -8 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0022 lower level_plate=1
+1 7 -180 -8 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0023 landing level_plate=1
+1 7 -60 -8 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0024 lower level_plate=1
+1 7 -360 -8 1060 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0025 lower level_plate=1
+1 7 -260 -8 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0026 lower level_plate=1
+1 7 -140 -8 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0027 landing level_plate=1
+1 7 -40 -8 1060 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0028 lower level_plate=2
+1 71 -380 -16 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0029 lower level_plate=2
+1 71 -380 -16 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0030 lower level_plate=2
+1 7 -340 -16 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0031 lower level_plate=2
+1 7 -300 -16 1000 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0032 lower level_plate=2
+1 7 -300 -16 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0033 lower level_plate=2
+1 7 -260 -16 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0034 lower level_plate=2
+1 7 -260 -16 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0035 lower level_plate=2
+1 7 -220 -16 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0036 lower level_plate=2
+1 7 -180 -16 1000 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0037 lower level_plate=2
+1 7 -180 -16 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0038 lower level_plate=2
+1 7 -140 -16 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0039 lower level_plate=2
+1 7 -140 -16 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0040 upper level_plate=2
+1 7 -100 -16 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0041 upper level_plate=2
+1 7 -100 -16 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0042 upper level_plate=2
+1 7 -100 -16 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0043 landing level_plate=2
+1 7 -100 -16 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0044 upper level_plate=2
+1 7 -60 -16 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0045 upper level_plate=2
+1 7 -60 -16 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0046 upper level_plate=2
+1 7 -60 -16 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0047 upper level_plate=2
+1 7 -60 -16 980 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0048 landing level_plate=2
+1 7 -60 -16 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0049 upper level_plate=2
+1 7 -20 -16 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0050 upper level_plate=2
+1 7 -20 -16 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0051 upper level_plate=2
+1 7 -20 -16 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0052 upper level_plate=2
+1 7 -20 -16 940 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0053 landing level_plate=2
+1 7 -20 -16 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0054 upper level_plate=3
+1 7 -100 -24 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0055 upper level_plate=3
+1 7 -40 -24 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0056 upper level_plate=3
+1 7 -80 -24 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0057 upper level_plate=3
+1 7 -20 -24 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0058 upper level_plate=3
+1 7 -60 -24 700 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0059 upper level_plate=3
+1 7 -100 -24 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0060 upper level_plate=3
+1 7 -40 -24 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0061 upper level_plate=3
+1 7 -80 -24 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0062 upper level_plate=3
+1 7 -20 -24 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0063 upper level_plate=3
+1 7 -60 -24 820 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0064 upper level_plate=3
+1 7 -100 -24 860 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0065 upper level_plate=3
+1 7 -40 -24 860 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0066 upper level_plate=3
+1 7 -80 -24 900 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0067 upper level_plate=3
+1 7 -20 -24 900 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0068 upper level_plate=3
+1 7 -60 -24 940 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0069 lower level_plate=3
+1 7 -340 -24 980 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0070 lower level_plate=3
+1 7 -260 -24 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0071 lower level_plate=3
+1 7 -140 -24 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0072 landing level_plate=3
+1 7 -40 -24 980 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0073 lower level_plate=3
+1 7 -320 -24 1020 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0074 lower level_plate=3
+1 7 -220 -24 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0075 lower level_plate=3
+1 7 -100 -24 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0076 landing level_plate=3
+1 7 -20 -24 1020 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0077 lower level_plate=3
+1 7 -300 -24 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0078 lower level_plate=3
+1 7 -180 -24 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0079 landing level_plate=3
+1 7 -60 -24 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0080 lower level_plate=4
+1 71 -340 -32 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0081 lower level_plate=4
+1 71 -340 -32 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0082 lower level_plate=4
+1 7 -300 -32 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0083 lower level_plate=4
+1 7 -260 -32 1000 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0084 lower level_plate=4
+1 7 -260 -32 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0085 lower level_plate=4
+1 7 -220 -32 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0086 lower level_plate=4
+1 7 -220 -32 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0087 lower level_plate=4
+1 7 -180 -32 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0088 lower level_plate=4
+1 7 -140 -32 1000 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0089 lower level_plate=4
+1 7 -140 -32 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0090 upper level_plate=4
+1 7 -100 -32 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0091 upper level_plate=4
+1 7 -100 -32 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0092 upper level_plate=4
+1 7 -100 -32 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0093 upper level_plate=4
+1 7 -100 -32 940 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0094 landing level_plate=4
+1 7 -100 -32 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0095 upper level_plate=4
+1 7 -60 -32 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0096 upper level_plate=4
+1 7 -60 -32 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0097 upper level_plate=4
+1 7 -60 -32 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0098 landing level_plate=4
+1 7 -60 -32 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0099 upper level_plate=4
+1 7 -20 -32 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0100 upper level_plate=4
+1 7 -20 -32 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0101 upper level_plate=4
+1 7 -20 -32 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0102 upper level_plate=4
+1 7 -20 -32 980 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0103 landing level_plate=4
+1 7 -20 -32 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0104 upper level_plate=5
+1 7 -80 -40 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0105 upper level_plate=5
+1 7 -20 -40 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0106 upper level_plate=5
+1 7 -60 -40 660 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0107 upper level_plate=5
+1 7 -100 -40 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0108 upper level_plate=5
+1 7 -40 -40 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0109 upper level_plate=5
+1 7 -80 -40 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0110 upper level_plate=5
+1 7 -20 -40 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0111 upper level_plate=5
+1 7 -60 -40 780 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0112 upper level_plate=5
+1 7 -100 -40 820 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0113 upper level_plate=5
+1 7 -40 -40 820 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0114 upper level_plate=5
+1 7 -80 -40 860 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0115 upper level_plate=5
+1 7 -20 -40 860 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0116 upper level_plate=5
+1 7 -60 -40 900 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0117 upper level_plate=5
+1 7 -100 -40 940 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0118 upper level_plate=5
+1 7 -40 -40 940 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0119 lower level_plate=5
+1 7 -280 -40 980 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0120 lower level_plate=5
+1 7 -180 -40 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0121 landing level_plate=5
+1 7 -60 -40 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0122 lower level_plate=5
+1 7 -260 -40 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0123 lower level_plate=5
+1 7 -140 -40 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0124 landing level_plate=5
+1 7 -40 -40 1020 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0125 lower level_plate=5
+1 7 -300 -40 1060 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0126 lower level_plate=5
+1 7 -220 -40 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0127 lower level_plate=5
+1 7 -100 -40 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0128 landing level_plate=5
+1 7 -20 -40 1060 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0129 lower level_plate=6
+1 71 -300 -48 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0130 lower level_plate=6
+1 71 -300 -48 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0131 lower level_plate=6
+1 7 -260 -48 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0132 lower level_plate=6
+1 7 -220 -48 1000 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0133 lower level_plate=6
+1 7 -220 -48 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0134 lower level_plate=6
+1 7 -180 -48 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0135 lower level_plate=6
+1 7 -180 -48 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0136 lower level_plate=6
+1 7 -140 -48 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0137 upper level_plate=6
+1 7 -100 -48 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0138 upper level_plate=6
+1 7 -100 -48 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0139 upper level_plate=6
+1 7 -100 -48 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0140 upper level_plate=6
+1 7 -100 -48 980 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0141 landing level_plate=6
+1 7 -100 -48 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0142 upper level_plate=6
+1 7 -60 -48 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0143 upper level_plate=6
+1 7 -60 -48 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0144 upper level_plate=6
+1 7 -60 -48 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0145 upper level_plate=6
+1 7 -60 -48 940 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0146 landing level_plate=6
+1 7 -60 -48 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0147 upper level_plate=6
+1 7 -20 -48 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0148 upper level_plate=6
+1 7 -20 -48 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0149 upper level_plate=6
+1 7 -20 -48 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0150 landing level_plate=6
+1 7 -20 -48 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0151 upper level_plate=7
+1 7 -60 -56 620 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0152 upper level_plate=7
+1 7 -100 -56 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0153 upper level_plate=7
+1 7 -40 -56 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0154 upper level_plate=7
+1 7 -80 -56 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0155 upper level_plate=7
+1 7 -20 -56 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0156 upper level_plate=7
+1 7 -60 -56 740 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0157 upper level_plate=7
+1 7 -100 -56 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0158 upper level_plate=7
+1 7 -40 -56 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0159 upper level_plate=7
+1 7 -80 -56 820 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0160 upper level_plate=7
+1 7 -20 -56 820 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0161 upper level_plate=7
+1 7 -60 -56 860 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0162 upper level_plate=7
+1 7 -100 -56 900 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0163 upper level_plate=7
+1 7 -40 -56 900 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0164 upper level_plate=7
+1 7 -80 -56 940 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0165 upper level_plate=7
+1 7 -20 -56 940 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0166 lower level_plate=7
+1 7 -220 -56 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0167 lower level_plate=7
+1 7 -100 -56 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0168 landing level_plate=7
+1 7 -20 -56 980 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0169 lower level_plate=7
+1 7 -260 -56 1020 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0170 lower level_plate=7
+1 7 -180 -56 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0171 landing level_plate=7
+1 7 -60 -56 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0172 lower level_plate=7
+1 7 -240 -56 1060 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0173 lower level_plate=7
+1 7 -140 -56 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0174 landing level_plate=7
+1 7 -40 -56 1060 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0175 lower level_plate=8
+1 71 -260 -64 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0176 lower level_plate=8
+1 71 -260 -64 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0177 lower level_plate=8
+1 7 -220 -64 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0178 lower level_plate=8
+1 7 -180 -64 1000 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0179 lower level_plate=8
+1 7 -180 -64 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0180 lower level_plate=8
+1 7 -140 -64 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0181 lower level_plate=8
+1 7 -140 -64 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0182 upper level_plate=8
+1 7 -100 -64 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0183 upper level_plate=8
+1 7 -100 -64 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0184 upper level_plate=8
+1 7 -100 -64 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0185 landing level_plate=8
+1 7 -100 -64 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0186 upper level_plate=8
+1 7 -60 -64 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0187 upper level_plate=8
+1 7 -60 -64 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0188 upper level_plate=8
+1 7 -60 -64 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0189 upper level_plate=8
+1 7 -60 -64 980 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0190 landing level_plate=8
+1 7 -60 -64 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0191 upper level_plate=8
+1 7 -20 -64 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0192 upper level_plate=8
+1 7 -20 -64 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0193 upper level_plate=8
+1 7 -20 -64 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0194 upper level_plate=8
+1 7 -20 -64 940 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0195 landing level_plate=8
+1 7 -20 -64 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0196 upper level_plate=9
+1 7 -100 -72 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0197 upper level_plate=9
+1 7 -40 -72 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0198 upper level_plate=9
+1 7 -80 -72 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0199 upper level_plate=9
+1 7 -20 -72 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0200 upper level_plate=9
+1 7 -60 -72 700 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0201 upper level_plate=9
+1 7 -100 -72 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0202 upper level_plate=9
+1 7 -40 -72 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0203 upper level_plate=9
+1 7 -80 -72 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0204 upper level_plate=9
+1 7 -20 -72 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0205 upper level_plate=9
+1 7 -60 -72 820 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0206 upper level_plate=9
+1 7 -100 -72 860 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0207 upper level_plate=9
+1 7 -40 -72 860 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0208 upper level_plate=9
+1 7 -80 -72 900 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0209 upper level_plate=9
+1 7 -20 -72 900 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0210 upper level_plate=9
+1 7 -60 -72 940 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0211 lower level_plate=9
+1 7 -220 -72 980 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0212 lower level_plate=9
+1 7 -140 -72 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0213 landing level_plate=9
+1 7 -40 -72 980 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0214 lower level_plate=9
+1 7 -200 -72 1020 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0215 lower level_plate=9
+1 7 -100 -72 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0216 landing level_plate=9
+1 7 -20 -72 1020 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0217 lower level_plate=9
+1 7 -180 -72 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0218 landing level_plate=9
+1 7 -60 -72 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0219 lower level_plate=10
+1 71 -220 -80 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0220 lower level_plate=10
+1 71 -220 -80 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0221 lower level_plate=10
+1 7 -180 -80 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0222 lower level_plate=10
+1 7 -140 -80 1000 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0223 lower level_plate=10
+1 7 -140 -80 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0224 upper level_plate=10
+1 7 -100 -80 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0225 upper level_plate=10
+1 7 -100 -80 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0226 upper level_plate=10
+1 7 -100 -80 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0227 upper level_plate=10
+1 7 -100 -80 940 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0228 landing level_plate=10
+1 7 -100 -80 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0229 upper level_plate=10
+1 7 -60 -80 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0230 upper level_plate=10
+1 7 -60 -80 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0231 upper level_plate=10
+1 7 -60 -80 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0232 landing level_plate=10
+1 7 -60 -80 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0233 upper level_plate=10
+1 7 -20 -80 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0234 upper level_plate=10
+1 7 -20 -80 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0235 upper level_plate=10
+1 7 -20 -80 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0236 upper level_plate=10
+1 7 -20 -80 980 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0237 landing level_plate=10
+1 7 -20 -80 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0238 upper level_plate=11
+1 7 -80 -88 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0239 upper level_plate=11
+1 7 -20 -88 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0240 upper level_plate=11
+1 7 -60 -88 660 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0241 upper level_plate=11
+1 7 -100 -88 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0242 upper level_plate=11
+1 7 -40 -88 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0243 upper level_plate=11
+1 7 -80 -88 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0244 upper level_plate=11
+1 7 -20 -88 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0245 upper level_plate=11
+1 7 -60 -88 780 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0246 upper level_plate=11
+1 7 -100 -88 820 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0247 upper level_plate=11
+1 7 -40 -88 820 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0248 upper level_plate=11
+1 7 -80 -88 860 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0249 upper level_plate=11
+1 7 -20 -88 860 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0250 upper level_plate=11
+1 7 -60 -88 900 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0251 upper level_plate=11
+1 7 -100 -88 940 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0252 upper level_plate=11
+1 7 -40 -88 940 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0253 lower level_plate=11
+1 7 -160 -88 980 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0254 landing level_plate=11
+1 7 -60 -88 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0255 lower level_plate=11
+1 7 -140 -88 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0256 landing level_plate=11
+1 7 -40 -88 1020 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0257 lower level_plate=11
+1 7 -180 -88 1060 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0258 lower level_plate=11
+1 7 -100 -88 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0259 landing level_plate=11
+1 7 -20 -88 1060 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0260 lower level_plate=12
+1 71 -180 -96 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0261 lower level_plate=12
+1 71 -180 -96 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0262 lower level_plate=12
+1 7 -140 -96 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0263 upper level_plate=12
+1 7 -100 -96 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0264 upper level_plate=12
+1 7 -100 -96 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0265 upper level_plate=12
+1 7 -100 -96 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0266 upper level_plate=12
+1 7 -100 -96 980 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0267 landing level_plate=12
+1 7 -100 -96 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0268 upper level_plate=12
+1 7 -60 -96 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0269 upper level_plate=12
+1 7 -60 -96 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0270 upper level_plate=12
+1 7 -60 -96 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0271 upper level_plate=12
+1 7 -60 -96 940 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0272 landing level_plate=12
+1 7 -60 -96 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0273 upper level_plate=12
+1 7 -20 -96 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0274 upper level_plate=12
+1 7 -20 -96 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0275 upper level_plate=12
+1 7 -20 -96 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0276 landing level_plate=12
+1 7 -20 -96 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0277 upper level_plate=13
+1 7 -60 -104 620 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0278 upper level_plate=13
+1 7 -100 -104 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0279 upper level_plate=13
+1 7 -40 -104 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0280 upper level_plate=13
+1 7 -80 -104 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0281 upper level_plate=13
+1 7 -20 -104 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0282 upper level_plate=13
+1 7 -60 -104 740 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0283 upper level_plate=13
+1 7 -100 -104 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0284 upper level_plate=13
+1 7 -40 -104 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0285 upper level_plate=13
+1 7 -80 -104 820 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0286 upper level_plate=13
+1 7 -20 -104 820 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0287 upper level_plate=13
+1 7 -60 -104 860 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0288 upper level_plate=13
+1 7 -100 -104 900 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0289 upper level_plate=13
+1 7 -40 -104 900 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0290 upper level_plate=13
+1 7 -80 -104 940 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0291 upper level_plate=13
+1 7 -20 -104 940 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0292 lower level_plate=13
+1 7 -100 -104 980 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0293 landing level_plate=13
+1 7 -20 -104 980 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0294 lower level_plate=13
+1 7 -140 -104 1020 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0295 landing level_plate=13
+1 7 -60 -104 1020 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0296 lower level_plate=13
+1 7 -120 -104 1060 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0297 landing level_plate=13
+1 7 -40 -104 1060 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0298 lower level_plate=14
+1 71 -140 -112 980 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0299 lower level_plate=14
+1 71 -140 -112 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0300 upper level_plate=14
+1 7 -100 -112 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0301 upper level_plate=14
+1 7 -100 -112 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0302 upper level_plate=14
+1 7 -100 -112 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0303 landing level_plate=14
+1 7 -100 -112 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0304 upper level_plate=14
+1 7 -60 -112 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0305 upper level_plate=14
+1 7 -60 -112 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0306 upper level_plate=14
+1 7 -60 -112 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0307 upper level_plate=14
+1 7 -60 -112 980 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0308 landing level_plate=14
+1 7 -60 -112 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0309 upper level_plate=14
+1 7 -20 -112 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0310 upper level_plate=14
+1 7 -20 -112 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0311 upper level_plate=14
+1 7 -20 -112 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0312 upper level_plate=14
+1 7 -20 -112 940 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0313 landing level_plate=14
+1 7 -20 -112 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0314 upper level_plate=15
+1 7 -100 -120 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0315 upper level_plate=15
+1 7 -40 -120 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0316 upper level_plate=15
+1 7 -80 -120 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0317 upper level_plate=15
+1 7 -20 -120 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0318 upper level_plate=15
+1 7 -60 -120 700 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0319 upper level_plate=15
+1 7 -100 -120 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0320 upper level_plate=15
+1 7 -40 -120 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0321 upper level_plate=15
+1 7 -80 -120 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0322 upper level_plate=15
+1 7 -20 -120 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0323 upper level_plate=15
+1 7 -60 -120 820 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0324 upper level_plate=15
+1 7 -100 -120 860 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0325 upper level_plate=15
+1 7 -40 -120 860 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0326 upper level_plate=15
+1 7 -80 -120 900 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0327 upper level_plate=15
+1 7 -20 -120 900 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0328 upper level_plate=15
+1 7 -60 -120 940 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0329 landing level_plate=15
+1 7 -100 -120 980 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0330 landing level_plate=15
+1 7 -40 -120 980 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0331 landing level_plate=15
+1 7 -80 -120 1020 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0332 landing level_plate=15
+1 7 -20 -120 1020 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0333 landing level_plate=15
+1 7 -60 -120 1060 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0334 upper level_plate=16
+1 7 -100 -128 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0335 upper level_plate=16
+1 7 -100 -128 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0336 upper level_plate=16
+1 7 -100 -128 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0337 upper level_plate=16
+1 71 -100 -128 940 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0338 landing level_plate=16
+1 71 -100 -128 1040 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0339 upper level_plate=16
+1 7 -60 -128 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0340 upper level_plate=16
+1 7 -60 -128 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0341 upper level_plate=16
+1 7 -60 -128 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0342 landing level_plate=16
+1 71 -60 -128 1020 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0343 upper level_plate=16
+1 7 -20 -128 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0344 upper level_plate=16
+1 7 -20 -128 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0345 upper level_plate=16
+1 7 -20 -128 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0346 upper level_plate=16
+1 71 -20 -128 980 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0347 landing level_plate=16
+1 71 -20 -128 1060 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0348 upper level_plate=17
+1 7 -80 -136 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0349 upper level_plate=17
+1 7 -20 -136 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0350 upper level_plate=17
+1 7 -60 -136 660 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0351 upper level_plate=17
+1 7 -100 -136 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0352 upper level_plate=17
+1 7 -40 -136 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0353 upper level_plate=17
+1 7 -80 -136 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0354 upper level_plate=17
+1 7 -20 -136 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0355 upper level_plate=17
+1 7 -60 -136 780 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0356 upper level_plate=17
+1 7 -100 -136 820 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0357 upper level_plate=17
+1 7 -40 -136 820 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0358 upper level_plate=17
+1 7 -80 -136 860 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0359 upper level_plate=17
+1 7 -20 -136 860 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0360 upper level_plate=17
+1 7 -60 -136 900 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0361 upper level_plate=17
+1 7 -100 -136 940 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0362 upper level_plate=17
+1 7 -40 -136 940 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0363 upper level_plate=18
+1 7 -100 -144 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0364 upper level_plate=18
+1 7 -100 -144 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0365 upper level_plate=18
+1 7 -100 -144 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0366 upper level_plate=18
+1 71 -100 -144 940 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0367 upper level_plate=18
+1 7 -60 -144 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0368 upper level_plate=18
+1 7 -60 -144 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0369 upper level_plate=18
+1 7 -60 -144 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0370 upper level_plate=18
+1 71 -60 -144 920 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0371 upper level_plate=18
+1 7 -20 -144 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0372 upper level_plate=18
+1 7 -20 -144 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0373 upper level_plate=18
+1 71 -20 -144 900 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0374 upper level_plate=19
+1 7 -60 -152 620 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0375 upper level_plate=19
+1 7 -100 -152 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0376 upper level_plate=19
+1 7 -40 -152 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0377 upper level_plate=19
+1 7 -80 -152 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0378 upper level_plate=19
+1 7 -20 -152 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0379 upper level_plate=19
+1 7 -60 -152 740 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0380 upper level_plate=19
+1 7 -100 -152 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0381 upper level_plate=19
+1 7 -40 -152 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0382 upper level_plate=19
+1 7 -80 -152 820 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0383 upper level_plate=19
+1 7 -20 -152 820 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0384 upper level_plate=19
+1 7 -60 -152 860 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0385 upper level_plate=19
+1 7 -100 -152 900 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0386 upper level_plate=19
+1 7 -40 -152 900 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0387 upper level_plate=20
+1 7 -100 -160 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0388 upper level_plate=20
+1 7 -100 -160 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0389 upper level_plate=20
+1 71 -100 -160 880 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0390 upper level_plate=20
+1 7 -60 -160 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0391 upper level_plate=20
+1 7 -60 -160 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0392 upper level_plate=20
+1 71 -60 -160 860 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0393 upper level_plate=20
+1 7 -20 -160 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0394 upper level_plate=20
+1 7 -20 -160 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0395 upper level_plate=20
+1 7 -20 -160 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0396 upper level_plate=20
+1 71 -20 -160 900 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0397 upper level_plate=21
+1 7 -100 -168 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0398 upper level_plate=21
+1 7 -40 -168 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0399 upper level_plate=21
+1 7 -80 -168 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0400 upper level_plate=21
+1 7 -20 -168 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0401 upper level_plate=21
+1 7 -60 -168 700 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0402 upper level_plate=21
+1 7 -100 -168 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0403 upper level_plate=21
+1 7 -40 -168 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0404 upper level_plate=21
+1 7 -80 -168 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0405 upper level_plate=21
+1 7 -20 -168 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0406 upper level_plate=21
+1 7 -60 -168 820 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0407 upper level_plate=21
+1 7 -100 -168 860 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0408 upper level_plate=21
+1 7 -40 -168 860 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0409 upper level_plate=22
+1 7 -100 -176 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0410 upper level_plate=22
+1 7 -100 -176 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0411 upper level_plate=22
+1 71 -100 -176 820 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0412 upper level_plate=22
+1 7 -60 -176 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0413 upper level_plate=22
+1 7 -60 -176 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0414 upper level_plate=22
+1 71 -60 -176 860 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0415 upper level_plate=22
+1 7 -20 -176 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0416 upper level_plate=22
+1 7 -20 -176 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0417 upper level_plate=22
+1 71 -20 -176 840 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0418 upper level_plate=23
+1 7 -80 -184 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0419 upper level_plate=23
+1 7 -20 -184 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0420 upper level_plate=23
+1 7 -60 -184 660 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0421 upper level_plate=23
+1 7 -100 -184 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0422 upper level_plate=23
+1 7 -40 -184 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0423 upper level_plate=23
+1 7 -80 -184 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0424 upper level_plate=23
+1 7 -20 -184 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0425 upper level_plate=23
+1 7 -60 -184 780 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0426 upper level_plate=23
+1 7 -100 -184 820 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0427 upper level_plate=23
+1 7 -40 -184 820 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0428 upper level_plate=24
+1 7 -100 -192 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0429 upper level_plate=24
+1 7 -100 -192 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0430 upper level_plate=24
+1 71 -100 -192 820 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0431 upper level_plate=24
+1 7 -60 -192 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0432 upper level_plate=24
+1 7 -60 -192 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0433 upper level_plate=24
+1 71 -60 -192 800 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0434 upper level_plate=24
+1 7 -20 -192 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0435 upper level_plate=24
+1 71 -20 -192 780 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0436 upper level_plate=25
+1 7 -60 -200 620 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0437 upper level_plate=25
+1 7 -100 -200 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0438 upper level_plate=25
+1 7 -40 -200 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0439 upper level_plate=25
+1 7 -80 -200 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0440 upper level_plate=25
+1 7 -20 -200 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0441 upper level_plate=25
+1 7 -60 -200 740 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0442 upper level_plate=25
+1 7 -100 -200 780 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0443 upper level_plate=25
+1 7 -40 -200 780 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0444 upper level_plate=26
+1 7 -100 -208 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0445 upper level_plate=26
+1 71 -100 -208 760 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0446 upper level_plate=26
+1 7 -60 -208 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0447 upper level_plate=26
+1 71 -60 -208 740 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0448 upper level_plate=26
+1 7 -20 -208 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0449 upper level_plate=26
+1 7 -20 -208 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0450 upper level_plate=26
+1 71 -20 -208 780 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0451 upper level_plate=27
+1 7 -100 -216 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0452 upper level_plate=27
+1 7 -40 -216 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0453 upper level_plate=27
+1 7 -80 -216 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0454 upper level_plate=27
+1 7 -20 -216 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0455 upper level_plate=27
+1 7 -60 -216 700 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0456 upper level_plate=27
+1 7 -100 -216 740 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0457 upper level_plate=27
+1 7 -40 -216 740 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0458 upper level_plate=28
+1 7 -100 -224 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0459 upper level_plate=28
+1 71 -100 -224 700 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0460 upper level_plate=28
+1 7 -60 -224 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0461 upper level_plate=28
+1 71 -60 -224 740 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0462 upper level_plate=28
+1 7 -20 -224 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0463 upper level_plate=28
+1 71 -20 -224 720 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0464 upper level_plate=29
+1 7 -80 -232 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0465 upper level_plate=29
+1 7 -20 -232 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0466 upper level_plate=29
+1 7 -60 -232 660 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0467 upper level_plate=29
+1 7 -100 -232 700 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0468 upper level_plate=29
+1 7 -40 -232 700 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0469 upper level_plate=30
+1 7 -100 -240 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0470 upper level_plate=30
+1 71 -100 -240 700 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0471 upper level_plate=30
+1 7 -60 -240 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0472 upper level_plate=30
+1 71 -60 -240 680 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0473 upper level_plate=30
+1 71 -20 -240 660 1 0 0 0 1 0 0 0 1 3795.dat
+0 // M034-0474 upper level_plate=31
+1 7 -60 -248 620 0 0 -1 0 1 0 1 0 0 3795.dat
+0 // M034-0475 upper level_plate=31
+1 7 -100 -248 660 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0476 upper level_plate=31
+1 7 -40 -248 660 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0477 upper level_plate=32
+1 71 -100 -256 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0478 upper level_plate=32
+1 71 -60 -256 640 1 0 0 0 1 0 0 0 1 3020.dat
+0 // M034-0479 upper level_plate=32
+1 7 -20 -256 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0480 upper level_plate=32
+1 71 -20 -256 660 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0481 upper level_plate=33
+1 7 -100 -264 620 0 0 -1 0 1 0 1 0 0 3022.dat
+0 // M034-0482 upper level_plate=33
+1 7 -40 -264 620 0 0 -1 0 1 0 1 0 0 3020.dat
+0 // M034-0483 upper level_plate=34
+1 71 -100 -272 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0484 upper level_plate=34
+1 71 -60 -272 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 // M034-0485 upper level_plate=34
+1 71 -20 -272 620 1 0 0 0 1 0 0 0 1 3022.dat
+0 NOFILE

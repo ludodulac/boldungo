@@ -1,0 +1,112 @@
+{
+  "mission": "M042",
+  "source_B3_parts": 1904,
+  "source_M038_parts": 1126,
+  "source_B3_slope_parts_not_mesh_tested": 408,
+  "retained_M038_steps": {
+    "upper": 9,
+    "lower": 7
+  },
+  "retained_M038_width_m": 1.1,
+  "new_adapter_parts": 7,
+  "new_adapter_refs": {
+    "3794b.dat": 2,
+    "3024.dat": 4,
+    "3666.dat": 1
+  },
+  "joined_concrete_b3_refs": [
+    "scene-platform:south-concrete-platform:deck:00289"
+  ],
+  "joined_stair_m038_refs": [
+    "M038-01001 high cap",
+    "M038-01005 high cap"
+  ],
+  "concrete_to_adapter_nominal_edges": 1,
+  "concrete_to_adapter_nominal_sites": 2,
+  "stair_to_adapter_nominal_edges": 2,
+  "stair_to_adapter_nominal_sites": 4,
+  "adapter_to_adapter_nominal_edges": 6,
+  "adapter_internal_connected_components": 1,
+  "coordinates_LDU": {
+    "adapter_x": 170,
+    "upper_cap_top_y": -264,
+    "concrete_top_y": -288,
+    "bridge_top_y": -296,
+    "original_deck_end_z": 300,
+    "stair_start_z": 340
+  },
+  "empty_bridge_span_z_LDU": [
+    300,
+    340
+  ],
+  "failures_for_rejected_x190": [
+    {
+      "kind": "new-B3",
+      "a": "M042-jumper-350",
+      "b": "EXPERIMENT-B2-DECK-BRACE-1"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-stem-1-350",
+      "b": "EXPERIMENT-B2-DECK-BRACE-1"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-stem-2-350",
+      "b": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:04"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-stem-2-350",
+      "b": "EXPERIMENT-B2-DECK-BRACE-1"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-jumper-370",
+      "b": "EXPERIMENT-B2-DECK-BRACE-1"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-jumper-370",
+      "b": "EXPERIMENT-B2-DECK-BRACE-2"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-stem-1-370",
+      "b": "EXPERIMENT-B2-DECK-BRACE-1"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-stem-1-370",
+      "b": "EXPERIMENT-B2-DECK-BRACE-2"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-stem-2-370",
+      "b": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:04"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-stem-2-370",
+      "b": "EXPERIMENT-B2-DECK-BRACE-1"
+    },
+    {
+      "kind": "new-B3",
+      "a": "M042-stem-2-370",
+      "b": "EXPERIMENT-B2-DECK-BRACE-2"
+    }
+  ],
+  "b3_vs_new_aabb_collision_pairs": 0,
+  "m038_vs_new_aabb_collision_pairs": 0,
+  "new_vs_new_aabb_collision_pairs": 0,
+  "original_B3_untouched": true,
+  "original_M038_untouched": true,
+  "true_LDraw_solid_mesh_intersection_tested": false,
+  "ldraw_official_refs_verified": "3794b jumper 1x2 centre stud, 3024 plate 1x1, 3666 plate 1x6",
+  "LDCad_shadow_socket_clutch_tested": false,
+  "connection_strength_certified": false,
+  "insertion_sequence_tested": false,
+  "photo_fit_fully_certified": false,
+  "roof_collision_note": "408 slope meshes uninstantiated; nearest slope center x>=350 LDU, adapter occupies x<=190.",
+  "comment": "Only nominal stud/cavity mating at identified planes; existing platform wood/wall kept unchanged."
+}

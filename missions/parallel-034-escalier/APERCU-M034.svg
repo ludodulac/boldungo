@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1220" height="810" viewBox="0 0 1220 810">
+<rect width="1220" height="810" fill="#f8fafc"/>
+<text x="38" y="53" font-family="sans-serif" font-size="31" font-weight="700" fill="#162a40">BOLDÜNGO · M034 — escalier expérimental en L</text>
+<text x="38" y="81" font-family="sans-serif" font-size="15" fill="#5e7081">Plan à l’échelle de la grille LEGO + profils des 16 marches • modèle autonome, NON raccordé à la maison</text>
+<rect x="25" y="100" width="570" height="630" rx="15" fill="#ffffff" stroke="#dde4eb"/>
+<text x="45" y="135" font-family="sans-serif" font-size="20" font-weight="600" fill="#162a40">Vue en plan · coordonnées GUIDED004</text>
+<text x="52" y="165" font-family="sans-serif" font-size="13" fill="#718399">← Sud (−x)        Ouest (+z) ↓</text>
+<rect x="366" y="184" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="184" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="184" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="227" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="227" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="227" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="270" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="270" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="270" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="313" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="313" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="313" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="356" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="356" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="356" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="399" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="399" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="399" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="442" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="442" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="442" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="485" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="485" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="485" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="528" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="528" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="528" width="42" height="42" fill="#7f91ae" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="571" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="614" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="366" y="657" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="571" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="614" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="409" y="657" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="571" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="614" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="452" y="657" width="42" height="42" fill="#d7a76e" stroke="#fff" stroke-width="1.2"/>
+<rect x="323" y="571" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="323" y="614" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="323" y="657" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="280" y="571" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="280" y="614" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="280" y="657" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="237" y="571" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="237" y="614" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="237" y="657" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="194" y="571" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="194" y="614" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="194" y="657" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="151" y="571" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="151" y="614" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="151" y="657" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="108" y="571" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="108" y="614" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="108" y="657" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="65" y="571" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="65" y="614" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<rect x="65" y="657" width="42" height="42" fill="#7ca49b" stroke="#fff" stroke-width="1.2"/>
+<text x="339" y="599" font-size="16" font-family="sans-serif" font-weight="600" fill="white">1</text>
+<text x="296" y="599" font-size="16" font-family="sans-serif" font-weight="600" fill="white">2</text>
+<text x="253" y="599" font-size="16" font-family="sans-serif" font-weight="600" fill="white">3</text>
+<text x="210" y="599" font-size="16" font-family="sans-serif" font-weight="600" fill="white">4</text>
+<text x="167" y="599" font-size="16" font-family="sans-serif" font-weight="600" fill="white">5</text>
+<text x="124" y="599" font-size="16" font-family="sans-serif" font-weight="600" fill="white">6</text>
+<text x="81" y="599" font-size="16" font-family="sans-serif" font-weight="600" fill="white">7</text>
+<text x="415" y="212" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">9</text>
+<text x="415" y="255" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">8</text>
+<text x="415" y="298" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">7</text>
+<text x="415" y="341" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">6</text>
+<text x="415" y="384" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">5</text>
+<text x="415" y="427" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">4</text>
+<text x="415" y="470" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">3</text>
+<text x="415" y="513" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">2</text>
+<text x="415" y="556" font-size="15" font-family="sans-serif" font-weight="600" fill="#fff">1</text>
+<text x="431" y="637" font-family="sans-serif" font-size="13" fill="#4b637d">6 tenons ≈ 1,20 m</text>
+<text x="45" y="692" font-family="sans-serif" font-size="13" fill="#728294">L’implantation n’est pas la position relevée sur les photos.</text>
+<rect x="615" y="100" width="577" height="630" rx="15" fill="#fff" stroke="#dde4eb"/>
+<text x="644" y="135" font-family="sans-serif" font-size="20" font-weight="600" fill="#162a40">Profils d’élévation (du bas vers le haut)</text>
+<line x1="649" y1="408" x2="1151" y2="408" stroke="#8c9eab" stroke-width="2"/>
+<rect x="649" y="397.4" width="71" height="10.6" fill="#7ca49b" stroke="white" stroke-width="1"/>
+<text x="684.5" y="428" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">1</text>
+<rect x="720" y="386.8" width="71" height="21.2" fill="#7ca49b" stroke="white" stroke-width="1"/>
+<text x="755.5" y="428" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">2</text>
+<rect x="791" y="376.2" width="71" height="31.799999999999997" fill="#7ca49b" stroke="white" stroke-width="1"/>
+<text x="826.5" y="428" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">3</text>
+<rect x="862" y="365.6" width="71" height="42.4" fill="#7ca49b" stroke="white" stroke-width="1"/>
+<text x="897.5" y="428" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">4</text>
+<rect x="933" y="355" width="71" height="53" fill="#7ca49b" stroke="white" stroke-width="1"/>
+<text x="968.5" y="428" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">5</text>
+<rect x="1004" y="344.4" width="71" height="63.599999999999994" fill="#7ca49b" stroke="white" stroke-width="1"/>
+<text x="1039.5" y="428" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">6</text>
+<rect x="1075" y="333.8" width="71" height="74.2" fill="#7ca49b" stroke="white" stroke-width="1"/>
+<text x="1110.5" y="428" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">7</text>
+<text x="645" y="167" font-family="sans-serif" font-size="14" fill="#48655e">Volée basse : 7 marches → palier (16 plaques = 1,28 m)</text>
+<line x1="649" y1="685" x2="1151" y2="685" stroke="#8c9eab" stroke-width="2"/>
+<rect x="649" y="589.6" width="55" height="95.39999999999999" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="676.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">1</text>
+<rect x="704" y="579" width="55" height="106" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="731.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">2</text>
+<rect x="759" y="568.4" width="55" height="116.6" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="786.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">3</text>
+<rect x="814" y="557.8" width="55" height="127.19999999999999" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="841.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">4</text>
+<rect x="869" y="547.2" width="55" height="137.79999999999998" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="896.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">5</text>
+<rect x="924" y="536.6" width="55" height="148.4" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="951.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">6</text>
+<rect x="979" y="526" width="55" height="159" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="1006.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">7</text>
+<rect x="1034" y="515.4" width="55" height="169.6" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="1061.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">8</text>
+<rect x="1089" y="504.8" width="55" height="180.2" fill="#7f91ae" stroke="white" stroke-width="1"/>
+<text x="1116.5" y="705" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#596e83">9</text>
+<text x="645" y="444" font-family="sans-serif" font-size="14" fill="#4b5e86">Volée haute : 9 marches → 2,72 m (provisoire)</text>
+<text x="37" y="774" font-family="sans-serif" font-size="14" fill="#945f38">Attention : liaisons tenons/logements nominales ; stabilité, insertion et raccord à la vraie maison non prouvés.</text>
+</svg>
