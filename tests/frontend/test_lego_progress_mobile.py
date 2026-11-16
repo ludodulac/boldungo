@@ -13,7 +13,7 @@ def test_ldraw_mini_roof_renders_in_mobile_chromium():
     script=(FRONTEND/"lego-progress.js").read_text(encoding="utf8")
     assert "LDrawLoader" in script and "setPartsLibraryPath" in script
     assert 'aria-label="Visionneuse interactive' in page_html
-    for filename,expected in [("toiture.ldr",10),("charpente.ldr",6),("terrasse.ldr",116),("escalier-raccord.ldr",7),("escalier.ldr",1126)]:
+    for filename,expected in [("maison-b3-1904.ldr",1904), ("toiture.ldr",10),("charpente.ldr",6),("terrasse.ldr",116),("escalier-raccord.ldr",7),("escalier.ldr",1126)]:
         lines=(FRONTEND/"progress"/filename).read_text(encoding="utf8").splitlines()
         assert sum(line.startswith("1 ") for line in lines)==expected,filename
     server=ThreadingHTTPServer(("127.0.0.1",0),partial(SimpleHTTPRequestHandler,directory=str(FRONTEND)))
@@ -39,6 +39,12 @@ def test_ldraw_mini_roof_renders_in_mobile_chromium():
             page.locator("[data-preview=terrasse]").click()
             page.wait_for_function("document.querySelector('#loading').hidden === true",timeout=130000)
             assert "TERRASSE M045" in page.locator("#model-description").inner_text()
+            assert not errors,errors
+            # The actual 1,904-piece B3 house must also render on a smartphone.
+            page.locator("[data-preview=maison]").click()
+            page.wait_for_function("document.querySelector('#loading').hidden === true",timeout=200000)
+            assert page.locator("[data-preview=maison]").get_attribute("aria-pressed")=="true"
+            assert "MAISON ENTIÈRE B3" in page.locator("#model-description").inner_text()
             assert not errors,errors
             browser.close()
     finally:
