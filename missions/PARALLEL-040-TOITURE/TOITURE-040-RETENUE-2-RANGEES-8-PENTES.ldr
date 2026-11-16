@@ -1,0 +1,28 @@
+0 FILE TOITURE-040-RETENUE-2-RANGEES-8-PENTES.ldr
+0 BOLDUNGO M040 - REAL B3 2-row subset: 8 slopes 30363 + 2 wall 3008 supports
+0 All 10 placements are EXACT COPIES of immutable original B3, including six M036 parts
+0 Excluded historical gable-000001: existing wall699-gable001 mesh engine COLLISION
+0 17 nominal LDCad matches expected: 9 original + 8 slope-to-slope
+0 Engine no-collision is not proof of insertion, forbidden material clearance, or mechanical load
+0 Source 288c60fde76918128d8b955f78ebfa9afc2dfe8e
+0 // wall-000699
+1 19 400 -744 50 1 0 0 0 1 0 0 0 1 3008.dat
+0 // wall-000715
+1 19 330 -744 140 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // roof-000002
+1 1 350 -768 60 0 0 1 0 1 0 -1 0 0 30363.dat
+0 // roof-000003
+1 1 350 -768 100 0 0 1 0 1 0 -1 0 0 30363.dat
+0 // roof-000004
+1 1 350 -768 140 0 0 1 0 1 0 -1 0 0 30363.dat
+0 // roof-000005
+1 1 350 -768 180 0 0 1 0 1 0 -1 0 0 30363.dat
+0 // roof-000025
+1 1 410 -792 60 0 0 1 0 1 0 -1 0 0 30363.dat
+0 // roof-000026
+1 1 410 -792 100 0 0 1 0 1 0 -1 0 0 30363.dat
+0 // roof-000027
+1 1 410 -792 140 0 0 1 0 1 0 -1 0 0 30363.dat
+0 // roof-000028
+1 1 410 -792 180 0 0 1 0 1 0 -1 0 0 30363.dat
+0 NOFILE

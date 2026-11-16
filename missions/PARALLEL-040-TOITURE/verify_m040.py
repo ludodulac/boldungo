@@ -19,6 +19,14 @@ M032=ROOT/"missions/PARALLEL-032-TOITURE/RELEVE-408.json"
 OLD_ROOFS=[f"roof-{i:06d}" for i in range(2,6)]
 COMMON=["wall-000699","wall-000715",*OLD_ROOFS]
 OPTIONS={
+ "CROSS_BARE":{
+   "slopes":[*OLD_ROOFS,*[f"roof-{i:06d}" for i in range(25,29)]],
+   "supports":["wall-000699","wall-000715"],
+   "filename":"TOITURE-040-RETENUE-2-RANGEES-8-PENTES.ldr",
+   "expected_snap_count":17,
+   "assembly_order":["wall-000699","wall-000715",
+       *OLD_ROOFS,*[f"roof-{i:06d}" for i in range(25,29)]],
+ },
  "CROSS":{
    "slopes":[*OLD_ROOFS,*[f"roof-{i:06d}" for i in range(25,29)]],
    "supports":["wall-000699","wall-000715","gable-000001"],
@@ -72,7 +80,7 @@ def execute(ldraw,shadow,output):
     for option,rule in OPTIONS.items():
         rows,total=original_rows((HERE/rule["filename"]).read_text(encoding="utf8"))
         ids=[*rule["supports"],*rule["slopes"]]
-        assert len(ids)==len(set(ids))==11 and total==11 and set(rows)==set(ids)
+        assert len(ids)==len(set(ids))==total and total in (10,11) and set(rows)==set(ids)
         assert all(rows[i]==original[i] for i in ids)
         assert all(rows[i]==old[i] for i in COMMON)
         instances={}
@@ -131,10 +139,10 @@ def execute(ldraw,shadow,output):
                             tuple(float(v) for v in s["world"]),float(s["depth_ldu"])))
         assert sorted(nominal)==sorted(expected),(option,nominal,expected)
         assert len(nominal)==rule["expected_snap_count"],(option,len(nominal))
-        assert len(pair_reports)==55 and total_new_pairs==40
+        assert len(pair_reports)==len(ids)*(len(ids)-1)//2 and total_new_pairs==(len(ids)*(len(ids)-1)//2-15)
         results[option]={
             "sha_of_original_b3_git_blob":original_blob(source_bytes),
-            "num_slopes":8,"num_supports":3,"part_count":11,
+            "num_slopes":8,"num_supports":len(rule["supports"]),"part_count":len(ids),
             "preserved_m036_parts":len(COMMON),
             "new_pieces":[p for p in ids if p not in COMMON],
             "nominal_ldcad":len(nominal),
@@ -144,7 +152,7 @@ def execute(ldraw,shadow,output):
             "mesh_engine_counts":dict(contacts),
             "mesh_collisions":[{"a":e["a"],"b":e["b"],"new":e["new_interface"]}
                 for e in pair_reports if e["mesh_engine"]=="COLLISION"],
-            "pairs_examined":55,"new_interface_pairs_examined":total_new_pairs,
+            "pairs_examined":len(pair_reports),"new_interface_pairs_examined":total_new_pairs,
             "pair_reports":pair_reports,
             "plausible_not_proven_order":rule["assembly_order"],
             "wall_related_parts":rule["supports"],
@@ -153,16 +161,15 @@ def execute(ldraw,shadow,output):
             "mechanical_stability_certified":False
         }
     if SOURCE.read_bytes()!=source_bytes:raise AssertionError("original B3 changed")
-    if results["CROSS"]["mesh_collisions"]:
-        if not results["LONG"]["mesh_collisions"]:
-            chosen="LONG"
-            reason="CROSS_HAS_UNRESOLVED_ENGINE_COLLISIONS"
-        else:
-            chosen="M036"
-            reason="BOTH_ENLARGEMENTS_HAVE_UNRESOLVED_ENGINE_COLLISIONS"
+    if not results["CROSS_BARE"]["mesh_collisions"]:
+        chosen="CROSS_BARE"
+        reason="TWO_REAL_ROWS; THE GABLE_WALL_JOIN_WITH_COLLISION_IS_EXCLUDED"
+    elif not results["LONG"]["mesh_collisions"]:
+        chosen="LONG"
+        reason="CROSS_ROWS_STILL_HAVE_UNRESOLVED_ENGINE_COLLISIONS"
     else:
-        chosen="CROSS"
-        reason="NO_ENGINE_COLLISION_IN_CROSS_TRIAL_BUT_PHYSICAL_INSERTION_UNPROVEN"
+        chosen="M036"
+        reason="BOTH_ENLARGEMENTS_HAVE_UNRESOLVED_ENGINE_COLLISIONS"
     output=Path(output)
     output.parent.mkdir(parents=True,exist_ok=True)
     result={
@@ -177,7 +184,9 @@ def execute(ldraw,shadow,output):
     output.write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n",encoding="utf8")
     print(json.dumps({"mission":40,"M032_reproduction":"PASS",
       "M036_preserved":"PASS",
-      "CROSS":{"LDCad":results["CROSS"]["nominal_ldcad"],
+      "CROSS_BARE":{"LDCad":results["CROSS_BARE"]["nominal_ldcad"],
+        "mesh":results["CROSS_BARE"]["mesh_engine_counts"]},
+      "CROSS_WITH_GABLE":{"LDCad":results["CROSS"]["nominal_ldcad"],
         "mesh":results["CROSS"]["mesh_engine_counts"]},
       "LONG":{"LDCad":results["LONG"]["nominal_ldcad"],
         "mesh":results["LONG"]["mesh_engine_counts"]},

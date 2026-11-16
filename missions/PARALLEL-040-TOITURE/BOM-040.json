@@ -46,6 +46,28 @@
         "roof-000009"
       ],
       "expected_LDCad_snap_pairs": 17
+    },
+    "CROSS_BARE": {
+      "slopes": 8,
+      "total_parts": 10,
+      "by_LDraw_and_color": {
+        "30363.dat color 1": 8,
+        "3008.dat color 19": 2
+      },
+      "part_ids": [
+        "wall-000699",
+        "wall-000715",
+        "roof-000002",
+        "roof-000003",
+        "roof-000004",
+        "roof-000005",
+        "roof-000025",
+        "roof-000026",
+        "roof-000027",
+        "roof-000028"
+      ],
+      "expected_LDCad_snap_pairs": 17
     }
-  }
+  },
+  "recommended_candidate": "CROSS_BARE_AFTER_REAL_MESH_RUN"
 }

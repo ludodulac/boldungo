@@ -1,22 +1,18 @@
-# GRAND-PÈRE BOLDÜNGO — M040 : agrandir la toiture à huit pentes
+# BOLDÜNGO — M040 : huit pentes, deux véritables rangées LEGO (provisoire avant contrôle final)
 
-## Base et fidélité
-Branche `feat/boldungo-parallel-032-toiture` à partir du HEAD M036 `296ad4b489d89141c479467cfcc5e397e7b66443` ; PR #942 conserve son statut DRAFT.
-Fichier original `missions/B3/generated/GUIDED004-B3-1904.ldr` : Git blob `288c60fde76918128d8b955f78ebfa9afc2dfe8e`, **1 904 pièces non modifiées**.
-Chaque ligne LDraw du nouveau sous-ensemble est la **ligne originale exacte** correspondante. Les six pièces de M036 sont préservées sans déplacement.
+Base M036 HEAD initial : `296ad4b489d89141c479467cfcc5e397e7b66443`. Fichier B3 d'origine : blob `288c60fde76918128d8b955f78ebfa9afc2dfe8e`, 1 904 pièces inchangées. M036 six pièces conservées rigoureusement dans les nouveaux sous-assemblages.
 
-## Deux propositions matérielles documentées — décider après le test maillage réel
+## Premier essai de 2 rangées : collision dans les pièces de support, pas entre pentes
+Le run de contrôle [M040 GitHub Actions #43859979725](https://github.com/ludodulac/boldungo/actions/runs/43859979725) a testé deux options de 11 pièces :
+- **CROSS** (pentes 002–005 et 025–028, murs 699/715 + pignon 001) : **18** snaps LDCad, **23 CONTACT**, **31 SEPARATED**, **1 COLLISION moteur** sur 55 paires : **`wall-000699` ↔ `gable-000001`**, bien qu'ils aient 4 correspondances ordinaires de tenons. Ce contact est suspendu : pas de validation mécanique, aucun retrait de ce pignon du modèle réel.
+- **LONG** (8 pentes 002–009, murs 699/715/714) : **17** snaps LDCad, **19 CONTACT**, **36 SEPARATED**, **0 COLLISION moteur** sur 55 paires. Une bande étroite alternative, 11 pièces.
 
-**ESSAI CROISÉ (souhaité)** : `TOITURE-040-ESSAI-2-RANGEES-8-PENTES.ldr` : pentes 002–005 et 025–028 ; appuis existants `wall-000699`, `wall-000715` et `gable-000001`, 11 pièces (8 pentes, 3 supports). Les calculs du M032 prévoient **18** coïncidences LDCad : 9 dans l'ancien sous-ensemble, **8 pente–pente** nouvelles et **1 pente–pignon** nouvelle. Le pignon est aligné au-dessus de `wall-000699` par des grilles de tenons standards. Les anciennes analyses M023/M024 avertissent toutefois de possibles **signaux de collision** entre les pentes de rangées décalées en hauteur. Une coïncidence LDCad ne les absout pas.
+**NOUVELLE PROPOSITION M040 — CROSS_BARE** : conserver les mêmes **deux rangées** de pentes 002–005 et 025–028, mais **ne pas inclure `gable-000001` dans le module expérimental**. Conserver exactement les **deux vrais éléments de murs M036**, `wall-000699` et `wall-000715` : **8 pentes + 2 supports = 10 pièces**. Les 4 pentes de la rangée supérieure possèdent chacune 2 matches nominaux sur les tenons de la pente inférieure ; soit **17 snaps LDCad** au total (9 M036 + 8 nouvelles). Les **45 paires** du nouveau sous-ensemble sont soumises au contrôle dédié `verify_m040.py` avant toute conclusion. Le problème de la jonction `wall-000699` / `gable-000001`, toujours existante dans la maison B3, demeure un **obstacle externe** à l'intégration complète.
 
-**REPLI LONGITUDINAL (si signaux de collision croisés)** : `TOITURE-040-REPLI-BANDE-8-PENTES.ldr` : 002–009 ; supports `wall-000699`, `wall-000715`, `wall-000714`, toujours 11 pièces. **17** coïncidences LDCad (9 d'origine + 8 nouvelles) d'après M032. Cet agrandissement prolonge la longueur de la bande, sans ajouter une seconde rangée de pente.
+## Livrables et limites
+- `TOITURE-040-RETENUE-2-RANGEES-8-PENTES.ldr` et `APERCU-040-RETENUE-2-RANGEES.svg` : dix lignes LDraw copiées de B3 et projection géométrique.
+- `TOITURE-040-ESSAI-2-RANGEES-8-PENTES.ldr` : variant à 11 pièces **non retenu** (1 signal COLLISION sur la jonction support/pignon).
+- `TOITURE-040-REPLI-BANDE-8-PENTES.ldr` : alternative prudemment vérifiée.
+- `BOM-040.json`, `verify_m040.py`, run ciblé et artefact : matrices, noms originaux, tests M032, LDCad M031 et maillages triangulés véritables.
 
-## Protocole de décision conservateur
-`verify_m040.py` relit M036 et B3, **relance M032**, confronte les sites calculés à `RELEVE-408.json`, vérifie `find_connections` avec les 8 réceptions 30363 de la vraie ShadowLibrary M031, puis **`check_collision` sur les 55 paires de chaque variante (110 paires, dont 40 nouvelles par variante)** à partir des maillages officiels LDraw épinglés. Le workflow `.github/workflows/lego2-m040-toiture.yml` téléchargera uniquement les sources tierces dans le runner. Si le moteur retourne des `COLLISION` sur l'essai croisé, le modèle de repli n'est retenu que s'il ne comporte aucun signal de collision ; sinon conserver M036.
-
-Le journal `M040-RESULTATS-MAILLAGES.json` de l'artefact GitHub fournit la décision réellement mesurée. **`CONTACT` ne certifie pas une insertion. `COLLISION` reste un signal géométrique à qualifier, pas automatiquement une pénétration interdite.** L'ordre plausible est support de mur → éventuel pignon → pentes de rive → pentes supérieures (ou pentes 002–009 pour le repli). Il n'existe pour l'instant aucune trajectoire d'insertion continue ou preuve de stabilité sous charge.
-
-## Nomenclature et visuels
-Chaque option : 8 × `30363.dat` (couleur 1) et 3 × `3008.dat` (couleur 19). Les deux aperçus SVG sont des projections techniques **des transformations originales**, non des photographies ou des preuves d'assemblage. Aucune pièce extérieure à la maison n'a été inventée.
-
-**STOP mécanique** : ne pas intégrer ce prototype dans le modèle original ou présenter le rampant comme supportant une charge avant qualification des collisions, ordre physique de pose, appuis jusqu'aux fondations, faîtage.
+**Ordre seulement plausible** : les deux murs existants, puis les quatre pentes de rive dans l'ordre 002→005, puis les quatre pentes de rangée suivante dans l'ordre 025→028. Ne constitue PAS une simulation d'insertion réelle, ni une preuve de stabilité, ni un raccord complet aux fondations. Aucun changement de B3, du moteur ou des autres missions.
