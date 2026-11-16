@@ -96,9 +96,11 @@ function validateCandidate(b3,stair,a) {
   if(face(p.box,q.box))errors.push({kind:"new-B3",a:p.id,b:q.id});
  for(const p of a)for(const q of stair.parts)
   if(face(p.box,q.box))errors.push({kind:"new-M038",a:p.id,b:q.id});
- const found=[],edge=(lo,up)=>{
-   let sites=links(lo,up);
-   if(sites.length)found.push({lower:lo.id,upper:up.id,origin_low:lo.origin,origin_up:up.origin,sites});
+ const found=[],seenEdges=new Set(),edge=(lo,up)=>{
+   const pairKey=lo.id+"|"+up.id;
+   if(seenEdges.has(pairKey))return;
+   const sites=links(lo,up);
+   if(sites.length){seenEdges.add(pairKey);found.push({lower:lo.id,upper:up.id,origin_low:lo.origin,origin_up:up.origin,sites});}
  };
  // Limit connectors to physically precise neighbours (no side contact).
  for(const p of [...b3.parts,...stair.parts,...a])for(const q of a)
