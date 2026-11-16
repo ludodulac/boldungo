@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="780" viewBox="129 -22 573 814">
+<rect x="129" y="-22" width="573" height="814" fill="#fafaf7"/>
+<text x="149.5" y="20.900000000000006" font-family="Arial" font-weight="bold" font-size="28" fill="#304650">M040 · ESSAI 2 RANGÉES</text>
+<text x="149.5" y="53.900000000000006" font-family="Arial" font-size="17" fill="#5d6970">8 pentes LEGO 30363 + 3 pièces d'appui réelles · matrices B3 conservées</text>
+<polygon points="218.5,241.3 354.5,478.1 396.5,475.5 260.5,238.7" fill="#aab8ad" fill-opacity=".91" stroke="#4e7468" stroke-width="2.2" />
+<polygon points="277.5,268.3 613.5,247.5 596.5,217.9 260.5,238.7" fill="#aab8ad" fill-opacity=".91" stroke="#4e7468" stroke-width="2.2" />
+<polygon points="286.5,345.3 422.5,582.1 464.5,579.5 328.5,342.7" fill="#aab8ad" fill-opacity=".91" stroke="#4e7468" stroke-width="2.2" />
+<polygon points="319.5,251.3 235.5,256.5 184.5,179.7 268.5,174.5" fill="#bf6674" fill-opacity=".91" stroke="#71434b" stroke-width="2.2" />
+<polygon points="403.5,246.1 319.5,251.3 268.5,174.5 352.5,169.3" fill="#bf6674" fill-opacity=".91" stroke="#71434b" stroke-width="2.2" />
+<polygon points="487.5,240.9 403.5,246.1 352.5,169.3 436.5,164.1" fill="#bf6674" fill-opacity=".91" stroke="#71434b" stroke-width="2.2" />
+<polygon points="571.5,235.7 487.5,240.9 436.5,164.1 520.5,158.9" fill="#bf6674" fill-opacity=".91" stroke="#71434b" stroke-width="2.2" />
+<polygon points="370.5,325.7 286.5,330.9 235.5,254.1 319.5,248.9" fill="#dc9775" fill-opacity=".91" stroke="#71434b" stroke-width="2.2" />
+<polygon points="454.5,320.5 370.5,325.7 319.5,248.9 403.5,243.7" fill="#dc9775" fill-opacity=".91" stroke="#71434b" stroke-width="2.2" />
+<polygon points="538.5,315.3 454.5,320.5 403.5,243.7 487.5,238.5" fill="#dc9775" fill-opacity=".91" stroke="#71434b" stroke-width="2.2" />
+<polygon points="622.5,310.1 538.5,315.3 487.5,238.5 571.5,233.3" fill="#dc9775" fill-opacity=".91" stroke="#71434b" stroke-width="2.2" />
+<text x="307.5" y="358.4" font-family="Arial" font-size="15" fill="#26493d" font-weight="bold" text-anchor="middle">699</text>
+<text x="437.0" y="243.1" font-family="Arial" font-size="15" fill="#26493d" font-weight="bold" text-anchor="middle">715</text>
+<text x="375.5" y="462.4" font-family="Arial" font-size="15" fill="#26493d" font-weight="bold" text-anchor="middle">001</text>
+<text x="252.0" y="215.5" font-family="Arial" font-size="15" fill="#fff" font-weight="bold" text-anchor="middle">002</text>
+<text x="336.0" y="210.3" font-family="Arial" font-size="15" fill="#fff" font-weight="bold" text-anchor="middle">003</text>
+<text x="420.0" y="205.1" font-family="Arial" font-size="15" fill="#fff" font-weight="bold" text-anchor="middle">004</text>
+<text x="504.0" y="199.9" font-family="Arial" font-size="15" fill="#fff" font-weight="bold" text-anchor="middle">005</text>
+<text x="303.0" y="289.9" font-family="Arial" font-size="15" fill="#fff" font-weight="bold" text-anchor="middle">025</text>
+<text x="387.0" y="284.7" font-family="Arial" font-size="15" fill="#fff" font-weight="bold" text-anchor="middle">026</text>
+<text x="471.0" y="279.5" font-family="Arial" font-size="15" fill="#fff" font-weight="bold" text-anchor="middle">027</text>
+<text x="555.0" y="274.3" font-family="Arial" font-size="15" fill="#fff" font-weight="bold" text-anchor="middle">028</text>
+<text x="149.5" y="657.1000000000001" font-family="Arial" font-size="18" fill="#3e515e">Deux rangées du rampant; jonctions transversales en vérification</text>
+<text x="149.5" y="685.1000000000001" font-family="Arial" font-size="14" fill="#a55334">Projection schématique de pièces réelles, pas un rendu de maillage ni une certification d'insertion.</text>
+</svg>

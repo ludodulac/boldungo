@@ -1,0 +1,51 @@
+{
+  "source_original_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+  "commit_parent_m036": "296ad4b489d89141c479467cfcc5e397e7b66443",
+  "release_for_purchase": false,
+  "variants": {
+    "CROSS": {
+      "slopes": 8,
+      "total_parts": 11,
+      "by_LDraw_and_color": {
+        "30363.dat color 1": 8,
+        "3008.dat color 19": 3
+      },
+      "part_ids": [
+        "wall-000699",
+        "wall-000715",
+        "gable-000001",
+        "roof-000002",
+        "roof-000003",
+        "roof-000004",
+        "roof-000005",
+        "roof-000025",
+        "roof-000026",
+        "roof-000027",
+        "roof-000028"
+      ],
+      "expected_LDCad_snap_pairs": 18
+    },
+    "LONG": {
+      "slopes": 8,
+      "total_parts": 11,
+      "by_LDraw_and_color": {
+        "30363.dat color 1": 8,
+        "3008.dat color 19": 3
+      },
+      "part_ids": [
+        "wall-000699",
+        "wall-000715",
+        "wall-000714",
+        "roof-000002",
+        "roof-000003",
+        "roof-000004",
+        "roof-000005",
+        "roof-000006",
+        "roof-000007",
+        "roof-000008",
+        "roof-000009"
+      ],
+      "expected_LDCad_snap_pairs": 17
+    }
+  }
+}
