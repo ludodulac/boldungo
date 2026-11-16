@@ -1,0 +1,55 @@
+name: BOLDUNGO M040 — toiture deux rangées
+on:
+  push:
+    branches: [feat/boldungo-parallel-032-toiture]
+    paths:
+      - 'missions/PARALLEL-040-TOITURE/**'
+      - '.github/workflows/lego2-m040-toiture.yml'
+  workflow_dispatch:
+
+jobs:
+  verify-m040-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install unmodified LDraw engine
+        run: python -m pip install -e ./lego_geometry_engine
+      - name: Verify syntax and earlier M032 totals
+        run: |
+          python -m py_compile missions/PARALLEL-040-TOITURE/verify_m040.py
+          mkdir -p artifacts/lego2-m040
+          python missions/PARALLEL-032-TOITURE/audit_032.py | tee artifacts/lego2-m040/REPRO-M032.json
+      - name: Fetch only two actual LDraw part families and dependencies (pinned)
+        run: python scripts/download_ldraw_probe_066.py /tmp/lego2-m040-ldraw --max-files 160 --parts 30363 3008
+      - name: Download four pinned CC BY-SA external LDCad shadows without vendoring
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen
+          rev='9b1131fb1991f8c0bfc072325e4e12f6271aba35'
+          root=Path('/tmp/lego2-m040-shadow')
+          for rel in ('parts/s/30363s01.dat','parts/3004.dat','parts/s/3004s01.dat','p/stud.dat'):
+              target=root/rel
+              target.parent.mkdir(parents=True,exist_ok=True)
+              with urlopen(f'https://raw.githubusercontent.com/RolandMelkert/LDCadShadowLibrary/{rev}/{rel}',timeout=25) as response:
+                  data=response.read()
+              if not data or b'CC BY-SA 4.0' not in data:
+                  raise ValueError('Invalid external LDCad source '+rel)
+              target.write_bytes(data)
+          PY
+      - name: "Test three alternatives: 45+55+55 real mesh pairs and LDCad profiles"
+        run: |
+          set -o pipefail
+          python missions/PARALLEL-040-TOITURE/verify_m040.py --ldraw-root /tmp/lego2-m040-ldraw --ldcad-shadow-root /tmp/lego2-m040-shadow --out artifacts/lego2-m040/M040-RESULTATS-MAILLAGES.json 2>&1 | tee artifacts/lego2-m040/M040-CONSOLE.txt
+      - name: Archive bounded verifiable results, not third-party meshes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M040-TOITURE-8-PENTES-NON-CERTIFIE
+          path: artifacts/lego2-m040/
+          if-no-files-found: warn
+          retention-days: 30
