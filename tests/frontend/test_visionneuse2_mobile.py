@@ -21,7 +21,7 @@ def test_mobile_both_models_status_no_overlay_and_controls():
     assert 'id="model-kind-status"' in view
     assert 'updateModelKind(b);' in script
     for path,quantity in [
-        ("boldungo2-lego-house-019.json",2852),
+        ("boldungo2-lego-house-019.json",2853),
         ("guided004-maison4-356-brickhouse.json",356),
     ]:
         bundle=json.loads((FRONTEND/"data"/path).read_text())
@@ -47,7 +47,7 @@ def test_mobile_both_models_status_no_overlay_and_controls():
             page.on("pageerror",lambda e:errors.append(str(e)))
             base=f"http://127.0.0.1:{server.server_port}/"
             options=[
-                ("boldungo2-lego-house-019.json",2852,"visual","Maison complète — modèle visuel approximatif","non certifié LEGO","visual"),
+                ("boldungo2-lego-house-019.json",2853,"visual","Maison complète — modèle visuel approximatif","non certifié LEGO","visual"),
                 ("guided004-maison4-356-brickhouse.json",356,"lego","Construction LEGO — 356 pièces","Modèle de travail","lego"),
             ]
             for filename,count,kind,heading,subtitle,suffix in options:
