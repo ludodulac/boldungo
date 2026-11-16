@@ -1,0 +1,16 @@
+name: M043 terrasse corrected full-house regression
+on:
+  push:
+    branches:
+      - feat/boldungo-parallel-035-terrasse
+    paths:
+      - "missions/043-terrasse/**"
+      - ".github/workflows/boldungo-terrasse-043.yml"
+  workflow_dispatch:
+jobs:
+  targeted:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: M043 12-collision regression + Technic Y + complete house
+        run: python missions/043-terrasse/VERIFIER-043.py
