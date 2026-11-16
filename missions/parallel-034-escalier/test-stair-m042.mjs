@@ -31,7 +31,7 @@ check("no certified clutch/insertion/strength",q.connection_strength_certified==
 check("diagram shows wall and real concrete",data.overview.includes("Façade Sud")&&data.overview.includes("Plateforme béton"));
 const edited=B3.replace("1 15 470 -96 50 1 0 0 0 1 0 0 0 1 3005.dat","1 15 170 -288 350 1 0 0 0 1 0 0 0 1 3005.dat");
 check("negative: inserted obstacle in candidate path rejected",edited!==B3&&(()=>{
-  try{buildM042(edited);return false;}catch(e){return String(e).includes("NO_NOMINAL_ADAPTER_CAN_BE_BUILT");}
+  try{buildM042(edited,M038);return false;}catch(e){return String(e).includes("NO_NOMINAL_ADAPTER_CAN_BE_BUILT");}
 })());
 check("negative: missing B3 source part refused",(()=>{
   try{buildM042(B3.replace("1 15 470 -96 50 1 0 0 0 1 0 0 0 1 3005.dat",""),M038);return false;}
