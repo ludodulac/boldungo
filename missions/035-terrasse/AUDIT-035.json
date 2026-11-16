@@ -1,0 +1,132 @@
+{
+  "mission": "035",
+  "base_commit": "0f5bfe1836598f7050089c54a415123f06d33945",
+  "source_ldraw": "missions/B3/generated/GUIDED004-B3-1904.ldr",
+  "prototype": "missions/035-terrasse/PROTO-035-GUIDED004-Y.ldr",
+  "checks": {
+    "source_original_parts": 1904,
+    "source_reference_roof_30363": 408,
+    "original_terrace_extracted_unchanged": 155,
+    "new_parts": 16,
+    "complete_source_orthogonal_parts_scanned": 1496,
+    "additions_vs_source_orthogonal_AABB_overlaps": 0,
+    "additions_internal_AABB_overlaps": 0,
+    "source_30363_roof_y_top_LDU_min": -960,
+    "source_30363_roof_y_top_LDU_max": -768,
+    "new_y_LDU_min": -288,
+    "new_y_LDU_max": 24,
+    "internal_top_stud_to_bottom_overlap_pairs": 15,
+    "nominal_stud_contacts_to_existing_boards": 2,
+    "nominal_stud_contact_sites_on_existing_boards": 4,
+    "stud_centers_exactly_coincident_for_all_reported_contacts": true
+  },
+  "host_contacts": [
+    {
+      "prototype": "M035:Y:arm:left:3",
+      "source": "scene-platform:south-timber-deck-main:board:00014",
+      "studs": 2
+    },
+    {
+      "prototype": "M035:Y:arm:right:3",
+      "source": "scene-platform:south-timber-deck-main:board:00026",
+      "studs": 2
+    }
+  ],
+  "internal_contacts": [
+    {
+      "a": "M035:Y:stem:01",
+      "b": "M035:Y:footing",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:stem:02",
+      "b": "M035:Y:stem:01",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:stem:03",
+      "b": "M035:Y:stem:02",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:stem:04",
+      "b": "M035:Y:stem:03",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:stem:05",
+      "b": "M035:Y:stem:04",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:stem:06",
+      "b": "M035:Y:stem:05",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:stem:07",
+      "b": "M035:Y:stem:06",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:stem:08",
+      "b": "M035:Y:stem:07",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:fork:central",
+      "b": "M035:Y:stem:08",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:arm:left:1",
+      "b": "M035:Y:fork:central",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:arm:right:1",
+      "b": "M035:Y:fork:central",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:arm:left:2",
+      "b": "M035:Y:arm:left:1",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:arm:right:2",
+      "b": "M035:Y:arm:right:1",
+      "studs": 1
+    },
+    {
+      "a": "M035:Y:arm:left:3",
+      "b": "M035:Y:arm:left:2",
+      "studs": 2
+    },
+    {
+      "a": "M035:Y:arm:right:3",
+      "b": "M035:Y:arm:right:2",
+      "studs": 2
+    }
+  ],
+  "geometric_assumptions": [
+    "All rectangular standard brick/plate dimensions are used as orthogonal nominal AABBs (20 LDU/stud, 24 LDU/brick, 8 LDU/plate).",
+    "The 408 sloped roof parts are outside the vertical search envelope of the Y; they are not subjected to a mesh-level collision test.",
+    "Nominal contacts are coplanar top studs/underside on common stud grid, not verified coupling force or tubes clearance.",
+    "Concrete level and timber level are taken from the selected GUIDED004 B3 LDraw even though owner topology states timber is below masonry; unresolved mismatch.",
+    "Stud centers, not only overlapping AABBs, coincide on the 20-LDU grid for all reported nominal interfaces."
+  ],
+  "not_verified": [
+    "actual photographs inspected visually in this session",
+    "accuracy of Y position/angle on the real facade",
+    "anti-stud geometry and stud clutch tolerance",
+    "swept insertion/removal corridor",
+    "independent lateral bracing",
+    "footing on actual sloping terrain",
+    "mechanical load path and stability",
+    "global physical full-house certification",
+    "Y diagonal fidelity"
+  ],
+  "verdict": "ZERO_NEW_ORTHOGONAL_AABB_COLLISIONS_AND_NOMINAL_STUD_GRAPH_ONLY__NOT_STABLE_CERTIFICATE",
+  "construction_status": "EXPERIMENTAL_GEOMETRY_ONLY"
+}

@@ -1,0 +1,534 @@
+{
+  "mission": 43,
+  "branch": "feat/boldungo-parallel-035-terrasse",
+  "validated_head_before_work": "6bd708b8a04a444ff3d4bddb07a60f581d4ff9ea",
+  "base_B3_commit": "0f5bfe1836598f7050089c54a415123f06d33945",
+  "baseline_model": "missions/039-terrasse/PROTO-039-TERRASSE-Y-TECHNIC.ldr",
+  "source_B3": "missions/B3/generated/GUIDED004-B3-1904.ldr",
+  "owner_confirmed_level_relation": "wood below concrete, one step; step height not measured",
+  "level_M043_ldu": {
+    "concrete_top": -288,
+    "wood_top": -264,
+    "delta": 24,
+    "source_B3_wood_top": -312
+  },
+  "status": "STEP_DELTA_HYPOTHETICAL",
+  "classified_M039": {
+    "reported": 12,
+    "true_interferences_in_reconstructed_full_variant": 12,
+    "false_from_replaced_source_counterparts": 0,
+    "isolated_M039_model_only": 2,
+    "full_house_context_only": 10,
+    "all_pairs": [
+      {
+        "moved_piece": "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00001",
+        "retained_piece": "guided004-031:concrete-timber-cross-joint:04",
+        "source_part": "3008.dat",
+        "source_position_ldu": [
+          270,
+          -312,
+          420
+        ],
+        "other_part": "3008.dat",
+        "other_position_ldu": [
+          230,
+          -312,
+          420
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dz": 20,
+          "why": "Rive extérieure : libérer le raccord B3 031:04 sans toucher la maçonnerie."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00009",
+        "retained_piece": "guided004-031:concrete-timber-cross-joint:04",
+        "source_part": "3008.dat",
+        "source_position_ldu": [
+          160,
+          -312,
+          350
+        ],
+        "other_part": "3008.dat",
+        "other_position_ldu": [
+          230,
+          -312,
+          420
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dz": -20,
+          "why": "Traversée côté palier : ne plus pénétrer 031:04."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-west-return:board:00003",
+        "retained_piece": "wall-000248",
+        "source_part": "2456.dat",
+        "source_position_ldu": [
+          200,
+          -264,
+          780
+        ],
+        "other_part": "3008.dat",
+        "other_position_ldu": [
+          330,
+          -264,
+          780
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dx": -30,
+          "part": "3007.dat",
+          "why": "Recalepinage du retour contre le mur : bande z760–800, x90–250."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-west-return:board:00005",
+        "retained_piece": "wall-000248",
+        "source_part": "2456.dat",
+        "source_position_ldu": [
+          240,
+          -264,
+          780
+        ],
+        "other_part": "3008.dat",
+        "other_position_ldu": [
+          330,
+          -264,
+          780
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dx": -70,
+          "dz": 40,
+          "part": "3007.dat",
+          "why": "Recalepinage du retour contre le mur : bande z800–840, x90–250."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-west-return:board:00007",
+        "retained_piece": "wall-000248",
+        "source_part": "3009.dat",
+        "source_position_ldu": [
+          270,
+          -264,
+          780
+        ],
+        "other_part": "3008.dat",
+        "other_position_ldu": [
+          330,
+          -264,
+          780
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "remove": true,
+          "why": "Ancienne lame recouvrant wall-000248 retirée uniquement dans la variante ; sa surface praticable est reprise par les trois bandes 3007 adjacentes."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-main:y_min:rail-post:00089",
+        "retained_piece": "scene-platform:south-concrete-platform:deck:00179",
+        "source_part": "3005.dat",
+        "source_position_ldu": [
+          130,
+          -288,
+          350
+        ],
+        "other_part": "3007.dat",
+        "other_position_ldu": [
+          120,
+          -288,
+          280
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dz": 60,
+          "why": "Décaler le montant hors des deux briques du plateau béton ; garde-corps de début à revalider."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-main:y_min:rail-post:00089",
+        "retained_piece": "scene-platform:south-concrete-platform:deck:00181",
+        "source_part": "3005.dat",
+        "source_position_ldu": [
+          130,
+          -288,
+          350
+        ],
+        "other_part": "3007.dat",
+        "other_position_ldu": [
+          120,
+          -288,
+          320
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dz": 60,
+          "why": "Décaler le montant hors des deux briques du plateau béton ; garde-corps de début à revalider."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-main:x_max:rail-post:00069",
+        "retained_piece": "guided004-031:house-timber:wall-retile:01",
+        "source_part": "3005.dat",
+        "source_position_ldu": [
+          270,
+          -288,
+          470
+        ],
+        "other_part": "3460.dat",
+        "other_position_ldu": [
+          330,
+          -272,
+          480
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dz": -20,
+          "why": "Éviter deux plaques de retile du mur de la maison."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-main:x_max:rail-post:00069",
+        "retained_piece": "guided004-031:house-timber:wall-retile:02",
+        "source_part": "3005.dat",
+        "source_position_ldu": [
+          270,
+          -288,
+          470
+        ],
+        "other_part": "3460.dat",
+        "other_position_ldu": [
+          330,
+          -280,
+          480
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dz": -20,
+          "why": "Éviter deux plaques de retile du mur de la maison."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-main:x_max:rail-post:00081",
+        "retained_piece": "wall-000271",
+        "source_part": "3005.dat",
+        "source_position_ldu": [
+          270,
+          -288,
+          650
+        ],
+        "other_part": "3008.dat",
+        "other_position_ldu": [
+          330,
+          -288,
+          640
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dz": 20,
+          "why": "Éviter le mur 000271 sans chevaucher le poteau d'angle 00109."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00010",
+        "retained_piece": "guided004-031:concrete-timber-cross-joint:03",
+        "source_part": "3005.dat",
+        "source_position_ldu": [
+          250,
+          -312,
+          350
+        ],
+        "other_part": "3004.dat",
+        "other_position_ldu": [
+          250,
+          -312,
+          340
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dz": 20,
+          "why": "Traversée côté palier : dégager 031:03."
+        }
+      },
+      {
+        "moved_piece": "scene-platform:south-timber-deck-west-return:x_max:rail-post:00022",
+        "retained_piece": "wall-000270",
+        "source_part": "3005.dat",
+        "source_position_ldu": [
+          270,
+          -288,
+          790
+        ],
+        "other_part": "3008.dat",
+        "other_position_ldu": [
+          330,
+          -288,
+          800
+        ],
+        "other_retained_in_full_variant": true,
+        "overlap_M039": true,
+        "overlap_M043": false,
+        "resolution": {
+          "dx": -40,
+          "why": "Reculer l'extrémité de garde-corps du mur 000270 ; ancrage inférieur à revalider."
+        }
+      }
+    ]
+  },
+  "changed_source_parts": [
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00001",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "3008.dat",
+        "x": 270,
+        "y": -312,
+        "z": 420
+      },
+      "after": {
+        "part": "3008.dat",
+        "x": 270,
+        "y": -312,
+        "z": 440
+      },
+      "rationale": "Rive extérieure : libérer le raccord B3 031:04 sans toucher la maçonnerie."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00009",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "3008.dat",
+        "x": 160,
+        "y": -312,
+        "z": 350
+      },
+      "after": {
+        "part": "3008.dat",
+        "x": 160,
+        "y": -312,
+        "z": 330
+      },
+      "rationale": "Traversée côté palier : ne plus pénétrer 031:04."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00010",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "3005.dat",
+        "x": 250,
+        "y": -312,
+        "z": 350
+      },
+      "after": {
+        "part": "3005.dat",
+        "x": 250,
+        "y": -312,
+        "z": 370
+      },
+      "rationale": "Traversée côté palier : dégager 031:03."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_min:rail-post:00089",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "3005.dat",
+        "x": 130,
+        "y": -288,
+        "z": 350
+      },
+      "after": {
+        "part": "3005.dat",
+        "x": 130,
+        "y": -288,
+        "z": 410
+      },
+      "rationale": "Décaler le montant hors des deux briques du plateau béton ; garde-corps de début à revalider."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-post:00069",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "3005.dat",
+        "x": 270,
+        "y": -288,
+        "z": 470
+      },
+      "after": {
+        "part": "3005.dat",
+        "x": 270,
+        "y": -288,
+        "z": 450
+      },
+      "rationale": "Éviter deux plaques de retile du mur de la maison."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-post:00081",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "3005.dat",
+        "x": 270,
+        "y": -288,
+        "z": 650
+      },
+      "after": {
+        "part": "3005.dat",
+        "x": 270,
+        "y": -288,
+        "z": 670
+      },
+      "rationale": "Éviter le mur 000271 sans chevaucher le poteau d'angle 00109."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:x_max:rail-post:00022",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "3005.dat",
+        "x": 270,
+        "y": -288,
+        "z": 790
+      },
+      "after": {
+        "part": "3005.dat",
+        "x": 230,
+        "y": -288,
+        "z": 790
+      },
+      "rationale": "Reculer l'extrémité de garde-corps du mur 000270 ; ancrage inférieur à revalider."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:board:00001",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "2456.dat",
+        "x": 160,
+        "y": -264,
+        "z": 780
+      },
+      "after": {
+        "part": "3007.dat",
+        "x": 170,
+        "y": -264,
+        "z": 740
+      },
+      "rationale": "Recalepinage du retour contre le mur : bande z720–760, x90–250."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:board:00003",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "2456.dat",
+        "x": 200,
+        "y": -264,
+        "z": 780
+      },
+      "after": {
+        "part": "3007.dat",
+        "x": 170,
+        "y": -264,
+        "z": 780
+      },
+      "rationale": "Recalepinage du retour contre le mur : bande z760–800, x90–250."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:board:00005",
+      "operation": "POSITION_OR_REFERENCE_UPDATE",
+      "before": {
+        "part": "2456.dat",
+        "x": 240,
+        "y": -264,
+        "z": 780
+      },
+      "after": {
+        "part": "3007.dat",
+        "x": 170,
+        "y": -264,
+        "z": 820
+      },
+      "rationale": "Recalepinage du retour contre le mur : bande z800–840, x90–250."
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:board:00007",
+      "operation": "REPLACED_BY_RETILE",
+      "before": {
+        "part": "3009.dat",
+        "x": 270,
+        "y": -264,
+        "z": 780
+      },
+      "after": null,
+      "rationale": "Ancienne lame recouvrant wall-000248 retirée uniquement dans la variante ; sa surface praticable est reprise par les trois bandes 3007 adjacentes."
+    }
+  ],
+  "retiled_architecture": {
+    "description": "Four superimposed west-return boards re-tiled into 3 adjacent LEGO 3007 rows with common x = [90,250] LDU and z bands [720,760],[760,800],[800,840]; material at wall encroachment x >=250 z in [770,790] is not represented as timber.",
+    "one_original_piece_absent": "scene-platform:south-timber-deck-west-return:board:00007",
+    "replacement": [
+      "scene-platform:south-timber-deck-west-return:board:00001",
+      "scene-platform:south-timber-deck-west-return:board:00003",
+      "scene-platform:south-timber-deck-west-return:board:00005"
+    ],
+    "photo_fidelity": "REQUIRES_PHOTO_AND_METRIC_REVIEW"
+  },
+  "after_M043": {
+    "isolated_variant_parts": 163,
+    "full_house_variant_parts": 1912,
+    "source_B3_parts": 1904,
+    "nominal_orthogonal_pieces_full": 1499,
+    "reported_initial_12_remaining": 0,
+    "moved_wood_vs_retained_full_house_AABB": 0,
+    "internal_isolated_M039_AABB": 78,
+    "internal_isolated_M043_AABB": 70,
+    "newly_introduced_internal_AABB": 0,
+    "full_house_B3_original_AABB_count": 230,
+    "full_house_M039_AABB_count": 223,
+    "full_house_M043_AABB_count": 205,
+    "full_house_new_overlap_pairs_vs_M039": 0,
+    "full_house_removed_overlap_pairs_vs_M039": 18,
+    "full_house_new_overlap_pairs_vs_original_B3": 0
+  },
+  "preserved_Y": {
+    "parts": 16,
+    "beams_32524": 2,
+    "pins_6558": 3,
+    "holes_nominal": 3,
+    "stud_nominal_chains": 8,
+    "source_positions_unchanged": true,
+    "board_contacts": "7 projected overlaps reported by M039 are geometrically ambiguous, NOT 7 verified independent joints"
+  },
+  "not_certified": [
+    "205 rectangular AABB pairs remain in reconstructed full-house variant; many are inherited from B3, none introduced relative to B3 or M039.",
+    "No verified real mesh for inclined 32524 beams/6558 pins; real insertion clearance not verified.",
+    "No definitive diagonal brace angle nor load bearing test nor stud clutch force.",
+    "Wood's 24 LDU lower-than-concrete step is an assumption only.",
+    "Re-tiled west-return extent and moved posts need photo review and guardrail attachment tests.",
+    "Roof 30363 meshes excluded from rectangular AABB scope.",
+    "Wall and historic joiners unchanged, source B3 untouched."
+  ],
+  "verdict": "12/12_REPORTED_M039_PAIRS_RESOLVED_NO_NEW_ORTHOGONAL_AABB;205_INHERITED_GLOBAL_AABB_PAIRS_REMAIN;NOT_MECHANICALLY_CERTIFIED"
+}

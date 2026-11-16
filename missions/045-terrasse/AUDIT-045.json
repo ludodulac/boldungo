@@ -1,0 +1,843 @@
+{
+  "mission": 45,
+  "head_before": "fca15489b56e434b386646716e61e300d127ed29",
+  "source_B3_parts": 1904,
+  "source_variant": "missions/043-terrasse/GUIDED004-B3-EXPERIMENTAL-M043.ldr",
+  "original_B3_modified": false,
+  "prototype_M035_M039_M043_modified": false,
+  "loose_or_unjustified_found": 48,
+  "classification": {
+    "4": "orphaned B2 trial braces/seams",
+    "5": "no-nominal-contact hidden bonding plates",
+    "39": "provisional rail group"
+  },
+  "classification_counts": {
+    "rail": 39,
+    "hidden": 5,
+    "B2": 4
+  },
+  "removed": 48,
+  "repositioned": 29,
+  "added": 1,
+  "repositions": [
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0000:00011",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        24,
+        370
+      ],
+      "after": [
+        90,
+        -24,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0000:00023",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        24,
+        690
+      ],
+      "after": [
+        100,
+        -24,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0012:00015",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        -72,
+        370
+      ],
+      "after": [
+        90,
+        -120,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0012:00027",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        -72,
+        690
+      ],
+      "after": [
+        100,
+        -120,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0015:00016",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        -96,
+        370
+      ],
+      "after": [
+        90,
+        -144,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0015:00028",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        -96,
+        690
+      ],
+      "after": [
+        100,
+        -144,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0018:00017",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        -120,
+        370
+      ],
+      "after": [
+        90,
+        -168,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0018:00029",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        -120,
+        690
+      ],
+      "after": [
+        100,
+        -168,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0021:00018",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        -144,
+        370
+      ],
+      "after": [
+        90,
+        -192,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0021:00030",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        -144,
+        690
+      ],
+      "after": [
+        100,
+        -192,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0024:00019",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        -168,
+        370
+      ],
+      "after": [
+        90,
+        -216,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0024:00031",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        -168,
+        690
+      ],
+      "after": [
+        100,
+        -216,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0027:00032",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        -192,
+        690
+      ],
+      "after": [
+        100,
+        -240,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0003:00012",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        0,
+        370
+      ],
+      "after": [
+        90,
+        -48,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0003:00024",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        0,
+        690
+      ],
+      "after": [
+        100,
+        -48,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0006:00013",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        -24,
+        370
+      ],
+      "after": [
+        90,
+        -72,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0006:00025",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        -24,
+        690
+      ],
+      "after": [
+        100,
+        -72,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0009:00014",
+      "delta": [
+        0,
+        -48,
+        40
+      ],
+      "before": [
+        90,
+        -48,
+        370
+      ],
+      "after": [
+        90,
+        -96,
+        410
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0009:00026",
+      "delta": [
+        10,
+        -48,
+        10
+      ],
+      "before": [
+        90,
+        -48,
+        690
+      ],
+      "after": [
+        100,
+        -96,
+        700
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0000:00035",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        24,
+        810
+      ],
+      "after": [
+        180,
+        -24,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0012:00039",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        -72,
+        810
+      ],
+      "after": [
+        180,
+        -120,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0015:00040",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        -96,
+        810
+      ],
+      "after": [
+        180,
+        -144,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0018:00041",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        -120,
+        810
+      ],
+      "after": [
+        180,
+        -168,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0021:00042",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        -144,
+        810
+      ],
+      "after": [
+        180,
+        -192,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0024:00043",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        -168,
+        810
+      ],
+      "after": [
+        180,
+        -216,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0027:00044",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        -192,
+        810
+      ],
+      "after": [
+        180,
+        -240,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0003:00036",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        0,
+        810
+      ],
+      "after": [
+        180,
+        -48,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0006:00037",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        -24,
+        810
+      ],
+      "after": [
+        180,
+        -72,
+        810
+      ]
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0009:00038",
+      "delta": [
+        10,
+        -48,
+        0
+      ],
+      "before": [
+        170,
+        -48,
+        810
+      ],
+      "after": [
+        180,
+        -96,
+        810
+      ]
+    }
+  ],
+  "deleted": [
+    {
+      "name": "scene-platform:south-timber-deck-main:y_min:rail-post:00097",
+      "reference": "3004.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_max:rail-post:00109",
+      "reference": "3004.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-top-solution:00006",
+      "reference": "3622.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00003",
+      "reference": "3622.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-top-solution:00004",
+      "reference": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-top-solution:00005",
+      "reference": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00001",
+      "reference": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00002",
+      "reference": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00009",
+      "reference": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_max:rail-top-solution:00007",
+      "reference": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:y_min:rail-top-solution:00015",
+      "reference": "3010.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:y_max:rail-top-solution:00013",
+      "reference": "3010.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:x_min:rail-top-solution:00012",
+      "reference": "3009.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-post:00035",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-post:00039",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-post:00043",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-post:00047",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-post:00051",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-post:00055",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_min:rail-post:00059",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_min:rail-post:00089",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_max:rail-post:00101",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_min:rail-post:00093",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_max:rail-post:00105",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_max:rail-post:00065",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_max:rail-post:00069",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_max:rail-post:00073",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_max:rail-post:00077",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:x_max:rail-post:00081",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00010",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:y_max:rail-top-solution:00008",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:x_min:rail-post:00009",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:x_min:rail-post:00013",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:x_min:rail-post:00016",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:y_min:rail-post:00029",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:y_max:rail-post:00035",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:x_max:rail-post:00018",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:x_max:rail-post:00022",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-west-return:x_max:rail-post:00025",
+      "reference": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013",
+      "reference": "3666.dat",
+      "reason": "hidden"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:01",
+      "reference": "3460.dat",
+      "reason": "hidden"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:06",
+      "reference": "3623.dat",
+      "reason": "hidden"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:07",
+      "reference": "3623.dat",
+      "reason": "hidden"
+    },
+    {
+      "name": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:08",
+      "reference": "3623.dat",
+      "reason": "hidden"
+    },
+    {
+      "name": "EXPERIMENT-B2-DECK-BRACE-1",
+      "reference": "3008.dat",
+      "reason": "B2"
+    },
+    {
+      "name": "EXPERIMENT-B2-DECK-BRACE-2",
+      "reference": "3008.dat",
+      "reason": "B2"
+    },
+    {
+      "name": "EXPERIMENT-B2-DECK-SEAM-1",
+      "reference": "3623.dat",
+      "reason": "B2"
+    },
+    {
+      "name": "EXPERIMENT-B2-DECK-SEAM-2",
+      "reference": "3623.dat",
+      "reason": "B2"
+    }
+  ],
+  "post_to_deck_contacts": [
+    {
+      "post": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0027:00032",
+      "board": "scene-platform:south-timber-deck-main:board:00003",
+      "studs": 1
+    },
+    {
+      "post": "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0027:00032",
+      "board": "scene-platform:south-timber-deck-main:board:00009",
+      "studs": 1
+    },
+    {
+      "post": "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0027:00044",
+      "board": "scene-platform:south-timber-deck-west-return:board:00005",
+      "studs": 1
+    },
+    {
+      "post": "M045:post-east:top-brick",
+      "board": "scene-platform:south-timber-deck-main:board:00001",
+      "studs": 1
+    },
+    {
+      "post": "M045:post-east:top-brick",
+      "board": "scene-platform:south-timber-deck-main:board:00007",
+      "studs": 1
+    },
+    {
+      "post": "M045:post-east:top-brick",
+      "board": "scene-platform:south-timber-deck-main:board:00013",
+      "studs": 1
+    }
+  ],
+  "post_to_post_nominal_pairs": 27,
+  "Y": {
+    "unchanged_parts": 16,
+    "has_sloped_technic_beams": 2,
+    "has_pins": 3,
+    "nominal_joint_039": "PRESERVED_NOT_MECHANICALLY_CERTIFIED"
+  },
+  "levels": "concrete top -288 LDU; timber top -264 LDU; 24 LDU hypothesis (lower wood)",
+  "collision_AABB": {
+    "M043_full": 205,
+    "M045_full": 196,
+    "removed": 9,
+    "new": 0
+  },
+  "full_house_orthogonal_mesh_status": "AABB_ONLY; LDraw sloped roof + Technic actual meshes not checked",
+  "remaining_ambiguities": [
+    "Two return boards 00001 and 00003 remain adjacent to a board tied nominally to the return post but do not themselves have proven underside clutch to a support.",
+    "Remaining main boards include contiguous adjacent planks with no independent stud connection; they are retained as the walking surface, not certified load-bearing.",
+    "39 provisional guardrail pieces removed only from M045; the architectural guardrail must be rebuilt with proper posts/tenon connections in a separate task.",
+    "Photographic placement of support posts not directly remeasured; x/z deltas are approximate stud-grid hypotheses.",
+    "Y pin/beam mechanical insertion, soil foundations and physical stability not verified."
+  ],
+  "status": "CLEANER_DRAFT_NOT_CERTIFIED"
+}

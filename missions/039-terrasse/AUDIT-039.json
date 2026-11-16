@@ -1,0 +1,208 @@
+{
+  "mission": 39,
+  "source_head_checked": "f4f7731085594db62bc26d430fc0affebc50d033",
+  "source_B3_untouched": true,
+  "owner": "Bois plus bas que béton, exactement une marche; hauteur inconnue",
+  "old_levels_ldu": {
+    "concrete": -288,
+    "timber": -312
+  },
+  "experimental_levels_ldu": {
+    "concrete": -288,
+    "timber": -264
+  },
+  "timber_y_shift_ldu": 48,
+  "step_delta_ldu": 24,
+  "step_metric_status": "HYPOTHESIS_NOT_MEASURED",
+  "variant_concrete": 46,
+  "variant_shifted_wood": 102,
+  "variant_Y": 16,
+  "variant_total": 164,
+  "dropped_courses": 6,
+  "dropped_unverified_old_bridge": 1,
+  "axes": {
+    "beams": "32524 local Y through-hole -> world Z (M098)",
+    "pins": "6558 local X shaft -> world Z (M098)",
+    "bricks": "3700 local Z through-hole -> world Z (official DAT peghole at z=±10)",
+    "hole_centres": [
+      [
+        120,
+        -230,
+        570
+      ],
+      [
+        240,
+        -230,
+        570
+      ],
+      [
+        180,
+        -150,
+        570
+      ]
+    ],
+    "left_beam_holes": [
+      [
+        120,
+        -230,
+        550
+      ],
+      [
+        180,
+        -150,
+        550
+      ]
+    ],
+    "right_beam_holes": [
+      [
+        240,
+        -230,
+        590
+      ],
+      [
+        180,
+        -150,
+        590
+      ]
+    ],
+    "note": "Hole indices 0 and 5 on two 7-hole beams, 100 LDU apart; pins are 3L, actual pin insertion/swept collision unverified."
+  },
+  "stud_chain": [
+    [
+      "M039:stem:1",
+      "M039:foot",
+      2
+    ],
+    [
+      "M039:stem:2",
+      "M039:stem:1",
+      2
+    ],
+    [
+      "M039:stem:3",
+      "M039:stem:2",
+      2
+    ],
+    [
+      "M039:stem:4",
+      "M039:stem:3",
+      2
+    ],
+    [
+      "M039:stem:5",
+      "M039:stem:4",
+      2
+    ],
+    [
+      "M039:plate:1",
+      "M039:stem:5",
+      2
+    ],
+    [
+      "M039:plate:2",
+      "M039:plate:1",
+      2
+    ],
+    [
+      "M039:fork:3700",
+      "M039:plate:2",
+      2
+    ]
+  ],
+  "board_contacts_GEOMETRIC_AMBIGUOUS": [
+    [
+      "M039:left:3700",
+      "scene-platform:south-timber-deck-main:board:00002",
+      2
+    ],
+    [
+      "M039:left:3700",
+      "scene-platform:south-timber-deck-main:board:00008",
+      2
+    ],
+    [
+      "M039:left:3700",
+      "scene-platform:south-timber-deck-main:board:00014",
+      2
+    ],
+    [
+      "M039:left:3700",
+      "scene-platform:south-timber-deck-main:board:00020",
+      1
+    ],
+    [
+      "M039:right:3700",
+      "scene-platform:south-timber-deck-main:board:00014",
+      1
+    ],
+    [
+      "M039:right:3700",
+      "scene-platform:south-timber-deck-main:board:00020",
+      2
+    ],
+    [
+      "M039:right:3700",
+      "scene-platform:south-timber-deck-main:board:00026",
+      2
+    ]
+  ],
+  "board_nominal_overlaps": "Source B3 planks overlap; 7 matches not 7 independent physical joints",
+  "collisions": {
+    "new_Y_rectangular": 0,
+    "shifted_wood_against_house": 12,
+    "pairs": [
+      [
+        "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00001",
+        "guided004-031:concrete-timber-cross-joint:04"
+      ],
+      [
+        "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00009",
+        "guided004-031:concrete-timber-cross-joint:04"
+      ],
+      [
+        "scene-platform:south-timber-deck-west-return:board:00003",
+        "wall-000248"
+      ],
+      [
+        "scene-platform:south-timber-deck-west-return:board:00005",
+        "wall-000248"
+      ],
+      [
+        "scene-platform:south-timber-deck-west-return:board:00007",
+        "wall-000248"
+      ],
+      [
+        "scene-platform:south-timber-deck-main:y_min:rail-post:00089",
+        "scene-platform:south-concrete-platform:deck:00179"
+      ],
+      [
+        "scene-platform:south-timber-deck-main:y_min:rail-post:00089",
+        "scene-platform:south-concrete-platform:deck:00181"
+      ],
+      [
+        "scene-platform:south-timber-deck-main:x_max:rail-post:00069",
+        "guided004-031:house-timber:wall-retile:01"
+      ],
+      [
+        "scene-platform:south-timber-deck-main:x_max:rail-post:00069",
+        "guided004-031:house-timber:wall-retile:02"
+      ],
+      [
+        "scene-platform:south-timber-deck-main:x_max:rail-post:00081",
+        "wall-000271"
+      ],
+      [
+        "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00010",
+        "guided004-031:concrete-timber-cross-joint:03"
+      ],
+      [
+        "scene-platform:south-timber-deck-west-return:x_max:rail-post:00022",
+        "wall-000270"
+      ]
+    ],
+    "beam_mesh": "NOT_TESTED",
+    "pin_sweeps": "NOT_TESTED"
+  },
+  "photos": "Survey reports south timber supports/diagonal braces; JPG binary not visually accessible",
+  "status": "STOP:12_RECTANGULAR_CLASHES__NOT_BUILDABLE"
+}

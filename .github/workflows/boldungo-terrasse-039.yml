@@ -1,0 +1,16 @@
+name: M039 terrasse isolated verification
+on:
+  push:
+    branches:
+      - feat/boldungo-parallel-035-terrasse
+    paths:
+      - "missions/039-terrasse/**"
+      - ".github/workflows/boldungo-terrasse-039.yml"
+  workflow_dispatch:
+jobs:
+  targeted:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Targeted regression on B3 terrace
+        run: python missions/039-terrasse/VERIFIER-039.py

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="760" viewBox="0 0 1260 760">
+<rect width="1260" height="760" fill="#f2f6fa"/>
+<rect x="20" y="16" width="1220" height="90" rx="14" fill="#143a51"/>
+<text x="44" y="56" font-family="Arial" font-size="28" font-weight="bold" fill="white">BOLDÜNGO · M043 — Terrasse / 12 conflits traités</text>
+<text x="44" y="85" font-family="Arial" font-size="16" fill="#dce9f0">GUIDED004 · variante de 1912 pièces · plateau bois sous béton · Y Technic inchangé · non certifié</text>
+<rect x="20" y="120" width="590" height="560" rx="14" fill="white" stroke="#c5d4dd"/>
+<text x="42" y="156" font-family="Arial" font-size="23" font-weight="bold" fill="#17394e">Profil — une marche (hypothèse)</text>
+<rect x="63" y="217" width="145" height="26" fill="#b0c2cb" stroke="#516b7d" stroke-width="2"/>
+<rect x="214" y="245" width="240" height="26" fill="#deb785" stroke="#966c42" stroke-width="2"/>
+<rect x="454" y="245" width="100" height="26" fill="#e8c494" stroke="#966c42" stroke-width="2"/>
+<text x="62" y="198" font-family="Arial" font-size="16" fill="#466574">Béton y = −288</text>
+<text x="278" y="231" font-family="Arial" font-size="16" fill="#8b582e">Bois y = −264</text>
+<line x1="291" y1="375" x2="368" y2="303" stroke="#405f88" stroke-width="15" stroke-linecap="round"/>
+<line x1="443" y1="375" x2="368" y2="303" stroke="#405f88" stroke-width="15" stroke-linecap="round"/>
+<circle cx="291" cy="375" r="9" fill="#ea8e52"/><circle cx="368" cy="303" r="9" fill="#ea8e52"/><circle cx="443" cy="375" r="9" fill="#ea8e52"/>
+<rect x="349" y="376" width="38" height="167" fill="#af8052" stroke="#735131" stroke-width="1.5"/>
+<line x1="46" y1="544" x2="564" y2="544" stroke="#b6c6cf" stroke-width="3"/>
+<text x="49" y="583" font-family="Arial" font-size="16" fill="#385a69">2 poutres Technic 32524 inclinées conservées</text>
+<text x="49" y="611" font-family="Arial" font-size="16" fill="#385a69">3 pivots 6558/3700 nominaux ; appuis non certifiés</text>
+<rect x="626" y="120" width="614" height="560" rx="14" fill="white" stroke="#c5d4dd"/>
+<text x="649" y="157" font-family="Arial" font-size="23" font-weight="bold" fill="#17394e">Plan du retour bois près du mur</text>
+<rect x="650" y="201" width="560" height="364" rx="7" fill="#f3f7f8"/>
+<rect x="691" y="257" width="410" height="207" fill="#e9dfcd" stroke="#aa8e67" stroke-width="2"/>
+<text x="712" y="295" font-family="Arial" font-size="17" fill="#71553c">Terrasse principale</text>
+<rect x="924" y="236" width="113" height="270" fill="#f6d39b" opacity=".75" stroke="#936d32" stroke-dasharray="8,5"/>
+<rect x="950" y="246" width="56" height="240" fill="#e1b47f" stroke="#976b41"/>
+<rect x="950" y="246" width="56" height="80" fill="#db995a" stroke="#976b41" stroke-width="2"/>
+<rect x="950" y="326" width="56" height="80" fill="#e1ad76" stroke="#976b41" stroke-width="2"/>
+<rect x="950" y="406" width="56" height="80" fill="#d99961" stroke="#976b41" stroke-width="2"/>
+<rect x="1006" y="326" width="87" height="80" fill="#d88d88" opacity=".65" stroke="#a34545" stroke-dasharray="5,5"/>
+<path d="M 1006 326 L 1093 406 M 1093 326 L 1006 406" stroke="#a34545" stroke-width="3" opacity=".6"/>
+<text x="671" y="524" font-family="Arial" font-size="15" fill="#5d6f7a">3 rangs LEGO 3007 côte à côte ; planches anciennes recalepinées</text>
+<text x="671" y="547" font-family="Arial" font-size="15" fill="#9b4f38">Zone rouge : ancienne pénétration dans wall-000248</text>
+<rect x="22" y="699" width="1216" height="47" fill="#fbe8d5" rx="8"/>
+<text x="42" y="722" font-family="Arial" font-size="17" font-weight="bold" fill="#a25126">12/12 paires M039 corrigées. 205 autres superpositions AABB demeurent dans la maison entière.</text>
+<text x="42" y="739" font-family="Arial" font-size="13" fill="#995d40">Aperçu schématique ; maillages Technic / insertion / solidité / fidélité photographique non vérifiés.</text>
+</svg>

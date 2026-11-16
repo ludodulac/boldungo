@@ -1,0 +1,63 @@
+{
+  "total": 164,
+  "source_original_total": 1904,
+  "M035_preserved_total": 171,
+  "concrete": {
+    "2456.dat": 4,
+    "3003.dat": 9,
+    "3007.dat": 18,
+    "3008.dat": 8,
+    "3010.dat": 7
+  },
+  "timber_shifted": {
+    "2456.dat": 3,
+    "3002.dat": 5,
+    "3004.dat": 2,
+    "3005.dat": 55,
+    "3007.dat": 9,
+    "3008.dat": 10,
+    "3009.dat": 2,
+    "3010.dat": 2,
+    "3460.dat": 4,
+    "3622.dat": 3,
+    "3623.dat": 5,
+    "3666.dat": 2
+  },
+  "Y_new": {
+    "3001.dat": 1,
+    "3004.dat": 5,
+    "3023b.dat": 2,
+    "32524.dat": 2,
+    "3700.dat": 3,
+    "6558.dat": 3
+  },
+  "all": {
+    "2456.dat": 7,
+    "3001.dat": 1,
+    "3002.dat": 5,
+    "3003.dat": 9,
+    "3004.dat": 7,
+    "3005.dat": 55,
+    "3007.dat": 27,
+    "3008.dat": 18,
+    "3009.dat": 2,
+    "3010.dat": 9,
+    "3023b.dat": 2,
+    "32524.dat": 2,
+    "3460.dat": 4,
+    "3622.dat": 3,
+    "3623.dat": 5,
+    "3666.dat": 2,
+    "3700.dat": 3,
+    "6558.dat": 3
+  },
+  "omitted_only_from_copy": [
+    "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0030:00021",
+    "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0030:00033",
+    "scene-platform:south-timber-deck-main:support-solution:timber-post-east:0033:00022",
+    "scene-platform:south-timber-deck-main:support-solution:timber-post-west:0033:00034",
+    "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0030:00045",
+    "scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0033:00046",
+    "EXPERIMENT-B3-CONCRETE-TO-TIMBER-BRIDGE"
+  ]
+}

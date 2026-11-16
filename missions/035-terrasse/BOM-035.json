@@ -1,0 +1,200 @@
+{
+  "mission": "035",
+  "status": "EXPERIMENTAL_NOT_CERTIFIED",
+  "source_commit": "0f5bfe1836598f7050089c54a415123f06d33945",
+  "source_model": "missions/B3/generated/GUIDED004-B3-1904.ldr",
+  "original_model_parts": 1904,
+  "scene_terrace_extracted_parts": 155,
+  "new_experimental_parts": 16,
+  "prototype_total_parts": 171,
+  "original_terrace_existing_by_group": {
+    "south-concrete-platform": 46,
+    "south-timber-deck-main": 77,
+    "south-timber-deck-west-return": 27,
+    "original_b2_b3_experiments": 5
+  },
+  "existing_references": {
+    "2456.dat": 7,
+    "3001.dat": 1,
+    "3002.dat": 5,
+    "3003.dat": 9,
+    "3004.dat": 2,
+    "3005.dat": 61,
+    "3007.dat": 27,
+    "3008.dat": 18,
+    "3009.dat": 2,
+    "3010.dat": 9,
+    "3460.dat": 4,
+    "3622.dat": 3,
+    "3623.dat": 5,
+    "3666.dat": 2
+  },
+  "addition_references": {
+    "3001.dat": 1,
+    "3004.dat": 7,
+    "3005.dat": 8
+  },
+  "prototype_references": {
+    "2456.dat": 7,
+    "3001.dat": 2,
+    "3002.dat": 5,
+    "3003.dat": 9,
+    "3004.dat": 9,
+    "3005.dat": 69,
+    "3007.dat": 27,
+    "3008.dat": 18,
+    "3009.dat": 2,
+    "3010.dat": 9,
+    "3460.dat": 4,
+    "3622.dat": 3,
+    "3623.dat": 5,
+    "3666.dat": 2
+  },
+  "new_placement_manifest": [
+    {
+      "id": "M035:Y:footing",
+      "part": "3001.dat",
+      "color": 7,
+      "x_ldu": 200,
+      "y_ldu": 0,
+      "z_ldu": 560,
+      "rotation_90deg": true
+    },
+    {
+      "id": "M035:Y:stem:01",
+      "part": "3005.dat",
+      "color": 6,
+      "x_ldu": 190,
+      "y_ldu": -24,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:stem:02",
+      "part": "3005.dat",
+      "color": 6,
+      "x_ldu": 190,
+      "y_ldu": -48,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:stem:03",
+      "part": "3005.dat",
+      "color": 6,
+      "x_ldu": 190,
+      "y_ldu": -72,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:stem:04",
+      "part": "3005.dat",
+      "color": 6,
+      "x_ldu": 190,
+      "y_ldu": -96,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:stem:05",
+      "part": "3005.dat",
+      "color": 6,
+      "x_ldu": 190,
+      "y_ldu": -120,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:stem:06",
+      "part": "3005.dat",
+      "color": 6,
+      "x_ldu": 190,
+      "y_ldu": -144,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:stem:07",
+      "part": "3005.dat",
+      "color": 6,
+      "x_ldu": 190,
+      "y_ldu": -168,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:stem:08",
+      "part": "3005.dat",
+      "color": 6,
+      "x_ldu": 190,
+      "y_ldu": -192,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:fork:central",
+      "part": "3004.dat",
+      "color": 6,
+      "x_ldu": 200,
+      "y_ldu": -216,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:arm:left:1",
+      "part": "3004.dat",
+      "color": 6,
+      "x_ldu": 180,
+      "y_ldu": -240,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:arm:right:1",
+      "part": "3004.dat",
+      "color": 6,
+      "x_ldu": 220,
+      "y_ldu": -240,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:arm:left:2",
+      "part": "3004.dat",
+      "color": 6,
+      "x_ldu": 160,
+      "y_ldu": -264,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:arm:right:2",
+      "part": "3004.dat",
+      "color": 6,
+      "x_ldu": 240,
+      "y_ldu": -264,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:arm:left:3",
+      "part": "3004.dat",
+      "color": 6,
+      "x_ldu": 160,
+      "y_ldu": -288,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    },
+    {
+      "id": "M035:Y:arm:right:3",
+      "part": "3004.dat",
+      "color": 6,
+      "x_ldu": 240,
+      "y_ldu": -288,
+      "z_ldu": 550,
+      "rotation_90deg": false
+    }
+  ],
+  "ordering_note": "BOM is a design list, not purchase or safe load instructions."
+}

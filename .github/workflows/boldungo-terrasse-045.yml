@@ -1,0 +1,16 @@
+name: M045 terrace floating pieces targeted validation
+on:
+  push:
+    branches:
+      - feat/boldungo-parallel-035-terrasse
+    paths:
+      - "missions/045-terrasse/**"
+      - ".github/workflows/boldungo-terrasse-045.yml"
+  workflow_dispatch:
+jobs:
+  terrace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify isolated terrace and full-house M045 delta
+        run: python missions/045-terrasse/VERIFIER-045.py
