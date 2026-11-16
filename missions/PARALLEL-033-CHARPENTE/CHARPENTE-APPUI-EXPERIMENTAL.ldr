@@ -1,0 +1,17 @@
+0 FILE M033-CHARPENTE-APPUI-EXPERIMENTAL.ldr
+0 Real LEGO 3003 and 3007, plus 30363, not a complete 22deg roof
+0 World coordinates local to an isolated test fixture, NOT installed in B3
+0 Stud joints exact; physical collisions/insertion/load NOT certified
+0 // wall-A-course-1
+1 19 20 -24 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // wall-A-course-2
+1 19 20 -48 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // wall-B-course-1
+1 19 140 -24 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // wall-B-course-2
+1 19 140 -48 20 1 0 0 0 1 0 0 0 1 3003.dat
+0 // real-crossbeam-2x8
+1 7 80 -72 20 1 0 0 0 1 0 0 0 1 3007.dat
+0 // slope-30363-nominal-interface
+1 1 110 -96 20 0 0 1 0 1 0 -1 0 0 30363.dat
+0 NOFILE

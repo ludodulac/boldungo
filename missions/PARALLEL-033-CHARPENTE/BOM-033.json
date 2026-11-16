@@ -1,0 +1,41 @@
+{
+  "mission": "M033",
+  "status": "PROTOTYPE_LOCAL_NON_CERTIFIE",
+  "source_commit": "0f5bfe1836598f7050089c54a415123f06d33945",
+  "model": "CHARPENTE-APPUI-EXPERIMENTAL.ldr",
+  "total_parts": 6,
+  "parts": [
+    {
+      "ldraw": "3003.dat",
+      "description": "Brique LEGO 2 x 2; deux appuis de deux rangs",
+      "quantity": 4,
+      "color_ldraw": 19
+    },
+    {
+      "ldraw": "3007.dat",
+      "description": "Brique LEGO 2 x 8; traverse courte",
+      "quantity": 1,
+      "color_ldraw": 7
+    },
+    {
+      "ldraw": "30363.dat",
+      "description": "Pente LEGO, connexion LDCad nominale seulement",
+      "quantity": 1,
+      "color_ldraw": 1
+    }
+  ],
+  "contacts": {
+    "standard_brick_stud_interfaces": 4,
+    "nominal_studs_per_standard_interface": 4,
+    "slope_30363_nominal_socket_matches": 8,
+    "independent_maillage_collision_verification": false
+  },
+  "architecture": {
+    "real_house_1904_parts_unmodified": true,
+    "roof_pitch_22deg_not_implemented_in_fixture": true,
+    "full_length_transverse_frame": false,
+    "no_installation_on_real_walls_claimed": true,
+    "approved_for_purchase": false
+  },
+  "notes": "Quantités propres au seul gabarit de six pièces, pas à une charpente complète; les couleurs sont des valeurs du fichier LDraw, pas un bon de commande."
+}

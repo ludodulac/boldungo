@@ -1,0 +1,114 @@
+{
+  "mission": 37,
+  "status": "LOCAL_NOMINAL_SUPPORT_ONLY",
+  "head_before_mission": "69c7b5e792199056490539af185368eb5b23b5c0",
+  "original_source_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+  "source_piece_count": 1904,
+  "slope_piece_count": 408,
+  "new_parts": [
+    {
+      "id": "M037-3004",
+      "ldraw": "3004.dat",
+      "xyz": [
+        440,
+        -792,
+        50
+      ]
+    }
+  ],
+  "source_context": [
+    "wall-000699",
+    "wall-000704",
+    "gable-000001",
+    "gable-000005",
+    "gable-000006",
+    "roof-000025",
+    "roof-000048"
+  ],
+  "nominal_connections": {
+    "wall_699_to_gable_001": {
+      "studs": [
+        [
+          410,
+          -744,
+          50
+        ],
+        [
+          430,
+          -744,
+          50
+        ],
+        [
+          450,
+          -744,
+          50
+        ],
+        [
+          470,
+          -744,
+          50
+        ]
+      ]
+    },
+    "gable_001_to_new_3004": {
+      "studs": [
+        [
+          430,
+          -768,
+          50
+        ],
+        [
+          450,
+          -768,
+          50
+        ]
+      ]
+    },
+    "new_3004_to_roof_048": {
+      "female_sites": [
+        {
+          "pt": [
+            450,
+            -792,
+            50
+          ],
+          "depth": 14
+        },
+        {
+          "pt": [
+            430,
+            -792,
+            50
+          ],
+          "depth": 8
+        }
+      ],
+      "source": "M030-M031 LDCadShadowLibrary@9b1131fb"
+    }
+  },
+  "targeted_checks": {
+    "original_new_piece_bbox_positive_intersections": 0,
+    "body_only_not_full_mesh": true,
+    "negative_shift_left_20": {
+      "hits": [
+        "roof-000025"
+      ]
+    },
+    "negative_shift_right_20": {
+      "hits": [
+        "gable-000006"
+      ]
+    },
+    "negative_shift_up_24": {
+      "hits": [
+        "roof-000048"
+      ]
+    },
+    "mesh": "NOT_RUN",
+    "insertion": "NOT_PROVEN",
+    "strength": "NOT_PROVEN"
+  },
+  "original_house_unmodified": true,
+  "roof_22degree_architecture_unchanged": true,
+  "full_charpente_constructibility": "NOT_PROVEN"
+}

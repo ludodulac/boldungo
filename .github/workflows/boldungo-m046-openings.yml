@@ -1,0 +1,22 @@
+name: BOLDUNGO M046 visual openings targeted checks
+on:
+  push:
+    branches: [feat/boldungo-parallel-033-charpente]
+    paths:
+      - frontend/data/boldungo2-lego-house-019.json
+      - frontend/viewer.js
+      - missions/PARALLEL-033-CHARPENTE/audit_046.mjs
+      - .github/workflows/boldungo-m046-openings.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  opening-a-b-c:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check viewer syntax
+        run: node --check frontend/viewer.js
+      - name: Check the 3 openings, BOM and no other moved pieces
+        run: node missions/PARALLEL-033-CHARPENTE/audit_046.mjs
