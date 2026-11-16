@@ -35,6 +35,11 @@ def test_ldraw_mini_roof_renders_in_mobile_chromium():
             page.wait_for_function("document.querySelector('#loading').hidden === true",timeout=110000)
             assert "CHARPENTE M041" in page.locator("#model-description").inner_text()
             assert not errors,errors
+            # Check the full cleaned 116-piece terrace in the real renderer.
+            page.locator("[data-preview=terrasse]").click()
+            page.wait_for_function("document.querySelector('#loading').hidden === true",timeout=130000)
+            assert "TERRASSE M045" in page.locator("#model-description").inner_text()
+            assert not errors,errors
             browser.close()
     finally:
         server.shutdown()
