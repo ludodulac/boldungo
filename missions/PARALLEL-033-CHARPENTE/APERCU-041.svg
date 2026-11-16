@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="530" viewBox="0 0 1000 530">
+<rect width="1000" height="530" fill="#f9fcfd"/>
+<text x="32" y="39" font-family="Arial,sans-serif" font-weight="bold" font-size="25" fill="#213b50">BOLDÜNGO M041 · charpente / appui local B3</text>
+<text x="32" y="67" font-family="Arial,sans-serif" font-size="15" fill="#3c6173">Coupe y–x à z ≈ 50–60 LDU ; transformations B3 inchangées, éléments réels LEGO</text>
+<g stroke="#415567" stroke-width="2" stroke-linejoin="round">
+  <rect x="145" y="340" width="320" height="76" fill="#9dacbb"/>
+  <rect x="305" y="264" width="320" height="76" fill="#c6c4b8"/>
+  <rect x="465" y="188" width="80" height="76" fill="#b0aba8"/>
+  <polygon points="185,248 305,205 345,205 345,264 185,264" fill="#83b2d8"/>
+  <rect x="385" y="188" width="80" height="76" fill="#f6ba45" stroke="#b96d00" stroke-width="4"/>
+  <polygon points="305,177 425,134 465,134 465,188 305,188" fill="#6a99c5"/>
+</g>
+<g font-family="Arial,sans-serif" font-size="14" fill="#243c4e">
+<text x="170" y="380">wall-000699 · 3008</text>
+<text x="381" y="312">gable-000001 · 3008</text>
+<text x="555" y="227">gable-000006</text>
+<text x="395" y="225" font-weight="bold" fill="#5b3400">NEW 3004</text>
+<text x="180" y="196">roof-000025</text>
+<text x="470" y="145">roof-000048 · 30363</text>
+<text x="36" y="461">Ordre étudié : 1. mur → 2. pignon → 3. support → 4. pente.</text>
+<text x="36" y="487" fill="#ad5722">Schéma de coupe uniquement : ne représente pas le maillage triangulé détaillé.</text>
+<text x="36" y="509" fill="#ad5722">Collision volumique, insertion continue et tenue mécanique : NON CERTIFIÉES sans vérification.</text>
+</g>
+</svg>
