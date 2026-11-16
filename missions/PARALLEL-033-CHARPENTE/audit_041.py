@@ -287,6 +287,9 @@ def main():
           len(by_approx),"local original parts;",len(near),"neighbor AABB candidates")
     print("M041 FINAL CROSSING CANDIDATES:",{k:v["crossings"] for k,v in contact.items()})
     print("M041 STAGED PATH SAMPLES:",{k:len(v) for k,v in stage.items()})
+    for path_name,samples in stage.items():
+        print("M041 PATH",path_name,
+              [(p["shift_y_ldu"],p["crossing_candidates"]) for p in samples])
     print("M041 LDraw true mesh DAT files:",len(SRC_HASHES))
     print("M041 ORIGINAL B3 SOURCE UNCHANGED; STRENGTH / FULL INSERTION NON-CERTIFIED")
 
