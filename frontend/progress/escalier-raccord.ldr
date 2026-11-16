@@ -1,0 +1,18 @@
+0 FILE ADAPTATEUR-M042-7-PIECES.ldr
+0 BOLDUNGO M042 — experimental adapter only; no physical strength claim
+0 !CATEGORY Model
+0 // M042-jumper-350 new-adapter
+1 8 170 -272 350 0 0 -1 0 1 0 1 0 0 3794b.dat
+0 // M042-stem-1-350 new-adapter
+1 7 170 -280 350 1 0 0 0 1 0 0 0 1 3024.dat
+0 // M042-stem-2-350 new-adapter
+1 7 170 -288 350 1 0 0 0 1 0 0 0 1 3024.dat
+0 // M042-jumper-370 new-adapter
+1 8 170 -272 370 0 0 -1 0 1 0 1 0 0 3794b.dat
+0 // M042-stem-1-370 new-adapter
+1 7 170 -280 370 1 0 0 0 1 0 0 0 1 3024.dat
+0 // M042-stem-2-370 new-adapter
+1 7 170 -288 370 1 0 0 0 1 0 0 0 1 3024.dat
+0 // M042-bridge-1x6 new-adapter
+1 71 170 -296 320 1 0 0 0 1 0 0 0 1 3666.dat
+0 NOFILE
