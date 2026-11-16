@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="630" viewBox="0 0 1160 630">
+<rect width="1160" height="630" fill="#f3f7fa"/>
+<rect x="20" y="17" width="1120" height="76" rx="12" fill="#173950"/>
+<text x="42" y="52" fill="white" font-size="26" font-family="Arial" font-weight="bold">BOLDÜNGO — M045 · Terrasse bois nettoyée</text>
+<text x="42" y="80" fill="#dae9ef" font-size="16" font-family="Arial">Variante indépendante : 48 pièces provisoires retirées · 3 poteaux reposés sous le platelage · 2 bras Y conservés</text>
+<rect x="20" y="109" width="555" height="455" rx="12" fill="white" stroke="#cad6de"/>
+<text x="41" y="148" font-family="Arial" font-size="21" font-weight="bold" fill="#22495f">Élévation simplifiée (sans garde-corps provisoire)</text>
+<rect x="60" y="206" width="130" height="26" fill="#c2cdd3" stroke="#667b86" stroke-width="2"/>
+<rect x="197" y="231" width="325" height="24" fill="#d0a475" stroke="#8d633c" stroke-width="2"/>
+<text x="68" y="192" font-size="15" fill="#5e7580" font-family="Arial">Béton</text>
+<text x="296" y="217" font-size="15" fill="#865e35" font-family="Arial">Planches bois</text>
+<rect x="232" y="255" width="19" height="252" fill="#ac8057" stroke="#6e543a"/>
+<rect x="458" y="255" width="19" height="252" fill="#ac8057" stroke="#6e543a"/>
+<line x1="272" y1="272" x2="360" y2="347" stroke="#4d6787" stroke-width="13" stroke-linecap="round"/>
+<line x1="444" y1="272" x2="360" y2="347" stroke="#4d6787" stroke-width="13" stroke-linecap="round"/>
+<rect x="351" y="349" width="18" height="158" fill="#ad7d53" stroke="#755333"/>
+<circle cx="272" cy="272" r="7" fill="#cb873c"/><circle cx="444" cy="272" r="7" fill="#cb873c"/><circle cx="360" cy="347" r="7" fill="#cb873c"/>
+<line x1="50" y1="508" x2="530" y2="508" stroke="#bbc9d2" stroke-width="2"/>
+<text x="48" y="540" font-size="14" font-family="Arial" fill="#5b7382">3 appuis nominaux rétablis (terrain non vérifié)</text>
+<rect x="590" y="109" width="550" height="455" rx="12" fill="white" stroke="#cad6de"/>
+<text x="612" y="148" font-family="Arial" font-size="21" font-weight="bold" fill="#22495f">Vue de dessus · terrasse principale + retour</text>
+<rect x="637" y="188" width="430" height="240" fill="#e4b680" stroke="#90633d" stroke-width="2"/>
+<g stroke="#966b41" stroke-width="1.5"><line x1="637" y1="231" x2="1067" y2="231"/><line x1="637" y1="274" x2="1067" y2="274"/><line x1="637" y1="317" x2="1067" y2="317"/><line x1="637" y1="360" x2="1067" y2="360"/><line x1="637" y1="403" x2="1067" y2="403"/></g>
+<rect x="820" y="428" width="180" height="100" fill="#ebc08f" stroke="#916842" stroke-width="2"/>
+<line x1="820" y1="461" x2="1000" y2="461" stroke="#956e47"/><line x1="820" y1="494" x2="1000" y2="494" stroke="#956e47"/>
+<circle cx="672" cy="391" r="12" fill="#356b66" stroke="white" stroke-width="3"/>
+<circle cx="672" cy="210" r="12" fill="#356b66" stroke="white" stroke-width="3"/>
+<circle cx="918" cy="492" r="12" fill="#356b66" stroke="white" stroke-width="3"/>
+<text x="755" y="348" font-family="Arial" font-size="18" fill="#835a33">Platelage conservé</text>
+<text x="814" y="552" font-family="Arial" font-size="14" fill="#668077">● = appui nominal (implantation indicative)</text>
+<rect x="20" y="577" width="1120" height="38" rx="7" fill="#fee8cf"/>
+<text x="37" y="601" fill="#94512e" font-family="Arial" font-size="15" font-weight="bold">⚠ Schéma, pas rendu 3D du maillage : garde-corps et plusieurs jonctions sous plancher restent à reconstruire.</text>
+</svg>

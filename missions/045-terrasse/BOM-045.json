@@ -1,0 +1,302 @@
+{
+  "mission": 45,
+  "source_043_isolated": 163,
+  "source_043_full": 1912,
+  "clean_isolated": 116,
+  "clean_full": 1865,
+  "deletions": 48,
+  "repositions": 29,
+  "added": 1,
+  "removed_parts": [
+    {
+      "id": "scene-platform:south-timber-deck-main:y_min:rail-post:00097",
+      "part": "3004.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_max:rail-post:00109",
+      "part": "3004.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-top-solution:00006",
+      "part": "3622.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00003",
+      "part": "3622.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-top-solution:00004",
+      "part": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-top-solution:00005",
+      "part": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00001",
+      "part": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-top-solution:00002",
+      "part": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00009",
+      "part": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_max:rail-top-solution:00007",
+      "part": "3008.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:y_min:rail-top-solution:00015",
+      "part": "3010.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:y_max:rail-top-solution:00013",
+      "part": "3010.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:x_min:rail-top-solution:00012",
+      "part": "3009.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-post:00035",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-post:00039",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-post:00043",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-post:00047",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-post:00051",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-post:00055",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_min:rail-post:00059",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_min:rail-post:00089",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_max:rail-post:00101",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_min:rail-post:00093",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_max:rail-post:00105",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-post:00065",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-post:00069",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-post:00073",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-post:00077",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:x_max:rail-post:00081",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_min:rail-top-solution:00010",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:y_max:rail-top-solution:00008",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:x_min:rail-post:00009",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:x_min:rail-post:00013",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:x_min:rail-post:00016",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:y_min:rail-post:00029",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:y_max:rail-post:00035",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:x_max:rail-post:00018",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:x_max:rail-post:00022",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-west-return:x_max:rail-post:00025",
+      "part": "3005.dat",
+      "reason": "rail"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013",
+      "part": "3666.dat",
+      "reason": "hidden"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:01",
+      "part": "3460.dat",
+      "reason": "hidden"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:06",
+      "part": "3623.dat",
+      "reason": "hidden"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:07",
+      "part": "3623.dat",
+      "reason": "hidden"
+    },
+    {
+      "id": "scene-platform:south-timber-deck-main:hidden-cross-bond-029:08",
+      "part": "3623.dat",
+      "reason": "hidden"
+    },
+    {
+      "id": "EXPERIMENT-B2-DECK-BRACE-1",
+      "part": "3008.dat",
+      "reason": "B2"
+    },
+    {
+      "id": "EXPERIMENT-B2-DECK-BRACE-2",
+      "part": "3008.dat",
+      "reason": "B2"
+    },
+    {
+      "id": "EXPERIMENT-B2-DECK-SEAM-1",
+      "part": "3623.dat",
+      "reason": "B2"
+    },
+    {
+      "id": "EXPERIMENT-B2-DECK-SEAM-2",
+      "part": "3623.dat",
+      "reason": "B2"
+    }
+  ],
+  "new_placements": [
+    {
+      "name": "M045:post-east:top-brick",
+      "part": "3005.dat",
+      "x": 90,
+      "y": -240,
+      "z": 410
+    }
+  ],
+  "isolated_references": {
+    "2456.dat": 4,
+    "3001.dat": 1,
+    "3002.dat": 5,
+    "3003.dat": 9,
+    "3004.dat": 5,
+    "3005.dat": 30,
+    "3007.dat": 30,
+    "3008.dat": 10,
+    "3010.dat": 7,
+    "3023b.dat": 2,
+    "32524.dat": 2,
+    "3460.dat": 3,
+    "3622.dat": 1,
+    "3666.dat": 1,
+    "3700.dat": 3,
+    "6558.dat": 3
+  },
+  "full_references": {
+    "2456.dat": 25,
+    "3001.dat": 1,
+    "3002.dat": 36,
+    "3003.dat": 10,
+    "3004.dat": 55,
+    "3005.dat": 443,
+    "3006.dat": 6,
+    "3007.dat": 59,
+    "3008.dat": 589,
+    "3009.dat": 114,
+    "3010.dat": 50,
+    "3023b.dat": 5,
+    "30363.dat": 408,
+    "32524.dat": 2,
+    "3460.dat": 5,
+    "3622.dat": 47,
+    "3623.dat": 1,
+    "3666.dat": 1,
+    "3700.dat": 3,
+    "3710.dat": 2,
+    "6558.dat": 3
+  }
+}
