@@ -102,7 +102,12 @@ def local_mesh(name):
             pts=[tuple(map(float,v[2+3*i:5+3*i])) for i in range(n)]
             tris.append(tuple(pts[:3]))
             if n==4: tris.append((pts[0],pts[2],pts[3]))
-    if not tris: raise ValueError("NO_REAL_FACES "+name)
+    if not tris:
+        # LDraw edge primitives (e.g. 4-4edge.dat) intentionally consist
+        # only of type-2 lines. They are not material triangle faces.
+        if any(line.lstrip().startswith(("2 ","5 ")) for line in data.splitlines()):
+            return tuple()
+        raise ValueError("NO_REAL_FACES "+name)
     return tuple(tris)
 
 @lru_cache(maxsize=None)
