@@ -1,0 +1,33 @@
+name: BOLDUNGO M041 local charpente mesh validation
+
+on:
+  push:
+    branches:
+      - feat/boldungo-parallel-033-charpente
+    paths:
+      - 'missions/PARALLEL-033-CHARPENTE/**'
+      - '.github/workflows/boldungo-m041-charpente-mesh.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mesh-041:
+    name: M041 pinned LDraw meshes and staged insertion
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - name: Checkout branch (B3 must remain unmodified)
+        uses: actions/checkout@v4
+      - name: Verify M037 nominal links and source immutability
+        run: node missions/PARALLEL-033-CHARPENTE/audit_037.mjs
+      - name: Parse pinned real LDraw triangle meshes and test local stage paths
+        run: python3 missions/PARALLEL-033-CHARPENTE/audit_041.py
+      - name: Keep full geometric evidence without publishing the house
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-M041-CHARPENTE-REAL-LDRAW-MESH
+          path: missions/PARALLEL-033-CHARPENTE/run-041/RESULTATS-041.json
+          if-no-files-found: warn
