@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BOLDÜNGO — Mes vraies constructions LEGO en 3D</title>
+  <title>BOLDÜNGO — Maison LEGO complète en 3D</title>
   <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.185.0/examples/jsm/"}}</script>
   <style>
     :root {color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#101827;color:#f0f5ff}
@@ -29,10 +29,11 @@
 </head>
 <body>
   <header>
-    <h1>🧱 BOLDÜNGO · Constructions LEGO en 3D</h1>
-    <p class="sub">Les vrais fichiers LDraw des quatre équipes. Tourne avec le doigt, pince pour zoomer. Les assemblages restent expérimentaux.</p>
+    <h1>🧱 BOLDÜNGO · La maison LEGO en 3D</h1>
+    <p class="sub">La maison entière (1 904 vraies références LEGO) et les prototypes des équipes. Tourne avec le doigt, pince pour zoomer. Modèles expérimentaux non certifiés.</p>
   </header>
   <nav class="modes" aria-label="Choisir la construction à voir">
+    <button type="button" data-preview="maison">🏠 Maison complète</button>
     <button type="button" data-preview="toiture">🏠 Toiture</button>
     <button type="button" data-preview="terrasse">🌳 Terrasse</button>
     <button type="button" data-preview="charpente">🏗️ Charpente</button>
@@ -45,7 +46,7 @@
   </div>
   <section class="footer">
     <div class="badge" id="model-description">Choisis un modèle pour afficher les tenons et formes réelles des pièces LEGO.</div>
-    <p class="warn">Important : ce sont des sous-assemblages LDraw issus des missions 040, 041, 042 et 045. Ils ne sont pas encore intégrés à la maison entière ni certifiés physiquement constructibles.</p>
+    <p class="warn"><strong>Maison complète :</strong> référence B3 de 1 904 pièces LEGO réelles, mais assemblage non certifié, raccords de toit et de terrasse encore à corriger. Les autres boutons montrent les prototypes expérimentaux séparés ; ils ne sont pas encore intégrés dans B3.</p>
     <a href="./viewer.html?bundle=./data/boldungo2-lego-house-019.json">← Retour à la maison complète</a>
     <a href="./index.html">Accueil</a>
   </section>
