@@ -48,7 +48,7 @@ def original_rows(text):
     return rows,count
 
 def original_blob(data):
-    return hashlib.sha1(b"blob "+str(len(data)).encode()+b"\\0"+data).hexdigest()
+    return hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()
 
 def execute(ldraw,shadow,output):
     source_bytes=SOURCE.read_bytes()
@@ -174,7 +174,7 @@ def execute(ldraw,shadow,output):
       "results":results,
       "warning":"ENGINE CONTACT != mechanical certificate; engine COLLISION != proof of forbidden solid matter; insertion/path to ground not checked"
     }
-    output.write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\\n",encoding="utf8")
+    output.write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n",encoding="utf8")
     print(json.dumps({"mission":40,"M032_reproduction":"PASS",
       "M036_preserved":"PASS",
       "CROSS":{"LDCad":results["CROSS"]["nominal_ldcad"],
