@@ -1,0 +1,25 @@
+name: BOLDÜNGO - echte LDraw mobile viewer smoke
+on:
+  pull_request:
+    paths:
+      - 'frontend/lego-progress.*'
+      - 'frontend/progress/**'
+      - 'frontend/viewer.js'
+      - 'frontend/viewer.html'
+      - 'tests/frontend/test_lego_progress_mobile.py'
+      - '.github/workflows/lego-progress-mobile.yml'
+  workflow_dispatch:
+jobs:
+  mobile-ldraw:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright pytest
+      - run: python -m playwright install --with-deps chromium
+      - run: node --check frontend/lego-progress.js
+      - run: node --check frontend/viewer.js
+      - run: python -m pytest -q tests/frontend/test_lego_progress_mobile.py

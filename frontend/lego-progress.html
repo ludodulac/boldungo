@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BOLDÜNGO — Mes vraies constructions LEGO en 3D</title>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.185.0/examples/jsm/"}}</script>
+  <style>
+    :root {color-scheme:dark;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#101827;color:#f0f5ff}
+    *{box-sizing:border-box}
+    body{margin:0}
+    header{padding:12px 16px 8px;background:#18243b}
+    h1{font-size:1.12rem;margin:0 0 5px}
+    p{margin:.3rem 0;line-height:1.4}
+    .sub{font-size:.85rem;color:#b8cadf}
+    .modes{display:flex;gap:7px;overflow-x:auto;padding:10px 12px;background:#18243b;scrollbar-width:thin}
+    .modes button{white-space:nowrap;font:inherit;font-size:.92rem;font-weight:650;border:1px solid #7a8ca6;border-radius:12px;background:#233451;color:white;padding:11px 12px;min-height:45px;cursor:pointer}
+    .modes button[aria-pressed=true]{background:#ffe19b;color:#172234;border-color:#ffe19b}
+    .stage{height:min(66vh,630px);min-height:300px;position:relative;background:radial-gradient(circle at 50% 30%,#293953,#101827 68%)}
+    canvas{width:100%;height:100%;display:block;touch-action:none}
+    #loading{position:absolute;left:12px;top:12px;right:12px;z-index:2;background:#142439e8;border:1px solid #657a93;border-radius:10px;padding:10px;font-size:.9rem}
+    #loading[hidden]{display:none}
+    .footer{padding:12px 16px 23px}
+    .footer a{display:inline-flex;margin:6px 8px 6px 0;min-height:42px;align-items:center;color:#ffe19b;border:1px solid #657a93;padding:9px;border-radius:10px;text-decoration:none}
+    .badge{background:#263b4f;border-radius:8px;padding:8px 10px;color:#d2ecf3;margin:6px 0}
+    .warn{font-size:.88rem;color:#d5c5b1}
+    @media(min-width:800px){.stage{height:70vh}header{padding-left:24px}.modes{padding-left:24px}}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧱 BOLDÜNGO · Constructions LEGO en 3D</h1>
+    <p class="sub">Les vrais fichiers LDraw des quatre équipes. Tourne avec le doigt, pince pour zoomer. Les assemblages restent expérimentaux.</p>
+  </header>
+  <nav class="modes" aria-label="Choisir la construction à voir">
+    <button type="button" data-preview="toiture">🏠 Toiture</button>
+    <button type="button" data-preview="terrasse">🌳 Terrasse</button>
+    <button type="button" data-preview="charpente">🏗️ Charpente</button>
+    <button type="button" data-preview="escalier-raccord">🪜 Raccord</button>
+    <button type="button" data-preview="escalier">🪜 Escalier entier</button>
+  </nav>
+  <div class="stage">
+    <canvas id="preview" aria-label="Visionneuse interactive montrant les vraies géométries LDraw LEGO"></canvas>
+    <div role="status" aria-live="polite" id="loading">Chargement des pièces LEGO...</div>
+  </div>
+  <section class="footer">
+    <div class="badge" id="model-description">Choisis un modèle pour afficher les tenons et formes réelles des pièces LEGO.</div>
+    <p class="warn">Important : ce sont des sous-assemblages LDraw issus des missions 040, 041, 042 et 045. Ils ne sont pas encore intégrés à la maison entière ni certifiés physiquement constructibles.</p>
+    <a href="./viewer.html?bundle=./data/boldungo2-lego-house-019.json">← Retour à la maison complète</a>
+    <a href="./index.html">Accueil</a>
+  </section>
+  <script type="module" src="./lego-progress.js"></script>
+</body>
+</html>

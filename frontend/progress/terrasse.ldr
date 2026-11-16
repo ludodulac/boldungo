@@ -1,0 +1,239 @@
+0 FILE PROTO-045-TERRASSE-BOIS-NETTOYEE.ldr
+0 BOLDUNGO M045 - 116 LEGO pieces: provisional floating details removed
+0 !CATEGORY Model
+0 // CLEAN-DRAFT only. No original files changed. 39 provisional rail pieces OMITTED.
+0 // Y Technic remains M039 unchanged. No build/stability/terrain certification.
+0 STEP
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0000:00001
+1 19 80 -24 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0003:00002
+1 19 80 -48 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0006:00003
+1 19 80 -72 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0009:00004
+1 19 80 -96 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0012:00005
+1 19 80 -120 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0015:00006
+1 19 80 -144 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0018:00007
+1 19 80 -168 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0021:00008
+1 19 80 -192 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:support-solution:concrete-support-west:0024:00009
+1 19 80 -216 320 0 0 -1 0 1 0 1 0 0 3003.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00121
+1 19 220 -264 280 0 0 -1 0 1 0 1 0 0 2456.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00149
+1 19 260 -264 280 0 0 -1 0 1 0 1 0 0 2456.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00113
+1 19 220 -264 140 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00141
+1 19 260 -264 140 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00001
+1 19 120 -264 80 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00003
+1 19 120 -264 120 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00005
+1 19 120 -264 160 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00007
+1 19 120 -264 200 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00009
+1 19 120 -264 240 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00011
+1 19 120 -264 280 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00013
+1 19 120 -264 320 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00289
+1 19 220 -288 280 0 0 -1 0 1 0 1 0 0 2456.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00317
+1 19 260 -288 280 0 0 -1 0 1 0 1 0 0 2456.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00281
+1 19 220 -288 140 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00309
+1 19 260 -288 140 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00169
+1 19 120 -288 80 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00171
+1 19 120 -288 120 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00173
+1 19 120 -288 160 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00175
+1 19 120 -288 200 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00177
+1 19 120 -288 240 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00179
+1 19 120 -288 280 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:deck:00181
+1 19 120 -288 320 1 0 0 0 1 0 0 0 1 3007.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_min:parapet:00355
+1 19 50 -312 280 0 0 -1 0 1 0 1 0 0 3010.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_max:parapet:00383
+1 19 270 -312 280 0 0 -1 0 1 0 1 0 0 3010.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:y_min:parapet:00407
+1 19 240 -312 70 1 0 0 0 1 0 0 0 1 3010.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_min:parapet:00339
+1 19 50 -312 160 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_max:parapet:00367
+1 19 270 -312 160 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_min:parapet:00337
+1 19 120 -312 70 1 0 0 0 1 0 0 0 1 3008.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_min:parapet:00363
+1 19 120 -312 330 1 0 0 0 1 0 0 0 1 3008.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_min:parapet:00356
+1 19 50 -336 280 0 0 -1 0 1 0 1 0 0 3010.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_max:parapet:00384
+1 19 270 -336 280 0 0 -1 0 1 0 1 0 0 3010.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:y_min:parapet:00408
+1 19 240 -336 70 1 0 0 0 1 0 0 0 1 3010.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:y_max:parapet:00428
+1 19 240 -336 330 1 0 0 0 1 0 0 0 1 3010.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_min:parapet:00340
+1 19 50 -336 160 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_max:parapet:00368
+1 19 270 -336 160 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_min:parapet:00338
+1 19 120 -336 70 1 0 0 0 1 0 0 0 1 3008.dat
+0 // SOURCE-B3 scene-platform:south-concrete-platform:x_min:parapet:00364
+1 19 120 -336 330 1 0 0 0 1 0 0 0 1 3008.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00003
+1 19 80 -264 690 0 0 -1 0 1 0 1 0 0 3002.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00009
+1 19 120 -264 690 0 0 -1 0 1 0 1 0 0 3002.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00015
+1 19 160 -264 690 0 0 -1 0 1 0 1 0 0 3002.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00021
+1 19 200 -264 690 0 0 -1 0 1 0 1 0 0 3002.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00027
+1 19 240 -264 690 0 0 -1 0 1 0 1 0 0 3002.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00033
+1 19 270 -264 690 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00001
+1 19 80 -264 420 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00002
+1 19 80 -264 580 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00007
+1 19 120 -264 420 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00008
+1 19 120 -264 580 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00013
+1 19 160 -264 420 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00014
+1 19 160 -264 580 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00019
+1 19 200 -264 420 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00020
+1 19 200 -264 580 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00026
+1 19 240 -264 580 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00031
+1 19 270 -264 420 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:board:00032
+1 19 270 -264 580 0 0 -1 0 1 0 1 0 0 3008.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:board:00001
+1 19 170 -264 740 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:board:00003
+1 19 170 -264 780 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:board:00005
+1 19 170 -264 820 0 0 -1 0 1 0 1 0 0 3007.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0000:00011
+1 19 90 -24 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0000:00023
+1 19 100 -24 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0012:00015
+1 19 90 -120 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0012:00027
+1 19 100 -120 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0015:00016
+1 19 90 -144 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0015:00028
+1 19 100 -144 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0018:00017
+1 19 90 -168 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0018:00029
+1 19 100 -168 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0021:00018
+1 19 90 -192 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0021:00030
+1 19 100 -192 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0024:00019
+1 19 90 -216 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0024:00031
+1 19 100 -216 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0027:00032
+1 19 100 -240 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0003:00012
+1 19 90 -48 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0003:00024
+1 19 100 -48 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0006:00013
+1 19 90 -72 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0006:00025
+1 19 100 -72 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-east:0009:00014
+1 19 90 -96 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:support-solution:timber-post-west:0009:00026
+1 19 100 -96 700 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0000:00035
+1 19 180 -24 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0012:00039
+1 19 180 -120 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0015:00040
+1 19 180 -144 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0018:00041
+1 19 180 -168 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0021:00042
+1 19 180 -192 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0024:00043
+1 19 180 -216 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0027:00044
+1 19 180 -240 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0003:00036
+1 19 180 -48 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0006:00037
+1 19 180 -72 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-west-return:support-solution:timber-post-return:0009:00038
+1 19 180 -96 810 0 0 -1 0 1 0 1 0 0 3005.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:hidden-cross-bond-029:02
+1 19 160 -240 670 1 0 0 0 1 0 0 0 1 3460.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:hidden-cross-bond-029:03
+1 19 220 -240 730 1 0 0 0 1 0 0 0 1 3666.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:hidden-cross-bond-029:05
+1 19 200 -240 530 1 0 0 0 1 0 0 0 1 3460.dat
+0 // SOURCE-B3 scene-platform:south-timber-deck-main:hidden-cross-bond-029:04
+1 19 200 -240 350 1 0 0 0 1 0 0 0 1 3460.dat
+0 // M039:foot
+1 7 180 0 580 0 0 -1 0 1 0 1 0 0 3001.dat
+0 // M039:stem:1
+1 6 180 -24 570 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // M039:stem:2
+1 6 180 -48 570 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // M039:stem:3
+1 6 180 -72 570 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // M039:stem:4
+1 6 180 -96 570 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // M039:stem:5
+1 6 180 -120 570 0 0 -1 0 1 0 1 0 0 3004.dat
+0 // M039:plate:1
+1 6 180 -128 570 0 0 -1 0 1 0 1 0 0 3023b.dat
+0 // M039:plate:2
+1 6 180 -136 570 0 0 -1 0 1 0 1 0 0 3023b.dat
+0 // M039:fork:3700
+1 6 180 -160 570 1 0 0 0 1 0 0 0 1 3700.dat
+0 // M039:left:3700
+1 6 120 -240 570 1 0 0 0 1 0 0 0 1 3700.dat
+0 // M039:right:3700
+1 6 240 -240 570 1 0 0 0 1 0 0 0 1 3700.dat
+0 // M039:left:32524
+1 71 156 -182 550 -0.8 0 0.6 0.6 0 0.8 0 1 0 32524.dat
+0 // M039:right:32524
+1 71 204 -182 590 -0.8 0 -0.6 -0.6 0 0.8 0 1 0 32524.dat
+0 // M039:left:6558
+1 0 120 -230 570 0 0 -1 0 1 0 1 0 0 6558.dat
+0 // M039:right:6558
+1 0 240 -230 570 0 0 -1 0 1 0 1 0 0 6558.dat
+0 // M039:fork:6558
+1 0 180 -150 570 0 0 -1 0 1 0 1 0 0 6558.dat
+0 // M045:post-east:top-brick
+1 19 90 -240 410 0 0 -1 0 1 0 1 0 0 3005.dat
+0 NOFILE

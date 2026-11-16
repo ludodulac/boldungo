@@ -16,9 +16,12 @@
           <a class="file-button" href="./index.html">← Accueil BrickHouse</a>
           <a class="file-button" href="./configurator.html">Créer une autre maison</a>
           <a class="file-button" id="load-guided004-full" href="./viewer.html?bundle=./data/boldungo2-lego-house-019.json">Voir ma maison complète</a>
+          <a class="file-button" id="view-real-lego-parts" href="./lego-progress.html?mode=toiture" style="background:#f9dfa6;color:#142036;font-weight:800;border:2px solid #f8c65b">🧱 VOIR LES VRAIES PIÈCES LEGO EN 3D — Toiture, terrasse, charpente, escalier</a>
           <a class="file-button" id="load-maison4-356" href="./viewer.html?bundle=./data/guided004-maison4-356-brickhouse.json">Construction LEGO — 356 pièces</a>
           <label class="file-button" for="file-input">Ouvrir un export JSON</label><input id="file-input" type="file" accept="application/json,.json" />
           <button id="reset-view" type="button">Vue perspective</button>
+          <label class="file-button" for="lego-detail-toggle"><input id="lego-detail-toggle" type="checkbox" checked /> Détails LEGO (48 briques sur téléphone)</label>
+          <p class="intro" id="lego-detail-status" role="status">Détails ciblés : tenons visibles, sans certification mécanique.</p>
           <div class="assembly-buttons" aria-label="Vues architecturales canoniques"><button id="view-front" type="button">Avant</button><button id="view-rear" type="button">Arrière</button></div>
           <div class="assembly-buttons"><button id="view-left" type="button">Gauche</button><button id="view-right" type="button">Droite</button></div>
           <button id="load-reference-house" type="button">Charger la maison des 5 photos</button>
