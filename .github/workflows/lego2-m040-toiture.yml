@@ -41,7 +41,7 @@ jobs:
                   raise ValueError('Invalid external LDCad source '+rel)
               target.write_bytes(data)
           PY
-      - name: Test three alternatives: 45+55+55 real mesh pairs and LDCad profiles
+      - name: "Test three alternatives: 45+55+55 real mesh pairs and LDCad profiles"
         run: |
           set -o pipefail
           python missions/PARALLEL-040-TOITURE/verify_m040.py --ldraw-root /tmp/lego2-m040-ldraw --ldcad-shadow-root /tmp/lego2-m040-shadow --out artifacts/lego2-m040/M040-RESULTATS-MAILLAGES.json 2>&1 | tee artifacts/lego2-m040/M040-CONSOLE.txt
