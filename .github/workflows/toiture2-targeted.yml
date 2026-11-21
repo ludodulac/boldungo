@@ -1,0 +1,61 @@
+name: TOITURE-2 — one independent 3002 bridge and 30363 roof connection
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/toiture2_probe.py'
+      - 'scripts/toiture2_browser.py'
+      - 'missions/TOITURE2/MODULE-VARIANTE-3002.ldr'
+      - 'missions/TOITURE2/VIEWER-3.json'
+      - '.github/workflows/toiture2-targeted.yml'
+permissions:
+  contents: write
+concurrency:
+  group: toiture2-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  one-variant:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing geometry engine and mobile Chromium
+        run: |
+          python -m pip install -e "./lego_geometry_engine"
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Pinned genuine LDraw parts including complete slope subparts
+        run: python scripts/download_ldraw_probe_066.py /tmp/toiture2-ldraw --max-files 160 --parts 30363 3622 3002
+      - name: ONE targeted real mesh, stud/cavity, collision and continuous insertion test
+        run: python scripts/toiture2_probe.py --ldraw-root /tmp/toiture2-ldraw
+      - name: ONE existing BOLDUNGO mobile viewer 3-step test
+        run: python scripts/toiture2_browser.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOITURE2-3002-REAL-LDRAW-CERTIFICATE-LOCAL-ONLY
+          path: |
+            missions/TOITURE2/*.json
+            missions/TOITURE2/*.ldr
+            missions/TOITURE2/*.png
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Commit measured evidence to DRAFT branch, never main
+        if: success()
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add missions/TOITURE2/CONNEXIONS.json missions/TOITURE2/COLLISIONS.json missions/TOITURE2/INSERTION.json missions/TOITURE2/RESULTAT.json missions/TOITURE2/toiture2-mobile.png
+          if ! git diff --cached --quiet; then
+            git commit -m "TOITURE-2: actual three-piece LDraw roof/3002 connection and mobile viewer evidence"
+            git push origin "HEAD:refs/heads/${BRANCH}"
+          fi

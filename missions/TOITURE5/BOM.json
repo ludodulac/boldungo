@@ -1,0 +1,26 @@
+{
+  "total_parts": 43,
+  "additional_to_TOITURE4": 0,
+  "lines": [
+    {
+      "ldraw_ref": "3008.dat",
+      "quantity": 35,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "3622.dat",
+      "quantity": 1,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "3006.dat",
+      "quantity": 2,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "30363.dat",
+      "quantity": 5,
+      "category": "roof"
+    }
+  ]
+}

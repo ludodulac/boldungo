@@ -1,0 +1,25 @@
+{
+  "selected_count": 10,
+  "insertion_demonstrated": 10,
+  "blocked_demonstrated": 0,
+  "undetermined": 0,
+  "first_non_demonstrated": null,
+  "sequence_status": "PASS",
+  "geometric_assembly_status": "PASS",
+  "physical_strength": "NON DÉMONTRÉ",
+  "proof_method": "ANALYTICAL_CONTINUOUS_UPRIGHT_BODY_AND_LDRAW_STUD_CYLINDER_SWEEP",
+  "official_stud_primitive": {
+    "primitive": "p/stud.dat",
+    "outer_radius_ldu": 6,
+    "height_ldu": 4,
+    "library": "Pinned public LDraw mirror, see download_ldraw_probe_066.py"
+  },
+  "last_motion_start_y_is_above_every_existing_mesh": true,
+  "sampled_positions_used_as_proof": false,
+  "visualization": "PASS — 10 successive assembly steps in actual Chromium mobile viewport",
+  "limitations": [
+    "Certified only for these ten upright nominal LDraw placements and primitive stud geometry.",
+    "A radius-6 disk clearance is a conservative sufficient test; failures are INDETERMINATE rather than proof of obstruction.",
+    "Clutch strength, friction, insertion force, plastic tolerances and gravity stability NOT TESTED."
+  ]
+}

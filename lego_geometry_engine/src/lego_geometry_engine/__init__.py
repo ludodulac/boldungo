@@ -15,6 +15,7 @@ from .core import (
 )
 from .library import LDrawLibrary
 from .assembly import analyze_assembly
+from .joint_validation import PairEvidence, assess_pair, first_mesh_crossing
 
 __all__ = [
     "AABB",
@@ -26,6 +27,9 @@ __all__ = [
     "Relation",
     "Transform",
     "analyze_assembly",
+    "PairEvidence",
+    "assess_pair",
+    "first_mesh_crossing",
     "check_collision",
     "find_connections",
     "find_contacts",

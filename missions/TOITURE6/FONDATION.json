@@ -1,0 +1,92 @@
+{
+  "placement": "1 2 960 0 760 1 0 0 0 1 0 0 0 1 3811.dat",
+  "source": "Official 3811.dat genuine LDraw",
+  "root_west": {
+    "foot": "wall-000009",
+    "plate": "TOITURE6-FOUNDATION-3811",
+    "actual_mesh_plate_bbox": [
+      -320.0,
+      -4.0,
+      -320.0,
+      320.0,
+      4.0,
+      320.0
+    ],
+    "body_y_separation": true,
+    "48_ldu_start_disjoint": true,
+    "official_anti_stud_to_stud_matches": 8,
+    "real_stud_primitive_vs_real_wall_mesh": {
+      "source_real_mesh": "3008.dat",
+      "studs_total": 1024,
+      "studs_in_exact_swept_projection": 8,
+      "full_parametric_stud_sweep": true,
+      "interferences": [],
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "root_east": {
+    "foot": "wall-000021",
+    "plate": "TOITURE6-FOUNDATION-3811",
+    "actual_mesh_plate_bbox": [
+      -320.0,
+      -4.0,
+      -320.0,
+      320.0,
+      4.0,
+      320.0
+    ],
+    "body_y_separation": true,
+    "48_ldu_start_disjoint": true,
+    "official_anti_stud_to_stud_matches": 8,
+    "real_stud_primitive_vs_real_wall_mesh": {
+      "source_real_mesh": "3008.dat",
+      "studs_total": 1024,
+      "studs_in_exact_swept_projection": 8,
+      "full_parametric_stud_sweep": true,
+      "interferences": [],
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "nearby_original_B3_bases_considered": [
+    {
+      "id": "wall-000007",
+      "ref": "3008.dat",
+      "nominal_con": 8,
+      "body_y_separate": true
+    },
+    {
+      "id": "wall-000008",
+      "ref": "3008.dat",
+      "nominal_con": 8,
+      "body_y_separate": true
+    },
+    {
+      "id": "wall-000010",
+      "ref": "3008.dat",
+      "nominal_con": 8,
+      "body_y_separate": true
+    },
+    {
+      "id": "wall-000020",
+      "ref": "3008.dat",
+      "nominal_con": 5,
+      "body_y_separate": true
+    },
+    {
+      "id": "wall-000022",
+      "ref": "3008.dat",
+      "nominal_con": 8,
+      "body_y_separate": true
+    }
+  ],
+  "invalid_neighbor_foundations": [],
+  "negative_tests": {
+    "10_LDU_half_stud_shift_nominal_matches": 0,
+    "identical_3811_solid_collision": "COLLISION"
+  },
+  "negative_tests_pass": true,
+  "local_plate_not_full_house": true,
+  "status": "PASS"
+}

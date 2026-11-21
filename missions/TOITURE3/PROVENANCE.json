@@ -1,0 +1,84 @@
+{
+  "source_pr": 931,
+  "source_commit": "3c8c5f19f5d7c5ee6d81383bbd24dc3ea38a8003",
+  "source_file": "missions/B3/generated/GUIDED004-B3-1904.ldr",
+  "source_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+  "pinned_snapshot": "missions/TOITURE3/B3-ORIGINAL-READONLY.ldr",
+  "source_roof_target_ids": [
+    "roof-000313",
+    "roof-000314",
+    "roof-000315",
+    "roof-000316",
+    "roof-000317",
+    "roof-000336",
+    "roof-000337",
+    "roof-000338",
+    "roof-000339",
+    "roof-000340",
+    "roof-000359",
+    "roof-000360",
+    "roof-000361",
+    "roof-000362",
+    "roof-000363"
+  ],
+  "retained_roof_ids": [
+    "roof-000336",
+    "roof-000337",
+    "roof-000338",
+    "roof-000339",
+    "roof-000340"
+  ],
+  "experimental_scope": "Only this TOITURE3 module; 5 fixed original roof placements and lower 3622, replacing old B3 upper 3622 and isolated TOITURE2 bridge 3002 by one long original LEGO part 3006. Both prior models remain unchanged.",
+  "original_lower_support": {
+    "id": "scene-chimney:house-chimney-antenna:00043:solution",
+    "line": "1 19 950 -840 630 0 0 -1 0 1 0 1 0 0 3622.dat"
+  },
+  "replaced_original_upper": {
+    "id": "scene-chimney:house-chimney-antenna:00052:solution",
+    "line": "1 19 950 -864 630 0 0 -1 0 1 0 1 0 0 3622.dat"
+  },
+  "replaced_previous_experimental": {
+    "id": "TOITURE2-VARIANT-3002",
+    "line": "1 19 960 -864 630 0 0 -1 0 1 0 1 0 0 3002.dat"
+  },
+  "new_shared_beam": {
+    "id": "TOITURE3-VARIANT-3006-ROW336-340",
+    "line": "1 19 960 -864 620 0 0 -1 0 1 0 1 0 0 3006.dat",
+    "ldraw_ref": "3006.dat"
+  },
+  "roof_originals": [
+    {
+      "id": "roof-000336",
+      "line": "1 1 970 -888 540 0 0 -1 0 1 0 1 0 0 30363.dat"
+    },
+    {
+      "id": "roof-000337",
+      "line": "1 1 970 -888 580 0 0 -1 0 1 0 1 0 0 30363.dat"
+    },
+    {
+      "id": "roof-000338",
+      "line": "1 1 970 -888 620 0 0 -1 0 1 0 1 0 0 30363.dat"
+    },
+    {
+      "id": "roof-000339",
+      "line": "1 1 970 -888 660 0 0 -1 0 1 0 1 0 0 30363.dat"
+    },
+    {
+      "id": "roof-000340",
+      "line": "1 1 970 -888 700 0 0 -1 0 1 0 1 0 0 30363.dat"
+    }
+  ],
+  "excluded_other_10_for_lack_of_independent_foundation": [
+    "roof-000313",
+    "roof-000314",
+    "roof-000315",
+    "roof-000316",
+    "roof-000317",
+    "roof-000359",
+    "roof-000360",
+    "roof-000361",
+    "roof-000362",
+    "roof-000363"
+  ],
+  "original_408_roof_placements_untouched": true
+}

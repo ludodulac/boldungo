@@ -1,0 +1,11 @@
+0 FILE TOITURE2-SUPPORT-VARIANT-3002.ldr
+0 VARIANT INDEPENDENT: 2 B3 ORIGINAL placements unchanged; 3622 upper replaced by one REAL 3002 Brick 2 x 3.\n0 SOURCE B3 1904 and TOITURE1 ORIGINAL remain unchanged; experimental geometry only.
+0 PITCH 18 DEG NOMINAL LEGO SLOPE; 22 DEG GENERAL ARCHITECTURE NOT CERTIFIED
+0 Physical strength, weather sealing, and support to house foundations NOT CERTIFIED.
+0 // scene-chimney:house-chimney-antenna:00043:solution
+1 19 950 -840 630 0 0 -1 0 1 0 1 0 0 3622.dat
+0 // TOITURE2-VARIANT-3002 replaces only the original B3 upper 3622, without altering B3 source
+1 19 960 -864 630 0 0 -1 0 1 0 1 0 0 3002.dat
+0 // roof-000338
+1 1 970 -888 620 0 0 -1 0 1 0 1 0 0 30363.dat
+0 NOFILE

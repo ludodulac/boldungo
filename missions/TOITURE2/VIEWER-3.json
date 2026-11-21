@@ -1,0 +1,206 @@
+{
+  "schema_version": "0.1",
+  "building_id": "TOITURE2-B3-roof338-3002-bridge",
+  "volume_id": "single-experimental-roof-connection",
+  "metadata": {
+    "experiment": "TOITURE2",
+    "source": "PR931 missions/B3/generated/GUIDED004-B3-1904.ldr",
+    "source_commit": "3c8c5f19f5d7c5ee6d81383bbd24dc3ea38a8003",
+    "original_ldraw_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+    "note": "Viewer shows schematic proxy geometry; canonical XYZ/transforms are retained in every part and in separate LDraw file. Mechanical proof in TOITURE1/RESULTAT.json.",
+    "sampling": "one roof and two support course elements only",
+    "additional_parts": 0,
+    "source_variant": "missions/TOITURE2/MODULE-VARIANTE-3002.ldr",
+    "original_reference": "missions/TOITURE1/MODULE-B3-ORIGINAL.ldr",
+    "roof_position_unchanged": true,
+    "lower_support_unchanged": true,
+    "upper_support_replaced_from": "3622.dat at (950,-864,630)",
+    "upper_support_replaced_to": "3002.dat at (960,-864,630)",
+    "local_extra_part_refs": [
+      "3002.dat"
+    ],
+    "net_piece_count_change": 0,
+    "geometry_proof": "Separate official LDraw proof; these viewer shapes are schematic."
+  },
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "TOITURE2-B3-roof338-3002-bridge",
+    "volume_id": "single-experimental-roof-connection",
+    "width_studs": 10,
+    "depth_studs": 10,
+    "height_plates": 12,
+    "parts": [
+      {
+        "placement_id": "scene-chimney:house-chimney-antenna:00043:solution",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "roof_support",
+        "x_studs": 1,
+        "y_studs": 3,
+        "z_plates": 0,
+        "rotation_quarter_turns": 0,
+        "width_studs": 3,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3622.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          950,
+          -840,
+          630
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true
+      },
+      {
+        "placement_id": "TOITURE2-VARIANT-3002",
+        "part_id": "BRICK_2X3",
+        "category": "brick",
+        "component": "roof_support",
+        "x_studs": 1,
+        "y_studs": 2,
+        "z_plates": 3,
+        "rotation_quarter_turns": 0,
+        "width_studs": 3,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "3002.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          960,
+          -864,
+          630
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#c98c40",
+        "visual_proxy": true,
+        "source_annotation": "EXPERIMENTAL-LOCAL-REPLACEMENT-NOT-B3"
+      },
+      {
+        "placement_id": "roof-000338",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 3,
+        "y_studs": 2,
+        "z_plates": 6,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true
+      }
+    ]
+  },
+  "bom": {
+    "schema_version": "0.1",
+    "total_parts": 3,
+    "unique_part_types": 3,
+    "lines": [
+      {
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "ldraw_ref": "3622.dat",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_2X3",
+        "category": "brick",
+        "ldraw_ref": "3002.dat",
+        "quantity": 1
+      },
+      {
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "ldraw_ref": "30363.dat",
+        "quantity": 1
+      }
+    ]
+  },
+  "fidelity_issues": [
+    {
+      "severity": "warning",
+      "message": "TOITURE-2 : variante expérimentale locale, ne modifie pas le modèle B-3 ni sa toiture ; 3002 remplace une 3622, sans ajout net de pièce."
+    },
+    {
+      "severity": "warning",
+      "message": "Visionneuse : volumes schématiques. Tests de géométrie réalisés séparément sur les maillages LDraw officiels."
+    },
+    {
+      "severity": "warning",
+      "message": "Fondations de la maison, voisinage des autres pièces B-3 et résistance mécanique : NON DÉMONTRÉS."
+    }
+  ],
+  "assembly_plan": {
+    "schema_version": "0.1",
+    "total_steps": 3,
+    "total_parts": 3,
+    "steps": [
+      {
+        "sequence": 1,
+        "step_id": "toiture1-1",
+        "title": "Installer le support inférieur 3622 original",
+        "placement_ids": [
+          "scene-chimney:house-chimney-antenna:00043:solution"
+        ]
+      },
+      {
+        "sequence": 2,
+        "step_id": "toiture1-2",
+        "title": "Poser la nouvelle brique 3002 (support intermédiaire)",
+        "placement_ids": [
+          "TOITURE2-VARIANT-3002"
+        ]
+      },
+      {
+        "sequence": 3,
+        "step_id": "toiture1-3",
+        "title": "Emboîter la véritable toiture 30363 originale",
+        "placement_ids": [
+          "roof-000338"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "B3_original_records": 1904,
+  "B3_new_braces_real_mesh_pair_interactions_checked": 10,
+  "B3_actual_forbidden": [
+    {
+      "piece": "TOITURE6-BRIDGE-D-3006",
+      "original_B3_neighbor": "roof-000223",
+      "reference": "30363.dat",
+      "relation": "COLLISION"
+    },
+    {
+      "piece": "TOITURE6-BRIDGE-C-3006",
+      "original_B3_neighbor": "roof-000246",
+      "reference": "30363.dat",
+      "relation": "COLLISION"
+    },
+    {
+      "piece": "TOITURE6-BRIDGE-B-3006",
+      "original_B3_neighbor": "roof-000269",
+      "reference": "30363.dat",
+      "relation": "COLLISION"
+    },
+    {
+      "piece": "TOITURE6-BRIDGE-A-3006",
+      "original_B3_neighbor": "roof-000292",
+      "reference": "30363.dat",
+      "relation": "COLLISION"
+    }
+  ],
+  "new_support_internal_solid_overlap": [],
+  "baseplate_adjacent_footprint": [
+    {
+      "id": "wall-000007",
+      "ref": "3008.dat",
+      "nominal_con": 8,
+      "body_y_separate": true
+    },
+    {
+      "id": "wall-000008",
+      "ref": "3008.dat",
+      "nominal_con": 8,
+      "body_y_separate": true
+    },
+    {
+      "id": "wall-000010",
+      "ref": "3008.dat",
+      "nominal_con": 8,
+      "body_y_separate": true
+    },
+    {
+      "id": "wall-000020",
+      "ref": "3008.dat",
+      "nominal_con": 5,
+      "body_y_separate": true
+    },
+    {
+      "id": "wall-000022",
+      "ref": "3008.dat",
+      "nominal_con": 8,
+      "body_y_separate": true
+    }
+  ],
+  "baseplate_grid_or_body_incompatibility": [],
+  "original_5_roofs_previous_TOITURE5": "PASS retained unchanged",
+  "roof315_pair_with_bridge": "CONTACT",
+  "roof315_to_existing_roof_rows": [
+    {
+      "later_original_slope": "roof-000338",
+      "final_relation": "CONTACT",
+      "conservative_full_sweep_AABB_separated": false
+    },
+    {
+      "later_original_slope": "roof-000337",
+      "final_relation": "SEPARATED",
+      "conservative_full_sweep_AABB_separated": true
+    },
+    {
+      "later_original_slope": "roof-000339",
+      "final_relation": "SEPARATED",
+      "conservative_full_sweep_AABB_separated": true
+    },
+    {
+      "later_original_slope": "roof-000336",
+      "final_relation": "SEPARATED",
+      "conservative_full_sweep_AABB_separated": true
+    },
+    {
+      "later_original_slope": "roof-000340",
+      "final_relation": "SEPARATED",
+      "conservative_full_sweep_AABB_separated": true
+    }
+  ],
+  "status": "FAIL"
+}

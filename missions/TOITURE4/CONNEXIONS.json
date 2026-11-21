@@ -1,0 +1,182 @@
+{
+  "prior_five_roof_interfaces": "TOITURE3 established PASS; not reaudited",
+  "wall_link_edges": [
+    {
+      "base": "wall-000707",
+      "attached": "gable-000026",
+      "recognized_exact_stud_cavity_count": 4,
+      "LDraw_real_mesh_relation": "CONTACT",
+      "full_continuous_insert": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "base": "gable-000026",
+      "attached": "gable-000031",
+      "recognized_exact_stud_cavity_count": 5,
+      "LDraw_real_mesh_relation": "CONTACT",
+      "full_continuous_insert": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "base": "gable-000031",
+      "attached": "gable-000035",
+      "recognized_exact_stud_cavity_count": 7,
+      "LDraw_real_mesh_relation": "CONTACT",
+      "full_continuous_insert": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "base": "gable-000035",
+      "attached": "gable-000039",
+      "recognized_exact_stud_cavity_count": 7,
+      "LDraw_real_mesh_relation": "CONTACT",
+      "full_continuous_insert": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "base": "gable-000039",
+      "attached": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "recognized_exact_stud_cavity_count": 1,
+      "LDraw_real_mesh_relation": "CONTACT",
+      "full_continuous_insert": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "base": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "attached": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "recognized_exact_stud_cavity_count": 1,
+      "LDraw_real_mesh_relation": "CONTACT",
+      "full_continuous_insert": {
+        "direction": "UP from below",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 20,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "base": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "attached": "TOITURE3-VARIANT-3006-ROW336-340",
+      "recognized_exact_stud_cavity_count": 6,
+      "LDraw_real_mesh_relation": "CONTACT",
+      "full_continuous_insert": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 20,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    }
+  ],
+  "roof_to_wall_verified_paths": {
+    "roof-000336": [
+      "roof-000336",
+      "TOITURE3-VARIANT-3006-ROW336-340",
+      "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "gable-000039",
+      "gable-000035",
+      "gable-000031",
+      "gable-000026",
+      "wall-000707"
+    ],
+    "roof-000337": [
+      "roof-000337",
+      "TOITURE3-VARIANT-3006-ROW336-340",
+      "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "gable-000039",
+      "gable-000035",
+      "gable-000031",
+      "gable-000026",
+      "wall-000707"
+    ],
+    "roof-000338": [
+      "roof-000338",
+      "TOITURE3-VARIANT-3006-ROW336-340",
+      "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "gable-000039",
+      "gable-000035",
+      "gable-000031",
+      "gable-000026",
+      "wall-000707"
+    ],
+    "roof-000339": [
+      "roof-000339",
+      "TOITURE3-VARIANT-3006-ROW336-340",
+      "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "gable-000039",
+      "gable-000035",
+      "gable-000031",
+      "gable-000026",
+      "wall-000707"
+    ],
+    "roof-000340": [
+      "roof-000340",
+      "TOITURE3-VARIANT-3006-ROW336-340",
+      "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+      "gable-000039",
+      "gable-000035",
+      "gable-000031",
+      "gable-000026",
+      "wall-000707"
+    ]
+  },
+  "all_five_roof_to_beam_reference_pass": true,
+  "geometry_source": {
+    "pinned_true_LDraw_3006_3622_3008": true,
+    "source": "pybricks/ldraw c43ed06a128a10ed65675166bf42eb6fd608b9b0",
+    "nominal_height_brick_ldu": 24,
+    "nominal_x_length_3006": 200
+  },
+  "status": "PASS"
+}

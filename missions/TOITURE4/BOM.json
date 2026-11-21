@@ -1,0 +1,32 @@
+{
+  "total_parts": 13,
+  "unique_part_types": 4,
+  "lines": [
+    {
+      "ldraw_ref": "3008.dat",
+      "quantity": 5,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "3622.dat",
+      "quantity": 1,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "3006.dat",
+      "quantity": 2,
+      "category": "brick"
+    },
+    {
+      "ldraw_ref": "30363.dat",
+      "quantity": 5,
+      "category": "roof"
+    }
+  ],
+  "new_experimental_pieces": 2,
+  "new_references": [
+    "3006.dat",
+    "3622.dat"
+  ],
+  "original_piece_positions_retained": 10
+}

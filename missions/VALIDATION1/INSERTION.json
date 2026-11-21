@@ -1,0 +1,123 @@
+{
+  "path_type": "STRAIGHT_DOWN_LDRAW_VERTICAL",
+  "ordered_original_placement_ids": [
+    "M1-EXPERIMENTAL-BASE-3811",
+    "wall-000001",
+    "wall-000017",
+    "wall-000041",
+    "wall-000040",
+    "wall-000023",
+    "wall-000048",
+    "wall-000065",
+    "wall-000071",
+    "wall-000088"
+  ],
+  "per_step": [
+    {
+      "piece": "M1-EXPERIMENTAL-BASE-3811",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000001",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "M1-EXPERIMENTAL-BASE-3811"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000017",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "M1-EXPERIMENTAL-BASE-3811"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000041",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "wall-000001",
+        "wall-000017"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000040",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "wall-000017"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000023",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "wall-000001"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000048",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "wall-000041",
+        "wall-000023"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000065",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "wall-000041",
+        "wall-000040"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000071",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "wall-000048"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    },
+    {
+      "piece": "wall-000088",
+      "approach": "VERTICAL_FROM_ABOVE",
+      "nominal_swept_box_clear": true,
+      "nominal_sweep_obstacles": [],
+      "preexisting_nominal_support": [
+        "wall-000048",
+        "wall-000065"
+      ],
+      "full_official_mesh_continuous_insertion": "NON DÉMONTRÉ"
+    }
+  ],
+  "nominal_sweep_clear": true,
+  "continuous_official_mesh_trajectory": "NON DÉMONTRÉ",
+  "physical_insertion": "NON DÉMONTRÉ",
+  "status": "NON DÉMONTRÉ"
+}

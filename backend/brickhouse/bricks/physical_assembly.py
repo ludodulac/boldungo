@@ -6,7 +6,8 @@ This deliberately refuses legacy visual models rather than silently passing.
 from .physical_placement_gate import Placement, PhysicalPlacementGate, verify_connected
 from .assembly import generate_assembly_plan
 
-def generate_physically_screened_assembly_plan(model):
+def generate_physically_screened_assembly_plan(model, *, require_connected: bool = True):
+    """Always reject material overlap; only strict notices require one component."""
     gate = PhysicalPlacementGate()
     # Support ordering: ground first, then ascending z; a supported piece
     # can only depend on parts already placed below it.
@@ -24,11 +25,16 @@ def generate_physically_screened_assembly_plan(model):
                                part.z_plates, part.rotation_quarter_turns))
         except (ValueError, TypeError) as exc:
             raise ValueError(f"PHYSICAL_GATE_FAIL:{part.placement_id}:{exc}") from exc
-    try:
-        verify_connected(gate.accepted)
-    except ValueError as exc:
-        raise ValueError(f"PHYSICAL_GATE_FAIL:{exc}") from exc
+    if require_connected:
+        try:
+            verify_connected(gate.accepted)
+        except ValueError as exc:
+            raise ValueError(f"PHYSICAL_GATE_FAIL:{exc}") from exc
     plan = generate_assembly_plan(model)
+    if not require_connected:
+        # A preview may contain disconnected islands: NOT a validated build notice.
+        # The same gate.add above already rejected solid collisions for every part.
+        return plan
     # Replay the actual notice order, not just a sorted spatial model.
     ordered = PhysicalPlacementGate()
     parts_by_id = {part.placement_id: part for part in model.parts}

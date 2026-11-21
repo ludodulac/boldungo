@@ -1,0 +1,61 @@
+name: TOITURE-5 — roof-to-original-wall-foot, one targeted proof
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/toiture5_probe.py'
+      - 'scripts/toiture5_browser.py'
+      - 'missions/TOITURE5/MODULE-TOIT-AU-PIED.ldr'
+      - 'missions/TOITURE5/VIEWER-43.json'
+      - '.github/workflows/toiture5-targeted.yml'
+permissions:
+  contents: write
+concurrency:
+  group: toiture5-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  one-wall-continuity:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Existing geometry engine and mobile Chromium
+        run: |
+          python -m pip install -e "./lego_geometry_engine"
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Official pinned LDraw real 3008 wall and TOITURE4 existing part families
+        run: python scripts/download_ldraw_probe_066.py /tmp/toiture5-ldraw --max-files 180 --parts 3008 3622 3006 30363
+      - name: ONE wall study — thirty original connections and continuous insertion
+        run: python scripts/toiture5_probe.py --ldraw-root /tmp/toiture5-ldraw
+      - name: ONE real BOLDÜNGO existing viewer, 43-step mobile test
+        run: python scripts/toiture5_browser.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TOITURE5-31-LEVEL-WALL-TO-FOOT-PROOF
+          path: |
+            missions/TOITURE5/*.json
+            missions/TOITURE5/*.ldr
+            missions/TOITURE5/*.png
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Persist factual proof and capture on DRAFT branch only
+        if: success()
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add missions/TOITURE5/CHAIN-PROOF.json missions/TOITURE5/COLLISIONS.json missions/TOITURE5/INSERTION.json missions/TOITURE5/EXTENSION.json missions/TOITURE5/RESULTAT.json missions/TOITURE5/toiture5-mobile.png
+          if ! git diff --cached --quiet; then
+            git commit -m "TOITURE-5: measure original B3 wall bottom-to-roof graph and mobile assembly"
+            git push origin "HEAD:refs/heads/${BRANCH}"
+          fi

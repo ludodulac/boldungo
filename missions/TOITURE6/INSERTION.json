@@ -1,0 +1,821 @@
+{
+  "order": [
+    "TOITURE6-FOUNDATION-3811",
+    "wall-000009",
+    "wall-000031",
+    "wall-000057",
+    "wall-000078",
+    "wall-000104",
+    "wall-000125",
+    "wall-000151",
+    "wall-000172",
+    "wall-000198",
+    "wall-000220",
+    "wall-000244",
+    "wall-000266",
+    "wall-000290",
+    "wall-000310",
+    "wall-000335",
+    "wall-000355",
+    "wall-000380",
+    "wall-000400",
+    "wall-000424",
+    "wall-000445",
+    "wall-000469",
+    "wall-000490",
+    "wall-000515",
+    "wall-000537",
+    "wall-000564",
+    "wall-000586",
+    "wall-000613",
+    "wall-000635",
+    "wall-000660",
+    "wall-000683",
+    "wall-000707",
+    "wall-000021",
+    "wall-000045",
+    "wall-000069",
+    "wall-000092",
+    "wall-000116",
+    "wall-000139",
+    "wall-000163",
+    "wall-000186",
+    "wall-000210",
+    "wall-000233",
+    "wall-000256",
+    "wall-000279",
+    "wall-000301",
+    "wall-000323",
+    "wall-000346",
+    "wall-000368",
+    "wall-000391",
+    "wall-000413",
+    "wall-000435",
+    "wall-000458",
+    "wall-000480",
+    "wall-000503",
+    "wall-000527",
+    "wall-000552",
+    "wall-000576",
+    "wall-000601",
+    "wall-000625",
+    "wall-000649",
+    "wall-000673",
+    "wall-000696",
+    "wall-000719",
+    "gable-000026",
+    "gable-000031",
+    "gable-000035",
+    "gable-000039",
+    "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+    "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+    "TOITURE6-BRIDGE-D-3006",
+    "TOITURE6-BRIDGE-C-3006",
+    "TOITURE6-BRIDGE-B-3006",
+    "TOITURE6-BRIDGE-A-3006",
+    "TOITURE3-VARIANT-3006-ROW336-340",
+    "roof-000315",
+    "roof-000338",
+    "roof-000337",
+    "roof-000339",
+    "roof-000336",
+    "roof-000340"
+  ],
+  "original_toiture5": "PASS retained unchanged",
+  "baseplate_root": "LOCAL FIRST PLACEMENT",
+  "foundation_west_48ldu": {
+    "foot": "wall-000009",
+    "plate": "TOITURE6-FOUNDATION-3811",
+    "actual_mesh_plate_bbox": [
+      -320.0,
+      -4.0,
+      -320.0,
+      320.0,
+      4.0,
+      320.0
+    ],
+    "body_y_separation": true,
+    "48_ldu_start_disjoint": true,
+    "official_anti_stud_to_stud_matches": 8,
+    "real_stud_primitive_vs_real_wall_mesh": {
+      "source_real_mesh": "3008.dat",
+      "studs_total": 1024,
+      "studs_in_exact_swept_projection": 8,
+      "full_parametric_stud_sweep": true,
+      "interferences": [],
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "foundation_east_48ldu": {
+    "foot": "wall-000021",
+    "plate": "TOITURE6-FOUNDATION-3811",
+    "actual_mesh_plate_bbox": [
+      -320.0,
+      -4.0,
+      -320.0,
+      320.0,
+      4.0,
+      320.0
+    ],
+    "body_y_separation": true,
+    "48_ldu_start_disjoint": true,
+    "official_anti_stud_to_stud_matches": 8,
+    "real_stud_primitive_vs_real_wall_mesh": {
+      "source_real_mesh": "3008.dat",
+      "studs_total": 1024,
+      "studs_in_exact_swept_projection": 8,
+      "full_parametric_stud_sweep": true,
+      "interferences": [],
+      "status": "PASS"
+    },
+    "status": "PASS"
+  },
+  "second_wall_30_entire_continuous_insertion": [
+    {
+      "from": "wall-000021",
+      "to": "wall-000045",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000045",
+      "to": "wall-000069",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 6,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000069",
+      "to": "wall-000092",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 5,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 6,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000092",
+      "to": "wall-000116",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 5,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 6,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000116",
+      "to": "wall-000139",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 5,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 6,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000139",
+      "to": "wall-000163",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 5,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 6,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000163",
+      "to": "wall-000186",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000186",
+      "to": "wall-000210",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000210",
+      "to": "wall-000233",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000233",
+      "to": "wall-000256",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000256",
+      "to": "wall-000279",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000279",
+      "to": "wall-000301",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000301",
+      "to": "wall-000323",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000323",
+      "to": "wall-000346",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000346",
+      "to": "wall-000368",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000368",
+      "to": "wall-000391",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000391",
+      "to": "wall-000413",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000413",
+      "to": "wall-000435",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000435",
+      "to": "wall-000458",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000458",
+      "to": "wall-000480",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000480",
+      "to": "wall-000503",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000503",
+      "to": "wall-000527",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 3,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000527",
+      "to": "wall-000552",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 6,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000552",
+      "to": "wall-000576",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 6,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000576",
+      "to": "wall-000601",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 6,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000601",
+      "to": "wall-000625",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 6,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000625",
+      "to": "wall-000649",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 3,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000649",
+      "to": "wall-000673",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000673",
+      "to": "wall-000696",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "wall-000696",
+      "to": "wall-000719",
+      "kind": "ORIGINAL_B3_SECOND_WALL_COURSE",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 7,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    }
+  ],
+  "second_support_four_genuine_3006_stud_sweeps": [
+    {
+      "from": "wall-000719",
+      "to": "TOITURE6-BRIDGE-D-3006",
+      "kind": "NEW_SECOND_LOAD_PATH",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 2,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 8,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "TOITURE6-BRIDGE-D-3006",
+      "to": "TOITURE6-BRIDGE-C-3006",
+      "kind": "NEW_SECOND_LOAD_PATH",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 20,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 20,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "TOITURE6-BRIDGE-C-3006",
+      "to": "TOITURE6-BRIDGE-B-3006",
+      "kind": "NEW_SECOND_LOAD_PATH",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 20,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 20,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "TOITURE6-BRIDGE-B-3006",
+      "to": "TOITURE6-BRIDGE-A-3006",
+      "kind": "NEW_SECOND_LOAD_PATH",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 8,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 20,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "from": "TOITURE6-BRIDGE-A-3006",
+      "to": "TOITURE3-VARIANT-3006-ROW336-340",
+      "kind": "NEW_SECOND_LOAD_PATH",
+      "official_mesh_relation": "CONTACT",
+      "genuine_connector_count": 2,
+      "continuous_insertion": {
+        "direction": "DOWN from above",
+        "full_continuous_stud_sweep_not_discrete_samples": true,
+        "body_planes_separate": true,
+        "initial_position_outside_neighbor": true,
+        "studs_checked": 20,
+        "first_interference": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    }
+  ],
+  "new_roof315": {
+    "matched_cavity_centers": [
+      [
+        1030.0,
+        -840.0,
+        610.0
+      ],
+      [
+        1030.0,
+        -840.0,
+        630.0
+      ]
+    ],
+    "real_mesh_relation": "CONTACT",
+    "whole_continuous_sweep": {
+      "direction": "DOWN from above",
+      "full_continuous_stud_sweep_not_discrete_samples": true,
+      "body_planes_separate": true,
+      "initial_position_outside_neighbor": true,
+      "studs_checked": 20,
+      "first_interference": {
+        "fixed_stud_center_ldu": [
+          1050.0,
+          -840.0,
+          610.0
+        ],
+        "stud_cylindrical_body_checked": true,
+        "candidate_triangles": 30,
+        "swept_surface_interference": {
+          "triangle": 601,
+          "projection_distance_ldu": 0.0,
+          "stud_center_ldu": [
+            1050.0,
+            -840.0,
+            610.0
+          ],
+          "moving_triangle_final_xyz_ldu": [
+            [
+              1040.0,
+              -860.0,
+              636.0
+            ],
+            [
+              1088.0,
+              -844.0,
+              604.0
+            ],
+            [
+              1040.0,
+              -860.0,
+              604.0
+            ]
+          ]
+        },
+        "continuous_sweep_clear": false
+      },
+      "status": "NON DÉMONTRÉ"
+    },
+    "later_original_roof_siblings": [
+      {
+        "later_original_slope": "roof-000338",
+        "final_relation": "CONTACT",
+        "conservative_full_sweep_AABB_separated": false
+      },
+      {
+        "later_original_slope": "roof-000337",
+        "final_relation": "SEPARATED",
+        "conservative_full_sweep_AABB_separated": true
+      },
+      {
+        "later_original_slope": "roof-000339",
+        "final_relation": "SEPARATED",
+        "conservative_full_sweep_AABB_separated": true
+      },
+      {
+        "later_original_slope": "roof-000336",
+        "final_relation": "SEPARATED",
+        "conservative_full_sweep_AABB_separated": true
+      },
+      {
+        "later_original_slope": "roof-000340",
+        "final_relation": "SEPARATED",
+        "conservative_full_sweep_AABB_separated": true
+      }
+    ],
+    "status": "NON DÉMONTRÉ"
+  },
+  "status": "NON DÉMONTRÉ"
+}

@@ -1,0 +1,93 @@
+{
+  "official_sources": {
+    "mirror": "pybricks/ldraw pinned at c43ed06a128a10ed65675166bf42eb6fd608b9b0",
+    "real_slope": "30363.dat / s/30363s01.dat",
+    "physical_slope_top_studs": [
+      [
+        -10,
+        0,
+        0
+      ],
+      [
+        10,
+        0,
+        0
+      ]
+    ],
+    "cavity_lower_face_ldraw_y": 24,
+    "slope_interior": "Hollow geometry (box2-5 / box2-7) is triangulated and checked in the sweep",
+    "stud_radius_ldu": 6,
+    "stud_height_ldu": 4,
+    "real_support": "3002.dat (Brick 2 x 3)",
+    "support_upper_studs_local": [
+      [
+        -20,
+        0,
+        -10
+      ],
+      [
+        -20,
+        0,
+        10
+      ],
+      [
+        0,
+        0,
+        -10
+      ],
+      [
+        0,
+        0,
+        10
+      ],
+      [
+        20,
+        0,
+        -10
+      ],
+      [
+        20,
+        0,
+        10
+      ]
+    ],
+    "support_lower_cavity": "actual inverted inner box5.dat; no presumed physical tolerances"
+  },
+  "lower_to_bridge_stud_cavity_centers": [
+    [
+      950.0,
+      -840.0,
+      610.0
+    ],
+    [
+      950.0,
+      -840.0,
+      630.0
+    ],
+    [
+      950.0,
+      -840.0,
+      650.0
+    ]
+  ],
+  "bridge_to_roof_30363_underside_cavity_centers": [
+    [
+      970.0,
+      -864.0,
+      610.0
+    ],
+    [
+      970.0,
+      -864.0,
+      630.0
+    ]
+  ],
+  "lower_engine_connector_matches": 3,
+  "lower_to_bridge_actual_mesh_relation": "CONTACT",
+  "bridge_to_roof_actual_mesh_relation": "CONTACT",
+  "roof_to_bottom_actual_mesh_relation": "SEPARATED",
+  "hypothesis_replaced_original_nonmatching_center_count": 0,
+  "aligned_centers_alone_are_not_certification": true,
+  "actual_mesh_clearance_and_continuous_sweep_necessary": true,
+  "status": "PASS"
+}

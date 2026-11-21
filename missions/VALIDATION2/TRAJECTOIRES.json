@@ -1,0 +1,2191 @@
+{
+  "ldraw_motion": "Y positive downward",
+  "order": [
+    "M1-EXPERIMENTAL-BASE-3811",
+    "wall-000001",
+    "wall-000017",
+    "wall-000041",
+    "wall-000040",
+    "wall-000023",
+    "wall-000048",
+    "wall-000065",
+    "wall-000071",
+    "wall-000088"
+  ],
+  "proof_criterion": "Exact continuous box separation and triangle-projected disk clearance, not point samples",
+  "steps": [
+    {
+      "sequence": 1,
+      "placement_id": "M1-EXPERIMENTAL-BASE-3811",
+      "ldraw_part": "3811.dat",
+      "start_ldraw_xyz_ldu": [
+        640.0,
+        -48.0,
+        360.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        640.0,
+        0.0,
+        360.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "640.0",
+          "-48.0 + 48.0*t",
+          "360.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [],
+      "fixed_parts_checked": [],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 2,
+      "placement_id": "wall-000001",
+      "ldraw_part": "3008.dat",
+      "start_ldraw_xyz_ldu": [
+        400.0,
+        -72.0,
+        50.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        400.0,
+        -24.0,
+        50.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "400.0",
+          "-72.0 + 48.0*t",
+          "50.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 8,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 8,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 3,
+      "placement_id": "wall-000017",
+      "ldraw_part": "3008.dat",
+      "start_ldraw_xyz_ldu": [
+        330.0,
+        -72.0,
+        140.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        330.0,
+        -24.0,
+        140.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "330.0",
+          "-72.0 + 48.0*t",
+          "140.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811",
+        "wall-000001"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 8,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 8,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000001",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": false,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 4,
+      "placement_id": "wall-000041",
+      "ldraw_part": "3004.dat",
+      "start_ldraw_xyz_ldu": [
+        330.0,
+        -96.0,
+        60.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        330.0,
+        -48.0,
+        60.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "330.0",
+          "-96.0 + 48.0*t",
+          "60.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811",
+        "wall-000001",
+        "wall-000017"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000001",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 1,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 1,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000017",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 1,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 1,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 5,
+      "placement_id": "wall-000040",
+      "ldraw_part": "3622.dat",
+      "start_ldraw_xyz_ldu": [
+        330.0,
+        -96.0,
+        110.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        330.0,
+        -48.0,
+        110.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "330.0",
+          "-96.0 + 48.0*t",
+          "110.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811",
+        "wall-000001",
+        "wall-000017",
+        "wall-000041"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000001",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000017",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 3,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 3,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000041",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": false,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 2,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 6,
+      "placement_id": "wall-000023",
+      "ldraw_part": "3008.dat",
+      "start_ldraw_xyz_ldu": [
+        420.0,
+        -96.0,
+        50.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        420.0,
+        -48.0,
+        50.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "420.0",
+          "-96.0 + 48.0*t",
+          "50.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811",
+        "wall-000001",
+        "wall-000017",
+        "wall-000041",
+        "wall-000040"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000001",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 7,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 7,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000017",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000041",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": false,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 2,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000040",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": false,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 3,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 7,
+      "placement_id": "wall-000048",
+      "ldraw_part": "3008.dat",
+      "start_ldraw_xyz_ldu": [
+        400.0,
+        -120.0,
+        50.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        400.0,
+        -72.0,
+        50.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "400.0",
+          "-120.0 + 48.0*t",
+          "50.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811",
+        "wall-000001",
+        "wall-000017",
+        "wall-000041",
+        "wall-000040",
+        "wall-000023"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000001",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000017",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000041",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 1,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 2,
+            "studs_whose_sweep_enters_upper_mesh_region": 1,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000040",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 3,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000023",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 7,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 7,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 8,
+      "placement_id": "wall-000065",
+      "ldraw_part": "3009.dat",
+      "start_ldraw_xyz_ldu": [
+        330.0,
+        -120.0,
+        120.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        330.0,
+        -72.0,
+        120.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "330.0",
+          "-120.0 + 48.0*t",
+          "120.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811",
+        "wall-000001",
+        "wall-000017",
+        "wall-000041",
+        "wall-000040",
+        "wall-000023",
+        "wall-000048"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000001",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000017",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000041",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 1,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 2,
+            "studs_whose_sweep_enters_upper_mesh_region": 1,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000040",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 3,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 3,
+            "studs_whose_sweep_enters_upper_mesh_region": 3,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000023",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000048",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": false,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 9,
+      "placement_id": "wall-000071",
+      "ldraw_part": "3009.dat",
+      "start_ldraw_xyz_ldu": [
+        400.0,
+        -144.0,
+        50.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        400.0,
+        -96.0,
+        50.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "400.0",
+          "-144.0 + 48.0*t",
+          "50.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811",
+        "wall-000001",
+        "wall-000017",
+        "wall-000041",
+        "wall-000040",
+        "wall-000023",
+        "wall-000048",
+        "wall-000065"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000001",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000017",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000041",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 2,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000040",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 3,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000023",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000048",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 6,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 6,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000065",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 6,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    },
+    {
+      "sequence": 10,
+      "placement_id": "wall-000088",
+      "ldraw_part": "3004.dat",
+      "start_ldraw_xyz_ldu": [
+        330.0,
+        -144.0,
+        60.0
+      ],
+      "end_ldraw_xyz_ldu": [
+        330.0,
+        -96.0,
+        60.0
+      ],
+      "motion": {
+        "kind": "STRAIGHT_VERTICAL_TRANSLATION",
+        "continuous_interval": "t in [0, 1]",
+        "world_xyz_ldu_formula": [
+          "330.0",
+          "-144.0 + 48.0*t",
+          "60.0"
+        ],
+        "moving_part_orientation_constant": true
+      },
+      "placed_before": [
+        "M1-EXPERIMENTAL-BASE-3811",
+        "wall-000001",
+        "wall-000017",
+        "wall-000041",
+        "wall-000040",
+        "wall-000023",
+        "wall-000048",
+        "wall-000065",
+        "wall-000071"
+      ],
+      "fixed_parts_checked": [
+        {
+          "fixed_id": "M1-EXPERIMENTAL-BASE-3811",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                0.0,
+                40.0
+              ],
+              [
+                960.0,
+                4.0,
+                680.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 1024,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000001",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                40.0
+              ],
+              [
+                480.0,
+                0.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000017",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -24.0,
+                60.0
+              ],
+              [
+                340.0,
+                0.0,
+                220.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000041",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                40.0
+              ],
+              [
+                340.0,
+                -24.0,
+                80.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 2,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000040",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -48.0,
+                80.0
+              ],
+              [
+                340.0,
+                -24.0,
+                140.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 3,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000023",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                340.0,
+                -48.0,
+                40.0
+              ],
+              [
+                500.0,
+                -24.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000048",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                40.0
+              ],
+              [
+                480.0,
+                -48.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 1,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 8,
+            "studs_whose_sweep_enters_upper_mesh_region": 1,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000065",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                320.0,
+                -72.0,
+                60.0
+              ],
+              [
+                340.0,
+                -48.0,
+                180.0
+              ]
+            ],
+            "overlap_xz": true,
+            "upper_always_above_lower": true,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 1,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 6,
+            "studs_whose_sweep_enters_upper_mesh_region": 1,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        },
+        {
+          "fixed_id": "wall-000071",
+          "body_continuous_certificate": {
+            "moving_body_xyz": [
+              [
+                320.0,
+                -96.0,
+                40.0
+              ],
+              [
+                340.0,
+                -72.0,
+                80.0
+              ]
+            ],
+            "fixed_body_xyz": [
+              [
+                340.0,
+                -96.0,
+                40.0
+              ],
+              [
+                460.0,
+                -72.0,
+                60.0
+              ]
+            ],
+            "overlap_xz": false,
+            "upper_always_above_lower": false,
+            "continuous_body_clear": true
+          },
+          "nominal_connector_matches": 0,
+          "entire_stud_sweep_certificate": {
+            "stud_connectors_checked": 6,
+            "studs_whose_sweep_enters_upper_mesh_region": 0,
+            "interference_candidates": [],
+            "full_continuous_stud_sweep_clear": true
+          },
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS",
+      "limits": [
+        "Mathematical ideal LDraw geometry, not physical friction or plastic tolerance."
+      ]
+    }
+  ]
+}

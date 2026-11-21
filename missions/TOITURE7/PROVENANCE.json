@@ -1,0 +1,11 @@
+{
+  "origin_baseline_head": "710f7c70dc891641741f42d9ba93e20cba449d17",
+  "retained_75_sha": "7338e31dbe80d249c5a30c695a713a7daf5bcbf2",
+  "retained_viewer_sha": "d0107ec6f1d728884b59857471732ecf4130c97d",
+  "B3_sha": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+  "real_roof223": "1 1 1270 -768 620 0 0 -1 0 1 0 1 0 0 30363.dat",
+  "real_wall719": "1 19 1270 -744 620 0 0 -1 0 1 0 1 0 0 3008.dat",
+  "no_original_changes": true,
+  "pinned_official_ldraw": "c43ed06a128a10ed65675166bf42eb6fd608b9b0",
+  "MAISON4_coordinate_alignment": "NOT ASSUMED"
+}

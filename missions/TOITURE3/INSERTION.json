@@ -1,0 +1,309 @@
+{
+  "whole_continuous_vertical_trajectories_not_just_samples": true,
+  "ldraw_y_positive_down": true,
+  "order": [
+    "scene-chimney:house-chimney-antenna:00043:solution",
+    "TOITURE3-VARIANT-3006-ROW336-340",
+    "roof-000338",
+    "roof-000337",
+    "roof-000339",
+    "roof-000336",
+    "roof-000340"
+  ],
+  "steps": [
+    {
+      "sequence": 1,
+      "piece": "scene-chimney:house-chimney-antenna:00043:solution",
+      "position": [
+        950,
+        -840,
+        630
+      ],
+      "status": "PASS",
+      "role": "locally rooted 3622; no house foundation proof"
+    },
+    {
+      "sequence": 2,
+      "piece": "TOITURE3-VARIANT-3006-ROW336-340",
+      "approach_start_ldu": [
+        960,
+        -912,
+        620
+      ],
+      "end_ldu": [
+        960,
+        -864,
+        620
+      ],
+      "motion": "XYZ(t)=(960,-912+48*t,620); 0<=t<=1",
+      "support_connectors": 3,
+      "continuous_clearance": {
+        "role": "Original 3622 bottom to 3006 shared beam",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 3,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "status": "PASS"
+    },
+    {
+      "sequence": 3,
+      "piece": "roof-000338",
+      "approach_start_ldu": [
+        970,
+        -936.0,
+        620
+      ],
+      "end_ldu": [
+        970,
+        -888,
+        620
+      ],
+      "motion": "XYZ(t)=(970,-936.0+48*t,620); 0<=t<=1",
+      "shared_support": "TOITURE3-VARIANT-3006-ROW336-340",
+      "attached_cavities": [
+        [
+          970.0,
+          -864.0,
+          610.0
+        ],
+        [
+          970.0,
+          -864.0,
+          630.0
+        ]
+      ],
+      "roof_30263_actual_mesh_relation": "CONTACT",
+      "continuous_clearance": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "other_roofs": [],
+      "status": "PASS"
+    },
+    {
+      "sequence": 4,
+      "piece": "roof-000337",
+      "approach_start_ldu": [
+        970,
+        -936.0,
+        580
+      ],
+      "end_ldu": [
+        970,
+        -888,
+        580
+      ],
+      "motion": "XYZ(t)=(970,-936.0+48*t,580); 0<=t<=1",
+      "shared_support": "TOITURE3-VARIANT-3006-ROW336-340",
+      "attached_cavities": [
+        [
+          970.0,
+          -864.0,
+          570.0
+        ],
+        [
+          970.0,
+          -864.0,
+          590.0
+        ]
+      ],
+      "roof_30263_actual_mesh_relation": "CONTACT",
+      "continuous_clearance": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "other_roofs": [
+        {
+          "already_installed": "roof-000338",
+          "final_mesh_relation": "CONTACT",
+          "xy_projected_sweep_clear_for_all_t": true
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "sequence": 5,
+      "piece": "roof-000339",
+      "approach_start_ldu": [
+        970,
+        -936.0,
+        660
+      ],
+      "end_ldu": [
+        970,
+        -888,
+        660
+      ],
+      "motion": "XYZ(t)=(970,-936.0+48*t,660); 0<=t<=1",
+      "shared_support": "TOITURE3-VARIANT-3006-ROW336-340",
+      "attached_cavities": [
+        [
+          970.0,
+          -864.0,
+          650.0
+        ],
+        [
+          970.0,
+          -864.0,
+          670.0
+        ]
+      ],
+      "roof_30263_actual_mesh_relation": "CONTACT",
+      "continuous_clearance": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "other_roofs": [
+        {
+          "already_installed": "roof-000338",
+          "final_mesh_relation": "CONTACT",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000337",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "sequence": 6,
+      "piece": "roof-000336",
+      "approach_start_ldu": [
+        970,
+        -936.0,
+        540
+      ],
+      "end_ldu": [
+        970,
+        -888,
+        540
+      ],
+      "motion": "XYZ(t)=(970,-936.0+48*t,540); 0<=t<=1",
+      "shared_support": "TOITURE3-VARIANT-3006-ROW336-340",
+      "attached_cavities": [
+        [
+          970.0,
+          -864.0,
+          530.0
+        ],
+        [
+          970.0,
+          -864.0,
+          550.0
+        ]
+      ],
+      "roof_30263_actual_mesh_relation": "CONTACT",
+      "continuous_clearance": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "other_roofs": [
+        {
+          "already_installed": "roof-000338",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000337",
+          "final_mesh_relation": "CONTACT",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000339",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "sequence": 7,
+      "piece": "roof-000340",
+      "approach_start_ldu": [
+        970,
+        -936.0,
+        700
+      ],
+      "end_ldu": [
+        970,
+        -888,
+        700
+      ],
+      "motion": "XYZ(t)=(970,-936.0+48*t,700); 0<=t<=1",
+      "shared_support": "TOITURE3-VARIANT-3006-ROW336-340",
+      "attached_cavities": [
+        [
+          970.0,
+          -864.0,
+          690.0
+        ],
+        [
+          970.0,
+          -864.0,
+          710.0
+        ]
+      ],
+      "roof_30263_actual_mesh_relation": "CONTACT",
+      "continuous_clearance": {
+        "role": "3006 studs into 30363 cavities",
+        "start_disjoint": true,
+        "solid_body_y_plane_separate_for_all_t": true,
+        "actual_studs_all_checked": 20,
+        "stud_cylinder_continuous_clearance": true,
+        "first_obstacle": null,
+        "status": "PASS"
+      },
+      "other_roofs": [
+        {
+          "already_installed": "roof-000338",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000337",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000339",
+          "final_mesh_relation": "CONTACT",
+          "xy_projected_sweep_clear_for_all_t": true
+        },
+        {
+          "already_installed": "roof-000336",
+          "final_mesh_relation": "SEPARATED",
+          "xy_projected_sweep_clear_for_all_t": true
+        }
+      ],
+      "status": "PASS"
+    }
+  ],
+  "local_status": "PASS",
+  "all_B3_surrounding_roof_installation_order": "NON DÉMONTRÉ",
+  "force_insertion_friction": "NON DÉMONTRÉ"
+}

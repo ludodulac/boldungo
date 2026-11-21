@@ -1,0 +1,25 @@
+{
+  "original_roof_30363_position_fixed": true,
+  "lower_3622_fixed": true,
+  "original_upper_B3_3622_removed_from_experimental_fragment_only": true,
+  "variant_support_3002_experimental": true,
+  "original_upper_xyz": [
+    950,
+    -864,
+    630
+  ],
+  "variant_upper_xyz": [
+    960,
+    -864,
+    630
+  ],
+  "roof_xyz_unchanged": [
+    970,
+    -888,
+    620
+  ],
+  "extra_reference": "3002.dat",
+  "added_count": 1,
+  "replaced_count": 1,
+  "net_count_change": 0
+}

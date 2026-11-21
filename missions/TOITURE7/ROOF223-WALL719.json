@@ -1,0 +1,92 @@
+{
+  "roof_original": "roof-000223",
+  "wall_original": "wall-000719",
+  "roof_line": "1 1 1270 -768 620 0 0 -1 0 1 0 1 0 0 30363.dat",
+  "wall_line": "1 19 1270 -744 620 0 0 -1 0 1 0 1 0 0 3008.dat",
+  "genuine_part_sources": [
+    "30363.dat",
+    "3008.dat"
+  ],
+  "actual_30363_underside_cavities": [
+    [
+      1270.0,
+      -744.0,
+      610.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      630.0
+    ]
+  ],
+  "wall_3008_studs_at_top": [
+    [
+      1270.0,
+      -744.0,
+      550.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      570.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      590.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      610.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      630.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      650.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      670.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      690.0
+    ]
+  ],
+  "exact_anti_stud_to_stud_matches": [
+    [
+      1270.0,
+      -744.0,
+      610.0
+    ],
+    [
+      1270.0,
+      -744.0,
+      630.0
+    ]
+  ],
+  "official_LDraw_mesh_relation": "CONTACT",
+  "continuous_vertical_insert": {
+    "direction": "DOWN from above",
+    "full_continuous_stud_sweep_not_discrete_samples": true,
+    "body_planes_separate": true,
+    "initial_position_outside_neighbor": true,
+    "studs_checked": 8,
+    "first_interference": null,
+    "status": "PASS"
+  },
+  "local_B3_forbidden_neighbors": [],
+  "negative_10_LDU_offset_matches": 0,
+  "roof_wall_interface_status": "PASS",
+  "adjacent_roof_assembly_with_all_B3": "NON DÉMONTRÉ",
+  "does_not_attach_five_retained_roofs": true,
+  "status": "PASS"
+}

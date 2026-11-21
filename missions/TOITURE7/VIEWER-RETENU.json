@@ -1,0 +1,3274 @@
+{
+  "schema_version": "0.1",
+  "building_id": "TOITURE6-RETAINED-75-BASE-TWO-WALLS-NO-SECOND-ROOF-SUPPORT",
+  "volume_id": "two-wall-local-base",
+  "metadata": {
+    "experiment": "TOITURE4",
+    "source_b3_blob": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+    "previous_toiture3_head": "2111697cf346f2641b98b924288e79cb37e0ab0d",
+    "roof_original_positions_unchanged": true,
+    "experimental_support_parts": [
+      "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+      "TOITURE4-VARIANT-3622-GABLE-CONNECTOR"
+    ],
+    "selected_wall": "wall-000707",
+    "selected_gables": [
+      "gable-000026",
+      "gable-000031",
+      "gable-000035",
+      "gable-000039"
+    ],
+    "summary": "Five TOITURE-3 roof slopes connected to original B-3 gable and original wall through two real LEGO bridge parts. Actual LDraw geometry must pass targeted test.",
+    "visual_proxy_only": true,
+    "full_foundation_certified": false,
+    "mission": "TOITURE6",
+    "roof_count": 5,
+    "wall_levels_3008": 31,
+    "no_y0_foundation": true,
+    "source_b3_sha": "288c60fde76918128d8b955f78ebfa9afc2dfe8e",
+    "source_frame": "B3 only; no MAISON4 assumptions",
+    "source": "B3 original 1904, TOITURE5 43",
+    "new_baseplate": "3811.dat at 960,0,760",
+    "second_wall": "wall-000719 → wall-000021",
+    "original_roof_sixth": "roof-000315 hypothesis, not assumed valid",
+    "schematic_not_actual_LDraw": true,
+    "retention": "ONLY proven local foundation and two original 31-course B3 walls; second upper roof path failed",
+    "experimental_removed_for_collision": [
+      "TOITURE6-BRIDGE-D-3006",
+      "TOITURE6-BRIDGE-C-3006",
+      "TOITURE6-BRIDGE-B-3006",
+      "TOITURE6-BRIDGE-A-3006"
+    ],
+    "roof_candidate_excluded": "roof-000315",
+    "confirmed_original_roof_pieces": 5,
+    "second_roof_support": "NON DÉMONTRÉ"
+  },
+  "brick_model": {
+    "schema_version": "0.1",
+    "building_id": "TOITURE6-RETAINED-75-BASE-TWO-WALLS-NO-SECOND-ROOF-SUPPORT",
+    "volume_id": "two-wall-local-base",
+    "width_studs": 31,
+    "depth_studs": 30,
+    "height_plates": 120,
+    "parts": [
+      {
+        "placement_id": "wall-000009",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 0,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -24,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000031",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 3,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -48,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000057",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -72,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000078",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 9,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -96,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000104",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 12,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -120,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000125",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 15,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -144,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000151",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 18,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -168,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000172",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 21,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -192,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000198",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 24,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -216,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000220",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 27,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -240,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000244",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 30,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -264,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000266",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 33,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -288,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000290",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 36,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -312,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000310",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 39,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -336,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000335",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 42,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -360,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000355",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 45,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -384,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000380",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 48,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -408,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000400",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 51,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -432,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000424",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 54,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -456,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000445",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 57,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -480,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000469",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 60,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -504,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000490",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 63,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -528,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000515",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 66,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -552,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000537",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 69,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -576,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000564",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 72,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -600,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000586",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 75,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -624,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000613",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 78,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -648,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000635",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 81,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -672,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000660",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 84,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -696,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000683",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "wall_structural_column",
+        "x_studs": 7,
+        "y_studs": 11,
+        "z_plates": 87,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          860,
+          -720,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "ORIGINAL_B3_UNMODIFIED"
+      },
+      {
+        "placement_id": "wall-000707",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "load_bearing_wall",
+        "x_studs": 8,
+        "y_studs": 11,
+        "z_plates": 90,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          880,
+          -744,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "gable-000026",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "gable",
+        "x_studs": 12,
+        "y_studs": 11,
+        "z_plates": 93,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          960,
+          -768,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "gable-000031",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "gable",
+        "x_studs": 9,
+        "y_studs": 11,
+        "z_plates": 96,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          900,
+          -792,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "gable-000035",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "gable",
+        "x_studs": 10,
+        "y_studs": 11,
+        "z_plates": 99,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          920,
+          -816,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "gable-000039",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "gable",
+        "x_studs": 11,
+        "y_studs": 11,
+        "z_plates": 102,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 8,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          940,
+          -840,
+          870
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "semantic_color": "#d9b475",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED-ORIGINAL-B3"
+      },
+      {
+        "placement_id": "TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+        "part_id": "BRICK_1X3",
+        "category": "brick",
+        "component": "structural_link",
+        "x_studs": 12.5,
+        "y_studs": 11,
+        "z_plates": 105,
+        "rotation_quarter_turns": 1,
+        "width_studs": 1,
+        "length_studs": 3,
+        "height_plates": 3,
+        "ldraw_ref": "3622.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          970,
+          -864,
+          870
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#edaa55",
+        "visual_proxy": true,
+        "source_annotation": "TOITURE4-NEW-EXPERIMENTAL-REAL-LEGO"
+      },
+      {
+        "placement_id": "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+        "part_id": "BRICK_2X10",
+        "category": "brick",
+        "component": "structural_link",
+        "x_studs": 12,
+        "y_studs": 5.5,
+        "z_plates": 102,
+        "rotation_quarter_turns": 1,
+        "width_studs": 2,
+        "length_studs": 10,
+        "height_plates": 3,
+        "ldraw_ref": "3006.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          960,
+          -840,
+          760
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#d9773e",
+        "visual_proxy": true,
+        "source_annotation": "TOITURE4-NEW-EXPERIMENTAL-REAL-LEGO"
+      },
+      {
+        "placement_id": "TOITURE3-VARIANT-3006-ROW336-340",
+        "part_id": "BRICK_2X10",
+        "category": "brick",
+        "component": "roof_support",
+        "x_studs": 2,
+        "y_studs": 1,
+        "z_plates": 93,
+        "rotation_quarter_turns": 0,
+        "width_studs": 2,
+        "length_studs": 10,
+        "height_plates": 3,
+        "ldraw_ref": "3006.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          960,
+          -864,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#c88b4e",
+        "visual_proxy": true,
+        "source_annotation": "TOITURE3-EXPERIMENTAL-SUBSTITUTION-ONLY"
+      },
+      {
+        "placement_id": "roof-000338",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 6,
+        "z_plates": 96,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000337",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 4,
+        "z_plates": 96,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          580
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000339",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 8,
+        "z_plates": 96,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          660
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000336",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 2,
+        "z_plates": 96,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          540
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "roof-000340",
+        "part_id": "BRICK_SLOPED_18_4X2",
+        "category": "roof",
+        "component": "roof",
+        "x_studs": 2,
+        "y_studs": 10,
+        "z_plates": 96,
+        "rotation_quarter_turns": 0,
+        "width_studs": 4,
+        "length_studs": 2,
+        "height_plates": 3,
+        "ldraw_ref": "30363.dat",
+        "ldraw_color": 1,
+        "ldraw_xyz_ldu": [
+          970,
+          -888,
+          700
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#3271bb",
+        "roof_side": "slope",
+        "visual_proxy": true,
+        "source_annotation": "UNMODIFIED_B3_ORIGINAL_ROOF"
+      },
+      {
+        "placement_id": "TOITURE6-FOUNDATION-3811",
+        "part_id": "BASEPLATE_32X32",
+        "category": "plate",
+        "component": "local_foundation",
+        "x_studs": 0,
+        "y_studs": 0,
+        "z_plates": -1,
+        "width_studs": 32,
+        "length_studs": 32,
+        "height_plates": 1,
+        "rotation_quarter_turns": 0,
+        "ldraw_ref": "3811.dat",
+        "ldraw_xyz_ldu": [
+          960,
+          0,
+          760
+        ],
+        "ldraw_matrix": [
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1
+        ],
+        "ldraw_color": 2,
+        "semantic_color": "#47896c",
+        "visual_proxy": true,
+        "source_annotation": "REAL-LEGO-EXPERIMENTAL-LOCAL-FOUNDATION"
+      },
+      {
+        "placement_id": "wall-000021",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 0,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -24,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000045",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 3,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -48,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000069",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 6,
+        "rotation_quarter_turns": 1,
+        "width_studs": 6,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3009.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -72,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000092",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 9,
+        "z_plates": 9,
+        "rotation_quarter_turns": 1,
+        "width_studs": 6,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3009.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -96,
+          580
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000116",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 12,
+        "rotation_quarter_turns": 1,
+        "width_studs": 6,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3009.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -120,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000139",
+        "part_id": "BRICK_1X6",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 9,
+        "z_plates": 15,
+        "rotation_quarter_turns": 1,
+        "width_studs": 6,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3009.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -144,
+          580
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000163",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 18,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -168,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000186",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 21,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -192,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000210",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 24,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -216,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000233",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 27,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -240,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000256",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 30,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -264,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000279",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 33,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -288,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000301",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 36,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -312,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000323",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 39,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -336,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000346",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 42,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -360,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000368",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 45,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -384,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000391",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 48,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -408,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000413",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 51,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -432,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000435",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 54,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -456,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000458",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 57,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -480,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000480",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 60,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -504,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000503",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 63,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -528,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000527",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 15,
+        "z_plates": 66,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -552,
+          700
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000552",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 13,
+        "z_plates": 69,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -576,
+          660
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000576",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 15,
+        "z_plates": 72,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -600,
+          700
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000601",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 13,
+        "z_plates": 75,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -624,
+          660
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000625",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 15,
+        "z_plates": 78,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -648,
+          700
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000649",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 81,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -672,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000673",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 84,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -696,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000696",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 10,
+        "z_plates": 87,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -720,
+          600
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      },
+      {
+        "placement_id": "wall-000719",
+        "part_id": "BRICK_1X8",
+        "category": "brick",
+        "component": "second_wall_column",
+        "x_studs": 30,
+        "y_studs": 11,
+        "z_plates": 90,
+        "rotation_quarter_turns": 1,
+        "width_studs": 8,
+        "length_studs": 1,
+        "height_plates": 3,
+        "ldraw_ref": "3008.dat",
+        "ldraw_color": 19,
+        "ldraw_xyz_ldu": [
+          1270,
+          -744,
+          620
+        ],
+        "ldraw_matrix": [
+          0,
+          0,
+          -1,
+          0,
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        "semantic_color": "#ae946e",
+        "visual_proxy": true,
+        "source_annotation": "B3-ORIGINAL"
+      }
+    ]
+  },
+  "bom": {
+    "total_parts": 75,
+    "unique_part_types": 6,
+    "lines": [
+      {
+        "ldraw_ref": "3008.dat",
+        "quantity": 62,
+        "category": "brick"
+      },
+      {
+        "ldraw_ref": "3622.dat",
+        "quantity": 1,
+        "category": "brick"
+      },
+      {
+        "ldraw_ref": "3006.dat",
+        "quantity": 2,
+        "category": "brick"
+      },
+      {
+        "ldraw_ref": "30363.dat",
+        "quantity": 5,
+        "category": "roof"
+      },
+      {
+        "ldraw_ref": "3811.dat",
+        "quantity": 1,
+        "category": "plate"
+      },
+      {
+        "ldraw_ref": "3009.dat",
+        "quantity": 4,
+        "category": "brick"
+      }
+    ],
+    "new_experimental_pieces": 2,
+    "new_references": [
+      "3006.dat",
+      "3622.dat"
+    ],
+    "original_piece_positions_retained": 10
+  },
+  "fidelity_issues": [
+    {
+      "severity": "warning",
+      "message": "TOITURE-6 — sous-ensemble retenu de 75 vraies pièces : fondation locale LEGO 3811 et 2 colonnes originales, avec 5 pentes de toiture sur le seul mur ouest."
+    },
+    {
+      "severity": "warning",
+      "message": "Le deuxième raccord toiture→mur est EXCLU : collisions officielles LDraw détectées avec des pentes B3. Aucune stabilité mécanique démontrée."
+    },
+    {
+      "severity": "warning",
+      "message": "Cette vue est un proxy 3D, pas une preuve de résistance ni une fondation complète de maison. La lecture des rapports de géométrie prime."
+    }
+  ],
+  "assembly_plan": {
+    "schema_version": "0.1",
+    "total_parts": 75,
+    "total_steps": 75,
+    "steps": [
+      {
+        "step_id": "TOITURE6-RETENU-001",
+        "sequence": 1,
+        "title": "Plaque de fondation locale 3811",
+        "placement_ids": [
+          "TOITURE6-FOUNDATION-3811"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-002",
+        "sequence": 2,
+        "title": "Installer wall-000009",
+        "placement_ids": [
+          "wall-000009"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-003",
+        "sequence": 3,
+        "title": "Installer wall-000031",
+        "placement_ids": [
+          "wall-000031"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-004",
+        "sequence": 4,
+        "title": "Installer wall-000057",
+        "placement_ids": [
+          "wall-000057"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-005",
+        "sequence": 5,
+        "title": "Installer wall-000078",
+        "placement_ids": [
+          "wall-000078"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-006",
+        "sequence": 6,
+        "title": "Installer wall-000104",
+        "placement_ids": [
+          "wall-000104"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-007",
+        "sequence": 7,
+        "title": "Installer wall-000125",
+        "placement_ids": [
+          "wall-000125"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-008",
+        "sequence": 8,
+        "title": "Installer wall-000151",
+        "placement_ids": [
+          "wall-000151"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-009",
+        "sequence": 9,
+        "title": "Installer wall-000172",
+        "placement_ids": [
+          "wall-000172"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-010",
+        "sequence": 10,
+        "title": "Installer wall-000198",
+        "placement_ids": [
+          "wall-000198"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-011",
+        "sequence": 11,
+        "title": "Installer wall-000220",
+        "placement_ids": [
+          "wall-000220"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-012",
+        "sequence": 12,
+        "title": "Installer wall-000244",
+        "placement_ids": [
+          "wall-000244"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-013",
+        "sequence": 13,
+        "title": "Installer wall-000266",
+        "placement_ids": [
+          "wall-000266"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-014",
+        "sequence": 14,
+        "title": "Installer wall-000290",
+        "placement_ids": [
+          "wall-000290"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-015",
+        "sequence": 15,
+        "title": "Installer wall-000310",
+        "placement_ids": [
+          "wall-000310"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-016",
+        "sequence": 16,
+        "title": "Installer wall-000335",
+        "placement_ids": [
+          "wall-000335"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-017",
+        "sequence": 17,
+        "title": "Installer wall-000355",
+        "placement_ids": [
+          "wall-000355"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-018",
+        "sequence": 18,
+        "title": "Installer wall-000380",
+        "placement_ids": [
+          "wall-000380"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-019",
+        "sequence": 19,
+        "title": "Installer wall-000400",
+        "placement_ids": [
+          "wall-000400"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-020",
+        "sequence": 20,
+        "title": "Installer wall-000424",
+        "placement_ids": [
+          "wall-000424"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-021",
+        "sequence": 21,
+        "title": "Installer wall-000445",
+        "placement_ids": [
+          "wall-000445"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-022",
+        "sequence": 22,
+        "title": "Installer wall-000469",
+        "placement_ids": [
+          "wall-000469"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-023",
+        "sequence": 23,
+        "title": "Installer wall-000490",
+        "placement_ids": [
+          "wall-000490"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-024",
+        "sequence": 24,
+        "title": "Installer wall-000515",
+        "placement_ids": [
+          "wall-000515"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-025",
+        "sequence": 25,
+        "title": "Installer wall-000537",
+        "placement_ids": [
+          "wall-000537"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-026",
+        "sequence": 26,
+        "title": "Installer wall-000564",
+        "placement_ids": [
+          "wall-000564"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-027",
+        "sequence": 27,
+        "title": "Installer wall-000586",
+        "placement_ids": [
+          "wall-000586"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-028",
+        "sequence": 28,
+        "title": "Installer wall-000613",
+        "placement_ids": [
+          "wall-000613"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-029",
+        "sequence": 29,
+        "title": "Installer wall-000635",
+        "placement_ids": [
+          "wall-000635"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-030",
+        "sequence": 30,
+        "title": "Installer wall-000660",
+        "placement_ids": [
+          "wall-000660"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-031",
+        "sequence": 31,
+        "title": "Installer wall-000683",
+        "placement_ids": [
+          "wall-000683"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-032",
+        "sequence": 32,
+        "title": "Installer wall-000707",
+        "placement_ids": [
+          "wall-000707"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-033",
+        "sequence": 33,
+        "title": "Installer wall-000021",
+        "placement_ids": [
+          "wall-000021"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-034",
+        "sequence": 34,
+        "title": "Installer wall-000045",
+        "placement_ids": [
+          "wall-000045"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-035",
+        "sequence": 35,
+        "title": "Installer wall-000069",
+        "placement_ids": [
+          "wall-000069"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-036",
+        "sequence": 36,
+        "title": "Installer wall-000092",
+        "placement_ids": [
+          "wall-000092"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-037",
+        "sequence": 37,
+        "title": "Installer wall-000116",
+        "placement_ids": [
+          "wall-000116"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-038",
+        "sequence": 38,
+        "title": "Installer wall-000139",
+        "placement_ids": [
+          "wall-000139"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-039",
+        "sequence": 39,
+        "title": "Installer wall-000163",
+        "placement_ids": [
+          "wall-000163"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-040",
+        "sequence": 40,
+        "title": "Installer wall-000186",
+        "placement_ids": [
+          "wall-000186"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-041",
+        "sequence": 41,
+        "title": "Installer wall-000210",
+        "placement_ids": [
+          "wall-000210"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-042",
+        "sequence": 42,
+        "title": "Installer wall-000233",
+        "placement_ids": [
+          "wall-000233"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-043",
+        "sequence": 43,
+        "title": "Installer wall-000256",
+        "placement_ids": [
+          "wall-000256"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-044",
+        "sequence": 44,
+        "title": "Installer wall-000279",
+        "placement_ids": [
+          "wall-000279"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-045",
+        "sequence": 45,
+        "title": "Installer wall-000301",
+        "placement_ids": [
+          "wall-000301"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-046",
+        "sequence": 46,
+        "title": "Installer wall-000323",
+        "placement_ids": [
+          "wall-000323"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-047",
+        "sequence": 47,
+        "title": "Installer wall-000346",
+        "placement_ids": [
+          "wall-000346"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-048",
+        "sequence": 48,
+        "title": "Installer wall-000368",
+        "placement_ids": [
+          "wall-000368"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-049",
+        "sequence": 49,
+        "title": "Installer wall-000391",
+        "placement_ids": [
+          "wall-000391"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-050",
+        "sequence": 50,
+        "title": "Installer wall-000413",
+        "placement_ids": [
+          "wall-000413"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-051",
+        "sequence": 51,
+        "title": "Installer wall-000435",
+        "placement_ids": [
+          "wall-000435"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-052",
+        "sequence": 52,
+        "title": "Installer wall-000458",
+        "placement_ids": [
+          "wall-000458"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-053",
+        "sequence": 53,
+        "title": "Installer wall-000480",
+        "placement_ids": [
+          "wall-000480"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-054",
+        "sequence": 54,
+        "title": "Installer wall-000503",
+        "placement_ids": [
+          "wall-000503"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-055",
+        "sequence": 55,
+        "title": "Installer wall-000527",
+        "placement_ids": [
+          "wall-000527"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-056",
+        "sequence": 56,
+        "title": "Installer wall-000552",
+        "placement_ids": [
+          "wall-000552"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-057",
+        "sequence": 57,
+        "title": "Installer wall-000576",
+        "placement_ids": [
+          "wall-000576"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-058",
+        "sequence": 58,
+        "title": "Installer wall-000601",
+        "placement_ids": [
+          "wall-000601"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-059",
+        "sequence": 59,
+        "title": "Installer wall-000625",
+        "placement_ids": [
+          "wall-000625"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-060",
+        "sequence": 60,
+        "title": "Installer wall-000649",
+        "placement_ids": [
+          "wall-000649"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-061",
+        "sequence": 61,
+        "title": "Installer wall-000673",
+        "placement_ids": [
+          "wall-000673"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-062",
+        "sequence": 62,
+        "title": "Installer wall-000696",
+        "placement_ids": [
+          "wall-000696"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-063",
+        "sequence": 63,
+        "title": "Installer wall-000719",
+        "placement_ids": [
+          "wall-000719"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-064",
+        "sequence": 64,
+        "title": "Installer gable-000026",
+        "placement_ids": [
+          "gable-000026"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-065",
+        "sequence": 65,
+        "title": "Installer gable-000031",
+        "placement_ids": [
+          "gable-000031"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-066",
+        "sequence": 66,
+        "title": "Installer gable-000035",
+        "placement_ids": [
+          "gable-000035"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-067",
+        "sequence": 67,
+        "title": "Installer gable-000039",
+        "placement_ids": [
+          "gable-000039"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-068",
+        "sequence": 68,
+        "title": "Installer TOITURE4-VARIANT-3622-GABLE-CONNECTOR",
+        "placement_ids": [
+          "TOITURE4-VARIANT-3622-GABLE-CONNECTOR"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-069",
+        "sequence": 69,
+        "title": "Installer TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE",
+        "placement_ids": [
+          "TOITURE4-VARIANT-3006-BRIDGE-TO-GABLE"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-070",
+        "sequence": 70,
+        "title": "Installer TOITURE3-VARIANT-3006-ROW336-340",
+        "placement_ids": [
+          "TOITURE3-VARIANT-3006-ROW336-340"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-071",
+        "sequence": 71,
+        "title": "Installer roof-000338",
+        "placement_ids": [
+          "roof-000338"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-072",
+        "sequence": 72,
+        "title": "Installer roof-000337",
+        "placement_ids": [
+          "roof-000337"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-073",
+        "sequence": 73,
+        "title": "Installer roof-000339",
+        "placement_ids": [
+          "roof-000339"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-074",
+        "sequence": 74,
+        "title": "Installer roof-000336",
+        "placement_ids": [
+          "roof-000336"
+        ]
+      },
+      {
+        "step_id": "TOITURE6-RETENU-075",
+        "sequence": 75,
+        "title": "Installer roof-000340",
+        "placement_ids": [
+          "roof-000340"
+        ]
+      }
+    ]
+  }
+}
