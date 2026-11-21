@@ -1,4 +1,4 @@
-"""Fail-closed physical preflight for an existing BrickModel JSON file.
+"""Fail-closed GEOMETRY-ONLY preflight for an existing BrickModel JSON file.
 
 Usage: python scripts/preflight_boldungo2_brickmodel.py path/to/model.json
 Exit 0 means ORTHOGONAL_PREFLIGHT_PASS only; never physical certification.
@@ -12,22 +12,25 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 
 from brickhouse.bricks.brick_model import BrickModel
-from brickhouse.bricks.physical_assembly import generate_physically_screened_assembly_plan
+from brickhouse.bricks.physical_assembly import generate_geometrically_screened_assembly_plan
 
 
 def check_model_data(data):
     model = BrickModel.model_validate(data)
-    plan = generate_physically_screened_assembly_plan(model)
+    plan = generate_geometrically_screened_assembly_plan(model)
     return {
         "status": "ORTHOGONAL_PREFLIGHT_PASS",
         "physical_certification": False,
+        "validation_level": "GEOMETRY_ONLY",
+        "connector_validation": "NOT_CHECKED",
+        "physical_evidence": "NOT_CERTIFIED",
         "model_parts": len(model.parts),
         "notice_parts": plan.total_parts,
         "notice_steps": plan.total_steps,
         "collision": "PASS_RECTANGULAR_AABB_ONLY",
         "catalog": "PASS_INTERNAL_ORTHOGONAL_SUBSET_ONLY",
-        "connections": "PASS_VERTICAL_GRID_CONTACT_GRAPH_ONLY",
-        "support": "PASS_AT_LEAST_ONE_STUD_CONTACT_ONLY",
+        "connections": "NOT_CHECKED_GEOMETRIC_VERTICAL_CONTACT_GRAPH_ONLY",
+        "support": "PASS_GEOMETRIC_OVERLAP_ONLY_NO_CONNECTOR_EVIDENCE",
         "insertion": "NOT_TESTED",
         "stability": "NOT_TESTED",
         "architecture": "NOT_TESTED",

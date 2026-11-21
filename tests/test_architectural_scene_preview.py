@@ -53,7 +53,7 @@ def test_scene_preview_renders_known_exterior_elements() -> None:
 
 def test_scene_preview_accepts_explicit_scene_url_before_local_storage() -> None:
     source = Path("frontend/scene-viewer.js").read_text(encoding="utf-8")
-    explicit = "new URLSearchParams(window.location.search).get('scene')"
+    explicit = "const explicitSceneUrl = params.get('scene')"
     assert explicit in source
     assert "await fetch(explicitSceneUrl)" in source
     assert source.index(explicit) < source.index("localStorage.getItem(key)")

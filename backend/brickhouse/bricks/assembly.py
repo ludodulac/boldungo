@@ -181,13 +181,40 @@ def generate_assembly_plan(model: BrickModel) -> AssemblyPlan:
                 title += f" · partie {idx}/{len(chunks)}"
             pending.append(dict(component="wall", z=z, title=title, ids=chunk, phase="Structure", kind="placement", focus="normal"))
 
-    # Scene-aware stairs, landings, decks and similar attached structures.
-    _append_grouped_steps(
-        pending,
-        [part for part in model.parts if _phase_for_part(part) == "Structures extérieures"],
-        phase="Structures extérieures",
-        title="Structures extérieures",
-    )
+    # Scene-aware exterior construction. For the one verified south deck
+    # cross-plate, give explicit installation actions in correct Z order:
+    # existing post first, plate next (temporarily held), boards last.
+    exterior = [part for part in model.parts if _phase_for_part(part) == "Structures extérieures"]
+    cross_plate_id = "scene-platform:south-timber-deck-main:hidden-cross-plate:00007-00013"
+    target_boards = {
+        "scene-platform:south-timber-deck-main:board:" + n
+        for n in ("00001", "00007", "00013")
+    }
+    if any(p.placement_id == cross_plate_id for p in exterior):
+        for z in sorted({p.z_plates for p in exterior}):
+            level = [p for p in exterior if p.z_plates == z]
+            plate = [p for p in level if p.placement_id == cross_plate_id or ":hidden-cross-bond-029:" in p.placement_id]
+            boards = [p for p in level if p.placement_id in target_boards]
+            others = [p for p in level if p not in plate and p not in boards]
+            if plate:
+                _append_grouped_steps(
+                    pending, plate, phase="Structures extérieures",
+                    title="Terrasse sud — maintenir provisoirement les plaques de liaison cachées sous les planches avant emboîtement",
+                )
+            if boards:
+                _append_grouped_steps(
+                    pending, boards, phase="Structures extérieures",
+                    title="Terrasse sud — emboîter les planches 00001, 00007 et 00013 sur la plaque, puis retirer le maintien",
+                )
+            _append_grouped_steps(
+                pending, others, phase="Structures extérieures",
+                title="Structures extérieures",
+            )
+    else:
+        _append_grouped_steps(
+            pending, exterior, phase="Structures extérieures",
+            title="Structures extérieures",
+        )
 
     # Windows: build frame + pane as a mini-assembly before placing it.
     assemblies, used_window_ids = _window_subassemblies(model)

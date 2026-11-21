@@ -1,0 +1,54 @@
+name: LEGO2-083 design-first three ridge candidates
+
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/ridge_technique_candidates_083.py'
+      - 'tests/bricks/test_ridge_technique_candidates_083.py'
+      - 'scripts/design_ridge_trials_083.py'
+      - '.github/workflows/lego2-083-design-candidates.yml'
+  workflow_dispatch:
+
+jobs:
+  candidate-design:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install project
+        run: python -m pip install -e ".[dev]"
+      - name: Install LDraw geometry subpackage
+        run: python -m pip install -e "./lego_geometry_engine"
+      - name: Run bounded candidate tests and connector-first gate
+        run: |
+          python -m pytest -q tests/bricks/test_connector_first_design_082.py tests/bricks/test_ridge_technique_candidates_083.py
+      - name: Export the actual 30-part proposal
+        run: |
+          python scripts/design_ridge_trials_083.py --output artifacts/lego2-083/ridge-trials.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path('artifacts/lego2-083/ridge-trials.json').read_text())
+          assert r['candidate_count'] == 3
+          kit = r['physical_trial']
+          assert kit['total_pieces'] == 30
+          assert kit['frame_pieces'] == 24
+          assert kit['loose_slope_test_pieces'] == 6
+          assert kit['documented_nominal_frame_joints'] == 26
+          assert r['physical_certification'] == 'NOT_CERTIFIED'
+          assert r['guided004_mutated'] is False
+          assert all(c['physical_certification'] == 'NOT_CERTIFIED'
+                     for c in r['candidates'])
+          print('LEGO2_083_CANDIDATE_DELIVERY=PASS')
+          PY
+      - name: Upload reproducible ridge kit and gate outcomes
+        uses: actions/upload-artifact@v4
+        with:
+          name: lego2-083-three-ridge-candidates-and-physical-kit
+          path: artifacts/lego2-083/ridge-trials.json
+          if-no-files-found: error
+          retention-days: 21

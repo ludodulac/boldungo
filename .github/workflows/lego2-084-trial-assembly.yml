@@ -1,0 +1,56 @@
+name: LEGO2-084 experimental ridge trial assembly replay
+
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/ridge_trial_assembly_084.py'
+      - 'tests/bricks/test_ridge_trial_assembly_084.py'
+      - 'scripts/prepare_ridge_trial_084.py'
+      - '.github/workflows/lego2-084-trial-assembly.yml'
+  workflow_dispatch:
+
+jobs:
+  replay-24-steps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install BrickHouse and LDraw adapter
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Test connector-first trial and exact assembly sequence
+        run: |
+          python -m pytest -q tests/bricks/test_connector_first_design_082.py tests/bricks/test_ridge_technique_candidates_083.py tests/bricks/test_ridge_trial_assembly_084.py
+      - name: Generate human-readable and JSON physical experiment
+        run: |
+          python scripts/prepare_ridge_trial_084.py --output-dir artifacts/lego2-084
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r = json.loads(Path('artifacts/lego2-084/assembly-replay.json').read_text())
+          assert r['total_kit_parts'] == 30
+          assert r['step_count'] == 24
+          assert r['nominal_chain_to_datum_count'] == 24
+          assert r['frame_nominal_joint_count'] == 26
+          assert all(s['insertion_screen'] == 'GEOMETRY_CLEAR_ONLY' for s in r['steps'])
+          assert r['frame_trial_status'] == 'READY_FOR_USER_FRAME_ASSEMBLY_TRIAL'
+          assert len(r['roof_pieces']) == 6
+          assert all('NOT_APPROVED_FOR_INSTALLATION' in p['status'] for p in r['roof_pieces'])
+          assert r['physical_certification'] == 'NOT_CERTIFIED'
+          guide = Path('artifacts/lego2-084/ESSAI-30-PIECES.md').read_text()
+          assert 'NOT_CERTIFIED' in guide
+          assert guide.count('rotation=') >= 30
+          print('LEGO2_084_REPLAY_AND_PRINTABLE_GUIDE=PASS')
+          PY
+      - name: Upload trial steps and physical feedback sheet
+        uses: actions/upload-artifact@v4
+        with:
+          name: lego2-084-30-bricks-physical-trial-and-24-steps
+          path: artifacts/lego2-084/
+          if-no-files-found: error
+          retention-days: 21

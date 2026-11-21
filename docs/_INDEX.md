@@ -14,6 +14,7 @@ Commencer par `AI_START_HERE.md`. Cet index sert uniquement à atteindre rapidem
 - [ARCHITECTURE.md](ARCHITECTURE.md) — architecture générale du logiciel.
 - [ARCHITECTURAL_LEGO_SOLUTIONS.md](ARCHITECTURAL_LEGO_SOLUTIONS.md) — adaptation de l'architecture aux contraintes LEGO.
 - [ASSEMBLY_PLAN.md](ASSEMBLY_PLAN.md) — planification d'assemblage lorsque la tâche porte sur cette sortie.
+- [GEOMETRY_VS_CONNECTION_EVIDENCE.md](GEOMETRY_VS_CONNECTION_EVIDENCE.md) — distinguer contrôle géométrique non certifiant et support strict VALID.
 
 ## Raisonnement / validation
 

@@ -1,8 +1,10 @@
 """Regression checks for a wall aperture and its supported lintel."""
-from brickhouse.bricks.physical_opening_wall import wall_with_opening, validate_wall_with_opening
+from brickhouse.bricks.physical_opening_wall import wall_with_opening, validate_wall_geometry_with_opening
 
-def test_wall_with_opening_passes_catalog_support_preflight():
-    assert len(validate_wall_with_opening().accepted) == 12
+def test_wall_with_opening_passes_geometry_only_preflight():
+    gate = validate_wall_geometry_with_opening()
+    assert gate.connector_validation == "NOT_CHECKED"
+    assert len(gate.accepted) == 12
 
 def test_opening_is_clear_on_two_courses():
     parts = wall_with_opening()

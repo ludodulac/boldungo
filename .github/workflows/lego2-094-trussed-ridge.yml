@@ -1,0 +1,76 @@
+name: LEGO2-094 trussed roof, ridge and real hinge interface candidate
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/triangular_frame_ridge_094.py'
+      - 'scripts/construct_guided004_roof_094.py'
+      - 'scripts/construct_guided004_hinged_roof_093.py'
+      - 'tests/bricks/test_triangular_frame_ridge_094.py'
+      - '.github/workflows/lego2-094-trussed-ridge.yml'
+  workflow_dispatch:
+
+jobs:
+  construct-actual-house:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install existing BrickModel + LDraw engines
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Independent-house and historical mechanical evidence tests
+        run: |
+          python -m pytest -q tests/bricks/test_triangular_frame_ridge_094.py tests/bricks/test_articulated_roof_093.py
+      - name: Regenerate untouched canonical GUIDED004
+        run: python scripts/export_guided004_lego.py > guided004-canonical.log
+      - name: Rebuild historical 088 model
+        run: |
+          python scripts/construct_guided004_roof_088.py --source artifacts/lego2-guided-004/brick-model.json --output-dir artifacts/lego2-088-guided004-EXPERIMENTAL
+      - name: Rebuild historical 090 model
+        run: |
+          python scripts/construct_guided004_eave_090.py --canonical artifacts/lego2-guided-004/brick-model.json --previous artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --output artifacts/lego2-090
+      - name: Rebuild historical 091 model
+        run: |
+          python scripts/construct_guided004_roof_091.py --canonical artifacts/lego2-guided-004/brick-model.json --previous-088 artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --previous-090 artifacts/lego2-090/GUIDED-004-EXPERIMENTAL-090-NOT-CERTIFIED.json --output artifacts/lego2-091
+      - name: Construct real complete house with independent ridge and frame candidate
+        run: |
+          python scripts/construct_guided004_roof_094.py --source artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json --output artifacts/lego2-094
+      - name: Verify no invented mechanical certification or part count
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifacts/lego2-094")
+          obj=json.loads((p/"FRAME-094-PROOF-AND-BLOCKERS.json").read_text())
+          r=obj["report"]
+          assert r["source_093_composite_count"]==2812
+          assert r["retained_roof_angle"]==22.
+          assert r["frame_count"]>=2
+          assert r["ridge_beam_parts"]>=1
+          assert r["ridge_cover_tiles"]>=1
+          assert r["ridge_tip_to_cap_body_overlap_count"]==0
+          assert r["ridge_cap_purlin_nominal_stud_interfaces"]>=r["ridge_cover_tiles"]
+          assert r["ridge_real_3d_envelope_pairs_screened"]>0
+          assert r["coaxial_finger_type_pairs_identified"]==92
+          assert r["hinge_finger_contact_mesh_verified"]==0
+          assert r["truss_to_wall_compression_documented_verified"]==0
+          assert r["actual_load_rated_roof_paths"]==0
+          assert r["mechanically_closed_triangle_count"]==0
+          assert r["N6"]=="NOT_CERTIFIED"
+          assert r["views"]==7
+          assert p.joinpath("GUIDED004-ROOF-094-REAL-LEGO.ldr").exists()
+          print("LEGO2_094_REAL_HOUSE_PROPOSAL_BUILT_NOT_CERTIFIED")
+          PY
+      - name: Archive complete actual LDraw house, BOM, hinge and vertex blockers, and visual views
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: LEGO2-094-real-house-truss-ridge-unverified
+          path: artifacts/lego2-094/
+          retention-days: 30
+          if-no-files-found: warn

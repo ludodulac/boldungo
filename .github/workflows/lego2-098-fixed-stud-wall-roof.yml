@@ -1,0 +1,80 @@
+name: LEGO2-098 verified LDraw axes and fixed stud-lapped wall-roof tie
+on:
+  pull_request:
+    branches: [feat/lego2-existing-house-021]
+    paths:
+      - 'backend/brickhouse/bricks/technic_official_axes_098.py'
+      - 'backend/brickhouse/bricks/fixed_wall_roof_support_098.py'
+      - 'scripts/construct_guided004_fixed_wall_roof_098.py'
+      - 'tests/bricks/test_fixed_wall_roof_support_098.py'
+      - '.github/workflows/lego2-098-fixed-stud-wall-roof.yml'
+      - 'missions/098/**'
+  workflow_dispatch:
+jobs:
+  build-real-098:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install real existing engines
+        run: |
+          python -m pip install -e ".[dev]"
+          python -m pip install -e "./lego_geometry_engine"
+      - name: Verify DAT physical axes, 096-F6 and two grounded house layouts
+        run: |
+          python -m pytest -q tests/bricks/test_fixed_wall_roof_support_098.py tests/bricks/test_roof_technic_transfer_096.py tests/bricks/test_technic_triangle_095.py
+      - name: Generate protected 1890 piece canonical
+        run: |
+          python scripts/export_guided004_lego.py > guided004-canonical.log
+      - name: Rebuild historical 088
+        run: |
+          python scripts/construct_guided004_roof_088.py --source artifacts/lego2-guided-004/brick-model.json --output-dir artifacts/lego2-088-guided004-EXPERIMENTAL
+      - name: Rebuild historical 090
+        run: |
+          python scripts/construct_guided004_eave_090.py --canonical artifacts/lego2-guided-004/brick-model.json --previous artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --output artifacts/lego2-090
+      - name: Rebuild historical 091
+        run: |
+          python scripts/construct_guided004_roof_091.py --canonical artifacts/lego2-guided-004/brick-model.json --previous-088 artifacts/lego2-088-guided004-EXPERIMENTAL/GUIDED-004-EXPERIMENTAL-NOT-CERTIFIED.json --previous-090 artifacts/lego2-090/GUIDED-004-EXPERIMENTAL-090-NOT-CERTIFIED.json --output artifacts/lego2-091
+      - name: Build new wall-to-wall supported 22 degree roof + independent Technic axis audit
+        run: |
+          python scripts/construct_guided004_fixed_wall_roof_098.py --source artifacts/lego2-091/GUIDED-004-EXPERIMENTAL-STUDDED-ROOF-091-NOT-CERTIFIED.json --output artifacts/lego2-098
+      - name: Verify FULL LDraw BOM physical axes and fail-closed roof pitch locking
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("artifacts/lego2-098")
+          d=json.loads((p/"EVIDENCE-098-WALL-TIE-AND-BLOCKERS.json").read_text())
+          b=json.loads((p/"BOM-098-FULL-EXACT.json").read_text())
+          axes=json.loads((p/"AUDIT-098-OFFICIAL-LDRAW-AXES.json").read_text())
+          assert d["wall_to_wall_fixed_beam_chains"] in (0,1)
+          assert d["independent_fixed_eave_bearing_modules"]>=1
+          assert (d["wall_to_wall_fixed_beam_chains"]==1 and d["real_brick_course_lap_count"]>=2) or (d["wall_to_wall_fixed_beam_chains"]==0 and d["overlong_gap_studs"]>0 and d["real_brick_course_lap_count"]==0)
+          assert len(d["wall_sides"])==2
+          assert d["roof_panels_with_secondary_nonhinge_bearing_proven"]==0
+          assert d["roof_to_wall_complete_stable_paths_proven"]==0
+          assert d["roof_hinge_pitch_fixity"]=="ROTATION_ABOUT_EAVE_HINGE_NOT_RESTRAINED"
+          assert d["physical_strength"]=="NOT_CERTIFIED"
+          assert d["two_real_slopes_preserved"] is True
+          assert axes["corrected_count"]>0
+          assert axes["contains_uncorrected_096_F6"] is False
+          assert any(x.startswith("096-F6-brace") for x in axes["corrected_ids"])
+          assert d["seven_views_count"]==7
+          assert len(list((p/"views").glob("*.svg")))==7
+          assert b["total"]==sum(b["by_ldraw"].values())==d["full_house_composite_parts"]
+          assert sum(x.startswith("1 ") for x in
+            (p/"BOLDUNGO-098-WALL-FIXED-TIE-AND-22DEG-ROOF.ldr").read_text().splitlines())==b["total"]
+          assert (p/"SOUS-ASSEMBLAGE-098-POUTRE-FIXE-ET-CHARNIERE.ldr").exists()
+          print("LEGO2_098_GROUNDED_FIXED_EAVE_STUDS_REAL; OVERLONG_GAP_NOT_CLOSED; SECOND_ROOF_BEARING_NOT_PROVEN")
+          PY
+      - name: Upload complete full LDraw, actual positions/BOM, subassembly, audit and views
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOLDUNGO-098-real-fixed-stud-walls-and-LDraw-axes
+          path: artifacts/lego2-098/
+          if-no-files-found: warn
+          retention-days: 30

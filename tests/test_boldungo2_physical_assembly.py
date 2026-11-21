@@ -4,10 +4,11 @@ import pytest
 from brickhouse.bricks import physical_assembly as pa
 
 def part(pid, x, z):
+    # Already documented VALID by connectors.py; isolate order/coverage failures.
     return SimpleNamespace(
-        placement_id=pid, part_id="BRICK_2X4", x_studs=x,
+        placement_id=pid, part_id="BRICK_2X8", x_studs=x,
         y_studs=0, z_plates=z, rotation_quarter_turns=0,
-        width_studs=2, length_studs=4, height_plates=3,
+        width_studs=2, length_studs=8, height_plates=3,
     )
 
 def model(*parts):
@@ -38,7 +39,7 @@ def test_fake_part_rejected_before_notice(monkeypatch):
                         lambda m: pytest.fail("notice generated before validation"))
     fake = part("fake", 0, 0)
     fake.part_id = "BRICK_SLOPED_4X36"
-    with pytest.raises(ValueError, match="PHYSICAL_GATE_FAIL"):
+    with pytest.raises(ValueError, match="PART_NOT_IN_CANONICAL_CATALOG"):
         pa.generate_physically_screened_assembly_plan(model(fake))
 
 def test_mismatched_dimensions_rejected_before_notice(monkeypatch):

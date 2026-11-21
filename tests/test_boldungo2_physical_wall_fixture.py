@@ -1,6 +1,6 @@
 """Exercise actual Pydantic BrickModel and notice generation end to end."""
 from brickhouse.bricks.physical_wall_fixture import (
-    opening_wall_brick_model, opening_wall_screened_notice
+    opening_wall_brick_model, opening_wall_geometrically_screened_notice
 )
 
 def test_wall_fixture_parses_as_real_brick_model():
@@ -11,8 +11,8 @@ def test_wall_fixture_parses_as_real_brick_model():
     assert len(model.parts) == 12
     assert all(p.component == "wall" for p in model.parts)
 
-def test_wall_fixture_generates_physically_screened_notice():
-    model, plan = opening_wall_screened_notice()
+def test_wall_fixture_generates_geometrically_screened_notice():
+    model, plan = opening_wall_geometrically_screened_notice()
     ids = [pid for step in plan.steps for pid in step.placement_ids]
     assert len(ids) == 12
     assert set(ids) == {p.placement_id for p in model.parts}

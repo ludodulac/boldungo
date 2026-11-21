@@ -36,5 +36,5 @@ include = ["brickhouse*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["backend"]
+pythonpath = ["backend", "."]
 addopts = ["--import-mode=importlib"]
